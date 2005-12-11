@@ -1,6 +1,7 @@
 <?php
 
 require_once "../src/phpchat.class.php";
+//aaa
 $chat = new phpChat();
 
 ?>
