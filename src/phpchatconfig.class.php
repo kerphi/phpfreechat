@@ -24,7 +24,7 @@ class phpChatConfig
     $this->default_params["server_script"]       = "";
     $this->default_params["cache_dir"]           = dirname(__FILE__)."/cache/";
     $this->default_params["debug"]               = false;
-    $this->default_params["prefix"]              = "phpchat_";
+    $this->default_params["prefix"]              = phpChatConfig::GetPrefix();
     $this->default_params["container_type"]      = ($params["container_type"]!="") ? $params["container_type"] : "File";
 
     // set defaults values
@@ -44,7 +44,7 @@ class phpChatConfig
     }
 
     // calculate the chat id
-    $this->id = md5(serialize($this));
+    $this->id = phpChatConfig::GetIdFromParams($params);
   }
   
   function &getContainerInstance()
@@ -134,6 +134,21 @@ class phpChatConfig
     foreach ( $this->default_params as $p_k => $p_v )
       $smarty->assign($p_k, $this->$p_k);
   }
+
+  function GetIdFromParams($params)
+  {
+    if (isset($params["title"]))
+      return md5($params["title"]);
+    else
+      return md5("My phpChat");
+  }
+
+  function GetPrefix()
+  {
+    return "phpchat_";
+  }
+  
+  
 }
 
 ?>

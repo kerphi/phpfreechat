@@ -8,11 +8,11 @@ class phpChat
   var $chatconfig;
   var $xajax;
   
-  function phpChat( $c = NULL )
+  function phpChat( $params = array() )
   {
     // start the session : session is used for locking purpose and cache purpose
     session_start();
-    //session_destroy();
+    session_destroy();
 
     /*
     $fp = fopen("log", "w");
@@ -24,12 +24,16 @@ class phpChat
     fwrite($fp, $data);
     fclose($fp);
     */
-    
+
+    /*
+    $chat_id = phpChatConfig::GetIdFromParams($params);
+
     // create a default chatconfig if necessary
-    if ($c == NULL) $c = new phpChatConfig();
+    if ($c == NULL) $c = new phpChatConfig( $params );
+    */
 
     // save and initialize the chatconfig
-    $c =& phpChat::SetConfig( $c, false, true );
+    $c =& phpChat::SetConfig( $params, false, true );
     
     // Xajax doesn't support yet static class methode call
     // I use basic functions to wrap to my statics methodes
@@ -114,28 +118,33 @@ class phpChat
   /**
    * return the chatconfig object
    */
-  function &GetConfig( $c = NULL )
+  function &GetConfig( $chat_id = 0, $prefix = "" )
   {
     static $chatconfig;
     if (!isset($chatconfig))
-    {
-      if ($c == NULL)
-        die("phpChat::GetConfig must be called the first time with a chatconfig object.");
-      if (isset($_SESSION[$c->prefix."chatconfig_".$c->id]))
-        $chatconfig = unserialize($_SESSION[$c->prefix."chatconfig_".$c->id]);
-      else
-        die("phpChat::GetConfig do not find the chatconfig object.");        
-    }
+      {
+	if ($chat_id == 0 && $prefix == "")
+	  die("phpChat::GetConfig must be called the first time with a chatconfig object.");
+	if (isset($_SESSION[$prefix."chatconfig_".$chat_id]))
+	  $chatconfig = unserialize($_SESSION[$prefix."chatconfig_".$chat_id]);
+	else
+	  die("phpChat::GetConfig do not find the chatconfig object.");        
+      }
     return $chatconfig;    
   }
 
   /**
    * change the chatconfig object only if it is not allready saved
    */
-  function &SetConfig( &$c, $force = false, $init = true )
+  function &SetConfig( &$params, $force = false, $init = true )
   {
-    if ( !$force && isset($_SESSION[$c->prefix."chatconfig_".$c->id]) )
-      return phpChat::GetConfig( $c );
+    $chat_id = phpChatConfig::GetIdFromParams($params);
+    $prefix  = phpChatConfig::GetPrefix();
+
+    if ( !$force && isset($_SESSION[$prefix."chatconfig_".$chat_id]) )
+      return phpChat::GetConfig( $chat_id, $prefix );
+    
+    $c = new phpChatConfig( $params );
 
     // initialize the chatobject if necessary    
     if ($init)
@@ -152,7 +161,8 @@ class phpChat
 
     // save the validated config in session
     $_SESSION[$c->prefix."chatconfig_".$c->id] = serialize($c);
-    return phpChat::GetConfig( $c );
+
+    return phpChat::GetConfig( $chat_id, $prefix );
   }
   
   function FilterNickname($nickname)
@@ -229,14 +239,14 @@ class phpChat
     if ($c->nick != "")
     {
       $xml_reponse->addAssign($c->prefix."handle", "value", $c->nick);
-      $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
+      //      $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
       phpChat::Cmd_notice($xml_reponse, $c->nick." is connected");
     }
     else
     {
-      $errors[$c->prefix."handle"] = "Please enter your nickname.";
-      phpChat::Cmd_error($xml_reponse, $errors);      
-      $xml_reponse->addScript("document.getElementById('".$c->prefix."handle').focus();");
+      //      $errors[$c->prefix."handle"] = "Please enter your nickname.";
+      //      phpChat::Cmd_error($xml_reponse, $errors);      
+      //      $xml_reponse->addScript("document.getElementById('".$c->prefix."handle').focus();");
     }
   }
 
@@ -250,7 +260,12 @@ class phpChat
       return;
     }
     $container =& $c->getContainerInstance();
-    $newnick = $container->changeMyNick($newnick);
+    $newnick2 = $container->changeMyNick($newnick);
+    if ($newnick2 != $newnick)
+    {
+      phpChat::Cmd_asknick($xml_reponse, $newnick);
+      return;
+    }
     $oldnick = $c->nick;
     $c->nick = $newnick;
     phpChat::SetConfig($c, true);
@@ -259,18 +274,16 @@ class phpChat
       phpChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($oldnick))." changes his nickname to ".htmlspecialchars(stripslashes($newnick)));
     else
       phpChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($newnick))." is connected");
-    $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
     $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
+    //    $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
   }
 
   function Cmd_notice(&$xml_reponse, $msg)
   {
-    /*
     $c =& phpChat::GetConfig();
     $container =& $c->getContainerInstance();
     $container->writeMsg("*", $msg);
-		phpChat::Cmd_getNewMsg($xml_reponse);
-    */
+    phpChat::Cmd_getNewMsg($xml_reponse);
   }
 
   function Cmd_me(&$xml_reponse, $msg)
@@ -307,7 +320,7 @@ class phpChat
     $container =& $c->getContainerInstance();
     $ok = $container->updateMyNick();
     if (!$ok)
-      $xml_reponse->addScript($c->prefix."SetError('".addslashes("Cmd_updateMyNick failed")."', Array());");
+      phpChat::Cmd_error(&$xml_reponse, "Cmd_updateMyNick failed");
   }
   
   function Cmd_getNewMsg(&$xml_reponse)
@@ -394,8 +407,6 @@ class phpChat
     {
       // an error occured, just ignore the message and display errors
       phpChat::Cmd_error($xml_reponse, $errors);
-      //     	$error_ids = ""; $error_str = ""; foreach ($errors as $k => $e) { $error_ids .= ",'".$k."'"; $error_str.= $e." "; } $error_ids = substr($error_ids,1);
-      //    	$xml_reponse->addScript($c->prefix."SetError('".addslashes($error_str)."', Array(".$error_ids."));");
       if (isset($errors[$c->prefix."handle"])) // the nick is empty so give it focus
         $xml_reponse->addScript("document.getElementById('".$c->prefix."handle').focus();");
     }
@@ -408,12 +419,23 @@ class phpChat
   function Cmd_error(&$xml_reponse, $errors)
   {
     $c =& phpChat::GetConfig();
-    $error_ids = "";
-    $error_str = "";
-    foreach ($errors as $k => $e) { $error_ids .= ",'".$k."'"; $error_str.= $e." "; }
-    $error_ids = substr($error_ids,1);
-    $xml_reponse->addScript($c->prefix."SetError('".addslashes($error_str)."', Array(".$error_ids."));");
+    if (is_array($errors))
+    {
+      $error_ids = ""; $error_str = "";
+      foreach ($errors as $k => $e) { $error_ids .= ",'".$k."'"; $error_str.= $e." "; }
+      $error_ids = substr($error_ids,1);
+      $xml_reponse->addScript($c->prefix."SetError('".addslashes($error_str)."', Array(".$error_ids."));");
+    }
+    else
+      $xml_reponse->addScript($c->prefix."SetError('".addslashes($errors)."', Array());");
   }
+
+  function Cmd_asknick(&$xml_reponse, $nicktochange)
+  {
+    $c =& phpChat::GetConfig();
+    $xml_reponse->addScript("var newpseudo = prompt('Enter a new pseudo', 'green'); ".$c->prefix."handleRequest('/nick ' + newpseudo);");
+  }
+  
 }
 
 ?>

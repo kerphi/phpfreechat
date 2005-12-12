@@ -1,18 +1,19 @@
 <?php
 
 require_once "../src/phpchat.class.php";
-$chatconfig = new phpChatConfig( array("title"          => "A simple chat with user's parameters",
-                                       "init_nick"      => "guest",
-                                       "frozen_nick"    => false,
-                                       "max_nick_len"   => 5,
-                                       "max_text_len"   => 20,
-                                       "refresh_delay"  => 1000,
-                                       "max_msg"        => 15,
-                                       "height"         => "230px",
-                                       "width"          => "800px",
-                                       //"debug"          => true,
-                                       ) );
-$chat = new phpChat( $chatconfig );
+$params = array();
+$params["title"]          = "A simple chat with user's parameters";
+$params["init_nick"]      = "guest";
+$params["frozen_nick"]    = false;
+$params["max_nick_len"]   = 5;
+$params["max_text_len"]   = 20;
+$params["refresh_delay"]  = 1000;
+$params["max_msg"]        = 15;
+$params["height"]         = "230px";
+$params["width"]          = "800px";
+//$params["debug"]          = true;
+
+$chat = new phpChat( $params );
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
