@@ -2,16 +2,16 @@
 
 class phpChatConfig
 {
-  var $nick = "";
-  var $id;
+  var $nick           = "";
+  var $id             = 0;
   var $default_params = array();
-  var $errors = array();
-  var $is_init = false;
-  
+  var $errors         = array();
+  var $is_init        = false;
+
   function phpChatConfig( $params = array() )
   {
     $this->default_params["title"]               = "My phpChat";
-    $this->default_params["init_nick"]           = "";
+    $this->default_params["nick"]                = "";
     $this->default_params["frozen_nick"]         = false;
     $this->default_params["skip_optional_check"] = true;
     $this->default_params["max_nick_len"]        = 15;
@@ -23,9 +23,11 @@ class phpChatConfig
     $this->default_params["css_file"]            = "";
     $this->default_params["server_script"]       = "";
     $this->default_params["cache_dir"]           = dirname(__FILE__)."/cache/";
+    $this->default_params["shownotice"]          = true;
     $this->default_params["debug"]               = false;
-    $this->default_params["prefix"]              = phpChatConfig::GetPrefix();
-    $this->default_params["container_type"]      = ($params["container_type"]!="") ? $params["container_type"] : "File";
+    $this->default_params["connect"]             = true;
+    $this->default_params["prefix"]              = "phpchat_";
+    $this->default_params["container_type"]      = (isset($params["container_type"]) && $params["container_type"]!="") ? $params["container_type"] : "File";
 
     // set defaults values
     foreach ( $this->default_params as $k => $v ) $this->$k = $v;
@@ -43,8 +45,16 @@ class phpChatConfig
         $this->$attr = $v;
     }
 
-    // calculate the chat id
-    $this->id = phpChatConfig::GetIdFromParams($params);
+    $this->synchronizeWithSession();
+  }
+
+  function &Instance( $params = array() )
+  {
+    static $i;
+    
+    if (!isset($i))
+      $i = new phpChatConfig( $params );
+    return $i;
   }
   
   function &getContainerInstance()
@@ -112,9 +122,10 @@ class phpChatConfig
         $ok = false;
       }
     }
-    
-    if ($this->init_nick != "")
-      $this->nick = $this->init_nick;
+
+    // do not froze nickname if it has not be specified
+    if ($this->nick == "" && $this->frozen_nick)
+      $this->frozen_nick = false;
 
     $this->is_init = $ok;
   }
@@ -135,8 +146,10 @@ class phpChatConfig
       $smarty->assign($p_k, $this->$p_k);
   }
 
+  /*
   function GetIdFromParams($params)
   {
+    return md5(serialize($params));
     if (isset($params["title"]))
       return md5($params["title"]);
     else
@@ -147,8 +160,52 @@ class phpChatConfig
   {
     return "phpchat_";
   }
+  */
   
-  
+  function getId()
+  {
+    // calculate the chat id
+    if ($this->id == 0)
+    {
+      $spotted_atr = array();
+      $spotted_atr[] = $this->title;
+      $spotted_atr[] = $this->prefix;
+      $spotted_atr[] = $this->debug;
+      $spotted_atr[] = $this->connect;
+      $this->id = md5(serialize($spotted_atr));
+    }
+    return $this->id;
+  }  
+
+  /**
+   * save the phpchatconfig object into sessions if necessary
+   * else restore the old phpchatconfig object
+   */
+  function synchronizeWithSession()
+  {
+    $session_id = $this->prefix."chatconfig_".$this->getId();
+    if (isset($_SESSION[$session_id]))
+      $this = unserialize($_SESSION[$session_id]);
+    else
+    {
+      if (!$this->isInit())
+        $this->init();
+      if (!$this->isInit())
+      {
+        $errors = $this->getErrors();
+        echo "<ul>"; foreach( $errors as $e ) echo "<li>".$e."</li>"; echo "</ul>";
+        exit;
+      }
+      // save the validated config in session
+      $_SESSION[$session_id] = serialize($this);
+    }
+  }
+
+  function saveInSession()
+  {
+    $session_id = $this->prefix."chatconfig_".$this->getId();
+    $_SESSION[$session_id] = serialize($this);
+  }
 }
 
 ?>

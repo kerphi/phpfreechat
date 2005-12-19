@@ -1,6 +1,6 @@
-
+~[if $connect]~
 ~[$prefix]~handleRequest('/connect');
-~[$prefix]~handleRequest('/asknick');
+~[/if]~
 
 function ~[$prefix]~SetError(str, ids)
 {

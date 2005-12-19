@@ -112,34 +112,56 @@ class phpChat_Container_File extends phpChat_Container
     return $errors;
   }
   
-  function updateMyNick()
+  function updateNick($nickname)
   {
     $c =& $this->c;
 
     // update my online status file
     $my_filename = $c->container_cfg_online_dir.$this->_encode($c->nick);
-    touch($my_filename);
-
+    @touch($my_filename);
+    
     if ($c->skip_check && !file_exists($my_filename))
       return false;
     else
       return true;
   }
-  
-  function changeMyNick($newnick)
+
+  /**
+   * returns the id identifying the nickname's owner session
+   */
+  function getNickId($nickname)
   {
     $c =& $this->c;
-    
-    $newnick2 = $newnick;
-    $number = 1;
-    while(file_exists($c->container_cfg_online_dir.$this->_encode($newnick2)))
+    $nickid = 0;
+    $myfilename = $c->container_cfg_online_dir.$this->_encode($nickname);
+    if (file_exists($myfilename))
     {
-      $newnick2 = $newnick.$number;
-      $number++;
+      // write the nickid into the new nickname file
+      $fp = fopen($myfilename, "r");
+      //      flock ($fp, LOCK_EX); // lock
+      $nickid = fread($fp, filesize($myfilename));
+      //      flock ($fp, LOCK_UN); // unlock
+      fclose($fp);
     }
-    $newnick = $newnick2;
-    touch($c->container_cfg_online_dir.$this->_encode($newnick));
-    unlink($c->container_cfg_online_dir.$this->_encode($c->nick));
+    
+    return $nickid;
+  }
+
+  
+  function changeNick($newnick, $nickid)
+  {
+    $c =& $this->c;
+
+    // delete the old nickname file
+    @unlink($c->container_cfg_online_dir.$this->_encode($c->nick));
+    
+    // write the nickid into the new nickname file
+    $fp = fopen($c->container_cfg_online_dir.$this->_encode($newnick),"w");
+    flock ($fp, LOCK_EX); // lock
+    fwrite($fp, $nickid);
+    flock ($fp, LOCK_UN); // unlock
+    fclose($fp);
+
     return $newnick;
   }
   
@@ -149,7 +171,7 @@ class phpChat_Container_File extends phpChat_Container
     $nick_filename = $c->container_cfg_online_dir.$this->_encode($nick);
     if (file_exists($nick_filename))
     {
-      unlink($nick_filename);
+      @unlink($nick_filename);
       return true;
     }
     else
@@ -239,8 +261,8 @@ class phpChat_Container_File extends phpChat_Container
     $c =& $this->c;
     
     // write message to file
-		$fp = fopen($c->container_cfg_data_file, "a+");
-		flock ($fp, LOCK_EX); // lock
+    $fp = fopen($c->container_cfg_data_file, "a+");
+    flock ($fp, LOCK_EX); // lock
     
     // format message
     $msg_id = $this->_requestMsgId();
@@ -251,10 +273,10 @@ class phpChat_Container_File extends phpChat_Container
     $line .= $nickname."\t";
     $line .= $message;
 		
-		// write it to file
-		fwrite($fp, $line);
-		flock ($fp, LOCK_UN); // unlock
-		fclose($fp);
+    // write it to file
+    fwrite($fp, $line);
+    flock ($fp, LOCK_UN); // unlock
+    fclose($fp);
   }
   /**
    * used internaly

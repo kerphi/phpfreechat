@@ -3,9 +3,9 @@
 class phpChat_Container
 {
   var $c;
-  function phpChat_Container($config = NULL)
+  function phpChat_Container(&$config)
   {
-    $this->c = $config;
+    $this->c =& $config;
   }
   function getDefaultConfig()
   {
