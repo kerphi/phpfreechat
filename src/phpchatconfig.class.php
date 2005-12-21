@@ -146,22 +146,6 @@ class phpChatConfig
       $smarty->assign($p_k, $this->$p_k);
   }
 
-  /*
-  function GetIdFromParams($params)
-  {
-    return md5(serialize($params));
-    if (isset($params["title"]))
-      return md5($params["title"]);
-    else
-      return md5("My phpChat");
-  }
-
-  function GetPrefix()
-  {
-    return "phpchat_";
-  }
-  */
-  
   function getId()
   {
     // calculate the chat id
@@ -172,6 +156,8 @@ class phpChatConfig
       $spotted_atr[] = $this->prefix;
       $spotted_atr[] = $this->debug;
       $spotted_atr[] = $this->connect;
+      $spotted_atr[] = $this->cache_dir;
+      $spotted_atr[] = $this->container_type;
       $this->id = md5(serialize($spotted_atr));
     }
     return $this->id;
