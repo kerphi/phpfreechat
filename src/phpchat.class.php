@@ -115,67 +115,6 @@ class phpChat
     echo "\n-->\n</style>\n";
   }
   
-  /**
-   * return the chatconfig object
-   */
-  /*
-  function &GetConfig( $chat_id = 0, $prefix = "" )
-  {
-    static $chatconfig;
-    if (!isset($chatconfig))
-      {
-	if ($chat_id == 0 && $prefix == "")
-	  return NULL;
-	if (isset($_SESSION[$prefix."chatconfig_".$chat_id]))
-	  $chatconfig = unserialize($_SESSION[$prefix."chatconfig_".$chat_id]);
-	else
-	  return NULL;
-      }
-    return $chatconfig;    
-  }
-  */
-
-  /**
-   * change the chatconfig object only if it is not allready saved
-   */
-  /*
-  function &SetConfig( &$p, $force = false, $init = true )
-  {
-    if (is_a($p, 'phpChatConfig'))
-    {
-      // save config in session
-      $_SESSION[$p->prefix."chatconfig_".$p->id] = serialize($p);
-      return $p;
-    }
-
-    $chat_id = phpChatConfig::GetIdFromParams($p);
-    $prefix  = phpChatConfig::GetPrefix();
-
-    if ( !$force && isset($_SESSION[$prefix."chatconfig_".$chat_id]) )
-      return phpChat::GetConfig( $chat_id, $prefix );
-    
-    $c = new phpChatConfig( $p );
-
-    // initialize the chatobject if necessary    
-    if ($init)
-    {
-      if (!$c->isInit() || isset($_GET["init"]))
-        $c->init();
-      if (!$c->isInit())
-      {
-        $errors = $c->getErrors();
-        echo "<ul>"; foreach( $errors as $e ) echo "<li>".$e."</li>"; echo "</ul>";
-        exit;
-      }
-    }
-
-    // save the validated config in session
-    $_SESSION[$c->prefix."chatconfig_".$c->id] = serialize($c);
-
-    return phpChat::GetConfig( $chat_id, $prefix );
-  }
-  */
-  
   function FilterNickname($nickname)
   {
     $c =& phpChatConfig::Instance();
@@ -204,7 +143,6 @@ class phpChat
     
     
     $msg  = str_replace(phpChat::FilterNickname($c->nick), "<strong>".phpChat::FilterNickname($c->nick)."</strong>", $msg);
-
     return $msg;
   }
     
@@ -222,6 +160,7 @@ class phpChat
       // call the command
       phpChat::$cmd($xml_reponse, $param);
     }
+
     //    print_r($xml_reponse->getXML());
     //    $data = ob_get_contents();
     //    ob_end_clean();
@@ -246,23 +185,23 @@ class phpChat
     $c =& phpChatConfig::Instance();
     $_SESSION[$c->prefix."from_id_".$c->id] = 0;
     $xml_reponse->addScript("var ".$c->prefix."timeout_var;");
-    phpChat::Cmd_update($xml_reponse);
+
+    /*
+        $fp = fopen("log", "w");
+        ob_start();
+        print_r($c);
+        $data = ob_get_contents();
+        ob_end_clean();
+        fwrite($fp, $data!="" ? $data : "");
+        flush($fp);
+        fclose($fp);
+    */
+    
     if ($c->nick != "")
-    {
       phpChat::Cmd_nick(&$xml_reponse, $c->nick);
-      return;
-      
-      
-      $xml_reponse->addAssign($c->prefix."handle", "value", $c->nick);
-      //      $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
-      phpChat::Cmd_notice($xml_reponse, $c->nick." is connected");
-    }
     else
-    {
-      $errors[$c->prefix."handle"] = "Please enter your nickname.";
-      phpChat::Cmd_error($xml_reponse, $errors);      
-      $xml_reponse->addScript("document.getElementById('".$c->prefix."handle').focus();");
-    }
+      phpChat::Cmd_asknick($xml_reponse, "");
+    phpChat::Cmd_update($xml_reponse);
   }
 
   function Cmd_nick(&$xml_reponse, $newnick)
@@ -273,8 +212,6 @@ class phpChat
     if ($newnick == "")
     {
       phpChat::Cmd_asknick($xml_reponse, "");
-      //      $errors[$c->prefix."handle"] = "Please enter your nickname.";
-      //      phpChat::Cmd_error($xml_reponse, $errors);
       return;
     }
     
@@ -289,6 +226,8 @@ class phpChat
       $c->saveInSession();
       phpChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($newnick))." is connected");
       $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
+      // give focus to words fields
+      $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
     }
     else if ( $oldnickid == $c->sessionid )
     {
@@ -304,32 +243,15 @@ class phpChat
       }
       else
         $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
+      // give focus to words fields
+      $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
     }
     else
     {
       // the wanted nick is allready used
       // please change it
       phpChat::Cmd_asknick($xml_reponse, $newnick);
-    }
-     
-    /*
-    $newnick2 = $container->changeNick($newnick);
-    if ($newnick2 != $newnick)
-    {
-      phpChat::Cmd_asknick($xml_reponse, $newnick);
-      return;
-    }
-    $oldnick = $c->nick;
-    $c->nick = $newnick;
-    phpChat::SetConfig($c, true);
-    phpChat::Cmd_getOnlineNick($xml_reponse);
-    if ($oldnick != "")
-      phpChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($oldnick))." changes his nickname to ".htmlspecialchars(stripslashes($newnick)));
-    else
-      phpChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($newnick))." is connected");
-    $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
-    //    $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
-    */
+    }     
   }
 
   function Cmd_notice(&$xml_reponse, $msg)
@@ -453,13 +375,10 @@ class phpChat
     	
       // a message has been posted so :
       // - read new messages
-      // - clear "words" field to be ready to recieve the next message
       // - give focus to "words" field
-      //$xml_reponse->addClear($c->prefix."words","value");  	
       $xml_reponse->addScript($c->prefix."ClearError(Array('".$c->prefix."words"."','".$c->prefix."handle"."'));");
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
       phpChat::Cmd_getNewMsg($xml_reponse);
-      //  		$xml_reponse->addScript('window.clearTimeout('.$c->prefix.'timeout_var); '.$c->prefix.'refreshChat();');
     }
     else
     {

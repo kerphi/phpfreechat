@@ -3,8 +3,8 @@
 require_once "../src/phpchat.class.php";
 $params = array();
 $params["title"]          = "A simple chat with user's parameters";
-$params["init_nick"]      = "guest";
-$params["frozen_nick"]    = false;
+$params["nick"]           = "guest";
+$params["frozen_nick"]    = true;
 $params["max_nick_len"]   = 5;
 $params["max_text_len"]   = 20;
 $params["refresh_delay"]  = 1000;

@@ -17,7 +17,6 @@ div#~[$prefix]~content {
 
 div.~[$prefix]~message {
   background-color: transparent;
-  border-bottom: black dotted 1px;
   background-image: url(demo5_customized_style_data/newmsg.gif);
   background-repeat: no-repeat;
   background-position: left center;
@@ -60,4 +59,5 @@ div#~[$prefix]~online {
   border: none;
   background-color: transparent;
   width: 15%;
+  border-left: black solid 1px;
 }
