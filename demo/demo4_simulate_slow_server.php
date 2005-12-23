@@ -1,6 +1,6 @@
 <?php
 
-require_once "../src/phpchat.class.php";
+require_once "../src/phxpchat.class.php";
 
 // sleep [1-5] seconds to simulate a random serveur lag
 sleep(rand(1,5));
@@ -10,13 +10,13 @@ $params = array("title" => "A chat simulating slow server (lag form 1 to 5 secon
                 "refresh_delay" => 2000, // a fast refresh rate
                 //"debug" => true,
                 );
-$chat = new phpChat( $params );
+$chat = new phpXChat( $params );
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<title>phpChat demo</title>
+		<title>phpXChat demo</title>
 
 <?php $chat->printJavascript(); ?>
 <?php $chat->printStyle(); ?>

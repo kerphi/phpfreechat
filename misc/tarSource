@@ -1,14 +1,7 @@
 #!/bin/sh
-find ../../phpchat -name "*.php" > tmp
-find ../../phpchat -name "*.tpl" >> tmp
-find ../../phpchat -name "*.gif" >> tmp
-find ../../phpchat -name "*.jpg" >> tmp
-find ../../phpchat -name "*.png" >> tmp
-find ../../phpchat -name "dummy" >> tmp
-find ../../phpchat -name "README" >> tmp
-find ../../phpchat -name ".htaccess" >> tmp
-find ../../phpchat -name "tarSource" >> tmp
-grep -v "CVS" tmp > tmp2
-grep -v "cache/%%" tmp > tmp3
-tar czfp phpchat.tar.gz `cat tmp3`
-rm -f tmp && rm -f tmp2 && rm -f tmp3
+
+cd ..
+#svn -R list > tmp
+tar czfp misc/phpxchat.tar.gz `svn -R list`
+#rm -f tmp
+cd -

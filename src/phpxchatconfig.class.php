@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__)."/../debug/log.php";
 
-class phpChatConfig
+class phpXChatConfig
 {
   var $nick           = "";
   var $id             = 0;
@@ -10,9 +10,9 @@ class phpChatConfig
   var $errors         = array();
   var $is_init        = false;
 
-  function phpChatConfig( $params = array() )
+  function phpXChatConfig( $params = array() )
   {
-    $this->default_params["title"]               = "My phpChat";
+    $this->default_params["title"]               = "My phpXChat";
     $this->default_params["nick"]                = "";
     $this->default_params["frozen_nick"]         = false;
     $this->default_params["skip_optional_check"] = true;
@@ -28,7 +28,7 @@ class phpChatConfig
     $this->default_params["shownotice"]          = true;
     $this->default_params["debug"]               = false;
     $this->default_params["connect"]             = true;
-    $this->default_params["prefix"]              = "phpchat_";
+    $this->default_params["prefix"]              = "phpxchat_";
     $this->default_params["container_type"]      = (isset($params["container_type"]) && $params["container_type"]!="") ? $params["container_type"] : "File";
 
     // set defaults values
@@ -55,13 +55,13 @@ class phpChatConfig
     static $i;
     
     if (!isset($i))
-      $i = new phpChatConfig( $params );
+      $i = new phpXChatConfig( $params );
     return $i;
   }
   
   function &getContainerInstance()
   {
-    $container_classname = "phpChat_Container_".$this->container_type;
+    $container_classname = "phpXChat_Container_".$this->container_type;
     require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
     $container = new $container_classname($this);
     return $container;
@@ -114,7 +114,7 @@ class phpChatConfig
     // test container config
     if ($ok)
     {
-      $container_classname = "phpChat_Container_".$this->default_params["container_type"];
+      $container_classname = "phpXChat_Container_".$this->default_params["container_type"];
       require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
       $container = new $container_classname($this);
       $container_errors = $container->init();
@@ -166,8 +166,8 @@ class phpChatConfig
   }  
 
   /**
-   * save the phpchatconfig object into sessions if necessary
-   * else restore the old phpchatconfig object
+   * save the phpxchatconfig object into sessions if necessary
+   * else restore the old phpxchatconfig object
    */
   function synchronizeWithSession()
   {

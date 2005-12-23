@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__)."/phpchat_container.class.php";
+require_once dirname(__FILE__)."/phpxchat_container.class.php";
 
-class phpChat_Container_File extends phpChat_Container
+class phpXChat_Container_File extends phpXChat_Container
 {
   var $_users = NULL;
 
