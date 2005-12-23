@@ -15,8 +15,6 @@ class phpChat
     session_start();
     if (isset($_GET["init"])) session_destroy();
 
-    pxlog($_SESSION, "session");
-
     $params["sessionid"] = session_id();
 
     $c =& phpChatConfig::Instance( $params );
@@ -199,6 +197,7 @@ class phpChat
         flush($fp);
         fclose($fp);
     */
+    pxlog("Cmd_connect: current nick = ".$c->nick, "chat");
     
     if ($c->nick != "")
       phpChat::Cmd_nick(&$xml_reponse, $c->nick);
@@ -220,41 +219,57 @@ class phpChat
     
     $container =& $c->getContainerInstance();
     $oldnickid = $container->getNickId($oldnick);
-    
-    if ($oldnickid == 0 || $oldnick == "")
+    $newnickid = $container->getNickId($newnick);
+    if ($oldnickid == 0 || $oldnick == "") // this nick is free
     {
-      // this is the first time the nick is assigned
-      $container->changeNick($newnick, $c->sessionid);
-      $c->nick = $newnick;
-      $c->saveInSession();
-      phpChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($newnick))." is connected");
-      $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
-      // give focus to words fields
-      $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
+      if ($newnickid == 0) // new nick is free ?
+      {
+        // this is the first time the nick is assigned
+        $container->changeNick($newnick, $c->sessionid);
+        $c->nick = $newnick;
+        $c->saveInSession();
+        phpChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($newnick))." is connected");
+        $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
+        // give focus to words fields
+        $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
+        pxlog("Cmd_nick[".$c->sessionid."]: first time nick is assigned -> newnick=".$c->nick, "chat");
+      }
+      else
+      {
+        // the wanted nick is allready used
+        // please change it
+        pxlog("Cmd_nick[".$c->sessionid."]: wanted nick is allready in use -> oldnickid=".$oldnickid." oldnick=".$oldnick." wantednick=".$newnick, "chat");
+        phpChat::Cmd_asknick($xml_reponse, $newnick);
+      }
     }
-    else if ( $oldnickid == $c->sessionid )
+    else if ( $oldnickid == $c->sessionid ) // it's mind
     {
       if ($c->nick != $newnick)
       {
-        // this is a real nick change
-        $container->changeNick($newnick, $c->sessionid);
-        $oldnick = $c->nick;
-        $c->nick = $newnick;
-        $c->saveInSession();
-        phpChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($oldnick))." changes his nickname to ".htmlspecialchars(stripslashes($newnick)));
-        $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
+        if ($newnickid == 0) // new nick is free ?
+        {
+          // this is a real nick change
+          $container->changeNick($newnick, $c->sessionid);
+          $oldnick = $c->nick;
+          $c->nick = $newnick;
+          $c->saveInSession();
+          phpChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($oldnick))." changes his nickname to ".htmlspecialchars(stripslashes($newnick)));
+          $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
+          pxlog("Cmd_nick[".$c->sessionid."]: a real nick change -> oldnick=".$oldnick." newnick=".$newnick, "chat");
+        }
+        else
+        {
+          // the wanted nick is allready used
+          // please change it
+          pxlog("Cmd_nick[".$c->sessionid."]: wanted nick is allready in use -> oldnickid=".$oldnickid." oldnick=".$oldnick." wantednick=".$newnick, "chat");
+          phpChat::Cmd_asknick($xml_reponse, $newnick);
+        }
       }
       else
         $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
       // give focus to words fields
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
     }
-    else
-    {
-      // the wanted nick is allready used
-      // please change it
-      phpChat::Cmd_asknick($xml_reponse, $newnick);
-    }     
   }
 
   function Cmd_notice(&$xml_reponse, $msg)
@@ -282,6 +297,7 @@ class phpChat
       phpChat::Cmd_notice($xml_reponse, $c->nick." quit");
     else
       phpChat::Cmd_notice($xml_reponse, "error: ".$c->nick." can't quit");
+    pxlog("Cmd_quit[".$c->sessionid."]: a user just quit -> nick=".$c->nick, "chat");
   }
   
   function Cmd_getOnlineNick(&$xml_reponse)
@@ -375,6 +391,7 @@ class phpChat
     {
       $container =& $c->getContainerInstance();
       $container->writeMsg($nick, $text);
+      pxlog("Cmd_send[".$c->sessionid."]: a user just sent a message -> nick=".$c->nick." m=".$text, "chat");
     	
       // a message has been posted so :
       // - read new messages
@@ -386,6 +403,8 @@ class phpChat
     else
     {
       // an error occured, just ignore the message and display errors
+      foreach($errors as $e)
+        pxlog("Cmd_send[".$c->sessionid."]: user can't send a message -> nick=".$c->nick." err=".$e, "chat");
       phpChat::Cmd_error($xml_reponse, $errors);
       if (isset($errors[$c->prefix."handle"])) // the nick is empty so give it focus
         $xml_reponse->addScript("document.getElementById('".$c->prefix."handle').focus();");

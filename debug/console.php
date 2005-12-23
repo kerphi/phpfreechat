@@ -4,7 +4,7 @@ require_once dirname(__FILE__)."/../lib/xajax_0_1_beta4/xajax.inc.php";
 
 function getnewlog($section = "")
 {
-  $filename = dirname(__FILE__)."/debug".$section.".log";
+  $filename = dirname(__FILE__)."/../cache/debug".$section.".log";
   $xml_reponse = new xajaxResponse();
   if (file_exists($filename))
   {
@@ -37,41 +37,39 @@ $xajax->processRequests();
   <style type="text/css">
 <!--
   * { margin:0; padding:0; }
-div#debug {
- position: absolute;
- top: 2px;
- left: 1%;
- overflow:auto;
- width:48.5%;
- height:49%;
- border:1px solid black;
+h2 {
+ position:absolute;
+ top: 0;
+ right: 0;
+ font-size:0.8em;
+ padding:0 2px 0 2px;
+ border-bottom:1px solid black;
+ border-left:1px solid black;
+ background-color: #FED;
+ text-align: center;
 }
-div#debugsession {
- position: absolute;
- top: 2px;
- right: 1%;
- overflow:auto;
- width:48.5%;
- height:49%;
- border:1px solid black;
+pre {
+  font-size:10px;
 }
 div#debugchatconfig {
  position: absolute;
- bottom: 2px;
- left: 1%;
+ bottom: 4px;
+ left: 4px;
+ right: 4px;
  overflow:auto;
- width:48.5%;
  height:49%;
  border:1px solid black;
+ background-color: #EFE;
 }
 div#debugchat {
  position: absolute;
- bottom: 2px;
- right: 1%;
+ top: 4px;
+ left: 4px;
+ right: 4px;
  overflow:auto;
- width:48.5%;
  height:49%;
  border:1px solid black;
+ background-color: #EEF;
 }
 -->
   </style>
@@ -80,26 +78,16 @@ div#debugchat {
 
 <body>
 
-  <div id="debug"></div>
-  <script type="text/javascript"><!--
-  phpxchat_getnewlog();
-  --></script>
-
-  <div id="debugsession"></div>
-  <script type="text/javascript"><!--
-  phpxchat_getnewlog('session');
-  --></script>
-
-
-  <div id="debugchatconfig"></div>
+  
+  <div id="debugchatconfig"><h2>phpXChatConfig debug</h2></div>
   <script type="text/javascript"><!--
   phpxchat_getnewlog('chatconfig');
   --></script>
 
-  <div id="debugchat"></div>
+  <div id="debugchat"><h2>phpXChat debug</h2></div>
   <script type="text/javascript"><!--
   phpxchat_getnewlog('chat');
   --></script>
-
+  
 </body>
 </html>

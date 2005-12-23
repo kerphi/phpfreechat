@@ -175,27 +175,27 @@ class phpChatConfig
     if (isset($_SESSION[$session_id]))
     {
       $this = unserialize($_SESSION[$session_id]);
-      pxlog("synchronizeWithSession: taking config from session (id=".$session_id.")");
     }
     else
     {
-      pxlog("synchronizeWithSession: config doesn't exists in session, create a new one");
+      pxlog("synchronizeWithSession: config doesn't exists in session, create a new one", "chatconfig");
       if (!$this->isInit())
         $this->init();
       if (!$this->isInit())
       {
         $errors = $this->getErrors();
         echo "<ul>"; foreach( $errors as $e ) echo "<li>".$e."</li>"; echo "</ul>";
+        pxlog($errors, "chatconfig");
         exit;
       }
       // save the validated config in session
       $_SESSION[$session_id] = serialize($this);
-      pxlog("synchronizeWithSession: config has been saved in session (id=".$session_id.")");
     }
   }
 
   function saveInSession()
   {
+    pxlog($this, "chatconfig");
     $session_id = $this->prefix."chatconfig_".$this->getId();
     $_SESSION[$session_id] = serialize($this);
   }
