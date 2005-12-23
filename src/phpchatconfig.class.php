@@ -22,7 +22,7 @@ class phpChatConfig
     $this->default_params["width"]               = "";
     $this->default_params["css_file"]            = "";
     $this->default_params["server_script"]       = "";
-    $this->default_params["cache_dir"]           = dirname(__FILE__)."/cache/";
+    $this->default_params["cache_dir"]           = dirname(__FILE__)."/../cache/";
     $this->default_params["shownotice"]          = true;
     $this->default_params["debug"]               = false;
     $this->default_params["connect"]             = true;

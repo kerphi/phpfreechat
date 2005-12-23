@@ -59,7 +59,7 @@ class phpChat
     $smarty = new Smarty();
     $smarty->left_delimiter  = "~[";
     $smarty->right_delimiter = "]~";
-    $smarty->template_dir    = dirname(__FILE__).'/templates/';
+    $smarty->template_dir    = dirname(__FILE__).'/../templates/';
     $smarty->compile_dir     = $c->cache_dir;    
     $smarty->compile_check   = true;
     $smarty->debugging       = false;
@@ -82,7 +82,7 @@ class phpChat
     $smarty = new Smarty();
     $smarty->left_delimiter  = "~[";
     $smarty->right_delimiter = "]~";
-    $smarty->template_dir    = dirname(__FILE__).'/templates/';
+    $smarty->template_dir    = dirname(__FILE__).'/../templates/';
     $smarty->compile_dir     = $c->cache_dir;    
     $smarty->compile_check   = true;
     $smarty->debugging       = false;
@@ -102,7 +102,7 @@ class phpChat
     $smarty = new Smarty();
     $smarty->left_delimiter  = "~[";
     $smarty->right_delimiter = "]~";
-    $smarty->template_dir    = dirname(__FILE__).'/templates/';
+    $smarty->template_dir    = dirname(__FILE__).'/../templates/';
     $smarty->compile_dir     = $c->cache_dir;
     $smarty->compile_check   = true;
     $smarty->debugging       = false;
