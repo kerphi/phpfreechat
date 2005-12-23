@@ -1,7 +1,11 @@
 #!/bin/sh
 
-cd ..
-#svn -R list > tmp
-tar czfp misc/phpxchat.tar.gz `svn -R list`
-#rm -f tmp
-cd -
+echo "-- creating archive --"
+echo "-> copying files"
+rm -rf phpxchat
+svn export .. ./phpxchat
+echo "-> creating tar.gz"
+tar czfp phpxchat.tar.gz phpxchat/ 
+echo "-> removing temporary files"
+rm -rf phpxchat
+echo "-- creating archive, done --"
