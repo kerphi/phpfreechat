@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__)."/phpchatconfig.class.php";
 if (!class_exists("xajax")) require_once dirname(__FILE__)."/../lib/xajax_0_1_beta4/xajax.inc.php";
+require_once dirname(__FILE__)."/../debug/log.php";
 
 class phpChat
 {
@@ -13,6 +14,8 @@ class phpChat
     // start the session : session is used for locking purpose and cache purpose
     session_start();
     if (isset($_GET["init"])) session_destroy();
+
+    pxlog($_SESSION, "session");
 
     $params["sessionid"] = session_id();
 

@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__)."/../debug/log.php";
+
 class phpChatConfig
 {
   var $nick           = "";
@@ -171,9 +173,13 @@ class phpChatConfig
   {
     $session_id = $this->prefix."chatconfig_".$this->getId();
     if (isset($_SESSION[$session_id]))
+    {
       $this = unserialize($_SESSION[$session_id]);
+      pxlog("synchronizeWithSession: taking config from session (id=".$session_id.")");
+    }
     else
     {
+      pxlog("synchronizeWithSession: config doesn't exists in session, create a new one");
       if (!$this->isInit())
         $this->init();
       if (!$this->isInit())
@@ -184,6 +190,7 @@ class phpChatConfig
       }
       // save the validated config in session
       $_SESSION[$session_id] = serialize($this);
+      pxlog("synchronizeWithSession: config has been saved in session (id=".$session_id.")");
     }
   }
 
