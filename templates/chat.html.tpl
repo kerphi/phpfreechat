@@ -19,3 +19,9 @@
   -->
   </script>
 </div>
+~[foreach from=$smileys key=s_str item=s_file]~
+<img src="../smileys/~[$smileytheme]~/~[$s_file]~" alt="~[$s_str]~"/>
+~[/foreach]~
+~[if $debug]~
+<p>Debug is on, you can <a href="../debug/console.php?chatid=~[$id]~">open the debugging console</a>.</p>
+~[/if]~

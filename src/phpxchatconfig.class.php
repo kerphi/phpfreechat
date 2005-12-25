@@ -9,7 +9,8 @@ class phpXChatConfig
   var $default_params = array();
   var $errors         = array();
   var $is_init        = false;
-
+  var $smileys        = array();
+  
   function phpXChatConfig( $params = array() )
   {
     $this->default_params["title"]               = "My phpXChat";
@@ -28,6 +29,8 @@ class phpXChatConfig
     $this->default_params["shownotice"]          = true;
     $this->default_params["debug"]               = false;
     $this->default_params["connect"]             = true;
+    $this->default_params["smileytheme"]         = "default";
+    $this->default_params["smileymode"]          = "msn";
     $this->default_params["prefix"]              = "phpxchat_";
     $this->default_params["container_type"]      = (isset($params["container_type"]) && $params["container_type"]!="") ? $params["container_type"] : "File";
 
@@ -125,6 +128,10 @@ class phpXChatConfig
       }
     }
 
+    // load smileys from file
+    if ($ok)
+      $this->loadSmileyTheme();
+    
     // do not froze nickname if it has not be specified
     if ($this->nick == "" && $this->frozen_nick)
       $this->frozen_nick = false;
@@ -141,11 +148,39 @@ class phpXChatConfig
   {
     return $this->errors;
   }
+
+  function loadSmileyTheme()
+  {
+    $theme = file(dirname(__FILE__)."/../smileys/".$this->smileytheme."/theme");
+    $result = array();
+    $mode = "";
+    foreach($theme as $line)
+    {
+      if (preg_match("/^#.*/",$line))
+        continue;
+      else if (preg_match("/^\[(.*)\]$/",$line,$res))
+        $mode = strtolower($res[1]);
+      else if ($mode == $this->smileymode &&
+               preg_match("/^([a-z_]*(\.gif|\.png))(.*)$/i",$line,$res))
+      {
+        $smiley_file = $res[1];
+        $smiley_str = trim($res[3])."\n";
+        $smiley_str = str_replace("\n", "", $smiley_str);
+        $smiley_str = str_replace("\t", " ", $smiley_str);
+        $smiley_str_tab = explode(" ", $smiley_str);
+        foreach($smiley_str_tab as $str)
+          $result[htmlspecialchars($str)] = $smiley_file;
+      }
+    }
+    $this->smileys =& $result;
+  }
   
   function assignToSmarty( &$smarty )
   {
     foreach ( $this->default_params as $p_k => $p_v )
       $smarty->assign($p_k, $this->$p_k);
+    $smarty->assign("id", $this->getId());
+    $smarty->assign("smileys", $this->smileys);
   }
 
   function getId()
@@ -160,6 +195,8 @@ class phpXChatConfig
       $spotted_atr[] = $this->connect;
       $spotted_atr[] = $this->cache_dir;
       $spotted_atr[] = $this->container_type;
+      $spotted_atr[] = $this->smileytheme;
+      $spotted_atr[] = $this->smileymode;
       $this->id = md5(serialize($spotted_atr));
     }
     return $this->id;
@@ -174,30 +211,33 @@ class phpXChatConfig
     $session_id = $this->prefix."chatconfig_".$this->getId();
     if (isset($_SESSION[$session_id]))
     {
-      $this = unserialize($_SESSION[$session_id]);
+      $chatconfig =& unserialize($_SESSION[$session_id]); // restore $chatconfig var
+      $classvar = get_class_vars(get_class($this));
+      foreach( $classvar as $cv_name => $cv_val )
+        $this->$cv_name = $chatconfig->$cv_name;      
     }
     else
     {
-      pxlog("synchronizeWithSession: config doesn't exists in session, create a new one", "chatconfig");
       if (!$this->isInit())
         $this->init();
       if (!$this->isInit())
       {
         $errors = $this->getErrors();
         echo "<ul>"; foreach( $errors as $e ) echo "<li>".$e."</li>"; echo "</ul>";
-        pxlog($errors, "chatconfig");
         exit;
       }
       // save the validated config in session
-      $_SESSION[$session_id] = serialize($this);
+      $this->saveInSession();
     }
   }
 
   function saveInSession()
   {
-    pxlog($this, "chatconfig");
     $session_id = $this->prefix."chatconfig_".$this->getId();
-    $_SESSION[$session_id] = serialize($this);
+    //    $_SESSION[$session_id] = serialize($this);
+    $chatconfig =& $this;
+    $_SESSION[$session_id] = serialize(&$chatconfig);
+    if ($this->debug) pxlog($this, "chatconfig", $this->getId());
   }
 }
 

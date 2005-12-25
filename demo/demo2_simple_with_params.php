@@ -11,7 +11,7 @@ $params["refresh_delay"]  = 1000;
 $params["max_msg"]        = 15;
 $params["height"]         = "230px";
 $params["width"]          = "800px";
-//$params["debug"]          = true;
+$params["debug"]          = true;
 
 $chat = new phpXChat( $params );
 

@@ -1,0 +1,196 @@
+Name=Default
+Description=Emoticons from each protocol's official client.
+Icon=smile.png
+Author=Penguin Pimps
+
+[default]
+! luke.png			C:-) C:)
+! oneeye.png		O-)
+! crazy.png			>:) >:-)
+! mrt.png			:-o))) :-O)))
+! download.png		8-|)
+! farted.png		:-]
+smile.png			:) :-)
+sad.png				:( :-(
+wink.png			;) ;-)
+tongue.png			:-P :-p
+scream.png			=-O =-o
+kiss.png			:-*
+yell.png			>:o	>:O
+cool.png			8-)
+moneymouth.png		:-$
+burp.png			:-!
+embarrassed.png		:-[
+cry.png				:'(
+think.png			:-/	:-\
+crossedlips.png		:-X
+bigsmile.png		:-D :-d
+angel.png			O:-)
+
+[MSN]
+msn_angel.png		(a)	(A)
+msn_angry.png		:-@	:@
+msn_bat.gif			:-[	:[
+msn_beer.png		(B)	(b)
+msn_bowl.png		(||)
+msn_boy.png			(Z)	(z)
+msn_brb.png			(brb)
+msn_brheart.png		(U)	(u)
+msn_cake.gif		(^)
+msn_car.png			(au)
+msn_cat.png			(@)
+msn_cellphone.png	(mp)
+msn_cigarette.gif	(ci)
+msn_clock.png		(o)	(O)
+msn_coffee.png		(C)	(c)
+msn_coins.png		(mo)
+msn_computer.png	(co)
+msn_cry.gif			:'(
+msn_deadflower.png	(W)	(w)
+msn_devil.png		(6)
+msn_dog.png			(&)
+msn_dontknow.gif	:^)
+msn_donttell.png	:-#
+msn_drink.png		(D)	(d)
+msn_email.png		(e)	(E)
+msn_embarrassed.png	:$	:-$
+msn_eyeroll.gif		8-)
+msn_film.png		(~)
+msn_fingerscrossed.png	(yn)
+msn_flower.png		(F)	(f)
+msn_gift.png		(g)	(G)
+msn_girl.png		(X)	(x)
+msn_handcuffs.png	(%)
+msn_heart.png		(L)	(l)
+msn_highfive.png	(h5)
+msn_hot.png			(H)	(h)
+msn_icon.png		(M)	(m)
+msn_idea.png		(I)	(i)
+msn_island.png		(ip)
+msn_kiss.png		(K)	(k)
+msn_laugh.png		:-D	:-d	:d	:D	:->	:>
+msn_lightning.gif	(li)
+msn_nerd.png		8-|
+msn_neutral.png		:-|	:|
+msn_note.png		(8)
+msn_ooooh.png		:-O	:O	:-o	:o
+msn_party.gif		<:o)
+msn_phone.png		(T)	(t)
+msn_photo.png		(P)	(p)
+msn_pizza.png		(pi)
+msn_plane.png		(ap)
+msn_plate.png		(pl)
+msn_question.png	(?)
+msn_rainbow.png		(r)	(R)
+msn_run.png			({)
+msn_runback.png		(})
+msn_sad.png			:-(	:(	:-<
+msn_sarcastic.png	^o)
+msn_secret.png		:-*
+msn_sheep.png		(bah)
+msn_sick.png		+o(
+msn_sleep.png		(S)
+msn_sleepy.gif		|-)
+msn_smiley.png		:-)	:)
+msn_snail.png		(sn)
+msn_soccer.png		(so)
+msn_star.png		(*)
+msn_stormy.png		(st)
+msn_sun.png			(#)
+msn_teeth.png		8o|
+msn_think.gif		*-)
+msn_thumbdown.png	(N)	(n)
+msn_thumbup.png		(Y)	(y)
+msn_tongue.png		:-P	:P	:-p	:p
+msn_turtle.png		(tu)
+msn_umbrella.png	(um)
+msn_weird.png		:-S	:-s	:s	:S
+msn_wink.gif		;)	;-)
+msn_xbox.png		(xx)
+
+[Yahoo]
+yahoo_angel.gif		o:-) O:-) 0:-)
+yahoo_angry.gif		X-( x-( X( x(
+yahoo_batting.gif	;;)
+yahoo_bigsmile.gif	:D :-D :d :-d
+yahoo_blush.gif		:">
+yahoo_bye.gif		=;
+yahoo_clap.gif		=D> =d>
+yahoo_clown.gif		:o) :O) :0)
+yahoo_cry.gif		:(( :-((
+yahoo_devil.gif		>:)
+yahoo_doh.gif		#-o #-O
+yahoo_drool.gif		=P~ =p~
+yahoo_eyebrow.gif	/:) /:-)
+yahoo_eyeroll.gif	8-|
+yahoo_glasses.gif	:-B :-b
+yahoo_kiss.gif		:* :-*
+yahoo_laughloud.gif	:)) :-))
+yahoo_love.gif		:x :-x :X :-X
+yahoo_mean.gif		:> :->
+yahoo_neutral.gif	:| :-|
+yahoo_ooooh.gif		:O :-O :o :-o
+yahoo_question.gif	:-\ :-/
+yahoo_sad.gif		:( :-(
+yahoo_shhhh.gif		:-$
+yahoo_sick.gif		:-&
+yahoo_silent.gif	[-(
+yahoo_silly.gif		8-}
+yahoo_sleep.gif		I-) |-)
+yahoo_smiley.gif	:-) :) (: (-:
+yahoo_sunglas.gif	B-) b-)
+yahoo_tired.gif		(:|
+yahoo_think.gif		:-?
+yahoo_tongue.gif	:-p :-P :p :P
+yahoo_wink.gif		;-) ;)
+yahoo_worried.gif	:-s :-S
+
+# These are like supposed to be hidden.  I'm not hiding them
+yahoo_alien.gif		=:) =:-)
+yahoo_alien2.gif	>-)
+yahoo_beatup.gif	b-( B-(
+yahoo_chicken.gif	~:>
+yahoo_coffee.gif	~o) ~O)
+yahoo_cow.gif		3:-0 3:-O 3:-o
+yahoo_cowboy.gif	<):)
+yahoo_dance.gif		\:D/ \:d/
+yahoo_flower.gif	@};-
+yahoo_frustrated.gif	:-L :-l
+yahoo_ghost.gif		8-X 8-x
+yahoo_huggs.gif		>:D< >:d<
+yahoo_hypnotized.gif	@-)
+yahoo_idea.gif		*-:)
+yahoo_liar.gif		:^o :^O
+yahoo_monkey.gif	:(|)
+yahoo_moneyeyes.gif	$-)
+yahoo_peace.gif		:)>-
+yahoo_pig.gif		:@)
+yahoo_pray.gif		[-o< [-O<
+yahoo_pumpkin.gif	(~~)
+yahoo_shame.gif		[-X [-x
+yahoo_flag.gif		**==
+yahoo_shamrock.gif	%%-
+yahoo_whistling.gif	:-"
+
+# These only work in a certain IMvironment
+yahoo_malefighter1.gif	o-> O->
+yahoo_malefighter2.gif	o=> O=>
+yahoo_femalefighter.gif	o-+ O-+
+yahoo_yingyang.gif	(%)
+
+# New in Yahoo 6
+yahoo_brokenheart.gif	=((
+yahoo_sweating.gif	#:-S #:-s
+yahoo_rotfl.gif	=))
+yahoo_loser.gif	L-) l-)
+yahoo_party.gif	<:-P <:-p
+yahoo_nailbiting.gif	:-SS :-Ss :-sS :-ss
+yahoo_waiting.gif	:-w :-W
+yahoo_sighing.gif	:-<
+yahoo_madtongue.gif	>:P >:p
+yahoo_waving.gif	>:/
+yahoo_giggle.gif	;))
+yahoo_talktohand.gif	:-@
+yahoo_worship.gif	^:)^
+yahoo_youkiddingme.gif	:-j :-J
+yahoo_star.gif	(*)

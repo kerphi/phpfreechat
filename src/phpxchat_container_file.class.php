@@ -220,40 +220,40 @@ class phpXChat_Container_File extends phpXChat_Container
   }
    
   /**
-    * @todo lock the file at begining (do not use "file($data_file);" to load file content)
-    */
+   * @todo lock the file at begining (do not use "file($data_file);" to load file content)
+   */
   function readNewMsg($from_id)
   {
     $c =& $this->c;
     
     // load message from file and truncate it if necessary
-  	$content = file($c->container_cfg_data_file);
+    $content = file($c->container_cfg_data_file);
   	
-  	// remove old messages
-  	$content = array_slice($content, -$c->max_msg);
-  	// save the new content (with removed old messages)
-  	$content_save = implode("\n", $content);
-  	$content_save = str_replace("\n\n","\n",$content_save);
-  	$fp = fopen($c->container_cfg_data_file,"w+");
-  	flock ($fp, LOCK_EX); // lock
-  	fwrite($fp, $content_save);
-  	flock ($fp, LOCK_UN); // unlock
-  	fclose($fp);
+    // remove old messages
+    $content = array_slice($content, -$c->max_msg);
+    // save the new content (with removed old messages)
+    $content_save = implode("\n", $content);
+    $content_save = str_replace("\n\n","\n",$content_save);
+    $fp = fopen($c->container_cfg_data_file,"w+");
+    flock ($fp, LOCK_EX); // lock
+    fwrite($fp, $content_save);
+    flock ($fp, LOCK_UN); // unlock
+    fclose($fp);
   	  	
-  	// format content in order to extract only necessary information
-  	$formated_content = array();
-  	$new_from_id = $from_id;
-  	foreach ( $content as $line )
-  	{
-  	  $formated_line = explode( "\t", $line );
-  	  if ($from_id < $formated_line[0])
-  	    $formated_content[] = $formated_line;
-  	  if ($new_from_id < $formated_line[0])
-  	    $new_from_id = $formated_line[0];
-  	}
+    // format content in order to extract only necessary information
+    $formated_content = array();
+    $new_from_id = $from_id;
+    foreach ( $content as $line )
+    {
+      $formated_line = explode( "\t", $line );
+      if ($from_id < $formated_line[0])
+        $formated_content[] = $formated_line;
+      if ($new_from_id < $formated_line[0])
+        $new_from_id = $formated_line[0];
+    }
 
-  	return array("messages" => $formated_content,
-  	             "new_from_id" => $new_from_id );
+    return array("messages" => $formated_content,
+                 "new_from_id" => $new_from_id );
   }
   
   function writeMsg($nickname, $message)
@@ -292,7 +292,7 @@ class phpXChat_Container_File extends phpXChat_Container
     {
       flock ($fp, LOCK_EX);
       $msg_id = fread($fp, filesize($c->container_cfg_index_file));
-  		if (!is_numeric($msg_id)) $msg_id = 0;
+      if (!is_numeric($msg_id)) $msg_id = 0;
     }
 
     // increment message id and save it
@@ -303,7 +303,7 @@ class phpXChat_Container_File extends phpXChat_Container
     flock ($fp, LOCK_UN);
     fclose($fp);
 
-		return $msg_id;
+    return $msg_id;
   }
   
   function _encode($str)

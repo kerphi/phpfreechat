@@ -2,9 +2,11 @@
 
 require_once dirname(__FILE__)."/../lib/xajax_0_1_beta4/xajax.inc.php";
 
-function getnewlog($section = "")
+$chatid = $_GET["chatid"];
+
+function getnewlog($chatid, $section = "")
 {
-  $filename = dirname(__FILE__)."/../cache/debug".$section.".log";
+  $filename = dirname(__FILE__)."/../cache/debug".$section."_".$chatid.".log";
   $xml_reponse = new xajaxResponse();
   if (file_exists($filename))
   {
@@ -16,7 +18,7 @@ function getnewlog($section = "")
     unlink($filename);
     $xml_reponse->addAppend("debug".$section, "innerHTML", $html);
   }
-  $xml_reponse->addScript("window.setTimeout('phpxchat_getnewlog(\'".$section."\')', 1000);");
+  $xml_reponse->addScript("window.setTimeout('phpxchat_getnewlog(\'".$chatid."\',\'".$section."\')', 1000);");
   return $xml_reponse->getXML();
 }
 $xajax = new xajax("", "phpxchat_");
@@ -81,12 +83,12 @@ div#debugchat {
   
   <div id="debugchatconfig"><h2>phpXChatConfig debug</h2></div>
   <script type="text/javascript"><!--
-  phpxchat_getnewlog('chatconfig');
+  phpxchat_getnewlog('<?php echo $chatid; ?>','chatconfig');
   --></script>
 
   <div id="debugchat"><h2>phpXChat debug</h2></div>
   <script type="text/javascript"><!--
-  phpxchat_getnewlog('chat');
+  phpxchat_getnewlog('<?php echo $chatid; ?>','chat');
   --></script>
   
 </body>
