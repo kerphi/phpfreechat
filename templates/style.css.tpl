@@ -110,3 +110,12 @@ p#~[$prefix]~errors {
   font-style: italic;
   font-weight: bold;
 }
+
+div.~[$prefix]~smileys {
+  margin-top: 10px;
+  padding: 2px;
+  width: 40%;
+  border: 1px dotted black;
+  background-color: #898;
+}
+

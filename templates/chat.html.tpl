@@ -10,6 +10,12 @@
     <input id="~[$prefix]~handle" type="text" title="enter your nickname here" maxlength="~[$max_nick_len]~" ~[if $frozen_nick!=""]~readonly="readonly" value="~[$init_nick]~"~[/if]~ />
   </p>
   <p id="~[$prefix]~errors"></p>
+
+  <div class="~[$prefix]~smileys">
+~[foreach from=$smileys key=s_file item=s_str]~
+<img src="~[$smarty.server.PHP_SELF|dirname]~/smileys/~[$smileytheme]~/~[$s_file]~" alt="~[$s_str[0]]~" onclick="document.getElementById('~[$prefix]~words').value += '~[$s_str[0]]~'; document.getElementById('~[$prefix]~words').focus();" />
+~[/foreach]~
+  </div>
   		
   <script type="text/javascript">
   <!--
@@ -19,9 +25,6 @@
   -->
   </script>
 </div>
-~[foreach from=$smileys key=s_str item=s_file]~
-<img src="../smileys/~[$smileytheme]~/~[$s_file]~" alt="~[$s_str]~"/>
-~[/foreach]~
 ~[if $debug]~
-<p>Debug is on, you can <a href="../debug/console.php?chatid=~[$id]~">open the debugging console</a>.</p>
+<p>Debug is on, you can <a href="~[$smarty.server.PHP_SELF|dirname]~/debug/console.php?chatid=~[$id]~">open the debugging console</a>.</p>
 ~[/if]~

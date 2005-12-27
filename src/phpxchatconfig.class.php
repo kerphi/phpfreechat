@@ -169,7 +169,7 @@ class phpXChatConfig
         $smiley_str = str_replace("\t", " ", $smiley_str);
         $smiley_str_tab = explode(" ", $smiley_str);
         foreach($smiley_str_tab as $str)
-          $result[htmlspecialchars($str)] = $smiley_file;
+          $result[$smiley_file][] = htmlspecialchars($str);
       }
     }
     $this->smileys =& $result;
