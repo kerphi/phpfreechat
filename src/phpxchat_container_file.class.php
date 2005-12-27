@@ -188,7 +188,7 @@ class phpXChat_Container_File extends phpXChat_Container
     while (false !== ($file = readdir($dir_handle)))
     {
       if ($file == "." || $file == "..") continue; // skip . and .. generic files
-      if (time() > (filemtime($c->container_cfg_online_dir.$file)+($c->refresh_delay/1000)*3) ) // user will be disconnected after refresh_delay*3 secondes of inactivity
+      if (time() > (filemtime($c->container_cfg_online_dir.$file)+($c->refresh_delay/1000)*4) ) // user will be disconnected after refresh_delay*4 secondes of inactivity
       {
         $deleted_user[] = $this->_decode($file);
         unlink($c->container_cfg_online_dir.$file); // disconnect expired user
