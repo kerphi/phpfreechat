@@ -151,6 +151,20 @@ class phpXChatConfig
 
   function loadSmileyTheme()
   {
+    function relativepath($p1, $p2)
+    {
+      $p1 = realpath($p1);
+      $p2 = realpath($p2);
+      $res = "";
+      while( $p1 != "" && $p1 != "/" && strpos($p2, $p1) === FALSE)
+      {
+	$res .= "../";
+	$p1 = dirname($p1);
+      }
+      $p2 = substr($p2, strlen($p1), strlen($p2)-strlen($p1));
+      $res .= $p2;
+      return $res;
+    }
     $theme = file(dirname(__FILE__)."/../smileys/".$this->smileytheme."/theme");
     $result = array();
     $mode = "";
@@ -163,13 +177,13 @@ class phpXChatConfig
       else if ($mode == $this->smileymode &&
                preg_match("/^([a-z_]*(\.gif|\.png))(.*)$/i",$line,$res))
       {
-        $smiley_file = $res[1];
+        $smiley_file = relativepath(dirname($_SERVER["PATH_TRANSLATED"]), dirname(__FILE__).'/../smileys/'.$this->smileytheme.'/'.$res[1]);
         $smiley_str = trim($res[3])."\n";
         $smiley_str = str_replace("\n", "", $smiley_str);
         $smiley_str = str_replace("\t", " ", $smiley_str);
         $smiley_str_tab = explode(" ", $smiley_str);
         foreach($smiley_str_tab as $str)
-          $result[$smiley_file][] = htmlspecialchars($str);
+          $result[$smiley_file][] = $str;
       }
     }
     $this->smileys =& $result;

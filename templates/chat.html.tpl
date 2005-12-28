@@ -13,7 +13,7 @@
 
   <div class="~[$prefix]~smileys">
 ~[foreach from=$smileys key=s_file item=s_str]~
-<img src="~[$smarty.server.PHP_SELF|dirname]~/smileys/~[$smileytheme]~/~[$s_file]~" alt="~[$s_str[0]]~" onclick="document.getElementById('~[$prefix]~words').value += '~[$s_str[0]]~'; document.getElementById('~[$prefix]~words').focus();" />
+<img src="~[$s_file]~" alt="~[$s_str[0]]~" onclick="document.getElementById('~[$prefix]~words').value += '~[$s_str[0]]~'; document.getElementById('~[$prefix]~words').focus();" />
 ~[/foreach]~
   </div>
   		
