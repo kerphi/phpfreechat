@@ -23,24 +23,44 @@ div#~[$prefix]~chat {
   left: 0;
   top: 0;
   overflow: auto;
-  width: 89%;
+  width: 79%;
   ~[if $height!=""]~height: ~[$height]~;~[/if]~
+}
+
+div.~[$prefix]~smileys {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0;
+  width: 20%;
+  height: 58%;
+  overflow: auto;
+  text-align: center;
+  border: 1px dotted black;
+  background-color: #FFF;
 }
 
 div#~[$prefix]~online {
   position: absolute;
   right: 0;
   top: 0;
+  padding: 0;
   overflow: auto;
   border: black dotted 1px;
   background-color: #FFF;
-  width: 10%;
-  height: 100%;
+  width: 20%;
+  height: 39%;
 }
 div#~[$prefix]~online ul {
   list-style-type: none;
-  margin: 10px 0px 10px 2px;
+  margin: 0;
+  padding: 0;
+  margin-left: 8px;
+  margin-right: 8px;
   white-space: nowrap;
+}
+div#~[$prefix]~online li {
+  border-bottom: 1px solid #DDD;
 }
 
 h2.~[$prefix]~title {
@@ -109,13 +129,5 @@ p#~[$prefix]~errors {
   text-align: center;
   font-style: italic;
   font-weight: bold;
-}
-
-div.~[$prefix]~smileys {
-  margin-top: 10px;
-  padding: 2px;
-  width: 40%;
-  border: 1px dotted black;
-  background-color: #898;
 }
 

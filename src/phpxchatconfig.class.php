@@ -183,7 +183,7 @@ class phpXChatConfig
         $smiley_str = str_replace("\t", " ", $smiley_str);
         $smiley_str_tab = explode(" ", $smiley_str);
         foreach($smiley_str_tab as $str)
-          $result[$smiley_file][] = $str;
+          $result[$smiley_file][] = htmlspecialchars(addslashes($str));
       }
     }
     $this->smileys =& $result;

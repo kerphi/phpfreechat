@@ -47,3 +47,8 @@ function ~[$prefix]~Blink(id, action)
    }  	
  }
 
+function ~[$prefix]~insertSmiley(s)
+{
+  document.getElementById('~[$prefix]~words').value += s;
+  document.getElementById('~[$prefix]~words').focus();
+}

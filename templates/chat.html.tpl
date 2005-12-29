@@ -4,6 +4,14 @@
   <div id="~[$prefix]~content">
     <div id="~[$prefix]~online"></div>
     <div id="~[$prefix]~chat"></div>
+    <div class="~[$prefix]~smileys">
+      ~[foreach from=$smileys key=s_file item=s_str]~
+      <img src="~[$s_file]~" alt="~[$s_str[0]]~" onclick="~[$prefix]~insertSmiley('~[$s_str[0]|addslashes]~');" />
+      ~[/foreach]~
+    </div>
+    <div id="~[$prefix]~misc1"></div>
+    <div id="~[$prefix]~misc2"></div>
+    <div id="~[$prefix]~misc3"></div>
   </div>
   <p class="~[$prefix]~input_container">
     <input id="~[$prefix]~words" type="text" title="enter your text here" maxlength="~[$max_text_len]~" />
@@ -11,11 +19,9 @@
   </p>
   <p id="~[$prefix]~errors"></p>
 
-  <div class="~[$prefix]~smileys">
-~[foreach from=$smileys key=s_file item=s_str]~
-<img src="~[$s_file]~" alt="~[$s_str[0]]~" onclick="document.getElementById('~[$prefix]~words').value += '~[$s_str[0]]~'; document.getElementById('~[$prefix]~words').focus();" />
-~[/foreach]~
-  </div>
+  <div id="~[$prefix]~misc4"></div>
+  <div id="~[$prefix]~misc5"></div>
+  <div id="~[$prefix]~misc6"></div>
   		
   <script type="text/javascript">
   <!--
