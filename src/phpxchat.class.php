@@ -216,9 +216,9 @@ class phpXChat
 
     if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: oldnick=".$oldnick." newnick=".$newnick." oldnickid=".$oldnickid." newnickid=".$newnickid, "chat", $c->id);
 
-    if ($oldnickid == "") // this nick is free
+    if ($oldnickid == "undefined") // this nick is free
     {
-      if ($newnickid == "") // new nick is free ?
+      if ($newnickid == "undefined") // new nick is free ?
       {
         // this is the first time the nick is assigned
         $container->changeNick($newnick, $c->sessionid);
@@ -242,7 +242,7 @@ class phpXChat
     {
       if ($c->nick != $newnick)
       {
-        if ($newnickid == "") // new nick is free ?
+        if ($newnickid == "undefined") // new nick is free ?
         {
           // this is a real nick change
           $container->changeNick($newnick, $c->sessionid);
@@ -263,11 +263,18 @@ class phpXChat
       }
       else
       {
-	// TODO on doit faire qq chose de plus complique ici ... a voir
         $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
       }
       // give focus to words fields
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
+    }
+    else
+    {
+      //      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: AAAAAA oldnickid=".$oldnickid." newnickid=".$newnickid, "chat", $c->id);
+      // the wanted nick is allready used
+      // please change it
+      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: wanted nick is allready in use -> oldnickid=".$oldnickid." oldnick=".$oldnick." wantednick=".$newnick, "chat", $c->id);
+      phpXChat::Cmd_asknick($xml_reponse, $newnick);
     }
   }
 
@@ -432,11 +439,18 @@ class phpXChat
   function Cmd_asknick(&$xml_reponse, $nicktochange)
   {
     $c =& phpXChatConfig::Instance();
-    if ($nicktochange == "")
-      $msg = "Please enter your nickname";
+    if ($c->frozen_nick)
+    {
+      // TODO: assigner un nick aleatoire
+    }
     else
-      $msg = "'".$nicktochange."' is used, please choose another nickname.";
-    $xml_reponse->addScript("var newpseudo = prompt('".addslashes($msg)."', '".addslashes($nicktochange)."'); ".$c->prefix."handleRequest('/nick ' + newpseudo);");
+    {
+      if ($nicktochange == "")
+        $msg = "Please enter your nickname";
+      else
+        $msg = "'".$nicktochange."' is used, please choose another nickname.";
+      $xml_reponse->addScript("var newpseudo = prompt('".addslashes($msg)."', '".addslashes($nicktochange)."'); ".$c->prefix."handleRequest('/nick ' + newpseudo);");
+    }
   }
   
 }

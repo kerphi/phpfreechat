@@ -132,7 +132,7 @@ class phpXChat_Container_File extends phpXChat_Container
   function getNickId($nickname)
   {
     $c =& $this->c;
-    $nickid = "";
+    $nickid = "undefined";
     $myfilename = $c->container_cfg_online_dir.$this->_encode($nickname);
     if (file_exists($myfilename))
     {
