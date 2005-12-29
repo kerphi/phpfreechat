@@ -189,9 +189,11 @@ class phpXChat
     $xml_reponse->addScript("var ".$c->prefix."timeout_var;");
 
     if ($c->debug) pxlog("Cmd_connect: current nick = ".$c->nick, "chat", $c->id);
-    
+
     if ($c->nick != "")
+    {
       phpXChat::Cmd_nick(&$xml_reponse, $c->nick);
+    }
     else
       phpXChat::Cmd_asknick($xml_reponse, "");
     phpXChat::Cmd_update($xml_reponse);
@@ -211,9 +213,12 @@ class phpXChat
     $container =& $c->getContainerInstance();
     $oldnickid = $container->getNickId($oldnick);
     $newnickid = $container->getNickId($newnick);
-    if ($oldnickid == 0 || $oldnick == "") // this nick is free
+
+    if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: oldnick=".$oldnick." newnick=".$newnick." oldnickid=".$oldnickid." newnickid=".$newnickid, "chat", $c->id);
+
+    if ($oldnickid == "") // this nick is free
     {
-      if ($newnickid == 0) // new nick is free ?
+      if ($newnickid == "") // new nick is free ?
       {
         // this is the first time the nick is assigned
         $container->changeNick($newnick, $c->sessionid);
@@ -237,7 +242,7 @@ class phpXChat
     {
       if ($c->nick != $newnick)
       {
-        if ($newnickid == 0) // new nick is free ?
+        if ($newnickid == "") // new nick is free ?
         {
           // this is a real nick change
           $container->changeNick($newnick, $c->sessionid);
@@ -257,7 +262,10 @@ class phpXChat
         }
       }
       else
+      {
+	// TODO on doit faire qq chose de plus complique ici ... a voir
         $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
+      }
       // give focus to words fields
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
     }

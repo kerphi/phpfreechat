@@ -132,7 +132,7 @@ class phpXChat_Container_File extends phpXChat_Container
   function getNickId($nickname)
   {
     $c =& $this->c;
-    $nickid = 0;
+    $nickid = "";
     $myfilename = $c->container_cfg_online_dir.$this->_encode($nickname);
     if (file_exists($myfilename))
     {
@@ -143,7 +143,7 @@ class phpXChat_Container_File extends phpXChat_Container
       //      flock ($fp, LOCK_UN); // unlock
       fclose($fp);
     }
-    
+    //if ($c->debug) pxlog("getNickId[".$c->sessionid."]: nickname=".$nickname." nickid=".$nickid, "chat", $c->id);
     return $nickid;
   }
 
