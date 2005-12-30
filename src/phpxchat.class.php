@@ -188,92 +188,69 @@ class phpXChat
     $_SESSION[$c->prefix."from_id_".$c->id] = 0;
     $xml_reponse->addScript("var ".$c->prefix."timeout_var;");
 
-    if ($c->debug) pxlog("Cmd_connect: current nick = ".$c->nick, "chat", $c->id);
+    // check if the wanted nickname was allready known
+    $container =& $c->getContainerInstance();
+    $nickid = $container->getNickId($c->nick);
+    if ($nickid == "undefined") // is nickname unused ?
+      phpXChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($c->nick))." is connected");
 
-    if ($c->nick != "")
-    {
+    if ($c->debug) pxlog("Cmd_connect[".$c->sessionid."]: nick=".$c->nick." nickid=".$nickid, "chat", $c->id);
+
+    if ($c->nick == "")
+      // ask user to choose a nickname
+      phpXChat::Cmd_asknick($xml_reponse, "");
+    else
       phpXChat::Cmd_nick(&$xml_reponse, $c->nick);
+
+    phpXChat::Cmd_update($xml_reponse);
+  }
+
+  function Cmd_asknick(&$xml_reponse, $nicktochange)
+  {
+    $c =& phpXChatConfig::Instance();
+    if ($c->frozen_nick)
+    {
+      // assign a random nick
+      phpXChat::Cmd_nick($xml_reponse, $nicktochange."".rand(1,1000));
     }
     else
-      phpXChat::Cmd_asknick($xml_reponse, "");
-    phpXChat::Cmd_update($xml_reponse);
+    {
+      if ($nicktochange == "")
+        $msg = "Please enter your nickname";
+      else
+        $msg = "'".$nicktochange."' is used, please choose another nickname.";
+      $xml_reponse->addScript("var newpseudo = prompt('".addslashes($msg)."', '".addslashes($nicktochange)."'); ".$c->prefix."handleRequest('/nick ' + newpseudo);");
+    }
   }
 
   function Cmd_nick(&$xml_reponse, $newnick)
   {
     $c =& phpXChatConfig::Instance();
-    $oldnick = $c->nick;
-    
-    if ($newnick == "")
-    {
-      phpXChat::Cmd_asknick($xml_reponse, "");
-      return;
-    }
-    
     $container =& $c->getContainerInstance();
-    $oldnickid = $container->getNickId($oldnick);
     $newnickid = $container->getNickId($newnick);
 
-    if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: oldnick=".$oldnick." newnick=".$newnick." oldnickid=".$oldnickid." newnickid=".$newnickid, "chat", $c->id);
-
-    if ($oldnickid == "undefined") // this nick is free
+    if ($newnickid == "undefined")
     {
-      if ($newnickid == "undefined") // new nick is free ?
-      {
-        // this is the first time the nick is assigned
-        $container->changeNick($newnick, $c->sessionid);
-        $c->nick = $newnick;
-        $c->saveInSession();
-        phpXChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($newnick))." is connected");
-        $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
-        // give focus to words fields
-        $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
-        if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: first time nick is assigned -> newnick=".$c->nick, "chat", $c->id);
-      }
-      else
-      {
-        // the wanted nick is allready used
-        // please change it
-        if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: wanted nick is allready in use -> oldnickid=".$oldnickid." oldnick=".$oldnick." wantednick=".$newnick, "chat", $c->id);
-        phpXChat::Cmd_asknick($xml_reponse, $newnick);
-      }
-    }
-    else if ( $oldnickid == $c->sessionid ) // it's mind
-    {
-      if ($c->nick != $newnick)
-      {
-        if ($newnickid == "undefined") // new nick is free ?
-        {
-          // this is a real nick change
-          $container->changeNick($newnick, $c->sessionid);
-          $oldnick = $c->nick;
-          $c->nick = $newnick;
-          $c->saveInSession();
-          phpXChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($oldnick))." changes his nickname to ".htmlspecialchars(stripslashes($newnick)));
-          $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
-          if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: a real nick change -> oldnick=".$oldnick." newnick=".$newnick, "chat", $c->id);
-        }
-        else
-        {
-          // the wanted nick is allready used
-          // please change it
-          if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: wanted nick is allready in use -> oldnickid=".$oldnickid." oldnick=".$oldnick." wantednick=".$newnick, "chat", $c->id);
-          phpXChat::Cmd_asknick($xml_reponse, $newnick);
-        }
-      }
-      else
-      {
-        $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
-      }
-      // give focus to words fields
+      // this is the first time the nick is assigned
+      $container->changeNick($newnick, $c->sessionid);
+      $c->nick = $newnick;
+      $c->saveInSession();
+      $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
+      //      phpXChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($oldnick))." changes his nickname to ".htmlspecialchars(stripslashes($newnick)));
+      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: first time nick is assigned -> newnick=".$c->nick, "chat", $c->id);
+    }
+    else if ($newnickid == $c->sessionid)
+    {
+      // user didn't change his nickname
+      $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
+      $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
+      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: user just reloded the page so let him keep his nickname without any warnings -> nickid=".$newnickid." nick=".$newnick, "chat", $c->id);
     }
     else
     {
-      //      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: AAAAAA oldnickid=".$oldnickid." newnickid=".$newnickid, "chat", $c->id);
       // the wanted nick is allready used
-      // please change it
-      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: wanted nick is allready in use -> oldnickid=".$oldnickid." oldnick=".$oldnick." wantednick=".$newnick, "chat", $c->id);
+      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: wanted nick is allready in use -> wantednickid=".$newnickid." wantednick=".$newnick, "chat", $c->id);
       phpXChat::Cmd_asknick($xml_reponse, $newnick);
     }
   }
@@ -434,25 +411,7 @@ class phpXChat
     }
     else
       $xml_reponse->addScript($c->prefix."SetError('".addslashes(stripslashes($errors))."', Array());");
-  }
-
-  function Cmd_asknick(&$xml_reponse, $nicktochange)
-  {
-    $c =& phpXChatConfig::Instance();
-    if ($c->frozen_nick)
-    {
-      // TODO: assigner un nick aleatoire
-    }
-    else
-    {
-      if ($nicktochange == "")
-        $msg = "Please enter your nickname";
-      else
-        $msg = "'".$nicktochange."' is used, please choose another nickname.";
-      $xml_reponse->addScript("var newpseudo = prompt('".addslashes($msg)."', '".addslashes($nicktochange)."'); ".$c->prefix."handleRequest('/nick ' + newpseudo);");
-    }
-  }
-  
+  }  
 }
 
 ?>

@@ -1,7 +1,3 @@
-~[if $connect]~
-~[$prefix]~handleRequest('/connect');
-~[/if]~
-
 function ~[$prefix]~SetError(str, ids)
 {
   document.getElementById('~[$prefix]~errors').innerHTML = str;

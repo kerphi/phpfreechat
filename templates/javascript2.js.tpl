@@ -57,3 +57,6 @@ function onchangeCallback_handle(e)
   }
 }
 
+~[if $connect]~
+~[$prefix]~handleRequest('/connect');
+~[/if]~
