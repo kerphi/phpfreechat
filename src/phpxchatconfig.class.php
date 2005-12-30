@@ -161,7 +161,7 @@ class phpXChatConfig
 	$res .= "../";
 	$p1 = dirname($p1);
       }
-      $p2 = substr($p2, strlen($p1), strlen($p2)-strlen($p1));
+      $p2 = substr($p2, strlen($p1)+1, strlen($p2)-strlen($p1));
       $res .= $p2;
       return $res;
     }
