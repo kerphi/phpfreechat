@@ -153,7 +153,7 @@ class phpXChat
     $msg = str_replace("\n", "<br/>", $msg);
     $msg = str_replace("\t", "    ", $msg);
     $msg = str_replace("  ", "&nbsp;&nbsp;", $msg);
-    $msg = preg_replace('/('.phpXChat::FilterNickname($c->nick).')/i',  "<strong>$1</strong>", $msg );
+    $msg = preg_replace('/('.preg_quote(phpXChat::FilterNickname($c->nick)).')/i',  "<strong>$1</strong>", $msg );
     $msg = preg_replace('/(http\:\/\/[^\s]*)/i',  "<a href=\"$1\">$1</a>", $msg );
     return $msg;
   }
@@ -161,14 +161,22 @@ class phpXChat
   function HandleRequest($request)
   {
     $xml_reponse = new xajaxResponse();
-    
-    if (preg_match("/\/([a-z]*)( (.*)|)/i", $request, $res))
+    $request = stripslashes($request);
+
+    if (preg_match("/^\/([a-z]*)( (.*)|)/i", $request, $res))
     {
       $cmd   = "Cmd_".$res[1];
       $param = $res[3];
       // call the command
       phpXChat::$cmd($xml_reponse, $param);
     }
+    else
+    {
+      // by default this is a simple send command
+      $cmd   = "Cmd_send";
+      // call the command
+      phpXChat::$cmd($xml_reponse, $request);
+    } 
     
     return $xml_reponse->getXML();
   }
@@ -231,13 +239,15 @@ class phpXChat
 
     if ($newnickid == "undefined")
     {
-      // this is the first time the nick is assigned
+      // this is a real nickname change
       $container->changeNick($newnick, $c->sessionid);
+      $oldnick = $c->nick;
       $c->nick = $newnick;
       $c->saveInSession();
       $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
-      //      phpXChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($oldnick))." changes his nickname to ".htmlspecialchars(stripslashes($newnick)));
+      if ($oldnick != $newnick && $oldnick != "")
+	phpXChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($oldnick))." changes his nickname to ".htmlspecialchars(stripslashes($newnick)));
       if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: first time nick is assigned -> newnick=".$c->nick, "chat", $c->id);
     }
     else if ($newnickid == $c->sessionid)
@@ -261,7 +271,7 @@ class phpXChat
     if ($c->shownotice)
     {
       $container =& $c->getContainerInstance();
-      $container->writeMsg("*", $msg);
+      $container->writeMsg("*notice*", $msg);
       phpXChat::Cmd_getNewMsg($xml_reponse);
     }
   }
@@ -269,7 +279,9 @@ class phpXChat
   function Cmd_me(&$xml_reponse, $msg)
   {
     $c =& phpXChatConfig::Instance();
-    
+    $container =& $c->getContainerInstance();
+    $container->writeMsg("*me*", $c->nick." ".$msg);
+    phpXChat::Cmd_getNewMsg($xml_reponse);    
   }
   
   function Cmd_quit(&$xml_reponse)
@@ -334,11 +346,26 @@ class phpXChat
     $html = '';
     foreach ($messages as $msg)
     {
-      $html .= '<div id="'.$c->prefix.'msg'.$msg[0].'" class="'.$c->prefix.'message'.($from_id == 0 ? " ".$c->prefix."oldmsg" : "").'">';
+      $cmd_type = "cmd_msg";
+      if (preg_match("/\*([a-z]*)\*/i", $msg[3], $res))
+      {
+	if ($res[1] == "notice")
+	  $cmd_type = "cmd_notice";
+	else if ($res[1] == "me")
+	  $cmd_type = "cmd_me";
+      }
+      $html .= '<div id="'.$c->prefix.'msg'.$msg[0].'" class="'.$c->prefix.$cmd_type.' '.$c->prefix.'message'.($from_id == 0 ? " ".$c->prefix."oldmsg" : "").'">';
       $html .= '<span class="'.$c->prefix.'date'.((isset($msg[1]) && date("d/m/Y") == $msg[1]) ? " ".$c->prefix."invisible" : "" ).'">'.(isset($msg[1]) ? $msg[1] : "").'</span> ';
       $html .= '<span class="'.$c->prefix.'heure">'.(isset($msg[2]) ? $msg[2] : "").'</span> ';
-      $html .= '<span class="'.$c->prefix.'pseudo">&lt;'.(isset($msg[3]) ? $msg[3] : "").'&gt;</span> ';
-      $html .= '<span class="'.$c->prefix.'words">'.(isset($msg[4]) ? $msg[4] : "").'</span><br/>';
+      if ($cmd_type == "cmd_msg")
+      {
+	$html .= '<span class="'.$c->prefix.'pseudo">&lt;'.(isset($msg[3]) ? $msg[3] : "").'&gt;</span> ';
+	$html .= '<span class="'.$c->prefix.'words">'.(isset($msg[4]) ? $msg[4] : "").'</span>';
+      }
+      else if ($cmd_type == "cmd_notice" || $cmd_type == "cmd_me")
+      {
+	$html .= '<span class="'.$c->prefix.'words">* '.(isset($msg[4]) ? $msg[4] : "").'</span>';
+      }
       $html .= '</div>';
     }
   	

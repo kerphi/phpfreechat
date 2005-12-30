@@ -131,3 +131,15 @@ p#~[$prefix]~errors {
   font-weight: bold;
 }
 
+/* commands */
+.~[$prefix]~cmd_msg {
+  color: black;
+}
+.~[$prefix]~cmd_me {
+  font-style: italic;
+  color: black;
+}
+.~[$prefix]~cmd_notice {
+  font-style: italic;
+  color: grey;
+}

@@ -25,7 +25,7 @@ function onkeydownCallback_words(e)
   if (code == 13)
   {
     var w = document.getElementById('~[$prefix]~words');
-    ~[$prefix]~handleRequest('/send ' + w.value.substr(0,~[$max_text_len]~));
+    ~[$prefix]~handleRequest(w.value.substr(0,~[$max_text_len]~));
     w.value = '';
     return false;
   }
