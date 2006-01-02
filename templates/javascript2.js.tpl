@@ -19,15 +19,33 @@ function onfocusCallback_words(e)
 
 function onkeydownCallback_words(e)
 {
-    ~[$prefix]~ClearError(Array('~[$prefix]~words'));
+  ~[$prefix]~ClearError(Array('~[$prefix]~words'));
   if (!e) var e = window.event;
   var code = e.keyCode;
-  if (code == 13)
+  if (code == 13) /* enter key */
   {
     var w = document.getElementById('~[$prefix]~words');
     ~[$prefix]~handleRequest(w.value.substr(0,~[$max_text_len]~));
     w.value = '';
     return false;
+  }
+  else if (code == 39) /* right direction */
+  {
+    var w = document.getElementById('~[$prefix]~words');
+    var nick_src = w.value.substring(w.value.lastIndexOf(' ')+1,w.value.length);
+    if (nick_src != '')
+    {
+      var ul_online = document.getElementById('~[$prefix]~online').firstChild;
+      for (var i=0; i<ul_online.childNodes.length; i++)
+      {
+	var pseudo = ul_online.childNodes[i].innerHTML;
+	if (pseudo.indexOf(nick_src) == 0)
+	  w.value = w.value.replace(nick_src, pseudo);
+      }
+    }
+  }
+  else
+  {
   }
 }
 
