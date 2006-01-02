@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__)."/phpxchatconfig.class.php";
-if (!class_exists("xajax")) require_once dirname(__FILE__)."/../lib/xajax_0_1_beta4/xajax.inc.php";
+if (!class_exists("xajax")) require_once dirname(__FILE__)."/../lib/xajax_0.2_stable/xajax.inc.php";
 require_once dirname(__FILE__)."/../debug/log.php";
 
 class phpXChat
@@ -41,7 +41,7 @@ class phpXChat
   {
     $c =& phpXChatConfig::Instance();
     
-    $this->xajax->printJavascript();    
+    $this->xajax->printJavascript("../lib/xajax_0.2_stable/");    
     
     if (!class_exists("Smarty")) require_once dirname(__FILE__)."/../lib/Smarty-2.6.7/libs/Smarty.class.php";
     $smarty = new Smarty();
