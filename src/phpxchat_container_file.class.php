@@ -11,7 +11,7 @@ class phpXChat_Container_File extends phpXChat_Container
     $c =& $this->c;
     
     $cfg = array();
-    $cfg["chat_dir"]            = $c->data_private."/".md5($c->title)."/";
+    $cfg["chat_dir"]            = $c->data_private."/chat/".$c->channel."/";
     $cfg["data_file"]           = $cfg["chat_dir"]."messages.data";
     $cfg["index_file"]          = $cfg["chat_dir"]."messages.index";
     $cfg["nickname_dir"]        = $cfg["chat_dir"]."nicknames/";
@@ -27,7 +27,7 @@ class phpXChat_Container_File extends phpXChat_Container
     // ---
     // test message file
     if (!is_dir(dirname($c->container_cfg_data_file)))
-      @mkdir(dirname($c->container_cfg_data_file));
+      @RecursiveMkdir(dirname($c->container_cfg_data_file));
     if ($ok && !is_dir(dirname($c->container_cfg_data_file)))
     {
       $ok = false;
@@ -59,7 +59,7 @@ class phpXChat_Container_File extends phpXChat_Container
     // ---
     // file index test
     if (!is_dir(dirname($c->container_cfg_index_file)))
-      @mkdir(dirname($c->container_cfg_index_file));
+      @RecursiveMkdir(dirname($c->container_cfg_index_file));
     if ($ok && !is_dir(dirname($c->container_cfg_index_file)))
     {
       $ok = false;
@@ -97,7 +97,7 @@ class phpXChat_Container_File extends phpXChat_Container
     // ---
     // file nickname directory
     if (!is_dir($c->container_cfg_nickname_dir))
-      @mkdir($c->container_cfg_nickname_dir);
+      @RecursiveMkdir($c->container_cfg_nickname_dir);
     if ($ok && !is_dir($c->container_cfg_nickname_dir))
     {
       $ok = false;

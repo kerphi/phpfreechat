@@ -2,6 +2,21 @@
 
 require_once dirname(__FILE__)."/../debug/log.php";
 
+   function RecursiveMkdir($path)
+   {
+       // This function creates the specified directory using mkdir().  Note
+       // that the recursive feature on mkdir() is broken with PHP 5.0.4 for
+       // Windows, so I have to do the recursion myself.
+       if (!file_exists($path))
+       {
+           // The directory doesn't exist.  Recurse, passing in the parent
+           // directory so that it gets created.
+           RecursiveMkdir(dirname($path));
+
+           mkdir($path, 0777);
+       }
+   }
+
 class phpXChatConfig
 {
   var $nick           = "";
@@ -14,6 +29,7 @@ class phpXChatConfig
   function phpXChatConfig( $params = array() )
   {
     $this->default_params["title"]               = "My phpXChat";
+    $this->default_params["channel"]             = preg_replace("/[\s\.\:\-\,\;\#]*/","",strtolower($this->default_params["title"]));
     $this->default_params["nick"]                = "";
     $this->default_params["frozen_nick"]         = false;
     $this->default_params["skip_optional_check"] = true;
@@ -40,6 +56,10 @@ class phpXChatConfig
     
     // set user's values
     foreach ( $params as $k => $v ) $this->$k = $v;
+
+    // choose a auto-generated channel name if user choose a title but didn't choose a channel name
+    if ( !isset($params["channel"]) && isset($params["title"]) )
+      $this->channel = preg_replace("/[\s\.\:\-\,\;\#]*/","",strtolower($this->title));
 
     // load default container's config
     $container =& $this->getContainerInstance();
@@ -89,7 +109,7 @@ class phpXChatConfig
       $this->errors[] = $this->data_public." must be a directory";
     }      
     if ($ok && !is_dir($this->data_public))
-      @mkdir($this->data_public);
+      @RecursiveMkdir($this->data_public);
     if ($ok && !is_dir(dirname($this->data_public)))
     {
       $ok = false;
@@ -119,7 +139,7 @@ class phpXChatConfig
       $this->errors[] = $this->data_private." must be a directory";
     }      
     if ($ok && !is_dir($this->data_private))
-      @mkdir($this->data_private);
+      @RecursiveMkdir($this->data_private);
     if ($ok && !is_dir(dirname($this->data_private)))
     {
       $ok = false;
@@ -138,7 +158,7 @@ class phpXChatConfig
     /* templates_c directory for smarty */
     $dir = $this->data_private."/templates_c";
     if ($ok && !is_dir($dir))
-      @mkdir($dir);
+      @RecursiveMkdir($dir);
     if ($ok && !is_dir(dirname($dir)))
     {
       $ok = false;
@@ -254,6 +274,7 @@ class phpXChatConfig
     {
       $spotted_atr = array();
       $spotted_atr[] = $this->title;
+      $spotted_atr[] = $this->channel;
       $spotted_atr[] = $this->prefix;
       $spotted_atr[] = $this->debug;
       $spotted_atr[] = $this->connect;
