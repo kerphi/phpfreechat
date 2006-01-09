@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__)."/../debug/log.php";
+require_once dirname(__FILE__)."/phpxchattools.class.php";
 
    function RecursiveMkdir($path)
    {
@@ -222,20 +223,6 @@ class phpXChatConfig
 
   function loadSmileyTheme()
   {
-    function relativepath($p1, $p2)
-    {
-      $p1 = realpath($p1);
-      $p2 = realpath($p2);
-      $res = "";
-      while( $p1 != "" && $p1 != "/" && strpos($p2, $p1) === FALSE)
-      {
-	$res .= "../";
-	$p1 = dirname($p1);
-      }
-      $p2 = substr($p2, strlen($p1)+1, strlen($p2)-strlen($p1));
-      $res .= $p2;
-      return $res;
-    }
     $theme = file(dirname(__FILE__)."/../smileys/".$this->smileytheme."/theme");
     $result = array();
     foreach($theme as $line)
@@ -244,7 +231,7 @@ class phpXChatConfig
         continue;
       else if (preg_match("/^([a-z_]*(\.gif|\.png))(.*)$/i",$line,$res))
       {
-        $smiley_file = relativepath(dirname($_SERVER["PATH_TRANSLATED"]), dirname(__FILE__).'/../smileys/'.$this->smileytheme.'/'.$res[1]);
+        $smiley_file = phpXChatTools::RelativePath(dirname($_SERVER["PATH_TRANSLATED"]), dirname(__FILE__).'/../smileys/'.$this->smileytheme.'/'.$res[1]);
         $smiley_str = trim($res[3])."\n";
         $smiley_str = str_replace("\n", "", $smiley_str);
         $smiley_str = str_replace("\t", " ", $smiley_str);

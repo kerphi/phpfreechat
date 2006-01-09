@@ -41,7 +41,7 @@ class phpXChat
   {
     $c =& phpXChatConfig::Instance();
     
-    $this->xajax->printJavascript("../lib/xajax_0.2_stable/");    
+    $this->xajax->printJavascript("../lib/xajax_0.2_stable/");
     
     if (!class_exists("Smarty")) require_once dirname(__FILE__)."/../lib/Smarty-2.6.7/libs/Smarty.class.php";
     $smarty = new Smarty();
@@ -195,6 +195,7 @@ class phpXChat
     $c =& phpXChatConfig::Instance();
     $_SESSION[$c->prefix."from_id_".$c->id] = 0;
     $xml_reponse->addScript("var ".$c->prefix."timeout_var;");
+    $xml_reponse->addScript("var ".$c->prefix."nicklist = Array();");
 
     // check if the wanted nickname was allready known
     $container =& $c->getContainerInstance();
@@ -298,14 +299,29 @@ class phpXChat
   function Cmd_getOnlineNick(&$xml_reponse)
   {
     $c =& phpXChatConfig::Instance();
+
+    // get the actual nicklist
+    $oldnicklist = $_SESSION[$c->prefix."nicklist_".$c->id];
+
     $container =& $c->getContainerInstance();
     $disconnected_users = $container->removeObsoletNick();
     foreach ($disconnected_users as $u)
       phpXChat::Cmd_notice($xml_reponse, $u." disconnected (timeout)");
     $users = $container->getOnlineNick();
     sort($users);
-    $html = '<ul>'; foreach ($users as $u) $html .= '<li>'.htmlspecialchars(stripslashes($u)).'</li>'; $html .= '</ul>';
+    $html = '<ul>';
+    $js = "";
+    foreach ($users as $u)
+    {
+      $nickname = htmlspecialchars(stripslashes($u));
+      $html    .= '<li>'.$nickname.'</li>';
+      $js      .= "'".$nickname."',";
+    }
+    $html .= '</ul>';
+    $js    = substr($js, 0, strlen($js)-1); // remove last ','
+      
     $xml_reponse->addAssign($c->prefix."online", "innerHTML", $html);
+    $xml_reponse->addScript($c->prefix."nicklist = Array(".$js.");");
   }
 
   function Cmd_updateMyNick(&$xml_reponse)
