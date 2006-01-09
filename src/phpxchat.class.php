@@ -48,7 +48,7 @@ class phpXChat
     $smarty->left_delimiter  = "~[";
     $smarty->right_delimiter = "]~";
     $smarty->template_dir    = dirname(__FILE__).'/../templates/';
-    $smarty->compile_dir     = $c->cache_dir;    
+    $smarty->compile_dir     = $c->data_private."/templates_c/";    
     $smarty->compile_check   = true;
     $smarty->debugging       = false;
     $c->assignToSmarty($smarty);
@@ -71,7 +71,7 @@ class phpXChat
     $smarty->left_delimiter  = "~[";
     $smarty->right_delimiter = "]~";
     $smarty->template_dir    = dirname(__FILE__).'/../templates/';
-    $smarty->compile_dir     = $c->cache_dir;    
+    $smarty->compile_dir     = $c->data_private."/templates_c/";    
     $smarty->compile_check   = true;
     $smarty->debugging       = false;
     $c->assignToSmarty($smarty);
@@ -91,7 +91,7 @@ class phpXChat
     $smarty->left_delimiter  = "~[";
     $smarty->right_delimiter = "]~";
     $smarty->template_dir    = dirname(__FILE__).'/../templates/';
-    $smarty->compile_dir     = $c->cache_dir;
+    $smarty->compile_dir     = $c->data_private."/templates_c/";
     $smarty->compile_check   = true;
     $smarty->debugging       = false;
     $c->assignToSmarty($smarty);

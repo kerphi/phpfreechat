@@ -6,7 +6,7 @@ $chatid = $_GET["chatid"];
 
 function getnewlog($chatid, $section = "")
 {
-  $filename = dirname(__FILE__)."/../cache/debug".$section."_".$chatid.".log";
+  $filename = dirname(__FILE__)."/../data/private/debug".$section."_".$chatid.".log";
   $xml_reponse = new xajaxResponse();
   if (file_exists($filename))
   {

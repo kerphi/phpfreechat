@@ -25,7 +25,8 @@ class phpXChatConfig
     $this->default_params["width"]               = "";
     $this->default_params["css_file"]            = "";
     $this->default_params["server_script"]       = "";
-    $this->default_params["cache_dir"]           = dirname(__FILE__)."/../cache/";
+    $this->default_params["data_private"]        = dirname(__FILE__)."/../data/private";
+    $this->default_params["data_public"]         = dirname(__FILE__)."/../data/public";
     $this->default_params["shownotice"]          = true;
     $this->default_params["debug"]               = false;
     $this->default_params["connect"]             = true;
@@ -76,33 +77,82 @@ class phpXChatConfig
     $ok = true;
     
     // ---
-    // test cache directory
-    if ($ok && $this->cache_dir == "")
+    // test data_public directory
+    if ($ok && $this->data_public == "")
     {
       $ok = false;
       $this->errors[] = "cache directory must be specified";
     }
-    if ($ok && is_file($this->cache_dir))
+    if ($ok && is_file($this->data_public))
     {
       $ok = false;
-      $this->errors[] = $this->cache_dir." must be a directory";
+      $this->errors[] = $this->data_public." must be a directory";
     }      
-    if ($ok && !is_dir($this->cache_dir))
-      @mkdir($this->cache_dir);
-    if ($ok && !is_dir(dirname($this->cache_dir)))
+    if ($ok && !is_dir($this->data_public))
+      @mkdir($this->data_public);
+    if ($ok && !is_dir(dirname($this->data_public)))
     {
       $ok = false;
-      $this->errors[] = dirname($this->cache_dir)." can't be created";
+      $this->errors[] = dirname($this->data_public)." can't be created";
     }      
-    if ($ok && !is_writeable($this->cache_dir))
+    if ($ok && !is_writeable($this->data_public))
     {
       $ok = false;
-      $this->errors[] = $this->cache_dir." is not writeable";
+      $this->errors[] = $this->data_public." is not writeable";
     }
-    if ($ok && !is_readable($this->cache_dir))
+    if ($ok && !is_readable($this->data_public))
     {
       $ok = false;
-      $this->errors[] = $this->cache_dir." is not readable";
+      $this->errors[] = $this->data_public." is not readable";
+    }
+
+    // ---
+    // test data_private directory
+    if ($ok && $this->data_private == "")
+    {
+      $ok = false;
+      $this->errors[] = "cache directory must be specified";
+    }
+    if ($ok && is_file($this->data_private))
+    {
+      $ok = false;
+      $this->errors[] = $this->data_private." must be a directory";
+    }      
+    if ($ok && !is_dir($this->data_private))
+      @mkdir($this->data_private);
+    if ($ok && !is_dir(dirname($this->data_private)))
+    {
+      $ok = false;
+      $this->errors[] = dirname($this->data_private)." can't be created";
+    }      
+    if ($ok && !is_writeable($this->data_private))
+    {
+      $ok = false;
+      $this->errors[] = $this->data_private." is not writeable";
+    }
+    if ($ok && !is_readable($this->data_private))
+    {
+      $ok = false;
+      $this->errors[] = $this->data_private." is not readable";
+    }
+    /* templates_c directory for smarty */
+    $dir = $this->data_private."/templates_c";
+    if ($ok && !is_dir($dir))
+      @mkdir($dir);
+    if ($ok && !is_dir(dirname($dir)))
+    {
+      $ok = false;
+      $this->errors[] = dirname($dir)." can't be created";
+    }      
+    if ($ok && !is_writeable($dir))
+    {
+      $ok = false;
+      $this->errors[] = $dir." is not writeable";
+    }
+    if ($ok && !is_readable($dir))
+    {
+      $ok = false;
+      $this->errors[] = $dir." is not readable";
     }
     
     // ---
@@ -207,7 +257,8 @@ class phpXChatConfig
       $spotted_atr[] = $this->prefix;
       $spotted_atr[] = $this->debug;
       $spotted_atr[] = $this->connect;
-      $spotted_atr[] = $this->cache_dir;
+      $spotted_atr[] = $this->data_public; 
+      $spotted_atr[] = $this->data_private;
       $spotted_atr[] = $this->container_type;
       $spotted_atr[] = $this->smileytheme;
       $spotted_atr[] = $this->smileymode;
