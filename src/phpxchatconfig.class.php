@@ -47,7 +47,6 @@ class phpXChatConfig
     $this->default_params["debug"]               = false;
     $this->default_params["connect"]             = true;
     $this->default_params["smileytheme"]         = "default";
-    $this->default_params["smileymode"]          = "msn";
     $this->default_params["prefix"]              = "phpxchat_";
     $this->default_params["container_type"]      = (isset($params["container_type"]) && $params["container_type"]!="") ? $params["container_type"] : "File";
 
@@ -239,15 +238,11 @@ class phpXChatConfig
     }
     $theme = file(dirname(__FILE__)."/../smileys/".$this->smileytheme."/theme");
     $result = array();
-    $mode = "";
     foreach($theme as $line)
     {
       if (preg_match("/^#.*/",$line))
         continue;
-      else if (preg_match("/^\[(.*)\]$/",$line,$res))
-        $mode = strtolower($res[1]);
-      else if ($mode == $this->smileymode &&
-               preg_match("/^([a-z_]*(\.gif|\.png))(.*)$/i",$line,$res))
+      else if (preg_match("/^([a-z_]*(\.gif|\.png))(.*)$/i",$line,$res))
       {
         $smiley_file = relativepath(dirname($_SERVER["PATH_TRANSLATED"]), dirname(__FILE__).'/../smileys/'.$this->smileytheme.'/'.$res[1]);
         $smiley_str = trim($res[3])."\n";
@@ -284,7 +279,6 @@ class phpXChatConfig
       $spotted_atr[] = $this->data_private;
       $spotted_atr[] = $this->container_type;
       $spotted_atr[] = $this->smileytheme;
-      $spotted_atr[] = $this->smileymode;
       $this->id = md5(serialize($spotted_atr));
     }
     return $this->id;
