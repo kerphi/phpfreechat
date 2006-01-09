@@ -3,21 +3,6 @@
 require_once dirname(__FILE__)."/../debug/log.php";
 require_once dirname(__FILE__)."/phpxchattools.class.php";
 
-   function RecursiveMkdir($path)
-   {
-       // This function creates the specified directory using mkdir().  Note
-       // that the recursive feature on mkdir() is broken with PHP 5.0.4 for
-       // Windows, so I have to do the recursion myself.
-       if (!file_exists($path))
-       {
-           // The directory doesn't exist.  Recurse, passing in the parent
-           // directory so that it gets created.
-           RecursiveMkdir(dirname($path));
-
-           mkdir($path, 0777);
-       }
-   }
-
 class phpXChatConfig
 {
   var $nick           = "";
@@ -111,7 +96,7 @@ class phpXChatConfig
       $this->errors[] = $this->data_public." must be a directory";
     }      
     if ($ok && !is_dir($this->data_public))
-      @RecursiveMkdir($this->data_public);
+      @phpXChatTools::RecursiveMkdir($this->data_public);
     if ($ok && !is_dir(dirname($this->data_public)))
     {
       $ok = false;
@@ -141,7 +126,7 @@ class phpXChatConfig
       $this->errors[] = $this->data_private." must be a directory";
     }      
     if ($ok && !is_dir($this->data_private))
-      @RecursiveMkdir($this->data_private);
+      @phpXChatTools::RecursiveMkdir($this->data_private);
     if ($ok && !is_dir(dirname($this->data_private)))
     {
       $ok = false;
@@ -160,7 +145,7 @@ class phpXChatConfig
     /* templates_c directory for smarty */
     $dir = $this->data_private."/templates_c";
     if ($ok && !is_dir($dir))
-      @RecursiveMkdir($dir);
+      @phpXChatTools::RecursiveMkdir($dir);
     if ($ok && !is_dir(dirname($dir)))
     {
       $ok = false;

@@ -27,7 +27,7 @@ class phpXChat_Container_File extends phpXChat_Container
     // ---
     // test message file
     if (!is_dir(dirname($c->container_cfg_data_file)))
-      @RecursiveMkdir(dirname($c->container_cfg_data_file));
+      @phpXChatTools::RecursiveMkdir(dirname($c->container_cfg_data_file));
     if ($ok && !is_dir(dirname($c->container_cfg_data_file)))
     {
       $ok = false;
@@ -59,7 +59,7 @@ class phpXChat_Container_File extends phpXChat_Container
     // ---
     // file index test
     if (!is_dir(dirname($c->container_cfg_index_file)))
-      @RecursiveMkdir(dirname($c->container_cfg_index_file));
+      @phpXChatTools::RecursiveMkdir(dirname($c->container_cfg_index_file));
     if ($ok && !is_dir(dirname($c->container_cfg_index_file)))
     {
       $ok = false;
@@ -97,7 +97,7 @@ class phpXChat_Container_File extends phpXChat_Container
     // ---
     // file nickname directory
     if (!is_dir($c->container_cfg_nickname_dir))
-      @RecursiveMkdir($c->container_cfg_nickname_dir);
+      @phpXChatTools::RecursiveMkdir($c->container_cfg_nickname_dir);
     if ($ok && !is_dir($c->container_cfg_nickname_dir))
     {
       $ok = false;
