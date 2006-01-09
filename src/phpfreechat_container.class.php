@@ -1,9 +1,9 @@
 <?php
 
-class phpXChat_Container
+class phpFreeChat_Container
 {
   var $c;
-  function phpXChat_Container(&$config)
+  function phpFreeChat_Container(&$config)
   {
     $this->c =& $config;
   }

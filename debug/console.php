@@ -18,10 +18,10 @@ function getnewlog($chatid, $section = "")
     unlink($filename);
     $xml_reponse->addAppend("debug".$section, "innerHTML", $html);
   }
-  $xml_reponse->addScript("window.setTimeout('phpxchat_getnewlog(\'".$chatid."\',\'".$section."\')', 1000);");
+  $xml_reponse->addScript("window.setTimeout('phpfreechat_getnewlog(\'".$chatid."\',\'".$section."\')', 1000);");
   return $xml_reponse->getXML();
 }
-$xajax = new xajax("", "phpxchat_");
+$xajax = new xajax("", "phpfreechat_");
 //$xajax->debugOn();
 $xajax->registerFunction("getnewlog");
 $xajax->processRequests();
@@ -33,7 +33,7 @@ $xajax->processRequests();
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-  <title>phpXChat debug console</title>
+  <title>phpFreeChat debug console</title>
   <?php $xajax->printJavascript(); ?>
 
   <style type="text/css">
@@ -81,14 +81,14 @@ div#debugchat {
 <body>
 
   
-  <div id="debugchatconfig"><h2>phpXChatConfig debug</h2></div>
+  <div id="debugchatconfig"><h2>phpFreeChatConfig debug</h2></div>
   <script type="text/javascript"><!--
-  phpxchat_getnewlog('<?php echo $chatid; ?>','chatconfig');
+  phpfreechat_getnewlog('<?php echo $chatid; ?>','chatconfig');
   --></script>
 
-  <div id="debugchat"><h2>phpXChat debug</h2></div>
+  <div id="debugchat"><h2>phpFreeChat debug</h2></div>
   <script type="text/javascript"><!--
-  phpxchat_getnewlog('<?php echo $chatid; ?>','chat');
+  phpfreechat_getnewlog('<?php echo $chatid; ?>','chat');
   --></script>
   
 </body>

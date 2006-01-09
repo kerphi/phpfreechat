@@ -1,9 +1,9 @@
 <?php
 
 require_once dirname(__FILE__)."/../debug/log.php";
-require_once dirname(__FILE__)."/phpxchattools.class.php";
+require_once dirname(__FILE__)."/phpfreechattools.class.php";
 
-class phpXChatConfig
+class phpFreeChatConfig
 {
   var $nick           = "";
   var $id             = 0;
@@ -12,9 +12,9 @@ class phpXChatConfig
   var $is_init        = false;
   var $smileys        = array();
   
-  function phpXChatConfig( $params = array() )
+  function phpFreeChatConfig( $params = array() )
   {
-    $this->default_params["title"]               = "My phpXChat";
+    $this->default_params["title"]               = "My phpFreeChat";
     $this->default_params["channel"]             = preg_replace("/[^a-z0-9]*/","",strtolower($this->default_params["title"]));
     $this->default_params["nick"]                = "";
     $this->default_params["frozen_nick"]         = false;
@@ -33,7 +33,7 @@ class phpXChatConfig
     $this->default_params["debug"]               = false;
     $this->default_params["connect"]             = true;
     $this->default_params["smileytheme"]         = "default";
-    $this->default_params["prefix"]              = "phpxchat_";
+    $this->default_params["prefix"]              = "phpfreechat_";
     $this->default_params["container_type"]      = (isset($params["container_type"]) && $params["container_type"]!="") ? $params["container_type"] : "File";
 
     // set defaults values
@@ -66,13 +66,13 @@ class phpXChatConfig
     static $i;
     
     if (!isset($i))
-      $i = new phpXChatConfig( $params );
+      $i = new phpFreeChatConfig( $params );
     return $i;
   }
   
   function &getContainerInstance()
   {
-    $container_classname = "phpXChat_Container_".$this->container_type;
+    $container_classname = "phpFreeChat_Container_".$this->container_type;
     require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
     $container = new $container_classname($this);
     return $container;
@@ -96,7 +96,7 @@ class phpXChatConfig
       $this->errors[] = $this->data_public." must be a directory";
     }      
     if ($ok && !is_dir($this->data_public))
-      @phpXChatTools::RecursiveMkdir($this->data_public);
+      @phpFreeChatTools::RecursiveMkdir($this->data_public);
     if ($ok && !is_dir(dirname($this->data_public)))
     {
       $ok = false;
@@ -126,7 +126,7 @@ class phpXChatConfig
       $this->errors[] = $this->data_private." must be a directory";
     }      
     if ($ok && !is_dir($this->data_private))
-      @phpXChatTools::RecursiveMkdir($this->data_private);
+      @phpFreeChatTools::RecursiveMkdir($this->data_private);
     if ($ok && !is_dir(dirname($this->data_private)))
     {
       $ok = false;
@@ -145,7 +145,7 @@ class phpXChatConfig
     /* templates_c directory for smarty */
     $dir = $this->data_private."/templates_c";
     if ($ok && !is_dir($dir))
-      @phpXChatTools::RecursiveMkdir($dir);
+      @phpFreeChatTools::RecursiveMkdir($dir);
     if ($ok && !is_dir(dirname($dir)))
     {
       $ok = false;
@@ -174,7 +174,7 @@ class phpXChatConfig
     // test container config
     if ($ok)
     {
-      $container_classname = "phpXChat_Container_".$this->default_params["container_type"];
+      $container_classname = "phpFreeChat_Container_".$this->default_params["container_type"];
       require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
       $container = new $container_classname($this);
       $container_errors = $container->init();
@@ -216,7 +216,7 @@ class phpXChatConfig
         continue;
       else if (preg_match("/^([a-z_]*(\.gif|\.png))(.*)$/i",$line,$res))
       {
-        $smiley_file = phpXChatTools::RelativePath(dirname($_SERVER["PATH_TRANSLATED"]), dirname(__FILE__).'/../smileys/'.$this->smileytheme.'/'.$res[1]);
+        $smiley_file = phpFreeChatTools::RelativePath(dirname($_SERVER["PATH_TRANSLATED"]), dirname(__FILE__).'/../smileys/'.$this->smileytheme.'/'.$res[1]);
         $smiley_str = trim($res[3])."\n";
         $smiley_str = str_replace("\n", "", $smiley_str);
         $smiley_str = str_replace("\t", " ", $smiley_str);
@@ -257,8 +257,8 @@ class phpXChatConfig
   }  
 
   /**
-   * save the phpxchatconfig object into sessions if necessary
-   * else restore the old phpxchatconfig object
+   * save the phpfreechatconfig object into sessions if necessary
+   * else restore the old phpfreechatconfig object
    */
   function synchronizeWithSession()
   {

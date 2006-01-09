@@ -1,6 +1,6 @@
 <?php
 
-class phpXChatTools
+class phpFreeChatTools
 {
   function RelativePath($p1, $p2)
   {
@@ -26,7 +26,7 @@ class phpXChatTools
     {
       // The directory doesn't exist.  Recurse, passing in the parent
       // directory so that it gets created.
-      phpXChatTools::RecursiveMkdir(dirname($path));
+      phpFreeChatTools::RecursiveMkdir(dirname($path));
       mkdir($path, 0777);
     }
   }

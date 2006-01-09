@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__)."/phpxchat_container.class.php";
+require_once dirname(__FILE__)."/phpfreechat_container.class.php";
 
-class phpXChat_Container_File extends phpXChat_Container
+class phpFreeChat_Container_File extends phpFreeChat_Container
 {
   var $_users = NULL;
 
@@ -27,7 +27,7 @@ class phpXChat_Container_File extends phpXChat_Container
     // ---
     // test message file
     if (!is_dir(dirname($c->container_cfg_data_file)))
-      @phpXChatTools::RecursiveMkdir(dirname($c->container_cfg_data_file));
+      @phpFreeChatTools::RecursiveMkdir(dirname($c->container_cfg_data_file));
     if ($ok && !is_dir(dirname($c->container_cfg_data_file)))
     {
       $ok = false;
@@ -59,7 +59,7 @@ class phpXChat_Container_File extends phpXChat_Container
     // ---
     // file index test
     if (!is_dir(dirname($c->container_cfg_index_file)))
-      @phpXChatTools::RecursiveMkdir(dirname($c->container_cfg_index_file));
+      @phpFreeChatTools::RecursiveMkdir(dirname($c->container_cfg_index_file));
     if ($ok && !is_dir(dirname($c->container_cfg_index_file)))
     {
       $ok = false;
@@ -97,7 +97,7 @@ class phpXChat_Container_File extends phpXChat_Container
     // ---
     // file nickname directory
     if (!is_dir($c->container_cfg_nickname_dir))
-      @phpXChatTools::RecursiveMkdir($c->container_cfg_nickname_dir);
+      @phpFreeChatTools::RecursiveMkdir($c->container_cfg_nickname_dir);
     if ($ok && !is_dir($c->container_cfg_nickname_dir))
     {
       $ok = false;

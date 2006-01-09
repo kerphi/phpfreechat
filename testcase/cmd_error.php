@@ -1,17 +1,17 @@
 <?php
 
-require_once "../src/phpxchat.class.php";
+require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 
 $params = array();
 //$params["connect"]        = false;
-$chat = new phpXChat( $params );
-$c =& phpXChatConfig::Instance();
+$chat = new phpFreeChat( $params );
+$c =& phpFreeChatConfig::Instance();
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<title>phpXChat demo</title>
+		<title>phpFreeChat testcase</title>
 
 <?php $chat->printJavascript(); ?>
 <?php $chat->printStyle(); ?>

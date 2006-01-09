@@ -1,13 +1,13 @@
 <?php
 
-require_once "../src/phpxchat.class.php";
-$chat = new phpXChat();
+require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
+$chat = new phpFreeChat();
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<title>phpXChat demo</title>
+		<title>phpFreeChat demo</title>
 
 <?php $chat->printJavascript(); ?>
 <?php $chat->printStyle(); ?>

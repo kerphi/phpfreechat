@@ -1,6 +1,6 @@
 <?php
 
-require_once "../src/phpxchat.class.php";
+require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params = array();
 $params["title"]          = "A simple chat with user's parameters";
 $params["nick"]           = "guest";
@@ -13,13 +13,13 @@ $params["height"]         = "230px";
 $params["width"]          = "800px";
 $params["debug"]          = true;
 
-$chat = new phpXChat( $params );
+$chat = new phpFreeChat( $params );
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<title>phpXChat demo</title>
+		<title>phpFreeChat demo</title>
 
 <?php $chat->printJavascript(); ?>
 <?php $chat->printStyle(); ?>
