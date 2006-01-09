@@ -11,7 +11,7 @@ class phpXChat_Container_File extends phpXChat_Container
     $c =& $this->c;
     
     $cfg = array();
-    $cfg["chat_dir"]            = $c->data_private."".md5($c->title)."/";
+    $cfg["chat_dir"]            = $c->data_private."/".md5($c->title)."/";
     $cfg["data_file"]           = $cfg["chat_dir"]."messages.data";
     $cfg["index_file"]          = $cfg["chat_dir"]."messages.index";
     $cfg["nickname_dir"]        = $cfg["chat_dir"]."nicknames/";
