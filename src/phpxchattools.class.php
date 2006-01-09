@@ -26,7 +26,7 @@ class phpXChatTools
     {
       // The directory doesn't exist.  Recurse, passing in the parent
       // directory so that it gets created.
-      RecursiveMkdir(dirname($path));
+      phpXChatTools::RecursiveMkdir(dirname($path));
       mkdir($path, 0777);
     }
   }
