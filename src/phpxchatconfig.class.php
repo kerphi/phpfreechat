@@ -29,7 +29,7 @@ class phpXChatConfig
   function phpXChatConfig( $params = array() )
   {
     $this->default_params["title"]               = "My phpXChat";
-    $this->default_params["channel"]             = preg_replace("/[\s\.\:\-\,\;\#]*/","",strtolower($this->default_params["title"]));
+    $this->default_params["channel"]             = preg_replace("/[^a-z0-9]*/","",strtolower($this->default_params["title"]));
     $this->default_params["nick"]                = "";
     $this->default_params["frozen_nick"]         = false;
     $this->default_params["skip_optional_check"] = true;
@@ -59,7 +59,9 @@ class phpXChatConfig
 
     // choose a auto-generated channel name if user choose a title but didn't choose a channel name
     if ( !isset($params["channel"]) && isset($params["title"]) )
-      $this->channel = preg_replace("/[\s\.\:\-\,\;\#]*/","",strtolower($this->title));
+      $this->channel = preg_replace("/[^a-z0-9]*/","",strtolower($this->title));
+    else
+      $this->channel = preg_replace("/[^a-z0-9]*/","",strtolower($this->channel));
 
     // load default container's config
     $container =& $this->getContainerInstance();
