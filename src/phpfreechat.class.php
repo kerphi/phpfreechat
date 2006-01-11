@@ -1,9 +1,40 @@
 <?php
 
+/**
+ * phpfreechat.class.php
+ *
+ * Copyright © 2002 Lutz Müller <lutz@users.sourceforge.net>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details. 
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ */
+
 require_once dirname(__FILE__)."/phpfreechatconfig.class.php";
 if (!class_exists("xajax")) require_once dirname(__FILE__)."/../lib/xajax_0.2_stable/xajax.inc.php";
 require_once dirname(__FILE__)."/../debug/log.php";
 
+/**
+ * phpFreeChat is the entry point for developpers
+ *
+ * @example ../demo/demo1_simple.php
+ *
+ * @license http://opensource.org/licenses/lgpl-license.php GNU Lesser Public License
+ * @copyright Copyright &copy; 2006, phpFreeChat
+ * @author Stephane Gully <stephane.gully@gmail.com>
+ */
 class phpFreeChat
 {
   var $chatconfig;
@@ -35,7 +66,11 @@ class phpFreeChat
   }
 
   /**
-   * usage: <?php $chat->printJavascript(); ?>
+   * printJavaScript must be called into html header
+   * usage:
+   * <code>
+   *   <?php $chat->printJavascript(); ?>
+   * </code>
    */
   function printJavaScript()
   {
@@ -60,7 +95,12 @@ class phpFreeChat
   }
 
   /**
-   * usage: <?php $chat->printChat(); ?>
+   * printChat must be called somewhere in the page
+   * it inserts necessary html which will receive chat's data
+   * usage:
+   * <code>
+   *   <?php $chat->printChat(); ?>
+   * </code>
    */
   function printChat()
   {
@@ -80,7 +120,12 @@ class phpFreeChat
   }
   
   /**
-   * usage: <?php $chat->printStyle(); ?>
+   * printStyle must be called in the header
+   * it inserts CSS in order to style the chat
+   * usage:
+   * <code>
+   *   <?php $chat->printStyle(); ?>
+   * </code>
    */
   function printStyle()
   {

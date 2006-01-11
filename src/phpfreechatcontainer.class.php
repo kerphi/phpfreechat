@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @abstract
+ */
 class phpFreeChatContainer
 {
   var $c;
