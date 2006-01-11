@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__)."/phpfreechat_container.class.php";
+require_once dirname(__FILE__)."/phpfreechatcontainer.class.php";
 
-class phpFreeChat_Container_File extends phpFreeChat_Container
+class phpFreeChatContainerFile extends phpFreeChatContainer
 {
   var $_users = NULL;
 
@@ -309,13 +309,11 @@ class phpFreeChat_Container_File extends phpFreeChat_Container
   function _encode($str)
   {
     return base64_encode($str);
-    return str_replace("=","_",base64_encode($str));
   }
   
   function _decode($str)
   {
     return base64_decode($str);
-    return base64_decode(str_replace("_","=",$str));
   }
 }
 

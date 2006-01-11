@@ -72,7 +72,7 @@ class phpFreeChatConfig
   
   function &getContainerInstance()
   {
-    $container_classname = "phpFreeChat_Container_".$this->container_type;
+    $container_classname = "phpFreeChatContainer".$this->container_type;
     require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
     $container = new $container_classname($this);
     return $container;
@@ -174,7 +174,7 @@ class phpFreeChatConfig
     // test container config
     if ($ok)
     {
-      $container_classname = "phpFreeChat_Container_".$this->default_params["container_type"];
+      $container_classname = "phpFreeChatContainer".$this->default_params["container_type"];
       require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
       $container = new $container_classname($this);
       $container_errors = $container->init();
