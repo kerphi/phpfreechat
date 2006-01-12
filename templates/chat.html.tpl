@@ -13,10 +13,15 @@
     <div id="~[$prefix]~misc2"></div>
     <div id="~[$prefix]~misc3"></div>
   </div>
-  <p class="~[$prefix]~input_container">
-    <input id="~[$prefix]~words" type="text" title="enter your text here" maxlength="~[$max_text_len]~" />
-    <input id="~[$prefix]~handle" type="text" title="enter your nickname here" maxlength="~[$max_nick_len]~" ~[if $frozen_nick!=""]~readonly="readonly" value="~[$init_nick]~"~[/if]~ />
-  </p>
+
+  <table class="~[$prefix]~input_container">
+    <tr>
+      <td width="1%"><input id="~[$prefix]~handle" type="button" title="enter your nickname here" maxlength="~[$max_nick_len]~" ~[if $frozen_nick!=""]~readonly="readonly" value="~[$init_nick]~"~[/if]~ onclick="~[$prefix]~handleRequest('/asknick');" /></td>
+      <td><input id="~[$prefix]~words" type="text" title="enter your text here" maxlength="~[$max_text_len]~" /></td>
+      <td width="1%"><a href="http://www.phpfreechat.net" id="~[$prefix]~logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="Powered by phpFreeChat" title="Powered by phpFreeChat" /></a></td>
+    </tr>
+  </table>
+
   <p id="~[$prefix]~errors"></p>
 
   <div id="~[$prefix]~misc4"></div>

@@ -94,24 +94,21 @@ span.~[$prefix]~pseudo {
   color: blue;
 }
 
-p.~[$prefix]~input_container {
-  height: 1.3em;
-  margin-top: 5px;
+.~[$prefix]~input_container {
   clear: both;
+  width: 100%;
 }
 
 #~[$prefix]~words {
   border: black solid 1px;
-  float: left;
-  width: 89%;
+  width: 99.8%;
   height: 1.3em;
 }
 
 #~[$prefix]~handle {
   border: black solid 1px;
-  float: right;
-  width: 10%;
-  height: 1.3em;
+  padding: 0 4px 0 4px;
+  height: 1.4em;
   color: blue;
   ~[if $pseudo!=""]~background-color: #CCC;~[/if]~
   text-align: center;
@@ -129,6 +126,10 @@ p#~[$prefix]~errors {
   text-align: center;
   font-style: italic;
   font-weight: bold;
+}
+
+#~[$prefix]~logo {
+  margin: auto;
 }
 
 /* commands */
