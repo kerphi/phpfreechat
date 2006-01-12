@@ -266,10 +266,13 @@ class phpFreeChat
     else
     {
       if ($nicktochange == "")
+      {
+        $nicktochange = $c->nick;
         $msg = "Please enter your nickname";
+      }
       else
         $msg = "'".$nicktochange."' is used, please choose another nickname.";
-      $xml_reponse->addScript("var newpseudo = prompt('".addslashes($msg)."', '".addslashes($nicktochange)."'); ".$c->prefix."handleRequest('/nick ' + newpseudo);");
+      $xml_reponse->addScript("var newpseudo = prompt('".addslashes($msg)."', '".addslashes($nicktochange)."'); if (newpseudo) ".$c->prefix."handleRequest('/nick ' + newpseudo);");
     }
   }
 
