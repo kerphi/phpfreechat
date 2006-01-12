@@ -7,7 +7,7 @@ div.~[$prefix]~container * {
 div.~[$prefix]~container {
   ~[if $width!=""]~width: ~[$width]~;~[/if]~
   border: black solid 1px;
-  background-color: #9A9;
+  background-color: #339933;
   padding: 10px;
 }
 
@@ -22,6 +22,7 @@ div#~[$prefix]~chat {
   position: absolute;
   left: 0;
   top: 0;
+  border: 1px solid black;
   overflow: auto;
   width: 79%;
   ~[if $height!=""]~height: ~[$height]~;~[/if]~
@@ -66,11 +67,13 @@ div#~[$prefix]~online li {
 h2.~[$prefix]~title {
   float: left;
   font-size: 110%;
+  color: #FFF;
 }
 
 p.~[$prefix]~today_date {
   float: right;
   font-size: 80%;
+  color: #FFF;
 }
 
 .~[$prefix]~invisible {
@@ -78,24 +81,26 @@ p.~[$prefix]~today_date {
 }
 
 div.~[$prefix]~message {
-  background-color: #DDD;
-  margin: 2px 0 2px 0;
+  background-color: #e0edde;
+  margin: 0;
 }
 
 div.~[$prefix]~oldmsg {
-  background-color: #CCC;
+  background-color: #dde4dc;
 }
 
 span.~[$prefix]~heure {
-  color: red;
+  color: #bebebe;
 }
 
 span.~[$prefix]~pseudo {
-  color: blue;
+  color: #99cc33;
 }
 
-.~[$prefix]~input_container {
-  clear: both;
+div.~[$prefix]~input_container {
+  margin-top: 10px;
+}
+div.~[$prefix]~input_container table {
   width: 100%;
 }
 
