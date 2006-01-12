@@ -1,0 +1,56 @@
+phpFreeChat : un serveur de chat libre, simple, rapide et paramétrable
+
+    Simple
+         Vous avez seulement 3 lignes de php à copier/coller dans la page de
+         votre choix pour obtenire un chat fonctionnel.
+         En effet, pas besoin de paramétrer une base de donnée mysql, les
+         conversations sont stockées simplement dans des fichiers.
+         Le chat fontionnera chez tout le monde car il est basé sur http, il
+         vous suffit donc d'avoir un navigateur Web connecté à internet pour
+         pouvoir chatter.
+    Rapide
+         La technologie ajax est utilisée pour afficher périodiquement et
+         sans effets de clignotements les nouveaux messages et les nouvelles
+         personnes connectées.
+         Les conversations sont stockées dans des fichiers, les ressources du
+         serveur sont donc économisées au maximum.
+         La bande passante est économisée car le serveur ne transmettra
+         jamais deux fois les mêmes informations : seulement les nouveaux
+         messages sont transmis.
+    Paramétrable
+         Vous pouvez écrire vos feuilles de style (CSS) personnalisées pour
+         changer complètement l'apparence de votre chat.
+         Toutes les fonctionnalités du chat ont été rendu paramétrables, par
+         exemple : vous pouvez changer le temps de mise à jour des messages,
+         vous pouvez interdire aux utilisateurs de changer leur pseudo...
+         Vous pouvez également, grâce au système de plugin, écrire vos
+         propres routines de stockage si vous préférez stocker les
+         conversations dans votre base de donnée.
+    Libre
+         phpFreeChat est développé en opensource (LGPL), vous pouvez donc
+         librement utiliser le programme et le modifier.
+         Je demande juste, par gratitude, de ne pas enlever la signature logo
+         sur les pages de votre chat.
+
+    Toutes les commandes de phpFreeChat sont inspirées du protocole irc[15],
+    et son interface est inspirée de mIRC[16] et XChat[17], vos utilisateurs
+    ne seront donc pas dépaysés.
+
+    Les technologies utilisées par phpFreeChat sont :
+
+       *  php[18] : pour le coté serveur, les convertations sont simplement
+          enregistrées dans des fichiers
+       *  xajax[19] : pour la communication asynchrone entre le client et le
+          serveur
+
+    (phpFreeChat n'utilise PAS mysql)
+
+--------------------------------------------------------------
+List of References
+
+Document's URL:  http://www.phpfreechat.net/index.fr.html
+[15] http://www.irc.org
+[16] http://www.mirc.com/
+[17] http://www.xchat.org/
+[18] http://www.php.net/
+[19] http://www.xajaxproject.org/

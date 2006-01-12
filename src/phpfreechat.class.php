@@ -1,9 +1,8 @@
 <?php
-
 /**
  * phpfreechat.class.php
  *
- * Copyright © 2002 Lutz Müller <lutz@users.sourceforge.net>
+ * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,22 +16,19 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- *
+ * Free Software Foundation, 51 Franklin St, Fifth Floor,
+ * Boston, MA  02110-1301  USA
  */
 
 require_once dirname(__FILE__)."/phpfreechatconfig.class.php";
-if (!class_exists("xajax")) require_once dirname(__FILE__)."/../lib/xajax_0.2_stable/xajax.inc.php";
+if (!class_exists("xajax"))
+  require_once dirname(__FILE__)."/../lib/xajax_0.2_stable/xajax.inc.php";
 require_once dirname(__FILE__)."/../debug/log.php";
 
 /**
  * phpFreeChat is the entry point for developpers
  *
  * @example ../demo/demo1_simple.php
- *
- * @license http://opensource.org/licenses/lgpl-license.php GNU Lesser Public License
- * @copyright Copyright &copy; 2006, phpFreeChat
  * @author Stephane Gully <stephane.gully@gmail.com>
  */
 class phpFreeChat
