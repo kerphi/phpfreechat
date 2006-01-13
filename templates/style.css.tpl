@@ -95,7 +95,7 @@ span.~[$prefix]~heure {
 }
 
 span.~[$prefix]~pseudo {
-  color: #99cc33;
+  color: orange;
 }
 
 div.~[$prefix]~input_container {
