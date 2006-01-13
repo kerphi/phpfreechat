@@ -26,6 +26,7 @@ div#~[$prefix]~chat {
   overflow: auto;
   width: 79%;
   ~[if $height!=""]~height: ~[$height]~;~[/if]~
+  background-color: #FFF;
 }
 
 div.~[$prefix]~smileys {

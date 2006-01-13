@@ -21,8 +21,6 @@
  */
 
 require_once dirname(__FILE__)."/phpfreechatconfig.class.php";
-if (!class_exists("xajax"))
-  require_once dirname(__FILE__)."/../lib/xajax_0.2_stable/xajax.inc.php";
 require_once dirname(__FILE__)."/../debug/log.php";
 
 /**
@@ -49,12 +47,13 @@ class phpFreeChat
     // Xajax doesn't support yet static class methode call
     // I use basic functions to wrap to my statics methodes
     function handleRequest($request, $shownotice = true)
-      {
-        $c =& phpFreeChatConfig::Instance();
-        $c->shownotice = $shownotice;
-        return phpFreeChat::HandleRequest($request);
-      }
+    {
+      $c =& phpFreeChatConfig::Instance();
+      $c->shownotice = $shownotice;
+      return phpFreeChat::HandleRequest($request);
+    }
     // then init xajax engine
+    if (!class_exists("xajax")) require_once $c->xajaxpath."/xajax.inc.php";
     $this->xajax = new xajax($c->server_file, $c->prefix);
     //$this->xajax->debugOn();
     $this->xajax->registerFunction("handleRequest");
@@ -71,22 +70,16 @@ class phpFreeChat
   function printJavaScript()
   {
     $c =& phpFreeChatConfig::Instance();
-    
-    $this->xajax->printJavascript("../lib/xajax_0.2_stable/");
-    
-    if (!class_exists("Smarty")) require_once dirname(__FILE__)."/../lib/Smarty-2.6.7/libs/Smarty.class.php";
-    $smarty = new Smarty();
-    $smarty->left_delimiter  = "~[";
-    $smarty->right_delimiter = "]~";
-    $smarty->template_dir    = dirname(__FILE__).'/../templates/';
-    $smarty->compile_dir     = $c->data_private."/templates_c/";    
-    $smarty->compile_check   = true;
-    $smarty->debugging       = false;
+    // print xajax javascript
+    $xajax_js = phpFreeChatTools::RelativePath(dirname($_SERVER["PATH_TRANSLATED"]),
+					       dirname(__FILE__).'/../data/public/');
+    $this->xajax->printJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
+
+    // print phpfreechat specific javascript
+    $smarty =& phpFreeChatTools::GetSmarty();
     $c->assignToSmarty($smarty);
-    
     echo "<script type=\"text/javascript\">\n<!--\n";
     $smarty->display("javascript1.js.tpl");
-    //echo $this->xajax->compressJavascript($js);
     echo "\n-->\n</script>\n";
   }
 
@@ -100,18 +93,9 @@ class phpFreeChat
    */
   function printChat()
   {
-    $c =& phpFreeChatConfig::Instance();
-    
-    if (!class_exists("Smarty")) require_once dirname(__FILE__)."/../lib/Smarty-2.6.7/libs/Smarty.class.php";
-    $smarty = new Smarty();
-    $smarty->left_delimiter  = "~[";
-    $smarty->right_delimiter = "]~";
-    $smarty->template_dir    = dirname(__FILE__).'/../templates/';
-    $smarty->compile_dir     = $c->data_private."/templates_c/";    
-    $smarty->compile_check   = true;
-    $smarty->debugging       = false;
+    $c =& phpFreeChatConfig::Instance();   
+    $smarty =& phpFreeChatTools::GetSmarty();
     $c->assignToSmarty($smarty);
-    
     $smarty->display("chat.html.tpl");
   }
   
@@ -126,17 +110,8 @@ class phpFreeChat
   function printStyle()
   {
     $c =& phpFreeChatConfig::Instance();
-    
-    if (!class_exists("Smarty")) require_once dirname(__FILE__)."/../lib/Smarty-2.6.7/libs/Smarty.class.php";
-    $smarty = new Smarty();
-    $smarty->left_delimiter  = "~[";
-    $smarty->right_delimiter = "]~";
-    $smarty->template_dir    = dirname(__FILE__).'/../templates/';
-    $smarty->compile_dir     = $c->data_private."/templates_c/";
-    $smarty->compile_check   = true;
-    $smarty->debugging       = false;
+    $smarty =& phpFreeChatTools::GetSmarty();
     $c->assignToSmarty($smarty);
-    
     echo "<style type=\"text/css\">\n<!--\n";
     $smarty->display("style.css.tpl");
     if ($c->css_file)

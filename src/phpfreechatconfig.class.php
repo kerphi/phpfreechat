@@ -52,6 +52,8 @@ class phpFreeChatConfig
     $this->default_params["width"]               = "";
     $this->default_params["css_file"]            = "";
     $this->default_params["server_script"]       = "";
+    $this->default_params["smartypath"]          = dirname(__FILE__)."/../lib/Smarty-2.6.7";
+    $this->default_params["xajaxpath"]           = dirname(__FILE__)."/../lib/xajax_0.2_stable";
     $this->default_params["data_private"]        = dirname(__FILE__)."/../data/private";
     $this->default_params["data_public"]         = dirname(__FILE__)."/../data/public";
     $this->default_params["shownotice"]          = true;
@@ -186,6 +188,42 @@ class phpFreeChatConfig
       $ok = false;
       $this->errors[] = $dir." is not readable";
     }
+
+    // ---
+    // test xajax lib existance
+    $dir = $this->xajaxpath;
+    if ($ok && !is_dir($dir))
+    {
+      $ok = false;
+      $this->errors[] = $dir." doesn't exists, xajax library can't be found.";
+    }
+    if ($ok && !file_exists($dir."/xajax.inc.php"))
+    {
+      $ok = false;
+      $this->errors[] = "xajax.inc.php not found, xajax library can't be found.";
+    }
+    // copy public xajax js to phpfreechat public directory
+    if ($ok)
+    {
+      @phpFreeChatTools::RecursiveMkdir($this->data_public."/xajax_js/");
+      $ok &= copy( $this->xajaxpath."/xajax_js/xajaxCompress.php", $this->data_public."/xajax_js/xajaxCompress.php" );
+      $ok &= copy( $this->xajaxpath."/xajax_js/xajax_uncompressed.js", $this->data_public."/xajax_js/xajax_uncompressed.js" );
+    }
+
+    // ---
+    // test smarty lib
+    $dir = $this->smartypath;
+    if ($ok && !is_dir($dir))
+    {
+      $ok = false;
+      $this->errors[] = $dir." doesn't exists, smarty library can't be found.";
+    }
+    if ($ok && !file_exists($dir."/libs/Smarty.class.php"))
+    {
+      $ok = false;
+      $this->errors[] = "Smarty.class.php not found, smarty library can't be found.";
+    }
+
     
     // ---
     // test server file
@@ -267,6 +305,7 @@ class phpFreeChatConfig
     if ($this->id == 0)
     {
       $spotted_atr = array();
+      $spotted_atr[] = $_SERVER["PATH_TRANSLATED"];
       $spotted_atr[] = $this->title;
       $spotted_atr[] = $this->channel;
       $spotted_atr[] = $this->prefix;
@@ -274,6 +313,8 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->connect;
       $spotted_atr[] = $this->data_public; 
       $spotted_atr[] = $this->data_private;
+      $spotted_atr[] = $this->smartypath;
+      $spotted_atr[] = $this->xajaxpath;
       $spotted_atr[] = $this->container_type;
       $spotted_atr[] = $this->smileytheme;
       $this->id = md5(serialize($spotted_atr));

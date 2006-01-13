@@ -20,10 +20,10 @@
  * Boston, MA  02110-1301  USA
  */
 
-require_once dirname(__FILE__)."/phpfreechatcontainer.class.php";
+require_once dirname(__FILE__)."/phpfreechatconfig.class.php";
 
 /**
- * phpFreeChatTools is a toolbox containing misc. functions
+ * phpFreeChatTools is a toolbox with misc. functions
  *
  * @author Stephane Gully <stephane.gully@gmail.com>
  */
@@ -58,6 +58,63 @@ class phpFreeChatTools
     }
   }
 
+  function &GetSmarty()
+  {
+    $c =& phpFreeChatConfig::Instance();
+    if (!class_exists("Smarty")) require_once $c->smartypath."/libs/Smarty.class.php";
+    $smarty = new Smarty();
+    $smarty->left_delimiter  = "~[";
+    $smarty->right_delimiter = "]~";
+    $smarty->template_dir    = dirname(__FILE__).'/../templates/';
+    $smarty->compile_dir     = $c->data_private."/templates_c/";    
+    if ($c->debug || $_SERVER["HTTP_HOST"] == "localhost")
+      $smarty->compile_check = true;
+    else
+      $smarty->compile_check = false;
+    $smarty->debugging       = false;
+    return $smarty;
+  }
+
+  /**
+   * Copy a file, or recursively copy a folder and its contents
+   *
+   * @author      Aidan Lister <aidan@php.net>
+   * @version     1.0.1
+   * @link        http://aidanlister.com/repos/v/function.copyr.php
+   * @param       string   $source    Source path
+   * @param       string   $dest      Destination path
+   * @return      bool     Returns TRUE on success, FALSE on failure
+   */
+  function CopyR($source, $dest)
+  {
+    // Simple copy for a file
+    if (is_file($source)) {
+      return copy($source, $dest);
+    }
+    
+    // Make destination directory
+    if (!is_dir($dest)) {
+      mkdir($dest);
+    }
+    
+    // Loop through the folder
+    $dir = dir($source);
+    while (false !== $entry = $dir->read()) {
+      // Skip pointers
+      if ($entry == '.' || $entry == '..') {
+	continue;
+      }
+      
+      // Deep copy directories
+      if ($dest !== "$source/$entry") {
+	phpFreeChatTools::CopyR("$source/$entry", "$dest/$entry");
+      }
+    }
+    
+    // Clean up
+    $dir->close();
+    return true;
+  }
 }
 
 ?>
