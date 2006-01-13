@@ -36,6 +36,7 @@ class phpFreeChatConfig
   var $errors         = array();
   var $is_init        = false;
   var $smileys        = array();
+  var $version        = "";
   
   function phpFreeChatConfig( $params = array() )
   {
@@ -84,7 +85,7 @@ class phpFreeChatConfig
       if (!isset($this->$attr))
         $this->$attr = $v;
     }
-
+    
     $this->synchronizeWithSession();
   }
 
@@ -256,6 +257,10 @@ class phpFreeChatConfig
     if ($this->nick == "" && $this->frozen_nick)
       $this->frozen_nick = false;
 
+
+    // load version number from file
+    $this->version = file_get_contents(dirname(__FILE__)."/../version");
+    
     $this->is_init = $ok;
   }
   
@@ -296,6 +301,7 @@ class phpFreeChatConfig
     foreach ( $this->default_params as $p_k => $p_v )
       $smarty->assign($p_k, $this->$p_k);
     $smarty->assign("id", $this->getId());
+    $smarty->assign("version", $this->version);
     $smarty->assign("smileys", $this->smileys);
   }
 
@@ -317,6 +323,7 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->xajaxpath;
       $spotted_atr[] = $this->container_type;
       $spotted_atr[] = $this->smileytheme;
+      $spotted_atr[] = $this->version;
       $this->id = md5(serialize($spotted_atr));
     }
     return $this->id;

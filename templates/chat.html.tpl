@@ -19,7 +19,7 @@
     <tr>
       <td width="1%"><input id="~[$prefix]~handle" type="button" title="enter your nickname here" maxlength="~[$max_nick_len]~" ~[if $frozen_nick!=""]~readonly="readonly" value="~[$init_nick]~"~[/if]~ onclick="~[$prefix]~handleRequest('/asknick');" /></td>
       <td><input id="~[$prefix]~words" type="text" title="enter your text here" maxlength="~[$max_text_len]~" /></td>
-      <td width="1%"><a href="http://www.phpfreechat.net" id="~[$prefix]~logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="Powered by phpFreeChat" title="Powered by phpFreeChat" /></a></td>
+      <td width="1%"><a href="http://www.phpfreechat.net" id="~[$prefix]~logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="Powered by phpFreeChat-~[$version]~" title="Powered by phpFreeChat-~[$version]~" /></a></td>
     </tr>
   </table>
   </div>
