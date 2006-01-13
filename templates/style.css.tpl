@@ -14,7 +14,7 @@ div.~[$prefix]~container {
 div#~[$prefix]~content {
   ~[if $height!=""]~height: ~[$height]~;~[/if]~
   position: relative;
-  clear: both;
+  margin-top: 1.5em;
   width: 100%;
 }
 
