@@ -90,8 +90,9 @@ div.~[$prefix]~oldmsg {
   background-color: #dde4dc;
 }
 
-span.~[$prefix]~heure {
+span.~[$prefix]~heure, span~[$prefix]~date {
   color: #bebebe;
+  font-size: 70%;
 }
 
 span.~[$prefix]~pseudo {
