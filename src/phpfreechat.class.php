@@ -81,6 +81,17 @@ class phpFreeChat
     echo "<script type=\"text/javascript\">\n<!--\n";
     $smarty->display("javascript1.js.tpl");
     echo "\n-->\n</script>\n";
+   
+    // include microsoft IE6 patches
+    if ($c->useie7)
+    {
+      $ie7_path = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]), $c->ie7path);
+      echo "<!-- compliance patch for microsoft browsers -->\n";
+      echo "<!--[if lt IE 7]>\n";
+      echo "  <script type=\"text/javascript\">IE7_PNG_SUFFIX = \".png\";</script>\n";
+      echo "  <script type=\"text/javascript\" src=\"".$ie7_path."/ie7-standard-p.js\"></script>\n";
+      echo "<![endif]-->\n";
+    }
   }
 
   /**

@@ -53,8 +53,10 @@ class phpFreeChatConfig
     $this->default_params["width"]               = "";
     $this->default_params["css_file"]            = "";
     $this->default_params["server_script"]       = "";
+    $this->default_params["useie7"]              = true;
     $this->default_params["smartypath"]          = dirname(__FILE__)."/../lib/Smarty-2.6.7";
     $this->default_params["xajaxpath"]           = dirname(__FILE__)."/../lib/xajax_0.2_stable";
+    $this->default_params["ie7path"]             = dirname(__FILE__)."/../data/public/IE7_0_9";
     $this->default_params["data_private"]        = dirname(__FILE__)."/../data/private";
     $this->default_params["data_public"]         = dirname(__FILE__)."/../data/public";
     $this->default_params["shownotice"]          = true;
