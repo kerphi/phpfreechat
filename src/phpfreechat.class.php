@@ -71,7 +71,7 @@ class phpFreeChat
   {
     $c =& phpFreeChatConfig::Instance();
     // print xajax javascript
-    $xajax_js = phpFreeChatTools::RelativePath(dirname($_SERVER["PATH_TRANSLATED"]),
+    $xajax_js = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]),
 					       dirname(__FILE__).'/../data/public/');
     $this->xajax->printJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
 
@@ -127,7 +127,9 @@ class phpFreeChat
     return $nickname;
   }
   
-  // search/replace smileys
+  /**
+   * search/replace smileys
+   */
   function FilterSmiley($msg)
   {
     $c =& phpFreeChatConfig::Instance();
@@ -177,22 +179,29 @@ class phpFreeChat
   function HandleRequest($request)
   {
     $xml_reponse = new xajaxResponse();
-    $request = stripslashes($request);
+    $param = stripslashes($request);
 
+    // by default this is a simple send command
+    $cmd   = "Cmd_send";
+
+    // check for a user's command
     if (preg_match("/^\/([a-z]*)( (.*)|)/i", $request, $res))
     {
       $cmd   = "Cmd_".$res[1];
       $param = $res[3];
+    }
+    
+    // check this method really exists
+    if (is_callable(array("phpFreeChat", $cmd)))
+    {
       // call the command
       phpFreeChat::$cmd($xml_reponse, $param);
     }
     else
     {
-      // by default this is a simple send command
-      $cmd   = "Cmd_send";
-      // call the command
-      phpFreeChat::$cmd($xml_reponse, $request);
-    } 
+      // display an error message
+      phpFreeChat::Cmd_error(&$xml_reponse, "Unknown command [".stripslashes($request)."]");
+    }
     
     return $xml_reponse->getXML();
   }

@@ -284,7 +284,7 @@ class phpFreeChatConfig
         continue;
       else if (preg_match("/^([a-z_]*(\.gif|\.png))(.*)$/i",$line,$res))
       {
-        $smiley_file = phpFreeChatTools::RelativePath(dirname($_SERVER["PATH_TRANSLATED"]), dirname(__FILE__).'/../smileys/'.$this->smileytheme.'/'.$res[1]);
+        $smiley_file = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]), dirname(__FILE__).'/../smileys/'.$this->smileytheme.'/'.$res[1]);
         $smiley_str = trim($res[3])."\n";
         $smiley_str = str_replace("\n", "", $smiley_str);
         $smiley_str = str_replace("\t", " ", $smiley_str);
@@ -311,7 +311,7 @@ class phpFreeChatConfig
     if ($this->id == 0)
     {
       $spotted_atr = array();
-      $spotted_atr[] = $_SERVER["PATH_TRANSLATED"];
+      $spotted_atr[] = $_SERVER["SCRIPT_FILENAME"];
       $spotted_atr[] = $this->title;
       $spotted_atr[] = $this->channel;
       $spotted_atr[] = $this->prefix;
