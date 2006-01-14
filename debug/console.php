@@ -1,6 +1,7 @@
 <?php
 
-require_once dirname(__FILE__)."/../lib/xajax_0_1_beta4/xajax.inc.php";
+require_once dirname(__FILE__)."/../lib/xajax_0.2_stable/xajax.inc.php";
+require_once dirname(__FILE__)."/../src/phpfreechattools.class.php";
 
 $chatid = $_GET["chatid"];
 
@@ -34,7 +35,13 @@ $xajax->processRequests();
 <head>
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <title>phpFreeChat debug console</title>
-  <?php $xajax->printJavascript(); ?>
+<?php
+
+$xajax_js = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]),
+                                           dirname(__FILE__).'/../data/public/');
+$xajax->printJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
+
+?>
 
   <style type="text/css">
 <!--

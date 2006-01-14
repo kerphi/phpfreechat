@@ -39,5 +39,5 @@
   </script>
 </div>
 ~[if $debug]~
-<p>Debug is on, you can <a href="~[$smarty.server.PHP_SELF|dirname]~/debug/console.php?chatid=~[$id]~">open the debugging console</a>.</p>
+<p>Debug is on, you can <a href="~[$debugpath]~/console.php?chatid=~[$id]~">open the debugging console</a>.</p>
 ~[/if]~

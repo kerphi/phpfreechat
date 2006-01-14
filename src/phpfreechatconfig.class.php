@@ -37,6 +37,7 @@ class phpFreeChatConfig
   var $is_init        = false;
   var $smileys        = array();
   var $version        = "";
+  var $debugpath      = "";
   
   function phpFreeChatConfig( $params = array() )
   {
@@ -259,7 +260,10 @@ class phpFreeChatConfig
     if ($this->nick == "" && $this->frozen_nick)
       $this->frozen_nick = false;
 
-
+    // load debug path if necessary
+    if ($this->debug)
+      $this->debugpath =phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]), dirname(__FILE__).'/../debug/');
+    
     // load version number from file
     $this->version = file_get_contents(dirname(__FILE__)."/../version");
     
@@ -305,6 +309,7 @@ class phpFreeChatConfig
     $smarty->assign("id", $this->getId());
     $smarty->assign("version", $this->version);
     $smarty->assign("smileys", $this->smileys);
+    $smarty->assign("debugpath", $this->debugpath);
   }
 
   function getId()
