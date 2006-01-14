@@ -7,6 +7,7 @@ div.~[$prefix]~container * {
 div.~[$prefix]~container {
   ~[if $width!=""]~width: ~[$width]~;~[/if]~
   border: black solid 1px;
+  color: #FFF;
   background-color: #339933;
   padding: 10px;
 }
@@ -68,13 +69,11 @@ div#~[$prefix]~online li {
 h2.~[$prefix]~title {
   float: left;
   font-size: 110%;
-  color: #FFF;
 }
 
 p.~[$prefix]~today_date {
   float: right;
   font-size: 80%;
-  color: #FFF;
 }
 
 .~[$prefix]~invisible {
@@ -90,7 +89,7 @@ div.~[$prefix]~oldmsg {
   background-color: #dde4dc;
 }
 
-span.~[$prefix]~heure, span~[$prefix]~date {
+span.~[$prefix]~heure, span.~[$prefix]~date {
   color: #bebebe;
   font-size: 70%;
 }
