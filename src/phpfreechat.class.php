@@ -247,6 +247,9 @@ class phpFreeChat
     // i.e. be ready to re-get all last posted messages
     $_SESSION[$c->prefix."from_id_".$c->id] = 0;
 
+    // reset the nickname cache
+    $_SESSION[$c->prefix."nicklist_".$c->id] = NULL;
+    
     // define dynamicaly the JS variable used to store timer and nicknames list
     $xml_reponse->addScript("var ".$c->prefix."timeout_var;");
     $xml_reponse->addScript("var ".$c->prefix."nicklist = Array();");
@@ -298,17 +301,6 @@ class phpFreeChat
   function Cmd_nick(&$xml_reponse, $newnick)
   {
     $c =& phpFreeChatConfig::Instance();
-
-    /*
-    if ($c->nick == $newnick)
-    {
-      // do nothing if the newnick is the same as the old one
-      // just assign the nickname zone
-      $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
-      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: nothing to do, oldnick==newnick (".$c->nick.")", "chat", $c->id);
-      return;
-    }
-    */
     
     $container =& $c->getContainerInstance();
     $newnickid = $container->getNickId($newnick);
@@ -389,26 +381,34 @@ class phpFreeChat
 
     // get the actual nicklist
     $oldnicklist = $_SESSION[$c->prefix."nicklist_".$c->id];
-
+    
     $container =& $c->getContainerInstance();
     $disconnected_users = $container->removeObsoletNick();
     foreach ($disconnected_users as $u)
       phpFreeChat::Cmd_notice($xml_reponse, $u." disconnected (timeout)");
     $users = $container->getOnlineNick();
     sort($users);
-    $html = '<ul>';
-    $js = "";
-    foreach ($users as $u)
+    // check if the nickname list must be updated
+    if ($oldnicklist != $users)
     {
-      $nickname = htmlspecialchars(stripslashes($u));
-      $html    .= '<li>'.$nickname.'</li>';
-      $js      .= "'".$nickname."',";
-    }
-    $html .= '</ul>';
-    $js    = substr($js, 0, strlen($js)-1); // remove last ','
+      if ($c->debug) pxlog("Cmd_getOnlineNick[".$c->sessionid."]: nicklist updated - nicklist=".var_export($users, true), "chat", $c->id);
+
+      $_SESSION[$c->prefix."nicklist_".$c->id] = $users;
+
+      $html = '<ul>';
+      $js = "";
+      foreach ($users as $u)
+      {
+        $nickname = htmlspecialchars(stripslashes($u));
+        $html    .= '<li>'.$nickname.'</li>';
+        $js      .= "'".$nickname."',";
+      }
+      $html .= '</ul>';
+      $js    = substr($js, 0, strlen($js)-1); // remove last ','
       
-    $xml_reponse->addAssign($c->prefix."online", "innerHTML", $html);
-    $xml_reponse->addScript($c->prefix."nicklist = Array(".$js.");");
+      $xml_reponse->addAssign($c->prefix."online", "innerHTML", $html);
+      $xml_reponse->addScript($c->prefix."nicklist = Array(".$js.");");
+    }
   }
 
   function Cmd_updateMyNick(&$xml_reponse)
