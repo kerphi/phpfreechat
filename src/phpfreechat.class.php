@@ -370,8 +370,6 @@ class phpFreeChat
     $container =& $c->getContainerInstance();
     if ($container->removeNick($c->nick))
       phpFreeChat::Cmd_notice($xml_reponse, $c->nick." quit");
-    else
-      phpFreeChat::Cmd_notice($xml_reponse, "error: ".$c->nick." can't quit");
     if ($c->debug) pxlog("Cmd_quit[".$c->sessionid."]: a user just quit -> nick=".$c->nick, "chat", $c->id);
   }
   
