@@ -50,6 +50,7 @@ div#~[$prefix]~online {
   padding: 0;
   overflow: auto;
   border: black dotted 1px;
+  color: #000;
   background-color: #FFF;
   width: 20%;
   height: 39%;

@@ -189,6 +189,9 @@ class phpFreeChat
     
   function HandleRequest($request)
   {
+    $c =& phpFreeChatConfig::Instance();
+    if ($c->debug) ob_start(); // capture output
+ 
     $xml_reponse = new xajaxResponse();
     $param = stripslashes($request);
 
@@ -213,6 +216,16 @@ class phpFreeChat
       // display an error message
       phpFreeChat::Cmd_error(&$xml_reponse, "Unknown command [".stripslashes($request)."]");
     }
+
+    if ($c->debug)
+    {
+      // capture echoed content
+      // if a content not empty is captured it is a php error in the code
+      $data = ob_get_contents();
+      if ($data != "")
+        pxlog("HandleRequest[".$c->sessionid."]: content=".$data, "chat", $c->id);
+      ob_end_clean();
+    }
     
     return $xml_reponse->getXML();
   }
@@ -229,17 +242,28 @@ class phpFreeChat
   function Cmd_connect(&$xml_reponse)
   {
     $c =& phpFreeChatConfig::Instance();
+
+    // reset the message id indicator
+    // i.e. be ready to re-get all last posted messages
     $_SESSION[$c->prefix."from_id_".$c->id] = 0;
+
+    // define dynamicaly the JS variable used to store timer and nicknames list
     $xml_reponse->addScript("var ".$c->prefix."timeout_var;");
     $xml_reponse->addScript("var ".$c->prefix."nicklist = Array();");
 
+    // disable or not the nickname button if the frozen_nick is on/off
+    if ($c->frozen_nick)
+      $xml_reponse->addAssign($c->prefix."handle", "disabled", true);
+    else
+      $xml_reponse->addAssign($c->prefix."handle", "disabled", false);
+      
     // check if the wanted nickname was allready known
-    $container =& $c->getContainerInstance();
-    $nickid = $container->getNickId($c->nick);
-    if ($nickid == "undefined") // is nickname unused ?
-      phpFreeChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($c->nick))." is connected");
-
-    if ($c->debug) pxlog("Cmd_connect[".$c->sessionid."]: nick=".$c->nick." nickid=".$nickid, "chat", $c->id);
+    if ($c->debug)
+    {
+      $container =& $c->getContainerInstance();
+      $nickid    = $container->getNickId($c->nick);
+      pxlog("Cmd_connect[".$c->sessionid."]: nick=".$c->nick." nickid=".$nickid, "chat", $c->id);
+    }
 
     if ($c->nick == "")
       // ask user to choose a nickname
@@ -274,13 +298,26 @@ class phpFreeChat
   function Cmd_nick(&$xml_reponse, $newnick)
   {
     $c =& phpFreeChatConfig::Instance();
+
+    /*
+    if ($c->nick == $newnick)
+    {
+      // do nothing if the newnick is the same as the old one
+      // just assign the nickname zone
+      $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
+      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: nothing to do, oldnick==newnick (".$c->nick.")", "chat", $c->id);
+      return;
+    }
+    */
+    
     $container =& $c->getContainerInstance();
     $newnickid = $container->getNickId($newnick);
+    $oldnickid = $container->getNickId($c->nick);
 
-    if ($newnickid == "undefined")
+    if ( $newnickid == "undefined" )
     {
       // this is a real nickname change
-      $container->changeNick($newnick, $c->sessionid);
+      $container->changeNick($newnick, $c->sessionid, $oldnickid);
       $oldnick = $c->nick;
       $c->nick = $newnick;
       $c->saveInSession();
@@ -288,7 +325,12 @@ class phpFreeChat
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
       if ($oldnick != $newnick && $oldnick != "")
 	phpFreeChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($oldnick))." changes his nickname to ".htmlspecialchars(stripslashes($newnick)));
-      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: first time nick is assigned -> newnick=".$c->nick, "chat", $c->id);
+      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: first time nick is assigned -> newnick=".$c->nick." oldnick=".$oldnick, "chat", $c->id);
+      
+      // new nickname is undefined (not used) and
+      // current nickname (oldnickname) is not mine or is undefined
+      if ($oldnickid != "" && $oldnickid != $c->sessionid)
+        phpFreeChat::Cmd_notice($xml_reponse, htmlspecialchars(stripslashes($c->nick))." is connected");
     }
     else if ($newnickid == $c->sessionid)
     {
@@ -310,9 +352,14 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
     if ($c->shownotice)
     {
+      if ($c->debug) pxlog("Cmd_notice[".$c->sessionid."]: shownotice=true msg=".$msg, "chat", $c->id);
       $container =& $c->getContainerInstance();
       $container->writeMsg("*notice*", $msg);
       phpFreeChat::Cmd_getNewMsg($xml_reponse);
+    }
+    else
+    {
+      if ($c->debug) pxlog("Cmd_notice[".$c->sessionid."]: shownotice=false", "chat", $c->id);
     }
   }
 
@@ -322,6 +369,7 @@ class phpFreeChat
     $container =& $c->getContainerInstance();
     $container->writeMsg("*me*", $c->nick." ".$msg);
     phpFreeChat::Cmd_getNewMsg($xml_reponse);    
+    if ($c->debug) pxlog("Cmd_me[".$c->sessionid."]: msg=".$msg, "chat", $c->id);
   }
   
   function Cmd_quit(&$xml_reponse)

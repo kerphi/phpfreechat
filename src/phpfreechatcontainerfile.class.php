@@ -143,7 +143,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
 
     // update my online status file
     $my_filename = $c->container_cfg_nickname_dir.$this->_encode($c->nick);
-    @touch($my_filename);
+    touch($my_filename);
     
     if ($c->skip_check && !file_exists($my_filename))
       return false;
@@ -159,26 +159,31 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $c =& $this->c;
     $nickid = "undefined";
     $myfilename = $c->container_cfg_nickname_dir.$this->_encode($nickname);
-    if (file_exists($myfilename))
+    if (file_exists($myfilename) && filesize($myfilename)>0)
     {
       // write the nickid into the new nickname file
       $fp = fopen($myfilename, "r");
-      //      flock ($fp, LOCK_EX); // lock
       $nickid = fread($fp, filesize($myfilename));
-      //      flock ($fp, LOCK_UN); // unlock
+      if ($nickid == "") $nickid = "undefined";
       fclose($fp);
     }
     //if ($c->debug) pxlog("getNickId[".$c->sessionid."]: nickname=".$nickname." nickid=".$nickid, "chat", $c->id);
     return $nickid;
   }
 
-  
-  function changeNick($newnick, $nickid)
+  /**
+   * create a file containing the new nickname id
+   * and delete oldnickname file if the nickname id match (oldnickname file is mine)
+   */
+  function changeNick($newnick, $nickid, $oldnickid = "")
   {
     $c =& $this->c;
 
-    // delete the old nickname file
-    @unlink($c->container_cfg_nickname_dir.$this->_encode($c->nick));
+    // delete the old nickname file only if the nickid match
+    // ie: do not delete nickname if it's not mine
+    if ($oldnickid == "") $oldnickid = $this->getNickId($c->nick);
+    if ($nickid == $oldnickid)
+      unlink($c->container_cfg_nickname_dir.$this->_encode($c->nick));
     
     // write the nickid into the new nickname file
     $fp = fopen($c->container_cfg_nickname_dir.$this->_encode($newnick),"w");
@@ -194,9 +199,12 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
   {
     $c =& $this->c;
     $nick_filename = $c->container_cfg_nickname_dir.$this->_encode($nick);
-    if (file_exists($nick_filename))
+    $nickid = $this->getNickId($nick);
+    // don't allow to remove foreign nicknames
+    if ( $c->sessionid == $nickid &&
+         file_exists($nick_filename) )
     {
-      @unlink($nick_filename);
+      unlink($nick_filename);
       return true;
     }
     else
@@ -245,7 +253,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
   }
    
   /**
-   * @todo lock the file at begining (do not use "file($data_file);" to load file content)
+   * @todo use one file (filename = msgid) for one message
    */
   function readNewMsg($from_id)
   {
