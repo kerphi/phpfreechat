@@ -185,7 +185,6 @@ class phpFreeChat
     $msg = str_replace("\n", "<br/>", $msg);
     $msg = str_replace("\t", "    ", $msg);
     $msg = str_replace("  ", "&nbsp;&nbsp;", $msg);
-    $msg = preg_replace('/('.preg_quote(phpFreeChat::FilterNickname($c->nick)).')/i',  "<strong>$1</strong>", $msg );
     $msg = preg_replace('/(http\:\/\/[^\s]*)/i',  "<a href=\"$1\">$1</a>", $msg );
     return $msg;
   }
