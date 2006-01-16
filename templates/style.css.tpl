@@ -85,6 +85,9 @@ div.~[$prefix]~message {
   background-color: #e0edde;
   margin: 0;
 }
+.~[$prefix]~words {
+  font-size: 90%;
+}
 
 div.~[$prefix]~oldmsg {
   background-color: #dde4dc;
