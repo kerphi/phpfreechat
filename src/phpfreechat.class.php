@@ -168,7 +168,10 @@ class phpFreeChat
   }
 
   
-  function FilterMsg($msg)
+  /**
+   * Filter messages before they are sent to container
+   */
+  function PreFilterMsg($msg)
   {
     $c =& phpFreeChatConfig::Instance();
     $msg = substr($msg, 0, $c->max_text_len);
@@ -186,7 +189,17 @@ class phpFreeChat
     $msg = preg_replace('/(http\:\/\/[^\s]*)/i',  "<a href=\"$1\">$1</a>", $msg );
     return $msg;
   }
-    
+
+  /**
+   * Filter messages when they are recived from container
+   */
+  function PostFilterMsg($msg)
+  {
+    $c =& phpFreeChatConfig::Instance();
+    $msg = preg_replace('/('.preg_quote(phpFreeChat::FilterNickname($c->nick)).')/i',  "<strong>$1</strong>", $msg );
+    return $msg;
+  }
+
   function HandleRequest($request)
   {
     $c =& phpFreeChatConfig::Instance();
@@ -344,9 +357,11 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
     if ($c->shownotice)
     {
-      if ($c->debug) pxlog("Cmd_notice[".$c->sessionid."]: shownotice=true msg=".$msg, "chat", $c->id);
       $container =& $c->getContainerInstance();
+      $msg = phpFreeChat::PreFilterMsg($msg);
       $container->writeMsg("*notice*", $msg);
+      if ($c->debug) pxlog("Cmd_notice[".$c->sessionid."]: shownotice=true msg=".$msg, "chat", $c->id);
+
       phpFreeChat::Cmd_getNewMsg($xml_reponse);
     }
     else
@@ -359,6 +374,7 @@ class phpFreeChat
   {
     $c =& phpFreeChatConfig::Instance();
     $container =& $c->getContainerInstance();
+    $msg = phpFreeChat::PreFilterMsg($msg);
     $container->writeMsg("*me*", $c->nick." ".$msg);
     phpFreeChat::Cmd_getNewMsg($xml_reponse);    
     if ($c->debug) pxlog("Cmd_me[".$c->sessionid."]: msg=".$msg, "chat", $c->id);
@@ -447,25 +463,29 @@ class phpFreeChat
     $html = '';
     foreach ($messages as $msg)
     {
-      $cmd_type = "cmd_msg";
+      $m_date   = isset($msg[1]) ? $msg[1] : "";
+      $m_heure  = isset($msg[2]) ? $msg[2] : "";
+      $m_pseudo = isset($msg[3]) ? $msg[3] : "";
+      $m_words  = phpFreeChat::PostFilterMsg(isset($msg[4]) ? $msg[4] : "");
+      $m_cmd    = "cmd_msg";
       if (preg_match("/\*([a-z]*)\*/i", $msg[3], $res))
       {
 	if ($res[1] == "notice")
-	  $cmd_type = "cmd_notice";
+	  $m_cmd = "cmd_notice";
 	else if ($res[1] == "me")
-	  $cmd_type = "cmd_me";
+	  $m_cmd = "cmd_me";
       }
-      $html .= '<div id="'.$c->prefix.'msg'.$msg[0].'" class="'.$c->prefix.$cmd_type.' '.$c->prefix.'message'.($from_id == 0 ? " ".$c->prefix."oldmsg" : "").'">';
-      $html .= '<span class="'.$c->prefix.'date'.((isset($msg[1]) && date("d/m/Y") == $msg[1]) ? " ".$c->prefix."invisible" : "" ).'">'.(isset($msg[1]) ? $msg[1] : "").'</span> ';
-      $html .= '<span class="'.$c->prefix.'heure">'.(isset($msg[2]) ? $msg[2] : "").'</span> ';
-      if ($cmd_type == "cmd_msg")
+      $html .= '<div id="'.$c->prefix.'msg'.$msg[0].'" class="'.$c->prefix.$m_cmd.' '.$c->prefix.'message'.($from_id == 0 ? " ".$c->prefix."oldmsg" : "").'">';
+      $html .= '<span class="'.$c->prefix.'date'.(($m_date!="" && date("d/m/Y") == $m_date) ? " ".$c->prefix."invisible" : "" ).'">'.$m_date.'</span> ';
+      $html .= '<span class="'.$c->prefix.'heure">'.$m_heure.'</span> ';
+      if ($m_cmd == "cmd_msg")
       {
-	$html .= '<span class="'.$c->prefix.'pseudo">&lt;'.(isset($msg[3]) ? $msg[3] : "").'&gt;</span> ';
-	$html .= '<span class="'.$c->prefix.'words">'.(isset($msg[4]) ? $msg[4] : "").'</span>';
+	$html .= '<span class="'.$c->prefix.'pseudo">&lt;'.$m_pseudo.'&gt;</span> ';
+	$html .= '<span class="'.$c->prefix.'words">'.$m_words.'</span>';
       }
-      else if ($cmd_type == "cmd_notice" || $cmd_type == "cmd_me")
+      else if ($m_cmd == "cmd_notice" || $m_cmd == "cmd_me")
       {
-	$html .= '<span class="'.$c->prefix.'words">* '.(isset($msg[4]) ? $msg[4] : "").'</span>';
+	$html .= '<span class="'.$c->prefix.'words">* '.$m_words.'</span>';
       }
       $html .= '</div>';
     }
@@ -493,7 +513,7 @@ class phpFreeChat
         
     // check the nick is not allready known
     $nick = phpFreeChat::FilterNickname($c->nick);
-    $text = phpFreeChat::FilterMsg($msg);
+    $text = phpFreeChat::PreFilterMsg($msg);
         
     $errors = array();
     if ($text == "") $errors[$c->prefix."words"] = "Text cannot be empty.";
