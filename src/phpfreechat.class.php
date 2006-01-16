@@ -465,7 +465,8 @@ class phpFreeChat
       $m_date   = isset($msg[1]) ? $msg[1] : "";
       $m_heure  = isset($msg[2]) ? $msg[2] : "";
       $m_pseudo = isset($msg[3]) ? $msg[3] : "";
-      $m_words  = phpFreeChat::PostFilterMsg(isset($msg[4]) ? $msg[4] : "");
+      $m_words  = isset($msg[4]) ? $msg[4] : "";
+      //$m_words  = phpFreeChat::PostFilterMsg(isset($msg[4]) ? $msg[4] : "");
       $m_cmd    = "cmd_msg";
       if (preg_match("/\*([a-z]*)\*/i", $msg[3], $res))
       {
