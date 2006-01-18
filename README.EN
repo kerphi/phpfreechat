@@ -1,0 +1,58 @@
+  phpFreeChat is a free, simple, fast and customizable chat server
+
+    Simple
+         You only have to copy/paste 3 lines of code to have a nice
+         working chat.
+         No need to configure a database (Mysql), messages and nicknames are
+         stored in files.
+         No problems with firewall, this chat is based on HTTP so that you
+         only need a web browser and an internet connection. (everybody can
+         easily chat !)
+    Fast
+         AJAX technology is used to smoothly refresh (no flicker) and display
+         the chat zone and the nickname zone.
+         Messages and nicknames are stored into a simple filesystem, so that
+         server resources are saved to the uttermost.
+         Bandwidth is preserved because the server never transmits twice the
+         same data : only new messages are transmitted.
+    Customizable
+         You can write your own customized CSS stylesheets, to completely
+         change the appearance of your chat.
+         All chat functionalities are customizable. For example, you can
+         change the messages refresh time, you can ban users for changing
+         their usernames...
+         The plugin system allows you to write your own storage routines.
+         For example, you can write a plugin to store the conversations into
+         your database.
+    Opensource
+         phpFreeChat is an opensource (LGPL) program, so that you can freely
+         use it and modify it.
+         I just ask, by gratitude, to keep the sign logo on the pages of your
+         chat.
+
+    All phpFreeChat commands are inspired by the irc[21] protocol, and its
+    interface is inspired by mIRC[22] and XChat[23], so that users won't be
+    disoriented.
+
+    Techonologies used by phpFreeChat are :
+
+       *  php[24] : on the server side : conversations are simply stored in
+          filesystems.
+       *  xajax[25] : for the asynchronous communication between the client
+          and the server
+
+    (phpFreeChat do NOT use mysql)
+
+    ©2006 phpFreeChat
+
+
+--------------------------------------------------------------
+List of References
+
+Document's URL:  http://www.phpfreechat.net/overview.en.html
+[21] http://www.irc.org
+[22] http://www.mirc.com/
+[23] http://www.xchat.org/
+[24] http://www.php.net/
+[25] http://www.xajaxproject.org/
+

@@ -1,0 +1,48 @@
+  Install
+
+    To install phpFreeChat you need :
+
+       *  A Web server with the php module (apache for example)
+       *  A write access on the Web server (ssh, FTP, or other)
+
+    You don't need a Mysql database because the system uses files to store
+    information.
+
+    Once the archive downloaded, unzip it on your server and allow write
+    access to the directories phpfreechat/data/public and
+    phpfreechat/data/private (where convertations will be stored). Then
+    create and modify the script that displays the chat. You can take example
+    on scripts in phpfreechat/demo directory.
+
+    Here is the minimum script required for your chat to work (inspired from
+    demo1) :
+
+    <?php
+
+    require_once "phpfreechat.class.php";
+    $chat = new phpFreeChat();
+
+    ?>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html>
+      <head>
+        <title>phpFreeChat demo</title>
+        <?php $chat->printJavascript(); ?>
+        <?php $chat->printStyle(); ?>
+      </head>
+      <body>
+        <?php $chat->printChat(); ?>
+      </body>
+    </html>
+
+
+
+    ©2006 phpFreeChat
+
+
+
+--------------------------------------------------------------
+List of References
+
+Document's URL:  http://www.phpfreechat.net/install.en.html

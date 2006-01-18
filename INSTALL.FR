@@ -1,0 +1,46 @@
+  Installation
+
+    Vous avez besoin de :
+
+       *  Un serveur Web avec le module php (apache par exemple)
+       *  Un acces en écriture sur ce serveur Web (ssh, FTP ou autre)
+
+    Vous n'avez pas besoin d'une base de donnée Mysql car le système utilise
+    des fichiers pour stoquer les informations.
+
+    Une fois l'archive téléchargée, décompressez la sur votre serveur et
+    donnez les droits en écriture aux répertoires phpfreechat/data/public et
+    phpfreechat/data/private (les convertations y seront stockées). Ensuite,
+    créez ou modifiez le scripte qui affichera le chat, pour cela prennez
+    exemple sur les scriptes du répertoire phpfreechat/demo.
+
+    Voila le scripte minimum pour que le chat fonctionne (inspiré de demo1) :
+
+    <?php
+
+    require_once "phpfreechat.class.php"; // pensez à ajuster le chemin vers le fichier
+    $chat = new phpFreeChat();
+
+    ?>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html>
+      <head>
+        <title>phpFreeChat demo</title>
+        <?php $chat->printJavascript(); ?>
+        <?php $chat->printStyle(); ?>
+      </head>
+      <body>
+        <?php $chat->printChat(); ?>
+      </body>
+    </html>
+
+
+
+    ©2006 phpFreeChat
+
+
+--------------------------------------------------------------
+List of References
+
+Document's URL:  http://www.phpfreechat.net/install.fr.html
