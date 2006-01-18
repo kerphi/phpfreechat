@@ -262,7 +262,7 @@ class phpFreeChatConfig
 
     // load debug path if necessary
     if ($this->debug)
-      $this->debugpath =phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]), dirname(__FILE__).'/../debug/');
+      $this->debugpath = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]), dirname(__FILE__).'/../debug/');
     
     // load version number from file
     $this->version = file_get_contents(dirname(__FILE__)."/../version");
@@ -318,7 +318,7 @@ class phpFreeChatConfig
     if ($this->id == 0)
     {
       $spotted_atr = array();
-      $spotted_atr[] = $_SERVER["SCRIPT_FILENAME"];
+//      $spotted_atr[] = $_SERVER["SCRIPT_FILENAME"];
       $spotted_atr[] = $this->title;
       $spotted_atr[] = $this->channel;
       $spotted_atr[] = $this->prefix;
@@ -343,12 +343,14 @@ class phpFreeChatConfig
   function synchronizeWithSession()
   {
     $session_id = $this->prefix."chatconfig_".$this->getId();
+
     if (isset($_SESSION[$session_id]))
     {
       $chatconfig =& unserialize($_SESSION[$session_id]); // restore $chatconfig var
       $classvar = get_class_vars(get_class($this));
       foreach( $classvar as $cv_name => $cv_val )
         $this->$cv_name = $chatconfig->$cv_name;      
+      if ($this->debug) pxlog("synchronizeWithSession[".$this->getId()."]: restore chatconfig from session nick=".$this->nick, "chatconfig", $this->getId());
     }
     else
     {
@@ -368,10 +370,9 @@ class phpFreeChatConfig
   function saveInSession()
   {
     $session_id = $this->prefix."chatconfig_".$this->getId();
-    //    $_SESSION[$session_id] = serialize($this);
     $chatconfig =& $this;
     $_SESSION[$session_id] = serialize(&$chatconfig);
-    if ($this->debug) pxlog($this, "chatconfig", $this->getId());
+    if ($this->debug) pxlog("saveInSession[".$this->getId()."]: nick=".$this->nick, "chatconfig", $this->getId());
   }
 }
 
