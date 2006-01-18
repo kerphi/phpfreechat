@@ -229,6 +229,10 @@ class phpFreeChat
       // display an error message
       phpFreeChat::Cmd_error(&$xml_reponse, "Unknown command [".stripslashes($request)."]");
     }
+      
+    // force an update just after a command is sent
+    // thus the message user just poster is really fastly displayed
+    phpFreeChat::Cmd_update($xml_reponse);
 
     if ($c->debug)
     {
@@ -249,7 +253,7 @@ class phpFreeChat
     phpFreeChat::Cmd_updateMyNick($xml_reponse);
     phpFreeChat::Cmd_getOnlineNick($xml_reponse);
     phpFreeChat::Cmd_getNewMsg($xml_reponse);
-    $xml_reponse->addScript($c->prefix."timeout_var = window.setTimeout('".$c->prefix."handleRequest(\\'/update\\')', ".$c->refresh_delay.");");
+    $xml_reponse->addScript("window.clearTimeout(".$c->prefix."timeout); ".$c->prefix."timeout = window.setTimeout('".$c->prefix."handleRequest(\\'/update\\')', ".$c->refresh_delay.");");
   }
   
   function Cmd_connect(&$xml_reponse)
@@ -264,7 +268,7 @@ class phpFreeChat
     $_SESSION[$c->prefix."nicklist_".$c->id] = NULL;
     
     // define dynamicaly the JS variable used to store timer and nicknames list
-    $xml_reponse->addScript("var ".$c->prefix."timeout_var;");
+    $xml_reponse->addScript("var ".$c->prefix."timeout;");
     $xml_reponse->addScript("var ".$c->prefix."nicklist = Array();");
 
     // disable or not the nickname button if the frozen_nick is on/off
@@ -286,8 +290,6 @@ class phpFreeChat
       phpFreeChat::Cmd_asknick($xml_reponse, "");
     else
       phpFreeChat::Cmd_nick(&$xml_reponse, $c->nick);
-
-    phpFreeChat::Cmd_update($xml_reponse);
   }
 
   function Cmd_asknick(&$xml_reponse, $nicktochange)
@@ -541,7 +543,6 @@ class phpFreeChat
       // - give focus to "words" field
       $xml_reponse->addScript($c->prefix."ClearError(Array('".$c->prefix."words"."','".$c->prefix."handle"."'));");
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
-      phpFreeChat::Cmd_getNewMsg($xml_reponse);
     }
     else
     {
