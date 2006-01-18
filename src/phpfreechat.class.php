@@ -133,6 +133,7 @@ class phpFreeChat
   function FilterNickname($nickname)
   {
     $c =& phpFreeChatConfig::Instance();
+    $nickname = trim($nickname);
     $nickname = substr($nickname, 0, $c->max_nick_len);
     $nickname = htmlspecialchars(stripslashes($nickname));
     return $nickname;
@@ -195,7 +196,7 @@ class phpFreeChat
   function PostFilterMsg($msg)
   {
     $c =& phpFreeChatConfig::Instance();
-    $msg = preg_replace('/('.preg_quote(phpFreeChat::FilterNickname($c->nick)).')/i',  "<strong>$1</strong>", $msg );
+    $msg = preg_replace('/('.preg_quote($c->nick).')/i',  "<strong>$1</strong>", $msg );
     return $msg;
   }
 
@@ -292,6 +293,8 @@ class phpFreeChat
   function Cmd_asknick(&$xml_reponse, $nicktochange)
   {
     $c =& phpFreeChatConfig::Instance();
+    $nicktochange = phpFreeChat::FilterNickname($newtochange);
+    
     if ($c->frozen_nick)
     {
       // assign a random nick
@@ -313,7 +316,16 @@ class phpFreeChat
   function Cmd_nick(&$xml_reponse, $newnick)
   {
     $c =& phpFreeChatConfig::Instance();
-    
+    $newnick = phpFreeChat::FilterNickname($newnick);
+
+    if ($newnick == "")
+    {
+      // the choosen nick is empty
+      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: the choosen nick is empty", "chat", $c->id);
+      phpFreeChat::Cmd_asknick($xml_reponse, "");
+      return;
+    }
+   
     $container =& $c->getContainerInstance();
     $newnickid = $container->getNickId($newnick);
     $oldnickid = $container->getNickId($c->nick);
@@ -512,7 +524,7 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
         
     // check the nick is not allready known
-    $nick = phpFreeChat::FilterNickname($c->nick);
+    $nick = $c->nick;
     $text = phpFreeChat::PreFilterMsg($msg);
         
     $errors = array();
