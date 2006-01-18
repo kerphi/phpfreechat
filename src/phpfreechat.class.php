@@ -267,10 +267,6 @@ class phpFreeChat
     // reset the nickname cache
     $_SESSION[$c->prefix."nicklist_".$c->id] = NULL;
     
-    // define dynamicaly the JS variable used to store timer and nicknames list
-    $xml_reponse->addScript("var ".$c->prefix."timeout;");
-    $xml_reponse->addScript("var ".$c->prefix."nicklist = Array();");
-
     // disable or not the nickname button if the frozen_nick is on/off
     if ($c->frozen_nick)
       $xml_reponse->addAssign($c->prefix."handle", "disabled", true);
@@ -374,8 +370,6 @@ class phpFreeChat
       $msg = phpFreeChat::PreFilterMsg($msg);
       $container->writeMsg("*notice*", $msg);
       if ($c->debug) pxlog("Cmd_notice[".$c->sessionid."]: shownotice=true msg=".$msg, "chat", $c->id);
-
-      phpFreeChat::Cmd_getNewMsg($xml_reponse);
     }
     else
     {
@@ -389,7 +383,6 @@ class phpFreeChat
     $container =& $c->getContainerInstance();
     $msg = phpFreeChat::PreFilterMsg($msg);
     $container->writeMsg("*me*", $c->nick." ".$msg);
-    phpFreeChat::Cmd_getNewMsg($xml_reponse);    
     if ($c->debug) pxlog("Cmd_me[".$c->sessionid."]: msg=".$msg, "chat", $c->id);
   }
   
