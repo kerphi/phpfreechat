@@ -152,5 +152,5 @@ p#~[$prefix]~errors {
 }
 .~[$prefix]~cmd_notice {
   font-style: italic;
-  color: grey;
+  color: #888;
 }
