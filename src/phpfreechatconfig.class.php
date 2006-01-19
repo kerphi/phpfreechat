@@ -319,7 +319,7 @@ class phpFreeChatConfig
     if ($this->id == 0)
     {
       $spotted_atr = array();
-//      $spotted_atr[] = $_SERVER["SCRIPT_FILENAME"];
+      $spotted_atr[] = dirname(__FILE__);
       $spotted_atr[] = $this->title;
       $spotted_atr[] = $this->channel;
       $spotted_atr[] = $this->prefix;
@@ -331,7 +331,6 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->xajaxpath;
       $spotted_atr[] = $this->container_type;
       $spotted_atr[] = $this->smileytheme;
-      $spotted_atr[] = $this->version;
       $this->id = md5(serialize($spotted_atr));
     }
     return $this->id;
