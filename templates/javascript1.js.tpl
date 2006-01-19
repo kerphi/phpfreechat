@@ -53,3 +53,21 @@ function ~[$prefix]~insertSmiley(s)
   document.getElementById('~[$prefix]~words').value += s;
   document.getElementById('~[$prefix]~words').focus();
 }
+
+function ~[$prefix]~updateNickList(nicks)
+{
+  var nickdiv = document.getElementById('~[$prefix]~online');
+  var ul = document.createElement('ul');
+  for (var i=0; i<nicks.length; i++)
+  {
+    var li = document.createElement('li');
+    var txt = document.createTextNode(nicks[i]);
+    li.appendChild(txt);
+    ul.appendChild(li);
+  }
+  var fc = nickdiv.firstChild;
+  if (fc)
+    nickdiv.replaceChild(ul,fc);
+  else
+    nickdiv.appendChild(ul,fc);
+}
