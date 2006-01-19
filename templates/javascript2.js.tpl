@@ -37,8 +37,7 @@ function onkeydownCallback_words(e)
     else
     {
       /* a classic 'send' command*/
-      ~[$prefix]~handleRequest('/send ' + ~[$prefix]~clientid + ' ' +
-                               wval.substr(0,~[$max_text_len]~));
+      ~[$prefix]~handleRequest('/send ' + ~[$prefix]~clientid + ' ' + wval.substr(0,~[$max_text_len]~));
     }
     w.value = '';
     return false;

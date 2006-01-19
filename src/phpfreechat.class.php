@@ -206,7 +206,7 @@ class phpFreeChat
     if ($c->debug) ob_start(); // capture output
  
     $xml_reponse = new xajaxResponse();
-    $param = stripslashes($request);
+    $request = stripslashes($request);
 
     // check the command
     $cmd    = "";

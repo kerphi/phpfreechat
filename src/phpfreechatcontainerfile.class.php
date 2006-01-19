@@ -278,11 +278,14 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $new_from_id = $from_id;
     foreach ( $content as $line )
     {
-      $formated_line = explode( "\t", $line );
-      if ($from_id < $formated_line[0])
-        $formated_content[] = $formated_line;
-      if ($new_from_id < $formated_line[0])
-        $new_from_id = $formated_line[0];
+      if ($line != "" && $line != "\n")
+      {
+        $formated_line = explode( "\t", $line );
+        if ($from_id < $formated_line[0])
+          $formated_content[] = $formated_line;
+        if ($new_from_id < $formated_line[0])
+          $new_from_id = $formated_line[0];
+      }
     }
 
     return array("messages" => $formated_content,
@@ -299,7 +302,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     
     // format message
     $msg_id = $this->_requestMsgId();
-    $line = "\n";
+    $line .= "\n";
     $line .= $msg_id."\t";
     $line .= date("d/m/Y")."\t";
     $line .= date("H:i:s")."\t";
@@ -326,15 +329,14 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
       flock ($fp, LOCK_EX);
       $msg_id = fread($fp, filesize($c->container_cfg_index_file));
       if (!is_numeric($msg_id)) $msg_id = 0;
+      // increment message id and save it
+      $msg_id++;
+      ftruncate($fp, 0);
+      fseek($fp, 0);
+      fwrite($fp, $msg_id);
+      flock ($fp, LOCK_UN);
+      fclose($fp);
     }
-
-    // increment message id and save it
-    $msg_id++;
-    ftruncate($fp, 0);
-    fseek($fp, 0);
-    fwrite($fp, $msg_id);
-    flock ($fp, LOCK_UN);
-    fclose($fp);
 
     return $msg_id;
   }

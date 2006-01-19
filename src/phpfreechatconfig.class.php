@@ -344,7 +344,6 @@ class phpFreeChatConfig
   function synchronizeWithSession()
   {
     $session_id = $this->prefix."chatconfig_".$this->getId();
-
     if (isset($_SESSION[$session_id]))
     {
       $pfc_configvar = unserialize($_SESSION[$session_id]);
