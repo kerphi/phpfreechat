@@ -448,8 +448,8 @@ class phpFreeChat
       $html .= '</ul>';
       $js    = substr($js, 0, strlen($js)-1); // remove last ','
       
-      $xml_reponse->addAssign($c->prefix."online", "innerHTML", $html);
       $xml_reponse->addScript($c->prefix."nicklist = Array(".$js.");");
+      $xml_reponse->addScript($c->prefix."updateNickList(".$c->prefix."nicklist);");
     }
   }
 
