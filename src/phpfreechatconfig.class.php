@@ -347,7 +347,7 @@ class phpFreeChatConfig
 
     if (isset($_SESSION[$session_id]))
     {
-      $pfc_configvar = unserialize($_SESSION[$session_id]); // restore $chatconfig var
+      $pfc_configvar = unserialize($_SESSION[$session_id]);
       foreach($pfc_configvar as $key => $val)
 	$this->$key = $val;
       if ($this->debug) pxlog("synchronizeWithSession[".$this->getId()."]: restore chatconfig from session nick=".$this->nick, "chatconfig", $this->getId());
