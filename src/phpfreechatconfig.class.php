@@ -38,6 +38,7 @@ class phpFreeChatConfig
   var $smileys        = array();
   var $version        = "";
   var $debugpath      = "";
+  var $active         = true;
   
   function phpFreeChatConfig( $params = array() )
   {

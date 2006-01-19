@@ -230,10 +230,14 @@ class phpFreeChat
       phpFreeChat::Cmd_error(&$xml_reponse, "Unknown command [".stripslashes($request)."]");
     }
       
-    // force an update just after a command is sent
-    // thus the message user just poster is really fastly displayed
-    phpFreeChat::Cmd_update($xml_reponse);
-
+    // do not update twice
+    if ($cmd != "Cmd_update")
+    {
+      // force an update just after a command is sent
+      // thus the message user just poster is really fastly displayed
+      phpFreeChat::Cmd_update($xml_reponse);
+    }
+  
     if ($c->debug)
     {
       // capture echoed content
@@ -250,15 +254,23 @@ class phpFreeChat
   function Cmd_update(&$xml_reponse)
   {
     $c =& phpFreeChatConfig::Instance();
-    phpFreeChat::Cmd_updateMyNick($xml_reponse);
-    phpFreeChat::Cmd_getOnlineNick($xml_reponse);
-    phpFreeChat::Cmd_getNewMsg($xml_reponse);
-    $xml_reponse->addScript("window.clearTimeout(".$c->prefix."timeout); ".$c->prefix."timeout = window.setTimeout('".$c->prefix."handleRequest(\\'/update\\')', ".$c->refresh_delay.");");
+    // do not update if user isn't active (have quit)
+    if ($c->active)
+    {
+      phpFreeChat::Cmd_updateMyNick($xml_reponse);
+      phpFreeChat::Cmd_getOnlineNick($xml_reponse);
+      phpFreeChat::Cmd_getNewMsg($xml_reponse);
+      $xml_reponse->addScript("window.clearTimeout(".$c->prefix."timeout); ".$c->prefix."timeout = window.setTimeout('".$c->prefix."handleRequest(\\'/update\\')', ".$c->refresh_delay.");");
+    }
   }
   
   function Cmd_connect(&$xml_reponse)
   {
     $c =& phpFreeChatConfig::Instance();
+
+    // set the chat active
+    $c->active = true;
+    $c->saveInSession();
 
     // reset the message id indicator
     // i.e. be ready to re-get all last posted messages
@@ -389,9 +401,16 @@ class phpFreeChat
   function Cmd_quit(&$xml_reponse)
   {
     $c =& phpFreeChatConfig::Instance();
+    
+    // set the chat inactive
+    $c->active = false;
+    $c->saveInSession();
+
+    // then remove the nickname file
     $container =& $c->getContainerInstance();
     if ($container->removeNick($c->nick))
       phpFreeChat::Cmd_notice($xml_reponse, $c->nick." quit");
+
     if ($c->debug) pxlog("Cmd_quit[".$c->sessionid."]: a user just quit -> nick=".$c->nick, "chat", $c->id);
   }
   
