@@ -346,10 +346,9 @@ class phpFreeChatConfig
 
     if (isset($_SESSION[$session_id]))
     {
-      $chatconfig =& unserialize($_SESSION[$session_id]); // restore $chatconfig var
-      $classvar = get_class_vars(get_class($this));
-      foreach( $classvar as $cv_name => $cv_val )
-        $this->$cv_name = $chatconfig->$cv_name;      
+      $pfc_configvar = unserialize($_SESSION[$session_id]); // restore $chatconfig var
+      foreach($pfc_configvar as $key => $val)
+	$this->$key = $val;
       if ($this->debug) pxlog("synchronizeWithSession[".$this->getId()."]: restore chatconfig from session nick=".$this->nick, "chatconfig", $this->getId());
     }
     else
@@ -370,8 +369,7 @@ class phpFreeChatConfig
   function saveInSession()
   {
     $session_id = $this->prefix."chatconfig_".$this->getId();
-    $chatconfig =& $this;
-    $_SESSION[$session_id] = serialize(&$chatconfig);
+    $_SESSION[$session_id] = serialize(get_object_vars($this));
     if ($this->debug) pxlog("saveInSession[".$this->getId()."]: nick=".$this->nick, "chatconfig", $this->getId());
   }
 }
