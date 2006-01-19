@@ -72,6 +72,12 @@ class phpFreeChatTools
     else
       $smarty->compile_check = false;
     $smarty->debugging       = false;
+
+    // generate a unique client id (stored with JS: client side)
+    // this id is used to identify client window
+    // (2 clients can use the same session: then only the nickname is shared)
+    $smarty->assign("clientid", md5(uniqid(rand(), true)));
+
     return $smarty;
   }
 

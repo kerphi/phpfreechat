@@ -175,10 +175,10 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
    * create a file containing the new nickname id
    * and delete oldnickname file if the nickname id match (oldnickname file is mine)
    */
-  function changeNick($newnick, $nickid, $oldnickid = "")
+  function changeNick($newnick, $oldnickid = "")
   {
     $c =& $this->c;
-
+    $nickid = $c->sessionid;
     // delete the old nickname file only if the nickid match
     // ie: do not delete nickname if it's not mine
     if ($oldnickid == "") $oldnickid = $this->getNickId($c->nick);

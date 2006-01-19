@@ -7,7 +7,7 @@ document.getElementById('~[$prefix]~handle').onchange = onchangeCallback_handle;
 
 function onunloadCallback_content(e)
 {
-  ~[$prefix]~handleRequest('/quit' );
+  ~[$prefix]~handleRequest('/quit '+ ~[$prefix]~clientid );
 }
 
 function onfocusCallback_words(e)
@@ -25,7 +25,21 @@ function onkeydownCallback_words(e)
   if (code == 13) /* enter key */
   {
     var w = document.getElementById('~[$prefix]~words');
-    ~[$prefix]~handleRequest(w.value.substr(0,~[$max_text_len]~));
+    var wval = w.value;
+
+    re = new RegExp("^(\/[a-z]+)( (.*)|)");
+    if (wval.match(re))
+    {
+      /* a user command */
+      wval = wval.replace(re, '$1 '+ ~[$prefix]~clientid +' $2');
+      ~[$prefix]~handleRequest(wval.substr(0,~[$max_text_len]~ + ~[$prefix]~clientid.length));
+    }
+    else
+    {
+      /* a classic 'send' command*/
+      ~[$prefix]~handleRequest('/send ' + ~[$prefix]~clientid + ' ' +
+                               wval.substr(0,~[$max_text_len]~));
+    }
     w.value = '';
     return false;
   }
@@ -59,7 +73,7 @@ function onkeydownCallback_handle(e)
   {
     nick_changed = false;
     var h = document.getElementById('~[$prefix]~handle').value;
-    ~[$prefix]~handleRequest('/nick '+ h.substr(0,~[$max_nick_len]~) );
+    ~[$prefix]~handleRequest('/nick '+ ~[$prefix]~clientid + ' ' + h.substr(0,~[$max_nick_len]~) );
   }  
   else
     nick_changed = true;
@@ -71,7 +85,7 @@ function onchangeCallback_handle(e)
     nick_changed = false;
     ~[$prefix]~ClearError(Array('~[$prefix]~handle'));
     var h = document.getElementById('~[$prefix]~handle').value;
-    ~[$prefix]~handleRequest('/nick '+ h.substr(0,~[$max_nick_len]~) );
+    ~[$prefix]~handleRequest('/nick '+ ~[$prefix]~clientid + ' ' + h.substr(0,~[$max_nick_len]~) );
   }
 }
 

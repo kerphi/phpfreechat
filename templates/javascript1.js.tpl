@@ -1,6 +1,7 @@
 /* define the JS variable used to store timer and nicknames list */
 var ~[$prefix]~timeout;
 var ~[$prefix]~nicklist = Array();
+var ~[$prefix]~clientid = '~[$clientid]~';
 
 function ~[$prefix]~SetError(str, ids)
 {
