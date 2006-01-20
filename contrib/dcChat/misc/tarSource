@@ -2,13 +2,13 @@
 
 echo "-- creating archive --"
 echo "-> copying files"
-rm -rf dcchat-`cat ../../version`
+rm -rf dcchat
 svn export .. ./dcchat
-svn export ../.. ./dcchat/phpfreechat
-#echo "-> creating .tar.gz"
-#tar czfp phpfreechat-`cat ../version`.tar.gz phpfreechat-`cat ../version`/ 
-#echo "-> creating .zip"
-#zip -Tq9r phpfreechat-`cat ../version`.zip phpfreechat-`cat ../version`/
-#echo "-> removing temporary files"
-#rm -rf phpfreechat-`cat ../version`
-#echo "-- creating archive, done --"
+svn export ../../.. ./dcchat/phpfreechat
+echo "-> creating .tar.gz"
+tar czfp dcchat-`cat ../../../version`.tar.gz dcchat/ 
+echo "-> creating .zip"
+zip -Tq9r dcchat-`cat ../../../version`.zip dcchat/
+echo "-> removing temporary files"
+rm -rf dcchat
+echo "-- creating archive, done --"

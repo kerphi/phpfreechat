@@ -1,14 +1,15 @@
 <?php
 
-function dcPrintJavascript()
+function dcPrintJavascript($chatroom)
+{
+  require_once dirname(__FILE__)."/phpfreechat/src/phpfreechat.class.php";
+}
+
+function dcPrintStyle($chatroom)
 {
 }
 
-function dcPrintStyle()
-{
-}
-
-function dcPrintChat()
+function dcPrintChat($chatroom)
 {
 }
 
