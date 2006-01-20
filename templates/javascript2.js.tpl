@@ -116,13 +116,13 @@ function ~[$prefix]~refresh_loginlogout()
   var loginlogout_icon = document.getElementById('~[$prefix]~loginlogout');
   if (~[$prefix]~login_status)
   {
-    loginlogout_icon.src   = "../misc/logout.png";
+    loginlogout_icon.src   = "~[$rootpath]~/misc/logout.png";
     loginlogout_icon.alt   = "Disconnect";
     loginlogout_icon.title = "Disconnect";
   }
   else
   {
-    loginlogout_icon.src = "../misc/login.png";
+    loginlogout_icon.src = "~[$rootpath]~/misc/login.png";
     loginlogout_icon.alt   = "Connect";
     loginlogout_icon.title = "Connect";
   }

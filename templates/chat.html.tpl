@@ -19,7 +19,7 @@
     <div id="~[$prefix]~cmd_container">
       <a href="http://www.phpfreechat.net" id="~[$prefix]~logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="Powered by phpFreeChat-~[$version]~" title="Powered by phpFreeChat-~[$version]~" /></a>
       <input id="~[$prefix]~handle" type="button" title="enter your nickname here" maxlength="~[$max_nick_len]~" value="~[$nick]~" onclick="if (!~[$prefix]~login_status) return false; ~[$prefix]~handleRequest('/asknick');" />
-      <img src="../misc/logout.png" alt="Logout" title="Logout" id="~[$prefix]~loginlogout"
+      <img src="~[$rootpath]~/misc/logout.png" alt="Logout" title="Logout" id="~[$prefix]~loginlogout"
            onclick="~[$prefix]~connect_disconnect()"/>
     </div>
   </div>
@@ -39,5 +39,5 @@
   </script>
 </div>
 ~[if $debug]~
-<p>Debug is on, you can <a href="~[$debugpath]~/console.php?chatid=~[$id]~">open the debugging console</a>.</p>
+<p>Debug is on, you can <a href="~[$rootpath]~/debug/console.php?chatid=~[$id]~">open the debugging console</a>.</p>
 ~[/if]~
