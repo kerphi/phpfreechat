@@ -7,6 +7,7 @@ document.getElementById('~[$prefix]~handle').onchange = onchangeCallback_handle;
 
 function onunloadCallback_content(e)
 {
+  if (!~[$prefix]~login_status) return false;
   ~[$prefix]~handleRequest('/quit '+ ~[$prefix]~clientid );
 }
 
@@ -19,6 +20,7 @@ function onfocusCallback_words(e)
 
 function onkeydownCallback_words(e)
 {
+  if (!~[$prefix]~login_status) return false;
   ~[$prefix]~ClearError(Array('~[$prefix]~words'));
   if (!e) var e = window.event;
   var code = e.keyCode;
@@ -65,7 +67,8 @@ function onkeydownCallback_words(e)
 var nick_changed = false;
 function onkeydownCallback_handle(e)
 {
-    ~[$prefix]~ClearError(Array('~[$prefix]~handle'));
+  if (!~[$prefix]~login_status) return false;
+  ~[$prefix]~ClearError(Array('~[$prefix]~handle'));
   if (!e) var e = window.event;
   var code = e.keyCode;
   if (code == 13)
@@ -79,6 +82,7 @@ function onkeydownCallback_handle(e)
 }
 function onchangeCallback_handle(e)
 {
+  if (!~[$prefix]~login_status) return false;
   if (nick_changed)
   {
     nick_changed = false;
@@ -88,6 +92,42 @@ function onchangeCallback_handle(e)
   }
 }
 
+
+var ~[$prefix]~login_status = false;
+function ~[$prefix]~connect_disconnect()
+{
+  if (~[$prefix]~login_status)
+  {
+    ~[$prefix]~handleRequest('/quit');
+    ~[$prefix]~login_status = false;
+    ~[$prefix]~clearNickList();
+    ~[$prefix]~clearMessages();
+  }
+  else
+  {
+    ~[$prefix]~handleRequest('/connect');
+    ~[$prefix]~login_status = true;
+    ~[$prefix]~updateNickList();
+  }
+  ~[$prefix]~refresh_loginlogout()
+}
+function ~[$prefix]~refresh_loginlogout()
+{
+  var loginlogout_icon = document.getElementById('~[$prefix]~loginlogout');
+  if (~[$prefix]~login_status)
+  {
+    loginlogout_icon.src   = "../misc/logout.png";
+    loginlogout_icon.alt   = "Disconnect";
+    loginlogout_icon.title = "Disconnect";
+  }
+  else
+  {
+    loginlogout_icon.src = "../misc/login.png";
+    loginlogout_icon.alt   = "Connect";
+    loginlogout_icon.title = "Connect";
+  }
+}
+
 ~[if $connect]~
-~[$prefix]~handleRequest('/connect');
+~[$prefix]~connect_disconnect();
 ~[/if]~

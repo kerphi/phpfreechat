@@ -1,8 +1,11 @@
 /* define the JS variable used to store timer and nicknames list */
 var ~[$prefix]~timeout;
 var ~[$prefix]~nicklist = Array();
+/* unique client id for each windows used to identify a open window
+   this id is passed every time the JS communicate with server */
 var ~[$prefix]~clientid = '~[$clientid]~';
 
+/* show error area and assign to it an error message and start the blinking of given fields */
 function ~[$prefix]~SetError(str, ids)
 {
   document.getElementById('~[$prefix]~errors').innerHTML = str;
@@ -11,6 +14,7 @@ function ~[$prefix]~SetError(str, ids)
     ~[$prefix]~Blink(ids[i], 'start');
 }
 
+/* hide error area and stop blinking fields */
 function ~[$prefix]~ClearError(ids)
 { 
   document.getElementById('~[$prefix]~errors').style.display = 'none';
@@ -18,6 +22,7 @@ function ~[$prefix]~ClearError(ids)
     ~[$prefix]~Blink(ids[i], 'stop');
 }
 
+/* blink routines used by Error functions */
 var blinktmp = Array();
 var blinkloop = Array();
 var blinktimeout = Array();
@@ -48,14 +53,17 @@ function ~[$prefix]~Blink(id, action)
    }  	
  }
 
+/* insert a smiley */
 function ~[$prefix]~insertSmiley(s)
 {
   document.getElementById('~[$prefix]~words').value += s;
   document.getElementById('~[$prefix]~words').focus();
 }
 
-function ~[$prefix]~updateNickList(nicks)
+/* fill the nickname list with connected nicknames */
+function ~[$prefix]~updateNickList()
 {
+  var nicks = ~[$prefix]~nicklist;
   var nickdiv = document.getElementById('~[$prefix]~online');
   var ul = document.createElement('ul');
   for (var i=0; i<nicks.length; i++)
@@ -70,4 +78,24 @@ function ~[$prefix]~updateNickList(nicks)
     nickdiv.replaceChild(ul,fc);
   else
     nickdiv.appendChild(ul,fc);
+}
+/* clear the nickname list */
+function ~[$prefix]~clearNickList()
+{
+  var nickdiv = document.getElementById('~[$prefix]~online');
+  var fc = nickdiv.firstChild;
+  nickdiv.removeChild(fc);
+}
+
+/* clear the message list history */
+function ~[$prefix]~clearMessages()
+{
+  var msgdiv = document.getElementById('~[$prefix]~chat');
+  var node = msgdiv.firstChild;
+  var nodetmp;
+  while (node!=null) {
+    nodetmp = node.nextSibling;
+    msgdiv.removeChild(node);
+    if (nodetmp) node = nodetmp.nextSibling; else node = null;
+  }
 }

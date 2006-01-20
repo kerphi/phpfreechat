@@ -103,7 +103,7 @@ span.~[$prefix]~pseudo {
 }
 
 div.~[$prefix]~input_container {
-  margin-top: 10px;
+  margin-top: 5px;
 }
 div.~[$prefix]~input_container table {
   width: 100%;
@@ -111,17 +111,40 @@ div.~[$prefix]~input_container table {
 
 #~[$prefix]~words {
   border: black solid 1px;
-  width: 99.8%;
+  width: 100%;
   height: 1.3em;
+}
+
+div#~[$prefix]~cmd_container {
+  position: relative;
+  margin-top: 5px;
+  width: 100%;
 }
 
 #~[$prefix]~handle {
   border: black solid 1px;
   padding: 0 4px 0 4px;
-  height: 1.4em;
-  color: blue;
+  color: black;
   ~[if $pseudo!=""]~background-color: #CCC;~[/if]~
   text-align: center;
+  margin-bottom: 5px;
+}
+
+#~[$prefix]~logo {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+
+#~[$prefix]~loginlogout {
+  cursor: pointer;
+  border: 1px dotted #393; /* same as container color */
+}
+
+#~[$prefix]~loginlogout:hover {
+  border: 1px dotted #000;
+  background-color: #4A4;
 }
 
 p#~[$prefix]~errors {
@@ -136,10 +159,6 @@ p#~[$prefix]~errors {
   text-align: center;
   font-style: italic;
   font-weight: bold;
-}
-
-#~[$prefix]~logo {
-  margin: auto;
 }
 
 /* commands */
