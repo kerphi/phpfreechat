@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<plugin name="dcChat" version="0.3" active="true">
+  <author>Stéphane Gully</author>
+  
+  <label>dcChat</label>
+  <desc>Affiche un chat dans votre site.</desc>
+</plugin>
