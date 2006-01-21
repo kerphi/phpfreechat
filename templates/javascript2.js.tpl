@@ -98,14 +98,14 @@ function ~[$prefix]~connect_disconnect()
 {
   if (~[$prefix]~login_status)
   {
-    ~[$prefix]~handleRequest('/quit');
+    ~[$prefix]~handleRequest('/quit ' + ~[$prefix]~clientid);
     ~[$prefix]~login_status = false;
     ~[$prefix]~clearNickList();
     ~[$prefix]~clearMessages();
   }
   else
   {
-    ~[$prefix]~handleRequest('/connect');
+    ~[$prefix]~handleRequest('/connect ' + ~[$prefix]~clientid);
     ~[$prefix]~login_status = true;
     ~[$prefix]~updateNickList();
   }
