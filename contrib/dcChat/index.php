@@ -1,10 +1,12 @@
 <?php
 
-$url = 'tools.php?p=dcchat';
+require_once dirname(__FILE__)."/tools.php";
+
+$url = 'tools.php?p=dcChat';
 
 $message = "";
 
-buffer::str('<h1>dcChat - v'.XEmb_Config::GetAppVersion().'</h1>');
+buffer::str('<h1>dcChat - v'.file_get_contents(dirname(__FILE__)."/phpfreechat/version").'</h1>');
 
 buffer::str("<h2>Etat de l'installation</h2>");
 buffer::str('<ul>');
@@ -24,12 +26,14 @@ if (function_exists('session_id')) {
 }
 
 // verification des droits en écriture du répertoire partagé
-$dir = dirname(__FILE__).'/../../../share';
-if (is_writable($dir) {
+$dir = cleanPath(dirname(__FILE__).'/../../../share');
+$can_install = false;
+if (is_writable($dir)) {
   buffer::str('<li>'.sprintf($img_check,'on').' '.
 	      sprintf(__('Directory %s is writable.'),'<strong><code>'.$dir.'</code></strong>').
 	      '</li>'
 	      );
+  $can_install = true;
 } else {
   buffer::str('<li>'.sprintf($img_check,'off').' '.
 	      sprintf(__('Directory %s is not writable.'),'<strong><code>'.$dir.'</code></strong>').
@@ -38,9 +42,9 @@ if (is_writable($dir) {
 }
 
 // verification de la presence de phpfreechat dans le repertoire partage
-$dir = dirname(__FILE__).'/../../../share/dcchat/phpfreechat';
+$dir = cleanPath(dirname(__FILE__).'/../../../share/dcchat/phpfreechat');
 $dcchat_installed = false;
-if (dir_exists($dir))
+if (is_dir($dir))
 {
   // check if versions match
   if ( file_get_contents($dir."/version") ==
@@ -50,7 +54,7 @@ if (dir_exists($dir))
   }
 }
 // installation si demandée
-if (!$dcchat_installed && isset($_GET["install"]))
+if ($can_install && !$dcchat_installed && isset($_GET["install"]))
 {
   // on cree le repertoire de destination
   $dir = dirname(__FILE__).'/../../../share/dcchat/';
@@ -62,7 +66,7 @@ if (!$dcchat_installed && isset($_GET["install"]))
   // reverification
   $dir = dirname(__FILE__).'/../../../share/dcchat/phpfreechat';
   $dcchat_installed = false;
-  if (dir_exists($dir))
+  if (is_dir($dir))
   {
     // check if versions match
     if ( file_get_contents($dir."/version") ==
@@ -82,12 +86,13 @@ if ($dcchat_installed)
 else
 {
   buffer::str('<li>'.sprintf($img_check,'off').' '.
-	      __('dcChat is not installed.').
+	      __('dcChat is not installed.').($can_install?' (<a href="'.$url.'&amp;install">install it</a>)':'').
 	      '</li>'
 	      );
 }
 
-if (is_writable($dir) {
+/*
+if (is_writable($dir)) {
   buffer::str('<li>'.sprintf($img_check,'on').' '.
 	      sprintf(__('Directory %s is writable.'),'<strong><code>'.$dir.'</code></strong>').
 	      '</li>'
@@ -98,6 +103,8 @@ if (is_writable($dir) {
 	      '</li>'
 	      );
 }
+*/
+
 buffer::str("</ul>");
 
 
