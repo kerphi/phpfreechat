@@ -144,11 +144,8 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     // update my online status file
     $my_filename = $c->container_cfg_nickname_dir.$this->_encode($c->nick);
     touch($my_filename);
-    
-    if ($c->skip_check && !file_exists($my_filename))
-      return false;
-    else
-      return true;
+
+    return true;
   }
 
   /**
@@ -302,7 +299,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     
     // format message
     $msg_id = $this->_requestMsgId();
-    $line .= "\n";
+    $line = "\n";
     $line .= $msg_id."\t";
     $line .= date("d/m/Y")."\t";
     $line .= date("H:i:s")."\t";

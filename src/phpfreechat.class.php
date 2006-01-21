@@ -52,7 +52,7 @@ class phpFreeChat
     }
     // then init xajax engine
     if (!class_exists("xajax")) require_once $c->xajaxpath."/xajax.inc.php";
-    $this->xajax = new xajax($c->server_file, $c->prefix);
+    $this->xajax = new xajax($c->server_script, $c->prefix);
     //$this->xajax->debugOn();
     $this->xajax->registerFunction("handleRequest");
     $this->xajax->processRequests();
@@ -222,10 +222,10 @@ class phpFreeChat
     $rawcmd = "";
     if (preg_match("/^\/([a-z]*)( ([0-9a-f]*)|)( (.*)|)/i", $request, $res))
     {
-      $rawcmd   = $res[1];
+      $rawcmd   = isset($res[1]) ? $res[1] : "";
       $cmd      = "Cmd_".$rawcmd;
-      $clientid = $res[3];
-      $param    = $res[5];
+      $clientid = isset($res[3]) ? $res[3] : "";
+      $param    = isset($res[5]) ? $res[5] : "";
     }
     
     // call the command
@@ -233,7 +233,10 @@ class phpFreeChat
     if (is_callable(array("phpFreeChat", $cmd)))
     {
       // call the command
-      phpFreeChat::$cmd($xml_reponse, $clientid, $param);
+      if ($c->debug)
+        phpFreeChat::$cmd($xml_reponse, $clientid, $param);
+      else
+        @phpFreeChat::$cmd($xml_reponse, $clientid, $param);
     }
     else
     {
@@ -315,7 +318,7 @@ class phpFreeChat
   function Cmd_asknick(&$xml_reponse, $clientid, $nicktochange)
   {
     $c =& phpFreeChatConfig::Instance();
-    $nicktochange = phpFreeChat::FilterNickname($newtochange);
+    $nicktochange = phpFreeChat::FilterNickname($nicktochange);
     
     if ($c->frozen_nick)
     {
@@ -481,7 +484,7 @@ class phpFreeChat
       $last_10sec = time()-10;
       $last_lock = $_SESSION[$c->prefix."lock_readnewmsg_".$c->id."_".$clientid];
       if ($last_lock < $last_10sec) $_SESSION[$c->prefix."lock_".$c->id."_".$clientid] = 0;
-      if ( $_SESSION[$c->prefix."lock_readnewmsg_".$c->id] != 0 ) exit;
+      if ( $_SESSION[$c->prefix."lock_readnewmsg_".$c->id."_".$clientid] != 0 ) exit;
     }
 
     // create a new lock

@@ -231,11 +231,11 @@ class phpFreeChatConfig
 
     
     // ---
-    // test server file
-    if ($ok && $this->server_file != "" && !file_exists($this->server_file))
+    // test server script
+    if ($ok && $this->server_script != "" && !file_exists($this->server_script))
     {
       $ok = false;
-      $this->errors[] = $this->server_file." doesn't exist";
+      $this->errors[] = $this->server_script." doesn't exist";
     }
     
     // ---
