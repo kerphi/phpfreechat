@@ -91,11 +91,5 @@ function ~[$prefix]~clearNickList()
 function ~[$prefix]~clearMessages()
 {
   var msgdiv = document.getElementById('~[$prefix]~chat');
-  var node = msgdiv.firstChild;
-  var nodetmp;
-  while (node!=null) {
-    nodetmp = node.nextSibling;
-    msgdiv.removeChild(node);
-    if (nodetmp) node = nodetmp.nextSibling; else node = null;
-  }
+  msgdiv.innerHTML = '';
 }
