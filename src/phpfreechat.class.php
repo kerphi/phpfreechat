@@ -129,13 +129,24 @@ class phpFreeChat
       $smarty->display($c->css_file);
     echo "\n-->\n</style>\n";
   }
+
+  /**
+   * Encode special caracteres and remove extra slashes
+   */
+  function FilterSpecialChar($str)
+  {
+    $str = htmlspecialchars(stripslashes($str));
+    return $str;
+  }
   
+  /**
+   * Just check the nicknames doesn't start with spaces and is not longer than the max_nick_len
+   */
   function FilterNickname($nickname)
   {
     $c =& phpFreeChatConfig::Instance();
     $nickname = trim($nickname);
     $nickname = substr($nickname, 0, $c->max_nick_len);
-    $nickname = htmlspecialchars(stripslashes($nickname));
     return $nickname;
   }
   
@@ -176,7 +187,7 @@ class phpFreeChat
   {
     $c =& phpFreeChatConfig::Instance();
     $msg = substr($msg, 0, $c->max_text_len);
-    $msg  = htmlspecialchars(stripslashes($msg));
+    $msg = phpFreeChat::FilterSpecialChar($msg);
     
     $msg = phpFreeChat::FilterSmiley($msg);
 
@@ -353,13 +364,13 @@ class phpFreeChat
       $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
       if ($oldnick != $newnick && $oldnick != "")
-	phpFreeChat::Cmd_notice($xml_reponse, $clientid, htmlspecialchars(stripslashes($oldnick))." changes his nickname to ".htmlspecialchars(stripslashes($newnick)));
+	phpFreeChat::Cmd_notice($xml_reponse, $clientid, $oldnick." changes his nickname to ".$newnick);
       if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: first time nick is assigned -> newnick=".$c->nick." oldnick=".$oldnick, "chat", $c->id);
       
       // new nickname is undefined (not used) and
       // current nickname (oldnickname) is not mine or is undefined
       if ($oldnickid != "" && $oldnickid != $c->sessionid)
-        phpFreeChat::Cmd_notice($xml_reponse, $clientid, htmlspecialchars(stripslashes($c->nick))." is connected");
+        phpFreeChat::Cmd_notice($xml_reponse, $clientid, $c->nick." is connected");
     }
     else if ($newnickid == $c->sessionid)
     {
@@ -382,7 +393,7 @@ class phpFreeChat
     if ($c->shownotice)
     {
       $container =& $c->getContainerInstance();
-      $msg = phpFreeChat::PreFilterMsg($msg);
+      $msg = phpFreeChat::FilterSpecialChar($msg);
       $container->writeMsg("*notice*", $msg);
       if ($c->debug) pxlog("Cmd_notice[".$c->sessionid."]: shownotice=true msg=".$msg, "chat", $c->id);
     }
@@ -437,15 +448,12 @@ class phpFreeChat
 
       $_SESSION[$c->prefix."nicklist_".$c->id."_".$clientid] = $users;
 
-      $html = '<ul>';
       $js = "";
       foreach ($users as $u)
       {
-        $nickname = htmlspecialchars(stripslashes($u));
-        $html    .= '<li>'.$nickname.'</li>';
+        $nickname = addslashes($u);
         $js      .= "'".$nickname."',";
       }
-      $html .= '</ul>';
       $js    = substr($js, 0, strlen($js)-1); // remove last ','
       
       $xml_reponse->addScript($c->prefix."nicklist = Array(".$js.");");
@@ -541,7 +549,7 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
         
     // check the nick is not allready known
-    $nick = $c->nick;
+    $nick = phpFreeChat::FilterSpecialChar($c->nick);
     $text = phpFreeChat::PreFilterMsg($msg);
         
     $errors = array();
