@@ -330,6 +330,8 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->xajaxpath;
       $spotted_atr[] = $this->container_type;
       $spotted_atr[] = $this->smileytheme;
+      $spotted_atr[] = $this->shownotice;
+      $spotted_atr[] = $this->frozen_nick;
       $this->id = md5(serialize($spotted_atr));
     }
     return $this->id;

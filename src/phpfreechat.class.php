@@ -46,10 +46,8 @@ class phpFreeChat
     
     // Xajax doesn't support yet static class methode call
     // I use basic functions to wrap to my statics methodes
-    function handleRequest($request, $shownotice = true)
+    function handleRequest($request)
     {
-      $c =& phpFreeChatConfig::Instance();
-      $c->shownotice = $shownotice;
       return phpFreeChat::HandleRequest($request);
     }
     // then init xajax engine
@@ -364,13 +362,13 @@ class phpFreeChat
       $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
       if ($oldnick != $newnick && $oldnick != "")
-	phpFreeChat::Cmd_notice($xml_reponse, $clientid, $oldnick." changes his nickname to ".$newnick);
+	phpFreeChat::Cmd_notice($xml_reponse, $clientid, $oldnick." changes his nickname to ".$newnick, 1);
       if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: first time nick is assigned -> newnick=".$c->nick." oldnick=".$oldnick, "chat", $c->id);
       
       // new nickname is undefined (not used) and
       // current nickname (oldnickname) is not mine or is undefined
       if ($oldnickid != "" && $oldnickid != $c->sessionid)
-        phpFreeChat::Cmd_notice($xml_reponse, $clientid, $c->nick." is connected");
+        phpFreeChat::Cmd_notice($xml_reponse, $clientid, $c->nick." is connected", 2);
     }
     else if ($newnickid == $c->sessionid)
     {
@@ -387,10 +385,11 @@ class phpFreeChat
     }
   }
 
-  function Cmd_notice(&$xml_reponse, $clientid, $msg)
+  function Cmd_notice(&$xml_reponse, $clientid, $msg, $level = 2)
   {
     $c =& phpFreeChatConfig::Instance();
-    if ($c->shownotice)
+    if ($c->shownotice > 0 &&
+        $c->shownotice >= $level)
     {
       $container =& $c->getContainerInstance();
       $msg = phpFreeChat::FilterSpecialChar($msg);
@@ -423,7 +422,7 @@ class phpFreeChat
     // then remove the nickname file
     $container =& $c->getContainerInstance();
     if ($container->removeNick($c->nick))
-      phpFreeChat::Cmd_notice($xml_reponse, $clientid, $c->nick." quit");
+      phpFreeChat::Cmd_notice($xml_reponse, $clientid, $c->nick." quit", 2);
 
     if ($c->debug) pxlog("Cmd_quit[".$c->sessionid."]: a user just quit -> nick=".$c->nick, "chat", $c->id);
   }
@@ -438,7 +437,7 @@ class phpFreeChat
     $container =& $c->getContainerInstance();
     $disconnected_users = $container->removeObsoletNick();
     foreach ($disconnected_users as $u)
-      phpFreeChat::Cmd_notice($xml_reponse, $clientid, $u." disconnected (timeout)");
+      phpFreeChat::Cmd_notice($xml_reponse, $clientid, $u." disconnected (timeout)", 2);
     $users = $container->getOnlineNick();
     sort($users);
     // check if the nickname list must be updated
