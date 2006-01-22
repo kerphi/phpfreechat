@@ -69,8 +69,7 @@ class phpFreeChat
   {
     $c =& phpFreeChatConfig::Instance();
     // print xajax javascript
-    $xajax_js = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]),
-					       dirname(__FILE__).'/../data/public/');
+    $xajax_js = $c->rootpath.'/data/public/';
     $this->xajax->printJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
 
     // print phpfreechat specific javascript
@@ -102,7 +101,7 @@ class phpFreeChat
    */
   function printChat()
   {
-    $c =& phpFreeChatConfig::Instance();   
+    $c =& phpFreeChatConfig::Instance();
     $smarty =& phpFreeChatTools::GetSmarty();
     $c->assignToSmarty($smarty);
     $smarty->display("chat.html.tpl");

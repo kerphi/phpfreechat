@@ -232,10 +232,18 @@ class phpFreeChatConfig
     
     // ---
     // test server script
-    if ($ok && $this->server_script != "" && !file_exists($this->server_script))
+    if ($ok &&
+        $this->server_script != "")
     {
-      $ok = false;
-      $this->errors[] = $this->server_script." doesn't exist";
+      $filetotest = $this->server_script;
+      // do not take into account the url parameters
+      if (preg_match("/(.*)\?(.*)/",$this->server_script, $res))
+        $filetotest = $res[1];
+      if ( !file_exists($filetotest) )
+      {
+        $ok = false;
+        $this->errors[] = $filetotest." doesn't exist";
+      }
     }
     
     // ---
@@ -253,6 +261,9 @@ class phpFreeChatConfig
       }
     }
 
+    // load root path
+    $this->rootpath = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]), dirname(__FILE__).'/../');
+
     // load smileys from file
     if ($ok)
       $this->loadSmileyTheme();
@@ -260,9 +271,6 @@ class phpFreeChatConfig
     // do not froze nickname if it has not be specified
     if ($this->nick == "" && $this->frozen_nick)
       $this->frozen_nick = false;
-
-    // load root path if necessary
-    $this->rootpath = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]), dirname(__FILE__).'/../');
     
     // load version number from file
     $this->version = file_get_contents(dirname(__FILE__)."/../version");
@@ -290,7 +298,7 @@ class phpFreeChatConfig
         continue;
       else if (preg_match("/^([a-z_]*(\.gif|\.png))(.*)$/i",$line,$res))
       {
-        $smiley_file = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]), dirname(__FILE__).'/../smileys/'.$this->smileytheme.'/'.$res[1]);
+        $smiley_file = $this->rootpath.'/smileys/'.$this->smileytheme.'/'.$res[1];
         $smiley_str = trim($res[3])."\n";
         $smiley_str = str_replace("\n", "", $smiley_str);
         $smiley_str = str_replace("\t", " ", $smiley_str);
@@ -304,12 +312,9 @@ class phpFreeChatConfig
   
   function assignToSmarty( &$smarty )
   {
-    foreach ( $this->default_params as $p_k => $p_v )
-      $smarty->assign($p_k, $this->$p_k);
-    $smarty->assign("id", $this->getId());
-    $smarty->assign("version", $this->version);
-    $smarty->assign("smileys", $this->smileys);
-    $smarty->assign("rootpath", $this->rootpath);
+    $vars = get_object_vars($this);
+    foreach($vars as $p_k => $p_v)
+      $smarty->assign($p_k, $p_v);
   }
 
   function getId()
