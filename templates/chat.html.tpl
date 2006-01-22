@@ -6,7 +6,7 @@
     <div id="~[$prefix]~chat"></div>
     <div class="~[$prefix]~smileys">
       ~[foreach from=$smileys key=s_file item=s_str]~
-      <img src="~[$s_file]~" alt="~[$s_str[0]]~" onclick="~[$prefix]~insertSmiley('~[$s_str[0]|addslashes]~');" />
+      <img src="~[$s_file]~" alt="~[$s_str[0]]~" onclick="~[$prefix]~insertSmiley('~[$s_str[0]]~');" />
       ~[/foreach]~
     </div>
     <div id="~[$prefix]~misc1"></div>
