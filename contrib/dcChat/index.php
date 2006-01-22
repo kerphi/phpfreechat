@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__)."/tools.php";
 
-$url = 'tools.php?p=dcChat';
+$url = 'tools.php?p=dcchat';
 
 $message = "";
 
@@ -15,16 +15,17 @@ buffer::str('<ul>');
 $img_check = '<img src="images/check_%s.png" alt="" />';
 if (function_exists('session_id')) {
   buffer::str('<li>'.sprintf($img_check,'on').' '.
-	      __('php sessions is enable.').
+	      __('php sessions are enable.').
 	      '</li>'
 	      );
 } else {
   buffer::str('<li>'.sprintf($img_check,'off').' '.
-	      __('php sessions is missing.').
+	      __('php sessions support is missing.').
 	      '</li>'
 	      );
 }
 
+/*
 // verification des droits en écriture du répertoire partagé
 $dir = cleanPath(dirname(__FILE__).'/../../../share');
 $can_install = false;
@@ -40,25 +41,29 @@ if (is_writable($dir)) {
 	      '</li>'
 	      );
 }
+*/
 
+/*
 // verification de la presence de phpfreechat dans le repertoire partage
 $dir = cleanPath(dirname(__FILE__).'/../../../share/dcchat/phpfreechat');
 $dcchat_installed = false;
-if (is_dir($dir))
+// check if versions match
+if ( is_dir($dir) &&
+     file_get_contents($dir."/version") ==
+     file_get_contents(dirname(__FILE__)."/phpfreechat/version") )
 {
-  // check if versions match
-  if ( file_get_contents($dir."/version") ==
-       file_get_contents(dirname(__FILE__)."/phpfreechat/version") )
-  {
-    $dcchat_installed = true;
-  }
+  $dcchat_installed = true;
 }
+
 // installation si demandée
 if ($can_install && !$dcchat_installed && isset($_GET["install"]))
 {
   // on cree le repertoire de destination
   $dir = dirname(__FILE__).'/../../../share/dcchat/';
   mkdir($dir);
+  $dir = dirname(__FILE__).'/../../../share/dcchat/phpfreechat';
+  mkdir($dir);
+  
   // copy phpfreechat to the shared directory
   require_once dirname(__FILE__)."/phpfreechat/src/phpfreechattools.class.php";
   phpFreeChatTools::CopyR(dirname(__FILE__)."/phpfreechat/", $dir);
@@ -66,14 +71,11 @@ if ($can_install && !$dcchat_installed && isset($_GET["install"]))
   // reverification
   $dir = dirname(__FILE__).'/../../../share/dcchat/phpfreechat';
   $dcchat_installed = false;
-  if (is_dir($dir))
+  if ( is_dir($dir) &&
+       file_get_contents($dir."/version") ==
+       file_get_contents(dirname(__FILE__)."/phpfreechat/version") )
   {
-    // check if versions match
-    if ( file_get_contents($dir."/version") ==
-	 file_get_contents(dirname(__FILE__)."/phpfreechat/version") )
-    {
-      $dcchat_installed = true;
-    }
+    $dcchat_installed = true;
   }
 }
 if ($dcchat_installed)
@@ -90,6 +92,7 @@ else
 	      '</li>'
 	      );
 }
+*/
 
 /*
 if (is_writable($dir)) {
