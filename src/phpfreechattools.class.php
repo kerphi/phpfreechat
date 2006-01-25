@@ -31,8 +31,11 @@ class phpFreeChatTools
 {
   function RelativePath($p1, $p2)
   {
-    $p1 = realpath($p1);
-    $p2 = realpath($p2);
+    if (is_file($p1)) $p1 = dirname($p1);
+    if (is_file($p2)) $p2 = dirname($p2);
+    // using realpath function is necessary to resolve symbolic links
+    $p1 = realpath(phpFreeChatTools::CleanPath($p1));
+    $p2 = realpath(phpFreeChatTools::CleanPath($p2));
     $res = "";
     while( $p1 != "" && $p1 != "/" && strpos($p2, $p1) === FALSE)
     {
@@ -44,6 +47,29 @@ class phpFreeChatTools
     return $res;
   }
 
+  function CleanPath($path)
+  {
+    $result = array();
+    // $pathA = preg_split('/[\/\\\]/', $path);
+    $pathA = explode('/', $path);
+    if (!$pathA[0])
+      $result[] = '';
+    foreach ($pathA AS $key => $dir) {
+      if ($dir == '..') {
+        if (end($result) == '..') {
+          $result[] = '..';
+        } elseif (!array_pop($result)) {
+          $result[] = '..';
+        }
+      } elseif ($dir && $dir != '.') {
+        $result[] = $dir;
+      }
+    }
+    if (!end($pathA))
+      $result[] = '';
+    return implode('/', $result);
+  }
+  
   function RecursiveMkdir($path)
   {
     // This function creates the specified directory using mkdir().  Note

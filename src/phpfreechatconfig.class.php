@@ -262,7 +262,8 @@ class phpFreeChatConfig
     }
 
     // load root path
-    $this->rootpath = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]), dirname(__FILE__).'/../');
+    $this->rootpath = phpFreeChatTools::RelativePath($_SERVER["SCRIPT_FILENAME"],
+                                                     dirname(__FILE__).'/../');
 
     // load smileys from file
     if ($ok)

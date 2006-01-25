@@ -82,7 +82,7 @@ class phpFreeChat
     // include microsoft IE6 patches
     if ($c->useie7)
     {
-      $ie7_path = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]), $c->ie7path);
+      $ie7_path = phpFreeChatTools::RelativePath($_SERVER["SCRIPT_FILENAME"], $c->ie7path);
       echo "<!-- compliance patch for microsoft browsers -->\n";
       echo "<!--[if lt IE 7]>\n";
       echo "  <script type=\"text/javascript\">IE7_PNG_SUFFIX = \".png\";</script>\n";
