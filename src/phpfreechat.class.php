@@ -241,7 +241,7 @@ class phpFreeChat
     else
     {
       // display an error message
-      phpFreeChat::Cmd_error(&$xml_reponse, $clientid, "Unknown command [".stripslashes("/".$rawcmd." ".$param)."]");
+      phpFreeChat::Cmd_error($xml_reponse, $clientid, "Unknown command [".stripslashes("/".$rawcmd." ".$param)."]");
     }
       
     // do not update twice
@@ -312,7 +312,7 @@ class phpFreeChat
       // ask user to choose a nickname
       phpFreeChat::Cmd_asknick($xml_reponse, $clientid, "");
     else
-      phpFreeChat::Cmd_nick(&$xml_reponse, $clientid, $c->nick);
+      phpFreeChat::Cmd_nick($xml_reponse, $clientid, $c->nick);
     return $clientid;
   }
 
@@ -470,7 +470,7 @@ class phpFreeChat
     $container =& $c->getContainerInstance();
     $ok = $container->updateNick($c->nick);
     if (!$ok)
-      phpFreeChat::Cmd_error(&$xml_reponse, $clientid, "Cmd_updateMyNick failed");
+      phpFreeChat::Cmd_error($xml_reponse, $clientid, "Cmd_updateMyNick failed");
   }
   
   function Cmd_getNewMsg(&$xml_reponse, $clientid)
