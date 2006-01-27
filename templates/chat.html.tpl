@@ -17,7 +17,7 @@
   <div class="~[$prefix]~input_container">
     <input id="~[$prefix]~words" type="text" title="enter your text here" maxlength="~[$max_text_len]~" />
     <div id="~[$prefix]~cmd_container">
-      <a href="http://www.phpfreechat.net" id="~[$prefix]~logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="Powered by phpFreeChat-~[$version]~" title="Powered by phpFreeChat-~[$version]~" /></a>
+      <a href="http://www.phpfreechat.net" id="~[$prefix]~logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-~[$version]~]" title="PHP FREE CHAT [powered by phpFreeChat-~[$version]~]" /></a>
       <input id="~[$prefix]~handle" type="button" title="enter your nickname here" maxlength="~[$max_nick_len]~" value="~[$nick]~" onclick="if (!~[$prefix]~login_status) return false; ~[$prefix]~handleRequest('/asknick ' + ~[$prefix]~clientid);" />
       <img src="~[$rootpath]~/misc/logout.png" alt="Logout" title="Logout" id="~[$prefix]~loginlogout"
            onclick="~[$prefix]~connect_disconnect()"/>
