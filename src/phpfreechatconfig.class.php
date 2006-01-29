@@ -46,7 +46,6 @@ class phpFreeChatConfig
     $this->default_params["channel"]             = preg_replace("/[^a-z0-9]*/","",strtolower($this->default_params["title"]));
     $this->default_params["nick"]                = "";
     $this->default_params["frozen_nick"]         = false;
-    $this->default_params["skip_optional_check"] = true;
     $this->default_params["max_nick_len"]        = 15;
     $this->default_params["max_text_len"]        = 250;
     $this->default_params["refresh_delay"]       = 5000; // in mili-seconds (5 seconds)
@@ -338,6 +337,7 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->smileytheme;
       $spotted_atr[] = $this->shownotice;
       $spotted_atr[] = $this->frozen_nick;
+      $spotted_atr[] = $this->max_msg;
       $this->id = md5(serialize($spotted_atr));
     }
     return $this->id;

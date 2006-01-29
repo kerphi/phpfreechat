@@ -61,7 +61,7 @@ class phpFreeChatContainer
   {
     return array();
   }
-  function writeMsg($pseudo, $msg)
+  function writeMsg($nick, $msg)
   {
   }
   function readNewMsg($from_id)

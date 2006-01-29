@@ -53,9 +53,9 @@ function onkeydownCallback_words(e)
       var ul_online = document.getElementById('~[$prefix]~online').firstChild;
       for (var i=0; i<ul_online.childNodes.length; i++)
       {
-	var pseudo = ul_online.childNodes[i].innerHTML;
-	if (pseudo.indexOf(nick_src) == 0)
-	  w.value = w.value.replace(nick_src, pseudo);
+	var nick = ul_online.childNodes[i].innerHTML;
+	if (nick.indexOf(nick_src) == 0)
+	  w.value = w.value.replace(nick_src, nick);
       }
     }
   }
@@ -127,6 +127,7 @@ function ~[$prefix]~refresh_loginlogout()
     loginlogout_icon.title = "Connect";
   }
 }
+
 
 ~[if $connect]~
 ~[$prefix]~connect_disconnect();

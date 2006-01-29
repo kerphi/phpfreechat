@@ -98,7 +98,7 @@ span.~[$prefix]~heure, span.~[$prefix]~date {
   font-size: 70%;
 }
 
-span.~[$prefix]~pseudo {
+span.~[$prefix]~nick {
   color: orange;
 }
 
@@ -125,7 +125,7 @@ div#~[$prefix]~cmd_container {
   border: black solid 1px;
   padding: 0 4px 0 4px;
   color: black;
-  ~[if $pseudo!=""]~background-color: #CCC;~[/if]~
+  ~[if $nick!=""]~background-color: #CCC;~[/if]~
   text-align: center;
   margin-bottom: 5px;
 }
