@@ -54,6 +54,8 @@ class phpFreeChat
     if (!class_exists("xajax")) require_once $c->xajaxpath."/xajax.inc.php";
     $this->xajax = new xajax($c->server_script, $c->prefix);
     //$this->xajax->debugOn();
+    $this->xajax->waitCursorOff(); // do not show a wait cursor during chat updates
+    $this->xajax->errorHandlerOn(); // used to have verbose error logs
     $this->xajax->registerFunction("handleRequest");
     $this->xajax->processRequests();
   }
