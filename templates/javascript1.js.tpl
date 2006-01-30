@@ -139,8 +139,13 @@ function ~[$prefix]~parseAndPost(id, date, heure, nick, words, cmd, fromtoday, o
   if (fromtoday == 1) line += ' ~[$prefix]~invisible';
   line += '">'+ date +'</span> ';
   line += '<span class="~[$prefix]~heure">'+ heure +'</span> ';
-  line += '<span class="~[$prefix]~nick"><span class="~[$prefix]~nick_'+ nick +'">&#x2731;</span> &#x2039;'+ nick +'&#x203A;</span> ';
-  line += '<span class="~[$prefix]~words">'+ words +'</span> ';
+  line += '<span class="~[$prefix]~nick">';
+  if (cmd == 'cmd_msg')
+    line += '<span class="~[$prefix]~nick_'+ nick +'">@</span>&#x2039;'+ nick +'&#x203A;</span> ';
+  if (cmd == 'cmd_notice' || cmd == 'cmd_me')
+    line += '<span class="~[$prefix]~words">* '+ words +'</span> ';
+  else
+    line += '<span class="~[$prefix]~words">'+ words +'</span> ';
   line += '</div>';
   msgdiv.innerHTML += line;
 
