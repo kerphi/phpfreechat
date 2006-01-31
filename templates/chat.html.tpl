@@ -21,6 +21,9 @@
       <input id="~[$prefix]~handle" type="button" title="enter your nickname here" maxlength="~[$max_nick_len]~" value="~[$nick]~" onclick="if (!~[$prefix]~login_status) return false; ~[$prefix]~handleRequest('/asknick ' + ~[$prefix]~clientid);" />
       <img src="~[$rootpath]~/misc/logout.png" alt="Logout" title="Logout" id="~[$prefix]~loginlogout"
            onclick="~[$prefix]~connect_disconnect()"/>
+      <img src="~[$rootpath]~/misc/logout.png" alt="Hide nickname marker" title="Hide nickname marker" id="~[$prefix]~nickmarker"
+           onclick="~[$prefix]~nickmarker_swap()"/>
+
     </div>
   </div>
 

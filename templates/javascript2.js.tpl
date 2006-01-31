@@ -92,7 +92,9 @@ function onchangeCallback_handle(e)
   }
 }
 
-
+/**
+ * Connect/disconnect button
+ */
 var ~[$prefix]~login_status = false;
 function ~[$prefix]~connect_disconnect()
 {
@@ -127,6 +129,7 @@ function ~[$prefix]~refresh_loginlogout()
     loginlogout_icon.title = "Connect";
   }
 }
+
 
 
 ~[if $connect]~

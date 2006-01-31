@@ -1,6 +1,7 @@
 /* define the JS variable used to store timer and nicknames list */
 var ~[$prefix]~timeout;
 var ~[$prefix]~nicklist = Array();
+var ~[$prefix]~nickmarker = true;
 /* unique client id for each windows used to identify a open window
    this id is passed every time the JS communicate with server */
 var ~[$prefix]~clientid = '~[$clientid]~';
@@ -34,7 +35,6 @@ var ~[$prefix]~colorlist = Array(
 '#ffff6d'
 );
 var ~[$prefix]~nickcolor = Array();
-
 
 /* show error area and assign to it an error message and start the blinking of given fields */
 function ~[$prefix]~SetError(str, ids)
@@ -135,22 +135,39 @@ function ~[$prefix]~parseAndPost(id, date, heure, nick, words, cmd, fromtoday, o
   line += '<div id="~[$prefix]~msg'+ id +'" class="~[$prefix]~'+ cmd +' ~[$prefix]~message';
   if (oldmsg == 1) line += ' ~[$prefix]~oldmsg';
   line += '">';
+  line += '<span class="~[$prefix]~nickmarker ~[$prefix]~nick_'+ nick +'">&nbsp;</span>';
   line += '<span class="~[$prefix]~date';
   if (fromtoday == 1) line += ' ~[$prefix]~invisible';
   line += '">'+ date +'</span> ';
   line += '<span class="~[$prefix]~heure">'+ heure +'</span> ';
   line += '<span class="~[$prefix]~nick">';
   if (cmd == 'cmd_msg')
-    line += '<span class="~[$prefix]~nick_'+ nick +'">@</span>&#x2039;'+ nick +'&#x203A;</span> ';
+    line += '&#x2039;'+ nick +'&#x203A;</span> ';
   if (cmd == 'cmd_notice' || cmd == 'cmd_me')
     line += '<span class="~[$prefix]~words">* '+ words +'</span> ';
   else
     line += '<span class="~[$prefix]~words">'+ words +'</span> ';
   line += '</div>';
-  msgdiv.innerHTML += line;
+
+  /* create a dummy div to avoid konqueror bug when setting nickmarkers */
+  var m = document.createElement('div');
+  m.innerHTML = line;
+  msgdiv.appendChild(m);
+
+  ~[$prefix]~scrolldown('~[$prefix]~msg' + id);
+
 
   /* colorize messages nicknames */
-  ~[$prefix]~colorizeNicks(document.getElementById('~[$prefix]~msg' + id));
+  var root = document.getElementById('~[$prefix]~msg' + id);
+  ~[$prefix]~colorizeNicks(root);
+  ~[$prefix]~refresh_nickmarker(root);
+}
+
+/* scroll down from the posted message height */
+function ~[$prefix]~scrolldown(id)
+{
+  var elttoscroll = document.getElementById(id);
+  document.getElementById('~[$prefix]~chat').scrollTop += elttoscroll.offsetHeight+2;
 }
 
 /* apply nicknames color to the root childs */
@@ -186,17 +203,62 @@ function ~[$prefix]~applyNickColor(root, nick, color)
 {
   var nicktochange = getElementsByClassName(root, '~[$prefix]~nick_'+ nick)
   for(var i = 0; nicktochange.length > i; i++)
-    nicktochange[i].style['color'] = color; 
+  {       
+    nicktochange[i].style.backgroundColor = color; 
+    /*nicktochange[i].style.paddingLeft = '5px'; */
+  }
 }
 
 function getElementsByClassName( root, clsName ) {
    var i, matches=new Array();
    var els=root.getElementsByTagName('*');
+   var rx = new RegExp('.*'+clsName+'.*');
 
    for(i=0; i<els.length; i++) {
-      if(els.item(i).className==clsName) {
+      if(els.item(i).className.match(rx)) {
          matches.push(els.item(i));
       }
    }
    return matches;
+}
+
+
+/**
+ * Nickname marker show/hide
+ */
+function ~[$prefix]~nickmarker_swap()
+{
+  if (~[$prefix]~nickmarker)
+  {
+    ~[$prefix]~nickmarker = false;
+  }
+  else
+  {
+    ~[$prefix]~nickmarker = true;
+  }
+  ~[$prefix]~refresh_nickmarker()
+}
+function ~[$prefix]~refresh_nickmarker( root )
+{
+  var nickmarker_icon = document.getElementById('~[$prefix]~nickmarker');
+  if (!root) root = document.getElementById('~[$prefix]~chat');
+  if (~[$prefix]~nickmarker)
+  {
+    nickmarker_icon.src   = "~[$rootpath]~/misc/logout.png";
+    nickmarker_icon.alt   = "Hide nickname marker";
+    nickmarker_icon.title = "Hide nickname marker";
+
+    var nickmarkers = getElementsByClassName(root, '~[$prefix]~nickmarker');
+    for(var i = 0; nickmarkers.length > i; i++)
+      nickmarkers[i].style.display = 'inline'; 
+  }
+  else
+  {
+    nickmarker_icon.src = "~[$rootpath]~/misc/login.png";
+    nickmarker_icon.alt   = "Show nickname marker";
+    nickmarker_icon.title = "Show nickname marker";
+    var nickmarkers = getElementsByClassName(root, '~[$prefix]~nickmarker');
+    for(var i = 0; nickmarkers.length > i; i++)
+      nickmarkers[i].style.display = 'none'; 
+  }
 }
