@@ -2,6 +2,7 @@
 var ~[$prefix]~timeout;
 var ~[$prefix]~nicklist = Array();
 var ~[$prefix]~nickmarker = true;
+var ~[$prefix]~datehour = true;
 /* unique client id for each windows used to identify a open window
    this id is passed every time the JS communicate with server */
 var ~[$prefix]~clientid = '~[$clientid]~';
@@ -161,6 +162,7 @@ function ~[$prefix]~parseAndPost(id, date, heure, nick, words, cmd, fromtoday, o
   var root = document.getElementById('~[$prefix]~msg' + id);
   ~[$prefix]~colorizeNicks(root);
   ~[$prefix]~refresh_nickmarker(root);
+  ~[$prefix]~refresh_datehour(root);
 }
 
 /* scroll down from the posted message height */
@@ -222,6 +224,16 @@ function getElementsByClassName( root, clsName ) {
    return matches;
 }
 
+function showClass(root, clname, show)
+{
+  var elts = getElementsByClassName(root, clname);
+  for(var i = 0; elts.length > i; i++)
+    if (show)
+      elts[i].style.display = 'inline';
+    else
+      elts[i].style.display = 'none';
+}
+
 
 /**
  * Nickname marker show/hide
@@ -247,18 +259,51 @@ function ~[$prefix]~refresh_nickmarker( root )
     nickmarker_icon.src   = "~[$rootpath]~/misc/logout.png";
     nickmarker_icon.alt   = "Hide nickname marker";
     nickmarker_icon.title = "Hide nickname marker";
-
-    var nickmarkers = getElementsByClassName(root, '~[$prefix]~nickmarker');
-    for(var i = 0; nickmarkers.length > i; i++)
-      nickmarkers[i].style.display = 'inline'; 
+    showClass(root, '~[$prefix]~nickmarker', true);
   }
   else
   {
     nickmarker_icon.src = "~[$rootpath]~/misc/login.png";
     nickmarker_icon.alt   = "Show nickname marker";
     nickmarker_icon.title = "Show nickname marker";
-    var nickmarkers = getElementsByClassName(root, '~[$prefix]~nickmarker');
-    for(var i = 0; nickmarkers.length > i; i++)
-      nickmarkers[i].style.display = 'none'; 
+    showClass(root, '~[$prefix]~nickmarker', false);
+  }
+}
+
+
+/**
+ * Date/Hour show/hide
+ */
+function ~[$prefix]~datehour_swap()
+{
+  if (~[$prefix]~datehour)
+  {
+    ~[$prefix]~datehour = false;
+  }
+  else
+  {
+    ~[$prefix]~datehour = true;
+  }
+  ~[$prefix]~refresh_datehour()
+}
+function ~[$prefix]~refresh_datehour( root )
+{
+  var datehour_icon = document.getElementById('~[$prefix]~datehour');
+  if (!root) root = document.getElementById('~[$prefix]~chat');
+  if (~[$prefix]~datehour)
+  {
+    datehour_icon.src   = "~[$rootpath]~/misc/logout.png";
+    datehour_icon.alt   = "Hide date/hour";
+    datehour_icon.title = "Hide date/hour";
+    showClass(root, '~[$prefix]~date', true);
+    showClass(root, '~[$prefix]~heure', true);
+  }
+  else
+  {
+    datehour_icon.src = "~[$rootpath]~/misc/login.png";
+    datehour_icon.alt   = "Show date/hour";
+    datehour_icon.title = "Show date/hour";
+    showClass(root, '~[$prefix]~date', false);
+    showClass(root, '~[$prefix]~heure', false);
   }
 }
