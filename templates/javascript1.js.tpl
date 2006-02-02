@@ -312,7 +312,10 @@ function ~[$prefix]~refresh_nickmarker( root )
     nickmarker_icon.title = "Show nickname marker";
     var elts = getElementsByClassName(root, '~[$prefix]~nickmarker', '');
     for(var i = 0; elts.length > i; i++)
-      elts[i].removeAttribute('style');
+    {
+      /* this is not supported in konqueror =>>>  elts[i].removeAttribute('style');*/
+      elts[i].style.color = '';
+    }
   }
 }
 
