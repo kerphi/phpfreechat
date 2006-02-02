@@ -1,47 +1,3 @@
-function EcrireCookie(nom, valeur)
-{
-  var argv=EcrireCookie.arguments;
-  var argc=EcrireCookie.arguments.length;
-  var expires=(argc > 2) ? argv[2] : null;
-  var path=(argc > 3) ? argv[3] : null;
-  var domain=(argc > 4) ? argv[4] : null;
-  var secure=(argc > 5) ? argv[5] : false;
-  document.cookie=nom+"="+escape(valeur)+
-  ((expires==null) ? "" : ("; expires="+expires.toGMTString()))+
-  ((path==null) ? "" : ("; path="+path))+
-  ((domain==null) ? "" : ("; domain="+domain))+
-  ((secure==true) ? "; secure" : "");
-}
-function getCookieVal(offset)
-{
-  var endstr=document.cookie.indexOf (";", offset);
-  if (endstr==-1) endstr=document.cookie.length;
-  return unescape(document.cookie.substring(offset, endstr));
-}
-function LireCookie(nom)
-{
-  var arg=nom+"=";
-  var alen=arg.length;
-  var clen=document.cookie.length;
-  var i=0;
-  while (i<clen)
-  {
-    var j=i+alen;
-    if (document.cookie.substring(i, j)==arg) return getCookieVal(j);
-    i=document.cookie.indexOf(" ",i)+1;
-    if (i==0) break;
-  }
-  return null;
-}
-function EffaceCookie(nom)
-{
-  date=new Date;
-  date.setFullYear(date.getFullYear()-1);
-  EcrireCookie(nom,null,date);
-}
-
-
-
 /* define the JS variable used to store timer and nicknames list */
 var ~[$prefix]~timeout;
 var ~[$prefix]~nicklist = Array();
@@ -139,6 +95,7 @@ function ~[$prefix]~updateNickList()
   for (var i=0; i<nicks.length; i++)
   {
     var li = document.createElement('li');
+    li.setAttribute('class', '~[$prefix]~nickmarker ~[$prefix]~nick_'+ hex_md5(nicks[i]));
     var txt = document.createTextNode(nicks[i]);
     li.appendChild(txt);
     ul.appendChild(li);
@@ -148,6 +105,7 @@ function ~[$prefix]~updateNickList()
     nickdiv.replaceChild(ul,fc);
   else
     nickdiv.appendChild(ul,fc);
+  ~[$prefix]~colorizeNicks(nickdiv);
 }
 /* clear the nickname list */
 function ~[$prefix]~clearNickList()
@@ -182,7 +140,7 @@ function ~[$prefix]~parseAndPost(id, date, heure, nick, words, cmd, fromtoday, o
   {
     line += ' <span class="~[$prefix]~nick">';
     line += '&#x2039;';
-    line += '<span class="~[$prefix]~nickmarker ~[$prefix]~nick_'+ nick +'">';
+    line += '<span class="~[$prefix]~nickmarker ~[$prefix]~nick_'+ hex_md5(nick) +'">';
     line += nick;
     line += '</span>';
     line += '&#x203A;';
@@ -247,7 +205,7 @@ function ~[$prefix]~colorizeNicks(root)
 
 function ~[$prefix]~applyNickColor(root, nick, color)
 {
-  var nicktochange = getElementsByClassName(root, '~[$prefix]~nick_'+ nick, '')
+  var nicktochange = getElementsByClassName(root, '~[$prefix]~nick_'+ hex_md5(nick), '')
   for(var i = 0; nicktochange.length > i; i++)
     nicktochange[i].style.color = color; 
 }
@@ -304,6 +262,7 @@ function ~[$prefix]~refresh_nickmarker( root )
     nickmarker_icon.alt   = "Hide nickname marker";
     nickmarker_icon.title = "Hide nickname marker";
     ~[$prefix]~colorizeNicks(root);
+    ~[$prefix]~colorizeNicks(document.getElementById('~[$prefix]~online'));
   }
   else
   {
@@ -311,6 +270,12 @@ function ~[$prefix]~refresh_nickmarker( root )
     nickmarker_icon.alt   = "Show nickname marker";
     nickmarker_icon.title = "Show nickname marker";
     var elts = getElementsByClassName(root, '~[$prefix]~nickmarker', '');
+    for(var i = 0; elts.length > i; i++)
+    {
+      /* this is not supported in konqueror =>>>  elts[i].removeAttribute('style');*/
+      elts[i].style.color = '';
+    }
+    var elts = getElementsByClassName(document.getElementById('~[$prefix]~online'), '~[$prefix]~nickmarker', '');
     for(var i = 0; elts.length > i; i++)
     {
       /* this is not supported in konqueror =>>>  elts[i].removeAttribute('style');*/
@@ -356,5 +321,7 @@ function ~[$prefix]~refresh_clock( root )
     showClass(root, '~[$prefix]~date', '~[$prefix]~invisible', false);
     showClass(root, '~[$prefix]~heure', '~[$prefix]~invisible', false);
   }
+  /* browser automaticaly scroll up misteriously when showing the dates */
+  document.getElementById('~[$prefix]~chat').scrollTop += 20;
 }
 

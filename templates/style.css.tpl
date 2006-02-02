@@ -65,6 +65,8 @@ div#~[$prefix]~online ul {
 }
 div#~[$prefix]~online li {
   border-bottom: 1px solid #DDD;
+  font-weight: bold;
+  font-size: 90%;
 }
 
 h2.~[$prefix]~title {

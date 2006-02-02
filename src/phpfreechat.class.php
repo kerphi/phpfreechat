@@ -70,6 +70,11 @@ class phpFreeChat
   function printJavaScript()
   {
     $c =& phpFreeChatConfig::Instance();
+
+    // include javascript libraries
+    echo "<script type=\"text/javascript\" src=\"../lib/javascript/md5.js\"></script>";
+    echo "<script type=\"text/javascript\" src=\"../lib/javascript/cookie.js\"></script>";
+
     // print xajax javascript
     $xajax_js = $c->rootpath.'/data/public/';
     $this->xajax->printJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");

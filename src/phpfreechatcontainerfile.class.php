@@ -218,7 +218,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     while (false !== ($file = readdir($dir_handle)))
     {
       if ($file == "." || $file == "..") continue; // skip . and .. generic files
-      if (time() > (filemtime($c->container_cfg_nickname_dir.$file)+($c->refresh_delay/1000)*4) ) // user will be disconnected after refresh_delay*4 secondes of inactivity
+      if (time() > (filemtime($c->container_cfg_nickname_dir.$file)+2+($c->refresh_delay/1000)*4) ) // user will be disconnected after 2+refresh_delay*4 secondes of inactivity
       {
         $deleted_user[] = $this->_decode($file);
         unlink($c->container_cfg_nickname_dir.$file); // disconnect expired user
@@ -340,12 +340,12 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
   
   function _encode($str)
   {
-    return base64_encode($str);
+    return base64_encode(urlencode($str));
   }
   
   function _decode($str)
   {
-    return base64_decode($str);
+    return urldecode(base64_decode($str));
   }
 }
 
