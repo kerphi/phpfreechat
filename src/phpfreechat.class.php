@@ -502,7 +502,7 @@ class phpFreeChat
     $messages    = $new_msg["messages"];
 
     // transform new message in html format
-    $html = ' ';
+    $msg_sent = false;
     foreach ($messages as $msg)
     {
       $m_id     = isset($msg[0]) ? $msg[0] : "";
@@ -519,40 +519,13 @@ class phpFreeChat
 	  $m_cmd = "cmd_me";
       }
       $xml_reponse->addScript($c->prefix."parseAndPost(".$m_id.",'".addslashes($m_date)."','".addslashes($m_heure)."','".addslashes($m_nick)."','".addslashes($m_words)."','".addslashes($m_cmd)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($from_id == 0? 1 : 0).");");
-      //      $xml_reponse->addScript($c->prefix."colorizeNicks(document.getElementById('".$c->prefix."msg".$m_id."'));");
-      
-      /*
-      $html .= '<div id="'.$c->prefix.'msg'.$msg[0].'" class="'.$c->prefix.$m_cmd.' '.$c->prefix.'message'.($from_id == 0 ? " ".$c->prefix."oldmsg" : "").'">';
-      $html .= '<span class="'.$c->prefix.'date'.(($m_date!="" && date("d/m/Y") == $m_date) ? " ".$c->prefix."invisible" : "" ).'">'.$m_date.'</span> ';
-      $html .= '<span class="'.$c->prefix.'heure">'.$m_heure.'</span> ';
-      if ($m_cmd == "cmd_msg")
-      {
-	$html .= '<span class="'.$c->prefix.'nick">&lt;'.$m_nick.'&gt;</span> ';
-	$html .= '<span class="'.$c->prefix.'words">'.$m_words.'</span>';
-      }
-      else if ($m_cmd == "cmd_notice" || $m_cmd == "cmd_me")
-      {
-	$html .= '<span class="'.$c->prefix.'words">* '.$m_words.'</span>';
-      }
-      $html .= '</div>';*/
-      
+      $msg_sent = true;
     }
   	
-    if ($html != "") // do not send anything if there is no new messages to show
+    if ($msg_sent)
     {
       // store the new msg id
       $_SESSION[$c->prefix."from_id_".$c->id."_".$clientid] = $new_from_id;
-      // append new messages to chat zone
-      //      $xml_reponse->addAppend($c->prefix."chat", "innerHTML", $html);
-
-      
-      // move the scrollbar from N line down
-      /*
-      $xml_reponse->addScript('var div_msg; var msg_height = 0;');
-      foreach ($messages as $msg)
-        $xml_reponse->addScript('div_msg = document.getElementById(\''.$c->prefix.'msg'.$msg[0].'\'); msg_height += div_msg.offsetHeight+2;');
-      $xml_reponse->addScript('document.getElementById(\''.$c->prefix.'chat\').scrollTop += msg_height;');
-      */
     }
 
     // remove the lock

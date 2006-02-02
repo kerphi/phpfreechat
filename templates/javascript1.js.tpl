@@ -1,39 +1,77 @@
+function EcrireCookie(nom, valeur)
+{
+  var argv=EcrireCookie.arguments;
+  var argc=EcrireCookie.arguments.length;
+  var expires=(argc > 2) ? argv[2] : null;
+  var path=(argc > 3) ? argv[3] : null;
+  var domain=(argc > 4) ? argv[4] : null;
+  var secure=(argc > 5) ? argv[5] : false;
+  document.cookie=nom+"="+escape(valeur)+
+  ((expires==null) ? "" : ("; expires="+expires.toGMTString()))+
+  ((path==null) ? "" : ("; path="+path))+
+  ((domain==null) ? "" : ("; domain="+domain))+
+  ((secure==true) ? "; secure" : "");
+}
+function getCookieVal(offset)
+{
+  var endstr=document.cookie.indexOf (";", offset);
+  if (endstr==-1) endstr=document.cookie.length;
+  return unescape(document.cookie.substring(offset, endstr));
+}
+function LireCookie(nom)
+{
+  var arg=nom+"=";
+  var alen=arg.length;
+  var clen=document.cookie.length;
+  var i=0;
+  while (i<clen)
+  {
+    var j=i+alen;
+    if (document.cookie.substring(i, j)==arg) return getCookieVal(j);
+    i=document.cookie.indexOf(" ",i)+1;
+    if (i==0) break;
+  }
+  return null;
+}
+function EffaceCookie(nom)
+{
+  date=new Date;
+  date.setFullYear(date.getFullYear()-1);
+  EcrireCookie(nom,null,date);
+}
+
+
+
 /* define the JS variable used to store timer and nicknames list */
 var ~[$prefix]~timeout;
 var ~[$prefix]~nicklist = Array();
-var ~[$prefix]~nickmarker = true;
-var ~[$prefix]~datehour = true;
+
+var cookie = '';
+cookie = LireCookie('~[$prefix]~nickmarker');
+var ~[$prefix]~nickmarker = (cookie == 'true'); if (cookie == null) ~[$prefix]~nickmarker = true;
+cookie = LireCookie('~[$prefix]~clock');
+var ~[$prefix]~clock = (cookie == 'true'); if (cookie == null) ~[$prefix]~clock = true;
+
 /* unique client id for each windows used to identify a open window
    this id is passed every time the JS communicate with server */
 var ~[$prefix]~clientid = '~[$clientid]~';
 var ~[$prefix]~colorlist = Array(
-'#d24740',
-'#d27540',
-'#d29540',
-'#d2ba40',
-'#d2d240',
-'#b0d240',
-'#84d240',
-'#53d240',
-'#40d251',
-'#40d273',
-'#40d29a',
-'#40d2c1',
-'#40c1d2',
-'#4098d2',
-'#4073d2',
-'#4042d2',
-'#6e40d2',
-'#9840d2',
-'#bf40d2',
-'#d240d2',
-'#d240b2',
-'#d2408b',
-'#d24067',
-'#d24045',
-'#d84524',
-'#7b7b7b',
-'#ffff6d'
+'#CCCCCC',
+'#000000',
+'#3636B2',
+'#2A8C2A',
+'#C33B3B',
+'#C73232',
+'#80267F',
+'#66361F',
+'#D9A641',
+'#3DCC3D',
+'#1A5555',
+'#2F8C74',
+'#4545E6',
+'#B037B0',
+'#4C4C4C',
+'#959595'
 );
 var ~[$prefix]~nickcolor = Array();
 
@@ -136,14 +174,20 @@ function ~[$prefix]~parseAndPost(id, date, heure, nick, words, cmd, fromtoday, o
   line += '<div id="~[$prefix]~msg'+ id +'" class="~[$prefix]~'+ cmd +' ~[$prefix]~message';
   if (oldmsg == 1) line += ' ~[$prefix]~oldmsg';
   line += '">';
-  line += '<span class="~[$prefix]~nickmarker ~[$prefix]~nick_'+ nick +'">&nbsp;</span>';
   line += '<span class="~[$prefix]~date';
   if (fromtoday == 1) line += ' ~[$prefix]~invisible';
   line += '">'+ date +'</span> ';
   line += '<span class="~[$prefix]~heure">'+ heure +'</span> ';
-  line += '<span class="~[$prefix]~nick">';
   if (cmd == 'cmd_msg')
-    line += '&#x2039;'+ nick +'&#x203A;</span> ';
+  {
+    line += ' <span class="~[$prefix]~nick">';
+    line += '&#x2039;';
+    line += '<span class="~[$prefix]~nickmarker ~[$prefix]~nick_'+ nick +'">';
+    line += nick;
+    line += '</span>';
+    line += '&#x203A;';
+    line += '</span> ';
+  }
   if (cmd == 'cmd_notice' || cmd == 'cmd_me')
     line += '<span class="~[$prefix]~words">* '+ words +'</span> ';
   else
@@ -162,7 +206,7 @@ function ~[$prefix]~parseAndPost(id, date, heure, nick, words, cmd, fromtoday, o
   var root = document.getElementById('~[$prefix]~msg' + id);
   ~[$prefix]~colorizeNicks(root);
   ~[$prefix]~refresh_nickmarker(root);
-  ~[$prefix]~refresh_datehour(root);
+  ~[$prefix]~refresh_clock(root);
 }
 
 /* scroll down from the posted message height */
@@ -203,30 +247,29 @@ function ~[$prefix]~colorizeNicks(root)
 
 function ~[$prefix]~applyNickColor(root, nick, color)
 {
-  var nicktochange = getElementsByClassName(root, '~[$prefix]~nick_'+ nick)
+  var nicktochange = getElementsByClassName(root, '~[$prefix]~nick_'+ nick, '')
   for(var i = 0; nicktochange.length > i; i++)
-  {       
-    nicktochange[i].style.backgroundColor = color; 
-    /*nicktochange[i].style.paddingLeft = '5px'; */
-  }
+    nicktochange[i].style.color = color; 
 }
 
-function getElementsByClassName( root, clsName ) {
+function getElementsByClassName( root, clsName, clsIgnore ) {
    var i, matches=new Array();
    var els=root.getElementsByTagName('*');
-   var rx = new RegExp('.*'+clsName+'.*');
+   var rx1 = new RegExp('.*'+clsName+'.*');
+   var rx2 = new RegExp('.*'+clsIgnore+'.*');
 
    for(i=0; i<els.length; i++) {
-      if(els.item(i).className.match(rx)) {
+      if(els.item(i).className.match(rx1) &&
+         (clsIgnore == '' || !els.item(i).className.match(rx2)) ) {
          matches.push(els.item(i));
       }
    }
    return matches;
 }
 
-function showClass(root, clname, show)
+function showClass(root, clsName, clsIgnore, show)
 {
-  var elts = getElementsByClassName(root, clname);
+  var elts = getElementsByClassName(root, clsName, clsIgnore);
   for(var i = 0; elts.length > i; i++)
     if (show)
       elts[i].style.display = 'inline';
@@ -249,6 +292,7 @@ function ~[$prefix]~nickmarker_swap()
     ~[$prefix]~nickmarker = true;
   }
   ~[$prefix]~refresh_nickmarker()
+  EcrireCookie('~[$prefix]~nickmarker', ~[$prefix]~nickmarker);
 }
 function ~[$prefix]~refresh_nickmarker( root )
 {
@@ -256,17 +300,19 @@ function ~[$prefix]~refresh_nickmarker( root )
   if (!root) root = document.getElementById('~[$prefix]~chat');
   if (~[$prefix]~nickmarker)
   {
-    nickmarker_icon.src   = "~[$rootpath]~/misc/logout.png";
+    nickmarker_icon.src   = "~[$rootpath]~/misc/color-on.png";
     nickmarker_icon.alt   = "Hide nickname marker";
     nickmarker_icon.title = "Hide nickname marker";
-    showClass(root, '~[$prefix]~nickmarker', true);
+    ~[$prefix]~colorizeNicks(root);
   }
   else
   {
-    nickmarker_icon.src = "~[$rootpath]~/misc/login.png";
+    nickmarker_icon.src = "~[$rootpath]~/misc/color-off.png";
     nickmarker_icon.alt   = "Show nickname marker";
     nickmarker_icon.title = "Show nickname marker";
-    showClass(root, '~[$prefix]~nickmarker', false);
+    var elts = getElementsByClassName(root, '~[$prefix]~nickmarker', '');
+    for(var i = 0; elts.length > i; i++)
+      elts[i].removeAttribute('style');
   }
 }
 
@@ -274,36 +320,38 @@ function ~[$prefix]~refresh_nickmarker( root )
 /**
  * Date/Hour show/hide
  */
-function ~[$prefix]~datehour_swap()
+function ~[$prefix]~clock_swap()
 {
-  if (~[$prefix]~datehour)
+  if (~[$prefix]~clock)
   {
-    ~[$prefix]~datehour = false;
+    ~[$prefix]~clock = false;
   }
   else
   {
-    ~[$prefix]~datehour = true;
+    ~[$prefix]~clock = true;
   }
-  ~[$prefix]~refresh_datehour()
+  ~[$prefix]~refresh_clock()
+  EcrireCookie('~[$prefix]~clock', ~[$prefix]~clock);
 }
-function ~[$prefix]~refresh_datehour( root )
+function ~[$prefix]~refresh_clock( root )
 {
-  var datehour_icon = document.getElementById('~[$prefix]~datehour');
+  var clock_icon = document.getElementById('~[$prefix]~clock');
   if (!root) root = document.getElementById('~[$prefix]~chat');
-  if (~[$prefix]~datehour)
+  if (~[$prefix]~clock)
   {
-    datehour_icon.src   = "~[$rootpath]~/misc/logout.png";
-    datehour_icon.alt   = "Hide date/hour";
-    datehour_icon.title = "Hide date/hour";
-    showClass(root, '~[$prefix]~date', true);
-    showClass(root, '~[$prefix]~heure', true);
+    clock_icon.src   = "~[$rootpath]~/misc/clock-on.png";
+    clock_icon.alt   = "Hide date/hour";
+    clock_icon.title = "Hide date/hour";
+    showClass(root, '~[$prefix]~date', '~[$prefix]~invisible', true);
+    showClass(root, '~[$prefix]~heure', '~[$prefix]~invisible', true);
   }
   else
   {
-    datehour_icon.src = "~[$rootpath]~/misc/login.png";
-    datehour_icon.alt   = "Show date/hour";
-    datehour_icon.title = "Show date/hour";
-    showClass(root, '~[$prefix]~date', false);
-    showClass(root, '~[$prefix]~heure', false);
+    clock_icon.src = "~[$rootpath]~/misc/clock-off.png";
+    clock_icon.alt   = "Show date/hour";
+    clock_icon.title = "Show date/hour";
+    showClass(root, '~[$prefix]~date', '~[$prefix]~invisible', false);
+    showClass(root, '~[$prefix]~heure', '~[$prefix]~invisible', false);
   }
 }
+

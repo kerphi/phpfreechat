@@ -100,6 +100,7 @@ span.~[$prefix]~heure, span.~[$prefix]~date {
 
 span.~[$prefix]~nick {
   color: #fbac17;
+  font-weight: bold;
 }
 
 div.~[$prefix]~input_container {
@@ -137,12 +138,12 @@ div#~[$prefix]~cmd_container {
 }
 
 
-#~[$prefix]~loginlogout {
+#~[$prefix]~loginlogout, #~[$prefix]~nickmarker, #~[$prefix]~clock {
   cursor: pointer;
   border: 1px dotted #393; /* same as container color */
 }
 
-#~[$prefix]~loginlogout:hover {
+#~[$prefix]~loginlogout:hover, #~[$prefix]~nickmarker:hover, #~[$prefix]~clock:hover {
   border: 1px dotted #000;
   background-color: #4A4;
 }
