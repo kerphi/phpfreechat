@@ -99,7 +99,7 @@ span.~[$prefix]~heure, span.~[$prefix]~date {
 }
 
 span.~[$prefix]~nick {
-  color: #ffd800;
+  color: #fbac17;
 }
 
 div.~[$prefix]~input_container {
