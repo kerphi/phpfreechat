@@ -55,9 +55,10 @@ class phpFreeChatConfig
     $this->default_params["css_file"]            = "";
     $this->default_params["server_script"]       = "";
     $this->default_params["useie7"]              = true;
+    $this->default_params["ie7path"]             = dirname(__FILE__)."/../lib/IE7_0_9";
     $this->default_params["smartypath"]          = dirname(__FILE__)."/../lib/Smarty-2.6.7";
     $this->default_params["xajaxpath"]           = dirname(__FILE__)."/../lib/xajax_0.2_stable";
-    $this->default_params["ie7path"]             = dirname(__FILE__)."/../data/public/IE7_0_9";
+    $this->default_params["jspath"]              = dirname(__FILE__)."/../lib/javascript";
     $this->default_params["data_private"]        = dirname(__FILE__)."/../data/private";
     $this->default_params["data_public"]         = dirname(__FILE__)."/../data/public";
     $this->default_params["shownotice"]          = true;
@@ -131,7 +132,7 @@ class phpFreeChatConfig
     $ok &= $this->_testWritableDir($this->data_public, "data_public");
     $ok &= $this->_testWritableDir($this->data_private, "data_private");
     $ok &= $this->_testWritableDir($this->data_private."/templates_c/");
-    $ok &= $this->_installDir(dirname(__FILE__)."/../lib/IE7_0_9/", $this->ie7path);
+    $ok &= $this->_installDir($this->jspath, $this->data_public."/javascript/");
     
     // ---
     // test xajax lib existance
@@ -169,6 +170,22 @@ class phpFreeChatConfig
       $this->errors[] = "Smarty.class.php not found, smarty library can't be found.";
     }
 
+
+    // ---
+    // test ie7 lib
+    $dir = $this->ie7path;
+    if ($ok && !is_dir($dir))
+    {
+      $ok = false;
+      $this->errors[] = $dir." doesn't exists, ie7 library can't be found.";
+    }
+    if ($ok && !file_exists($dir."/ie7-core.js"))
+    {
+      $ok = false;
+      $this->errors[] = "ie7-core.js not found, ie7 library can't be found.";
+    }
+    $ok &= $this->_installDir($this->ie7path, $this->data_public."/ie7/");
+    
     // ---
     // test server script
     if ($ok &&
@@ -391,7 +408,7 @@ class phpFreeChatConfig
       $this->errors[] = $src_dir." is not readable.";
       return false;
     }
-    return Copy( $src_dir, $dst_dir );
+    return phpFreeChatTools::CopyR( $src_dir, $dst_dir );
   }
 
 }

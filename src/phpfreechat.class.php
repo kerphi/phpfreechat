@@ -72,9 +72,10 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
 
     // include javascript libraries
-    echo "<script type=\"text/javascript\" src=\"../lib/javascript/md5.js\"></script>";
-    echo "<script type=\"text/javascript\" src=\"../lib/javascript/cookie.js\"></script>";
-    echo "<script type=\"text/javascript\" src=\"../lib/javascript/image_preloader.js\"></script>";
+    $js_path = phpFreeChatTools::RelativePath($_SERVER["SCRIPT_FILENAME"], $c->data_public."/javascript/");
+    echo "<script type=\"text/javascript\" src=\"".$js_path."/md5.js\"></script>";
+    echo "<script type=\"text/javascript\" src=\"".$js_path."/cookie.js\"></script>";
+    echo "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
 
     // print xajax javascript
     $xajax_js = $c->rootpath.'/data/public/';
@@ -90,7 +91,7 @@ class phpFreeChat
     // include microsoft IE6 patches
     if ($c->useie7)
     {
-      $ie7_path = phpFreeChatTools::RelativePath($_SERVER["SCRIPT_FILENAME"], $c->ie7path);
+      $ie7_path = phpFreeChatTools::RelativePath($_SERVER["SCRIPT_FILENAME"], $c->data_public."/ie7/");
       echo "<!-- compliance patch for microsoft browsers -->\n";
       echo "<!--[if lt IE 7]>\n";
       echo "  <script type=\"text/javascript\">IE7_PNG_SUFFIX = \".png\";</script>\n";
