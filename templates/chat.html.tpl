@@ -19,11 +19,11 @@
     <div id="~[$prefix]~cmd_container">
       <a href="http://www.phpfreechat.net" id="~[$prefix]~logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-~[$version]~]" title="PHP FREE CHAT [powered by phpFreeChat-~[$version]~]" /></a>
       <input id="~[$prefix]~handle" type="button" title="enter your nickname here" maxlength="~[$max_nick_len]~" value="~[$nick]~" onclick="if (!~[$prefix]~login_status) return false; ~[$prefix]~handleRequest('/asknick ' + ~[$prefix]~clientid);" />
-      <img src="~[$rootpath]~/misc/logout.png" alt="Logout" title="Logout" id="~[$prefix]~loginlogout"
+      <img src="~[$rootpath]~/misc/logout.gif" alt="Logout" title="Logout" id="~[$prefix]~loginlogout"
            onclick="~[$prefix]~connect_disconnect()"/>
-      <img src="~[$rootpath]~/misc/color-on.png" alt="Hide nickname marker" title="Hide nickname marker" id="~[$prefix]~nickmarker"
+      <img src="~[$rootpath]~/misc/color-on.gif" alt="Hide nickname marker" title="Hide nickname marker" id="~[$prefix]~nickmarker"
            onclick="~[$prefix]~nickmarker_swap()"/>
-      <img src="~[$rootpath]~/misc/clock-on.png" alt="Hide date/hour" title="Hide date/hour" id="~[$prefix]~clock"
+      <img src="~[$rootpath]~/misc/clock-on.gif" alt="Hide date/hour" title="Hide date/hour" id="~[$prefix]~clock"
            onclick="~[$prefix]~clock_swap()"/>
 
     </div>
