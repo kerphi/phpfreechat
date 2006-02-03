@@ -130,7 +130,13 @@ function ~[$prefix]~refresh_loginlogout()
   }
 }
 
-
+/* preload smileys */
+preloadImages(
+  ~[foreach from=$smileys key=s_file item=s_str]~
+   '~[$s_file]~',
+  ~[/foreach]~
+  ''
+);
 
 ~[if $connect]~
 ~[$prefix]~connect_disconnect();

@@ -100,99 +100,39 @@ class phpFreeChatConfig
       $i = new phpFreeChatConfig( $params );
     return $i;
   }
+
   
+  /**
+   * Return the selected container instance
+   * by default it is the File container
+   */
   function &getContainerInstance()
   {
-    $container_classname = "phpFreeChatContainer".$this->container_type;
-    require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
-    $container = new $container_classname($this);
+    static $container;
+    if (!isset($container))
+    {
+      $container_classname = "phpFreeChatContainer".$this->container_type;
+      require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
+      $container = new $container_classname($this);
+    }
     return $container;
   }
+
   
+  /**
+   * Initialize the phpfreechat configuration
+   * this initialisation is done once at startup then it is stored into a session cache
+   */
   function init()
   {
     $this->errors = array();
     $ok = true;
     
-    // ---
-    // test data_public directory
-    if ($ok && $this->data_public == "")
-    {
-      $ok = false;
-      $this->errors[] = "cache directory must be specified";
-    }
-    if ($ok && is_file($this->data_public))
-    {
-      $ok = false;
-      $this->errors[] = $this->data_public." must be a directory";
-    }      
-    if ($ok && !is_dir($this->data_public))
-      @phpFreeChatTools::RecursiveMkdir($this->data_public);
-    if ($ok && !is_dir(dirname($this->data_public)))
-    {
-      $ok = false;
-      $this->errors[] = dirname($this->data_public)." can't be created";
-    }      
-    if ($ok && !is_writeable($this->data_public))
-    {
-      $ok = false;
-      $this->errors[] = $this->data_public." is not writeable";
-    }
-    if ($ok && !is_readable($this->data_public))
-    {
-      $ok = false;
-      $this->errors[] = $this->data_public." is not readable";
-    }
-
-    // ---
-    // test data_private directory
-    if ($ok && $this->data_private == "")
-    {
-      $ok = false;
-      $this->errors[] = "cache directory must be specified";
-    }
-    if ($ok && is_file($this->data_private))
-    {
-      $ok = false;
-      $this->errors[] = $this->data_private." must be a directory";
-    }      
-    if ($ok && !is_dir($this->data_private))
-      @phpFreeChatTools::RecursiveMkdir($this->data_private);
-    if ($ok && !is_dir(dirname($this->data_private)))
-    {
-      $ok = false;
-      $this->errors[] = dirname($this->data_private)." can't be created";
-    }      
-    if ($ok && !is_writeable($this->data_private))
-    {
-      $ok = false;
-      $this->errors[] = $this->data_private." is not writeable";
-    }
-    if ($ok && !is_readable($this->data_private))
-    {
-      $ok = false;
-      $this->errors[] = $this->data_private." is not readable";
-    }
-    /* templates_c directory for smarty */
-    $dir = $this->data_private."/templates_c";
-    if ($ok && !is_dir($dir))
-      @phpFreeChatTools::RecursiveMkdir($dir);
-    if ($ok && !is_dir(dirname($dir)))
-    {
-      $ok = false;
-      $this->errors[] = dirname($dir)." can't be created";
-    }      
-    if ($ok && !is_writeable($dir))
-    {
-      $ok = false;
-      $this->errors[] = $dir." is not writeable";
-    }
-    if ($ok && !is_readable($dir))
-    {
-      $ok = false;
-      $this->errors[] = $dir." is not readable";
-    }
-
+    $ok &= $this->_testWritableDir($this->data_public, "data_public");
+    $ok &= $this->_testWritableDir($this->data_private, "data_private");
+    $ok &= $this->_testWritableDir($this->data_private."/templates_c/");
+    $ok &= $this->_installDir(dirname(__FILE__)."/../lib/IE7_0_9/", $this->ie7path);
+    
     // ---
     // test xajax lib existance
     $dir = $this->xajaxpath;
@@ -206,12 +146,13 @@ class phpFreeChatConfig
       $ok = false;
       $this->errors[] = "xajax.inc.php not found, xajax library can't be found.";
     }
-    // copy public xajax js to phpfreechat public directory
     if ($ok)
     {
-      @phpFreeChatTools::RecursiveMkdir($this->data_public."/xajax_js/");
-      $ok &= copy( $this->xajaxpath."/xajax_js/xajaxCompress.php", $this->data_public."/xajax_js/xajaxCompress.php" );
-      $ok &= copy( $this->xajaxpath."/xajax_js/xajax_uncompressed.js", $this->data_public."/xajax_js/xajax_uncompressed.js" );
+      // install public xajax js to phpfreechat public directory
+      $ok &= $this->_installFile($this->xajaxpath."/xajax_js/xajaxCompress.php",
+                                 $this->data_public."/xajax_js/xajaxCompress.php");
+      $ok &= $this->_installFile($this->xajaxpath."/xajax_js/xajax_uncompressed.js",
+                                 $this->data_public."/xajax_js/xajax_uncompressed.js" );
     }
 
     // ---
@@ -228,7 +169,6 @@ class phpFreeChatConfig
       $this->errors[] = "Smarty.class.php not found, smarty library can't be found.";
     }
 
-    
     // ---
     // test server script
     if ($ok &&
@@ -246,7 +186,7 @@ class phpFreeChatConfig
     }
     
     // ---
-    // test container config
+    // run specific container initialisation
     if ($ok)
     {
       $container_classname = "phpFreeChatContainer".$this->default_params["container_type"];
@@ -378,6 +318,82 @@ class phpFreeChatConfig
     $_SESSION[$session_id] = serialize(get_object_vars($this));
     if ($this->debug) pxlog("saveInSession[".$this->getId()."]: nick=".$this->nick, "chatconfig", $this->getId());
   }
+
+
+
+  function _testWritableDir($dir, $name = "")
+  {
+    if ($dir == "")
+    {
+      $this->errors[] = ($name!="" ? $name : $dir)." directory must be specified";
+      return false;
+    }
+
+    if (is_file($dir))
+    {
+      $this->errors[] = $dir." must be a directory";
+      return false;
+    }
+    if (!is_dir($dir))
+      @phpFreeChatTools::RecursiveMkdir($dir);
+    if (!is_dir($dir))
+    {
+      $this->errors[] = $dir." can't be created";
+      return false;
+    }
+    if (!is_writeable($dir))
+    {
+      $this->errors[] = $dir." is not writeable";
+      return false;
+    }
+    if (!is_readable($dir))
+    {
+      $this->errors[] = $dir." is not readable";
+      return false;
+    }
+    return true;
+  }
+
+  function _installFile($src_file, $dst_file)
+  {
+    $src_dir = dirname($src_file);
+    $dst_dir = dirname($dst_file);
+    
+    if (!is_file($src_file))
+    {
+      $this->errors[] = $src_file." is not a file.";
+      return false;
+    }
+    if (!is_readable($src_file))
+    {
+      $this->errors[] = $src_file." is not readable.";
+      return false;
+    }      
+    if (!is_dir($src_dir))
+    {
+      $this->errors[] = $src_dir." is not a directory.";
+      return false;
+    }
+    if (!is_dir($dst_dir))
+      phpFreeChatTools::RecursiveMkdir($dst_dir);
+    return copy( $src_file, $dst_file );
+  }
+
+  function _installDir($src_dir, $dst_dir)
+  {
+    if (!is_dir($src_dir))
+    {
+      $this->errors[] = $src_dir." is not a directory.";
+      return false;
+    }
+    if (!is_readable($src_dir))
+    {
+      $this->errors[] = $src_dir." is not readable.";
+      return false;
+    }
+    return Copy( $src_dir, $dst_dir );
+  }
+
 }
 
 ?>

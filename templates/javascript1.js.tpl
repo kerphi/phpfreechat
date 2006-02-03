@@ -3,9 +3,9 @@ var ~[$prefix]~timeout;
 var ~[$prefix]~nicklist = Array();
 
 var cookie = '';
-cookie = LireCookie('~[$prefix]~nickmarker');
+cookie = getCookie('~[$prefix]~nickmarker');
 var ~[$prefix]~nickmarker = (cookie == 'true'); if (cookie == null) ~[$prefix]~nickmarker = true;
-cookie = LireCookie('~[$prefix]~clock');
+cookie = getCookie('~[$prefix]~clock');
 var ~[$prefix]~clock = (cookie == 'true'); if (cookie == null) ~[$prefix]~clock = true;
 
 /* unique client id for each windows used to identify a open window
@@ -250,7 +250,7 @@ function ~[$prefix]~nickmarker_swap()
     ~[$prefix]~nickmarker = true;
   }
   ~[$prefix]~refresh_nickmarker()
-  EcrireCookie('~[$prefix]~nickmarker', ~[$prefix]~nickmarker);
+  setCookie('~[$prefix]~nickmarker', ~[$prefix]~nickmarker);
 }
 function ~[$prefix]~refresh_nickmarker( root )
 {
@@ -299,7 +299,7 @@ function ~[$prefix]~clock_swap()
     ~[$prefix]~clock = true;
   }
   ~[$prefix]~refresh_clock()
-  EcrireCookie('~[$prefix]~clock', ~[$prefix]~clock);
+  setCookie('~[$prefix]~clock', ~[$prefix]~clock);
 }
 function ~[$prefix]~refresh_clock( root )
 {

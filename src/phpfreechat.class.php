@@ -74,6 +74,7 @@ class phpFreeChat
     // include javascript libraries
     echo "<script type=\"text/javascript\" src=\"../lib/javascript/md5.js\"></script>";
     echo "<script type=\"text/javascript\" src=\"../lib/javascript/cookie.js\"></script>";
+    echo "<script type=\"text/javascript\" src=\"../lib/javascript/image_preloader.js\"></script>";
 
     // print xajax javascript
     $xajax_js = $c->rootpath.'/data/public/';
@@ -449,7 +450,8 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
 
     // get the actual nicklist
-    $oldnicklist = $_SESSION[$c->prefix."nicklist_".$c->id."_".$clientid];
+    $nicklist_sid = $c->prefix."nicklist_".$c->id."_".$clientid;
+    $oldnicklist = isset($_SESSION[$nicklist_sid]) ? $_SESSION[$nicklist_sid] : array();
     
     $container =& $c->getContainerInstance();
     $disconnected_users = $container->removeObsoletNick();
@@ -462,7 +464,7 @@ class phpFreeChat
     {
       if ($c->debug) pxlog("Cmd_getOnlineNick[".$c->sessionid."]: nicklist updated - nicklist=".var_export($users, true), "chat", $c->id);
 
-      $_SESSION[$c->prefix."nicklist_".$c->id."_".$clientid] = $users;
+      $_SESSION[$nicklist_sid] = $users;
 
       $js = "";
       foreach ($users as $u)
@@ -504,7 +506,7 @@ class phpFreeChat
     // create a new lock
     $_SESSION[$c->prefix."lock_readnewmsg_".$c->id."_".$clientid] = time();
     
-    $from_id = $_SESSION[$c->prefix."from_id_".$c->id."_".$clientid];
+    $from_id = isset($_SESSION[$c->prefix."from_id_".$c->id."_".$clientid]) ? $_SESSION[$c->prefix."from_id_".$c->id."_".$clientid] : 0;
     
     $container =& $c->getContainerInstance();
     $new_msg = $container->readNewMsg($from_id);
