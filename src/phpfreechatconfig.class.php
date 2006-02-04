@@ -413,7 +413,7 @@ class phpFreeChatConfig
       $this->errors[] = $src_dir." is not readable.";
       return false;
     }
-    return phpFreeChatTools::CopyR( $src_dir, $dst_dir );
+    return @phpFreeChatTools::CopyR( $src_dir, $dst_dir );
   }
 
 }
