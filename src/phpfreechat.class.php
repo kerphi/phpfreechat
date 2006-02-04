@@ -173,7 +173,7 @@ class phpFreeChat
     {
       foreach ($s_strs as $s_str)
       {
-	//        $s_str = stripslashes($s_str);
+        $s_str = stripslashes($s_str); /* the :'( smileys needs this filter */
 	$query .= preg_quote($s_str,'/')."|";
 	$search[] = "/".preg_quote($s_str,'/')."/";
 	$replace[] = '<img src="'.$s_file.'" alt="'.$s_str.'" />';
