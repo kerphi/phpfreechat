@@ -312,7 +312,10 @@ class phpFreeChat
       $xml_reponse->addAssign($c->prefix."handle", "disabled", true);
     else
       $xml_reponse->addAssign($c->prefix."handle", "disabled", false);
-      
+
+    // disconnect last connected users if necessary 
+    phpFreeChat::Cmd_getOnlineNick($xml_reponse, $clientid);
+    
     // check if the wanted nickname was allready known
     if ($c->debug)
     {
