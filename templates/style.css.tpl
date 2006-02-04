@@ -1,10 +1,10 @@
-div.~[$prefix]~container * {
+div#~[$prefix]~container * {
   border: 0;
   margin: 0;
   padding: 0;
 }
 
-div.~[$prefix]~container {
+div#~[$prefix]~container {
   ~[if $width!=""]~width: ~[$width]~;~[/if]~
   border: black solid 1px;
   color: #FFF;
@@ -30,7 +30,7 @@ div#~[$prefix]~chat {
   background-color: #FFF;
 }
 
-div.~[$prefix]~smileys {
+div#~[$prefix]~smileys {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -69,12 +69,12 @@ div#~[$prefix]~online li {
   font-size: 90%;
 }
 
-h2.~[$prefix]~title {
+h2#~[$prefix]~title {
   float: left;
   font-size: 110%;
 }
 
-p.~[$prefix]~today_date {
+p#~[$prefix]~today_date {
   float: right;
   font-size: 80%;
 }
@@ -105,10 +105,10 @@ span.~[$prefix]~nick {
   font-weight: bold;
 }
 
-div.~[$prefix]~input_container {
+div#~[$prefix]~input_container {
   margin-top: 5px;
 }
-div.~[$prefix]~input_container table {
+div~[$prefix]~input_container table {
   width: 100%;
 }
 
@@ -124,7 +124,7 @@ div#~[$prefix]~cmd_container {
   width: 100%;
 }
 
-#~[$prefix]~handle {
+input#~[$prefix]~handle {
   border: black solid 1px;
   padding: 0 4px 0 4px;
   color: black;

@@ -4,6 +4,13 @@ document.getElementById('~[$prefix]~words').onkeydown = onkeydownCallback_words;
 document.getElementById('~[$prefix]~words').onfocus = onfocusCallback_words;
 document.getElementById('~[$prefix]~handle').onkeydown = onkeydownCallback_handle;
 document.getElementById('~[$prefix]~handle').onchange = onchangeCallback_handle;
+document.getElementById('~[$prefix]~container').onmouseup = onmouseupCallback_container;
+
+function onmouseupCallback_container(e)
+{
+  var w = document.getElementById('~[$prefix]~words');
+  w.focus();
+}
 
 function onunloadCallback_content(e)
 {
