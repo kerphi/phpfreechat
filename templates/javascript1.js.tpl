@@ -126,6 +126,7 @@ function ~[$prefix]~clearMessages()
 function ~[$prefix]~parseAndPost(id, date, heure, nick, words, cmd, fromtoday, oldmsg)
 {
   var msgdiv = document.getElementById('~[$prefix]~chat');
+  var nickcolor = ~[$prefix]~getAndAssignNickColor(nick);
 
   /* format and post message */
   var line = '';
@@ -140,7 +141,9 @@ function ~[$prefix]~parseAndPost(id, date, heure, nick, words, cmd, fromtoday, o
   {
     line += ' <span class="~[$prefix]~nick">';
     line += '&#x2039;';
-    line += '<span class="~[$prefix]~nickmarker ~[$prefix]~nick_'+ hex_md5(nick) +'">';
+    line += '<span ';
+    if (nickcolor != '') line += 'style="color: ' + nickcolor + '" ';
+    line += 'class="~[$prefix]~nickmarker ~[$prefix]~nick_'+ hex_md5(nick) +'">';
     line += nick;
     line += '</span>';
     line += '&#x203A;';
@@ -162,7 +165,7 @@ function ~[$prefix]~parseAndPost(id, date, heure, nick, words, cmd, fromtoday, o
 
   /* colorize messages nicknames */
   var root = document.getElementById('~[$prefix]~msg' + id);
-  ~[$prefix]~colorizeNicks(root);
+/*  ~[$prefix]~colorizeNicks(root);*/
   ~[$prefix]~refresh_nickmarker(root);
   ~[$prefix]~refresh_clock(root);
 }
@@ -180,27 +183,34 @@ function ~[$prefix]~colorizeNicks(root)
   for(var i = 0; i < ~[$prefix]~nicklist.length; i++)
   {
     var cur_nick = ~[$prefix]~nicklist[i];
-    var cur_color = '';
-    /* check the nickname is colorized or not */
-    var allready_colorized = false;
-    for(var j = 0; j < ~[$prefix]~nickcolor.length; j++)
-    {
-      if (~[$prefix]~nickcolor[j][0] == cur_nick)
-      {
-        allready_colorized = true;
-        cur_color = ~[$prefix]~nickcolor[j][1];
-      }
-    }
-    if (!allready_colorized)
-    {
-      /* take the next color from the list and colorize this nickname */
-      var cid = Math.round(Math.random()*(~[$prefix]~colorlist.length-1));
-      cur_color = ~[$prefix]~colorlist[cid];
-      ~[$prefix]~colorlist.splice(cid,1);
-      ~[$prefix]~nickcolor.push(new Array(cur_nick, cur_color));
-    }
+    var cur_color = ~[$prefix]~getAndAssignNickColor(cur_nick);
     ~[$prefix]~applyNickColor(root, cur_nick, cur_color);
   }
+}
+
+/* get the corresponding nickname color */
+function ~[$prefix]~getAndAssignNickColor(nick)
+{
+  /* check the nickname is colorized or not */
+  var allready_colorized = false;
+  var nickcolor = '';
+  for(var j = 0; j < ~[$prefix]~nickcolor.length; j++)
+  {
+    if (~[$prefix]~nickcolor[j][0] == nick)
+    {
+      allready_colorized = true;
+      nickcolor = ~[$prefix]~nickcolor[j][1];
+    }
+  }
+  if (!allready_colorized)
+  {
+    /* take the next color from the list and colorize this nickname */
+    var cid = Math.round(Math.random()*(~[$prefix]~colorlist.length-1));
+    nickcolor = ~[$prefix]~colorlist[cid];
+    ~[$prefix]~colorlist.splice(cid,1);
+    ~[$prefix]~nickcolor.push(new Array(nick, nickcolor));
+  }
+  return nickcolor;
 }
 
 function ~[$prefix]~applyNickColor(root, nick, color)
