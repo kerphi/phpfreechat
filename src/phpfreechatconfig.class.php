@@ -109,13 +109,18 @@ class phpFreeChatConfig
    */
   function &getContainerInstance()
   {
-    static $container;
-    if (!isset($container))
-    {
-      $container_classname = "phpFreeChatContainer".$this->container_type;
-      require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
-      $container = new $container_classname($this);
-    }
+    // bug in php4: cant make a static phpFreeChatContainer instance because
+    // it make problems with phpFreeChatConfig references (not updated)
+    // it works well in php5, maybe there is a workeround but I don't have time to debug this
+    // to reproduce the bug: uncomment the next lines and try to change your nickname
+    //                       the old nickname will not be removed
+    //    static $container;
+    //    if (!isset($container))
+    //    {
+    $container_classname = "phpFreeChatContainer".$this->container_type;
+    require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
+    $container = new $container_classname($this);
+    //    }
     return $container;
   }
 
