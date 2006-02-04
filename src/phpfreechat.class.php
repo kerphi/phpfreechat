@@ -155,7 +155,7 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
     //$nickname = str_replace("\\", "", $nickname); // '\' is a forbidden charactere for nicknames
     $nickname = trim($nickname);
-    $nickname = substr($nickname, 0, $c->max_nick_len);
+    $nickname = utf8_substr($nickname, 0, $c->max_nick_len);
     return $nickname;
   }
   

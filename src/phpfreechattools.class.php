@@ -150,6 +150,16 @@ class phpFreeChatTools
 }
 
 /**
+ * The utf8 version of substr
+ */
+function utf8_substr($str,$from,$len)
+{
+  return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'.
+                      '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s',
+                      '$1',$str);
+}
+
+/**
  * file_get_contents
  * define an alternative file_get_contents when this function doesn't exists on the used php version (<4.3.0)
  */
