@@ -374,7 +374,7 @@ class phpFreeChat
     if ( $newnickid == "undefined" )
     {
       // this is a real nickname change
-      $container->changeNick($newnick, $oldnickid);
+      $container->changeNick($newnick);
       $oldnick = $c->nick;
       $c->nick = $newnick;
       $c->saveInSession();
@@ -386,7 +386,8 @@ class phpFreeChat
       
       // new nickname is undefined (not used) and
       // current nickname (oldnickname) is not mine or is undefined
-      if ($oldnickid != "" && $oldnickid != $c->sessionid)
+      if ($oldnickid != "undefined" &&
+          $oldnickid != $c->sessionid)
         phpFreeChat::Cmd_notice($xml_reponse, $clientid, $c->nick." is connected", 2);
     }
     else if ($newnickid == $c->sessionid)

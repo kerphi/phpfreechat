@@ -30,7 +30,8 @@ require_once dirname(__FILE__)."/phpfreechatcontainer.class.php";
 class phpFreeChatContainerFile extends phpFreeChatContainer
 {
   var $_users = NULL;
-
+  var $_cache_nickid = array();
+  
   function getDefaultConfig()
   {
     $c =& $this->c;
@@ -153,32 +154,40 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
    */
   function getNickId($nickname)
   {
-    $c =& $this->c;
-    $nickid = "undefined";
-    $myfilename = $c->container_cfg_nickname_dir.$this->_encode($nickname);
-    if (file_exists($myfilename) && filesize($myfilename)>0)
+    if (!isset($this->_cache_nickid[$nickname]))
     {
-      // write the nickid into the new nickname file
-      $fp = fopen($myfilename, "r");
-      $nickid = fread($fp, filesize($myfilename));
-      if ($nickid == "") $nickid = "undefined";
-      fclose($fp);
+      $c =& $this->c;
+      $nickid = "undefined";
+      $myfilename = $c->container_cfg_nickname_dir.$this->_encode($nickname);
+      if (file_exists($myfilename))
+      {
+        $fsize = filesize($myfilename);
+        if ($fsize>0)
+        {
+          // write the nickid into the new nickname file
+          $fp = fopen($myfilename, "r");
+          $nickid = fread($fp, $fsize);
+          if ($nickid == "") $nickid = "undefined";
+          fclose($fp);
+        }
+      }
+      $this->_cache_nickid[$nickname] = $nickid;
+      //if ($c->debug) pxlog("getNickId[".$c->sessionid."]: nickname=".$nickname." nickid=".$nickid, "chat", $c->id);
     }
-    //if ($c->debug) pxlog("getNickId[".$c->sessionid."]: nickname=".$nickname." nickid=".$nickid, "chat", $c->id);
-    return $nickid;
+    return $this->_cache_nickid[$nickname];
   }
 
   /**
    * create a file containing the new nickname id
    * and delete oldnickname file if the nickname id match (oldnickname file is mine)
    */
-  function changeNick($newnick, $oldnickid = "")
+  function changeNick($newnick)
   {
     $c =& $this->c;
     $nickid = $c->sessionid;
     // delete the old nickname file only if the nickid match
     // ie: do not delete nickname if it's not mine
-    if ($oldnickid == "") $oldnickid = $this->getNickId($c->nick);
+    $oldnickid = $this->getNickId($c->nick);
     if ($nickid == $oldnickid)
       unlink($c->container_cfg_nickname_dir.$this->_encode($c->nick));
     
