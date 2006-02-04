@@ -322,6 +322,6 @@ function ~[$prefix]~refresh_clock( root )
     showClass(root, '~[$prefix]~heure', '~[$prefix]~invisible', false);
   }
   /* browser automaticaly scroll up misteriously when showing the dates */
-  document.getElementById('~[$prefix]~chat').scrollTop += 20;
+  document.getElementById('~[$prefix]~chat').scrollTop += 30;
 }
 
