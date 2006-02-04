@@ -1,4 +1,4 @@
-  phpFreeChat est un serveur de chat libre, simple, rapide et paramétrable
+  Un serveur de chat libre, simple, rapide et paramétrable
 
     Simple
          Vous avez seulement 3 lignes de php à copier/coller dans la page
@@ -8,9 +8,13 @@
          Le chat fontionnera chez tout le monde car il est basé sur HTTP, il
          vous suffit donc d'avoir un navigateur Web connecté à internet pour
          pouvoir chatter.
+         Tous les jeux de caractères sont supportés ! Que vous soyez Russe,
+         Japonais, Turque, Chinois, ou Arabe, tous les caractères
+         s'afficheront car phpfreechat utilise XML couplé à UTF8 pour encoder
+         les caractères.
     Rapide
          La technologie AJAX est utilisée pour afficher périodiquement et
-         sans effets de clignotements les nouveaux messages et les nouvelles
+         sans effets de clignotement les nouveaux messages et les nouvelles
          personnes connectées.
          Les conversations sont stockées dans des fichiers, les ressources du
          serveur sont donc économisées au maximum.
@@ -33,28 +37,21 @@
          Je demande juste, par gratitude, de ne pas enlever la signature logo
          sur les pages de votre chat.
 
-    Toutes les commandes de phpFreeChat sont inspirées du protocole irc[21],
-    et son interface est inspirée de mIRC[22] et XChat[23], vos utilisateurs
+    Toutes les commandes de phpFreeChat sont inspirées du protocole irc,
+    et son interface est inspirée de mIRC et XChat, vos utilisateurs
     ne seront donc pas dépaysés.
 
     Les technologies utilisées par phpFreeChat sont :
 
-       *  php[24] : pour le coté serveur, les conversations sont simplement
+       *  php : pour le coté serveur, les conversations sont simplement
           enregistrées dans des fichiers
-       *  xajax[25] : pour la communication asynchrone entre le client et le
+       *  xajax : pour la communication asynchrone entre le client et le
           serveur
 
     (phpFreeChat n'utilise PAS mysql)
-
-    ©2006 phpFreeChat
 
 
 --------------------------------------------------------------
 List of References
 
 Document's URL:  http://www.phpfreechat.net/overview.fr.html
-[21] http://www.irc.org
-[22] http://www.mirc.com/
-[23] http://www.xchat.org/
-[24] http://www.php.net/
-[25] http://www.xajaxproject.org/

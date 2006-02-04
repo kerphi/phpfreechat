@@ -1,4 +1,4 @@
-  phpFreeChat is a free, simple, fast and customizable chat server
+  A free, simple, fast and customizable chat server
 
     Simple
          You only have to copy/paste 3 lines of code to have a nice
@@ -8,6 +8,10 @@
          No problems with firewall, this chat is based on HTTP so that you
          only need a web browser and an internet connection. (everybody can
          easily chat !)
+         No problems with none latin characteres ! Are you Russian, Japanese,
+         Turk, Chinese, or Arabic ? Whatever, phpfreechat will display nicely
+         your characters because it uses XML with UTF8 to encode characters.
+
     Fast
          AJAX technology is used to smoothly refresh (no flicker) and display
          the chat zone and the nickname zone.
@@ -30,29 +34,20 @@
          I just ask, by gratitude, to keep the sign logo on the pages of your
          chat.
 
-    All phpFreeChat commands are inspired by the irc[21] protocol, and its
-    interface is inspired by mIRC[22] and XChat[23], so that users won't be
+    All phpFreeChat commands are inspired by the irc protocol, and its
+    interface is inspired by mIRC and XChat, so that users won't be
     disoriented.
 
     Techonologies used by phpFreeChat are :
 
-       *  php[24] : on the server side : conversations are simply stored in
+       *  php : on the server side : conversations are simply stored in
           filesystems.
-       *  xajax[25] : for the asynchronous communication between the client
+       *  xajax : for the asynchronous communication between the client
           and the server
 
     (phpFreeChat do NOT use mysql)
-
-    ©2006 phpFreeChat
-
 
 --------------------------------------------------------------
 List of References
 
 Document's URL:  http://www.phpfreechat.net/overview.en.html
-[21] http://www.irc.org
-[22] http://www.mirc.com/
-[23] http://www.xchat.org/
-[24] http://www.php.net/
-[25] http://www.xajaxproject.org/
-

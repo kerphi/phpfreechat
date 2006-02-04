@@ -1,25 +1,36 @@
   Install
 
-    To install phpFreeChat you need :
+    To install phpFreeChat you need:
 
-       *  A Web server with the php module (apache for example)
+       *  A Web server (apache, IIS ...) with php (4 or 5)
        *  A write access on the Web server (ssh, FTP, or other)
 
-    You don't need a Mysql database because the system uses files to store
-    information.
+    By default, you don't need Mysql database because the system uses files
+    to store messages and nicknames.
 
-    Once the archive downloaded, unzip it on your server and allow write
+       *  Quick start
+       *  Advanced configuration
+
+    Quick start
+
+    Once the archive downloaded[20], unzip it on your server and allow write
     access to the directories phpfreechat/data/public and
-    phpfreechat/data/private (where convertations will be stored). Then
-    create and modify the script that displays the chat. You can take example
-    on scripts in phpfreechat/demo directory.
+    phpfreechat/data/private (where convertations will be stored).
+
+    On linux :
+
+    tar xzf phpfreechat-x.x.tar.gz
+    chmod a+w phpfreechat-x.x/data/*
+
+    Then create and modify the script that displays the chat. You can take
+    example on scripts in phpfreechat-x.x/demo directory.
 
     Here is the minimum script required for your chat to work (inspired from
     demo1) :
 
     <?php
 
-    require_once "phpfreechat.class.php";
+    require_once "phpfreechat.class.php"; // adjust your own path
     $chat = new phpFreeChat();
 
     ?>
@@ -36,13 +47,155 @@
       </body>
     </html>
 
+    Advanced configuration
 
+    The chat is usable using default configuration but a lot of options can
+    be set to customize the chat. For exemple, to change the refresh speed to
+    2 seconds, copy/paste this piece of code:
 
-    ©2006 phpFreeChat
+    <?php
 
+    require_once "phpfreechat.class.php"; // adjust your own path
+    $params["refresh_delay"] = 2000; // 2000ms = 2s
+    $chat = new phpFreeChat();
+
+    ?>
+    [... copy/paste here the above HTML codes ...]
+
+    Another exemple, to assign the initial nickname to "guest" (this can be
+    useful when the chat is integrated into a portal or a forum which provide
+    a login/password), copy/paste this piece of code:
+
+    <?php
+
+    require_once "phpfreechat.class.php"; // adjust your own path
+    $params["nick"] = "guest"; // it can be useful to take nicks from a database
+    $chat = new phpFreeChat();
+
+    ?>
+    [... copy/paste here the above HTML codes ...]
+
+    Now see the full parameters list:
+
+    title
+         Used to change the chat title that is visible just above the
+         messages list.
+         ("My phpFreeChat"value by default)
+    channel
+         Used to create a room. Technicaly this parameter is used to choose
+         the data (messages + nicknames) storage destination. For a better
+         explanation, see this FAQ entry[21].
+         (auto-generated string based on the title parameter by default)
+    nick
+         If you have allready identified the user (forum, portal...) you can
+         force the user's nickname here, this will skip the "Please enter
+         your nickname" popup.
+         ("" value by default, means users must choose a nickname when he
+         connect)
+    frozen_nick
+         Setting this to true will forbid the user to change his nickname
+         later.
+         (false value by default)
+    max_nick_len
+         This is the maximum nickname length, a longer nickname is forbidden.
+         ( 15 caracteres by default)
+    max_text_len
+         This is the maximum message length, a longer message is forbidden.
+         ( 250 caracteres by default)
+    refresh_delay
+         This is the time to wait between two refreshs. A refresh is a HTTP
+         request which ask server if there is new things to display. If there
+         is no new messages, then a empty HTTP response is returned.
+         ( 5000ms = 5s value by default)
+    max_msg
+         This is the message history length. When a user connect, he can see
+         the history. Number of message he can see is defined by this
+         parameter.
+         (20 lines by default)
+    height
+         height of the chat area.
+         (440px value by default)
+    width
+         width of the chat area.
+         ("" value by default, means it's given by the CSS)
+    css_file
+         Used to customize display (skin). You can define you're own CSS
+         (take demo5 as an exemple) in order to change the default chat
+         style. Just give the path to your CSS customized file.
+         ("" value by default, means the default style sheet is used)
+    server_script
+         Used to specify the script which will handle asynchronous request.
+         Very useful when the chat (client) script is resource consuming.
+         ("" value by default, means the script used to receive users
+         commands is the same as the client script)
+    useie7
+         Setting this to false will disable IE7[22] scripts used to improve
+         display for the crappy InternetExplorer.
+         (true value by default)
+    ie7path
+         Specify the IE7 path. It's useful if you allready have a IE7 library
+         installed and you want to save bytes on your server.
+         (dirname(__FILE__)."/../lib/IE7_0_9" value by default)
+    jspath
+         Specify the javascript libraries path (md5, cookie ...).
+         (dirname(__FILE__)."/../lib/javascript" value by default)
+
+    smartypath
+         Specify the Smarty[23] path. It's useful if you allready have a
+         Smarty library installed and you want to save bytes on your server.
+         (dirname(__FILE__)."/../lib/Smarty-2.6.7" value by default)
+    xajaxpath
+         Specify the xajax[24] path. It's useful if you allready have a xajax
+         library installed and you want to save bytes on your server.
+         (dirname(__FILE__)."/../lib/xajax_0.2_stable" value by default);
+    data_private
+         Used by the filesystem container to store chat data. Used by smarty
+         to store compiled templates. Tip: you can optimize your chat
+         performances, see this FAQ entry[25].
+         (dirname(__FILE__)."/../data/private" value by default)
+    data_public
+         This path must be reachable by your web server. IE7 scripts and
+         xajax JS compiled scripts will be stored here.
+         (dirname(__FILE__)."/../data/public" value by default)
+    shownotice
+         Setting it to 0 will disable nickname changes notices and
+         connect/disconnect notices. Setting it to 1 will only disable
+         connect/disconnect notices. Setting it to 2 will show every notices.
+         (2 value by default)
+    debug
+         For developers, setting it to true will activate logings and
+         debuging console.
+         (false value by default)
+    connect
+         Setting it to false will oblige user to click on the connect button
+         if he wants to chat.
+         (true value by default, means when the chat web page is open, a
+         connection to the chat is automaticaly done)
+    smileytheme
+         Smileys themes can be defined, this parameter specify which theme
+         this chat will use. See this explanation[26] if you want to create a
+         smiley theme.
+         ("default" value by default)
+    prefix
+         Used to prefix every javascript functions, css ids and css class in
+         order to avoid variables overlaps.
+         ("phpfreechat_" value by default)
+    container_type
+         used to specify the used container. For the moment, only a file
+         container has been written but in the future several containers
+         (mysql, irc, msn, jabber...) will surely be available.
+         ("File" value by default)
 
 
 --------------------------------------------------------------
 List of References
 
 Document's URL:  http://www.phpfreechat.net/install.en.html
+[20] download.en.html
+[21] faq.en.html#multiple-channels
+[22] http://dean.edwards.name/IE7/
+[23] http://smarty.php.net/
+[24] http://www.xajaxproject.org/
+[25] faq.en.html#tmpfs
+[26] customize.en.html#cust-smileys
+
