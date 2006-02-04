@@ -1,5 +1,5 @@
 
-div.~[$prefix]~container {
+div#~[$prefix]~container {
   border: black double 5px;
   background-image: url(demo5_customized_style_data/brick.jpg);
   padding: 20px;
@@ -15,7 +15,7 @@ div.~[$prefix]~message {
   background-color: transparent;
   background-image: url(demo5_customized_style_data/newmsg.gif);
   background-repeat: no-repeat;
-  background-position: left center;
+  background-position: right center;
 }
 
 div.~[$prefix]~oldmsg {
@@ -40,10 +40,18 @@ span.~[$prefix]~pseudo {
 #~[$prefix]~words {
 }
 
-#~[$prefix]~handle {
+input#~[$prefix]~handle {
   color: black;
   font-weight: bold;
 }
 
 div#~[$prefix]~online {
+}
+
+div.~[$prefix]~btn img {
+  border: 1px solid #FFF; /* same as container color */
+}
+div.~[$prefix]~btn img:hover {
+  border: 1px solid #000;
+  background-color: #CCC;
 }

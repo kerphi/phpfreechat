@@ -112,7 +112,7 @@ div~[$prefix]~input_container table {
   width: 100%;
 }
 
-#~[$prefix]~words {
+input#~[$prefix]~words {
   border: black solid 1px;
   width: 100%;
   height: 1.3em;
@@ -133,20 +133,21 @@ input#~[$prefix]~handle {
   margin-bottom: 5px;
 }
 
-#~[$prefix]~logo {
+a#~[$prefix]~logo {
   position: absolute;
   right: 0;
   top: 0;
 }
 
-
-#~[$prefix]~loginlogout, #~[$prefix]~nickmarker, #~[$prefix]~clock {
+div.~[$prefix]~btn {
+  display: inline;
   cursor: pointer;
-  border: 1px dotted #393; /* same as container color */
 }
-
-#~[$prefix]~loginlogout:hover, #~[$prefix]~nickmarker:hover, #~[$prefix]~clock:hover {
-  border: 1px dotted #000;
+div.~[$prefix]~btn img {
+  border: 1px solid #393; /* same as container color */
+}
+div.~[$prefix]~btn img:hover {
+  border: 1px solid #000;
   background-color: #4A4;
 }
 
