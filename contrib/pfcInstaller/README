@@ -1,0 +1,13 @@
+This package will help you create your own web installer.
+The PHP script installer can unpack a web-based installer
+and the files to install and install it with one file. To
+make a web installer you will need to open createinstaller.php
+in your browser. Click next, than enter the path of the script.
+Click next, next, next, than see it compile. Go open the file
+install.php it created in your browser than follow than test it
+in a new path-- see if it works. Distribute it, or customise it
+to change the look. Than become a developer for the PHP script
+installer project and help me develop a script that also
+(here;s my todo list) configures your newly installed script,
+popluate a database, download updates from the web, or install
+from a file.

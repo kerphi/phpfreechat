@@ -1,0 +1,562 @@
+define('HTTP_FILE',('http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']));
+$step = isset($_REQUEST['step'])?$_REQUEST['step']:1;
+if(isset($_REQUEST['stepNext'])){
+	$step++;
+}else if(isset($_REQUEST['stepBack'])){
+	$step--;
+}
+
+function gpv($name){//getPostValue
+	if(isset($_REQUEST[$name])){
+		return stripslashes($_REQUEST[$name]);
+	}else{
+		return null;
+	}
+}
+
+$hidden = array('path','agreecheck');
+
+$pages = array();
+
+//constant
+PAGES
+//end constant
+foreach($pages as $n=>$v){
+	switch($v['title']){
+		case 'License':
+			$pages[$n]['uses'] = array('agreecheck');
+			break;
+		case 'Install Path':
+			$pages[$n]['uses'] = array('path');
+			break;
+		default:
+			$pages[$n]['uses'] = array();
+			break;
+	}
+}
+
+if(isset($_GET['file'])){
+switch($_GET['file']){
+case 'sp':
+header('Content-Type: image/gif');//EEEEEEVVVIIIILLLL GIF!
+echo base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEUAAAALAAAAAABAAEAAAICRAEAOw==');
+break;
+case 'hb':
+$data = "";
+$data .= '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAICAgICAgICAgIDAgICBAUEAgIEBQYF';
+$data .= 'BQUFBQYHBgYGBgYGBwcICAkICAcKCgsLCgoODg4ODg4ODg4ODg4ODg7/2wBDAQMD';
+$data .= 'AwYFBgsHBwsODAoMDhEQEBAQEREODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4O';
+$data .= 'Dg4ODg4ODg4ODg4ODg7/wAARCAAmAigDAREAAhEBAxEB/8QAHQAAAgIDAQEBAAAA';
+$data .= 'AAAAAAAAAAQFBgIDBwEICf/EADwQAAEDAgUBBgMEBwkAAAAAAAEAAgMEEQUSITFB';
+$data .= 'UQYTIjJCYQdxgTNikcEUFSMkUqGxJUNTY5LR0uHx/8QAGwEAAwEBAQEBAAAAAAAA';
+$data .= 'AAAAAAECAwQFBgf/xAAjEQEBAQACAgICAwEBAAAAAAAAAQIDERIhBDEFQVFhcRMi';
+$data .= '/9oADAMBAAIRAxEAPwD5HX7g/PwgBACAEAIAQAgBACAEAIAQDEXCE06YrtzfinGd';
+$data .= 'YRySQSCWI2c1NK3U1S2sh76PwvZ9owcFQirbhGKNntS1BDZm/Zk+pZ8nH+ymlj8v';
+$data .= 'CzhaQ+J4DQYw099H3dQB+zqW7j59VvnXTHpzDE8ExHAZryDPTk+Cpb5T7HotppNq';
+$data .= 'VpKjC+0mHPwDHLMik1oa71QP6t9jyFWs+URL4ODdq+zVf2exGehrWeNtjDIPK9h2';
+$data .= 'e08grj1OvVenw8s1FImjLfNss9ZbER+yffkrP6UesHNzLeXsiT48ri7cFY6ybAE3';
+$data .= 'tlsOqg2B8Qe07G6r7CKkYYiQ7nZQ3l7a7XtZJTEgpBiUG1ObqkcLuHRSbS4XBus7';
+$data .= 'DRk7CdtllY3xWNNOYHZXeU8IzRrPb6V+GmMtmo46eQ+Ondld7jcL2/hcnb5v8hxd';
+$data .= 'V1qrosjxND69wvQs6eZnf8trInVERPrafEtOz76IyxuZYOGqS5e3kTsjswNrIgWm';
+$data .= 'iqWysaTv6gm5eTKThcb9Lpszg1N72ITBmN2wvsqhJaN+Zoy/VRYg3FJlPspOHQkp';
+$data .= '6gNg4/FI4ebcFpcNVDWVPwPbkjaTcAi/yXNYWYr3a6ibLEyqaNQFv8bX6Tpx/EIb';
+$data .= 'xm2ulgujQxfajVLNZGEAX6rHUdsV2UW0CzbRizRI2ezv6oIxE4tOh1GyZWJNpFm6';
+$data .= '301KfTHpgdyri48QAgBACAEAIBdcr2AgBACAEAIAQAgBACAEAIAQDERtZCamYLED';
+$data .= '3UorGopsnjaLtKuVnSMVTLQTiaPxAednBHROktjZI6mGOspXG29+WnonljqLrgWN';
+$data .= 'tr2/olQctZHt9/3HusOTj6Oa7WA+FwHXhKM9VvPcTsdBMxssb9HsOqudxj2oGN9h';
+$data .= '3se+uwR3u+i/4lay9jtCujoO1GHO7NdoD+iVkAIwbE3j7J/+G/7jlWs+Xos78fb5';
+$data .= 'y7S4BW4FXT4fXQmCop3We3g/eB5BXHc3vqvV4eXyVJ0Y8pH1WVy3YQvdG7uzsUZv';
+$data .= 'RnHjNc6arWwiLmuF+nBWGobWLG/ztdI2uogEjNN28op410ierb6hTG4PHsgMDzp9';
+$data .= 'UjYOA0SNoe3/ANUqaet/opsBKVnO91jqLlRszCNVnG2KvfYLHP1djNPHK/LHU2Y8';
+$data .= 'nYX8p/FdnxeXw04Pn8PeX2lhQGIYbkPnYvpM/wDqPkuX1p7DAIXWaLMdupTb20V9';
+$data .= 'JpnaPk72VdL49IV0RaNdym37bqSf9Hk12O6Sd57WuGZrmh3XYqu3JYaa/wCt9QmR';
+$data .= '1vXZMHoJsunXdHSLEi0tOoUUj0TxlsfopVG8nTa6DbGnY9OEgkGxEsLwc1/Fb+ay';
+$data .= '8jzv9H6F+d2V3AUcjS3o/WxCrpJY7agaD5KeP1VSenFsSp3RSyRu0HpXd32xjn2I';
+$data .= 'RFkjrj3CjU9OzF9K1VxgOL/4tVztso69ik0bDrb+aCZsJ0sNkBJxODmAHfUN+iqV';
+$data .= 'lWSswgBACAEAIAQC65XsBACAEAIAQAgBACAEAIAQAgN7OEIqVgckipmMB7S0+Jp3';
+$data .= 'CSahK6mMTtvCfK5aMyFDiD8LqCdX0sulRF+Y9wl30dna0zDIYqykk0Pihmatvtz3';
+$data .= '06BgWNxYtCWzWZXw/at2v94LnuS+0q8mO5B97K8sLTVPiBa6x1/2VXjZ3otiuAYb';
+$data .= 'jnjP7vWt+zqm7/XqFUHbmnazstUYtQsw/FYwzEKJv9k4ju17R6CVes+U/s+Pm/51';
+$data .= '8uYlQT0NVNS1MRingdlljO9159/h7vHuanpDuY3kfIrKrZwTW8JV5oMSRgj2KrUB';
+$data .= 'B7SLi3yKw6ONYzZSHcJmQnhcCXgb7lRWudFt7joktgfdI2Ft/ZIMSOEjLPbYpKaH';
+$data .= 'i4ICz1DiOe2wN1hctCzHOZI17DYtNwitNTuPs74T9qo8Xw2HvX/vUQ7uqF+nP1X0';
+$data .= 'fwPkecfIfkvjeGv6dfq6Xu3nTwP29l315kpaSA5LO/FKw+1crobAH3USN+OodzbK';
+$data .= 'myWw6c6td5eCl2y5VgjfmsOmyqVzn2P09xwmTa2Tbqn2SXhfsEqzpxhsb3UDs+x2';
+$data .= 'e/BG4SX2yafawQEhHJM5l26RtFnbLKyHJDNM60rNdLo19Nk9C4B93Hwv8p+a56J9';
+$data .= 'KB2soTDUGaMeGXxXXVw67jLX25XisOZpI+ZWjbiqmVLfAW22Kx1HVlBvFnLNtGxt';
+$data .= 'uduUVL3TMbbBBwzTykEt2zEWKadQ7wCNitJUvEAIAQAgBACAXXK9gIAQAgBACAEA';
+$data .= 'IAQAgBACAEAxHwhNScDQhnU3Tt003UoPy0YqITG5u+x905pNiiYlRyU73seNRyrE';
+$data .= 'rXg2LtoZf1dXO/cpz+zlP927r8jylnfRcmO/ayS99h1RHU078krDdrhz/wBFbajm';
+$data .= 'jo+GYvHjVGZY/BUMGWpg6FRlnqGGutfNp7raMNQzBVZXa69FXTK7T8VRT1cRpquJ';
+$data .= 'ksLuu/06KeukeTnPxF+FB7QUUmIYNZ+LU7D3f+cwek+/Qrn5pOT/AF1/E5/H/Hxn';
+$data .= 'UQy080tNUxuhmiJbJE8WII0sQuLvt72deRAsINxxypPtIQyAgNdzutc6KsJohc9P';
+$data .= 'SlciEdRodFjYoEZhYoCHlZ3Uh10Oyh0ZvbB1jqmbA8pGwKQani4SVCrgpMpM2+qx';
+$data .= 'rTFRkjSNduFm2zV8+HvaKXAcajc11opjaQLq+Jy+Gnn/AJD4/nl+geFywY/gkdVT';
+$data .= 'uDyReM/kfkvppuX2+O1jxoFMZI3NOj2eZX2z7QFbT3aWv4U1pmqrPD3chBHyQ6s0';
+$data .= 'u0uifduhCmw7O1hp5u8Y13NtlLmsSjJOBxwtGZ5viF9PZMGonm4vuqKpSJ9xwosZ';
+$data .= 'nYn2frypVDvH5pKM08pa7TRrwQ5TqAwBlAA9PKltE1FOwtjb0y6LHx9lie3mP0gq';
+$data .= '8OLw3xMGn5pcOutI04fXw6SR8rup5qjVUJZLYjQrLbrl7VqdmV7h77rFvKWBA3SU';
+$data .= 'zcN0E2NOoQEnG9pZbbU5FUZWPVZhACAEAIAQC65XsBACAEAIAQAgBACAEAIAQAgN';
+$data .= 'zEIqUgKEJundq0qUrRSHNZZ0V7ieE09fTF1g2aMeB/5KsaZ2OO4phrRnsRotrg8b';
+$data .= 'P9nMRfWxSYRU3e+lYXU0/wBwel35I4d/plz469pCGtqcGq46umd4m2zs4cD6Sq36';
+$data .= 'Z/brImjrKOnr4g5jKpgeGncFbYcWyEhLHacLoZU7TVjtA7XojrtnqLbhWKSNlaQC';
+$data .= 'RHb8N9Fhy49Cb8XPvjT8LcMx7Aa3t/hBbheLYYwPxeH0VDL5c2mzx/NedvHl/r2f';
+$data .= 'h8/p8Rsl9J3XNL29Ox4CRJfgbhWaRjdnbb8FrL2loliFyDxsVOsmTH9Fl0qlqtge';
+$data .= 'M3IU1fHUaENGLtCpqoxKQYWSBWVoGqS40OFwVnoyErND7LLUak2PdFIxzDYi2VTF';
+$data .= '2dx9r/AztTO6akw+VpfT4hoR/C/qPZe78Pl7nT5T8hw9V9GYhStp57s8r9bL0MV4';
+$data .= 'tnVQGKUjHNEw0z7harVGoiDQbcrPUXKrkwGZ3zVOnLKlmMcgaPK47KbC3lZI3bEI';
+$data .= 'lc9h+J5zELRBsO45TI7G7bqqJKRk2BWVSkYTduqmqbGnUpA7G4u0Pp5UtcHqc2N9';
+$data .= '9VNWsLAJaezvKWnRcv1U9+3HMfpGwVkjQeV6OfrtDnmJxZZR7C6Xi6OL6VKvYGvP';
+$data .= 'U7/iud0YqLtqpaPb6FAetP0QDMUh/wBB0TibEgeHcO1VyojFMwgBACAEB//Z';
+header('Content-Type: image/jpeg');//EEEEEEEEEEEEEVVVVVVVVVVVVVVVVVIIIIIIIIIL JPEG!
+echo base64_decode($data);
+break;
+case 'ss':
+header('Content-Type: text/css');
+echo '/**
+* @version $Id: install.css,v 1.19 2004/08/26 05:20:59 rcastley Exp $
+* @package Mambo_4.5.1
+* @copyright (C) 2000 - 2004 Miro International Pty Ltd
+* @license http://www.gnu.org/copyleft/ GNU/GPL
+* Mambo is Free Software
+*/
+body {
+	margin: 0px;
+	padding: 0px;
+	color : #333;
+	background-color : #FFF;
+	font-size : 11px;
+	font-family : Arial, Helvetica, sans-serif;
+}
+
+#wrapper {
+        border: 0px;
+        margin: 0px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0px;
+}
+
+#header {
+        background-color: #FFF;
+        background-position: right top;
+        border-bottom: 4px solid #80B5D7;
+}
+
+#headertext {
+        position: relative;
+        width: 100%;
+        background: url("'.HTTP_FILE.'?file=hb") #30569D no-repeat;
+        background-position: top right;
+        margin: 0px;
+        padding: 0px;
+        height: 35px;
+        color: white;
+        font-size: 30px;
+        font-family: FrancineHmk;
+}
+
+#stepbar {
+	background-color: #F1F3F5;
+	width: 170px !important;
+	width: 170px;
+	height: 400px;
+	font-size: 11px;
+	float: left;
+	text-align: left;
+}
+
+#step {
+	background: url(install_logo.png) no-repeat;
+	font-size: 30px;
+	font-weight: bold;
+	text-align: left;
+	color: #666666;
+	padding: 10px 0px 20px 80px;
+	white-space: nowrap;
+	position: relative;
+	float: left;
+}
+
+.step-on {
+	color: #ff9900;
+	background: #30559C;
+	font-weight: bold;
+	font-size: 13px;
+	padding: 10px;
+	border: 1px solid #cccccc;
+	margin-bottom: 2px;
+}
+
+.step-off {
+  font-size: 13px;
+	color: #999999;
+	font-weight: bold;
+	padding: 10px;
+	border: 1px solid #cccccc;
+	margin-bottom: 2px;
+}
+
+#right {
+  float: right;
+  width: 555px !important;
+  width: 545px;
+  border-left: 1px solid #cccccc;
+  padding-left: 10px;
+
+}
+
+#break {
+	height: 20px;
+}
+
+.licensetext {
+  text-align: left;
+}
+
+.license {
+  padding: 0px;
+  width: 535px;
+  height: 400px;
+}
+
+.license-form {
+  float: left;
+}
+
+.install {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 3em;
+	margin-bottom: 3em;
+	padding: 10px;
+	border: 1px solid #cccccc;
+	width: 750px;
+	background: #F1F3F5;
+}
+	
+.install h1 {
+	font-size: 15px;
+	font-weight: bold;
+ 	color: #FF9900;
+	padding: 10px 10px 4px 0px;
+ 	text-align: left;
+	border-bottom: 1px solid #FF9900;
+	margin-bottom: 10px;
+
+}
+
+.install-form {
+  position: relative;
+	text-align: left;
+	float: right;
+	width: 69%;
+}
+
+.install-text {
+  position: relative;
+	text-align: left;
+	width: 30%;
+	float: left;
+}
+
+.form-block {
+	border: 1px solid #cccccc;
+	background: #E9ECEF;
+	padding-top: 5px;
+	padding-left: 5px;
+	padding-bottom: 5px;
+	padding-right: 5px;
+}
+
+.left {
+  position: relative;
+	text-align: left;
+	float: left;
+	width: 50%;
+}
+
+.right {
+  position: relative;
+	text-align: left;
+	float: right;
+	width: 50%;
+}
+
+.far-right {
+  position: relative;
+	text-align: right;
+	float: right;
+}
+
+.far-left {
+  position: relative; 
+	text-align: left;
+	float: left;
+}
+
+.clr {
+    clear:both;
+    }
+
+.ctr {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.button {
+	border : solid 1px #999;
+	background: #C9CcCF;
+	color : #666666;
+	font-weight : bold;
+	font-size : 11px;
+	padding: 4px;
+	cursor: pointer;
+}
+
+table.content {
+	width: 80%;
+}
+
+table.content td {
+	color : #333333;
+	font-size: 11px;
+	width: 50%;
+}
+
+table.content2 {
+	width: 90%;
+}
+
+table.content2 td {
+	color : #333333;
+	font-size: 11px;
+}
+
+.toggle {
+	font-weight: bold;
+}
+
+
+/*  old stuff */
+
+
+a {
+	color : #FF9900;
+	text-decoration : none;
+}
+a:hover {
+	color : #999999;
+	text-decoration : underline;
+}
+a:active {
+	color : #FF6600;
+	text-decoration : underline;
+}
+
+.inputbox {
+
+	color: blue;
+	font-family: Arial, Helvetica, sans-serif;
+	z-index: -3;
+	font-size: 11px;
+}
+
+.small {
+	color : #333;
+	font-size : 10px;
+}
+
+.error {
+	color : #cc0000;
+	font-size : 12px;
+	font-weight : bold;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+
+select.options, input.options {
+	font-size: 8pt;
+	border: 1px solid #999;
+}
+
+form {
+	margin: 0px 0px 0px 0px;
+}
+
+
+.dottedline {
+	border-bottom: 1px solid #333;
+}
+
+.installheader {
+	color : #FFF;
+	font-size : 24px;
+}
+
+textarea {
+	color : #0000dd;
+	font-family : Arial;
+	font-size : 11px;
+	border: 1px;
+}
+/* added this d3/m8/y2005 */
+#license-tabed a{
+	border: 1px solid #cccccc;
+	border-bottom: none;
+	background: #E9ECEF;
+	padding: 3px 3px 1px 3px;/* top right bottom left */
+}
+#license-tabed{
+	text-align: left;
+}
+';
+break;
+METAFILES
+}
+die;
+}
+echo '<?xml version="1.0" encoding="iso-8859-1"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Program - Web Installer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+<link rel="stylesheet" href="'.HTTP_FILE.'?file=ss" type="text/css" />
+<script>
+var checkobj
+function agreesubmit(el){
+	checkobj=el
+	if (document.all||document.getElementById){
+		//for (i=0;i<checkobj.form.length;i++){  //hunt down submit button
+		//var tempobj=checkobj.form.elements[i]
+		//if(tempobj.type.toLowerCase()=="submit")
+		//tempobj.disabled=!checkobj.checked
+		//}
+		document.getElementById(\'stepNext\').disabled=!checkobj.checked;
+	}
+}
+
+function defaultagree(el){
+	if (!document.all&&!document.getElementById){
+		if (window.checkobj&&checkobj.checked)
+		return true
+		else{
+			alert("Please read/accept license to continue installation")
+			return false
+		}
+	}
+}
+
+</script>
+</head>
+<body><form action="'.HTTP_FILE.'" method="post" id="installform" name="installform"><div id="wrapper">
+<div id="header">
+
+<!--<div id="header"><img src="header_install.png" alt="Mambo Installation" /></div>-->
+<div id="headertext">Install PROGRAM</div>
+</div>
+</div>
+
+<div id="ctr" align="center">
+<div class="install">
+<div id="stepbar">';
+foreach($pages as $name=>$value){
+	echo '<div class="step-'.($step==$name?'on':'off').'">'.$value['title'].'</div>';
+}
+//Line 938
+echo '</div>
+<div id="right"><div id="step">'.$pages[$step]['title'].'</div>
+
+<div class="far-right">';
+if($step<5 && $pages[$step]['title']!='License'){
+echo '<input name="stepNext" id="stepNext" type="submit" class="button" value="Next >>" />';
+}else if($pages[$step]['title']=='License'){
+echo '<input name="stepNext" id="stepNext" type="submit" class="button" value="Next >>" disabled="disabled" />';
+}
+	
+foreach($hidden as $value){
+	if(!in_array($value,$pages[$step]['uses'])){
+		echo '<input name="'.$value.'" id="'.$value.'" type="hidden" value="'.gpv($value).'" />';
+	}
+}
+echo '<input name="step" type="hidden" value="'.$step.'" />
+</div>
+<div class="clr"></div>
+'.$content.'
+<div class="clr"></div>
+</div>
+<div class="clr"></div>
+</div>
+
+<div class="ctr">
+This program uses styles from the<br />
+<a href="http://www.mamboserver.com" onclick="window.open(this.href);return false;">Mambo</a>
+CMS <br /> is Free Software released under the GNU/GPL License.
+</div></form></body>
+
+</html>';
+if($step==5){
+	set_time_limit (1000);
+	function updatepb($num,$message,$overwrite=false){
+		$overwrite = $overwrite?'true':'false';
+		$num = floor($num);
+		if($num<0){$num=0;}
+		if($num>100){$num=100;}
+		$message = addslashes($message);
+		echo "\n";
+		echo '<script type="text/javascript">updatepb('.$num.',"'.$message.'");</script>';
+	}
+	echo 'Loading Javascript Message Area...';
+	$write = gpv('path');
+	updatepb(0,"Writing files and folders to $write");
+	
+	$files = $data[1];//get data from parent script
+	$count = $files[3];
+	$sizes = $files[2];
+	$i = 0;
+	//make dirs.
+	foreach($files[1] as $name=>$value){
+		if(trim($value)==''){$value = '/';}
+		$str = str_pad('Adding directory: '.$value.' ' , 68, ".");
+		if(is_dir($write.$value)){
+			$str.= '[<span style="color:#BB0;font-weight:bold;">exists</span>]';
+		}else{
+			$fo = mkdir($write.$value);
+			if($fo === false){
+				$str.= '[<span style="color:red;">failed</span>]';
+				$str.= '<div style="color:red;"><b> &gt;&gt; Failed: could not make directory. Exiting...</b></div>';
+				updatepb((($i/$count)*100),$str);
+				die($str);
+			}else{
+				$str.= '[<span style="color:green;">  ok  </span>]';
+			}
+		}
+		updatepb((($i+=2/$count)*100),$str);
+		wait();
+	}
+	//write files
+	foreach($files[0] as $fname=>$data){
+		$fo = fopen($write.$fname,'w');
+		fwrite($fo,$data);
+		fclose($fo);
+		$str = str_pad('Adding file: '.$fname.' ' , 68, ".");
+		if($fo===false){
+			$str.= '[<span style="color:red;">failed</span>]';
+			$str.= '<div>Failed: could not file. Exiting...</div>';
+			updatepb(((++$i/$count)*100),$str);
+			die($str);
+		}else{
+			$str.= '[<span style="color:green;">  ok  </span>]';
+		}
+		updatepb((($i+=$sizes[$fname]/$count)*100),$str);
+		wait();
+	}
+	updatepb(100,'DONE COPYING FILES!');
+	echo '<script type="text/javascript">window.window.setTimeout("document.installform.submit()",500);</script>';
+}
+function wait(){
+	$i=0;
+	while($i++<2000){print ' ';}
+}

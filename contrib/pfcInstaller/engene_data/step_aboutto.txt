@@ -1,0 +1,23 @@
+$content='';
+if(is_dir(gpv('path'))){
+	$content.='<p><b>The directory you chose ('.gpv('path').') allready exists.';
+	$content.='This isn\'t a really bad thing, but a feww errors may appear because directories';
+	$content.='allready exist, and any files in the list below will be overwritten.</b></p>';
+}
+$content.= '<p>You are about to install PROGRAM, the best and most secure peice
+of software there is on the face of this earth. Click next to install.</p>
+<p>Please be sure that the folder you wanted to install to, <code>'.gpv('path').'</code>,
+is correct.	Be aware that it will overwrite any files with the same name.
+No warnings will be thrown during install, so beware. (see below for existing files)</p>
+<div style="border:inset 1px #666;width:100%;text-align:left;height:30em;max-height:30em;overflow:auto;">';
+$write = gpv('path');
+$files = $data[1];//get data from parent script
+$content.= '<b>The following files will be written:</b><br />';
+foreach($files[0] as $fname=>$data){
+	$content.= $write.$fname;
+	if(file_exists($write.$fname)){
+		$content.= ' <b><span style="color:red;">WARNING!</span><br />&nbsp;&gt;&gt;&nbsp;This file exists and will be overwritten!</b><br />';
+	}
+	$content.= '<br />';
+}
+$content.= '</div>';

@@ -1,0 +1,19 @@
+$content = '<h1>Pre-installation check</h1>
+<div class="install-text">
+These settings are recommended for PHP in order to ensure full
+compatibility with PROGRAM.
+<br />
+However, it may still operate if your settings do not quite match the recommended
+(In this case, the program will only offer, and thus say, \'Limited Functionality\').
+<div class="ctr"></div>
+</div>
+<div class="install-form">
+<div class="form-block">
+<table class="content">
+<tr><td class="item">file_get_contents</td><td align="left"><b>'.(function_exists('file_get_contents')?'<span style="color:green;">Available</span>':'<span style="color:red;">Unavailable</span>').'</b></td></tr>
+<tr><td class="item">unserialize</td><td align="left"><b>'.(function_exists('unserialize')?'<span style="color:green;">Available</span>':'<span style="color:red;">Unavailable</span>').'</b></td></tr>
+<tr><td class="item">GZ Compression</td><td align="left"><b>'.(function_exists('gzuncompress')?'<span style="color:green;">Available</span>':'<span style="color:red;">Unavailable</span>').'</b></td></tr>
+</table>
+</div>
+<div class="clr"></div>
+</div>';

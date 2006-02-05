@@ -1,0 +1,17 @@
+$content = '<h1> Enter the path of your site: </h1>
+<div class="install-text">Type path to install your script. Files will go into this directory, too.
+It should not exist, it should be somthing new.</div>	
+<div class="install-form">
+<div class="form-block">
+<table class="content2"> <tbody> <tr>
+<td width="100"> PROGRAM path </td>
+<td align="center"> <input class="inputbox" name="path" id="path" size="50" value="'.getcwd().'/PPATH" type="text"> </td>
+</tr> <tr>
+<td width="100"> &nbsp; </td>
+<td class="small" align="center"> e.g. /var/www/html/PPATH </td>
+</tr> <tr> </tr> </tbody> </table>
+</div>
+</div>
+<div class="clr"> </div>
+<div id="break"> </div>
+</div>';

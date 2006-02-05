@@ -1,0 +1,22 @@
+$content = '<h1> Installing... </h1>
+<script>
+function updatepb(num,message){
+	if(num>100){num=100;}
+	if(num<0){num=0;}
+	var content = document.getElementById("install-content");
+	var newdiv = document.createElement("div");
+	newdiv.innerHTML = message;
+	content.appendChild(newdiv);
+	document.getElementById("inner").style.width = num+"%";
+}
+</script>
+<div class="clr"> </div>         
+
+<div style="border:inset 1px #666;width:100%;"><div id="inner" style="background-color:#EE3333;width:0;height:14px;"></div></div>
+<div style="border:inset 1px #666;width:100%;overflow:auto;height:500px;text-align:left;"><pre id="install-content">
+
+</pre></div>
+<div class="clr"> </div>
+<div id="break"> </div>
+</div>
+<input name="stepNext" id="stepNext" type="hidden" value="Next >>" />';
