@@ -114,3 +114,4 @@ preloadImages(
 ~[$prefix]~refresh_loginlogout();
 ~[$prefix]~refresh_nickmarker();
 ~[$prefix]~refresh_clock();
+~[$prefix]~refresh_minimize_maximize();

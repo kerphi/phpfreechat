@@ -376,4 +376,41 @@ function ~[$prefix]~refresh_loginlogout()
     loginlogout_icon.title = "Connect";
   }
 }
- 
+
+
+/**
+ * Minimize/Maximized the chat zone
+ */
+var ~[$prefix]~minmax_status = false;
+var cookie = getCookie('~[$prefix]~minmax_status');
+if (cookie != null) var ~[$prefix]~minmax_status = (cookie == 'true');
+function ~[$prefix]~swap_minimize_maximize()
+{
+  if (~[$prefix]~minmax_status)
+  {
+    ~[$prefix]~minmax_status = false;
+  }
+  else
+  {
+    ~[$prefix]~minmax_status = true;
+  }
+  setCookie('~[$prefix]~minmax_status', ~[$prefix]~minmax_status);
+  ~[$prefix]~refresh_minimize_maximize();
+}
+function ~[$prefix]~refresh_minimize_maximize()
+{
+  var content = document.getElementById('~[$prefix]~content_expandable');
+  var btn = document.getElementById('~[$prefix]~minmax');
+  if (~[$prefix]~minmax_status)
+  {
+    btn.src = "~[$rootpath]~/data/public/images/minimize.gif";
+    btn.alt = "Maximize"; btn.title = btn.alt;
+    content.style.display = 'none';
+  }
+  else
+  {
+    btn.src = "~[$rootpath]~/data/public/images/maximize.gif";
+    btn.alt = "Minimize"; btn.title = btn.alt;
+    content.style.display = 'block';
+  }
+}

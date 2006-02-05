@@ -1,6 +1,9 @@
 <div id="~[$prefix]~container">
-  <p id="~[$prefix]~today_date">Le ~[php]~echo date("d/m/Y")~[/php]~</p>
+  <img id="~[$prefix]~minmax" onclick="~[$prefix]~swap_minimize_maximize()" src="~[$rootpath]~/data/public/images/minimize.gif" alt=""/>
   <h2 id="~[$prefix]~title">~[$title|htmlspecialchars]~</h2>
+
+  <div id="~[$prefix]~content_expandable">
+
   <div id="~[$prefix]~content">
     <div id="~[$prefix]~online"></div>
     <div id="~[$prefix]~chat"></div>
@@ -39,7 +42,9 @@
   
   -->
   </script>
+  </div>
 </div>
+
 ~[if $debug]~
 <p>Debug is on, you can <a href="~[$rootpath]~/debug/console.php?chatid=~[$id]~">open the debugging console</a>.</p>
 ~[/if]~

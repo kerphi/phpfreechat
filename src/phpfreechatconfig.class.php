@@ -141,6 +141,10 @@ class phpFreeChatConfig
     $ok &= $this->_testWritableDir($this->data_private."/templates_c/");
     $ok &= $this->_installDir($this->jspath, $this->data_public."/javascript/");
     
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/shade.gif", $this->data_public."/images/shade.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/minimize.gif", $this->data_public."/images/minimize.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/maximize.gif", $this->data_public."/images/maximize.gif");
+
     // ---
     // test xajax lib existance
     $dir = $this->xajaxpath;

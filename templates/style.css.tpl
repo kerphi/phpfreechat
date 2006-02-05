@@ -7,9 +7,16 @@ div#~[$prefix]~container * {
 div#~[$prefix]~container {
   ~[if $width!=""]~width: ~[$width]~;~[/if]~
   border: black solid 1px;
-  color: #FFF;
-  background-color: #339933;
+  color: #338822;
+  background-image: url(~[$rootpath]~/data/public/images/shade.gif);
+  background-position: right;
+  background-repeat: repeat-y;
   padding: 10px;
+  min-height: 20px;
+}
+
+#~[$prefix]~minmax {
+cursor: pointer;
 }
 
 div#~[$prefix]~content {
@@ -74,9 +81,8 @@ h2#~[$prefix]~title {
   font-size: 110%;
 }
 
-p#~[$prefix]~today_date {
+img#~[$prefix]~minmax {
   float: right;
-  font-size: 80%;
 }
 
 .~[$prefix]~invisible {
