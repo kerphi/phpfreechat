@@ -13,6 +13,9 @@ $params["max_msg"]        = 15;       // max message in the history is 15 (messa
 $params["height"]         = "230px";  // height of chat area is 230px
 $params["width"]          = "800px";  // width of chat area is 800px
 $params["debug"]          = true;     // activate debug console
+$params["active"]         = false;
+$params["nickmarker"]     = false;
+$params["clock"]          = false;
 //$params["data_private"] = "/dev/shm/mychat"; // specify a special directory to write data on a tmpfs ramdisk (only work on linux)
 
 $chat = new phpFreeChat( $params );

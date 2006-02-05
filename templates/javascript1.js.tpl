@@ -4,9 +4,13 @@ var ~[$prefix]~nicklist = Array();
 
 var cookie = '';
 cookie = getCookie('~[$prefix]~nickmarker');
-var ~[$prefix]~nickmarker = (cookie == 'true'); if (cookie == null) ~[$prefix]~nickmarker = true;
+var ~[$prefix]~nickmarker = (cookie == 'true');
+if (cookie == null)
+  ~[$prefix]~nickmarker = ~[if $nickmarker]~true~[else]~false~[/if]~;
 cookie = getCookie('~[$prefix]~clock');
-var ~[$prefix]~clock = (cookie == 'true'); if (cookie == null) ~[$prefix]~clock = true;
+var ~[$prefix]~clock = (cookie == 'true');
+if (cookie == null)
+  ~[$prefix]~clock = ~[if $clock]~true~[else]~false~[/if]~;
 
 /* unique client id for each windows used to identify a open window
    this id is passed every time the JS communicate with server */
@@ -335,3 +339,41 @@ function ~[$prefix]~refresh_clock( root )
   document.getElementById('~[$prefix]~chat').scrollTop += 30;
 }
 
+/**
+ * Connect/disconnect button
+ */
+var ~[$prefix]~login_status = false;
+function ~[$prefix]~connect_disconnect()
+{
+  if (~[$prefix]~login_status)
+  {
+    ~[$prefix]~handleRequest('/quit ' + ~[$prefix]~clientid);
+    ~[$prefix]~login_status = false;
+    ~[$prefix]~clearNickList();
+    ~[$prefix]~clearMessages();
+  }
+  else
+  {
+    ~[$prefix]~handleRequest('/connect ' + ~[$prefix]~clientid);
+    ~[$prefix]~login_status = true;
+    ~[$prefix]~updateNickList();
+  }
+  ~[$prefix]~refresh_loginlogout()
+}
+function ~[$prefix]~refresh_loginlogout()
+{
+  var loginlogout_icon = document.getElementById('~[$prefix]~loginlogout');
+  if (~[$prefix]~login_status)
+  {
+    loginlogout_icon.src   = "~[$rootpath]~/misc/logout.png";
+    loginlogout_icon.alt   = "Disconnect";
+    loginlogout_icon.title = "Disconnect";
+  }
+  else
+  {
+    loginlogout_icon.src = "~[$rootpath]~/misc/login.png";
+    loginlogout_icon.alt   = "Connect";
+    loginlogout_icon.title = "Connect";
+  }
+}
+ 

@@ -99,44 +99,6 @@ function onchangeCallback_handle(e)
   }
 }
 
-/**
- * Connect/disconnect button
- */
-var ~[$prefix]~login_status = false;
-function ~[$prefix]~connect_disconnect()
-{
-  if (~[$prefix]~login_status)
-  {
-    ~[$prefix]~handleRequest('/quit ' + ~[$prefix]~clientid);
-    ~[$prefix]~login_status = false;
-    ~[$prefix]~clearNickList();
-    ~[$prefix]~clearMessages();
-  }
-  else
-  {
-    ~[$prefix]~handleRequest('/connect ' + ~[$prefix]~clientid);
-    ~[$prefix]~login_status = true;
-    ~[$prefix]~updateNickList();
-  }
-  ~[$prefix]~refresh_loginlogout()
-}
-function ~[$prefix]~refresh_loginlogout()
-{
-  var loginlogout_icon = document.getElementById('~[$prefix]~loginlogout');
-  if (~[$prefix]~login_status)
-  {
-    loginlogout_icon.src   = "~[$rootpath]~/misc/logout.png";
-    loginlogout_icon.alt   = "Disconnect";
-    loginlogout_icon.title = "Disconnect";
-  }
-  else
-  {
-    loginlogout_icon.src = "~[$rootpath]~/misc/login.png";
-    loginlogout_icon.alt   = "Connect";
-    loginlogout_icon.title = "Connect";
-  }
-}
-
 /* preload smileys */
 preloadImages(
   ~[foreach from=$smileys key=s_file item=s_str]~
@@ -145,6 +107,10 @@ preloadImages(
   ''
 );
 
-~[if $connect]~
-~[$prefix]~connect_disconnect();
+~[if $active]~
+  ~[$prefix]~connect_disconnect();
 ~[/if]~
+
+~[$prefix]~refresh_loginlogout();
+~[$prefix]~refresh_nickmarker();
+~[$prefix]~refresh_clock();

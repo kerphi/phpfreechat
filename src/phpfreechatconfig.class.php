@@ -38,7 +38,7 @@ class phpFreeChatConfig
   var $smileys        = array();
   var $version        = "";
   var $rootpath      = "";
-  var $active         = true;
+  //  var $active         = true;
   
   function phpFreeChatConfig( $params = array() )
   {
@@ -63,7 +63,9 @@ class phpFreeChatConfig
     $this->default_params["data_public"]         = dirname(__FILE__)."/../data/public";
     $this->default_params["shownotice"]          = true;
     $this->default_params["debug"]               = false;
-    $this->default_params["connect"]             = true;
+    $this->default_params["active"]              = true;
+    $this->default_params["nickmarker"]          = true;
+    $this->default_params["clock"]               = true;
     $this->default_params["smileytheme"]         = "default";
     $this->default_params["prefix"]              = "phpfreechat_";
     $this->default_params["container_type"]      = (isset($params["container_type"]) && $params["container_type"]!="") ? $params["container_type"] : "File";
@@ -290,7 +292,6 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->channel;
       $spotted_atr[] = $this->prefix;
       $spotted_atr[] = $this->debug;
-      $spotted_atr[] = $this->connect;
       $spotted_atr[] = $this->data_public; 
       $spotted_atr[] = $this->data_private;
       $spotted_atr[] = $this->smartypath;
@@ -300,6 +301,8 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->shownotice;
       $spotted_atr[] = $this->frozen_nick;
       $spotted_atr[] = $this->max_msg;
+      $spotted_atr[] = $this->clock;
+      $spotted_atr[] = $this->nickmarker;
       $this->id = md5(serialize($spotted_atr));
     }
     return $this->id;
