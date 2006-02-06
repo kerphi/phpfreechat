@@ -15,24 +15,7 @@ if (cookie == null)
 /* unique client id for each windows used to identify a open window
    this id is passed every time the JS communicate with server */
 var ~[$prefix]~clientid = '~[$clientid]~';
-var ~[$prefix]~colorlist = Array(
-'#CCCCCC',
-'#000000',
-'#3636B2',
-'#2A8C2A',
-'#C33B3B',
-'#C73232',
-'#80267F',
-'#66361F',
-'#D9A641',
-'#3DCC3D',
-'#1A5555',
-'#2F8C74',
-'#4545E6',
-'#B037B0',
-'#4C4C4C',
-'#959595'
-);
+var ~[$prefix]~colorlist = Array();
 var ~[$prefix]~nickcolor = Array();
 
 /* show error area and assign to it an error message and start the blinking of given fields */
@@ -130,7 +113,16 @@ function ~[$prefix]~clearMessages()
 function ~[$prefix]~parseAndPost(id, date, heure, nick, words, cmd, fromtoday, oldmsg)
 {
   var msgdiv = document.getElementById('~[$prefix]~chat');
-  var nickcolor = ~[$prefix]~getAndAssignNickColor(nick);
+
+  /* check the nickname is in the list or not */
+  var nickfound = false;
+  for(var i = 0; i < ~[$prefix]~nicklist.length && !nickfound; i++)
+  {
+    if (~[$prefix]~nicklist[i] == nick)
+      nickfound = true;
+  }
+  var nickcolor = '';
+  if (nickfound) nickcolor = ~[$prefix]~getAndAssignNickColor(nick);
 
   /* format and post message */
   var line = '';
@@ -192,6 +184,28 @@ function ~[$prefix]~colorizeNicks(root)
   }
 }
 
+function ~[$prefix]~reloadColorList()
+{
+  ~[$prefix]~colorlist = Array(
+    '#CCCCCC',
+    '#000000',
+    '#3636B2',
+    '#2A8C2A',
+    '#C33B3B',
+    '#C73232',
+    '#80267F',
+    '#66361F',
+    '#D9A641',
+    '#3DCC3D',
+    '#1A5555',
+    '#2F8C74',
+    '#4545E6',
+    '#B037B0',
+    '#4C4C4C',
+    '#959595'
+    );
+}
+
 /* get the corresponding nickname color */
 function ~[$prefix]~getAndAssignNickColor(nick)
 {
@@ -208,6 +222,8 @@ function ~[$prefix]~getAndAssignNickColor(nick)
   }
   if (!allready_colorized)
   {
+    /* reload the color stack if it's empty */
+    if (~[$prefix]~colorlist.length == 0) ~[$prefix]~reloadColorList();
     /* take the next color from the list and colorize this nickname */
     var cid = Math.round(Math.random()*(~[$prefix]~colorlist.length-1));
     nickcolor = ~[$prefix]~colorlist[cid];
