@@ -107,7 +107,7 @@ preloadImages(
   ''
 );
 
-~[if $active]~
+~[if $connect_at_startup]~
   ~[$prefix]~connect_disconnect();
 ~[/if]~
 

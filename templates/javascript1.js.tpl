@@ -381,7 +381,7 @@ function ~[$prefix]~refresh_loginlogout()
 /**
  * Minimize/Maximized the chat zone
  */
-var ~[$prefix]~minmax_status = false;
+var ~[$prefix]~minmax_status = ~[if $start_minimized]~true~[else]~false~[/if]~;
 var cookie = getCookie('~[$prefix]~minmax_status');
 if (cookie != null) var ~[$prefix]~minmax_status = (cookie == 'true');
 function ~[$prefix]~swap_minimize_maximize()
