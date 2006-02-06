@@ -44,6 +44,10 @@ class phpFreeChatTools
     }
     $p2 = substr($p2, strlen($p1)+1, strlen($p2)-strlen($p1));
     $res .= $p2;
+    // remove the last "/"
+    if (preg_match("/.*\/$/", $res)) $res = preg_replace("/(.*)\//","$1",$res);
+    // if rootpath is empty replace it by "." to avoide url starting with "/"
+    if ($res == "") $res = ".";
     return $res;
   }
 
