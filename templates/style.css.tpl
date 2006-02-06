@@ -8,6 +8,7 @@ div#~[$prefix]~container {
   ~[if $width!=""]~width: ~[$width]~;~[/if]~
   border: black solid 1px;
   color: #338822;
+  background-color: #d9edd8;
   background-image: url(~[$rootpath]~/data/public/images/shade.gif);
   background-position: right;
   background-repeat: repeat-y;
