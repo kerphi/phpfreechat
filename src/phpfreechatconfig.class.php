@@ -295,7 +295,7 @@ class phpFreeChatConfig
       // do not check script filename if the chat use a script for the server side
       // because it's possible to put the script at a different place than the client script
       if ($this->server_script == "")
-        $spotted_atr[] = dirname($_SERVER["SCRIPT_FILENAME"]);
+        $spotted_atr[] = $_SERVER["SCRIPT_FILENAME"];
       $spotted_atr[] = $this->title;
       $spotted_atr[] = $this->channel;
       $spotted_atr[] = $this->prefix;
