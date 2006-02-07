@@ -37,13 +37,14 @@ class phpFreeChat
   function phpFreeChat( $params = array() )
   {
     // start the session : session is used for locking purpose and cache purpose
+    session_name( "phpfreechat" );
     if(session_id() == "") session_start();
     if (isset($_GET["init"])) session_destroy();
 
     $params["sessionid"] = session_id();
     
     $c =& phpFreeChatConfig::Instance( $params );
-    
+
     // Xajax doesn't support yet static class methode call
     // I use basic functions to wrap to my statics methodes
     function handleRequest($request)
