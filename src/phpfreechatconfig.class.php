@@ -128,6 +128,22 @@ class phpFreeChatConfig
     return $container;
   }
 
+  /**
+   * Check the functions really exists on this server
+   */
+  function _checkUsedFunctions( $f_list )
+  {
+    $ok = true;
+    foreach( $f_list as $func => $err )
+    {
+      if (!function_exists( $func ))
+      {
+        $this->errors[] = $func." doesn't exists. ".$err;
+        $ok = false;
+      }
+    }
+    return $ok;
+  }
   
   /**
    * Initialize the phpfreechat configuration
@@ -137,6 +153,24 @@ class phpFreeChatConfig
   {
     $this->errors = array();
     $ok = true;
+
+    // first of all, check the used functions
+    $f_list["file_get_contents"] = "You need PHP 4 >= 4.3.0 or PHP 5";
+    $err_session_x = "You need PHP 4 or PHP 5";
+    $f_list["session_start"]   = $err_session_x;
+    $f_list["session_destroy"] = $err_session_x;
+    $f_list["session_id"]      = $err_session_x;
+    $f_list["session_name"]    = $err_session_x;    
+    $err_preg_x = "You need PHP 3 >= 3.0.9 or PHP 4 or PHP 5";
+    $f_list["preg_match"]      = $err_preg_x;
+    $f_list["preg_replace"]    = $err_preg_x;
+    $f_list["preg_split"]      = $err_preg_x;
+    $err_ob_x = "You need PHP 4 or PHP 5";
+    $f_list["ob_start"]        = $err_ob_x;
+    $f_list["ob_get_contents"] = $err_ob_x;
+    $f_list["ob_end_clean"]    = $err_ob_x;
+    $f_list["get_object_vars"] = "You need PHP 4 or PHP 5";
+    $ok &= $this->_checkUsedFunctions($f_list);
     
     $ok &= $this->_testWritableDir($this->data_public, "data_public");
     $ok &= $this->_testWritableDir($this->data_private, "data_private");
