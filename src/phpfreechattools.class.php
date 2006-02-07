@@ -151,6 +151,27 @@ class phpFreeChatTools
     $dir->close();
     return true;
   }
+
+  /**
+   * Returns the absolute script filename
+   * takes care of php cgi configuration which do not support SCRIPT_FILENAME variable.
+   */
+  function GetScriptFilename()
+  {
+    $sf = $_SERVER["SCRIPT_FILENAME"]; // for 'normal' configurations
+    if (!file_exists($sf))
+      $sf = $_SERVER["PATH_TRANSLATED"]; // for cgi configurations
+    if (!file_exists($sf))
+    {
+      echo "<pre>";
+      echo "<span style='color:red'>Error: GetScriptFilename function returns a wrong path. Please contact the pfc team (contact@phpfreechat.net) and copy/paste this array to help debugging.</span>\n";
+      print_r($_SERVER);
+      echo "</pre>";
+      exit;
+    }
+    return $sf;
+  }
+
 }
 
 /**
