@@ -2,6 +2,7 @@
 div#~[$prefix]~container {
   border: black double 5px;
   background-image: url(demo5_customized_style_data/brick.jpg);
+  background-repeat: repeat;
   padding: 20px;
   color: black;
   margin: auto;
