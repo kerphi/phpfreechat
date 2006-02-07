@@ -1,5 +1,5 @@
 <div id="~[$prefix]~container">
-  <img id="~[$prefix]~minmax" onclick="~[$prefix]~swap_minimize_maximize()" src="~[$rootpath]~/data/public/images/minimize.gif" alt=""/>
+  <img id="~[$prefix]~minmax" onclick="~[$prefix]~swap_minimize_maximize()" src="~[$rootpath]~/data/public/images/~[if $start_minimized]~maximize~[else]~minimize~[/if]~.gif" alt=""/>
   <h2 id="~[$prefix]~title">~[$title|htmlspecialchars]~</h2>
 
   <div id="~[$prefix]~content_expandable">

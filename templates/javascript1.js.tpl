@@ -419,13 +419,13 @@ function ~[$prefix]~refresh_minimize_maximize()
   var btn = document.getElementById('~[$prefix]~minmax');
   if (~[$prefix]~minmax_status)
   {
-    btn.src = "~[$rootpath]~/data/public/images/minimize.gif";
+    btn.src = "~[$rootpath]~/data/public/images/maximize.gif";
     btn.alt = "Maximize"; btn.title = btn.alt;
     content.style.display = 'none';
   }
   else
   {
-    btn.src = "~[$rootpath]~/data/public/images/maximize.gif";
+    btn.src = "~[$rootpath]~/data/public/images/minimize.gif";
     btn.alt = "Minimize"; btn.title = btn.alt;
     content.style.display = 'block';
   }
