@@ -38,8 +38,8 @@ class phpFreeChat
   {
     // start the session : session is used for locking purpose and cache purpose
     session_name( "phpfreechat" );
+    if (isset($_GET["init"])) unset($_COOKIE[session_name()]);
     if(session_id() == "") session_start();
-    if (isset($_GET["init"])) session_destroy();
 
     $params["sessionid"] = session_id();
     
