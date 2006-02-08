@@ -177,9 +177,15 @@ class phpFreeChatConfig
     $ok &= $this->_testWritableDir($this->data_private."/templates_c/");
     $ok &= $this->_installDir($this->jspath, $this->data_public."/javascript/");
     
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/shade.gif", $this->data_public."/images/shade.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/color-on.gif", $this->data_public."/images/color-on.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/color-off.gif", $this->data_public."/images/color-off.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/clock-on.gif", $this->data_public."/images/clock-on.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/clock-off.gif", $this->data_public."/images/clock-off.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/logout.gif", $this->data_public."/images/logout.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/login.gif", $this->data_public."/images/login.gif");
     $ok &= $this->_installFile(dirname(__FILE__)."/../misc/minimize.gif", $this->data_public."/images/minimize.gif");
     $ok &= $this->_installFile(dirname(__FILE__)."/../misc/maximize.gif", $this->data_public."/images/maximize.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/shade.gif", $this->data_public."/images/shade.gif");
 
     // ---
     // test xajax lib existance

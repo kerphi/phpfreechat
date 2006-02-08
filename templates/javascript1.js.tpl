@@ -288,7 +288,7 @@ function ~[$prefix]~refresh_nickmarker( root )
   if (!root) root = document.getElementById('~[$prefix]~chat');
   if (~[$prefix]~nickmarker)
   {
-    nickmarker_icon.src   = "~[$rootpath]~/misc/color-on.gif";
+    nickmarker_icon.src   = "~[$rootpath]~/data/public/images/color-on.gif";
     nickmarker_icon.alt   = "Hide nickname marker";
     nickmarker_icon.title = "Hide nickname marker";
     ~[$prefix]~colorizeNicks(root);
@@ -296,7 +296,7 @@ function ~[$prefix]~refresh_nickmarker( root )
   }
   else
   {
-    nickmarker_icon.src = "~[$rootpath]~/misc/color-off.gif";
+    nickmarker_icon.src = "~[$rootpath]~/data/public/images/color-off.gif";
     nickmarker_icon.alt   = "Show nickname marker";
     nickmarker_icon.title = "Show nickname marker";
     var elts = getElementsByClassName(root, '~[$prefix]~nickmarker', '');
@@ -337,7 +337,7 @@ function ~[$prefix]~refresh_clock( root )
   if (!root) root = document.getElementById('~[$prefix]~chat');
   if (~[$prefix]~clock)
   {
-    clock_icon.src   = "~[$rootpath]~/misc/clock-on.gif";
+    clock_icon.src   = "~[$rootpath]~/data/public/images/clock-on.gif";
     clock_icon.alt   = "Hide date/hour";
     clock_icon.title = "Hide date/hour";
     showClass(root, '~[$prefix]~date', '~[$prefix]~invisible', true);
@@ -345,7 +345,7 @@ function ~[$prefix]~refresh_clock( root )
   }
   else
   {
-    clock_icon.src = "~[$rootpath]~/misc/clock-off.gif";
+    clock_icon.src = "~[$rootpath]~/data/public/images/clock-off.gif";
     clock_icon.alt   = "Show date/hour";
     clock_icon.title = "Show date/hour";
     showClass(root, '~[$prefix]~date', '~[$prefix]~invisible', false);
@@ -381,13 +381,13 @@ function ~[$prefix]~refresh_loginlogout()
   var loginlogout_icon = document.getElementById('~[$prefix]~loginlogout');
   if (~[$prefix]~login_status)
   {
-    loginlogout_icon.src   = "~[$rootpath]~/misc/logout.png";
+    loginlogout_icon.src   = "~[$rootpath]~/data/public/images/logout.gif";
     loginlogout_icon.alt   = "Disconnect";
     loginlogout_icon.title = "Disconnect";
   }
   else
   {
-    loginlogout_icon.src = "~[$rootpath]~/misc/login.png";
+    loginlogout_icon.src = "~[$rootpath]~/data/public/images/login.gif";
     loginlogout_icon.alt   = "Connect";
     loginlogout_icon.title = "Connect";
   }
