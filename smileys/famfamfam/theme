@@ -1,0 +1,27 @@
+# This theme set based on the icons at
+# http://www.famfamfam.com/lab/icons/silk/
+#
+# Ported to PHPFreeChat by Robin Monks
+#
+# These icons are under a Creative Commons Attribution 2.5 
+# License http://creativecommons.org/licenses/by/2.5/
+
+emoticon_smile.png		 :-) :) ^_^ :o)
+emoticon_evilgrin.png	 >( >:-( >:(
+arrow_right.png		     => -> --> ==> >>>
+arrow_left.png		     <= <- <-- <== <<<
+emoticon_surprised.png :S :s :-S :-s :/ :-/ :\ :-\ :o :O :-o :-O :!?!: :?!?: O_O o_o 0.0 O.O OO 00 o.o o-o O-O 0-0 
+emoticon_grin.png		   8) 8-) B) B-) :-D :D 9_9 ^o) ^-)
+emoticon_unhappy.png   :'( :"( :( :-( :o( :-< :-{ +( +-(
+exclamation.png		     :-@ :@ (!) [!] :!:		
+lightbulb.png		       *) 0=
+emoticon_happy.png     :lol:
+emoticon_waii.png		   :{} :-{} :razz: :} :-}
+emoticon_wink.png	     ;-) ;) ;o) *_- o_- -_o
+emoticon_tongue.png    :P :-P :oP :p :-p :op ;P ;p ;-P ;-p ;op ;oP
+weather_rain.png       /// \\\ ||| :rain: :drizzle:
+weather_snow.png       :***: :snow:
+weather_sun.png        >O< :sun:
+weather_clouds.png     :""": :cloud: :clouds: 
+weather_cloudy.png     :"O": :cloudly:
+weather_lightning.png  :$:
