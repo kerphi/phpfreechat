@@ -22,6 +22,7 @@
 
 require_once dirname(__FILE__)."/phpfreechatconfig.class.php";
 require_once dirname(__FILE__)."/../debug/log.php";
+require_once dirname(__FILE__)."/phpfreechati18n.class.php";
 
 /**
  * phpFreeChat is the entry point for developpers
@@ -35,7 +36,10 @@ class phpFreeChat
   var $xajax;
   
   function phpFreeChat( $params = array() )
-  {
+  {     
+    // setup the local for translated messages
+    phpFreeChatI18N::Init(isset($params["language"]) ? $params["language"] : "en");
+
     // start the session : session is used for locking purpose and cache purpose
     session_name( "phpfreechat" );
     if (isset($_GET["init"])) unset($_COOKIE[session_name()]);
@@ -44,7 +48,7 @@ class phpFreeChat
     $params["sessionid"] = session_id();
     
     $c =& phpFreeChatConfig::Instance( $params );
-
+    
     // Xajax doesn't support yet static class methode call
     // I use basic functions to wrap to my statics methodes
     function handleRequest($request)
