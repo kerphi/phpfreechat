@@ -29,45 +29,18 @@
 class phpFreeChatContainer
 {
   var $c;
-  function phpFreeChatContainer(&$config)
-  {
-    $this->c =& $config;
-  }
-  function getDefaultConfig()
-  {
-    return array();
-  }
-  function init()
-  {
-    return array();
-  }  
-  function updateMyNick()
-  {
-    return false;
-  }
-  function removeObsoletNick()
-  {
-    return false;
-  }
-  function removeNick($nick)
-  {
-    return false;
-  }
-  function changeMyNick($newnick)
-  {
-    return $newnick;
-  }
-  function getOnlineNick()
-  {
-    return array();
-  }
-  function writeMsg($nick, $msg)
-  {
-  }
-  function readNewMsg($from_id)
-  {
-    return array();
-  }
+  function phpFreeChatContainer(&$config) { $this->c =& $config; }
+  function getDefaultConfig()     { return array(); }
+  function init()                 { return array(); }  
+  function updateNick($nickname)  { return false; }
+  function getNickId($nickname)   { return "undefined"; }
+  function changeNick($newnick)   { return false; }
+  function removeNick($nick)      { return false; }
+  function removeObsoleteNick()   { return false; }
+  function changeMyNick($newnick) { return $newnick; }
+  function getOnlineNick()        { return array(); }
+  function writeMsg($nick, $msg)  { return false; }
+  function readNewMsg($from_id)   { return array(); }
 }
 
 ?>

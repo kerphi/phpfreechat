@@ -55,6 +55,7 @@ class phpFreeChatConfig
     $this->default_params["height"]              = "440px";
     $this->default_params["width"]               = "";
     $this->default_params["css_file"]            = "";
+    $this->default_params["client_script"]       = "";
     $this->default_params["server_script"]       = "";
     $this->default_params["useie7"]              = true;
     $this->default_params["ie7path"]             = dirname(__FILE__)."/../lib/IE7_0_9";
@@ -238,6 +239,24 @@ class phpFreeChatConfig
       $this->errors[] = "ie7-core.js not found, ie7 library can't be found.";
     }
     $ok &= $this->_installDir($this->ie7path, $this->data_public."/ie7/");
+
+    // ---
+    // test client script
+    if ($ok)
+    {
+      // try to automaticaly calculate the path
+      if ($this->client_script == "")
+	$this->client_script = phpFreeChatTools::GetScriptFilename();
+	$filetotest = $this->client_script;
+	// do not take into account the url parameters
+	if (preg_match("/(.*)\?(.*)/", $filetotest, $res))
+	  $filetotest = $res[1];
+	if ( !file_exists($filetotest) )
+	{
+	  $ok = false;
+	  $this->errors[] = $filetotest." doesn't exist";
+	}
+    }
     
     // ---
     // test server script
@@ -250,10 +269,13 @@ class phpFreeChatConfig
         $filetotest = $res[1];
       if ( !file_exists($filetotest) )
       {
-        $ok = false;
+	$ok = false;
         $this->errors[] = $filetotest." doesn't exist";
       }
+      $this->server_script = phpFreeChatTools::RelativePath($this->client_script, $this->server_script)."/".basename($this->server_script);
     }
+    else
+      $this->server_script = $this->client_script;
     
     // ---
     // run specific container initialisation
@@ -271,8 +293,7 @@ class phpFreeChatConfig
     }
 
     // load root path
-    $this->rootpath = phpFreeChatTools::RelativePath(phpFreeChatTools::GetScriptFilename(),
-                                                     dirname(__FILE__).'/../');
+    $this->rootpath = phpFreeChatTools::RelativePath($this->client_script, dirname(__FILE__).'/../');
 
     // load smileys from file
     if ($ok)

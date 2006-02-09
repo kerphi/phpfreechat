@@ -37,6 +37,8 @@ class phpFreeChatTools
     $p1 = realpath(phpFreeChatTools::CleanPath($p1));
     $p2 = realpath(phpFreeChatTools::CleanPath($p2));
     $res = "";
+    //echo $p1."<br>";
+    //echo $p2."<br>";
     while( $p1 != "" && $p1 != "/" && strpos($p2, $p1) === FALSE)
     {
       $res .= "../";
@@ -158,10 +160,12 @@ class phpFreeChatTools
    */
   function GetScriptFilename()
   {
-    $sf = $_SERVER["SCRIPT_FILENAME"]; // for 'normal' configurations
-    if (!file_exists($sf))
-      $sf = $_SERVER["PATH_TRANSLATED"]; // for cgi configurations
-    if (!file_exists($sf))
+    $sf = $_SERVER["PATH_TRANSLATED"]; // check for a cgi configurations
+    if (!isset($sf) ||
+	!file_exists($sf))
+      $sf = $_SERVER["SCRIPT_FILENAME"]; // for 'normal' configurations
+    if (!isset($sf) ||
+	!file_exists($sf))
     {
       echo "<pre>";
       echo "<span style='color:red'>Error: GetScriptFilename function returns a wrong path. Please contact the pfc team (contact@phpfreechat.net) and copy/paste this array to help debugging.</span>\n";

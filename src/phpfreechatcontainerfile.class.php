@@ -217,7 +217,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
       return false;
   }
     
-  function removeObsoletNick()
+  function removeObsoleteNick()
   {
     $c =& $this->c;
     
@@ -319,7 +319,9 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     fwrite($fp, $line);
     flock ($fp, LOCK_UN); // unlock
     fclose($fp);
+    return true;
   }
+
   /**
    * used internaly
    */ 

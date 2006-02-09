@@ -77,7 +77,7 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
 
     // include javascript libraries
-    $js_path = phpFreeChatTools::RelativePath(phpFreeChatTools::GetScriptFilename(), $c->data_public."/javascript/");
+    $js_path = phpFreeChatTools::RelativePath($c->client_script, $c->data_public."/javascript/");
     echo "<script type=\"text/javascript\" src=\"".$js_path."/md5.js\"></script>";
     echo "<script type=\"text/javascript\" src=\"".$js_path."/cookie.js\"></script>";
     echo "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
@@ -96,7 +96,7 @@ class phpFreeChat
     // include microsoft IE6 patches
     if ($c->useie7)
     {
-      $ie7_path = phpFreeChatTools::RelativePath(phpFreeChatTools::GetScriptFilename(), $c->data_public."/ie7/");
+      $ie7_path = phpFreeChatTools::RelativePath($c->client_script, $c->data_public."/ie7/");
       echo "<!-- compliance patch for microsoft browsers -->\n";
       echo "<!--[if lt IE 7]>\n";
       echo "  <script type=\"text/javascript\">IE7_PNG_SUFFIX = \".png\";</script>\n";
@@ -463,7 +463,7 @@ class phpFreeChat
     $oldnicklist = isset($_SESSION[$nicklist_sid]) ? $_SESSION[$nicklist_sid] : array();
     
     $container =& $c->getContainerInstance();
-    $disconnected_users = $container->removeObsoletNick();
+    $disconnected_users = $container->removeObsoleteNick();
     foreach ($disconnected_users as $u)
       phpFreeChat::Cmd_notice($xml_reponse, $clientid, $u." disconnected (timeout)", 2);
     $users = $container->getOnlineNick();
