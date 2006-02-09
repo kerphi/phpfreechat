@@ -42,7 +42,7 @@ class phpFreeChatConfig
   
   function phpFreeChatConfig( $params = array() )
   {
-    $this->default_params["title"]               = "My phpFreeChat";
+    $this->default_params["title"]               = __("My phpFreeChat");
     $this->default_params["channel"]             = preg_replace("/[^a-z0-9]*/","",strtolower($this->default_params["title"]));
     $this->default_params["nick"]                = "";
     $this->default_params["frozen_nick"]         = false;
@@ -124,7 +124,7 @@ class phpFreeChatConfig
     //    {
     $container_classname = "phpFreeChatContainer".$this->container_type;
     require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
-    $container = new $container_classname($this);
+    $container =& new $container_classname($this);
     //    }
     return $container;
   }
@@ -145,7 +145,7 @@ class phpFreeChatConfig
     }
     return $ok;
   }
-  
+
   /**
    * Initialize the phpfreechat configuration
    * this initialisation is done once at startup then it is stored into a session cache
@@ -199,7 +199,7 @@ class phpFreeChatConfig
     if ($ok && !file_exists($dir."/xajax.inc.php"))
     {
       $ok = false;
-      $this->errors[] = "xajax.inc.php not found, xajax library can't be found.";
+      $this->errors[] = __("xajax.inc.php not found, xajax library can't be found.");
     }
     if ($ok)
     {
