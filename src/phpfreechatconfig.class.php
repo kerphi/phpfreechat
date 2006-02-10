@@ -275,7 +275,7 @@ class phpFreeChatConfig
       $this->server_script = phpFreeChatTools::RelativePath($this->client_script, $this->server_script)."/".basename($this->server_script);
     }
     else
-      $this->server_script = $this->client_script;
+      $this->server_script = "./".basename($this->client_script);
     
     // ---
     // run specific container initialisation

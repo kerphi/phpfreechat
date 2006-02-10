@@ -38,8 +38,8 @@ class phpFreeChat
   function phpFreeChat( $params = array() )
   {     
     // setup the local for translated messages
-    phpFreeChatI18N::Init(isset($params["language"]) ? $params["language"] : "en");
-
+    //phpFreeChatI18N::Init(isset($params["language"]) ? $params["language"] : "en");
+    
     // start the session : session is used for locking purpose and cache purpose
     session_name( "phpfreechat" );
     if (isset($_GET["init"])) unset($_COOKIE[session_name()]);
