@@ -160,12 +160,12 @@ class phpFreeChatTools
    */
   function GetScriptFilename()
   {
-    $sf = $_SERVER["PATH_TRANSLATED"]; // check for a cgi configurations
-    if (!isset($sf) ||
-	!file_exists($sf))
-      $sf = $_SERVER["SCRIPT_FILENAME"]; // for 'normal' configurations
-    if (!isset($sf) ||
-	!file_exists($sf))
+    $sf = isset($_SERVER["PATH_TRANSLATED"]) ? $_SERVER["PATH_TRANSLATED"] : ""; // check for a cgi configurations
+    if ( $sf == "" ||
+         !file_exists($sf))
+      $sf = isset($_SERVER["SCRIPT_FILENAME"]) ? $_SERVER["SCRIPT_FILENAME"] : ""; // for 'normal' configurations
+    if ( $sf == "" ||
+         !file_exists($sf))
     {
       echo "<pre>";
       echo "<span style='color:red'>Error: GetScriptFilename function returns a wrong path. Please contact the pfc team (contact@phpfreechat.net) and copy/paste this array to help debugging.</span>\n";
