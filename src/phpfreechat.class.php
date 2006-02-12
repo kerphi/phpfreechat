@@ -86,7 +86,7 @@ class phpFreeChat
     $output .= $this->xajax->getJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
 
     // print phpfreechat specific javascript
-    $t = new phpFreeChatTemplate(dirname(__FILE__)."/../templates/javascript1.js.tpl");
+    $t = new phpFreeChatTemplate(dirname(__FILE__)."/../templates/javascript1.js.tpl.php");
     $t->assignObject($c);
     $output .= "<script type=\"text/javascript\">\n<!--\n";
     $output .= $t->getOutput();
@@ -121,7 +121,7 @@ class phpFreeChat
   function printChat( $return = false )
   {
     $c =& phpFreeChatConfig::Instance();
-    $t = new phpFreeChatTemplate(dirname(__FILE__)."/../templates/chat.html.tpl");
+    $t = new phpFreeChatTemplate(dirname(__FILE__)."/../templates/chat.html.tpl.php");
     $t->assignObject($c);
     $output = $t->getOutput();
     if($return) 

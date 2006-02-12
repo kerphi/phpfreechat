@@ -2,7 +2,7 @@
 /**
  * i18n/fr/main.php
  *
- * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
+ * Copyright Â© 2006 Stephane Gully <stephane.gully@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -85,5 +85,32 @@ $GLOBALS["i18n"]["%s is not a file"] = "%s is not a file";
 
 // line 491 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["%s is not a directory"] = "%s is not a directory";
+
+// line 23 in chat.html.tpl.php
+$GLOBALS["i18n"]["PHP FREE CHAT [powered by phpFreeChat-%s]"] = "PHP FREE CHAT [powered by phpFreeChat-%s]";
+
+// line 296 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Hide nickname marker"] = "Hide nickname colors";
+
+// line 304 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Show nickname marker"] = "Show nickname colors";
+
+// line 389 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Disconnect"] = "Disconnect";
+
+// line 395 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Connect"] = "Connect";
+
+// line 427 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Magnify"] = "Magnify";
+
+// line 434 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Cut down"] = "Cut down";
+
+// line 345 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Hide dates and hours"] = "Hide dates and hours";
+
+// line 353 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Show dates and hours"] = "Show dates and hours";
 
 ?>

@@ -293,16 +293,16 @@ function <?php echo $prefix; ?>refresh_nickmarker( root )
   if (<?php echo $prefix; ?>nickmarker)
   {
     nickmarker_icon.src   = "<?php echo $rootpath; ?>/data/public/images/color-on.gif";
-    nickmarker_icon.alt   = "Hide nickname marker";
-    nickmarker_icon.title = "Hide nickname marker";
+    nickmarker_icon.alt   = "<?php echo __("Hide nickname marker"); ?>";
+    nickmarker_icon.title = nickmarker_icon.alt;
     <?php echo $prefix; ?>colorizeNicks(root);
     <?php echo $prefix; ?>colorizeNicks(document.getElementById('<?php echo $prefix; ?>online'));
   }
   else
   {
     nickmarker_icon.src = "<?php echo $rootpath; ?>/data/public/images/color-off.gif";
-    nickmarker_icon.alt   = "Show nickname marker";
-    nickmarker_icon.title = "Show nickname marker";
+    nickmarker_icon.alt   = "<?php echo __("Show nickname marker"); ?>";
+    nickmarker_icon.title = nickmarker_icon.alt;
     var elts = getElementsByClassName(root, '<?php echo $prefix; ?>nickmarker', '');
     for(var i = 0; elts.length > i; i++)
     {
@@ -342,16 +342,16 @@ function <?php echo $prefix; ?>refresh_clock( root )
   if (<?php echo $prefix; ?>clock)
   {
     clock_icon.src   = "<?php echo $rootpath; ?>/data/public/images/clock-on.gif";
-    clock_icon.alt   = "Hide date/hour";
-    clock_icon.title = "Hide date/hour";
+    clock_icon.alt   = "<?php echo __("Hide dates and hours"); ?>";
+    clock_icon.title = clock_icon.alt;
     showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', true);
     showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', true);
   }
   else
   {
     clock_icon.src = "<?php echo $rootpath; ?>/data/public/images/clock-off.gif";
-    clock_icon.alt   = "Show date/hour";
-    clock_icon.title = "Show date/hour";
+    clock_icon.alt   = "<?php echo __("Show dates and hours"); ?>";
+    clock_icon.title = clock_icon.alt;
     showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', false);
     showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', false);
   }
@@ -386,14 +386,14 @@ function <?php echo $prefix; ?>refresh_loginlogout()
   if (<?php echo $prefix; ?>login_status)
   {
     loginlogout_icon.src   = "<?php echo $rootpath; ?>/data/public/images/logout.gif";
-    loginlogout_icon.alt   = "Disconnect";
-    loginlogout_icon.title = "Disconnect";
+    loginlogout_icon.alt   = "<?php echo __("Disconnect"); ?>";
+    loginlogout_icon.title = loginlogout_icon.alt;
   }
   else
   {
     loginlogout_icon.src = "<?php echo $rootpath; ?>/data/public/images/login.gif";
-    loginlogout_icon.alt   = "Connect";
-    loginlogout_icon.title = "Connect";
+    loginlogout_icon.alt   = "<?php echo __("Connect"); ?>";
+    loginlogout_icon.title = loginlogout_icon.alt;
   }
 }
 
@@ -424,13 +424,15 @@ function <?php echo $prefix; ?>refresh_minimize_maximize()
   if (<?php echo $prefix; ?>minmax_status)
   {
     btn.src = "<?php echo $rootpath; ?>/data/public/images/maximize.gif";
-    btn.alt = "Maximize"; btn.title = btn.alt;
+    btn.alt = "<?php echo __("Magnify"); ?>";
+    btn.title = btn.alt;
     content.style.display = 'none';
   }
   else
   {
     btn.src = "<?php echo $rootpath; ?>/data/public/images/minimize.gif";
-    btn.alt = "Minimize"; btn.title = btn.alt;
+    btn.alt = "<?php echo __("Cut down"); ?>";
+    btn.title = btn.alt;
     content.style.display = 'block';
   }
 }

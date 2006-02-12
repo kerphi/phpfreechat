@@ -30,7 +30,7 @@
 $GLOBALS["i18n"]["My Chat"] = "Mon chat";
 
 // line 201 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s non trouvÃ©, la librairie %x n'existe pas Ã  l'endroit spÃ©cifiÃ©.";
+$GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s non trouvÃ©, la librairie %s n'existe pas Ã  l'endroit spÃ©cifiÃ©.";
 
 // line 355 in phpfreechat.class.php
 $GLOBALS["i18n"]["Please enter your nickname"] = "Entrez votre pseudonyme";
@@ -60,30 +60,57 @@ $GLOBALS["i18n"]["%s doesn't exist: %s"] = "%s n'existe pas: %s";
 $GLOBALS["i18n"]["You need %s"] = "Vous avez besoin de %s";
 
 // line 241 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist, %s library can't be found"] = "%s n'existe pas, la librairie %s n'a pas été trouvée";
+$GLOBALS["i18n"]["%s doesn't exist, %s library can't be found"] = "%s n'existe pas, la librairie %s n'a pas Ã©tÃ© trouvÃ©e";
 
 // line 280 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["%s doesn't exist"] = "%s n'existe pas";
 
 // line 433 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s directory must be specified"] = "le répertoire %s doit être indiqué";
+$GLOBALS["i18n"]["%s directory must be specified"] = "le rÃ©pertoire %s doit Ãªtre indiquÃ©";
 
 // line 439 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s must be a directory"] = "%s doit être un répertoire";
+$GLOBALS["i18n"]["%s must be a directory"] = "%s doit Ãªtre un rÃ©pertoire";
 
 // line 446 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s can't be created"] = "%s ne peux pas être créé";
+$GLOBALS["i18n"]["%s can't be created"] = "%s ne peux pas Ãªtre crÃ©Ã©";
 
 // line 451 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not writeable"] = "%s ne peux pas être écrit";
+$GLOBALS["i18n"]["%s is not writeable"] = "%s ne peux pas Ãªtre Ã©crit";
 
 // line 496 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not readable"] = "%s ne peux pas être lu";
+$GLOBALS["i18n"]["%s is not readable"] = "%s ne peux pas Ãªtre lu";
 
 // line 469 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["%s is not a file"] = "%s n'est pas un fichier";
 
 // line 491 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not a directory"] = "%s n'est pas un répertoire";
+$GLOBALS["i18n"]["%s is not a directory"] = "%s n'est pas un rÃ©pertoire";
+
+// line 23 in chat.html.tpl.php
+$GLOBALS["i18n"]["PHP FREE CHAT [powered by phpFreeChat-%s]"] = "PHP FREE CHAT [propulsÃ© par phpFreeChat-%s]";
+
+// line 296 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Hide nickname marker"] = "Cacher la couleur des pseudonymes";
+
+// line 304 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Show nickname marker"] = "Montrer la couleur des pseudonymes";
+
+// line 389 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Disconnect"] = "Se dÃ©connecter";
+
+// line 395 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Connect"] = "Se connecter";
+
+// line 427 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Magnify"] = "Agrandir";
+
+// line 434 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Cut down"] = "RÃ©duire";
+
+// line 345 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Hide dates and hours"] = "Cacher la date";
+
+// line 353 in javascript1.js.tpl.php
+$GLOBALS["i18n"]["Show dates and hours"] = "Montrer la date";
 
 ?>

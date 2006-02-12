@@ -71,7 +71,12 @@ class phpFreeChatI18N
                             dirname(__FILE__)."/phpfreechattools.class.php",
                             dirname(__FILE__)."/phpfreechatconfig.class.php",
                             dirname(__FILE__)."/phpfreechatcontainer.class.php",
-                            dirname(__FILE__)."/phpfreechatcontainerfile.class.php" );
+                            dirname(__FILE__)."/phpfreechatcontainerfile.class.php",
+                            dirname(__FILE__)."/../templates/chat.html.tpl.php",
+                            dirname(__FILE__)."/../templates/javascript1.js.tpl.php",
+                            dirname(__FILE__)."/../templates/javascript2.js.tpl.php",
+                            dirname(__FILE__)."/../templates/style.css.tpl.php"
+                            );
     $res = array();
     foreach ( $src_filenames as $src_filename )
     {
@@ -104,6 +109,7 @@ class phpFreeChatI18N
       $new_content = "";
       foreach($res as $str => $com)
       {
+        //        echo "str=".$str."\n";
         if (preg_match("/".preg_quote($str)."/", $old_content) == 0)
           $new_content .= $com."\n\$GLOBALS[\"i18n\"][\"".$str."\"] = \"\";\n\n";
       }
