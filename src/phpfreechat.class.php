@@ -69,37 +69,44 @@ class phpFreeChat
    *   <?php $chat->printJavascript(); ?>
    * </code>
    */
-  function printJavaScript()
+  function printJavaScript( $return = false )
   {
+    $output = '';
     $c =& phpFreeChatConfig::Instance();
 
     // include javascript libraries
     $js_path = phpFreeChatTools::RelativePath($c->client_script, $c->data_public."/javascript/");
-    echo "<script type=\"text/javascript\" src=\"".$js_path."/md5.js\"></script>";
-    echo "<script type=\"text/javascript\" src=\"".$js_path."/cookie.js\"></script>";
-    echo "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
+    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/md5.js\"></script>";
+    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/cookie.js\"></script>";
+    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
 
     // print xajax javascript
     $xajax_js = $c->rootpath.'/data/public/';
-    $this->xajax->printJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
+    $output .= $this->xajax->getJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
 
     // print phpfreechat specific javascript
     $smarty =& phpFreeChatTools::GetSmarty();
     $c->assignToSmarty($smarty);
-    echo "<script type=\"text/javascript\">\n<!--\n";
-    $smarty->display("javascript1.js.tpl");
-    echo "\n-->\n</script>\n";
+    $output .= "<script type=\"text/javascript\">\n<!--\n";
+    $output .= $smarty->fetch("javascript1.js.tpl", null, null, false);
+    $output .= "\n-->\n</script>\n";
    
     // include microsoft IE6 patches
     if ($c->useie7)
     {
       $ie7_path = phpFreeChatTools::RelativePath($c->client_script, $c->data_public."/ie7/");
-      echo "<!-- compliance patch for microsoft browsers -->\n";
-      echo "<!--[if lt IE 7]>\n";
-      echo "  <script type=\"text/javascript\">IE7_PNG_SUFFIX = \".png\";</script>\n";
-      echo "  <script type=\"text/javascript\" src=\"".$ie7_path."/ie7-standard-p.js\"></script>\n";
-      echo "<![endif]-->\n";
+      $output .= "<!-- compliance patch for microsoft browsers -->\n";
+      $output .= "<!--[if lt IE 7]>\n";
+      $output .= "  <script type=\"text/javascript\">IE7_PNG_SUFFIX = \".png\";</script>\n";
+      $output .= "  <script type=\"text/javascript\" src=\"".$ie7_path."/ie7-standard-p.js\"></script>\n";
+      $output .= "<![endif]-->\n";
     }
+	
+    // display output
+    if ($return)
+      return $output;
+    else
+      echo $output;
   }
 
   /**
@@ -110,12 +117,16 @@ class phpFreeChat
    *   <?php $chat->printChat(); ?>
    * </code>
    */
-  function printChat()
+  function printChat( $return = false )
   {
     $c =& phpFreeChatConfig::Instance();
     $smarty =& phpFreeChatTools::GetSmarty();
     $c->assignToSmarty($smarty);
-    $smarty->display("chat.html.tpl");
+    $output = $smarty->fetch("chat.html.tpl", null, null, false);
+    if($return) 
+      return $output;
+    else 
+      echo $output;
   }
   
   /**
@@ -126,16 +137,21 @@ class phpFreeChat
    *   <?php $chat->printStyle(); ?>
    * </code>
    */
-  function printStyle()
+  function printStyle( $return = false )
   {
+    $output = '';
     $c =& phpFreeChatConfig::Instance();
     $smarty =& phpFreeChatTools::GetSmarty();
     $c->assignToSmarty($smarty);
-    echo "<style type=\"text/css\">\n<!--\n";
-    $smarty->display("style.css.tpl");
+    $output .= "<style type=\"text/css\">\n<!--\n";
+    $output .= $smarty->fetch("style.css.tpl", null, null, false);
     if ($c->css_file)
-      $smarty->display($c->css_file);
-    echo "\n-->\n</style>\n";
+      $output .= $smarty->fetch($c->css_file, null, null, false);
+    $output .= "\n-->\n</style>\n";
+    if($return) 
+      return $output;
+    else 
+      echo $output;
   }
 
   /**
