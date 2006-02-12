@@ -38,7 +38,7 @@
   <script type="text/javascript">
   <!--
   
-  <?php include("javascript2.js.tpl"); ?>
+  <?php include("javascript2.js.tpl.php"); ?>
   
   -->
   </script>

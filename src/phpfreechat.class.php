@@ -142,7 +142,7 @@ class phpFreeChat
   {
     $output = '';
     $c =& phpFreeChatConfig::Instance();
-    $css_filename = ($c->css_file != "") ? $c->css_file : dirname(__FILE__)."/../templates/style.css.tpl";
+    $css_filename = ($c->css_file != "") ? $c->css_file : dirname(__FILE__)."/../templates/style.css.tpl.php";
     $t = new phpFreeChatTemplate($css_filename);
     $t->assignObject($c);
     $output .= "<style type=\"text/css\">\n<!--\n";
