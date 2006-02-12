@@ -64,7 +64,6 @@ class phpFreeChatConfig
     $this->default_params["server_script"]       = "";
     $this->default_params["useie7"]              = true;
     $this->default_params["ie7path"]             = dirname(__FILE__)."/../lib/IE7_0_9";
-    $this->default_params["smartypath"]          = dirname(__FILE__)."/../lib/Smarty-2.6.7";
     $this->default_params["xajaxpath"]           = dirname(__FILE__)."/../lib/xajax_0.2_stable";
     $this->default_params["jspath"]              = dirname(__FILE__)."/../lib/javascript";
     $this->default_params["data_private"]        = dirname(__FILE__)."/../data/private";
@@ -218,21 +217,6 @@ class phpFreeChatConfig
     }
 
     // ---
-    // test smarty lib
-    $dir = $this->smartypath;
-    if ($ok && !is_dir($dir))
-    {
-      $ok = false;
-      $this->errors[] = __("%s doesn't exist, %s library can't be found", $dir, "Smarty");
-    }
-    if ($ok && !file_exists($dir."/libs/Smarty.class.php"))
-    {
-      $ok = false;
-      $this->errors[] = __("%s not found, %s library can't be found", "Smarty.class.php", "Smarty");
-    }
-
-
-    // ---
     // test ie7 lib
     $dir = $this->ie7path;
     if ($ok && !is_dir($dir))
@@ -347,13 +331,6 @@ class phpFreeChatConfig
     }
     $this->smileys =& $result;
   }
-  
-  function assignToSmarty( &$smarty )
-  {
-    $vars = get_object_vars($this);
-    foreach($vars as $p_k => $p_v)
-      $smarty->assign($p_k, $p_v);
-  }
 
   function getId()
   {
@@ -372,7 +349,6 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->debug;
       $spotted_atr[] = $this->data_public; 
       $spotted_atr[] = $this->data_private;
-      $spotted_atr[] = $this->smartypath;
       $spotted_atr[] = $this->xajaxpath;
       $spotted_atr[] = $this->container_type;
       $spotted_atr[] = $this->smileytheme;

@@ -21,6 +21,7 @@
  */
 
 require_once dirname(__FILE__)."/phpfreechatconfig.class.php";
+require_once dirname(__FILE__)."/phpfreechattemplate.class.php";
 require_once dirname(__FILE__)."/../debug/log.php";
 require_once dirname(__FILE__)."/../lib/utf8/utf8.php";
 
@@ -85,12 +86,12 @@ class phpFreeChat
     $output .= $this->xajax->getJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
 
     // print phpfreechat specific javascript
-    $smarty =& phpFreeChatTools::GetSmarty();
-    $c->assignToSmarty($smarty);
+    $t = new phpFreeChatTemplate(dirname(__FILE__)."/../templates/javascript1.js.tpl");
+    $t->assignObject($c);
     $output .= "<script type=\"text/javascript\">\n<!--\n";
-    $output .= $smarty->fetch("javascript1.js.tpl", null, null, false);
+    $output .= $t->getOutput();
     $output .= "\n-->\n</script>\n";
-   
+
     // include microsoft IE6 patches
     if ($c->useie7)
     {
@@ -120,9 +121,9 @@ class phpFreeChat
   function printChat( $return = false )
   {
     $c =& phpFreeChatConfig::Instance();
-    $smarty =& phpFreeChatTools::GetSmarty();
-    $c->assignToSmarty($smarty);
-    $output = $smarty->fetch("chat.html.tpl", null, null, false);
+    $t = new phpFreeChatTemplate(dirname(__FILE__)."/../templates/chat.html.tpl");
+    $t->assignObject($c);
+    $output = $t->getOutput();
     if($return) 
       return $output;
     else 
@@ -141,12 +142,11 @@ class phpFreeChat
   {
     $output = '';
     $c =& phpFreeChatConfig::Instance();
-    $smarty =& phpFreeChatTools::GetSmarty();
-    $c->assignToSmarty($smarty);
+    $css_filename = ($c->css_file != "") ? $c->css_file : dirname(__FILE__)."/../templates/style.css.tpl";
+    $t = new phpFreeChatTemplate($css_filename);
+    $t->assignObject($c);
     $output .= "<style type=\"text/css\">\n<!--\n";
-    $output .= $smarty->fetch("style.css.tpl", null, null, false);
-    if ($c->css_file)
-      $output .= $smarty->fetch($c->css_file, null, null, false);
+    $output .= $t->getOutput();
     $output .= "\n-->\n</style>\n";
     if($return) 
       return $output;

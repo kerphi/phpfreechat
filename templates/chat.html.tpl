@@ -1,50 +1,50 @@
-<div id="~[$prefix]~container">
-  <img id="~[$prefix]~minmax" onclick="~[$prefix]~swap_minimize_maximize()" src="~[$rootpath]~/data/public/images/~[if $start_minimized]~maximize~[else]~minimize~[/if]~.gif" alt=""/>
-  <h2 id="~[$prefix]~title">~[$title|htmlspecialchars]~</h2>
+<div id="<?php echo $prefix; ?>container">
+  <img id="<?php echo $prefix; ?>minmax" onclick="<?php echo $prefix; ?>swap_minimize_maximize()" src="<?php echo $rootpath; ?>/data/public/images/<?php if($start_minimized) { echo "maximize"; } else { echo "minimize"; } ?>.gif" alt=""/>
+  <h2 id="<?php echo $prefix; ?>title"><?php echo $title; ?></h2>
 
-  <div id="~[$prefix]~content_expandable">
+  <div id="<?php echo $prefix; ?>content_expandable">
 
-  <div id="~[$prefix]~content">
-    <div id="~[$prefix]~online"></div>
-    <div id="~[$prefix]~chat"></div>
-    <div id="~[$prefix]~smileys">
-      ~[foreach from=$smileys key=s_file item=s_str]~
-      <img src="~[$s_file]~" alt="~[$s_str[0]]~" onclick="~[$prefix]~insertSmiley('~[$s_str[0]]~');" />
-      ~[/foreach]~
+  <div id="<?php echo $prefix; ?>content">
+    <div id="<?php echo $prefix; ?>online"></div>
+    <div id="<?php echo $prefix; ?>chat"></div>
+    <div id="<?php echo $prefix; ?>smileys">
+      <?php foreach($smileys as $s_file => $s_str) { ?>
+      <img src="<?php echo $s_file; ?>" alt="<?php echo $s_str[0]; ?>" onclick="<?php echo $prefix; ?>insertSmiley('<?php echo $s_str[0]; ?>');" />
+      <?php } ?>
     </div>
-    <div id="~[$prefix]~misc1"></div>
-    <div id="~[$prefix]~misc2"></div>
-    <div id="~[$prefix]~misc3"></div>
+    <div id="<?php echo $prefix; ?>misc1"></div>
+    <div id="<?php echo $prefix; ?>misc2"></div>
+    <div id="<?php echo $prefix; ?>misc3"></div>
   </div>
 
-  <div id="~[$prefix]~input_container">
-    <input id="~[$prefix]~words" type="text" title="enter your text here" maxlength="~[$max_text_len]~" />
-    <div id="~[$prefix]~cmd_container">
-      <a href="http://www.phpfreechat.net" id="~[$prefix]~logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-~[$version]~]" title="PHP FREE CHAT [powered by phpFreeChat-~[$version]~]" /></a>
-      <input id="~[$prefix]~handle" type="button" title="enter your nickname here" maxlength="~[$max_nick_len]~" value="~[$nick]~" onclick="if (!~[$prefix]~login_status) return false; ~[$prefix]~handleRequest('/asknick ' + ~[$prefix]~clientid);" />
-      <div class="~[$prefix]~btn"><img src="~[$rootpath]~/misc/logout.gif" alt="Logout" title="Logout" id="~[$prefix]~loginlogout" onclick="~[$prefix]~connect_disconnect()" /></div>
-      <div class="~[$prefix]~btn"><img src="~[$rootpath]~/misc/color-on.gif" alt="Hide nickname marker" title="Hide nickname marker" id="~[$prefix]~nickmarker" onclick="~[$prefix]~nickmarker_swap()" /></div>
-      <div class="~[$prefix]~btn"><img src="~[$rootpath]~/misc/clock-on.gif" alt="Hide date/hour" title="Hide date/hour" id="~[$prefix]~clock" onclick="~[$prefix]~clock_swap()" /></div>
+  <div id="<?php echo $prefix; ?>input_container">
+    <input id="<?php echo $prefix; ?>words" type="text" title="enter your text here" maxlength="<?php echo $max_text_len; ?>" />
+    <div id="<?php echo $prefix; ?>cmd_container">
+      <a href="http://www.phpfreechat.net" id="<?php echo $prefix; ?>logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-<?php echo $version; ?>]" title="PHP FREE CHAT [powered by phpFreeChat-<?php echo $version; ?>]" /></a>
+      <input id="<?php echo $prefix; ?>handle" type="button" title="enter your nickname here" maxlength="<?php echo $max_nick_len; ?>" value="<?php echo $nick; ?>" onclick="if (!<?php echo $prefix; ?>login_status) return false; <?php echo $prefix; ?>handleRequest('/asknick ' + <?php echo $prefix; ?>clientid);" />
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $rootpath; ?>/misc/logout.gif" alt="Logout" title="Logout" id="<?php echo $prefix; ?>loginlogout" onclick="<?php echo $prefix; ?>connect_disconnect()" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $rootpath; ?>/misc/color-on.gif" alt="Hide nickname marker" title="Hide nickname marker" id="<?php echo $prefix; ?>nickmarker" onclick="<?php echo $prefix; ?>nickmarker_swap()" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $rootpath; ?>/misc/clock-on.gif" alt="Hide date/hour" title="Hide date/hour" id="<?php echo $prefix; ?>clock" onclick="<?php echo $prefix; ?>clock_swap()" /></div>
 
     </div>
   </div>
 
-  <p id="~[$prefix]~errors"></p>
+  <p id="<?php echo $prefix; ?>errors"></p>
 
-  <div id="~[$prefix]~misc4"></div>
-  <div id="~[$prefix]~misc5"></div>
-  <div id="~[$prefix]~misc6"></div>
+  <div id="<?php echo $prefix; ?>misc4"></div>
+  <div id="<?php echo $prefix; ?>misc5"></div>
+  <div id="<?php echo $prefix; ?>misc6"></div>
   		
   <script type="text/javascript">
   <!--
   
-  ~[include file="javascript2.js.tpl"]~
+  <?php include("javascript2.js.tpl"); ?>
   
   -->
   </script>
   </div>
 </div>
 
-~[if $debug]~
-<p>Debug is on, you can <a href="~[$rootpath]~/debug/console.php?chatid=~[$id]~">open the debugging console</a>.</p>
-~[/if]~
+<?php if ($debug) { ?>
+<p>Debug is on, you can <a href="<?php echo $rootpath; ?>/debug/console.php?chatid=<?php echo $id; ?>">open the debugging console</a>.</p>
+<?php } ?>

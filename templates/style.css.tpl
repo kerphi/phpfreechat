@@ -1,44 +1,44 @@
-div#~[$prefix]~container * {
+div#<?php echo $prefix; ?>container * {
   border: 0;
   margin: 0;
   padding: 0;
 }
 
-div#~[$prefix]~container {
-  ~[if $width!=""]~width: ~[$width]~;~[/if]~
+div#<?php echo $prefix; ?>container {
+  <?php if ($width!="") { ?>width: <?php echo $width; ?>;<?php } ?>
   border: black solid 1px;
   color: #338822;
   background-color: #d9edd8;
-  background-image: url(~[$rootpath]~/data/public/images/shade.gif);
+  background-image: url(<?php echo $rootpath; ?>/data/public/images/shade.gif);
   background-position: right;
   background-repeat: repeat-y;
   padding: 10px;
   min-height: 20px;
 }
 
-#~[$prefix]~minmax {
+#<?php echo $prefix; ?>minmax {
 cursor: pointer;
 }
 
-div#~[$prefix]~content {
-  ~[if $height!=""]~height: ~[$height]~;~[/if]~
+div#<?php echo $prefix; ?>content {
+  <?php if ($height!="") { ?>height: <?php echo $height; ?>;<?php } ?>
   position: relative;
   margin-top: 1.5em;
   width: 100%;
 }
 
-div#~[$prefix]~chat {
+div#<?php echo $prefix; ?>chat {
   position: absolute;
   left: 0;
   top: 0;
   border: 1px solid black;
   overflow: auto;
   width: 79%;
-  ~[if $height!=""]~height: ~[$height]~;~[/if]~
+  <?php if ($height!="") { ?>height: <?php echo $height; ?>;<?php } ?>
   background-color: #FFF;
 }
 
-div#~[$prefix]~smileys {
+div#<?php echo $prefix; ?>smileys {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -51,7 +51,7 @@ div#~[$prefix]~smileys {
   background-color: #FFF;
 }
 
-div#~[$prefix]~online {
+div#<?php echo $prefix; ?>online {
   position: absolute;
   right: 0;
   top: 0;
@@ -63,7 +63,7 @@ div#~[$prefix]~online {
   width: 20%;
   height: 39%;
 }
-div#~[$prefix]~online ul {
+div#<?php echo $prefix; ?>online ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -71,94 +71,94 @@ div#~[$prefix]~online ul {
   margin-right: 8px;
   white-space: nowrap;
 }
-div#~[$prefix]~online li {
+div#<?php echo $prefix; ?>online li {
   border-bottom: 1px solid #DDD;
   font-weight: bold;
   font-size: 90%;
 }
 
-h2#~[$prefix]~title {
+h2#<?php echo $prefix; ?>title {
   float: left;
   font-size: 110%;
 }
 
-img#~[$prefix]~minmax {
+img#<?php echo $prefix; ?>minmax {
   float: right;
 }
 
-.~[$prefix]~invisible {
+.<?php echo $prefix; ?>invisible {
   display: none;
 }
 
-div.~[$prefix]~message {
+div.<?php echo $prefix; ?>message {
   background-color: #e0edde;
   margin: 0;
 }
-.~[$prefix]~words {
+.<?php echo $prefix; ?>words {
   font-size: 90%;
 }
 
-div.~[$prefix]~oldmsg {
+div.<?php echo $prefix; ?>oldmsg {
   background-color: #dde4dc;
 }
 
-span.~[$prefix]~heure, span.~[$prefix]~date {
+span.<?php echo $prefix; ?>heure, span.<?php echo $prefix; ?>date {
   color: #bebebe;
   font-size: 70%;
 }
 
-span.~[$prefix]~nick {
+span.<?php echo $prefix; ?>nick {
   color: #fbac17;
   font-weight: bold;
 }
 
-div#~[$prefix]~input_container {
+div#<?php echo $prefix; ?>input_container {
   margin-top: 5px;
 }
-div~[$prefix]~input_container table {
+div<?php echo $prefix; ?>input_container table {
   width: 100%;
 }
 
-input#~[$prefix]~words {
+input#<?php echo $prefix; ?>words {
   border: black solid 1px;
   width: 100%;
   height: 1.3em;
 }
 
-div#~[$prefix]~cmd_container {
+div#<?php echo $prefix; ?>cmd_container {
   position: relative;
   margin-top: 5px;
   width: 100%;
 }
 
-input#~[$prefix]~handle {
+input#<?php echo $prefix; ?>handle {
   border: black solid 1px;
   padding: 0 4px 0 4px;
   color: black;
-  ~[if $nick!=""]~background-color: #CCC;~[/if]~
+  <?php if ($nick!="") { ?>background-color: #CCC;<?php } ?>
   text-align: center;
   margin-bottom: 5px;
 }
 
-a#~[$prefix]~logo {
+a#<?php echo $prefix; ?>logo {
   position: absolute;
   right: 0;
   top: 0;
 }
 
-div.~[$prefix]~btn {
+div.<?php echo $prefix; ?>btn {
   display: inline;
   cursor: pointer;
 }
-div.~[$prefix]~btn img {
+div.<?php echo $prefix; ?>btn img {
   border: 1px solid #393; /* same as container color */
 }
-div.~[$prefix]~btn img:hover {
+div.<?php echo $prefix; ?>btn img:hover {
   border: 1px solid #000;
   background-color: #4A4;
 }
 
-p#~[$prefix]~errors {
+p#<?php echo $prefix; ?>errors {
   display: none;
   margin-top: 5px;
   padding: 2px;
@@ -173,14 +173,14 @@ p#~[$prefix]~errors {
 }
 
 /* commands */
-.~[$prefix]~cmd_msg {
+.<?php echo $prefix; ?>cmd_msg {
   color: black;
 }
-.~[$prefix]~cmd_me {
+.<?php echo $prefix; ?>cmd_me {
   font-style: italic;
   color: black;
 }
-.~[$prefix]~cmd_notice {
+.<?php echo $prefix; ?>cmd_notice {
   font-style: italic;
   color: #888;
 }

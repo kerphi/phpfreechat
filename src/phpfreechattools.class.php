@@ -90,29 +90,6 @@ class phpFreeChatTools
     }
   }
 
-  function &GetSmarty()
-  {
-    $c =& phpFreeChatConfig::Instance();
-    if (!class_exists("Smarty")) require_once $c->smartypath."/libs/Smarty.class.php";
-    $smarty = new Smarty();
-    $smarty->left_delimiter  = "~[";
-    $smarty->right_delimiter = "]~";
-    $smarty->template_dir    = dirname(__FILE__).'/../templates/';
-    $smarty->compile_dir     = $c->data_private."/templates_c/";    
-    if ($c->debug || $_SERVER["HTTP_HOST"] == "localhost")
-      $smarty->compile_check = true;
-    else
-      $smarty->compile_check = false;
-    $smarty->debugging       = false;
-
-    // generate a unique client id (stored with JS: client side)
-    // this id is used to identify client window
-    // (2 clients can use the same session: then only the nickname is shared)
-    $smarty->assign("clientid", md5(uniqid(rand(), true)));
-
-    return $smarty;
-  }
-
   /**
    * Copy a file, or recursively copy a folder and its contents
    *
