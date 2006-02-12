@@ -34,6 +34,13 @@ $chat = new phpFreeChat( $params );
   </head>
 
   <body>
-    <?php $chat->printChat(); ?>
+  <?php $chat->printChat(); ?>
+  <?php
+  echo "<pre>";
+$c =& phpFreeChatConfig::Instance();
+print_r($c);
+print_r($_SERVER);
+echo "</pre>";
+  ?>
   </body>
 </html>
