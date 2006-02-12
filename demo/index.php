@@ -2,7 +2,7 @@
 <html>
 
   <head>
-    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>phpFreeChat demod</title>
   </head>
     
@@ -13,7 +13,8 @@
       <li><a href="demo3_client.php">demo3 - demo with separate client/server files</a></li>
       <li><a href="demo4_simulate_slow_server.php">demo4 - demo which simulate slow server responses</a></li>
       <li><a href="demo5_customized_style.php">demo5 - demo with a customized style</a></li>
-      <li><a href="demo6_en_francais.php">demo6 - traduction en francais du chat</a></li>
+      <li><a href="demo6_en_francais.php">demo6 - traduction en français du chat</a></li>
+      <li><a href="demo7_in_english.php">demo7 - english translation of the chat</a></li>
     </ul>
   </body>
   

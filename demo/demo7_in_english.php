@@ -2,8 +2,8 @@
 
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params = array();
-$params["title"] = "Un exemple de chat avec tous ses messages traduits en français";
-$params["language"] = "fr";
+$params["title"] = "A demo chat with all its message translated in english";
+$params["language"] = "en";
 $chat = new phpFreeChat( $params );
 
 ?>

@@ -6,8 +6,8 @@ $params["title"]          = "A simple chat with user's parameters";
 $params["nick"]           = "guest";  // setup the intitial nickname
 $params["frozen_nick"]    = true;     // do not allow to change the nickname
 $params["shownotice"]     = 0;        // 0 = nothing, 1 = just nickname changes, 2 = 1+connect/quit
-$params["max_nick_len"]   = 10;       // nickname length could not be longer than 10 caracteres
-$params["max_text_len"]   = 50;       // a message cannot be longer than 50 caracteres
+$params["max_nick_len"]   = 20;       // nickname length could not be longer than 10 caracteres
+$params["max_text_len"]   = 300;      // a message cannot be longer than 50 caracteres
 $params["refresh_delay"]  = 5000;     // chat refresh speed is 5 secondes (5000ms)
 $params["max_msg"]        = 15;       // max message in the history is 15 (message seen when reloading the chat)
 $params["height"]         = "230px";  // height of chat area is 230px
