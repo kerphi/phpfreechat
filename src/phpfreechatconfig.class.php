@@ -181,7 +181,6 @@ class phpFreeChatConfig
     
     $ok &= $this->_testWritableDir($this->data_public, "data_public");
     $ok &= $this->_testWritableDir($this->data_private, "data_private");
-    $ok &= $this->_testWritableDir($this->data_private."/templates_c/");
     $ok &= $this->_installDir($this->jspath, $this->data_public."/javascript/");
     
     $ok &= $this->_installFile(dirname(__FILE__)."/../misc/color-on.gif", $this->data_public."/images/color-on.gif");
