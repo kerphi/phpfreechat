@@ -18,10 +18,10 @@
   </div>
 
   <div id="<?php echo $prefix; ?>input_container">
-    <input id="<?php echo $prefix; ?>words" type="text" title="enter your text here" maxlength="<?php echo $max_text_len; ?>" />
+    <input id="<?php echo $prefix; ?>words" type="text" title="<?php echo __("Enter your message here"); ?>" maxlength="<?php echo $max_text_len; ?>" />
     <div id="<?php echo $prefix; ?>cmd_container">
       <a href="http://www.phpfreechat.net" id="<?php echo $prefix; ?>logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="<?php echo __("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" title="<?php echo __("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" /></a>
-      <input id="<?php echo $prefix; ?>handle" type="button" title="enter your nickname here" maxlength="<?php echo $max_nick_len; ?>" value="<?php echo $nick; ?>" onclick="if (!<?php echo $prefix; ?>login_status) return false; <?php echo $prefix; ?>handleRequest('/asknick ' + <?php echo $prefix; ?>clientid);" />
+      <input id="<?php echo $prefix; ?>handle" type="button" title="<?php echo __("Enter your nickname here"); ?>" maxlength="<?php echo $max_nick_len; ?>" value="<?php echo $nick; ?>" onclick="if (!<?php echo $prefix; ?>login_status) return false; <?php echo $prefix; ?>handleRequest('/asknick ' + <?php echo $prefix; ?>clientid);" />
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $rootpath; ?>/misc/logout.gif" alt="" title="" id="<?php echo $prefix; ?>loginlogout" onclick="<?php echo $prefix; ?>connect_disconnect()" /></div>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $rootpath; ?>/misc/color-on.gif" alt="" title="" id="<?php echo $prefix; ?>nickmarker" onclick="<?php echo $prefix; ?>nickmarker_swap()" /></div>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $rootpath; ?>/misc/clock-on.gif" alt="" title="" id="<?php echo $prefix; ?>clock" onclick="<?php echo $prefix; ?>clock_swap()" /></div>

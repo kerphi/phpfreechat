@@ -113,4 +113,10 @@ $GLOBALS["i18n"]["Hide dates and hours"] = "Cacher la date";
 // line 353 in javascript1.js.tpl.php
 $GLOBALS["i18n"]["Show dates and hours"] = "Montrer la date";
 
+// line 21 in chat.html.tpl.php
+$GLOBALS["i18n"]["Enter your message here"] = "Entrez votre message dans cette zone";
+
+// line 24 in chat.html.tpl.php
+$GLOBALS["i18n"]["Enter your nickname here"] = "Entrez votre pseudonyme ici";
+
 ?>
