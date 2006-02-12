@@ -20,18 +20,48 @@
  * Boston, MA  02110-1301  USA
  */
 
-function __($str)
+function __()
 {
-  return (!empty($GLOBALS['i18n'][$str])) ? $GLOBALS['i18n'][$str] : $str;
+  $args = func_get_args();
+  $args[0] = isset($GLOBALS["i18n"][$args[0]]) ?
+    iconv("UTF-8", $GLOBALS["output_encoding"], $GLOBALS["i18n"][$args[0]]) :
+    "_".$args[0]."_";
+  return call_user_func_array('sprintf', $args);
 }
 
 class phpFreeChatI18N
 {
-  function Init($lang)
+  function Init($language, $output_encoding)
   {
-    require_once(dirname(__FILE__)."/../i18n/".$lang."/main.php");
+    $language = strtolower($language);
+    if (!in_array($language, phpFreeChatI18N::GetAcceptedLanguage()))
+      $language = phpFreeChatI18N::GetDefaultServerLanguage();
+    require_once(dirname(__FILE__)."/../i18n/".$language."/main.php");
+    $GLOBALS["output_encoding"] = $output_encoding;
   }
 
+  /**
+   * Return the language used by the server or "en" if not listed in accepted languages
+   * (thanks to bsemf for his suggestion)
+   */
+  function GetDefaultServerLanguage()
+  {
+    $lang = explode(",",$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    $language = substr($lang[0], 0,2);
+    if (!in_array($language, phpFreeChatI18N::GetAcceptedLanguage()))
+      $language = "en";
+    return $language;
+  }
+
+  /**
+   * Return the language list supported bye i18n system
+   * (should be completed in future)
+   */
+  function GetAcceptedLanguage()
+  {
+    return array("en", "fr");
+  }
+  
   /**
    * Parse the source-code and update the i18n ressources files
    */
@@ -49,17 +79,19 @@ class phpFreeChatI18N
       $line_nb = 1;
       foreach( $lines as $l)
       {
-        if( preg_match_all('/__\("(.*)"\)/', $l, $matches) )
+        if( preg_match_all('/__\("([^\"]*)"(\s*\,.*|)\)/', $l, $matches) )
         {
-          //          echo "line: ".$line_nb."\t- ".$matches[1][0]."\n";
+          echo "line: ".$line_nb."\t- ".$matches[1][0]."\n";
           $res[$matches[1][0]] = "// line ".$line_nb." in ".basename($src_filename);
         }
         $line_nb++;
       }
     }
-    
-    $dst_filenames = array( dirname(__FILE__)."/../i18n/fr/main.php",
-                            dirname(__FILE__)."/../i18n/en/main.php");
+
+    $dst_filenames = array();
+    foreach(phpFreeChatI18N::GetAcceptedLanguage() as $lg)
+      $dst_filenames[] = dirname(__FILE__)."/../i18n/".$lg."/main.php";
+
     foreach( $dst_filenames as $dst_filename )
     {
       // filter lines to keep, line to add
@@ -73,7 +105,7 @@ class phpFreeChatI18N
       foreach($res as $str => $com)
       {
         if (preg_match("/".preg_quote($str)."/", $old_content) == 0)
-          $new_content .= $com."\n\$GLOBAL[\"i18n\"][\"".$str."\"] = \"\";\n\n";
+          $new_content .= $com."\n\$GLOBALS[\"i18n\"][\"".$str."\"] = \"\";\n\n";
       }
       $content = "<?php" . $old_content . $new_content . "?>";
       //echo $content;

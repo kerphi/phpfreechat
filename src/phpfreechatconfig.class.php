@@ -22,6 +22,7 @@
 
 require_once dirname(__FILE__)."/../debug/log.php";
 require_once dirname(__FILE__)."/phpfreechattools.class.php";
+require_once dirname(__FILE__)."/phpfreechati18n.class.php";
 
 /**
  * phpFreeChatConfig stock configuration data into sessions and initialize some stuff
@@ -42,7 +43,11 @@ class phpFreeChatConfig
   
   function phpFreeChatConfig( $params = array() )
   {
-    $this->default_params["title"]               = __("My phpFreeChat");
+    // setup the local for translated messages
+    phpFreeChatI18N::Init(isset($params["language"]) ? $params["language"] : "",
+                          isset($params["output_encoding"]) ? $params["output_encoding"] : "UTF-8");
+    
+    $this->default_params["title"]               = __("My Chat");
     $this->default_params["channel"]             = preg_replace("/[^a-z0-9]*/","",strtolower($this->default_params["title"]));
     $this->default_params["nick"]                = "";
     $this->default_params["frozen_nick"]         = false;
@@ -71,8 +76,10 @@ class phpFreeChatConfig
     $this->default_params["clock"]               = true;
     $this->default_params["smileytheme"]         = "default";
     $this->default_params["prefix"]              = "phpfreechat_";
+    $this->default_params["output_encoding"]     = "UTF-8"; // could be ISO-8859-1
+    $this->default_params["language"]            = ""; // "" means the language is the server language
     $this->default_params["container_type"]      = (isset($params["container_type"]) && $params["container_type"]!="") ? $params["container_type"] : "File";
-
+    
     // set defaults values
     foreach ( $this->default_params as $k => $v ) $this->$k = $v;
     
@@ -139,7 +146,7 @@ class phpFreeChatConfig
     {
       if (!function_exists( $func ))
       {
-        $this->errors[] = $func." doesn't exists. ".$err;
+        $this->errors[] = __("%s doesn't exist: %s", $func, $err);
         $ok = false;
       }
     }
@@ -156,21 +163,21 @@ class phpFreeChatConfig
     $ok = true;
 
     // first of all, check the used functions
-    $f_list["file_get_contents"] = "You need PHP 4 >= 4.3.0 or PHP 5";
+    $f_list["file_get_contents"] = __("You need %s", "PHP 4 >= 4.3.0 or PHP 5");
     $err_session_x = "You need PHP 4 or PHP 5";
     $f_list["session_start"]   = $err_session_x;
     $f_list["session_destroy"] = $err_session_x;
     $f_list["session_id"]      = $err_session_x;
     $f_list["session_name"]    = $err_session_x;    
-    $err_preg_x = "You need PHP 3 >= 3.0.9 or PHP 4 or PHP 5";
+    $err_preg_x = __("You need %s", "PHP 3 >= 3.0.9 or PHP 4 or PHP 5");
     $f_list["preg_match"]      = $err_preg_x;
     $f_list["preg_replace"]    = $err_preg_x;
     $f_list["preg_split"]      = $err_preg_x;
-    $err_ob_x = "You need PHP 4 or PHP 5";
+    $err_ob_x = __("You need %s", "PHP 4 or PHP 5");
     $f_list["ob_start"]        = $err_ob_x;
     $f_list["ob_get_contents"] = $err_ob_x;
     $f_list["ob_end_clean"]    = $err_ob_x;
-    $f_list["get_object_vars"] = "You need PHP 4 or PHP 5";
+    $f_list["get_object_vars"] = __("You need %s", "PHP 4 or PHP 5");
     $ok &= $this->_checkUsedFunctions($f_list);
     
     $ok &= $this->_testWritableDir($this->data_public, "data_public");
@@ -194,12 +201,12 @@ class phpFreeChatConfig
     if ($ok && !is_dir($dir))
     {
       $ok = false;
-      $this->errors[] = $dir." doesn't exists, xajax library can't be found.";
+      $this->errors[] = __("%s doesn't exist, %s library can't be found", $dir, "XAJAX");
     }
     if ($ok && !file_exists($dir."/xajax.inc.php"))
     {
       $ok = false;
-      $this->errors[] = __("xajax.inc.php not found, xajax library can't be found.");
+      $this->errors[] = __("%s not found, %s library can't be found", "xajax.inc.php", "XAJAX");
     }
     if ($ok)
     {
@@ -216,12 +223,12 @@ class phpFreeChatConfig
     if ($ok && !is_dir($dir))
     {
       $ok = false;
-      $this->errors[] = $dir." doesn't exists, smarty library can't be found.";
+      $this->errors[] = __("%s doesn't exist, %s library can't be found", $dir, "Smarty");
     }
     if ($ok && !file_exists($dir."/libs/Smarty.class.php"))
     {
       $ok = false;
-      $this->errors[] = "Smarty.class.php not found, smarty library can't be found.";
+      $this->errors[] = __("%s not found, %s library can't be found", "Smarty.class.php", "Smarty");
     }
 
 
@@ -231,12 +238,12 @@ class phpFreeChatConfig
     if ($ok && !is_dir($dir))
     {
       $ok = false;
-      $this->errors[] = $dir." doesn't exists, ie7 library can't be found.";
+      $this->errors[] = __("%s doesn't exist, %s library can't be found", $dir, "IE7");
     }
     if ($ok && !file_exists($dir."/ie7-core.js"))
     {
       $ok = false;
-      $this->errors[] = "ie7-core.js not found, ie7 library can't be found.";
+      $this->errors[] = __("%s not found, %s library can't be found", "ie7-core.js", "IE7");
     }
     $ok &= $this->_installDir($this->ie7path, $this->data_public."/ie7/");
 
@@ -254,7 +261,7 @@ class phpFreeChatConfig
 	if ( !file_exists($filetotest) )
 	{
 	  $ok = false;
-	  $this->errors[] = $filetotest." doesn't exist";
+	  $this->errors[] = __("%s doesn't exist", $filetotest);
 	}
     }
     
@@ -270,7 +277,7 @@ class phpFreeChatConfig
       if ( !file_exists($filetotest) )
       {
 	$ok = false;
-        $this->errors[] = $filetotest." doesn't exist";
+        $this->errors[] = __("%s doesn't exist", $filetotest);
       }
       $this->server_script = phpFreeChatTools::RelativePath($this->client_script, $this->server_script)."/".basename($this->server_script);
     }
@@ -423,30 +430,30 @@ class phpFreeChatConfig
   {
     if ($dir == "")
     {
-      $this->errors[] = ($name!="" ? $name : $dir)." directory must be specified";
+      $this->errors[] = __("%s directory must be specified", ($name!="" ? $name : $dir));
       return false;
     }
 
     if (is_file($dir))
     {
-      $this->errors[] = $dir." must be a directory";
+      $this->errors[] = __("%s must be a directory",$dir);
       return false;
     }
     if (!is_dir($dir))
       @phpFreeChatTools::RecursiveMkdir($dir);
     if (!is_dir($dir))
     {
-      $this->errors[] = $dir." can't be created";
+      $this->errors[] = __("%s can't be created",$dir);
       return false;
     }
     if (!is_writeable($dir))
     {
-      $this->errors[] = $dir." is not writeable";
+      $this->errors[] = __("%s is not writeable",$dir);
       return false;
     }
     if (!is_readable($dir))
     {
-      $this->errors[] = $dir." is not readable";
+      $this->errors[] = __("%s is not readable",$dir);
       return false;
     }
     return true;
@@ -459,17 +466,17 @@ class phpFreeChatConfig
     
     if (!is_file($src_file))
     {
-      $this->errors[] = $src_file." is not a file.";
+      $this->errors[] = __("%s is not a file", $src_file);
       return false;
     }
     if (!is_readable($src_file))
     {
-      $this->errors[] = $src_file." is not readable.";
+      $this->errors[] = __("%s is not readable", $src_file);
       return false;
     }      
     if (!is_dir($src_dir))
     {
-      $this->errors[] = $src_dir." is not a directory.";
+      $this->errors[] = __("%s is not a directory", $src_dir);
       return false;
     }
     if (!is_dir($dst_dir))
@@ -481,12 +488,12 @@ class phpFreeChatConfig
   {
     if (!is_dir($src_dir))
     {
-      $this->errors[] = $src_dir." is not a directory.";
+      $this->errors[] = __("%s is not a directory", $src_dir);
       return false;
     }
     if (!is_readable($src_dir))
     {
-      $this->errors[] = $src_dir." is not readable.";
+      $this->errors[] = __("%s is not readable", $src_dir);
       return false;
     }
     return @phpFreeChatTools::CopyR( $src_dir, $dst_dir );

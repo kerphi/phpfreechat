@@ -8,7 +8,7 @@ $chat = new phpFreeChat();
 <html>
 
   <head>
-    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>phpFreeChat demo</title>
     <?php $chat->printJavascript(); ?>
     <?php $chat->printStyle(); ?>

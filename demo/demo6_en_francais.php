@@ -1,7 +1,8 @@
 <?php
 
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
-require_once "demo3_config.php";
+$params = array();
+$params["language"] = "fr";
 $chat = new phpFreeChat( $params );
 
 ?>
@@ -13,10 +14,10 @@ $chat = new phpFreeChat( $params );
 
     <?php $chat->printJavascript(); ?>
     <?php $chat->printStyle(); ?>
+
   </head>
 
   <body>
     <?php $chat->printChat(); ?>
   </body>
-
 </html>

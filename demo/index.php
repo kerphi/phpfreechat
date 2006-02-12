@@ -13,6 +13,7 @@
       <li><a href="demo3_client.php">demo3 - demo with separate client/server files</a></li>
       <li><a href="demo4_simulate_slow_server.php">demo4 - demo which simulate slow server responses</a></li>
       <li><a href="demo5_customized_style.php">demo5 - demo with a customized style</a></li>
+      <li><a href="demo6_en_francais.php">demo6 - traduction en francais du chat</a></li>
     </ul>
   </body>
   
