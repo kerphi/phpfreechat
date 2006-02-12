@@ -4,12 +4,26 @@ document.getElementById('<?php echo $prefix; ?>words').onkeydown = onkeydownCall
 document.getElementById('<?php echo $prefix; ?>words').onfocus = onfocusCallback_words;
 document.getElementById('<?php echo $prefix; ?>handle').onkeydown = onkeydownCallback_handle;
 document.getElementById('<?php echo $prefix; ?>handle').onchange = onchangeCallback_handle;
+document.getElementById('<?php echo $prefix; ?>container').onmousedown = onmousedownCallback_container;
+document.getElementById('<?php echo $prefix; ?>container').onmousemove = onmousemoveCallback_container;
 document.getElementById('<?php echo $prefix; ?>container').onmouseup = onmouseupCallback_container;
 
+var <?php echo $prefix; ?>isdraging = false;
 function onmouseupCallback_container(e)
 {
-  var w = document.getElementById('<?php echo $prefix; ?>words');
-  w.focus();
+  if (!<?php echo $prefix; ?>isdraging)
+  {
+    var w = document.getElementById('<?php echo $prefix; ?>words');
+    w.focus();
+  }
+}
+function onmousemoveCallback_container(e)
+{
+  <?php echo $prefix; ?>isdraging = true;
+}
+function onmousedownCallback_container(e)
+{
+  <?php echo $prefix; ?>isdraging = false;
 }
 
 function onunloadCallback_content(e)
