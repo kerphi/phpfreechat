@@ -71,6 +71,8 @@ class phpFreeChatConfig
   var $smileyurl           = ""; // default is calculated from smileypath value
   var $smileypath          = ""; // default is dirname(__FILE__)."/../smileys";
   var $smileytheme         = "default";
+  var $tplpath             = ""; // default is dirname(__FILE__)."/../templates";
+  var $tpltheme            = "default";
   var $prefix              = "pfc_";
   var $language            = "";      // "" means the language is guess from the server config
   var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
@@ -96,6 +98,7 @@ class phpFreeChatConfig
     if ($this->data_public_path == "")  $this->data_public_path  = dirname(__FILE__)."/../data/public";
     if ($this->smileypath == "")   $this->smileypath   = dirname(__FILE__)."/../smileys";
     if ($this->rootpath == "")     $this->rootpath     = dirname(__FILE__)."/..";
+    if ($this->tplpath == "")      $this->tplpath      = dirname(__FILE__)."/../templates";
 
     // choose a auto-generated channel name if user choose a title but didn't choose a channel name
     if ( $this->channel == "" )
@@ -374,7 +377,10 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->xajaxpath;
       $spotted_atr[] = $this->csstidypath;
       $spotted_atr[] = $this->container_type;
+      $spotted_atr[] = $this->smileypath;
       $spotted_atr[] = $this->smileytheme;
+      $spotted_atr[] = $this->tplpath;
+      $spotted_atr[] = $this->tpltheme;
       $spotted_atr[] = $this->shownotice;
       $spotted_atr[] = $this->frozen_nick;
       $spotted_atr[] = $this->max_msg;

@@ -87,7 +87,7 @@ class phpFreeChat
     $output .= $this->xajax->getJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
 
     // print phpfreechat specific javascript
-    $t = new phpFreeChatTemplate(dirname(__FILE__)."/../templates/javascript1.js.tpl.php");
+    $t = new phpFreeChatTemplate($c->tplpath."/".$c->tpltheme."/javascript1.js.tpl.php");
     $t->assignObject($c);
     $output .= "<script type=\"text/javascript\">\n<!--\n";
     $output .= $t->getOutput();
@@ -124,7 +124,7 @@ class phpFreeChat
   {
     $c =& phpFreeChatConfig::Instance();
     phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
-    $t = new phpFreeChatTemplate(dirname(__FILE__)."/../templates/chat.html.tpl.php");
+    $t = new phpFreeChatTemplate($c->tplpath."/".$c->tpltheme."/chat.html.tpl.php");
     $t->assignObject($c);
     $output = $t->getOutput();
     phpFreeChatI18N::SwitchOutputEncoding();
@@ -148,7 +148,7 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
     phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
 
-    $css_filename = dirname(__FILE__)."/../templates/style.css.tpl.php";
+    $css_filename = $c->tplpath."/".$c->tpltheme."/style.css.tpl.php";
     $t = new phpFreeChatTemplate($css_filename);
     $t->assignObject($c);
     $output .= $t->getOutput();
