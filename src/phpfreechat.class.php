@@ -2,7 +2,7 @@
 /**
  * phpfreechat.class.php
  *
- * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
+ * Copyright Â© 2006 Stephane Gully <stephane.gully@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -145,9 +145,9 @@ class phpFreeChat
     $css_filename = ($c->css_file != "") ? $c->css_file : dirname(__FILE__)."/../templates/style.css.tpl.php";
     $t = new phpFreeChatTemplate($css_filename);
     $t->assignObject($c);
-    $output .= "<style type=\"text/css\">\n<!--\n";
+    $output .= "<style type=\"text/css\">\n";
     $output .= $t->getOutput();
-    $output .= "\n-->\n</style>\n";
+    $output .= "\n</style>\n";
     if($return) 
       return $output;
     else 
