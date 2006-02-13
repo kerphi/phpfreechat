@@ -7,7 +7,7 @@ $params =  array("title"          => "A chat with a customized stylesheet",
                  "width"          => "550px",
                  "max_msg"        => 21,
                  //"debug"          => true,
-                 "css_file"       => dirname(__FILE__)."/demo5_customized_style_data/style.css.tpl",
+                 "css_file"       => dirname(__FILE__)."/demo5_customized_style_data/style.css.tpl.php",
                  );
 $chat = new phpFreeChat( $params );
 
