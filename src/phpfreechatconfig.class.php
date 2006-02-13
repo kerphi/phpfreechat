@@ -31,11 +31,11 @@ require_once dirname(__FILE__)."/phpfreechati18n.class.php";
  */
 class phpFreeChatConfig
 {
-  var $id             = 0;
-  var $default_params = array();
-  var $errors         = array();
-  var $is_init        = false;
-  var $version        = "";
+  var $id                  = 0;
+  var $default_params      = array();
+  var $errors              = array();
+  var $is_init             = false;
+  var $version             = "";
   var $rootpath            = ""; // default is dirname(__FILE__)."/..";
   var $rooturl             = ""; // default is a value calculated from rootpath
   var $title               = ""; // default is __("My Chat")
@@ -72,7 +72,6 @@ class phpFreeChatConfig
   var $smileypath          = ""; // default is dirname(__FILE__)."/../smileys";
   var $smileytheme         = "default";
   var $prefix              = "pfc_";
-  var $output_encoding     = "UTF-8"; // could be ISO-8859-1
   var $language            = "";      // "" means the language is guess from the server config
   var $container_type      = "File";
 
@@ -84,7 +83,7 @@ class phpFreeChatConfig
     foreach ( $params as $k => $v ) $this->$k = $v;
 
     // setup the local for translated messages
-    phpFreeChatI18N::Init($this->language, $this->output_encoding);
+    phpFreeChatI18N::Init($this->language);
 
     // setup a defaut title if user didn't set it up
     if ($this->title == "")        $this->title        = __("My Chat");
@@ -298,7 +297,7 @@ class phpFreeChatConfig
     // run specific container initialisation
     if ($ok)
     {
-      $container_classname = "phpFreeChatContainer".$this->default_params["container_type"];
+      $container_classname = "phpFreeChatContainer".$this->container_type;
       require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
       $container = new $container_classname($this);
       $container_errors = $container->init();
@@ -383,7 +382,6 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->connect_at_startup;
       $spotted_atr[] = $this->start_minimized;
       $spotted_atr[] = $this->language;
-      $spotted_atr[] = $this->output_encoding;
       $this->id = md5(serialize($spotted_atr));
     }
     return $this->id;

@@ -24,20 +24,21 @@ function __()
 {
   $args = func_get_args();
   $args[0] = isset($GLOBALS["i18n"][$args[0]]) ?
-    iconv("UTF-8", $GLOBALS["output_encoding"], $GLOBALS["i18n"][$args[0]]) :
+    /*iconv("UTF-8", $GLOBALS["output_encoding"], $GLOBALS["i18n"][$args[0]])*/
+    $GLOBALS["i18n"][$args[0]] : /* only uses utf8 to communicate */
     "_".$args[0]."_";
   return call_user_func_array('sprintf', $args);
 }
 
 class phpFreeChatI18N
 {
-  function Init($language, $output_encoding)
+  function Init($language/*, $output_encoding*/)
   {
     $language = strtolower($language);
     if (!in_array($language, phpFreeChatI18N::GetAcceptedLanguage()))
       $language = phpFreeChatI18N::GetDefaultServerLanguage();
     require_once(dirname(__FILE__)."/../i18n/".$language."/main.php");
-    $GLOBALS["output_encoding"] = $output_encoding;
+    //$GLOBALS["output_encoding"] = $output_encoding;
   }
 
   /**
