@@ -383,6 +383,7 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->connect_at_startup;
       $spotted_atr[] = $this->start_minimized;
       $spotted_atr[] = $this->language;
+      $spotted_atr[] = $this->output_encoding;
       $this->id = md5(serialize($spotted_atr));
     }
     return $this->id;
