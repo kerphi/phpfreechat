@@ -31,7 +31,12 @@ class phpFreeChatTemplate
   var $tpl_filename;
   var $vars;
   
-  function phpFreeChatTemplate($tpl_filename)
+  function phpFreeChatTemplate($tpl_filename = "")
+  {
+    $this->tpl_filename = $tpl_filename;
+  }
+
+  function setTemplate($tpl_filename)
   {
     $this->tpl_filename = $tpl_filename;
   }

@@ -142,13 +142,26 @@ class phpFreeChat
   {
     $output = '';
     $c =& phpFreeChatConfig::Instance();
-    $css_filename = ($c->css_file != "") ? $c->css_file : dirname(__FILE__)."/../templates/style.css.tpl.php";
+    $css_filename = dirname(__FILE__)."/../templates/style.css.tpl.php";
     $t = new phpFreeChatTemplate($css_filename);
     $t->assignObject($c);
-    $output .= "<style type=\"text/css\">\n";
     $output .= $t->getOutput();
-    $output .= "\n</style>\n";
-    if($return) 
+    if ($c->css_file != "")
+    {
+      $t->setTemplate($c->css_file);
+      $output .= $t->getOutput();
+    }
+
+    // optimize css
+    require_once $c->csstidypath."/css_parser.php";
+    $csstidy = new csstidy();
+    $csstidy->set_cfg('remove_last_;',TRUE);
+    $csstidy->parse($output);
+    $output = $csstidy->print_code(NULL, true); 
+
+    // output css
+    $output = "<style type=\"text/css\">\n".$output."\n</style>\n";
+    if($return)
       return $output;
     else 
       echo $output;

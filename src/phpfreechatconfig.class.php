@@ -66,6 +66,7 @@ class phpFreeChatConfig
     $this->default_params["ie7path"]             = dirname(__FILE__)."/../lib/IE7_0_9";
     $this->default_params["xajaxpath"]           = dirname(__FILE__)."/../lib/xajax_0.2_stable";
     $this->default_params["jspath"]              = dirname(__FILE__)."/../lib/javascript";
+    $this->default_params["csstidypath"]         = dirname(__FILE__)."/../lib/csstidy-1.1";
     $this->default_params["data_private"]        = dirname(__FILE__)."/../data/private";
     $this->default_params["data_public"]         = dirname(__FILE__)."/../data/public";
     $this->default_params["shownotice"]          = true;
