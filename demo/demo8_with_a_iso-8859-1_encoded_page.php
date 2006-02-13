@@ -2,8 +2,9 @@
 
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params = array();
-$params["title"] = "A chat with a ISO-8859-1 encoded page";
+$params["title"]           = "A chat with a ISO-8859-1 encoded page";
 $params["language"]        = "fr";
+$params["output_encoding"] = "ISO-8859-1"; // same as the web page encoding
 $chat = new phpFreeChat( $params );
 
 ?>

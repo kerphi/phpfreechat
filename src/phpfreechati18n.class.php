@@ -24,23 +24,41 @@ function __()
 {
   $args = func_get_args();
   $args[0] = isset($GLOBALS["i18n"][$args[0]]) ?
-    /*iconv("UTF-8", $GLOBALS["output_encoding"], $GLOBALS["i18n"][$args[0]])*/
-    $GLOBALS["i18n"][$args[0]] : /* only uses utf8 to communicate */
+    iconv("UTF-8", $GLOBALS["output_encoding"], $GLOBALS["i18n"][$args[0]]) :
     "_".$args[0]."_";
   return call_user_func_array('sprintf', $args);
 }
 
 class phpFreeChatI18N
 {
-  function Init($language/*, $output_encoding*/)
+  function Init($language)
   {
     $language = strtolower($language);
     if (!in_array($language, phpFreeChatI18N::GetAcceptedLanguage()))
       $language = phpFreeChatI18N::GetDefaultServerLanguage();
     require_once(dirname(__FILE__)."/../i18n/".$language."/main.php");
-    //$GLOBALS["output_encoding"] = $output_encoding;
+    $GLOBALS["output_encoding"] = "UTF-8"; // by default client/server communication is utf8 encoded
   }
 
+  /**
+   * Switch output encoding in order to write the right characteres in the web page
+   */
+  function SwitchOutputEncoding($oe = "")
+  {
+    if ($oe == "")
+    {
+      $GLOBALS["output_encoding"]     = $GLOBALS["old_output_encoding"];
+      unset($GLOBALS["old_output_encoding"]);
+    }
+    else
+    {
+      if (isset($GLOBALS["old_output_encoding"]))
+        die("old_output_encoding must be empty (".$GLOBALS["old_output_encoding"].")");
+      $GLOBALS["old_output_encoding"] = $GLOBALS["output_encoding"];
+      $GLOBALS["output_encoding"]     = $oe;
+    }
+  }
+  
   /**
    * Return the language used by the server or "en" if not listed in accepted languages
    * (thanks to bsemf for his suggestion)

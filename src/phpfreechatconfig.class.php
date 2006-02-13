@@ -73,6 +73,7 @@ class phpFreeChatConfig
   var $smileytheme         = "default";
   var $prefix              = "pfc_";
   var $language            = "";      // "" means the language is guess from the server config
+  var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
   var $container_type      = "File";
 
   var $smileys        = array();

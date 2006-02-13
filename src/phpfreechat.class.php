@@ -74,6 +74,7 @@ class phpFreeChat
   {
     $output = '';
     $c =& phpFreeChatConfig::Instance();
+    phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
 
     // include javascript libraries
     $js_path = $c->data_public_url."/javascript";
@@ -102,6 +103,7 @@ class phpFreeChat
       $output .= "  <script type=\"text/javascript\" src=\"".$ie7_path."/ie7-standard-p.js\"></script>\n";
       $output .= "<![endif]-->\n";
     }
+    phpFreeChatI18N::SwitchOutputEncoding();
 	
     // display output
     if ($return)
@@ -121,9 +123,11 @@ class phpFreeChat
   function printChat( $return = false )
   {
     $c =& phpFreeChatConfig::Instance();
+    phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
     $t = new phpFreeChatTemplate(dirname(__FILE__)."/../templates/chat.html.tpl.php");
     $t->assignObject($c);
     $output = $t->getOutput();
+    phpFreeChatI18N::SwitchOutputEncoding();
     if($return) 
       return $output;
     else 
@@ -142,6 +146,8 @@ class phpFreeChat
   {
     $output = '';
     $c =& phpFreeChatConfig::Instance();
+    phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
+
     $css_filename = dirname(__FILE__)."/../templates/style.css.tpl.php";
     $t = new phpFreeChatTemplate($css_filename);
     $t->assignObject($c);
@@ -160,6 +166,7 @@ class phpFreeChat
     $output = $csstidy->print_code(NULL, true); 
 
     // output css
+    phpFreeChatI18N::SwitchOutputEncoding();
     $output = "<style type=\"text/css\">\n".$output."\n</style>\n";
     if($return)
       return $output;
