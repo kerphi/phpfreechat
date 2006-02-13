@@ -55,7 +55,7 @@ class phpFreeChat
     }
     // then init xajax engine
     if (!class_exists("xajax")) require_once $c->xajaxpath."/xajax.inc.php";
-    $this->xajax = new xajax($c->server_script, $c->prefix);
+    $this->xajax = new xajax($c->server_script_url, $c->prefix);
     //$this->xajax->debugOn();
     $this->xajax->waitCursorOff(); // do not show a wait cursor during chat updates
     $this->xajax->errorHandlerOn(); // used to have verbose error logs
@@ -76,13 +76,13 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
 
     // include javascript libraries
-    $js_path = phpFreeChatTools::RelativePath($c->client_script, $c->data_public."/javascript/");
+    $js_path = $c->data_public_url."/javascript";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/md5.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/cookie.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
 
     // print xajax javascript
-    $xajax_js = $c->rootpath.'/data/public/';
+    $xajax_js = $c->rooturl.'/data/public/';
     $output .= $this->xajax->getJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
 
     // print phpfreechat specific javascript
@@ -95,7 +95,7 @@ class phpFreeChat
     // include microsoft IE6 patches
     if ($c->useie7)
     {
-      $ie7_path = phpFreeChatTools::RelativePath($c->client_script, $c->data_public."/ie7/");
+      $ie7_path = $c->data_public_url."/ie7";
       $output .= "<!-- compliance patch for microsoft browsers -->\n";
       $output .= "<!--[if lt IE 7]>\n";
       $output .= "  <script type=\"text/javascript\">IE7_PNG_SUFFIX = \".png\";</script>\n";

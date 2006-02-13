@@ -17,7 +17,7 @@ $params["connect_at_startup"] = false;
 $params["start_minimized"]    = true;
 $params["nickmarker"]     = false;
 $params["clock"]          = false;
-//$params["data_private"] = "/dev/shm/mychat"; // specify a special directory to write data on a tmpfs ramdisk (only work on linux)
+//$params["data_private_path"] = "/dev/shm/mychat"; // specify a special directory to write data on a tmpfs ramdisk (only work on linux)
 
 $chat = new phpFreeChat( $params );
 

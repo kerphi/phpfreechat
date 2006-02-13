@@ -35,12 +35,11 @@ class phpFreeChatConfig
   var $default_params = array();
   var $errors         = array();
   var $is_init        = false;
-  var $smileys        = array();
   var $version        = "";
-  var $rootpath      = "";
-  
+  var $rootpath            = ""; // default is dirname(__FILE__)."/..";
+  var $rooturl             = ""; // default is a value calculated from rootpath
   var $title               = ""; // default is __("My Chat")
-  var $channel             = ""; // default is a value calculated for title
+  var $channel             = ""; // default is a value calculated from title
   var $nick                = "";
   var $frozen_nick         = false;
   var $max_nick_len        = 15;
@@ -52,25 +51,32 @@ class phpFreeChatConfig
   var $height              = "440px";
   var $width               = "";
   var $css_file            = "";
-  var $client_script       = "";
-  var $server_script       = "";
+  var $client_script_path  = "";
+  var $client_script_url   = ""; // default is calculated from 'client_script_path'
+  var $server_script_path  = "";
+  var $server_script_url   = ""; // default is calculated from 'server_script_path'
   var $useie7              = true;
   var $ie7path             = ""; // default is dirname(__FILE__)."/../lib/IE7_0_9";
   var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2_stable";
   var $jspath              = ""; // default is dirname(__FILE__)."/../lib/javascript";
   var $csstidypath         = ""; // default is dirname(__FILE__)."/../lib/csstidy-1.1";
-  var $data_private        = ""; // default is dirname(__FILE__)."/../data/private";
-  var $data_public         = ""; // default is dirname(__FILE__)."/../data/public";
+  var $data_private_path   = ""; // default is dirname(__FILE__)."/../data/private";
+  var $data_public_path    = ""; // default is dirname(__FILE__)."/../data/public";
+  var $data_public_url     = ""; // default is calculated from 'data_public_path' path
   var $shownotice          = true;
   var $debug               = false;
   var $active              = true;
   var $nickmarker          = true;
   var $clock               = true;
+  var $smileyurl           = ""; // default is calculated from smileypath value
+  var $smileypath          = ""; // default is dirname(__FILE__)."/../smileys";
   var $smileytheme         = "default";
   var $prefix              = "pfc_";
   var $output_encoding     = "UTF-8"; // could be ISO-8859-1
   var $language            = "";      // "" means the language is guess from the server config
   var $container_type      = "File";
+
+  var $smileys        = array();
   
   function phpFreeChatConfig( $params = array() )
   {
@@ -81,13 +87,15 @@ class phpFreeChatConfig
     phpFreeChatI18N::Init($this->language, $this->output_encoding);
 
     // setup a defaut title if user didn't set it up
-    if ($this->title == "")        $this->title = __("My Chat");
-    if ($this->ie7path == "")      $this->ie7path = dirname(__FILE__)."/../lib/IE7_0_9";
-    if ($this->xajaxpath == "")    $this->xajaxpath = dirname(__FILE__)."/../lib/xajax_0.2_stable";
-    if ($this->jspath == "")       $this->jspath = dirname(__FILE__)."/../lib/javascript";
-    if ($this->csstidypath == "")  $this->csstidypath = dirname(__FILE__)."/../lib/csstidy-1.1";
-    if ($this->data_private == "") $this->data_private = dirname(__FILE__)."/../data/private";
-    if ($this->data_public == "")  $this->data_public = dirname(__FILE__)."/../data/public";
+    if ($this->title == "")        $this->title        = __("My Chat");
+    if ($this->ie7path == "")      $this->ie7path      = dirname(__FILE__)."/../lib/IE7_0_9";
+    if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2_stable";
+    if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
+    if ($this->csstidypath == "")  $this->csstidypath  = dirname(__FILE__)."/../lib/csstidy-1.1";
+    if ($this->data_private_path == "") $this->data_private_path = dirname(__FILE__)."/../data/private";
+    if ($this->data_public_path == "")  $this->data_public_path  = dirname(__FILE__)."/../data/public";
+    if ($this->smileypath == "")   $this->smileypath   = dirname(__FILE__)."/../smileys";
+    if ($this->rootpath == "")     $this->rootpath     = dirname(__FILE__)."/..";
 
     // choose a auto-generated channel name if user choose a title but didn't choose a channel name
     if ( $this->channel == "" )
@@ -183,19 +191,19 @@ class phpFreeChatConfig
     $f_list["get_object_vars"] = __("You need %s", "PHP 4 or PHP 5");
     $ok &= $this->_checkUsedFunctions($f_list);
     
-    $ok &= $this->_testWritableDir($this->data_public, "data_public");
-    $ok &= $this->_testWritableDir($this->data_private, "data_private");
-    $ok &= $this->_installDir($this->jspath, $this->data_public."/javascript/");
+    $ok &= $this->_testWritableDir($this->data_public_path, "data_public_path");
+    $ok &= $this->_testWritableDir($this->data_private_path, "data_private_path");
+    $ok &= $this->_installDir($this->jspath, $this->data_public_path."/javascript/");
     
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/color-on.gif", $this->data_public."/images/color-on.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/color-off.gif", $this->data_public."/images/color-off.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/clock-on.gif", $this->data_public."/images/clock-on.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/clock-off.gif", $this->data_public."/images/clock-off.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/logout.gif", $this->data_public."/images/logout.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/login.gif", $this->data_public."/images/login.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/minimize.gif", $this->data_public."/images/minimize.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/maximize.gif", $this->data_public."/images/maximize.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/shade.gif", $this->data_public."/images/shade.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/color-on.gif", $this->data_public_path."/images/color-on.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/color-off.gif", $this->data_public_path."/images/color-off.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/clock-on.gif", $this->data_public_path."/images/clock-on.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/clock-off.gif", $this->data_public_path."/images/clock-off.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/logout.gif", $this->data_public_path."/images/logout.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/login.gif", $this->data_public_path."/images/login.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/minimize.gif", $this->data_public_path."/images/minimize.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/maximize.gif", $this->data_public_path."/images/maximize.gif");
+    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/shade.gif", $this->data_public_path."/images/shade.gif");
 
     // ---
     // test xajax lib existance
@@ -214,9 +222,9 @@ class phpFreeChatConfig
     {
       // install public xajax js to phpfreechat public directory
       $ok &= $this->_installFile($this->xajaxpath."/xajax_js/xajaxCompress.php",
-                                 $this->data_public."/xajax_js/xajaxCompress.php");
+                                 $this->data_public_path."/xajax_js/xajaxCompress.php");
       $ok &= $this->_installFile($this->xajaxpath."/xajax_js/xajax_uncompressed.js",
-                                 $this->data_public."/xajax_js/xajax_uncompressed.js" );
+                                 $this->data_public_path."/xajax_js/xajax_uncompressed.js" );
     }
 
     // ---
@@ -232,44 +240,59 @@ class phpFreeChatConfig
       $ok = false;
       $this->errors[] = __("%s not found, %s library can't be found", "ie7-core.js", "IE7");
     }
-    $ok &= $this->_installDir($this->ie7path, $this->data_public."/ie7/");
+    $ok &= $this->_installDir($this->ie7path, $this->data_public_path."/ie7/");
 
     // ---
     // test client script
     if ($ok)
     {
-      // try to automaticaly calculate the path
-      if ($this->client_script == "")
-	$this->client_script = phpFreeChatTools::GetScriptFilename();
-	$filetotest = $this->client_script;
-	// do not take into account the url parameters
-	if (preg_match("/(.*)\?(.*)/", $filetotest, $res))
-	  $filetotest = $res[1];
-	if ( !file_exists($filetotest) )
-	{
-	  $ok = false;
-	  $this->errors[] = __("%s doesn't exist", $filetotest);
-	}
+      // try to find the path into server configuration
+      if ($this->client_script_path == "")
+	$this->client_script_path = phpFreeChatTools::GetScriptFilename();
+      $filetotest = $this->client_script_path;
+      // do not take into account the url parameters
+      if (preg_match("/(.*)\?(.*)/", $filetotest, $res))
+	$filetotest = $res[1];
+      if ( !file_exists($filetotest) )
+      {
+	$ok = false;
+	$this->errors[] = __("%s doesn't exist", $filetotest);
+      }
+
+      if ($this->client_script_url == "")
+      {
+	$this->client_script_url = "./".basename($filetotest);
+      }
     }
-    
+
+    // calculate smiley url
+    if ($this->smileyurl == "")
+    {
+      $this->smileyurl = phpFreeChatTools::RelativePath($this->client_script_path, $this->smileypath);
+    }
+
+    // calculate datapublic url
+    if ($this->data_public_url == "")
+    {
+      $this->data_public_url = phpFreeChatTools::RelativePath($this->client_script_path, $this->data_public_path);
+    }
     // ---
     // test server script
-    if ($ok &&
-        $this->server_script != "")
+    if ($ok)
     {
-      $filetotest = $this->server_script;
+      if ($this->server_script_path == "") $this->server_script_path = $this->client_script_path;
+      $filetotest = $this->server_script_path;
       // do not take into account the url parameters
-      if (preg_match("/(.*)\?(.*)/",$this->server_script, $res))
+      if (preg_match("/(.*)\?(.*)/",$this->server_script_path, $res))
         $filetotest = $res[1];
       if ( !file_exists($filetotest) )
       {
 	$ok = false;
         $this->errors[] = __("%s doesn't exist", $filetotest);
       }
-      $this->server_script = phpFreeChatTools::RelativePath($this->client_script, $this->server_script)."/".basename($this->server_script);
+      if ($this->server_script_url == "")
+	$this->server_script_url = phpFreeChatTools::RelativePath($this->client_script_path, $this->server_script_path)."/".basename($this->server_script)."".basename($filetotest);
     }
-    else
-      $this->server_script = "./".basename($this->client_script);
     
     // ---
     // run specific container initialisation
@@ -287,7 +310,7 @@ class phpFreeChatConfig
     }
 
     // load root path
-    $this->rootpath = phpFreeChatTools::RelativePath($this->client_script, dirname(__FILE__).'/../');
+    $this->rooturl = phpFreeChatTools::RelativePath($this->client_script_path, $this->rootpath);
 
     // load smileys from file
     if ($ok)
@@ -315,7 +338,7 @@ class phpFreeChatConfig
 
   function loadSmileyTheme()
   {
-    $theme = file(dirname(__FILE__)."/../smileys/".$this->smileytheme."/theme");
+    $theme = file($this->smileypath."/".$this->smileytheme."/theme");
     $result = array();
     foreach($theme as $line)
     {
@@ -323,7 +346,7 @@ class phpFreeChatConfig
         continue;
       else if (preg_match("/^([a-z_0-9]*(\.gif|\.png))(.*)$/i",$line,$res))
       {
-        $smiley_file = $this->rootpath.'/smileys/'.$this->smileytheme.'/'.$res[1];
+        $smiley_file = $this->smileyurl.'/'.$this->smileytheme.'/'.$res[1];
         $smiley_str = trim($res[3])."\n";
         $smiley_str = str_replace("\n", "", $smiley_str);
         $smiley_str = str_replace("\t", " ", $smiley_str);
@@ -350,8 +373,8 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->channel;
       $spotted_atr[] = $this->prefix;
       $spotted_atr[] = $this->debug;
-      $spotted_atr[] = $this->data_public; 
-      $spotted_atr[] = $this->data_private;
+      $spotted_atr[] = $this->data_public_path; 
+      $spotted_atr[] = $this->data_private_path;
       $spotted_atr[] = $this->xajaxpath;
       $spotted_atr[] = $this->csstidypath;
       $spotted_atr[] = $this->container_type;

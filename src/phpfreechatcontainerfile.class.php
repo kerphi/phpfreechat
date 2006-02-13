@@ -37,7 +37,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $c =& $this->c;
     
     $cfg = array();
-    $cfg["chat_dir"]            = $c->data_private."/chat/".$c->channel."/";
+    $cfg["chat_dir"]            = $c->data_private_path."/chat/".$c->channel."/";
     $cfg["data_file"]           = $cfg["chat_dir"]."messages.data";
     $cfg["index_file"]          = $cfg["chat_dir"]."messages.index";
     $cfg["nickname_dir"]        = $cfg["chat_dir"]."nicknames/";
