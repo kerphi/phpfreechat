@@ -67,19 +67,18 @@ class phpFreeChatConfig
   var $nickmarker          = true;
   var $clock               = true;
   var $smileytheme         = "default";
-  var $prefix              = "phpfreechat_";
+  var $prefix              = "pfc_";
   var $output_encoding     = "UTF-8"; // could be ISO-8859-1
   var $language            = "";      // "" means the language is guess from the server config
   var $container_type      = "File";
   
   function phpFreeChatConfig( $params = array() )
   {
-    // setup the local for translated messages
-    phpFreeChatI18N::Init(isset($params["language"]) ? $params["language"] : "",
-                          isset($params["output_encoding"]) ? $params["output_encoding"] : "UTF-8");
-
     // set user's values
     foreach ( $params as $k => $v ) $this->$k = $v;
+
+    // setup the local for translated messages
+    phpFreeChatI18N::Init($this->language, $this->output_encoding);
 
     // setup a defaut title if user didn't set it up
     if ($this->title == "")        $this->title = __("My Chat");
