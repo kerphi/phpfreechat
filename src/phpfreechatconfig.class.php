@@ -291,7 +291,7 @@ class phpFreeChatConfig
         $this->errors[] = __("%s doesn't exist", $filetotest);
       }
       if ($this->server_script_url == "")
-	$this->server_script_url = phpFreeChatTools::RelativePath($this->client_script_path, $this->server_script_path)."/".basename($this->server_script)."".basename($filetotest);
+	$this->server_script_url = phpFreeChatTools::RelativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest);
     }
     
     // ---
@@ -365,10 +365,6 @@ class phpFreeChatConfig
     {
       $spotted_atr = array();
       $spotted_atr[] = dirname(__FILE__);
-      // do not check script filename if the chat use a script for the server side
-      // because it's possible to put the script at a different place than the client script
-      if ($this->server_script == "")
-        $spotted_atr[] = phpFreeChatTools::GetScriptFilename();
       $spotted_atr[] = $this->title;
       $spotted_atr[] = $this->channel;
       $spotted_atr[] = $this->prefix;
