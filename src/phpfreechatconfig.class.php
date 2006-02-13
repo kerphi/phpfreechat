@@ -31,7 +31,6 @@ require_once dirname(__FILE__)."/phpfreechati18n.class.php";
  */
 class phpFreeChatConfig
 {
-  var $nick           = "";
   var $id             = 0;
   var $default_params = array();
   var $errors         = array();
@@ -39,59 +38,64 @@ class phpFreeChatConfig
   var $smileys        = array();
   var $version        = "";
   var $rootpath      = "";
-  //  var $active         = true;
+  
+  var $title               = ""; // default is __("My Chat")
+  var $channel             = ""; // default is a value calculated for title
+  var $nick                = "";
+  var $frozen_nick         = false;
+  var $max_nick_len        = 15;
+  var $max_text_len        = 250;
+  var $connect_at_startup  = true;
+  var $start_minimized     = false;
+  var $refresh_delay       = 5000; // in mili-seconds (5 seconds)
+  var $max_msg             = 20;
+  var $height              = "440px";
+  var $width               = "";
+  var $css_file            = "";
+  var $client_script       = "";
+  var $server_script       = "";
+  var $useie7              = true;
+  var $ie7path             = ""; // default is dirname(__FILE__)."/../lib/IE7_0_9";
+  var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2_stable";
+  var $jspath              = ""; // default is dirname(__FILE__)."/../lib/javascript";
+  var $csstidypath         = ""; // default is dirname(__FILE__)."/../lib/csstidy-1.1";
+  var $data_private        = ""; // default is dirname(__FILE__)."/../data/private";
+  var $data_public         = ""; // default is dirname(__FILE__)."/../data/public";
+  var $shownotice          = true;
+  var $debug               = false;
+  var $active              = true;
+  var $nickmarker          = true;
+  var $clock               = true;
+  var $smileytheme         = "default";
+  var $prefix              = "phpfreechat_";
+  var $output_encoding     = "UTF-8"; // could be ISO-8859-1
+  var $language            = "";      // "" means the language is guess from the server config
+  var $container_type      = "File";
   
   function phpFreeChatConfig( $params = array() )
   {
     // setup the local for translated messages
     phpFreeChatI18N::Init(isset($params["language"]) ? $params["language"] : "",
                           isset($params["output_encoding"]) ? $params["output_encoding"] : "UTF-8");
-    
-    $this->default_params["title"]               = __("My Chat");
-    $this->default_params["channel"]             = preg_replace("/[^a-z0-9]*/","",strtolower($this->default_params["title"]));
-    $this->default_params["nick"]                = "";
-    $this->default_params["frozen_nick"]         = false;
-    $this->default_params["max_nick_len"]        = 15;
-    $this->default_params["max_text_len"]        = 250;
-    $this->default_params["connect_at_startup"]  = true;
-    $this->default_params["start_minimized"]     = false;
-    $this->default_params["refresh_delay"]       = 5000; // in mili-seconds (5 seconds)
-    $this->default_params["max_msg"]             = 20;
-    $this->default_params["height"]              = "440px";
-    $this->default_params["width"]               = "";
-    $this->default_params["css_file"]            = "";
-    $this->default_params["client_script"]       = "";
-    $this->default_params["server_script"]       = "";
-    $this->default_params["useie7"]              = true;
-    $this->default_params["ie7path"]             = dirname(__FILE__)."/../lib/IE7_0_9";
-    $this->default_params["xajaxpath"]           = dirname(__FILE__)."/../lib/xajax_0.2_stable";
-    $this->default_params["jspath"]              = dirname(__FILE__)."/../lib/javascript";
-    $this->default_params["csstidypath"]         = dirname(__FILE__)."/../lib/csstidy-1.1";
-    $this->default_params["data_private"]        = dirname(__FILE__)."/../data/private";
-    $this->default_params["data_public"]         = dirname(__FILE__)."/../data/public";
-    $this->default_params["shownotice"]          = true;
-    $this->default_params["debug"]               = false;
-    $this->default_params["active"]              = true;
-    $this->default_params["nickmarker"]          = true;
-    $this->default_params["clock"]               = true;
-    $this->default_params["smileytheme"]         = "default";
-    $this->default_params["prefix"]              = "phpfreechat_";
-    $this->default_params["output_encoding"]     = "UTF-8"; // could be ISO-8859-1
-    $this->default_params["language"]            = ""; // "" means the language is the server language
-    $this->default_params["container_type"]      = (isset($params["container_type"]) && $params["container_type"]!="") ? $params["container_type"] : "File";
-    
-    // set defaults values
-    foreach ( $this->default_params as $k => $v ) $this->$k = $v;
-    
+
     // set user's values
     foreach ( $params as $k => $v ) $this->$k = $v;
 
+    // setup a defaut title if user didn't set it up
+    if ($this->title == "")        $this->title = __("My Chat");
+    if ($this->ie7path == "")      $this->ie7path = dirname(__FILE__)."/../lib/IE7_0_9";
+    if ($this->xajaxpath == "")    $this->xajaxpath = dirname(__FILE__)."/../lib/xajax_0.2_stable";
+    if ($this->jspath == "")       $this->jspath = dirname(__FILE__)."/../lib/javascript";
+    if ($this->csstidypath == "")  $this->csstidypath = dirname(__FILE__)."/../lib/csstidy-1.1";
+    if ($this->data_private == "") $this->data_private = dirname(__FILE__)."/../data/private";
+    if ($this->data_public == "")  $this->data_public = dirname(__FILE__)."/../data/public";
+
     // choose a auto-generated channel name if user choose a title but didn't choose a channel name
-    if ( !isset($params["channel"]) && isset($params["title"]) )
+    if ( $this->channel == "" )
       $this->channel = preg_replace("/[^a-z0-9]*/","",strtolower($this->title));
     else
       $this->channel = preg_replace("/[^a-z0-9]*/","",strtolower($this->channel));
-
+    
     // load default container's config
     $container =& $this->getContainerInstance();
     $container_cfg = $container->getDefaultConfig();
@@ -350,6 +354,7 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->data_public; 
       $spotted_atr[] = $this->data_private;
       $spotted_atr[] = $this->xajaxpath;
+      $spotted_atr[] = $this->csstidypath;
       $spotted_atr[] = $this->container_type;
       $spotted_atr[] = $this->smileytheme;
       $spotted_atr[] = $this->shownotice;
@@ -359,6 +364,8 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->nickmarker;
       $spotted_atr[] = $this->connect_at_startup;
       $spotted_atr[] = $this->start_minimized;
+      $spotted_atr[] = $this->language;
+      $spotted_atr[] = $this->output_encoding;
       $this->id = md5(serialize($spotted_atr));
     }
     return $this->id;
