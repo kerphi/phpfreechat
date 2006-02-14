@@ -17,6 +17,7 @@
       <li><a href="demo7_in_english.php">demo7 - english translation of the chat</a></li>
       <li><a href="demo8_with_a_iso-8859-1_encoded_page.php">demo8 - a chat with a ISO-8859-1 encoded page</a></li>
       <li><a href="demo9_with_a_utf8_encoded_nickname.php">demo9 - a chat with a UTF-8 encoded nickname (none latin)</a></li>
+      <li><a href="demo10_in_chinese.php">demo10 - the chinese translation of the chat</a></li>
     </ul>
   </body>
   

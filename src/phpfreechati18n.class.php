@@ -74,11 +74,22 @@ class phpFreeChatI18N
 
   /**
    * Return the language list supported bye i18n system
-   * (should be completed in future)
+   * (content of the i18n directory)
    */
   function GetAcceptedLanguage()
   {
-    return array("en", "fr");
+    if (isset($GLOBALS["accepted_languages"]))
+      return $GLOBALS["accepted_languages"]; // restore the cached languages list
+    $GLOBALS["accepted_languages"] = array();
+    $dir_handle = opendir(dirname(__FILE__)."/../i18n");
+    while (false !== ($file = readdir($dir_handle)))
+    {
+      // skip . and .. generic files
+      // skip also .svn directory
+      if ($file == "." || $file == ".." || preg_match("/^\..*/", $file)) continue;
+      $GLOBALS["accepted_languages"][] = $file;
+    }
+    return $GLOBALS["accepted_languages"];
   }
   
   /**
