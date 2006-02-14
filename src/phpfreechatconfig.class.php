@@ -78,15 +78,21 @@ class phpFreeChatConfig
   var $active              = false; // used internaly
   var $is_init             = false; // used internaly to know if the chat config is initialized
   var $version             = ""; // the phpfreechat version: taken from the 'version' file content
+  var $sessionid           = 0; // the client sessionid, this is automatically set by phpfreechat instance
   var $debug               = false;
   
   function phpFreeChatConfig( $params = array() )
   {
-    // set user's values
-    foreach ( $params as $k => $v ) $this->$k = $v;
-
     // setup the local for translated messages
-    phpFreeChatI18N::Init($this->language);
+    phpFreeChatI18N::Init(isset($params["language"]) ? $params["language"] : "");
+
+    // set user's values
+    foreach ( $params as $k => $v )
+    {
+      if (!isset($this->$k))
+        $this->errors[] = __("Error: undefined or obsolete parameter '%s', please correct or remove this parameter", $k);
+      $this->$k = $v;
+    }
 
     // setup a defaut title if user didn't set it up
     if ($this->title == "")        $this->title        = __("My Chat");
@@ -174,7 +180,6 @@ class phpFreeChatConfig
    */
   function init()
   {
-    $this->errors = array();
     $ok = true;
 
     // first of all, check the used functions
@@ -335,7 +340,7 @@ class phpFreeChatConfig
     return $this->is_init;
   }
   
-  function getErrors()
+  function &getErrors()
   {
     return $this->errors;
   }
@@ -418,9 +423,9 @@ class phpFreeChatConfig
     {
       if (!$this->isInit())
         $this->init();
-      if (!$this->isInit())
+      $errors =& $this->getErrors();
+      if (count($errors) > 0)
       {
-        $errors = $this->getErrors();
         echo "<ul>"; foreach( $errors as $e ) echo "<li>".$e."</li>"; echo "</ul>";
         exit;
       }
