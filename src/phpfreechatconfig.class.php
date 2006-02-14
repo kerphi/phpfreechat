@@ -34,19 +34,30 @@ class phpFreeChatConfig
   var $serverid            = 0; // this is the chat server id (comparable to the server host in IRC)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
   var $title               = ""; // default is __("My Chat")
-  var $rootpath            = ""; // default is dirname(__FILE__)."/..";
-  var $rooturl             = ""; // default is a value calculated from rootpath
   var $channel             = ""; // default is a value calculated from title
   var $frozen_nick         = false;
   var $max_nick_len        = 15;
   var $max_text_len        = 250;
-  var $connect_at_startup  = true;
-  var $start_minimized     = false;
   var $refresh_delay       = 5000; // in mili-seconds (5 seconds)
   var $max_msg             = 20;
+  var $connect_at_startup  = true;
+  var $start_minimized     = false;
   var $height              = "440px";
   var $width               = "";
   var $css_file            = ""; // used to personalize the chat appearance
+  var $shownotice          = 2; // show: 0 = nothing, 1 = just nickname changes, 2 = 1+connect/quit
+  var $nickmarker          = true; // show/hide nicknames colors
+  var $clock               = true; // show/hide dates and hours
+  var $smileyurl           = ""; // default is calculated from smileypath value
+  var $smileypath          = ""; // default is dirname(__FILE__)."/../smileys";
+  var $smileytheme         = "default";
+  var $tplpath             = ""; // default is dirname(__FILE__)."/../templates";
+  var $tpltheme            = "default";
+  var $language            = "";      // could be something in i18n/* directory ("" means the language is guess from the server config)
+  var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
+  var $container_type      = "File";  
+  var $rootpath            = ""; // default is dirname(__FILE__)."/..";
+  var $rooturl             = ""; // default is a value calculated from rootpath
   var $client_script_path  = "";
   var $client_script_url   = ""; // default is calculated from 'client_script_path'
   var $server_script_path  = "";
@@ -60,19 +71,8 @@ class phpFreeChatConfig
   var $data_private_path   = ""; // default is dirname(__FILE__)."/../data/private";
   var $data_public_path    = ""; // default is dirname(__FILE__)."/../data/public";
   var $data_public_url     = ""; // default is calculated from 'data_public_path' path
-  var $shownotice          = 2; // show: 0 = nothing, 1 = just nickname changes, 2 = 1+connect/quit
-  var $nickmarker          = true; // show/hide nicknames colors
-  var $clock               = true; // show/hide dates and hours
-  var $smileyurl           = ""; // default is calculated from smileypath value
-  var $smileypath          = ""; // default is dirname(__FILE__)."/../smileys";
-  var $smileytheme         = "default";
-  var $tplpath             = ""; // default is dirname(__FILE__)."/../templates";
-  var $tpltheme            = "default";
-  var $language            = "";      // could be something in i18n/* directory ("" means the language is guess from the server config)
-  var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
-  var $container_type      = "File";
-  var $smileys             = array();
 
+  var $smileys             = array();
   var $errors              = array();
   var $prefix              = "pfc_";
   var $active              = false; // used internaly
