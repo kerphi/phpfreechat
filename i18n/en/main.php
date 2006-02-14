@@ -1,6 +1,6 @@
 <?php
 /**
- * i18n/fr/main.php
+ * i18n/en/main.php
  *
  * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
  *
