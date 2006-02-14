@@ -51,6 +51,7 @@ class phpFreeChatConfig
   var $client_script_url   = ""; // default is calculated from 'client_script_path'
   var $server_script_path  = "";
   var $server_script_url   = ""; // default is calculated from 'server_script_path'
+  var $url_params          = ""; // default is calculated from $_SERVER["QUERY_STRING"]
   var $useie7              = true; // use IE7 lib : fix crappy IE display bugs
   var $ie7path             = ""; // default is dirname(__FILE__)."/../lib/IE7_0_9";
   var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2_stable";
@@ -98,7 +99,8 @@ class phpFreeChatConfig
     if ($this->smileypath == "")   $this->smileypath   = dirname(__FILE__)."/../smileys";
     if ($this->rootpath == "")     $this->rootpath     = dirname(__FILE__)."/..";
     if ($this->tplpath == "")      $this->tplpath      = dirname(__FILE__)."/../templates";
-
+    if ($this->url_params == "")   $this->url_params   = $_SERVER["QUERY_STRING"];
+    
     // choose a auto-generated channel name if user choose a title but didn't choose a channel name
     if ( $this->channel == "" )
       $this->channel = preg_replace("/[^a-z0-9]*/","",strtolower($this->title));
@@ -263,7 +265,7 @@ class phpFreeChatConfig
 
       if ($this->client_script_url == "")
       {
-	$this->client_script_url = "./".basename($filetotest);
+	$this->client_script_url = "./".basename($filetotest).($this->url_params != "" ? "?".$this->url_params : "");
       }
     }
 
@@ -293,7 +295,7 @@ class phpFreeChatConfig
         $this->errors[] = __("%s doesn't exist", $filetotest);
       }
       if ($this->server_script_url == "")
-	$this->server_script_url = phpFreeChatTools::RelativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest);
+	$this->server_script_url = phpFreeChatTools::RelativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest).($this->url_params != "" ? "?".$this->url_params : "");
     }
     
     // ---

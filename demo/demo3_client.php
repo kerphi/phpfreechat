@@ -17,6 +17,32 @@ $chat = new phpFreeChat( $params );
 
   <body>
     <?php $chat->printChat(); ?>
+
+<?php
+  // print the current file
+  echo "<h2>The source code</h2>";
+
+  $filename = __FILE__;
+  echo "<p><code>".$filename."</code></p>";
+  echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
+  $content = file_get_contents($filename);
+  echo htmlentities($content);
+  echo "</pre>";
+
+  $filename = dirname(__FILE__)."/demo3_config.php";
+  echo "<p><code>".$filename."</code></p>";
+  echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
+  $content = file_get_contents($filename);
+  echo htmlentities($content);
+  echo "</pre>";
+
+  $filename = dirname(__FILE__)."/demo3_server.php";
+  echo "<p><code>".$filename."</code></p>";
+  echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
+  $content = file_get_contents($filename);
+  echo htmlentities($content);
+  echo "</pre>";
+?>
   </body>
 
 </html>
