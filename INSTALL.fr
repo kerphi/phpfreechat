@@ -13,19 +13,44 @@
 
     En avant!
 
-    Une fois l'archive téléchargée[20], décompressez la sur votre serveur et
-    donnez les droits en écriture aux répertoires phpfreechat-x.x/data/public
-    et phpfreechat-x.x/data/private (les convertations y seront stockées).
+    Pour les feignants:
 
-    Sous linux :
+       1. Téléchargez le script d'installation auto-extractible :
+          phpfreechat-x.x-setup.php[21] (la dernière version de préférence)
+       2. Uploadez le script dans un répertoire accessible par votre
+          navigateur (répertoire publique)
+       3. Lancez votre navigateur et exécutez le script d'installation que
+          vous venez d'uploader, ceci devrait lancer une interface
+          d'installation, suivez alors les étapes !
+          Astuce : supprimez le scripte d'installation une fois terminé pour
+          des raisons de sécurité.
 
-    tar xzf phpfreechat-x.x.tar.gz
-    chmod a+w phpfreechat-x.x/data/*
+    Pour les utilisateurs avancés ou pour ceux qui n'ont pas gzip installé
+    sur leur serveur:
 
-    Ensuite, créez ou modifiez le scripte qui affichera le chat, pour cela
-    prennez exemple sur les scriptes du répertoire phpfreechat-x.x/demo.
+       1. Téléchargez l'archive zip (ou tag.gz pour les utilisateurs linux) :
+          phpfreechat-x.x.zip[22] (la dernière version de préférence)
+       2. Décompressez l'archive localement et uploadez le résultat sur votre
+          serveur dans un répertoire accessible par votre navigateur.
+          Astuce: si vous avez un accès SSH, je vous conseil d'uploader
+          l'archive tar.gz puis de la décompresser directement sur le serveur
+          avec la commande tar xzf phpfreechat-x.x.tar.gz
+       3. Donnez les droits en écriture aux répertoires
+          phpfreechat-x.x/data/public et phpfreechat-x.x/data/private
+          Si vous utilisez FTP, voici les commandes:
+          CHMOD 777 phpfreechat-x.x/data/private
+          CHMOD 777 phpfreechat-x.x/data/public
 
-    Voila le scripte minimum pour que le chat fonctionne (inspiré de demo1) :
+          Si vous utilisez SSH, voici les commandes:
+          chmod a+w phpfreechat-x.x/data/*
+
+       4. Pour terminer : lancez votre navigateur et ouvrez le répertoire
+          phpfreechat-x.x sur votre serveur !
+
+    Vous désirez certainement paramétrer votre propre chat, pour cela prenez
+    exemple sur les scriptes du répertoire phpfreechat-x.x/demo.
+
+    Voila le script minimum pour que le chat fonctionne (inspiré de demo1) :
 
     <?php
 
@@ -57,7 +82,7 @@
 
     require_once "phpfreechat.class.php"; // ajustez le chemin
     $params["refresh_delay"] = 2000; // 2000ms = 2s
-    $chat = new phpFreeChat();
+    $chat = new phpFreeChat($params);
 
     ?>
     [... copiez/coller le code HTML vu plus haut ...]
@@ -72,23 +97,19 @@
 
     require_once "phpfreechat.class.php"; // ajustez le chemin
     $params["nick"] = "guest"; // ce pseudo peut-être récupéré depuis une base de données
-    $chat = new phpFreeChat();
+    $chat = new phpFreeChat($params);
 
     ?>
     [... copiez/coller le code HTML vu plus haut ...]
 
     Maintenant voyons la liste exaustive des paramètres :
 
-    title
-         Permet de changer le titre du chat, c'est à dire le texte qui
-         s'affiche en haut.
-         ("My phpFreeChat" est la valeur par défaut)
-    channel
-         Permet de créer un salon. Techniquement, ce paramètre permet de
-         choisir où vont être stockés les messages et les pseudonymes du
-         chat. Pour une explication plus détaillées voyez le paragraphe
-         suivant[21] dans la FAQ.
-         (par défaut, il est calculé automatiquement à partir du title)
+    serverid
+         C'est l'id identifiant du chat, "son IP" (comparable à l'adresse
+         (host) d'un serveur IRC). Deux chats doivent avoir des serverid
+         différents.
+         (par défaut ce paramètre est calculé à partir des autres paramètres
+         passés au chat)
     nick
          Ce paramètre est très utile si vous connaissez à l'avance les
          pseudonymes des utilisateurs, par exemple si vous souhaitez intégrer
@@ -101,6 +122,16 @@
          frozen_nick pour empêcher l'utilisateur de changer de nom.
          ("" par défaut, signifie que les utilisateurs doivent choisir leur
          pseudonymes quand ils se connectent)
+    title
+         Permet de changer le titre du chat, c'est à dire le texte qui
+         s'affiche en haut.
+         ("My phpFreeChat" est la valeur par défaut)
+    channel
+         Permet de créer un salon. Techniquement, ce paramètre permet de
+         choisir où vont être stockés les messages et les pseudonymes du
+         chat. Pour une explication plus détaillées voyez le paragraphe
+         suivant[23] dans la FAQ.
+         (par défaut, il est calculé automatiquement à partir du title)
     frozen_nick
          Mettre cette option à true va tout simplement empêcher les
          utilisateurs de changer leur pseudonymes. Cela sous entends que le
@@ -124,6 +155,15 @@
          automatiquement les messages de l'historique. Le nombre de messages
          qu'il voit est définit par ce paramètre
          (20 lignes par défaut)
+    connect_at_startup
+         Mettre cette option à false obligera les utilisateurs à cliquer sur
+         l'icone de connexion pour tchater.
+         (true par défaut, signifie que les utilisateurs sont automatiquement
+         connectés lorsque la page du chat est ouverte)
+    start_minimized
+         Mettre cette option à true minimizera le chat au premier chargement
+         de la page.
+         (false par défaut)
     height
          Hauteur de la zone de chat
          (440px par défaut)
@@ -138,16 +178,76 @@
          style en utilisant cette option.
          ("" par défaut, signifie que la feuille de style par défaut est
          utilisée)
-    server_script
-         Ce paramètre permet de spécifier un scripte externe qui sera chargé
-         des communication client/serveur du chat. Ce paramètre est très
-         utile lorsque le scripte du chat (client) consomme beaucoup de
-         ressources (voyez la demo3 pour un exemple concret).
-         ("" par défaut, signifie que le scripte qui s'occupe des
-         communications est le même que le scripte d'initialisation du chat,
-         le scripte client)
+    shownotice
+         Trois valeurs sont possibles : 0 pour ne rien afficher (ni les
+         notices de connexion/deconnexion, ni les changements de pseudo), 1
+         pour afficher seulement les changements de pseudo, 2 pour afficher
+         les changements de pseudo et les connexions/deconnexions.
+         (2 par défaut)
+    nickmarker
+         Mettre cette option à false désactivera la colorisation des
+         pseudonymes.
+         (true par défaut)
+    clock
+         Mettre cette option à false désactivera l'affichage de la date et de
+         l'heure.
+         (true par défaut)
+    smileyurl
+         Utilisé pour indiquer l'url à taper dans le navigateur pour y
+         acceder (utile pour les réécriture d'url)
+         (ce paramètre est calculé automatiquement par défaut)
+    smileypath
+         Le chemin vers le répertoire racine des smileys. Les sous répertoire
+         de ce répertoire doivent contenir les différents themes de smiley
+         utilisables.
+         (dirname(__FILE__)."/../smileys" par défaut)
+    smileytheme
+         Plusieurs thèmes de smileys peuvent cohabiter, ce paramètre permet
+         de spécifier lequel utiliser. Voyez l'explication détailée de
+         comment créer un thème[24] dand la FAQ.
+         ("default" par défaut)
+    tplpath et tpltheme
+         Sur le même principe que les smiley, ces paramètres permettent
+         d'indiquer l'emplacement des templates à utiliser. .
+         (par défaut ils pointent vers le répertoire de template
+         dirname(__FILE__)."/../templates")
+    language
+         Permet d'afficher le chat dans une langue donnée. Les valeurs
+         possibles sont les nom des sous répertoires de i18n.
+         (par défaut la langue est celle du serveur qui héberge le chat)
+    output_encoding
+         Permet de spécifier l'encodage à utiliser pour afficher les labels.
+         Concretement ce paramètre doit correspondre à l'encodage de la page
+         Web contenant le chat.
+         (par défaut UTF-8, c'est à dire aucun transcodage car les messages
+         sont stoqués en UTF-8 par défaut)
+    container_type
+         Permet de spéficier le conteneur à utiliser. Pour le moment, seul le
+         conteneur File (système de fichier) est disponible mais dans le
+         future de nombreux conteneurs existerons surrement (mysql, irc, msn,
+         jabber...).
+         ("File" par défaut)
+    server_script_path et server_script_url
+         Ces paramètres permettent de spécifier un script externe qui sera
+         chargé des communication client/serveur du chat. Ce paramètre est
+         très utile lorsque le script du chat (client) consomme beaucoup de
+         ressources (voyez la demo3 pour un exemple concret). Le premier
+         paramètre spécifie l'endroit du fichier lui même, le second
+         paramètre indique l'url où est situé le fichier (utile pour la
+         réécriture d'url)
+         (par défaut on utilise le même scripte que le script client pour les
+         communications)
+    client_script_path et client_script_url
+         Ces paramètres sont utilisés pour spécifier le chemin du script qui
+         va afficher le chat (script client). Ces options peuvent être utile
+         lorsque la configuration du serveur est peu commune. Le premier
+         paramètre spécifie l'endroit du fichier lui même, le second
+         paramètre indique l'url où est situé le fichier (utile pour la
+         réécriture d'url)
+         (par défaut pfc va essayer d'auto-detecter le script client en
+         fonction des variables globales du serveur)
     useie7
-         Mettre ce paramètre à false désactivera l'ajout des scriptes IE7[22]
+         Mettre ce paramètre à false désactivera l'ajout des scripts IE7[25]
          permettant un meilleur affichage dans Internet Explorer.
          (true par défaut)
     ie7path
@@ -159,70 +259,51 @@
          Spécifie le répertoire vers les librairies javascript (md5, cookie
          ...).
          (dirname(__FILE__)."/../lib/javascript" par défaut)
-    smartypath
-         Spécifie le répertoire vers la librairie Smarty[23]. Ce paramètre
-         est utile si vous avez déjà installé une librairie smarty et que
+    csstidypath
+         Spécifie le répertoire vers la librairie CSS Tidy[26]. Ce paramètre
+         est utile si vous avez déjà installé une librairie csstidy et que
          vous voulez économiser des octets sur votre serveur.
-         (dirname(__FILE__)."/../lib/Smarty-2.6.7" par défaut)
+         (dirname(__FILE__)."/../lib/csstidy-1.1" par défaut)
     xajaxpath
-         Spécifie le répertoire vers la librairie xajax[24]. Ce paramètre est
+         Spécifie le répertoire vers la librairie xajax[27]. Ce paramètre est
          utile si vous avez déjà installé une librairie xajax et que vous
          voulez économiser des octets sur votre serveur.
          (dirname(__FILE__)."/../lib/xajax_0.2_stable" par défaut)
-    data_private
+    data_private_path
          Ce répertoire est utilisé pour stoqué les données du chat ainsi que
          les templates compilés de smarty. Astuce: vous pouvez optimisez les
          performances coté serveur en spécifiant un répertoire en mémoire
-         vive (RAM disk, tmpfs), voyez cette section dans la FAQ[25].
+         vive (RAM disk, tmpfs), voyez cette section dans la FAQ[28].
          (dirname(__FILE__)."/../data/private" par défaut)
-    data_public
+    data_public_path et data_public_url
          Ce répertoire doit être impérativement accessible par votre serveur
-         Web. Les scriptes IE7 et xajax necessaires au chat y seront stockés.
-         (dirname(__FILE__)."/../data/public" par défaut)
-    shownotice
-         Trois valeurs sont possibles : 0 pour ne rien afficher (ni les
-         notices de connexion/deconnexion, ni les changements de pseudo), 1
-         pour afficher seulement les changements de pseudo, 2 pour afficher
-         les changements de pseudo et les connexions/deconnexions.
-         (2 par défaut)
+         Web. Les scripts IE7 et xajax necessaires au chat y seront stockés.
+         Le premier paramètre indique le répertoire absolue au niveau système
+         de fichier, et le second indique l'url pour y acceder depuis le
+         navigateur (utile pour la réécritude d'url)
+         (dirname(__FILE__)."/../data/public" par défaut, data_public_url lui
+         est calculé automatiquement)
     debug
          Cette option est pour les développeurs seulement. La mettre à true
          va activer les messages de log et la console de debug.
          (false par défaut)
-    connect
-         Mettre cette option à false obligera les utilisateurs à cliquer sur
-         l'icone de connexion pour tchater.
-         (true par défaut, signifie que les utilisateurs sont automatiquement
-         connectés lorsque la page du chat est ouverte)
-    smileytheme
-         Plusieurs thèmes de smileys peuvent cohabiter, ce paramètre permet
-         de spécifier lequel utiliser. Voyez l'explication détailée de
-         comment créer un thème[26] dand la FAQ.
-         ("default" par défaut)
     prefix
-         Ce prefix est utilisé pour chaques fonctions javascripte, chaque id
+         Ce prefix est utilisé pour chaques fonctions javascript, chaque id
          CSS et chaques classes CSS de façon à éviter les recouvrements de
          variables entre phpfreechat et votre site web.
          ("phpfreechat_" par défaut)
-    container_type
-         Permet de spéficier le conteneur à utiliser. Pour le moment, seul le
-         conteneur File (système de fichier) est disponible mais dans le
-         future de nombreux conteneurs existerons surrement (mysql, irc, msn,
-         jabber...).
-         ("File" par défaut)
 
 
 
+    ©2006 phpFreeChat
 
 --------------------------------------------------------------
 List of References
 
-Document's URL:  /tmp/install.fr.html
-[20] download.fr.html
-[21] faq.fr.html#multiple-channels
-[22] http://dean.edwards.name/IE7/
-[23] http://smarty.php.net/
-[24] http://www.xajaxproject.org/
-[25] faq.fr.html#tmpfs
-[26] customize.fr.html#cust-smileys
-
+Document's URL:  http://www.phpfreechat.net/install.fr.html
+[23] faq.fr.html#multiple-channels
+[24] customize.fr.html#cust-smileys
+[25] http://dean.edwards.name/IE7/
+[26] http://csstidy.sourceforge.net/index.php
+[27] http://www.xajaxproject.org/
+[28] faq.fr.html#tmpfs

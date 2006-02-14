@@ -2,10 +2,10 @@
 
     To install phpFreeChat you need:
 
-       *  A Web server (apache, IIS ...) with php (4 or 5)
-       *  A write access on the Web server (ssh, FTP, or other)
+       *  A Web server (Apache, IIS, Xitami ...) with PHP (4 or 5)
+       *  Write access on the Web server (SSH, FTP, or other)
 
-    By default, you don't need Mysql database because the system uses files
+    By default, you don't need a Mysql database because the system uses files
     to store messages and nicknames.
 
        *  Quick start
@@ -13,24 +13,44 @@
 
     Quick start
 
-    Once the archive downloaded[20], unzip it on your server and allow write
-    access to the directories phpfreechat/data/public and
-    phpfreechat/data/private (where convertations will be stored).
+    Using the setup (the easy way):
 
-    On linux :
+       1. Download phpfreechat-x.x-setup.php[21] (lastest version)
+       2. Upload the setup script on your server into a browsable directory
+          (public directory)
+       3. Browse the script with your personnal browser, it should launch a
+          setup, then follow the steps !
+          Tip: remove the setup when the install is finished for security
+          reason.
 
-    tar xzf phpfreechat-x.x.tar.gz
-    chmod a+w phpfreechat-x.x/data/*
+    Using the ziped archives (for those who havn't gzip module in their php):
 
-    Then create and modify the script that displays the chat. You can take
-    example on scripts in phpfreechat-x.x/demo directory.
+       1. Download phpfreechat-x.x.zip (or .tar.gz for linux users)[22]
+          (lastest version)
+       2. Unzip the archive localy then upload the phpfreechat-x.x directory
+          on your server into a browsable directory (public directory).
+          Tip: if you have a SSH access I suggesto to untar the archives
+          directly on the server usign tar xzf phpfreechat-x.x.tar.gz command.
+       3. Give the write rights to phpfreechat-x.x/data/public and
+          phpfreechat-x.x/data/private directories.
+          If you are using FTP:
+          CHMOD 777 phpfreechat-x.x/data/private
+          CHMOD 777 phpfreechat-x.x/data/public
+
+          If you are using SSH:
+          chmod a+w phpfreechat-x.x/data/*
+
+       4. Browse the phpfreechat-x.x directory with your browser and enjoy !
+
+    Now you need surely to customize your chat. You can take a look at the
+    example scripts in the phpfreechat-x.x/demo directory.
 
     Here is the minimum script required for your chat to work (inspired from
-    demo1) :
+    demo1):
 
     <?php
 
-    require_once "phpfreechat.class.php"; // adjust your own path
+    require_once "phpfreechat.class.php"; // adjust to your own path
     $chat = new phpFreeChat();
 
     ?>
@@ -49,49 +69,53 @@
 
     Advanced configuration
 
-    The chat is usable using default configuration but a lot of options can
-    be set to customize the chat. For exemple, to change the refresh speed to
-    2 seconds, copy/paste this piece of code:
+    The chat is usable using the default configuration but a lot of options
+    can be tweaked to customize the chat. For exemple, to change the refresh
+    speed to 2 seconds, copy/paste this piece of code:
 
     <?php
 
-    require_once "phpfreechat.class.php"; // adjust your own path
+    require_once "phpfreechat.class.php"; // adjust to your own path
     $params["refresh_delay"] = 2000; // 2000ms = 2s
-    $chat = new phpFreeChat();
+    $chat = new phpFreeChat($params);
 
     ?>
     [... copy/paste here the above HTML codes ...]
 
-    Another exemple, to assign the initial nickname to "guest" (this can be
-    useful when the chat is integrated into a portal or a forum which provide
-    a login/password), copy/paste this piece of code:
+    Another example, to set the initial nickname to "guest" (this can be
+    useful when the chat is integrated into a portal or a forum which
+    provides the login/password), copy/paste this piece of code:
 
     <?php
 
-    require_once "phpfreechat.class.php"; // adjust your own path
+    require_once "phpfreechat.class.php"; // adjust to your own path
     $params["nick"] = "guest"; // it can be useful to take nicks from a database
-    $chat = new phpFreeChat();
+    $chat = new phpFreeChat($params);
 
     ?>
     [... copy/paste here the above HTML codes ...]
 
-    Now see the full parameters list:
+    Now for the full parameters list:
 
+    serverid
+         This is the chat server id, "its IP" (comparable to the server host
+         in IRC). Two chat must have different serverid.
+         (by default this parameter is calculated from other parameters list)
+    nick
+         If you have already identified the user (forum, portal...) you can
+         force the user's nickname here, this will skip the "Please enter
+         your nickname" popup.
+         ("" value by default, means users must choose a nickname when s/he
+         connect)
     title
          Used to change the chat title that is visible just above the
          messages list.
-         ("My phpFreeChat"value by default)
+         ("My phpFreeChat" by default)
     channel
          Used to create a room. Technicaly this parameter is used to choose
          the data (messages + nicknames) storage destination. For a better
-         explanation, see this FAQ entry[21].
+         explaination, see this FAQ entry[23].
          (auto-generated string based on the title parameter by default)
-    nick
-         If you have allready identified the user (forum, portal...) you can
-         force the user's nickname here, this will skip the "Please enter
-         your nickname" popup.
-         ("" value by default, means users must choose a nickname when he
-         connect)
     frozen_nick
          Setting this to true will forbid the user to change his nickname
          later.
@@ -101,101 +125,145 @@
          ( 15 caracteres by default)
     max_text_len
          This is the maximum message length, a longer message is forbidden.
-         ( 250 caracteres by default)
+         ( 250 characters by default)
     refresh_delay
-         This is the time to wait between two refreshs. A refresh is a HTTP
-         request which ask server if there is new things to display. If there
-         is no new messages, then a empty HTTP response is returned.
-         ( 5000ms = 5s value by default)
+         This is the time to wait between two refreshes. A refresh is a HTTP
+         request which asks the server if there are new messages to display.
+         If there are no new messages, then a empty HTTP response is returned.
+         ( 5000ms = 5s by default)
     max_msg
-         This is the message history length. When a user connect, he can see
-         the history. Number of message he can see is defined by this
-         parameter.
+         This is the message history length. When a user connects, he can see
+         the history. The number of messages s/he can see is defined by this
          (20 lines by default)
+    connect_at_startup
+         Setting this to false will oblige user to click on the connect
+         button if s/he wants to chat.
+         (true value by default, means when the chat web page is open, a
+         connection to the chat is automaticaly performed)
+    start_minimized
+         Setting it to true will start the chat minimized.
+         (false value by default)
     height
-         height of the chat area.
-         (440px value by default)
+         Height of the chat area.
+         (440px by default)
     width
-         width of the chat area.
-         ("" value by default, means it's given by the CSS)
+         Width of the chat area.
+         ("" by default, means it's given by the CSS)
     css_file
-         Used to customize display (skin). You can define you're own CSS
-         (take demo5 as an exemple) in order to change the default chat
-         style. Just give the path to your CSS customized file.
+         Used to customize display (skin). You can define your own CSS (take
+         demo5 as an exemple) in order to change the default chat style. Just
+         give the path to your CSS customized file.
          ("" value by default, means the default style sheet is used)
-    server_script
+    shownotice
+         Setting this to 0 will disable nickname change notices and
+         connect/disconnect notices. Setting it to 1 will only disable
+         connect/disconnect notices. Setting it to 2 will show all notice
+         types.
+         (2 by default)
+    nickmarker
+         Setting it to false will disable nickname colorization.
+         (true value by default)
+    clock
+         Setting it to false will hide the date/hour column.
+         (true value by default)
+    smileyurl
+         Used to specify the smiley browsable url (useful for url rewriting)
+         (this parameter is automaticaly calculated by default)
+    smileypath
+         The absolute smiley directory path. Sub directories must contains
+         smileys theme directories.
+         (dirname(__FILE__)."/../smileys" by default)
+    smileytheme
+         Smiley themes can be defined, this parameter specifies which theme
+         this chat will use. See this explanation[24] if you want to create a
+         smiley theme.
+         ("default" by default)
+    tplpath and tpltheme
+         As for simleys, these parameters are used to specify template
+         location.
+         (dirname(__FILE__)."/../templates" by default and "default" for
+         tpltheme)
+    language
+         Used to specify the chat labels language. Accepted values are i18n/*
+         sub directories names.
+         (by default this is the local server language)
+    output_encoding
+         Useful to set a sepcific encoding for chat labels. This is really
+         useful when the Web page embedding the chat is not UTF-8 encoded.
+         This parameter should be the same as the chat web page.
+         (UTF-8 by default )
+    container_type
+         Used to specify the used container. For the moment, only a file
+         container has been written but in the future several containers
+         (mysql, irc, msn, jabber...) will surely be available.
+         ("File" by default)
+    server_script_path and server_script_url
          Used to specify the script which will handle asynchronous request.
-         Very useful when the chat (client) script is resource consuming.
-         ("" value by default, means the script used to receive users
-         commands is the same as the client script)
+         Very useful when the chat (client) script is resource consuming (ex:
+         forum or portal chat integration). server_script_url must point to
+         the server script browable url (useful when using url rewriting).
+         (by default these parameters are auto-calculated)
+    client_script_path and client_script_url
+         Used to specify the script path which display the chat and load
+         every JavaScript libraries (the client side). Useful when the php
+         configuration is uncommon, this option can be used to force the
+         automatic detection process. client_script_url must point to the
+         client script browable url (useful when using url rewriting).
+         (by default these parameters are auto-detected)
     useie7
-         Setting this to false will disable IE7[22] scripts used to improve
-         display for the crappy InternetExplorer.
+         Setting this to false will disable IE7[25] scripts used to improve
+         display for the crappy Internet Explorer.
          (true value by default)
     ie7path
          Specify the IE7 path. It's useful if you allready have a IE7 library
          installed and you want to save bytes on your server.
-         (dirname(__FILE__)."/../lib/IE7_0_9" value by default)
+         (dirname(__FILE__)."/../lib/IE7_0_9" by default)
     jspath
          Specify the javascript libraries path (md5, cookie ...).
-         (dirname(__FILE__)."/../lib/javascript" value by default)
-
+         (dirname(__FILE__)."/../lib/javascript" by default)
     smartypath
-         Specify the Smarty[23] path. It's useful if you allready have a
+         Specify the Smarty[26] path. It's useful if you allready have a
          Smarty library installed and you want to save bytes on your server.
-         (dirname(__FILE__)."/../lib/Smarty-2.6.7" value by default)
+         (dirname(__FILE__)."/../lib/Smarty-2.6.7" by default)
+    csstidypath
+         Specify the CSS Tidy[27] library path. It's useful if you allready
+         have a Smarty library installed and you want to save bytes on your
+         server.
+         (dirname(__FILE__)."/../lib/csstidy-1.1" by default)
     xajaxpath
-         Specify the xajax[24] path. It's useful if you allready have a xajax
+         Specify the xajax[28] path. It's useful if you allready have a xajax
          library installed and you want to save bytes on your server.
-         (dirname(__FILE__)."/../lib/xajax_0.2_stable" value by default);
-    data_private
+         (dirname(__FILE__)."/../lib/xajax_0.2_stable" by default);
+    data_private_path
          Used by the filesystem container to store chat data. Used by smarty
          to store compiled templates. Tip: you can optimize your chat
-         performances, see this FAQ entry[25].
-         (dirname(__FILE__)."/../data/private" value by default)
-    data_public
+         performances, see this FAQ entry[29].
+         (dirname(__FILE__)."/../data/private" by default)
+    data_public_path and data_public_url
          This path must be reachable by your web server. IE7 scripts and
-         xajax JS compiled scripts will be stored here.
-         (dirname(__FILE__)."/../data/public" value by default)
-    shownotice
-         Setting it to 0 will disable nickname changes notices and
-         connect/disconnect notices. Setting it to 1 will only disable
-         connect/disconnect notices. Setting it to 2 will show every notices.
-         (2 value by default)
+         xajax JS compiled scripts will be stored here. data_public_url
+         parameter can be specified to help when url rewriting is used.
+         (dirname(__FILE__)."/../data/public" by default)
     debug
-         For developers, setting it to true will activate logings and
+         For developers, setting it to true will activate logging and
          debuging console.
          (false value by default)
-    connect
-         Setting it to false will oblige user to click on the connect button
-         if he wants to chat.
-         (true value by default, means when the chat web page is open, a
-         connection to the chat is automaticaly done)
-    smileytheme
-         Smileys themes can be defined, this parameter specify which theme
-         this chat will use. See this explanation[26] if you want to create a
-         smiley theme.
-         ("default" value by default)
     prefix
-         Used to prefix every javascript functions, css ids and css class in
+         Used to prefix all javascript functions, css ids and css class in
          order to avoid variables overlaps.
-         ("phpfreechat_" value by default)
-    container_type
-         used to specify the used container. For the moment, only a file
-         container has been written but in the future several containers
-         (mysql, irc, msn, jabber...) will surely be available.
-         ("File" value by default)
+         ("phpfreechat_" by default)
+
+    ©2006 phpFreeChat
 
 
 --------------------------------------------------------------
 List of References
 
 Document's URL:  http://www.phpfreechat.net/install.en.html
-[20] download.en.html
-[21] faq.en.html#multiple-channels
-[22] http://dean.edwards.name/IE7/
-[23] http://smarty.php.net/
-[24] http://www.xajaxproject.org/
-[25] faq.en.html#tmpfs
-[26] customize.en.html#cust-smileys
-
+[23] faq.en.html#multiple-channels
+[24] customize.en.html#cust-smileys
+[25] http://dean.edwards.name/IE7/
+[26] http://smarty.php.net/
+[27] http://csstidy.sourceforge.net/index.php
+[28] http://www.xajaxproject.org/
+[29] faq.en.html#tmpfs
