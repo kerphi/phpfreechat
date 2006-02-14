@@ -172,7 +172,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
         }
       }
       $this->_cache_nickid[$nickname] = $nickid;
-      //if ($c->debug) pxlog("getNickId[".$c->sessionid."]: nickname=".$nickname." nickid=".$nickid, "chat", $c->id);
+      //if ($c->debug) pxlog("getNickId[".$c->sessionid."]: nickname=".$nickname." nickid=".$nickid, "chat", $c->getId());
     }
     return $this->_cache_nickid[$nickname];
   }

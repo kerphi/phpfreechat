@@ -31,16 +31,12 @@ require_once dirname(__FILE__)."/phpfreechati18n.class.php";
  */
 class phpFreeChatConfig
 {
-  var $id                  = 0;
-  var $default_params      = array();
-  var $errors              = array();
-  var $is_init             = false;
-  var $version             = "";
+  var $serverid            = 0; // this is the chat server id (comparable to the server host in IRC)
+  var $nick                = ""; // the initial nickname ("" means the user will be queried)
+  var $title               = ""; // default is __("My Chat")
   var $rootpath            = ""; // default is dirname(__FILE__)."/..";
   var $rooturl             = ""; // default is a value calculated from rootpath
-  var $title               = ""; // default is __("My Chat")
   var $channel             = ""; // default is a value calculated from title
-  var $nick                = "";
   var $frozen_nick         = false;
   var $max_nick_len        = 15;
   var $max_text_len        = 250;
@@ -50,12 +46,12 @@ class phpFreeChatConfig
   var $max_msg             = 20;
   var $height              = "440px";
   var $width               = "";
-  var $css_file            = "";
+  var $css_file            = ""; // used to personalize the chat appearance
   var $client_script_path  = "";
   var $client_script_url   = ""; // default is calculated from 'client_script_path'
   var $server_script_path  = "";
   var $server_script_url   = ""; // default is calculated from 'server_script_path'
-  var $useie7              = true;
+  var $useie7              = true; // use IE7 lib : fix crappy IE display bugs
   var $ie7path             = ""; // default is dirname(__FILE__)."/../lib/IE7_0_9";
   var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2_stable";
   var $jspath              = ""; // default is dirname(__FILE__)."/../lib/javascript";
@@ -63,22 +59,25 @@ class phpFreeChatConfig
   var $data_private_path   = ""; // default is dirname(__FILE__)."/../data/private";
   var $data_public_path    = ""; // default is dirname(__FILE__)."/../data/public";
   var $data_public_url     = ""; // default is calculated from 'data_public_path' path
-  var $shownotice          = true;
-  var $debug               = false;
-  var $active              = true;
-  var $nickmarker          = true;
-  var $clock               = true;
+  var $shownotice          = 2; // show: 0 = nothing, 1 = just nickname changes, 2 = 1+connect/quit
+  var $nickmarker          = true; // show/hide nicknames colors
+  var $clock               = true; // show/hide dates and hours
   var $smileyurl           = ""; // default is calculated from smileypath value
   var $smileypath          = ""; // default is dirname(__FILE__)."/../smileys";
   var $smileytheme         = "default";
   var $tplpath             = ""; // default is dirname(__FILE__)."/../templates";
   var $tpltheme            = "default";
-  var $prefix              = "pfc_";
-  var $language            = "";      // "" means the language is guess from the server config
+  var $language            = "";      // could be something in i18n/* directory ("" means the language is guess from the server config)
   var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
   var $container_type      = "File";
+  var $smileys             = array();
 
-  var $smileys        = array();
+  var $errors              = array();
+  var $prefix              = "pfc_";
+  var $active              = false; // used internaly
+  var $is_init             = false; // used internaly to know if the chat config is initialized
+  var $version             = ""; // the phpfreechat version: taken from the 'version' file content
+  var $debug               = false;
   
   function phpFreeChatConfig( $params = array() )
   {
@@ -364,7 +363,9 @@ class phpFreeChatConfig
   function getId()
   {
     // calculate the chat id
-    if ($this->id == 0)
+    // do not put in the parameter list something which is modified in
+    // ->init() methode
+    if ($this->serverid == 0)
     {
       $spotted_atr = array();
       $spotted_atr[] = dirname(__FILE__);
@@ -372,9 +373,8 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->channel;
       $spotted_atr[] = $this->prefix;
       $spotted_atr[] = $this->debug;
-      $spotted_atr[] = $this->client_script_url; 
-      $spotted_atr[] = $this->server_script_url; 
-      $spotted_atr[] = $this->data_public_url; 
+      //$spotted_atr[] = $this->client_script_path; /* do not uncomment because it can be set in ->init() methode */ 
+      //$spotted_atr[] = $this->server_script_path; /* do not uncomment because it can be set in ->init() methode */
       $spotted_atr[] = $this->data_public_path; 
       $spotted_atr[] = $this->data_private_path;
       $spotted_atr[] = $this->xajaxpath;
@@ -393,9 +393,9 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->start_minimized;
       $spotted_atr[] = $this->language;
       $spotted_atr[] = $this->output_encoding;
-      $this->id = md5(serialize($spotted_atr));
+      $this->serverid = md5(serialize($spotted_atr));
     }
-    return $this->id;
+    return $this->serverid;
   }  
 
   /**
@@ -431,7 +431,10 @@ class phpFreeChatConfig
   {
     $session_id = $this->prefix."chatconfig_".$this->getId();
     $_SESSION[$session_id] = serialize(get_object_vars($this));
-    if ($this->debug) pxlog("saveInSession[".$this->getId()."]: nick=".$this->nick, "chatconfig", $this->getId());
+    pxlog($this->nick, "chatconfig", $this->getId());
+    pxlog(debug_backtrace(), "chatconfig", $this->getId());
+
+    //    if ($this->debug) pxlog("saveInSession[".$this->getId()."]: nick=".$this->nick, "chatconfig", $this->getId());
   }
 
 

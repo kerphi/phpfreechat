@@ -46,5 +46,5 @@
 </div>
 
 <?php if ($debug) { ?>
-<p>Debug is on, you can <a href="<?php echo $rooturl; ?>/debug/console.php?chatid=<?php echo $id; ?>">open the debugging console</a>.</p>
+<p>Debug is on, you can <a href="<?php echo $rooturl; ?>/debug/console.php?chatid=<?php echo $serverid; ?>">open the debugging console</a>.</p>
 <?php } ?>
