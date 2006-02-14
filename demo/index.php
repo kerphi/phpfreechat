@@ -3,7 +3,7 @@
 
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>phpFreeChat demod</title>
+    <title>phpFreeChat demos</title>
   </head>
     
   <body>
