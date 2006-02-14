@@ -119,4 +119,7 @@ $GLOBALS["i18n"]["Enter your message here"] = "Enter your message here";
 // line 24 in chat.html.tpl.php
 $GLOBALS["i18n"]["Enter your nickname here"] = "Enter your nickname here";
 
+// line 93 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "Error: undefined or obsolete parameter '%s', please correct or remove this parameter";
+
 ?>

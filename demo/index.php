@@ -23,6 +23,7 @@
       <li><a href="demo13_in_german_informal_language.php">demo13 - the german (informal) translation of the chat</a></li>
       <li><a href="demo14_in_german_formal_language.php">demo14 - the german (formal) translation of the chat</a></li>
       <li><a href="demo15_multiple_channel.php">demo15 - a chat with multiple/dynamic channels</a></li>
+      <li><a href="demo16_in_arabic.php">demo16 - the arabic translation of the chat</a></li>
 </ul>
   </body>
   
