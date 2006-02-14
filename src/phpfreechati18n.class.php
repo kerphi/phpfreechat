@@ -23,7 +23,7 @@
 function __()
 {
   $args = func_get_args();
-  $args[0] = isset($GLOBALS["i18n"][$args[0]]) ?
+  $args[0] = isset($GLOBALS["i18n"][$args[0]]) && $GLOBALS["i18n"][$args[0]] != "" ?
     iconv("UTF-8", $GLOBALS["output_encoding"], $GLOBALS["i18n"][$args[0]]) :
     "_".$args[0]."_";
   return call_user_func_array('sprintf', $args);
@@ -102,10 +102,10 @@ class phpFreeChatI18N
                             dirname(__FILE__)."/phpfreechatconfig.class.php",
                             dirname(__FILE__)."/phpfreechatcontainer.class.php",
                             dirname(__FILE__)."/phpfreechatcontainerfile.class.php",
-                            dirname(__FILE__)."/../templates/chat.html.tpl.php",
-                            dirname(__FILE__)."/../templates/javascript1.js.tpl.php",
-                            dirname(__FILE__)."/../templates/javascript2.js.tpl.php",
-                            dirname(__FILE__)."/../templates/style.css.tpl.php"
+                            dirname(__FILE__)."/../templates/default/chat.html.tpl.php",
+                            dirname(__FILE__)."/../templates/default/javascript1.js.tpl.php",
+                            dirname(__FILE__)."/../templates/default/javascript2.js.tpl.php",
+                            dirname(__FILE__)."/../templates/default/style.css.tpl.php"
                             );
     $res = array();
     foreach ( $src_filenames as $src_filename )
