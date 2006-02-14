@@ -20,6 +20,8 @@
       <li><a href="demo10_in_chinese.php">demo10 - the chinese translation of the chat</a></li>
       <li><a href="demo11_famfamfam_smiley_theme.php">demo11 - A chat with a customized smiley theme (famfamfam theme)</a></li>
       <li><a href="demo12_phoenity_smiley_theme.php">demo12 - A chat with a customized smiley theme (phoenity theme)</a></li>
+      <li><a href="demo13_in_german_informal_language.php">demo13 - the german (informal) translation of the chat</a></li>
+      <li><a href="demo14_in_german_formal_language.php">demo14 - the german (formal) translation of the chat</a></li>
     </ul>
   </body>
   
