@@ -83,8 +83,7 @@ class phpFreeChat
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
 
     // print xajax javascript
-    $xajax_js = $c->rooturl.'/data/public/';
-    $output .= $this->xajax->getJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
+    $output .= $this->xajax->getJavascript($c->data_public_url, NULL, $c->data_public_url."/xajax_js/xajax.js");
 
     // print phpfreechat specific javascript
     $t = new phpFreeChatTemplate($c->tplpath."/".$c->tpltheme."/javascript1.js.tpl.php");

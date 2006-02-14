@@ -44,7 +44,8 @@ class phpFreeChatTools
       $res .= "../";
       $p1 = dirname($p1);
     }
-    $p2 = substr($p2, strlen($p1)+1, strlen($p2)-strlen($p1));
+    //    $p2 = substr($p2, strlen($p1)+1, strlen($p2)-strlen($p1));
+    $p2 = (isset($_SERVER["WINDIR"])) ? str_replace("\\","/",substr($p2, strlen($p1)+1, strlen($p2)-strlen($p1))) : substr($p2, strlen($p1)+1, strlen($p2)-strlen($p1));
     $res .= $p2;
     // remove the last "/"
     if (preg_match("/.*\/$/", $res)) $res = preg_replace("/(.*)\//","$1",$res);
@@ -57,7 +58,7 @@ class phpFreeChatTools
   {
     $result = array();
     // $pathA = preg_split('/[\/\\\]/', $path);
-    $pathA = explode('/', $path);
+    $pathA = (isset($_SERVER["WINDIR"])) ? explode('\\', $path) : explode('/', $path);
     if (!$pathA[0])
       $result[] = '';
     foreach ($pathA AS $key => $dir) {

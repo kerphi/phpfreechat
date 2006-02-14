@@ -372,6 +372,9 @@ class phpFreeChatConfig
       $spotted_atr[] = $this->channel;
       $spotted_atr[] = $this->prefix;
       $spotted_atr[] = $this->debug;
+      $spotted_atr[] = $this->client_script_url; 
+      $spotted_atr[] = $this->server_script_url; 
+      $spotted_atr[] = $this->data_public_url; 
       $spotted_atr[] = $this->data_public_path; 
       $spotted_atr[] = $this->data_private_path;
       $spotted_atr[] = $this->xajaxpath;
