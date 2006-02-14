@@ -9,7 +9,7 @@
     <div id="<?php echo $prefix; ?>chat"></div>
     <div id="<?php echo $prefix; ?>smileys">
       <?php foreach($smileys as $s_file => $s_str) { ?>
-      <img src="<?php echo $s_file; ?>" alt="<?php echo $s_str[0]; ?>" onclick="<?php echo $prefix; ?>insertSmiley('<?php echo $s_str[0]; ?>');" />
+      <img src="<?php echo $s_file; ?>" alt="<?php echo $s_str[0]; ?>" title="<?php echo $s_str[0]; ?>" onclick="<?php echo $prefix; ?>insertSmiley('<?php echo $s_str[0]; ?>');" />
       <?php } ?>
     </div>
     <div id="<?php echo $prefix; ?>misc1"></div>
