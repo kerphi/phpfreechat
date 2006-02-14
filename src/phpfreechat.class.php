@@ -213,7 +213,7 @@ class phpFreeChat
         $s_str = stripslashes($s_str); /* the :'( smileys needs this filter */
 	$query .= preg_quote($s_str,'/')."|";
 	$search[] = "/".preg_quote($s_str,'/')."/";
-	$replace[] = '<img src="'.$s_file.'" alt="'.$s_str.'" />';
+	$replace[] = '<img src="'.$s_file.'" alt="'.$s_str.'" title="'.$s_str.'" />';
       }
     }
     $query = substr($query, 0, strlen($query)-1);
