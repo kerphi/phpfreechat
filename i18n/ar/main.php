@@ -14,7 +14,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details. 
  *
- * You should have received a copy of the GNU Lesser General Public
+ * You should have received a copy of t'%s'he GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
@@ -120,6 +120,6 @@ $GLOBALS["i18n"]["Enter your message here"] = "أدخل رسالتك هنا";
 $GLOBALS["i18n"]["Enter your nickname here"] = "أدخل لقبك هنا";
 
 // line 93 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "";
+$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = " برمتر غير معروف يرجى تصحيح أو حذف هذا البرمتر '%s'  : خطء";
 
 ?>
