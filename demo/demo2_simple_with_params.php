@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params = array();
+$params["serverid"]       = md5(__FILE__); // calculate a unique id for this chat
 $params["title"]          = "A simple chat with user's parameters";
 $params["nick"]           = "guest";  // setup the intitial nickname
 $params["frozen_nick"]    = true;     // do not allow to change the nickname

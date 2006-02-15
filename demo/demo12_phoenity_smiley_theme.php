@@ -1,10 +1,11 @@
 <?php
 
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
-$params = array();
-$params["title"]          = "A chat with a customized smiley theme (phoenity theme)";
-$params["nick"]           = "guest";  // setup the intitial nickname
-$params["smileytheme"]    = "phoenity";
+
+$params["serverid"]    = md5(__FILE__); // calculate a unique id for this chat
+$params["title"]       = "A chat with a customized smiley theme (phoenity theme)";
+$params["nick"]        = "guest";  // setup the intitial nickname
+$params["smileytheme"] = "phoenity";
 $chat = new phpFreeChat( $params );
 
 ?>

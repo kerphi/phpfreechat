@@ -2,13 +2,12 @@
 
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 
-$params =  array("title"          => "A chat with a customized stylesheet",
-                 "height"         => "500px",
-                 "width"          => "550px",
-                 "max_msg"        => 21,
-                 //"debug"          => true,
-                 "css_file"       => dirname(__FILE__)."/demo5_customized_style_data/style.css.tpl.php",
-                 );
+$params["serverid"]      = md5(__FILE__); // calculate a unique id for this chat
+$params["title"]         = "A chat with a customized stylesheet";
+$params["height"]        = "500px";
+$params["width"]         = "550px";
+$params["max_msg"]       = 21;
+$params["css_file"]      = dirname(__FILE__)."/demo5_customized_style_data/style.css.tpl.php";
 $chat = new phpFreeChat( $params );
 
 ?>

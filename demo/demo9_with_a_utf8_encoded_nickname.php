@@ -1,7 +1,8 @@
 <?php
 
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
-$params = array();
+
+$params["serverid"]       = md5(__FILE__); // calculate a unique id for this chat
 $params["title"]          = "A simple chat with a utf8 none latin initial nickname";
 $params["nick"]           = "سندرا";  // setup the utf8 encoded nickname
 $chat = new phpFreeChat( $params );

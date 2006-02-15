@@ -1,8 +1,9 @@
 <?php
 
 require_once dirname(__FILE__)."/../src/phpfreechatconfig.class.php";
-$params = array("title" => "A chat with one script for client and on script for server",
-                "nick" => "guest",
-                "server_script_path" => dirname(__FILE__)."/demo3_server.php" );
+$params["serverid"]           = md5(__FILE__); // calculate a unique id for this chat
+$params["title"]              = "A chat with one script for client and on script for server";
+$params["nick"]               = "guest";
+$params["server_script_path"] = dirname(__FILE__)."/demo3_server.php";
 
 ?>

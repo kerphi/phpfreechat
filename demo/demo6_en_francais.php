@@ -1,9 +1,10 @@
 <?php
 
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
-$params = array();
-$params["title"] = "Un exemple de chat avec tous ses messages traduits en français";
-$params["language"] = "fr";
+
+$params["serverid"]      = md5(__FILE__); // calculate a unique id for this chat
+$params["title"]         = "Un exemple de chat avec tous ses messages traduits en français";
+$params["language"]      = "fr";
 $chat = new phpFreeChat( $params );
 
 ?>

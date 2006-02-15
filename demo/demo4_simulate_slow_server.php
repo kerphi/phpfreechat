@@ -5,11 +5,10 @@ require_once "../src/phpfreechat.class.php";
 // sleep [1-5] seconds to simulate a random serveur lag
 sleep(rand(1,5));
 
-$params = array("title" => "A chat simulating slow server (lag form 1 to 5 seconds)",
-                "nick" => "guest",
-                "refresh_delay" => 2000, // a fast refresh rate
-                //"debug" => true,
-                );
+$params["serverid"]      = md5(__FILE__); // calculate a unique id for this chat
+$params["title"]         = "A chat simulating slow server (lag form 1 to 5 seconds)";
+$params["nick"]          = "guest";
+$params["refresh_delay"] = 2000;
 $chat = new phpFreeChat( $params );
 
 ?>
