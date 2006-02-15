@@ -500,8 +500,8 @@ class phpFreeChatConfig
       return false;
     }
     if (!is_dir($dst_dir))
-      phpFreeChatTools::RecursiveMkdir($dst_dir);
-    return copy( $src_file, $dst_file );
+      @phpFreeChatTools::RecursiveMkdir($dst_dir);
+    return @copy( $src_file, $dst_file );
   }
 
   function _installDir($src_dir, $dst_dir)
