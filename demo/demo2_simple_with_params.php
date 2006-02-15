@@ -5,6 +5,7 @@ $params = array();
 $params["serverid"]       = md5(__FILE__); // calculate a unique id for this chat
 $params["title"]          = "A simple chat with user's parameters";
 $params["nick"]           = "guest";  // setup the intitial nickname
+$params["prefix"]         = "myprefix_";
 $params["frozen_nick"]    = true;     // do not allow to change the nickname
 $params["shownotice"]     = 0;        // 0 = nothing, 1 = just nickname changes, 2 = 1+connect/quit
 $params["max_nick_len"]   = 20;       // nickname length could not be longer than 10 caracteres

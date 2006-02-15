@@ -378,7 +378,7 @@ class phpFreeChatConfig
       $spotted_atr[] = dirname(__FILE__);
       $spotted_atr[] = $this->title;
       $spotted_atr[] = $this->channel;
-      $spotted_atr[] = $this->prefix;
+      //$spotted_atr[] = $this->prefix; /* do not use prefix here because it is used before the first getId call */
       $spotted_atr[] = $this->debug;
       //$spotted_atr[] = $this->client_script_path; /* do not uncomment because it can be set in ->init() methode */ 
       //$spotted_atr[] = $this->server_script_path; /* do not uncomment because it can be set in ->init() methode */
