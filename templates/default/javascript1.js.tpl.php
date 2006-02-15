@@ -5,11 +5,12 @@ var <?php echo $prefix; ?>nicklist = Array();
 var cookie = '';
 cookie = getCookie('<?php echo $prefix; ?>nickmarker');
 var <?php echo $prefix; ?>nickmarker = (cookie == 'true');
-if (cookie == null)
+if (cookie == '')
   <?php echo $prefix; ?>nickmarker = <?php if ($nickmarker) { ?>true<?php } else { ?>false<?php } ?>;
+cookie = '';
 cookie = getCookie('<?php echo $prefix; ?>clock');
 var <?php echo $prefix; ?>clock = (cookie == 'true');
-if (cookie == null)
+if (cookie == '')
   <?php echo $prefix; ?>clock = <?php if ($clock) { ?>true<?php } else { ?>false<?php } ?>;
 
 /* unique client id for each windows used to identify a open window
