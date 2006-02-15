@@ -36,7 +36,7 @@ $GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s non trouvé, 
 $GLOBALS["i18n"]["Please enter your nickname"] = "Entrez votre pseudonyme";
 
 // line 565 in phpfreechat.class.php
-$GLOBALS["i18n"]["Text cannot be empty."] = "Le message ne peux pas être vide";
+$GLOBALS["i18n"]["Text cannot be empty"] = "Le message ne peux pas être vide";
 
 // line 392 in phpfreechat.class.php
 $GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s s'appel maintenant %s";
