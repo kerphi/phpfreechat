@@ -82,6 +82,7 @@ class phpFreeChat
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/md5.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/cookie.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
+    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/prototype.js\"></script>";
 
     // print xajax javascript
     $output .= $this->xajax->getJavascript($c->data_public_url, NULL, $c->data_public_url."/xajax_js/xajax.js");
