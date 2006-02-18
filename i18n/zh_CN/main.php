@@ -1,6 +1,6 @@
 <?php
 /**
-* i18n/zh/main.php
+* i18n/zh_CN/main.php
 *
 * Copyright 漏 2006 Stephane Gully <stephane.gully@gmail.com>
 *
