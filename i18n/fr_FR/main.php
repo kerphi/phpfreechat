@@ -122,4 +122,5 @@ $GLOBALS["i18n"]["Enter your nickname here"] = "Entrez votre pseudonyme ici";
 // line 93 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "Erreur : paramètre inconnu ou obsolète '%s', corrigez ou enlevez ce paramètre";
 
+
 ?>

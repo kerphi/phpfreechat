@@ -122,4 +122,5 @@ $GLOBALS["i18n"]["Enter your nickname here"] = "أدخل لقبك هنا";
 // line 93 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = " برمتر غير معروف يرجى تصحيح أو حذف هذا البرمتر '%s'  : خطء";
 
+
 ?>
