@@ -33,9 +33,8 @@ class phpFreeChatI18N
 {
   function Init($language)
   {
-    $language = strtolower($language);
     if (!in_array($language, phpFreeChatI18N::GetAcceptedLanguage()))
-      $language = phpFreeChatI18N::GetDefaultServerLanguage();
+      $language = phpFreeChatI18N::GetDefaultLanguage();
     require_once(dirname(__FILE__)."/../i18n/".$language."/main.php");
     $GLOBALS["output_encoding"] = "UTF-8"; // by default client/server communication is utf8 encoded
   }
@@ -60,16 +59,11 @@ class phpFreeChatI18N
   }
   
   /**
-   * Return the language used by the server or "en" if not listed in accepted languages
-   * (thanks to bsemf for his suggestion)
+   * Return the default language : "en"
    */
-  function GetDefaultServerLanguage()
+  function GetDefaultLanguage()
   {
-    $lang = explode(",",$_SERVER['HTTP_ACCEPT_LANGUAGE']);
-    $language = substr($lang[0], 0,2);
-    if (!in_array($language, phpFreeChatI18N::GetAcceptedLanguage()))
-      $language = "en";
-    return $language;
+    return "en_US";
   }
 
   /**
