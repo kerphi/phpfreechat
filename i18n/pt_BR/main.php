@@ -2,7 +2,7 @@
 /**
  * i18n/pt_BR/main.php
  *
- * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
+ * Copyright ¬© 2006 Stephane Gully <stephane.gully@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,13 +30,13 @@
 $GLOBALS["i18n"]["My Chat"] = "Meu Batepapo";
 
 // line 201 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s n„o encontrada, a biblioteca %s n„o pode ser encontrada.";
+$GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s n√£o encontrada, a biblioteca %s n√£o pode ser encontrada.";
 
 // line 355 in phpfreechat.class.php
 $GLOBALS["i18n"]["Please enter your nickname"] = "Porfavor, informe seu apelido";
 
 // line 565 in phpfreechat.class.php
-$GLOBALS["i18n"]["Text cannot be empty"] = "O Texto n„o de ser em branco";
+$GLOBALS["i18n"]["Text cannot be empty"] = "O Texto n√£o de ser em branco";
 
 // line 392 in phpfreechat.class.php
 $GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s mudou de apeildo para %s";
@@ -54,37 +54,37 @@ $GLOBALS["i18n"]["%s disconnected (timeout)"] = "%s foi desconectado por timeout
 $GLOBALS["i18n"]["Unknown command [%s]"] = "comando desconhecido [%s]";
 
 // line 149 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist: %s"] = "%s n„o existe: %s";
+$GLOBALS["i18n"]["%s doesn't exist: %s"] = "%s n√£o existe: %s";
 
 // line 180 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["You need %s"] = "VocÍ precisa de %s";
+$GLOBALS["i18n"]["You need %s"] = "Voc√™ precisa de %s";
 
 // line 241 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist, %s library can't be found"] = "%s n„o existe, a biblioteca %s n„o pode ser encontrada";
+$GLOBALS["i18n"]["%s doesn't exist, %s library can't be found"] = "%s n√£o existe, a biblioteca %s n√£o pode ser encontrada";
 
 // line 280 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist"] = "%s n„o existe";
+$GLOBALS["i18n"]["%s doesn't exist"] = "%s n√£o existe";
 
 // line 433 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s directory must be specified"] = "%s o diretÛrio precisa ser especificado";
+$GLOBALS["i18n"]["%s directory must be specified"] = "%s o diret√≥rio precisa ser especificado";
 
 // line 439 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s must be a directory"] = "%s precisa ser um diretÛrio";
+$GLOBALS["i18n"]["%s must be a directory"] = "%s precisa ser um diret√≥rio";
 
 // line 446 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s can't be created"] = "%s n„o pode ser criado";
+$GLOBALS["i18n"]["%s can't be created"] = "%s n√£o pode ser criado";
 
 // line 451 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not writeable"] = "%s n„o tem permiss„o de escrita";
+$GLOBALS["i18n"]["%s is not writeable"] = "%s n√£o tem permiss√£o de escrita";
 
 // line 496 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not readable"] = "%s n„o tem permiss„o de leitura";
+$GLOBALS["i18n"]["%s is not readable"] = "%s n√£o tem permiss√£o de leitura";
 
 // line 469 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not a file"] = "%s n„o È um arquivo";
+$GLOBALS["i18n"]["%s is not a file"] = "%s n√£o √© um arquivo";
 
 // line 491 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not a directory"] = "%s n„o È um diretÛrio";
+$GLOBALS["i18n"]["%s is not a directory"] = "%s n√£o √© um diret√≥rio";
 
 // line 23 in chat.html.tpl.php
 $GLOBALS["i18n"]["PHP FREE CHAT [powered by phpFreeChat-%s]"] = "PHP FREE CHAT [powered by phpFreeChat-%s]";
