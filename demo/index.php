@@ -24,6 +24,10 @@
       <li><a href="demo14_in_german_formal_language.php">demo14 - the german (formal) translation of the chat</a></li>
       <li><a href="demo15_multiple_channel.php">demo15 - a chat with multiple/dynamic channels</a></li>
       <li><a href="demo16_in_arabic.php">demo16 - the arabic translation of the chat</a></li>
+      <li><a href="demo17_cerutti_smiley_theme.php">demo17 - A chat with a customized smiley theme (cerutti theme)</a></li>
+      <li><a href="demo18_phpbb2_smiley_theme.php">demo18 - A chat with a customized smiley theme (phpbb2 theme)</a></li>
+      <li><a href="demo19_in_japanese.php">demo19 - the japanese translation of the chat</a></li>
+      <li><a href="demo20_in_brazilian_portuguese.php">demo20 - the brazilian portuguese translation of the chat</a></li>
 </ul>
   </body>
   
