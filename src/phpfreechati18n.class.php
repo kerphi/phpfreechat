@@ -20,7 +20,7 @@
  * Boston, MA  02110-1301  USA
  */
 
-function __()
+function _pfc()
 {
   $args = func_get_args();
   $args[0] = isset($GLOBALS["i18n"][$args[0]]) && $GLOBALS["i18n"][$args[0]] != "" ?
@@ -108,7 +108,7 @@ class phpFreeChatI18N
       $line_nb = 1;
       foreach( $lines as $l)
       {
-        if( preg_match_all('/__\("([^\"]*)"(\s*\,.*|)\)/', $l, $matches) )
+        if( preg_match_all('/_pfc\("([^\"]*)"(\s*\,.*|)\)/', $l, $matches) )
         {
           echo "line: ".$line_nb."\t- ".$matches[1][0]."\n";
           $res[$matches[1][0]] = "// line ".$line_nb." in ".basename($src_filename);

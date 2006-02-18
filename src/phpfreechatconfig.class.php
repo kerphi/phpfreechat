@@ -33,7 +33,7 @@ class phpFreeChatConfig
 {
   var $serverid            = 0; // this is the chat server id (comparable to the server host in IRC)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
-  var $title               = ""; // default is __("My Chat")
+  var $title               = ""; // default is _pfc("My Chat")
   var $channel             = ""; // default is a value calculated from title
   var $frozen_nick         = false;
   var $max_nick_len        = 15;
@@ -89,12 +89,12 @@ class phpFreeChatConfig
     foreach ( $params as $k => $v )
     {
       if (!isset($this->$k))
-        $this->errors[] = __("Error: undefined or obsolete parameter '%s', please correct or remove this parameter", $k);
+        $this->errors[] = _pfc("Error: undefined or obsolete parameter '%s', please correct or remove this parameter", $k);
       $this->$k = $v;
     }
 
     // setup a defaut title if user didn't set it up
-    if ($this->title == "")        $this->title        = __("My Chat");
+    if ($this->title == "")        $this->title        = _pfc("My Chat");
     if ($this->ie7path == "")      $this->ie7path      = dirname(__FILE__)."/../lib/IE7_0_9";
     if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2_stable";
     if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
@@ -165,7 +165,7 @@ class phpFreeChatConfig
     {
       if (!function_exists( $func ))
       {
-        $this->errors[] = __("%s doesn't exist: %s", $func, $err);
+        $this->errors[] = _pfc("%s doesn't exist: %s", $func, $err);
         $ok = false;
       }
     }
@@ -181,21 +181,21 @@ class phpFreeChatConfig
     $ok = true;
 
     // first of all, check the used functions
-    $f_list["file_get_contents"] = __("You need %s", "PHP 4 >= 4.3.0 or PHP 5");
+    $f_list["file_get_contents"] = _pfc("You need %s", "PHP 4 >= 4.3.0 or PHP 5");
     $err_session_x = "You need PHP 4 or PHP 5";
     $f_list["session_start"]   = $err_session_x;
     $f_list["session_destroy"] = $err_session_x;
     $f_list["session_id"]      = $err_session_x;
     $f_list["session_name"]    = $err_session_x;    
-    $err_preg_x = __("You need %s", "PHP 3 >= 3.0.9 or PHP 4 or PHP 5");
+    $err_preg_x = _pfc("You need %s", "PHP 3 >= 3.0.9 or PHP 4 or PHP 5");
     $f_list["preg_match"]      = $err_preg_x;
     $f_list["preg_replace"]    = $err_preg_x;
     $f_list["preg_split"]      = $err_preg_x;
-    $err_ob_x = __("You need %s", "PHP 4 or PHP 5");
+    $err_ob_x = _pfc("You need %s", "PHP 4 or PHP 5");
     $f_list["ob_start"]        = $err_ob_x;
     $f_list["ob_get_contents"] = $err_ob_x;
     $f_list["ob_end_clean"]    = $err_ob_x;
-    $f_list["get_object_vars"] = __("You need %s", "PHP 4 or PHP 5");
+    $f_list["get_object_vars"] = _pfc("You need %s", "PHP 4 or PHP 5");
     $ok &= $this->_checkUsedFunctions($f_list);
     
     $ok &= $this->_testWritableDir($this->data_public_path, "data_public_path");
@@ -218,12 +218,12 @@ class phpFreeChatConfig
     if ($ok && !is_dir($dir))
     {
       $ok = false;
-      $this->errors[] = __("%s doesn't exist, %s library can't be found", $dir, "XAJAX");
+      $this->errors[] = _pfc("%s doesn't exist, %s library can't be found", $dir, "XAJAX");
     }
     if ($ok && !file_exists($dir."/xajax.inc.php"))
     {
       $ok = false;
-      $this->errors[] = __("%s not found, %s library can't be found", "xajax.inc.php", "XAJAX");
+      $this->errors[] = _pfc("%s not found, %s library can't be found", "xajax.inc.php", "XAJAX");
     }
     if ($ok)
     {
@@ -240,12 +240,12 @@ class phpFreeChatConfig
     if ($ok && !is_dir($dir))
     {
       $ok = false;
-      $this->errors[] = __("%s doesn't exist, %s library can't be found", $dir, "IE7");
+      $this->errors[] = _pfc("%s doesn't exist, %s library can't be found", $dir, "IE7");
     }
     if ($ok && !file_exists($dir."/ie7-core.js"))
     {
       $ok = false;
-      $this->errors[] = __("%s not found, %s library can't be found", "ie7-core.js", "IE7");
+      $this->errors[] = _pfc("%s not found, %s library can't be found", "ie7-core.js", "IE7");
     }
     $ok &= $this->_installDir($this->ie7path, $this->data_public_path."/ie7/");
 
@@ -263,7 +263,7 @@ class phpFreeChatConfig
       if ( !file_exists($filetotest) )
       {
 	$ok = false;
-	$this->errors[] = __("%s doesn't exist", $filetotest);
+	$this->errors[] = _pfc("%s doesn't exist", $filetotest);
       }
 
       if ($this->client_script_url == "")
@@ -295,7 +295,7 @@ class phpFreeChatConfig
       if ( !file_exists($filetotest) )
       {
 	$ok = false;
-        $this->errors[] = __("%s doesn't exist", $filetotest);
+        $this->errors[] = _pfc("%s doesn't exist", $filetotest);
       }
       if ($this->server_script_url == "")
 	$this->server_script_url = phpFreeChatTools::RelativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest);
@@ -448,30 +448,30 @@ class phpFreeChatConfig
   {
     if ($dir == "")
     {
-      $this->errors[] = __("%s directory must be specified", ($name!="" ? $name : $dir));
+      $this->errors[] = _pfc("%s directory must be specified", ($name!="" ? $name : $dir));
       return false;
     }
 
     if (is_file($dir))
     {
-      $this->errors[] = __("%s must be a directory",$dir);
+      $this->errors[] = _pfc("%s must be a directory",$dir);
       return false;
     }
     if (!is_dir($dir))
       @phpFreeChatTools::RecursiveMkdir($dir);
     if (!is_dir($dir))
     {
-      $this->errors[] = __("%s can't be created",$dir);
+      $this->errors[] = _pfc("%s can't be created",$dir);
       return false;
     }
     if (!is_writeable($dir))
     {
-      $this->errors[] = __("%s is not writeable",$dir);
+      $this->errors[] = _pfc("%s is not writeable",$dir);
       return false;
     }
     if (!is_readable($dir))
     {
-      $this->errors[] = __("%s is not readable",$dir);
+      $this->errors[] = _pfc("%s is not readable",$dir);
       return false;
     }
     return true;
@@ -484,17 +484,17 @@ class phpFreeChatConfig
     
     if (!is_file($src_file))
     {
-      $this->errors[] = __("%s is not a file", $src_file);
+      $this->errors[] = _pfc("%s is not a file", $src_file);
       return false;
     }
     if (!is_readable($src_file))
     {
-      $this->errors[] = __("%s is not readable", $src_file);
+      $this->errors[] = _pfc("%s is not readable", $src_file);
       return false;
     }      
     if (!is_dir($src_dir))
     {
-      $this->errors[] = __("%s is not a directory", $src_dir);
+      $this->errors[] = _pfc("%s is not a directory", $src_dir);
       return false;
     }
     if (!is_dir($dst_dir))
@@ -506,12 +506,12 @@ class phpFreeChatConfig
   {
     if (!is_dir($src_dir))
     {
-      $this->errors[] = __("%s is not a directory", $src_dir);
+      $this->errors[] = _pfc("%s is not a directory", $src_dir);
       return false;
     }
     if (!is_readable($src_dir))
     {
-      $this->errors[] = __("%s is not readable", $src_dir);
+      $this->errors[] = _pfc("%s is not readable", $src_dir);
       return false;
     }
     return @phpFreeChatTools::CopyR( $src_dir, $dst_dir );

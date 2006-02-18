@@ -293,7 +293,7 @@ class phpFreeChat
     else
     {
       // display an error message
-      phpFreeChat::Cmd_error($xml_reponse, $clientid, __("Unknown command [%s]",stripslashes("/".$rawcmd." ".$param)));
+      phpFreeChat::Cmd_error($xml_reponse, $clientid, _pfc("Unknown command [%s]",stripslashes("/".$rawcmd." ".$param)));
     }
       
     // do not update twice
@@ -386,7 +386,7 @@ class phpFreeChat
       if ($nicktochange == "")
       {
         $nicktochange = $c->nick;
-        $msg = __("Please enter your nickname");
+        $msg = _pfc("Please enter your nickname");
       }
       else
         $msg = "'".$nicktochange."' is used, please choose another nickname.";
@@ -423,13 +423,13 @@ class phpFreeChat
       $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
       if ($oldnick != $newnick && $oldnick != "")
-	phpFreeChat::Cmd_notice($xml_reponse, $clientid, __("%s changes his nickname to %s",$oldnick,$newnick), 1);
+	phpFreeChat::Cmd_notice($xml_reponse, $clientid, _pfc("%s changes his nickname to %s",$oldnick,$newnick), 1);
       if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: first time nick is assigned -> newnick=".$c->nick." oldnick=".$oldnick, "chat", $c->getId());
       
       // new nickname is undefined (not used) and
       // current nickname (oldnickname) is not mine or is undefined
       if ($oldnickid != $c->sessionid)
-        phpFreeChat::Cmd_notice($xml_reponse, $clientid, __("%s is connected",$c->nick), 2);
+        phpFreeChat::Cmd_notice($xml_reponse, $clientid, _pfc("%s is connected",$c->nick), 2);
     }
     else if ($newnickid == $c->sessionid)
     {
@@ -483,7 +483,7 @@ class phpFreeChat
     // then remove the nickname file
     $container =& $c->getContainerInstance();
     if ($container->removeNick($c->nick))
-      phpFreeChat::Cmd_notice($xml_reponse, $clientid, __("%s quit", $c->nick), 2);
+      phpFreeChat::Cmd_notice($xml_reponse, $clientid, _pfc("%s quit", $c->nick), 2);
 
     if ($c->debug) pxlog("Cmd_quit[".$c->sessionid."]: a user just quit -> nick=".$c->nick, "chat", $c->getId());
   }
@@ -499,7 +499,7 @@ class phpFreeChat
     $container =& $c->getContainerInstance();
     $disconnected_users = $container->removeObsoleteNick();
     foreach ($disconnected_users as $u)
-      phpFreeChat::Cmd_notice($xml_reponse, $clientid, __("%s disconnected (timeout)",$u), 2);
+      phpFreeChat::Cmd_notice($xml_reponse, $clientid, _pfc("%s disconnected (timeout)",$u), 2);
     $users = $container->getOnlineNick();
     sort($users);
     // check if the nickname list must be updated
@@ -596,8 +596,8 @@ class phpFreeChat
     $text = phpFreeChat::PreFilterMsg($msg);
         
     $errors = array();
-    if ($text == "") $errors[$c->prefix."words"] = __("Text cannot be empty");
-    if ($nick == "") $errors[$c->prefix."handle"] = __("Please enter your nickname");
+    if ($text == "") $errors[$c->prefix."words"] = _pfc("Text cannot be empty");
+    if ($nick == "") $errors[$c->prefix."handle"] = _pfc("Please enter your nickname");
     if (count($errors) == 0)
     {
       $container =& $c->getContainerInstance();

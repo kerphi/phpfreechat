@@ -45,7 +45,7 @@ class phpFreeChatTemplate
   {
     ob_start();
     if (!file_exists($this->tpl_filename))
-      die(__("%s template could not be found", $this->tpl_filename));
+      die(_pfc("%s template could not be found", $this->tpl_filename));
     // assign defined vars to this template
     foreach( $this->vars as $v_name => $v_val )
       $$v_name = $v_val;
