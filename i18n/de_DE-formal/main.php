@@ -1,6 +1,6 @@
 <?php
 /**
- * i18n/de-informal/main.php
+ * i18n/de_DE-formal/main.php
  *
  * Copyright ©2006 Stephane Gully <stephane.gully@gmail.com>
  *
@@ -21,7 +21,7 @@
  */
 
 /**
- * German (informal) translation of the messages (utf8 encoded!)
+ * German (formal) translation of the messages (utf8 encoded!)
  *
  * @author BSEMF <bsemfger <at> aim.com>
  */
@@ -33,13 +33,13 @@ $GLOBALS["i18n"]["My Chat"] = "Mein Chat";
 $GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s wurde nicht gefunden, %s Programmbibliothek konnte nicht gefunden werden.";
 
 // line 355 in phpfreechat.class.php
-$GLOBALS["i18n"]["Please enter your nickname"] = "Bitte gib deinen Nickname ein";
+$GLOBALS["i18n"]["Please enter your nickname"] = "Bitte geben Sie Ihren Spitznamen ein";
 
 // line 565 in phpfreechat.class.php
 $GLOBALS["i18n"]["Text cannot be empty"] = "Text darf nicht leer sein";
 
 // line 392 in phpfreechat.class.php
-$GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s ändert seinen Nickname zu %s";
+$GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s heißt jetzt %s";
 
 // line 398 in phpfreechat.class.php
 $GLOBALS["i18n"]["%s is connected"] = "%s hat sich verbunden";
@@ -57,7 +57,7 @@ $GLOBALS["i18n"]["Unknown command [%s]"] = "Unbekannter Befehl [%s]";
 $GLOBALS["i18n"]["%s doesn't exist: %s"] = "%s existiert nicht: %s";
 
 // line 180 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["You need %s"] = "Du brauchst %s";
+$GLOBALS["i18n"]["You need %s"] = "Sie brauchen %s";
 
 // line 241 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["%s doesn't exist, %s library can't be found"] = "%s wurde nicht gefunden, %s Programmbibliothek konnte nicht gefunden werden";
@@ -114,10 +114,10 @@ $GLOBALS["i18n"]["Hide dates and hours"] = "Verstecke Datum und Zeit";
 $GLOBALS["i18n"]["Show dates and hours"] = "Zeige Datum und Zeit";
 
 // line 21 in chat.html.tpl.php
-$GLOBALS["i18n"]["Enter your message here"] = "Gib deine Nachricht hier ein";
+$GLOBALS["i18n"]["Enter your message here"] = "Geben Sie Ihre Nachricht hier ein";
 
 // line 24 in chat.html.tpl.php
-$GLOBALS["i18n"]["Enter your nickname here"] = "Gib deinen Nickname hier ein";
+$GLOBALS["i18n"]["Enter your nickname here"] = "Bitte geben Sie Ihren Spitznamen hier ein";
 
 // line 93 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "";
