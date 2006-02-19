@@ -11,8 +11,11 @@ function &getChat($room)
     $params = array();
     $params["title"]         = "";
     $params["channel"]       = $room;
-    $params["server_script_url"] = "ecrire/tools/dcchat/server_script.php?room=".$room;
-    $params["debug"] = true;
+    $params["connect_at_startup"] = false;
+    $params["start_minimized"]    = true;
+    $params["server_script_url"]  = "ecrire/tools/dcchat/server_script.php?room=".$room;
+    $params["smileyurl"]          = "ecrire/tools/dcchat/phpfreechat/smileys";
+//    $params["debug"]             = true;
     $chat = new phpFreeChat($params);
   }
   return $chat;
