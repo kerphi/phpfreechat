@@ -298,7 +298,9 @@ class phpFreeChatConfig
         $this->errors[] = _pfc("%s doesn't exist", $filetotest);
       }
       if ($this->server_script_url == "")
-	$this->server_script_url = phpFreeChatTools::RelativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest);
+      {
+	$this->server_script_url = $this->client_script_url;
+      }
     }
     
     // ---
