@@ -28,7 +28,9 @@
       <li><a href="demo18_phpbb2_smiley_theme.php">demo18 - A chat with a customized smiley theme (phpbb2 theme)</a></li>
       <li><a href="demo19_in_japanese.php">demo19 - the japanese translation of the chat</a></li>
       <li><a href="demo20_in_brazilian_portuguese.php">demo20 - the brazilian portuguese translation of the chat</a></li>
-</ul>
+      <li><a href="demo21_with_hardcoded_urls.php">demo21 - with hardcoded url: data_public_url, client_script_url ... (interesting for strange server configuration)</a></li>
+      <li><a href="demo22_in_serbian_croatian.php">demo22 - the serbian croatian translation of the chat</a></li>
+    </ul>
   </body>
   
 </html>
