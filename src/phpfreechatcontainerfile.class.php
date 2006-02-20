@@ -137,16 +137,22 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     
     return $errors;
   }
-  
+
+  /**
+   * return : true if the nickname was allready there
+   *          false if the file was not there
+   */
   function updateNick($nickname)
   {
     $c =& $this->c;
-
+    $there = false;
+    
     // update my online status file
     $my_filename = $c->container_cfg_nickname_dir.$this->_encode($c->nick);
+    if (file_exists($my_filename)) $there = true;
     touch($my_filename);
-
-    return true;
+    
+    return $there;
   }
 
   /**
@@ -227,7 +233,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     while (false !== ($file = readdir($dir_handle)))
     {
       if ($file == "." || $file == "..") continue; // skip . and .. generic files
-      if (time() > (filemtime($c->container_cfg_nickname_dir.$file)+2+($c->refresh_delay/1000)*4) ) // user will be disconnected after 2+refresh_delay*4 secondes of inactivity
+      if (time() > (filemtime($c->container_cfg_nickname_dir.$file)+$c->timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
       {
         $deleted_user[] = $this->_decode($file);
         unlink($c->container_cfg_nickname_dir.$file); // disconnect expired user

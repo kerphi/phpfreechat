@@ -39,6 +39,7 @@ class phpFreeChatConfig
   var $max_nick_len        = 15;
   var $max_text_len        = 250;
   var $refresh_delay       = 5000; // in mili-seconds (5 seconds)
+  var $timeout             = 20000; // in mili-seconds (20 seconds)
   var $max_msg             = 20;
   var $connect_at_startup  = true;
   var $start_minimized     = false;
