@@ -31,6 +31,8 @@
       <li><a href="demo21_with_hardcoded_urls.php">demo21 - with hardcoded url: data_public_url, client_script_url ... (interesting for strange server configuration)</a></li>
       <li><a href="demo22_in_serbian_croatian.php">demo22 - the serbian croatian translation of the chat</a></li>
       <li><a href="demo23_in_italian.php">demo23 - the italian translation of the chat</a></li>
+      <li><a href="demo24_in_spanish.php">demo24 - the spanish translation of the chat</a></li>
+      
     </ul>
   </body>
   
