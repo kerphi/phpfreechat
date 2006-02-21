@@ -367,6 +367,10 @@ class phpFreeChat
       phpFreeChat::Cmd_asknick($xml_reponse, $clientid, "");
     else
       phpFreeChat::Cmd_nick($xml_reponse, $clientid, $c->nick);
+    
+    // start updates
+    $xml_reponse->addScript("pfc.updateChat(true);");
+
     return $clientid;
   }
 
@@ -389,7 +393,7 @@ class phpFreeChat
       }
       else
         $msg = "'".$nicktochange."' is used, please choose another nickname.";
-      $xml_reponse->addScript("var newnick = prompt('".addslashes($msg)."', '".addslashes($nicktochange)."'); if (newnick) ".$c->prefix."handleRequest('/nick '+".$c->prefix."clientid + ' ' + newnick);");
+      $xml_reponse->addScript("var newnick = prompt('".addslashes($msg)."', '".addslashes($nicktochange)."'); if (newnick) pfc.handleRequest('/nick', newnick);");
     }
   }
 
@@ -484,6 +488,9 @@ class phpFreeChat
     if ($container->removeNick($c->nick))
       phpFreeChat::Cmd_notice($xml_reponse, $clientid, _pfc("%s quit", $c->nick), 2);
 
+    // stop updates
+    $xml_reponse->addScript("pfc.updateChat(false);");
+
     if ($c->debug) pxlog("Cmd_quit[".$c->sessionid."]: a user just quit -> nick=".$c->nick, "chat", $c->getId());
   }
   
@@ -516,8 +523,7 @@ class phpFreeChat
       }
       $js    = substr($js, 0, strlen($js)-1); // remove last ','
       
-      $xml_reponse->addScript($c->prefix."nicklist = Array(".$js.");");
-      $xml_reponse->addScript($c->prefix."updateNickList(".$c->prefix."nicklist);");
+      $xml_reponse->addScript("pfc.updateNickList(Array(".$js."));");
     }
   }
 
@@ -580,7 +586,7 @@ class phpFreeChat
 	else if ($res[1] == "me")
 	  $m_cmd = "cmd_me";
       }
-      $xml_reponse->addScript($c->prefix."parseAndPost(".$m_id.",'".addslashes($m_date)."','".addslashes($m_heure)."','".addslashes($m_nick)."','".addslashes($m_words)."','".addslashes($m_cmd)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($from_id == 0? 1 : 0).");");
+      $xml_reponse->addScript("pfc.parseAndPost(".$m_id.",'".addslashes($m_date)."','".addslashes($m_heure)."','".addslashes($m_nick)."','".addslashes($m_words)."','".addslashes($m_cmd)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($from_id == 0? 1 : 0).");");
       $msg_sent = true;
     }
   	
@@ -614,7 +620,7 @@ class phpFreeChat
       // a message has been posted so :
       // - read new messages
       // - give focus to "words" field
-      $xml_reponse->addScript($c->prefix."ClearError(Array('".$c->prefix."words"."','".$c->prefix."handle"."'));");
+      $xml_reponse->addScript("pfc.clearError(Array('".$c->prefix."words"."','".$c->prefix."handle"."'));");
       $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
     }
     else
@@ -641,10 +647,10 @@ class phpFreeChat
       $error_ids = ""; $error_str = "";
       foreach ($errors as $k => $e) { $error_ids .= ",'".$k."'"; $error_str.= $e." "; }
       $error_ids = substr($error_ids,1);
-      $xml_reponse->addScript($c->prefix."SetError('".addslashes(stripslashes($error_str))."', Array(".$error_ids."));");
+      $xml_reponse->addScript("pfc.setError('".addslashes(stripslashes($error_str))."', Array(".$error_ids."));");
     }
     else
-      $xml_reponse->addScript($c->prefix."SetError('".addslashes(stripslashes($errors))."', Array());");
+      $xml_reponse->addScript("pfc.SetError('".addslashes(stripslashes($errors))."', Array());");
   }  
 }
 

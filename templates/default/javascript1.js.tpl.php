@@ -1,453 +1,598 @@
-/* define the JS variable used to store timer and nicknames list */
-var <?php echo $prefix; ?>timeout;
-var <?php echo $prefix; ?>nicklist = Array();
+/**
+ * This class is the client part of phpFreeChat
+ * (dpends on prototype library)
+ * @author Stephane Gully
+ */
+var pfcClient = Class.create();
 
-var cookie = '';
-cookie = getCookie('<?php echo $prefix; ?>nickmarker');
-var <?php echo $prefix; ?>nickmarker = (cookie == 'true');
-if (cookie == '')
-  <?php echo $prefix; ?>nickmarker = <?php if ($nickmarker) { ?>true<?php } else { ?>false<?php } ?>;
-cookie = '';
-cookie = getCookie('<?php echo $prefix; ?>clock');
-var <?php echo $prefix; ?>clock = (cookie == 'true');
-if (cookie == '')
-  <?php echo $prefix; ?>clock = <?php if ($clock) { ?>true<?php } else { ?>false<?php } ?>;
-
-/* unique client id for each windows used to identify a open window
-   this id is passed every time the JS communicate with server */
-var <?php echo $prefix; ?>clientid = '<?php
-    // generate a unique client id (stored with JS: client side)
-    // this id is used to identify client window
-    // (2 clients can use the same session: then only the nickname is shared)
-    echo md5(uniqid(rand(), true)); ?>';
-var <?php echo $prefix; ?>colorlist = Array();
-var <?php echo $prefix; ?>nickcolor = Array();
-
-/* add an update function to poll the server each 'refresh_delay' time */
-function <?php echo $prefix; ?>UpdateChat(start)
-{
-  window.clearTimeout(<?php echo $prefix; ?>timeout);
-  if (start)
+//defining the rest of the class implmentation
+pfcClient.prototype = {
+  
+  initialize: function()
   {
-    <?php echo $prefix; ?>handleRequest('/update ' + <?php echo $prefix; ?>clientid);
-    <?php echo $prefix; ?>timeout = window.setTimeout('<?php echo $prefix; ?>UpdateChat(true)',
-						      <?php echo $refresh_delay; ?>);
-  }
-}
+    this.timeout       = null;
+    this.refresh_delay = <?php echo $refresh_delay; ?>;
+    /* unique client id for each windows used to identify a open window
+     * this id is passed every time the JS communicate with server
+     * (2 clients can use the same session: then only the nickname is shared) */
+    this.clientid      = '<?php echo md5(uniqid(rand(), true)); ?>';
 
-/* show error area and assign to it an error message and start the blinking of given fields */
-function <?php echo $prefix; ?>SetError(str, ids)
-{
-  document.getElementById('<?php echo $prefix; ?>errors').innerHTML = str;
-  document.getElementById('<?php echo $prefix; ?>errors').style.display = 'block';
-  for (var i=0;i<ids.length;i++)
-    <?php echo $prefix; ?>Blink(ids[i], 'start');
-}
+    this.minmax_status = <?php if ($start_minimized) { ?>true<?php } else { ?>false<?php } ?>;
+    var cookie = getCookie('<?php echo $prefix; ?>minmax_status');
+    if (cookie != null)
+      this.minmax_status = (cookie == 'true');
+    cookie = getCookie('<?php echo $prefix; ?>nickmarker');
+    this.nickmarker = (cookie == 'true');
+    if (cookie == '' || cookie == null)
+      this.nickmarker = <?php if ($nickmarker) { ?>true<?php } else { ?>false<?php } ?>;
+    cookie = getCookie('<?php echo $prefix; ?>clock');
+    this.clock = (cookie == 'true');
+    if (cookie == '' || cookie == null)
+      this.clock = <?php if ($clock) { ?>true<?php } else { ?>false<?php } ?>;
 
-/* hide error area and stop blinking fields */
-function <?php echo $prefix; ?>ClearError(ids)
-{ 
-  document.getElementById('<?php echo $prefix; ?>errors').style.display = 'none';
-  for (var i=0;i<ids.length;i++)
-    <?php echo $prefix; ?>Blink(ids[i], 'stop');
-}
+    this.login_status  = false; // todo: initialize this variable with the cookie value
+    this.nicklist      = Array();
+    this.nickcolor     = Array();
+    this.colorlist     = Array();
 
-/* blink routines used by Error functions */
-var blinktmp = Array();
-var blinkloop = Array();
-var blinktimeout = Array();
-function <?php echo $prefix; ?>Blink(id, action)
- {
-  clearTimeout(blinktimeout[id]);
-   if (action == 'start')
-   {
-    blinktmp[id] = document.getElementById(id).style.backgroundColor;
-	   clearTimeout(blinktimeout[id]);  	
-	   blinktimeout[id] = setTimeout('<?php echo $prefix; ?>Blink(\'' + id + '\',\'loop\')', 500);
-	 }
-   if (action == 'stop')
-   {
-    document.getElementById(id).style.backgroundColor = blinktmp[id];
-	 }  	
-   if (action == 'loop')
-   {
-	   if (blinkloop[id] == 1)
-	   {
-      document.getElementById(id).style.backgroundColor = '#FFDFC0';
-	     blinkloop[id] = 2;
-  	 } else {
-      document.getElementById(id).style.backgroundColor = '#FFFFFF';
-	     blinkloop[id] = 1;
-  	 }
-	   blinktimeout[id] = setTimeout('<?php echo $prefix; ?>Blink(\'' + id + '\',\'loop\')', 500);
-   }  	
- }
+    this.blinktmp     = Array();
+    this.blinkloop    = Array();
+    this.blinktimeout = Array();
 
-/* insert a smiley */
-function <?php echo $prefix; ?>insertSmiley(s)
-{
-  document.getElementById('<?php echo $prefix; ?>words').value += s;
-  document.getElementById('<?php echo $prefix; ?>words').focus();
-}
+    this.el_words     = $('<?php echo $prefix; ?>words');
+    this.el_handle    = $('<?php echo $prefix; ?>handle');
+    this.el_container = $('<?php echo $prefix; ?>container');
+    this.el_online    = $('<?php echo $prefix; ?>online');
+    this.el_errors    = $('<?php echo $prefix; ?>errors');
 
-/* fill the nickname list with connected nicknames */
-function <?php echo $prefix; ?>updateNickList()
-{
-  var nicks = <?php echo $prefix; ?>nicklist;
-  var nickdiv = document.getElementById('<?php echo $prefix; ?>online');
-  var ul = document.createElement('ul');
-  for (var i=0; i<nicks.length; i++)
+    this.el_words.onkeydown  = this.callbackWords_OnKeydown.bindAsEventListener(this);
+    this.el_words.onfocus    = this.callbackWords_OnFocus.bindAsEventListener(this);
+
+    this.el_handle.onkeydown = this.callbackHandle_OnKeydown.bindAsEventListener(this);
+    this.el_handle.onchange  = this.callbackHandle_OnChange.bindAsEventListener(this);
+
+    this.el_container.onmousemove = this.callbackContainer_OnMousemove.bindAsEventListener(this);
+    this.el_container.onmousedown = this.callbackContainer_OnMousedown.bindAsEventListener(this);
+    this.el_container.onmouseup   = this.callbackContainer_OnMouseup.bindAsEventListener(this);
+
+    document.body.onunload = this.callback_OnUnload.bindAsEventListener(this);
+  },
+  
+  callbackWords_OnKeydown: function(evt)
   {
-    var li = document.createElement('li');
-    li.setAttribute('class', '<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(nicks[i]));
-    var txt = document.createTextNode(nicks[i]);
-    li.appendChild(txt);
-    ul.appendChild(li);
-  }
-  var fc = nickdiv.firstChild;
-  if (fc)
-    nickdiv.replaceChild(ul,fc);
-  else
-    nickdiv.appendChild(ul,fc);
-  <?php echo $prefix; ?>colorizeNicks(nickdiv);
-}
-/* clear the nickname list */
-function <?php echo $prefix; ?>clearNickList()
-{
-  var nickdiv = document.getElementById('<?php echo $prefix; ?>online');
-  var fc = nickdiv.firstChild;
-  nickdiv.removeChild(fc);
-}
-
-/* clear the message list history */
-function <?php echo $prefix; ?>clearMessages()
-{
-  var msgdiv = document.getElementById('<?php echo $prefix; ?>chat');
-  msgdiv.innerHTML = '';
-}
-
-/* parse message and append it to the message list */
-function <?php echo $prefix; ?>parseAndPost(id, date, heure, nick, words, cmd, fromtoday, oldmsg)
-{
-  var msgdiv = document.getElementById('<?php echo $prefix; ?>chat');
-
-  /* check the nickname is in the list or not */
-  var nickfound = false;
-  for(var i = 0; i < <?php echo $prefix; ?>nicklist.length && !nickfound; i++)
-  {
-    if (<?php echo $prefix; ?>nicklist[i] == nick)
-      nickfound = true;
-  }
-  var nickcolor = '';
-  if (nickfound) nickcolor = <?php echo $prefix; ?>getAndAssignNickColor(nick);
-
-  /* format and post message */
-  var line = '';
-  line += '<div id="<?php echo $prefix; ?>msg'+ id +'" class="<?php echo $prefix; ?>'+ cmd +' <?php echo $prefix; ?>message';
-  if (oldmsg == 1) line += ' <?php echo $prefix; ?>oldmsg';
-  line += '">';
-  line += '<span class="<?php echo $prefix; ?>date';
-  if (fromtoday == 1) line += ' <?php echo $prefix; ?>invisible';
-  line += '">'+ date +'</span> ';
-  line += '<span class="<?php echo $prefix; ?>heure">'+ heure +'</span> ';
-  if (cmd == 'cmd_msg')
-  {
-    line += ' <span class="<?php echo $prefix; ?>nick">';
-    line += '&#x2039;';
-    line += '<span ';
-    if (nickcolor != '') line += 'style="color: ' + nickcolor + '" ';
-    line += 'class="<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(nick) +'">';
-    line += nick;
-    line += '</span>';
-    line += '&#x203A;';
-    line += '</span> ';
-  }
-  if (cmd == 'cmd_notice' || cmd == 'cmd_me')
-    line += '<span class="<?php echo $prefix; ?>words">* '+ words +'</span> ';
-  else
-    line += '<span class="<?php echo $prefix; ?>words">'+ words +'</span> ';
-  line += '</div>';
-
-  /* create a dummy div to avoid konqueror bug when setting nickmarkers */
-  var m = document.createElement('div');
-  m.innerHTML = line;
-  msgdiv.appendChild(m);
-
-  <?php echo $prefix; ?>scrolldown('<?php echo $prefix; ?>msg' + id);
-
-
-  /* colorize messages nicknames */
-  var root = document.getElementById('<?php echo $prefix; ?>msg' + id);
-/*  <?php echo $prefix; ?>colorizeNicks(root);*/
-  <?php echo $prefix; ?>refresh_nickmarker(root);
-  <?php echo $prefix; ?>refresh_clock(root);
-}
-
-/* scroll down from the posted message height */
-function <?php echo $prefix; ?>scrolldown(id)
-{
-  var elttoscroll = document.getElementById(id);
-  document.getElementById('<?php echo $prefix; ?>chat').scrollTop += elttoscroll.offsetHeight+2;
-}
-
-/* apply nicknames color to the root childs */
-function <?php echo $prefix; ?>colorizeNicks(root)
-{
-  for(var i = 0; i < <?php echo $prefix; ?>nicklist.length; i++)
-  {
-    var cur_nick = <?php echo $prefix; ?>nicklist[i];
-    var cur_color = <?php echo $prefix; ?>getAndAssignNickColor(cur_nick);
-    <?php echo $prefix; ?>applyNickColor(root, cur_nick, cur_color);
-  }
-}
-
-function <?php echo $prefix; ?>reloadColorList()
-{
-  <?php echo $prefix; ?>colorlist = Array(
-    '#CCCCCC',
-    '#000000',
-    '#3636B2',
-    '#2A8C2A',
-    '#C33B3B',
-    '#C73232',
-    '#80267F',
-    '#66361F',
-    '#D9A641',
-    '#3DCC3D',
-    '#1A5555',
-    '#2F8C74',
-    '#4545E6',
-    '#B037B0',
-    '#4C4C4C',
-    '#959595'
-    );
-}
-
-/* get the corresponding nickname color */
-function <?php echo $prefix; ?>getAndAssignNickColor(nick)
-{
-  /* check the nickname is colorized or not */
-  var allready_colorized = false;
-  var nickcolor = '';
-  for(var j = 0; j < <?php echo $prefix; ?>nickcolor.length; j++)
-  {
-    if (<?php echo $prefix; ?>nickcolor[j][0] == nick)
+    if (!this.login_status) return false;
+    this.clearError(Array(this.el_words));
+    var code = evt.keyCode;
+    if (code == 13) /* enter key */
     {
-      allready_colorized = true;
-      nickcolor = <?php echo $prefix; ?>nickcolor[j][1];
+      var w = this.el_words;
+      var wval = w.value;
+      re = new RegExp("^(\/[a-z]+)( (.*)|)");
+      if (wval.match(re))
+      {
+	/* a user command */
+	cmd   = wval.replace(re, '$1');
+	param = wval.replace(re, '$2');
+	this.handleRequest(cmd, param.substr(0,<?php echo $max_text_len; ?> + this.clientid.length));
+      }
+      else
+      {
+	/* a classic 'send' command*/
+	this.handleRequest('/send', wval.substr(0,<?php echo $max_text_len; ?>));
+      }
+      w.value = '';
+      return false;
     }
-  }
-  if (!allready_colorized)
+    else if (code == 39) /* right direction */
+    {
+      var w = this.el_words;
+      var nick_src = w.value.substring(w.value.lastIndexOf(' ')+1,w.value.length);
+      if (nick_src != '')
+      {
+	var ul_online = this.el_online.firstChild;
+	for (var i=0; i<ul_online.childNodes.length; i++)
+	{
+	  var nick = ul_online.childNodes[i].innerHTML;
+	  if (nick.indexOf(nick_src) == 0)
+	    w.value = w.value.replace(nick_src, nick);
+	}
+      }
+    }
+    else
+    {
+    }
+  },
+  callbackWords_OnFocus: function(evt)
   {
-    /* reload the color stack if it's empty */
-    if (<?php echo $prefix; ?>colorlist.length == 0) <?php echo $prefix; ?>reloadColorList();
-    /* take the next color from the list and colorize this nickname */
-    var cid = Math.round(Math.random()*(<?php echo $prefix; ?>colorlist.length-1));
-    nickcolor = <?php echo $prefix; ?>colorlist[cid];
-    <?php echo $prefix; ?>colorlist.splice(cid,1);
-    <?php echo $prefix; ?>nickcolor.push(new Array(nick, nickcolor));
-  }
-  return nickcolor;
-}
+    if (this.el_handle && this.el_handle.value == '' && !this.minmax_status)
+      this.el_handle.focus();
+  },
+  callbackHandle_OnKeydown: function(evt)
+  {
+  },
+  callbackHandle_OnChange: function(evt)
+  {
+  },
+  callback_OnUnload: function(evt)
+  {
+  },
 
-function <?php echo $prefix; ?>applyNickColor(root, nick, color)
-{
-  var nicktochange = getElementsByClassName(root, '<?php echo $prefix; ?>nick_'+ hex_md5(nick), '')
-  for(var i = 0; nicktochange.length > i; i++)
-    nicktochange[i].style.color = color; 
-}
+  callbackContainer_OnMousemove: function(evt)
+  {
+    this.isdraging = true;
+  },
+  callbackContainer_OnMousedown: function(evt)
+  {
+    this.isdraging = false;
+  },
+  callbackContainer_OnMouseup: function(evt)
+  {
+    if (!this.isdraging)
+      if (this.el_words && !this.minmax_status)
+        this.el_words.focus();
+  },
+  callbackOnQuit: function(evt)
+  {
+    if (!this.login_status) return false;
+    this.handleRequest('/quit');
+  },
 
-function getElementsByClassName( root, clsName, clsIgnore ) {
-   var i, matches=new Array();
-   var els=root.getElementsByTagName('*');
-   var rx1 = new RegExp('.*'+clsName+'.*');
-   var rx2 = new RegExp('.*'+clsIgnore+'.*');
+  /**
+   * hide error area and stop blinking fields
+   */
+  clearError: function(ids)
+  { 
+    this.el_errors.style.display = 'none';
+    for (var i=0; i<ids.length; i++)
+      this.blink(ids[i].id, 'stop');
+  },
 
-   for(i=0; i<els.length; i++) {
+  /**
+   * show error area and assign to it an error message and start the blinking of given fields
+   */
+  setError: function(str, ids)
+  {
+    this.el_errors.innerHTML = str;
+    this.el_errors.style.display = 'block';
+    for (var i=0; i<ids.length; i++)
+      this.blink(ids[i].id, 'start');
+  },
+
+  /**
+   * blink routines used by Error functions
+   */
+  blink: function(id, action)
+  {
+    clearTimeout(this.blinktimeout[id]);
+    if ($(id) == null) return;
+    if (action == 'start')
+    {
+      this.blinktmp[id] = $(id).style.backgroundColor;
+      clearTimeout(this.blinktimeout[id]);
+      this.blinktimeout[id] = setTimeout('pfc.blink(\'' + id + '\',\'loop\')', 500);
+    }
+    if (action == 'stop')
+    {
+      $(id).style.backgroundColor = this.blinktmp[id];
+    }
+    if (action == 'loop')
+    {
+      if (this.blinkloop[id] == 1)
+      {
+	$(id).style.backgroundColor = '#FFDFC0';
+	this.blinkloop[id] = 2;
+      }
+      else
+      {
+	$(id).style.backgroundColor = '#FFFFFF';
+	this.blinkloop[id] = 1;
+      }
+      this.blinktimeout[id] = setTimeout('pfc.blink(\'' + id + '\',\'loop\')', 500);
+    }
+  },
+
+  /**
+   * Call the ajax request function
+   * Will query the server
+   */
+  handleRequest: function(cmd, param)
+  {
+    <?php echo $prefix; ?>handleRequest(cmd + " " + this.clientid + " " + param);
+  },
+
+  /**
+   * update function to poll the server each 'refresh_delay' time
+   */
+  updateChat: function(start)
+  {
+    window.clearTimeout(this.timeout);
+    if (start)
+    {
+      this.handleRequest('/update');
+      this.timeout = window.setTimeout('pfc.updateChat(true)',
+				       this.refresh_delay);
+    }
+  },
+
+  /**
+   * insert a smiley
+   */
+  insertSmiley: function(s)
+  {
+    this.el_words.value += s;
+    this.el_words.focus();
+  },
+
+  /**
+   * fill the nickname list with connected nicknames
+   */
+  updateNickList: function(lst)
+  {
+    this.nicklist = lst;
+    var nicks   = lst;
+    var nickdiv = this.el_online;
+    var ul = document.createElement('ul');
+    for (var i=0; i<nicks.length; i++)
+    {
+      var li = document.createElement('li');
+      li.setAttribute('class', '<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(nicks[i]));
+      var txt = document.createTextNode(nicks[i]);
+      li.appendChild(txt);
+      ul.appendChild(li);
+    }
+    var fc = nickdiv.firstChild;
+    if (fc)
+      nickdiv.replaceChild(ul,fc);
+    else
+      nickdiv.appendChild(ul,fc);
+    this.colorizeNicks(nickdiv);
+  },
+
+  /**
+   * clear the nickname list
+   */
+  clearNickList: function()
+  {
+    var nickdiv = this.el_online;
+    var fc = nickdiv.firstChild;
+    nickdiv.removeChild(fc);
+  },
+
+
+  /**
+   * clear the message list history
+   */
+  clearMessages: function()
+  {
+    var msgdiv = $('<?php echo $prefix; ?>chat');
+    msgdiv.innerHTML = '';
+  },
+
+
+  /**
+   * parse message and append it to the message list
+   */
+  parseAndPost: function(id, date, heure, nick, words, cmd, fromtoday, oldmsg)
+  {
+    var msgdiv = $('<?php echo $prefix; ?>chat');
+
+    /* check the nickname is in the list or not */
+    var nickfound = false;
+    for(var i = 0; i < this.nicklist.length && !nickfound; i++)
+    {
+      if (this.nicklist[i] == nick)
+	nickfound = true;
+    }
+    var nickcolor = '';
+    if (nickfound) nickcolor = this.getAndAssignNickColor(nick);
+
+    /* format and post message */
+    var line = '';
+    line += '<div id="<?php echo $prefix; ?>msg'+ id +'" class="<?php echo $prefix; ?>'+ cmd +' <?php echo $prefix; ?>message';
+    if (oldmsg == 1) line += ' <?php echo $prefix; ?>oldmsg';
+    line += '">';
+    line += '<span class="<?php echo $prefix; ?>date';
+    if (fromtoday == 1) line += ' <?php echo $prefix; ?>invisible';
+    line += '">'+ date +'</span> ';
+    line += '<span class="<?php echo $prefix; ?>heure">'+ heure +'</span> ';
+    if (cmd == 'cmd_msg')
+    {
+      line += ' <span class="<?php echo $prefix; ?>nick">';
+      line += '&#x2039;';
+      line += '<span ';
+      if (nickcolor != '') line += 'style="color: ' + nickcolor + '" ';
+      line += 'class="<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(nick) +'">';
+      line += nick;
+      line += '</span>';
+      line += '&#x203A;';
+      line += '</span> ';
+    }
+    if (cmd == 'cmd_notice' || cmd == 'cmd_me')
+      line += '<span class="<?php echo $prefix; ?>words">* '+ words +'</span> ';
+    else
+      line += '<span class="<?php echo $prefix; ?>words">'+ words +'</span> ';
+    line += '</div>';
+
+    /* create a dummy div to avoid konqueror bug when setting nickmarkers */
+    var m = document.createElement('div');
+    m.innerHTML = line;
+    msgdiv.appendChild(m);
+
+    this.scrolldown($('<?php echo $prefix; ?>msg'+id));
+
+    /* colorize messages nicknames */
+    var root = $('<?php echo $prefix; ?>msg' + id);
+    this.refresh_nickmarker(root);
+    this.refresh_clock(root);
+  },
+
+  /**
+   * scroll down from the posted message height
+   */
+  scrolldown: function(elttoscroll)
+  {
+    $('<?php echo $prefix; ?>chat').scrollTop += elttoscroll.offsetHeight+2;
+  },
+
+  /**
+   * apply nicknames color to the root childs
+   */
+  colorizeNicks: function(root)
+  {
+    for(var i = 0; i < this.nicklist.length; i++)
+    {
+      var cur_nick = this.nicklist[i];
+      var cur_color = this.getAndAssignNickColor(cur_nick);
+      this.applyNickColor(root, cur_nick, cur_color);
+    }
+  },
+
+  /**
+   * Initialize the color array used to colirize the nicknames
+   */
+  reloadColorList: function()
+  {
+    this.colorlist = Array('#CCCCCC',
+			   '#000000',
+			   '#3636B2',
+			   '#2A8C2A',
+			   '#C33B3B',
+			   '#C73232',
+			   '#80267F',
+			   '#66361F',
+			   '#D9A641',
+			   '#3DCC3D',
+			   '#1A5555',
+			   '#2F8C74',
+			   '#4545E6',
+			   '#B037B0',
+			   '#4C4C4C',
+			   '#959595'
+			   );
+  },
+  
+
+  /**
+   * get the corresponding nickname color
+   */
+  getAndAssignNickColor: function(nick)
+  {
+    /* check the nickname is colorized or not */
+    var allready_colorized = false;
+    var nc = '';
+    for(var j = 0; j < this.nickcolor.length; j++)
+    {
+      if (this.nickcolor[j][0] == nick)
+      {
+	allready_colorized = true;
+	nc = this.nickcolor[j][1];
+      }
+    }
+    if (!allready_colorized)
+    {
+      /* reload the color stack if it's empty */
+      if (this.colorlist.length == 0) this.reloadColorList();
+      /* take the next color from the list and colorize this nickname */
+      var cid = Math.round(Math.random()*(this.colorlist.length-1));
+      nc = this.colorlist[cid];
+      this.colorlist.splice(cid,1);
+      this.nickcolor.push(new Array(nick, nc));
+    }
+    return nc;
+  },
+  
+
+  /**
+   * Colorize with 'color' all the nicknames found as a 'root' child
+   */
+  applyNickColor: function(root, nick, color)
+  {
+    var nicktochange = this.getElementsByClassName(root, '<?php echo $prefix; ?>nick_'+ hex_md5(nick), '')
+    for(var i = 0; nicktochange.length > i; i++)
+      nicktochange[i].style.color = color; 
+  },
+
+  /**
+   * Returns a list of elements which have a clsName class
+   */
+  getElementsByClassName: function( root, clsName, clsIgnore )
+  {
+    var i, matches = new Array();
+    var els = root.getElementsByTagName('*');
+    var rx1 = new RegExp('.*'+clsName+'.*');
+    var rx2 = new RegExp('.*'+clsIgnore+'.*');
+    for(i=0; i<els.length; i++) {
       if(els.item(i).className.match(rx1) &&
          (clsIgnore == '' || !els.item(i).className.match(rx2)) ) {
-         matches.push(els.item(i));
+	matches.push(els.item(i));
       }
-   }
-   return matches;
-}
+    }
+    return matches;
+  },
 
-function showClass(root, clsName, clsIgnore, show)
-{
-  var elts = getElementsByClassName(root, clsName, clsIgnore);
-  for(var i = 0; elts.length > i; i++)
+  showClass: function(root, clsName, clsIgnore, show)
+  {
+    var elts = this.getElementsByClassName(root, clsName, clsIgnore);
+    for(var i = 0; elts.length > i; i++)
     if (show)
       elts[i].style.display = 'inline';
     else
       elts[i].style.display = 'none';
-}
+  },
 
 
-/**
- * Nickname marker show/hide
- */
-function <?php echo $prefix; ?>nickmarker_swap()
-{
-  if (<?php echo $prefix; ?>nickmarker)
+  /**
+   * Nickname marker show/hide
+   */
+  nickmarker_swap: function()
   {
-    <?php echo $prefix; ?>nickmarker = false;
-  }
-  else
-  {
-    <?php echo $prefix; ?>nickmarker = true;
-  }
-  <?php echo $prefix; ?>refresh_nickmarker()
-  setCookie('<?php echo $prefix; ?>nickmarker', <?php echo $prefix; ?>nickmarker);
-}
-function <?php echo $prefix; ?>refresh_nickmarker( root )
-{
-  var nickmarker_icon = document.getElementById('<?php echo $prefix; ?>nickmarker');
-  if (!root) root = document.getElementById('<?php echo $prefix; ?>chat');
-  if (<?php echo $prefix; ?>nickmarker)
-  {
-    nickmarker_icon.src   = "<?php echo $data_public_url; ?>/images/color-on.gif";
-    nickmarker_icon.alt   = "<?php echo _pfc("Hide nickname marker"); ?>";
-    nickmarker_icon.title = nickmarker_icon.alt;
-    <?php echo $prefix; ?>colorizeNicks(root);
-    <?php echo $prefix; ?>colorizeNicks(document.getElementById('<?php echo $prefix; ?>online'));
-  }
-  else
-  {
-    nickmarker_icon.src = "<?php echo $data_public_url; ?>/images/color-off.gif";
-    nickmarker_icon.alt   = "<?php echo _pfc("Show nickname marker"); ?>";
-    nickmarker_icon.title = nickmarker_icon.alt;
-    var elts = getElementsByClassName(root, '<?php echo $prefix; ?>nickmarker', '');
-    for(var i = 0; elts.length > i; i++)
-    {
-      /* this is not supported in konqueror =>>>  elts[i].removeAttribute('style');*/
-      elts[i].style.color = '';
+    if (this.nickmarker) {
+      this.nickmarker = false;
+    } else {
+      this.nickmarker = true;
     }
-    var elts = getElementsByClassName(document.getElementById('<?php echo $prefix; ?>online'), '<?php echo $prefix; ?>nickmarker', '');
-    for(var i = 0; elts.length > i; i++)
+    this.refresh_nickmarker()
+    setCookie('<?php echo $prefix; ?>nickmarker', this.nickmarker);
+  },
+  refresh_nickmarker: function(root)
+  {
+    var nickmarker_icon = $('<?php echo $prefix; ?>nickmarker');
+    if (!root) root = $('<?php echo $prefix; ?>chat');
+    if (this.nickmarker)
     {
-      /* this is not supported in konqueror =>>>  elts[i].removeAttribute('style');*/
-      elts[i].style.color = '';
+      nickmarker_icon.src   = "<?php echo $data_public_url; ?>/images/color-on.gif";
+      nickmarker_icon.alt   = "<?php echo _pfc("Hide nickname marker"); ?>";
+      nickmarker_icon.title = nickmarker_icon.alt;
+      this.colorizeNicks(root);
+      this.colorizeNicks($('<?php echo $prefix; ?>online'));
+    }
+    else
+    {
+      nickmarker_icon.src   = "<?php echo $data_public_url; ?>/images/color-off.gif";
+      nickmarker_icon.alt   = "<?php echo _pfc("Show nickname marker"); ?>";
+      nickmarker_icon.title = nickmarker_icon.alt;
+      var elts = this.getElementsByClassName(root, '<?php echo $prefix; ?>nickmarker', '');
+      for(var i = 0; elts.length > i; i++)
+      {
+	/* this is not supported in konqueror =>>>  elts[i].removeAttribute('style');*/
+	elts[i].style.color = '';
+      }
+      var elts = this.getElementsByClassName($('<?php echo $prefix; ?>online'), '<?php echo $prefix; ?>nickmarker', '');
+      for(var i = 0; elts.length > i; i++)
+      {
+	/* this is not supported in konqueror =>>>  elts[i].removeAttribute('style');*/
+	elts[i].style.color = '';
+      }
+    }
+  },
+
+
+  /**
+   * Date/Hour show/hide
+   */
+  clock_swap: function()
+  {
+    if (this.clock) {
+      this.clock = false;
+    } else {
+      this.clock = true;
+    }
+    this.refresh_clock();
+    setCookie('<?php echo $prefix; ?>clock', this.clock);
+  },
+  refresh_clock: function( root )
+  {
+    var clock_icon = $('<?php echo $prefix; ?>clock');
+    if (!root) root = $('<?php echo $prefix; ?>chat');
+    if (this.clock)
+    {
+      clock_icon.src   = "<?php echo $data_public_url; ?>/images/clock-on.gif";
+      clock_icon.alt   = "<?php echo _pfc("Hide dates and hours"); ?>";
+      clock_icon.title = clock_icon.alt;
+      this.showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', true);
+      this.showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', true);
+    }
+    else
+    {
+      clock_icon.src = "<?php echo $data_public_url; ?>/images/clock-off.gif";
+      clock_icon.alt   = "<?php echo _pfc("Show dates and hours"); ?>";
+      clock_icon.title = clock_icon.alt;
+      this.showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', false);
+      this.showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', false);
+    }
+    /* browser automaticaly scroll up misteriously when showing the dates */
+    $('<?php echo $prefix; ?>chat').scrollTop += 30;
+  },
+
+  /**
+   * Connect/disconnect button
+   */
+  connect_disconnect: function()
+  {
+    if (this.login_status)
+    {
+      this.handleRequest('/quit');
+      this.login_status = false;
+      this.clearNickList();
+      this.clearMessages();
+    }
+    else
+    {
+      this.handleRequest('/connect');
+      this.login_status = true;
+      this.updateNickList(this.nicklist);
+    }
+    this.refresh_loginlogout()
+  },
+  refresh_loginlogout: function()
+  {
+    var loginlogout_icon = $('<?php echo $prefix; ?>loginlogout');
+    if (this.login_status)
+    {
+      loginlogout_icon.src   = "<?php echo $data_public_url; ?>/images/logout.gif";
+      loginlogout_icon.alt   = "<?php echo _pfc("Disconnect"); ?>";
+      loginlogout_icon.title = loginlogout_icon.alt;
+    }
+    else
+    {
+      loginlogout_icon.src = "<?php echo $data_public_url; ?>/images/login.gif";
+      loginlogout_icon.alt   = "<?php echo _pfc("Connect"); ?>";
+      loginlogout_icon.title = loginlogout_icon.alt;
+    }
+  },
+
+
+
+  /**
+   * Minimize/Maximized the chat zone
+   */
+  swap_minimize_maximize: function()
+  {
+    if (this.minmax_status) {
+      this.minmax_status = false;
+    } else {
+      this.minmax_status = true;
+    }
+    setCookie('<?php echo $prefix; ?>minmax_status', this.minmax_status);
+    this.refresh_minimize_maximize();
+  },
+  refresh_minimize_maximize: function()
+  {
+    var content = $('<?php echo $prefix; ?>content_expandable');
+    var btn     = $('<?php echo $prefix; ?>minmax');
+    if (this.minmax_status)
+    {
+      btn.src = "<?php echo $data_public_url; ?>/images/maximize.gif";
+      btn.alt = "<?php echo _pfc("Magnify"); ?>";
+      btn.title = btn.alt;
+      content.style.display = 'none';
+    }
+    else
+    {
+      btn.src = "<?php echo $data_public_url; ?>/images/minimize.gif";
+      btn.alt = "<?php echo _pfc("Cut down"); ?>";
+      btn.title = btn.alt;
+      content.style.display = 'block';
     }
   }
-}
-
-
-/**
- * Date/Hour show/hide
- */
-function <?php echo $prefix; ?>clock_swap()
-{
-  if (<?php echo $prefix; ?>clock)
-  {
-    <?php echo $prefix; ?>clock = false;
-  }
-  else
-  {
-    <?php echo $prefix; ?>clock = true;
-  }
-  <?php echo $prefix; ?>refresh_clock()
-  setCookie('<?php echo $prefix; ?>clock', <?php echo $prefix; ?>clock);
-}
-function <?php echo $prefix; ?>refresh_clock( root )
-{
-  var clock_icon = document.getElementById('<?php echo $prefix; ?>clock');
-  if (!root) root = document.getElementById('<?php echo $prefix; ?>chat');
-  if (<?php echo $prefix; ?>clock)
-  {
-    clock_icon.src   = "<?php echo $data_public_url; ?>/images/clock-on.gif";
-    clock_icon.alt   = "<?php echo _pfc("Hide dates and hours"); ?>";
-    clock_icon.title = clock_icon.alt;
-    showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', true);
-    showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', true);
-  }
-  else
-  {
-    clock_icon.src = "<?php echo $data_public_url; ?>/images/clock-off.gif";
-    clock_icon.alt   = "<?php echo _pfc("Show dates and hours"); ?>";
-    clock_icon.title = clock_icon.alt;
-    showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', false);
-    showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', false);
-  }
-  /* browser automaticaly scroll up misteriously when showing the dates */
-  document.getElementById('<?php echo $prefix; ?>chat').scrollTop += 30;
-}
-
-/**
- * Connect/disconnect button
- */
-var <?php echo $prefix; ?>login_status = false;
-function <?php echo $prefix; ?>connect_disconnect()
-{
-  if (<?php echo $prefix; ?>login_status)
-  {
-    <?php echo $prefix; ?>handleRequest('/quit ' + <?php echo $prefix; ?>clientid);
-    <?php echo $prefix; ?>login_status = false;
-    <?php echo $prefix; ?>clearNickList();
-    <?php echo $prefix; ?>clearMessages();
-    <?php echo $prefix; ?>UpdateChat(false); // stop updates
-  }
-  else
-  {
-    <?php echo $prefix; ?>handleRequest('/connect ' + <?php echo $prefix; ?>clientid);
-    <?php echo $prefix; ?>login_status = true;
-    <?php echo $prefix; ?>updateNickList();
-    <?php echo $prefix; ?>UpdateChat(true); // start updates
-  }
-  <?php echo $prefix; ?>refresh_loginlogout()
-}
-function <?php echo $prefix; ?>refresh_loginlogout()
-{
-  var loginlogout_icon = document.getElementById('<?php echo $prefix; ?>loginlogout');
-  if (<?php echo $prefix; ?>login_status)
-  {
-    loginlogout_icon.src   = "<?php echo $data_public_url; ?>/images/logout.gif";
-    loginlogout_icon.alt   = "<?php echo _pfc("Disconnect"); ?>";
-    loginlogout_icon.title = loginlogout_icon.alt;
-  }
-  else
-  {
-    loginlogout_icon.src = "<?php echo $data_public_url; ?>/images/login.gif";
-    loginlogout_icon.alt   = "<?php echo _pfc("Connect"); ?>";
-    loginlogout_icon.title = loginlogout_icon.alt;
-  }
-}
-
-
-/**
- * Minimize/Maximized the chat zone
- */
-var <?php echo $prefix; ?>minmax_status = <?php if ($start_minimized) { ?>true<?php } else { ?>false<?php } ?>;
-var cookie = getCookie('<?php echo $prefix; ?>minmax_status');
-if (cookie != null) var <?php echo $prefix; ?>minmax_status = (cookie == 'true');
-function <?php echo $prefix; ?>swap_minimize_maximize()
-{
-  if (<?php echo $prefix; ?>minmax_status)
-  {
-    <?php echo $prefix; ?>minmax_status = false;
-  }
-  else
-  {
-    <?php echo $prefix; ?>minmax_status = true;
-  }
-  setCookie('<?php echo $prefix; ?>minmax_status', <?php echo $prefix; ?>minmax_status);
-  <?php echo $prefix; ?>refresh_minimize_maximize();
-}
-function <?php echo $prefix; ?>refresh_minimize_maximize()
-{
-  var content = document.getElementById('<?php echo $prefix; ?>content_expandable');
-  var btn = document.getElementById('<?php echo $prefix; ?>minmax');
-  if (<?php echo $prefix; ?>minmax_status)
-  {
-    btn.src = "<?php echo $data_public_url; ?>/images/maximize.gif";
-    btn.alt = "<?php echo _pfc("Magnify"); ?>";
-    btn.title = btn.alt;
-    content.style.display = 'none';
-  }
-  else
-  {
-    btn.src = "<?php echo $data_public_url; ?>/images/minimize.gif";
-    btn.alt = "<?php echo _pfc("Cut down"); ?>";
-    btn.title = btn.alt;
-    content.style.display = 'block';
-  }
-}
+};
