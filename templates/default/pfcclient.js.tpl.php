@@ -488,7 +488,7 @@ pfcClient.prototype = {
     if (!root) root = $('<?php echo $prefix; ?>chat');
     if (this.nickmarker)
     {
-      nickmarker_icon.src   = "<?php echo $data_public_url; ?>/images/color-on.gif";
+      nickmarker_icon.src   = "<?php echo $themeurl."/".$theme; ?>/images/color-on.gif";
       nickmarker_icon.alt   = "<?php echo _pfc("Hide nickname marker"); ?>";
       nickmarker_icon.title = nickmarker_icon.alt;
       this.colorizeNicks(root);
@@ -496,7 +496,7 @@ pfcClient.prototype = {
     }
     else
     {
-      nickmarker_icon.src   = "<?php echo $data_public_url; ?>/images/color-off.gif";
+      nickmarker_icon.src   = "<?php echo $themeurl."/".$theme; ?>/images/color-off.gif";
       nickmarker_icon.alt   = "<?php echo _pfc("Show nickname marker"); ?>";
       nickmarker_icon.title = nickmarker_icon.alt;
       var elts = this.getElementsByClassName(root, '<?php echo $prefix; ?>nickmarker', '');
@@ -534,7 +534,7 @@ pfcClient.prototype = {
     if (!root) root = $('<?php echo $prefix; ?>chat');
     if (this.clock)
     {
-      clock_icon.src   = "<?php echo $data_public_url; ?>/images/clock-on.gif";
+      clock_icon.src   = "<?php echo $themeurl."/".$theme; ?>/images/clock-on.gif";
       clock_icon.alt   = "<?php echo _pfc("Hide dates and hours"); ?>";
       clock_icon.title = clock_icon.alt;
       this.showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', true);
@@ -542,7 +542,7 @@ pfcClient.prototype = {
     }
     else
     {
-      clock_icon.src = "<?php echo $data_public_url; ?>/images/clock-off.gif";
+      clock_icon.src = "<?php echo $themeurl."/".$theme; ?>/images/clock-off.gif";
       clock_icon.alt   = "<?php echo _pfc("Show dates and hours"); ?>";
       clock_icon.title = clock_icon.alt;
       this.showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', false);
@@ -577,13 +577,13 @@ pfcClient.prototype = {
     var loginlogout_icon = $('<?php echo $prefix; ?>loginlogout');
     if (this.login_status)
     {
-      loginlogout_icon.src   = "<?php echo $data_public_url; ?>/images/logout.gif";
+      loginlogout_icon.src   = "<?php echo $themeurl."/".$theme; ?>/images/logout.gif";
       loginlogout_icon.alt   = "<?php echo _pfc("Disconnect"); ?>";
       loginlogout_icon.title = loginlogout_icon.alt;
     }
     else
     {
-      loginlogout_icon.src = "<?php echo $data_public_url; ?>/images/login.gif";
+      loginlogout_icon.src = "<?php echo $themeurl."/".$theme; ?>/images/login.gif";
       loginlogout_icon.alt   = "<?php echo _pfc("Connect"); ?>";
       loginlogout_icon.title = loginlogout_icon.alt;
     }
@@ -610,14 +610,14 @@ pfcClient.prototype = {
     var btn     = $('<?php echo $prefix; ?>minmax');
     if (this.minmax_status)
     {
-      btn.src = "<?php echo $data_public_url; ?>/images/maximize.gif";
+      btn.src = "<?php echo $themeurl."/".$theme; ?>/images/maximize.gif";
       btn.alt = "<?php echo _pfc("Magnify"); ?>";
       btn.title = btn.alt;
       content.style.display = 'none';
     }
     else
     {
-      btn.src = "<?php echo $data_public_url; ?>/images/minimize.gif";
+      btn.src = "<?php echo $themeurl."/".$theme; ?>/images/minimize.gif";
       btn.alt = "<?php echo _pfc("Cut down"); ?>";
       btn.title = btn.alt;
       content.style.display = 'block';
