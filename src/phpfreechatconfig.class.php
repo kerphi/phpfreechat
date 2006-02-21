@@ -49,16 +49,23 @@ class phpFreeChatConfig
   var $shownotice          = 2; // show: 0 = nothing, 1 = just nickname changes, 2 = 1+connect/quit
   var $nickmarker          = true; // show/hide nicknames colors
   var $clock               = true; // show/hide dates and hours
+
   var $smileyurl           = ""; // default is calculated from smileypath value
   var $smileypath          = ""; // default is dirname(__FILE__)."/../smileys";
   var $smileytheme         = "default";
+  
+  var $theme               = "default";
+  var $themepath           = "";
+  var $themeurl            = "";
+  
+  var $tplurl              = ""; // default is calculated from tplpath value
   var $tplpath             = ""; // default is dirname(__FILE__)."/../templates";
   var $tpltheme            = "default";
+
   var $language            = "";      // could be something in i18n/* directory ("" means the language is guess from the server config)
   var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
   var $container_type      = "File";  
-  var $rootpath            = ""; // default is dirname(__FILE__)."/..";
-  var $rooturl             = ""; // default is a value calculated from rootpath
+
   var $client_script_path  = "";
   var $client_script_url   = ""; // default is calculated from 'client_script_path'
   var $server_script_path  = "";
@@ -79,6 +86,7 @@ class phpFreeChatConfig
   var $is_init             = false; // used internaly to know if the chat config is initialized
   var $version             = ""; // the phpfreechat version: taken from the 'version' file content
   var $sessionid           = 0; // the client sessionid, this is automatically set by phpfreechat instance
+  var $debugurl            = "";
   var $debug               = false;
   
   function phpFreeChatConfig( $params = array() )
@@ -103,7 +111,6 @@ class phpFreeChatConfig
     if ($this->data_private_path == "") $this->data_private_path = dirname(__FILE__)."/../data/private";
     if ($this->data_public_path == "")  $this->data_public_path  = dirname(__FILE__)."/../data/public";
     if ($this->smileypath == "")   $this->smileypath   = dirname(__FILE__)."/../smileys";
-    if ($this->rootpath == "")     $this->rootpath     = dirname(__FILE__)."/..";
     if ($this->tplpath == "")      $this->tplpath      = dirname(__FILE__)."/../templates";
     
     // choose a auto-generated channel name if user choose a title but didn't choose a channel name
@@ -273,12 +280,32 @@ class phpFreeChatConfig
       }
     }
 
+    // calculate template url
+    if ($this->tplurl == "")
+    {
+      $this->tplurl = phpFreeChatTools::RelativePath($this->client_script_path, $this->tplpath);
+    }
+
+
     // calculate smiley url
     if ($this->smileyurl == "")
     {
       $this->smileyurl = phpFreeChatTools::RelativePath($this->client_script_path, $this->smileypath);
     }
 
+
+    // set the default theme path
+    if ($this->themepath == "")
+    {
+      $this->themepath = dirname(__FILE__)."/../themes";
+    }
+    
+    // calculate theme url
+    if ($this->themeurl == "")
+    {
+      $this->themeurl = phpFreeChatTools::RelativePath($this->client_script_path, $this->themepath);
+    }
+    
     // calculate datapublic url
     if ($this->data_public_url == "")
     {
@@ -319,8 +346,8 @@ class phpFreeChatConfig
       }
     }
 
-    // load root path
-    $this->rooturl = phpFreeChatTools::RelativePath($this->client_script_path, $this->rootpath);
+    // load debug url
+    $this->debugurl = phpFreeChatTools::RelativePath($this->client_script_path, dirname(__FILE__)."/../debug");
 
     // load smileys from file
     if ($ok)

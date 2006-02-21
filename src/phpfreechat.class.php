@@ -83,16 +83,18 @@ class phpFreeChat
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/cookie.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/prototype.js\"></script>";
-
-    // print xajax javascript
-    $output .= $this->xajax->getJavascript($c->data_public_url, NULL, $c->data_public_url."/xajax_js/xajax.js");
-
+    //$output .= "<script type=\"text/javascript\" src=\"".$c->tplurl."/".$c->tpltheme."/pfcclient.js.tpl.php\"></script>";
+    
     // print phpfreechat specific javascript
-    $t = new phpFreeChatTemplate($c->tplpath."/".$c->tpltheme."/javascript1.js.tpl.php");
+    $t = new phpFreeChatTemplate($c->tplpath."/".$c->tpltheme."/pfcclient.js.tpl.php");
     $t->assignObject($c);
     $output .= "<script type=\"text/javascript\">\n<!--\n";
     $output .= $t->getOutput();
     $output .= "\n-->\n</script>\n";
+
+    
+    // print xajax javascript
+    $output .= $this->xajax->getJavascript($c->data_public_url, NULL, $c->data_public_url."/xajax_js/xajax.js");
 
     // include microsoft IE6 patches
     if ($c->useie7)
