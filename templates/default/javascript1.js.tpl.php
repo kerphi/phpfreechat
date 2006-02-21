@@ -339,7 +339,7 @@ pfcClient.prototype = {
     
     for(var i = 0; i < msgids.length ; i++) 
     {
-      this.scrolldown($(msgids[i]));
+      this.scrolldown($('<?php echo $prefix; ?>msg'+ msgids[i]));
       /* colorize messages nicknames */
       var root = $('<?php echo $prefix; ?>msg'+ msgids[i]);
       this.refresh_nickmarker(root);
