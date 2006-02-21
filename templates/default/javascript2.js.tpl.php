@@ -14,7 +14,7 @@ function onmouseupCallback_container(e)
   if (!<?php echo $prefix; ?>isdraging)
   {
     var w = document.getElementById('<?php echo $prefix; ?>words');
-    w.focus();
+    if (w && !<?php echo $prefix; ?>minmax_status) w.focus();
   }
 }
 function onmousemoveCallback_container(e)
@@ -35,7 +35,7 @@ function onunloadCallback_content(e)
 function onfocusCallback_words(e)
 {
   var h = document.getElementById('<?php echo $prefix; ?>handle');
-  if (h.value == '')
+  if (h && h.value == '' && !<?php echo $prefix; ?>minmax_status)
     h.focus();
 }
 
