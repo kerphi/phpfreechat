@@ -327,7 +327,6 @@ class phpFreeChat
       phpFreeChat::Cmd_updateMyNick($xml_reponse, $clientid);
       phpFreeChat::Cmd_getOnlineNick($xml_reponse, $clientid);
       phpFreeChat::Cmd_getNewMsg($xml_reponse, $clientid);
-      $xml_reponse->addScript("window.clearTimeout(".$c->prefix."timeout); ".$c->prefix."timeout = window.setTimeout('".$c->prefix."handleRequest(\\'/update ".$clientid."\\')', ".$c->refresh_delay.");");
     }
   }
   

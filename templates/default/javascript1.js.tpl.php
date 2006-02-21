@@ -23,6 +23,18 @@ var <?php echo $prefix; ?>clientid = '<?php
 var <?php echo $prefix; ?>colorlist = Array();
 var <?php echo $prefix; ?>nickcolor = Array();
 
+/* add an update function to poll the server each 'refresh_delay' time */
+function <?php echo $prefix; ?>UpdateChat(start)
+{
+  window.clearTimeout(<?php echo $prefix; ?>timeout);
+  if (start)
+  {
+    <?php echo $prefix; ?>handleRequest('/update ' + <?php echo $prefix; ?>clientid);
+    <?php echo $prefix; ?>timeout = window.setTimeout('<?php echo $prefix; ?>UpdateChat(true)',
+						      <?php echo $refresh_delay; ?>);
+  }
+}
+
 /* show error area and assign to it an error message and start the blinking of given fields */
 function <?php echo $prefix; ?>SetError(str, ids)
 {
@@ -372,12 +384,14 @@ function <?php echo $prefix; ?>connect_disconnect()
     <?php echo $prefix; ?>login_status = false;
     <?php echo $prefix; ?>clearNickList();
     <?php echo $prefix; ?>clearMessages();
+    <?php echo $prefix; ?>UpdateChat(false); // stop updates
   }
   else
   {
     <?php echo $prefix; ?>handleRequest('/connect ' + <?php echo $prefix; ?>clientid);
     <?php echo $prefix; ?>login_status = true;
     <?php echo $prefix; ?>updateNickList();
+    <?php echo $prefix; ?>UpdateChat(true); // start updates
   }
   <?php echo $prefix; ?>refresh_loginlogout()
 }
