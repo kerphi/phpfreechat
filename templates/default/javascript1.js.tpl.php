@@ -270,61 +270,83 @@ pfcClient.prototype = {
 
 
   /**
-   * parse message and append it to the message list
+   * parse messages and append it to the message list
    */
-  parseAndPost: function(id, date, heure, nick, words, cmd, fromtoday, oldmsg)
+  parseAndPost: function(msgs)
   {
     var msgdiv = $('<?php echo $prefix; ?>chat');
+    var msgids = Array();
 
-    /* check the nickname is in the list or not */
-    var nickfound = false;
-    for(var i = 0; i < this.nicklist.length && !nickfound; i++)
-    {
-      if (this.nicklist[i] == nick)
-	nickfound = true;
-    }
-    var nickcolor = '';
-    if (nickfound) nickcolor = this.getAndAssignNickColor(nick);
+    var html = '';
+    for(var mid = 0; mid < msgs.length ; mid++)
+    {      
+      var id        = msgs[mid][0];
+      var date      = msgs[mid][1];
+      var heure     = msgs[mid][2];
+      var nick      = msgs[mid][3];
+      var words     = msgs[mid][4];
+      var cmd       = msgs[mid][5];
+      var fromtoday = msgs[mid][6];
+      var oldmsg    = msgs[mid][7];
 
-    /* format and post message */
-    var line = '';
-    line += '<div id="<?php echo $prefix; ?>msg'+ id +'" class="<?php echo $prefix; ?>'+ cmd +' <?php echo $prefix; ?>message';
-    if (oldmsg == 1) line += ' <?php echo $prefix; ?>oldmsg';
-    line += '">';
-    line += '<span class="<?php echo $prefix; ?>date';
-    if (fromtoday == 1) line += ' <?php echo $prefix; ?>invisible';
-    line += '">'+ date +'</span> ';
-    line += '<span class="<?php echo $prefix; ?>heure">'+ heure +'</span> ';
-    if (cmd == 'cmd_msg')
-    {
-      line += ' <span class="<?php echo $prefix; ?>nick">';
-      line += '&#x2039;';
-      line += '<span ';
-      if (nickcolor != '') line += 'style="color: ' + nickcolor + '" ';
-      line += 'class="<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(nick) +'">';
-      line += nick;
-      line += '</span>';
-      line += '&#x203A;';
-      line += '</span> ';
+      msgids.push(id);
+
+      /* check the nickname is in the list or not */
+      var nickfound = false;
+      for(var i = 0; i < this.nicklist.length && !nickfound; i++)
+      {
+	if (this.nicklist[i] == nick)
+	  nickfound = true;
+      }
+      var nickcolor = '';
+      if (nickfound) nickcolor = this.getAndAssignNickColor(nick);
+
+      /* format and post message */
+      var line = '';
+      line += '<div id="<?php echo $prefix; ?>msg'+ id +'" class="<?php echo $prefix; ?>'+ cmd +' <?php echo $prefix; ?>message';
+      if (oldmsg == 1) line += ' <?php echo $prefix; ?>oldmsg';
+      line += '">';
+      line += '<span class="<?php echo $prefix; ?>date';
+      if (fromtoday == 1) line += ' <?php echo $prefix; ?>invisible';
+      line += '">'+ date +'</span> ';
+      line += '<span class="<?php echo $prefix; ?>heure">'+ heure +'</span> ';
+      if (cmd == 'cmd_msg')
+      {
+	line += ' <span class="<?php echo $prefix; ?>nick">';
+	line += '&#x2039;';
+	line += '<span ';
+	if (nickcolor != '') line += 'style="color: ' + nickcolor + '" ';
+	line += 'class="<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(nick) +'">';
+	line += nick;
+	line += '</span>';
+	line += '&#x203A;';
+	line += '</span> ';
+      }
+      if (cmd == 'cmd_notice' || cmd == 'cmd_me')
+	line += '<span class="<?php echo $prefix; ?>words">* '+ words +'</span> ';
+      else
+	line += '<span class="<?php echo $prefix; ?>words">'+ words +'</span> ';
+      line += '</div>';
+      html += line;
     }
-    if (cmd == 'cmd_notice' || cmd == 'cmd_me')
-      line += '<span class="<?php echo $prefix; ?>words">* '+ words +'</span> ';
-    else
-      line += '<span class="<?php echo $prefix; ?>words">'+ words +'</span> ';
-    line += '</div>';
 
     /* create a dummy div to avoid konqueror bug when setting nickmarkers */
     var m = document.createElement('div');
-    m.innerHTML = line;
+    m.innerHTML = html;
+
+    /* finaly append this to the message list */
     msgdiv.appendChild(m);
-
-    this.scrolldown($('<?php echo $prefix; ?>msg'+id));
-
-    /* colorize messages nicknames */
-    var root = $('<?php echo $prefix; ?>msg' + id);
-    this.refresh_nickmarker(root);
-    this.refresh_clock(root);
+    
+    for(var i = 0; i < msgids.length ; i++) 
+    {
+      this.scrolldown($(msgids[i]));
+      /* colorize messages nicknames */
+      var root = $('<?php echo $prefix; ?>msg'+ msgids[i]);
+      this.refresh_nickmarker(root);
+      this.refresh_clock(root);
+    }
   },
+
 
   /**
    * scroll down from the posted message height

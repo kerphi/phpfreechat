@@ -424,7 +424,7 @@ class phpFreeChat
       $c->nick = $newnick;
       $c->saveInSession();
       $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
-      $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
+      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
       if ($oldnick != $newnick && $oldnick != "")
 	phpFreeChat::Cmd_notice($xml_reponse, $clientid, _pfc("%s changes his nickname to %s",$oldnick,$newnick), 1);
       if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: first time nick is assigned -> newnick=".$c->nick." oldnick=".$oldnick, "chat", $c->getId());
@@ -438,7 +438,7 @@ class phpFreeChat
     {
       // user didn't change his nickname
       $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
-      $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
+      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
       if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: user just reloded the page so let him keep his nickname without any warnings -> nickid=".$newnickid." nick=".$newnick, "chat", $c->getId());
     }
     else
@@ -570,6 +570,7 @@ class phpFreeChat
     $messages    = $new_msg["messages"];
 
     // transform new message in html format
+    $js = '';
     $msg_sent = false;
     foreach ($messages as $msg)
     {
@@ -586,10 +587,17 @@ class phpFreeChat
 	else if ($res[1] == "me")
 	  $m_cmd = "cmd_me";
       }
-      $xml_reponse->addScript("pfc.parseAndPost(".$m_id.",'".addslashes($m_date)."','".addslashes($m_heure)."','".addslashes($m_nick)."','".addslashes($m_words)."','".addslashes($m_cmd)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($from_id == 0? 1 : 0).");");
+
+      $js .= "Array(".$m_id.",'".addslashes($m_date)."','".addslashes($m_heure)."','".addslashes($m_nick)."','".addslashes($m_words)."','".addslashes($m_cmd)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($from_id == 0? 1 : 0)."),";
       $msg_sent = true;
     }
-  	
+    if ($js != "")
+    {
+      $js = substr($js, 0, strlen($js)-1); // remove last ','
+      $js = 'Array('.$js.')';
+      $xml_reponse->addScript("pfc.parseAndPost(".$js.");");
+    }
+
     if ($msg_sent)
     {
       // store the new msg id
@@ -621,7 +629,7 @@ class phpFreeChat
       // - read new messages
       // - give focus to "words" field
       $xml_reponse->addScript("pfc.clearError(Array('".$c->prefix."words"."','".$c->prefix."handle"."'));");
-      $xml_reponse->addScript("document.getElementById('".$c->prefix."words').focus();");
+      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
     }
     else
     {
@@ -630,7 +638,7 @@ class phpFreeChat
         if ($c->debug) pxlog("Cmd_send[".$c->sessionid."]: user can't send a message -> nick=".$c->nick." err=".$e, "chat", $c->getId());
       phpFreeChat::Cmd_error($xml_reponse, $clientid, $errors);
       if (isset($errors[$c->prefix."handle"])) // the nick is empty so give it focus
-        $xml_reponse->addScript("document.getElementById('".$c->prefix."handle').focus();");
+        $xml_reponse->addScript("$('".$c->prefix."handle').focus();");
     }
   }
   
