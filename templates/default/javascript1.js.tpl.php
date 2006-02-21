@@ -115,6 +115,12 @@ pfcClient.prototype = {
   },
   callback_OnUnload: function(evt)
   {
+    /* don't disconnect users when they reload the window
+     * this event doesn't only occurs when the page is closed but also when the page is reloaded */
+    /*
+    if (!this.login_status) return false;
+    this.handleRequest('/quit');
+    */
   },
 
   callbackContainer_OnMousemove: function(evt)
