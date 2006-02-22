@@ -45,17 +45,28 @@ pfcClient.prototype = {
     this.el_online    = $('<?php echo $prefix; ?>online');
     this.el_errors    = $('<?php echo $prefix; ?>errors');
 
+    /* the events callbacks */
     this.el_words.onkeydown  = this.callbackWords_OnKeydown.bindAsEventListener(this);
     this.el_words.onfocus    = this.callbackWords_OnFocus.bindAsEventListener(this);
-
     this.el_handle.onkeydown = this.callbackHandle_OnKeydown.bindAsEventListener(this);
     this.el_handle.onchange  = this.callbackHandle_OnChange.bindAsEventListener(this);
-
     this.el_container.onmousemove = this.callbackContainer_OnMousemove.bindAsEventListener(this);
     this.el_container.onmousedown = this.callbackContainer_OnMousedown.bindAsEventListener(this);
     this.el_container.onmouseup   = this.callbackContainer_OnMouseup.bindAsEventListener(this);
-
     document.body.onunload = this.callback_OnUnload.bindAsEventListener(this);
+
+    /* the i18n translations */
+    var i18n = {
+      hide_nickname_color: "<?php echo _pfc("Hide nickname marker"); ?>",
+      show_nickname_color: "<?php echo _pfc("Show nickname marker"); ?>",
+      hide_clock:          "<?php echo _pfc("Hide dates and hours"); ?>",
+      show_clock:          "<?php echo _pfc("Show dates and hours"); ?>",
+      logout:              "<?php echo _pfc("Disconnect"); ?>",
+      login:               "<?php echo _pfc("Connect"); ?>",
+      maximize:            "<?php echo _pfc("Magnify"); ?>",
+      minimize:            "<?php echo _pfc("Cut down"); ?>"
+    };
+    this.i18n = $H(i18n);
   },
   
   callbackWords_OnKeydown: function(evt)
@@ -489,7 +500,7 @@ pfcClient.prototype = {
     if (this.nickmarker)
     {
       nickmarker_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/color-on.gif'); ?>";
-      nickmarker_icon.alt   = "<?php echo _pfc("Hide nickname marker"); ?>";
+      nickmarker_icon.alt   = this.i18n.hide_nickname_color;
       nickmarker_icon.title = nickmarker_icon.alt;
       this.colorizeNicks(root);
       this.colorizeNicks($('<?php echo $prefix; ?>online'));
@@ -497,7 +508,7 @@ pfcClient.prototype = {
     else
     {
       nickmarker_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/color-off.gif'); ?>";
-      nickmarker_icon.alt   = "<?php echo _pfc("Show nickname marker"); ?>";
+      nickmarker_icon.alt   = this.i18n.show_nickname_color;
       nickmarker_icon.title = nickmarker_icon.alt;
       var elts = this.getElementsByClassName(root, '<?php echo $prefix; ?>nickmarker', '');
       for(var i = 0; elts.length > i; i++)
@@ -535,7 +546,7 @@ pfcClient.prototype = {
     if (this.clock)
     {
       clock_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/clock-on.gif'); ?>";
-      clock_icon.alt   = "<?php echo _pfc("Hide dates and hours"); ?>";
+      clock_icon.alt   = this.i18n.hide_clock;
       clock_icon.title = clock_icon.alt;
       this.showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', true);
       this.showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', true);
@@ -543,7 +554,7 @@ pfcClient.prototype = {
     else
     {
       clock_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/clock-off.gif'); ?>";
-      clock_icon.alt   = "<?php echo _pfc("Show dates and hours"); ?>";
+      clock_icon.alt   = this.i18n.show_clock;
       clock_icon.title = clock_icon.alt;
       this.showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', false);
       this.showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', false);
@@ -578,13 +589,13 @@ pfcClient.prototype = {
     if (this.login_status)
     {
       loginlogout_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>";
-      loginlogout_icon.alt   = "<?php echo _pfc("Disconnect"); ?>";
+      loginlogout_icon.alt   = this.i18n.logout;
       loginlogout_icon.title = loginlogout_icon.alt;
     }
     else
     {
       loginlogout_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/login.gif'); ?>";
-      loginlogout_icon.alt   = "<?php echo _pfc("Connect"); ?>";
+      loginlogout_icon.alt   = this.i18n.login;
       loginlogout_icon.title = loginlogout_icon.alt;
     }
   },
@@ -611,14 +622,14 @@ pfcClient.prototype = {
     if (this.minmax_status)
     {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/maximize.gif'); ?>";
-      btn.alt = "<?php echo _pfc("Magnify"); ?>";
+      btn.alt = this.i18n.maximize;
       btn.title = btn.alt;
       content.style.display = 'none';
     }
     else
     {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/minimize.gif'); ?>";
-      btn.alt = "<?php echo _pfc("Cut down"); ?>";
+      btn.alt = this.i18n.minimize;
       btn.title = btn.alt;
       content.style.display = 'block';
     }
