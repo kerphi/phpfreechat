@@ -1,3 +1,16 @@
+RegExp.escape = function(text) {
+  if (!arguments.callee.sRE) {
+    var specials = [
+      '/', '.', '*', '+', '?', '|', '$', '^',
+      '(', ')', '[', ']', '{', '}', '\\'
+    ];
+    arguments.callee.sRE = new RegExp(
+      '(\\' + specials.join('|\\') + ')', 'g'
+    );
+  }
+  return text.replace(arguments.callee.sRE, '\\$1');
+}
+
 /**
  * This class is the client part of phpFreeChat
  * (dpends on prototype library)
@@ -57,16 +70,33 @@ pfcClient.prototype = {
 
     /* the i18n translations */
     var i18n = {
-      hide_nickname_color: "<?php echo _pfc("Hide nickname marker"); ?>",
-      show_nickname_color: "<?php echo _pfc("Show nickname marker"); ?>",
-      hide_clock:          "<?php echo _pfc("Hide dates and hours"); ?>",
-      show_clock:          "<?php echo _pfc("Show dates and hours"); ?>",
-      logout:              "<?php echo _pfc("Disconnect"); ?>",
-      login:               "<?php echo _pfc("Connect"); ?>",
-      maximize:            "<?php echo _pfc("Magnify"); ?>",
-      minimize:            "<?php echo _pfc("Cut down"); ?>"
+      hide_nickname_color: '<?php echo _pfc("Hide nickname marker"); ?>',
+      show_nickname_color: '<?php echo _pfc("Show nickname marker"); ?>',
+      hide_clock:          '<?php echo _pfc("Hide dates and hours"); ?>',
+      show_clock:          '<?php echo _pfc("Show dates and hours"); ?>',
+      logout:              '<?php echo _pfc("Disconnect"); ?>',
+      login:               '<?php echo _pfc("Connect"); ?>',
+      maximize:            '<?php echo _pfc("Magnify"); ?>',
+      minimize:            '<?php echo _pfc("Cut down"); ?>'
     };
     this.i18n = $H(i18n);
+
+    /* the smileys */
+    var smileys = {
+      <?php
+      $output = "";
+      foreach($smileys as $s_file => $s_str) { 
+	for($j = 0; $j<count($s_str) ; $j++) {
+	  $s = $s_str[$j];
+	  $output .= "'".$s."': '".$s_file."',";
+	}
+      }
+      $output = substr($output, 0, strlen($output)-1); // remove last ','
+      echo $output;
+      ?>
+    }
+    this.smileys = $H(smileys);
+    //var k = this.smileys.keys(); alert(k.inspect());
   },
   
   callbackWords_OnKeydown: function(evt)
@@ -285,6 +315,22 @@ pfcClient.prototype = {
     msgdiv.innerHTML = '';
   },
 
+  /**
+   * parse the message
+   */
+  parseMessage: function(msg)
+  {
+    /* try to parse smileys */
+    var sl = this.smileys.keys();
+    for(var i = 0; i < sl.length; i++)
+    {
+      var rx = new RegExp('(.*)('+RegExp.escape(sl[i])+')(.*)');
+      msg = msg.replace(rx, '$1<img src="'+ this.smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />$3');
+    }
+    
+
+    return msg;
+  },
 
   /**
    * parse messages and append it to the message list
@@ -340,9 +386,9 @@ pfcClient.prototype = {
 	line += '</span> ';
       }
       if (cmd == 'cmd_notice' || cmd == 'cmd_me')
-	line += '<span class="<?php echo $prefix; ?>words">* '+ words +'</span> ';
+	line += '<span class="<?php echo $prefix; ?>words">* '+ this.parseMessage(words) +'</span> ';
       else
-	line += '<span class="<?php echo $prefix; ?>words">'+ words +'</span> ';
+	line += '<span class="<?php echo $prefix; ?>words">'+ this.parseMessage(words) +'</span> ';
       line += '</div>';
       html += line;
     }
