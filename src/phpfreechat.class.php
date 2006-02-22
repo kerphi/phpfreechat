@@ -83,6 +83,7 @@ class phpFreeChat
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/cookie.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/prototype.js\"></script>";
+    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/regex.js\"></script>";
     
     // print phpfreechat specific javascript
     $t = new phpFreeChatTemplate($c->getFilePathFromTheme("templates/pfcclient.js.tpl.php"));
@@ -258,8 +259,8 @@ class phpFreeChat
    */
   function PostFilterMsg($msg)
   {
-    $c =& phpFreeChatConfig::Instance();
-    $msg = preg_replace('/('.preg_quote($c->nick,'/').')/i', "<strong>$1</strong>", $msg );
+    //$c =& phpFreeChatConfig::Instance();
+    //    $msg = preg_replace('/('.preg_quote($c->nick,'/').')/i', "<strong>$1</strong>", $msg );
     $msg = preg_replace('/\n/i', "", $msg );
     return $msg;
   }
@@ -450,6 +451,9 @@ class phpFreeChat
       if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: wanted nick is allready in use -> wantednickid=".$newnickid." wantednick=".$newnick, "chat", $c->getId());
       phpFreeChat::Cmd_asknick($xml_reponse, $clientid, $newnick);
     }
+
+    // refresh users info on client side
+    $xml_reponse->addScript("pfc.nickname = '".$c->nick."';");
   }
 
   function Cmd_notice(&$xml_reponse, $clientid, $msg, $level = 2)

@@ -1,19 +1,6 @@
-RegExp.escape = function(text) {
-  if (!arguments.callee.sRE) {
-    var specials = [
-      '/', '.', '*', '+', '?', '|', '$', '^',
-      '(', ')', '[', ']', '{', '}', '\\'
-    ];
-    arguments.callee.sRE = new RegExp(
-      '(\\' + specials.join('|\\') + ')', 'g'
-    );
-  }
-  return text.replace(arguments.callee.sRE, '\\$1');
-}
-
 /**
  * This class is the client part of phpFreeChat
- * (dpends on prototype library)
+ * (depends on prototype library)
  * @author Stephane Gully
  */
 var pfcClient = Class.create();
@@ -23,6 +10,9 @@ pfcClient.prototype = {
   
   initialize: function()
   {
+    /* user description */
+    this.nickname      = '';
+    
     this.timeout       = null;
     this.refresh_delay = <?php echo $refresh_delay; ?>;
     /* unique client id for each windows used to identify a open window
@@ -95,8 +85,10 @@ pfcClient.prototype = {
       echo $output;
       ?>
     }
-    this.smileys = $H(smileys);
+    //    this.smileys = ;
     //var k = this.smileys.keys(); alert(k.inspect());
+    this.smileys = $H(smileys);
+    //    this.smileyparser = new pfcSmileyParser($H(smileys));
   },
   
   callbackWords_OnKeydown: function(evt)
@@ -320,15 +312,23 @@ pfcClient.prototype = {
    */
   parseMessage: function(msg)
   {
+    var rx = null;
+    
+    /* try to parse nickname for highlighting  */
+    rx = new RegExp(RegExp.escape(this.nickname),'g');
+    msg = msg.replace(rx, '<strong>'+ this.nickname +'</strong>');
+    
+
+
     /* try to parse smileys */
     var sl = this.smileys.keys();
     for(var i = 0; i < sl.length; i++)
     {
-      var rx = new RegExp('(.*)('+RegExp.escape(sl[i])+')(.*)');
-      msg = msg.replace(rx, '$1<img src="'+ this.smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />$3');
+      rx = new RegExp(RegExp.escape(sl[i]),'g');
+      msg = msg.replace(rx, '<img src="'+ this.smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
     }
-    
 
+    
     return msg;
   },
 
@@ -353,6 +353,7 @@ pfcClient.prototype = {
       var oldmsg    = msgs[mid][7];
 
       msgids.push(id);
+      //this.smileyparser.addMsgToParse(id);
 
       /* check the nickname is in the list or not */
       var nickfound = false;
