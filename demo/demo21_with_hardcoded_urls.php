@@ -8,7 +8,7 @@ $params["nick"]           = "guest";  // setup the intitial nickname
 $params["data_public_url"]   = "../data/public";
 $params["client_script_url"] = "./demo21_with_hardcoded_urls.php";
 $params["server_script_url"] = "./demo21_with_hardcoded_urls.php";
-$params["smileyurl"]         = "../smileys";
+$params["themeurl"]          = "../themes";
 $chat = new phpFreeChat( $params );
 
 ?>

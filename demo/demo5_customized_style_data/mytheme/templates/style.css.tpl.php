@@ -1,7 +1,7 @@
 
 div#<?php echo $prefix; ?>container {
   border: black double 5px;
-  background-image: url(demo5_customized_style_data/brick.jpg);
+  background-image: url(<?php echo $c->getFileUrlFromTheme('images/brick.jpg'); ?>);
   background-repeat: repeat;
   padding: 20px;
   color: black;
@@ -14,13 +14,13 @@ div#<?php echo $prefix; ?>content {
 
 div.<?php echo $prefix; ?>message {
   background-color: transparent;
-  background-image: url(demo5_customized_style_data/newmsg.gif);
+  background-image: url(<?php echo $c->getFileUrlFromTheme('images/newmsg.gif'); ?>);
   background-repeat: no-repeat;
   background-position: right center;
 }
 
 div.<?php echo $prefix; ?>oldmsg {
-  background-image: url(demo5_customized_style_data/oldmsg.gif);
+  background-image: url(<?php echo $c->getFileUrlFromTheme('images/oldmsg.gif'); ?>);
 }
 
 span.<?php echo $prefix; ?>heure {
@@ -35,10 +35,6 @@ span.<?php echo $prefix; ?>date {
 span.<?php echo $prefix; ?>pseudo {
   color: black;
   font-weight: bold;
-}
-
-
-#<?php echo $prefix; ?>words {
 }
 
 input#<?php echo $prefix; ?>handle {

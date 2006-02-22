@@ -83,10 +83,9 @@ class phpFreeChat
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/cookie.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/prototype.js\"></script>";
-    //$output .= "<script type=\"text/javascript\" src=\"".$c->tplurl."/".$c->tpltheme."/pfcclient.js.tpl.php\"></script>";
     
     // print phpfreechat specific javascript
-    $t = new phpFreeChatTemplate($c->tplpath."/".$c->tpltheme."/pfcclient.js.tpl.php");
+    $t = new phpFreeChatTemplate($c->getFilePathFromTheme("templates/pfcclient.js.tpl.php"));
     $t->assignObject($c);
     $output .= "<script type=\"text/javascript\">\n<!--\n";
     $output .= $t->getOutput();
@@ -127,7 +126,7 @@ class phpFreeChat
   {
     $c =& phpFreeChatConfig::Instance();
     phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
-    $t = new phpFreeChatTemplate($c->tplpath."/".$c->tpltheme."/chat.html.tpl.php");
+    $t = new phpFreeChatTemplate($c->getFilePathFromTheme("templates/chat.html.tpl.php"));
     $t->assignObject($c);
     $output = $t->getOutput();
     phpFreeChatI18N::SwitchOutputEncoding();
@@ -151,13 +150,15 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
     phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
 
-    $css_filename = $c->tplpath."/".$c->tpltheme."/style.css.tpl.php";
-    $t = new phpFreeChatTemplate($css_filename);
+    $css_filename1 = dirname(__FILE__)."/../themes/default/templates/style.css.tpl.php";
+    $css_filename2 = $c->getFilePathFromTheme("templates/style.css.tpl.php");
+    $t = new phpFreeChatTemplate();
     $t->assignObject($c);
+    $t->setTemplate($css_filename1);
     $output .= $t->getOutput();
-    if ($c->css_file != "")
+    if ($css_filename1 != $css_filename2)
     {
-      $t->setTemplate($c->css_file);
+      $t->setTemplate($css_filename2);
       $output .= $t->getOutput();
     }
 

@@ -31,7 +31,7 @@ require_once dirname(__FILE__)."/phpfreechati18n.class.php";
  */
 class phpFreeChatConfig
 {
-  var $serverid            = 0; // this is the chat server id (comparable to the server host in IRC)
+  var $serverid            = ""; // this is the chat server id (comparable to the server host in IRC)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
   var $title               = ""; // default is _pfc("My Chat")
   var $channel             = ""; // default is a value calculated from title
@@ -45,23 +45,16 @@ class phpFreeChatConfig
   var $start_minimized     = false;
   var $height              = "440px";
   var $width               = "";
-  var $css_file            = ""; // used to personalize the chat appearance
   var $shownotice          = 2; // show: 0 = nothing, 1 = just nickname changes, 2 = 1+connect/quit
   var $nickmarker          = true; // show/hide nicknames colors
   var $clock               = true; // show/hide dates and hours
-
-  var $smileyurl           = ""; // default is calculated from smileypath value
-  var $smileypath          = ""; // default is dirname(__FILE__)."/../smileys";
-  var $smileytheme         = "default";
-  
+ 
   var $theme               = "default";
   var $themepath           = "";
   var $themeurl            = "";
+  var $themepath_default   = "";
+  var $themeurl_default    = "";
   
-  var $tplurl              = ""; // default is calculated from tplpath value
-  var $tplpath             = ""; // default is dirname(__FILE__)."/../templates";
-  var $tpltheme            = "default";
-
   var $language            = "";      // could be something in i18n/* directory ("" means the language is guess from the server config)
   var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
   var $container_type      = "File";  
@@ -110,8 +103,6 @@ class phpFreeChatConfig
     if ($this->csstidypath == "")  $this->csstidypath  = dirname(__FILE__)."/../lib/csstidy-1.1";
     if ($this->data_private_path == "") $this->data_private_path = dirname(__FILE__)."/../data/private";
     if ($this->data_public_path == "")  $this->data_public_path  = dirname(__FILE__)."/../data/public";
-    if ($this->smileypath == "")   $this->smileypath   = dirname(__FILE__)."/../smileys";
-    if ($this->tplpath == "")      $this->tplpath      = dirname(__FILE__)."/../templates";
     
     // choose a auto-generated channel name if user choose a title but didn't choose a channel name
     if ( $this->channel == "" )
@@ -209,16 +200,6 @@ class phpFreeChatConfig
     $ok &= $this->_testWritableDir($this->data_public_path, "data_public_path");
     $ok &= $this->_testWritableDir($this->data_private_path, "data_private_path");
     $ok &= $this->_installDir($this->jspath, $this->data_public_path."/javascript/");
-    
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/color-on.gif", $this->data_public_path."/images/color-on.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/color-off.gif", $this->data_public_path."/images/color-off.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/clock-on.gif", $this->data_public_path."/images/clock-on.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/clock-off.gif", $this->data_public_path."/images/clock-off.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/logout.gif", $this->data_public_path."/images/logout.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/login.gif", $this->data_public_path."/images/login.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/minimize.gif", $this->data_public_path."/images/minimize.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/maximize.gif", $this->data_public_path."/images/maximize.gif");
-    $ok &= $this->_installFile(dirname(__FILE__)."/../misc/shade.gif", $this->data_public_path."/images/shade.gif");
 
     // ---
     // test xajax lib existance
@@ -280,31 +261,17 @@ class phpFreeChatConfig
       }
     }
 
-    // calculate template url
-    if ($this->tplurl == "")
-    {
-      $this->tplurl = phpFreeChatTools::RelativePath($this->client_script_path, $this->tplpath);
-    }
-
-
-    // calculate smiley url
-    if ($this->smileyurl == "")
-    {
-      $this->smileyurl = phpFreeChatTools::RelativePath($this->client_script_path, $this->smileypath);
-    }
-
-
     // set the default theme path
+    if ($this->themepath_default == "")
+      $this->themepath_default = dirname(__FILE__)."/../themes";
     if ($this->themepath == "")
-    {
-      $this->themepath = dirname(__FILE__)."/../themes";
-    }
-    
-    // calculate theme url
+      $this->themepath = $this->themepath_default;
+        
+    // calculate the default theme url
+    if ($this->themeurl_default == "")
+      $this->themeurl_default = phpFreeChatTools::RelativePath($this->client_script_path, $this->themepath_default);
     if ($this->themeurl == "")
-    {
       $this->themeurl = phpFreeChatTools::RelativePath($this->client_script_path, $this->themepath);
-    }
     
     // calculate datapublic url
     if ($this->data_public_url == "")
@@ -349,6 +316,13 @@ class phpFreeChatConfig
     // load debug url
     $this->debugurl = phpFreeChatTools::RelativePath($this->client_script_path, dirname(__FILE__)."/../debug");
 
+    // check the serverid is really defined
+    if ($this->serverid == "")
+    {
+      $this->errors[] = _pfc("'serverid' parameter is mandatory by default use 'md5(__FILE__)' value");
+      $ok = false;
+    }
+    
     // load smileys from file
     if ($ok)
       $this->loadSmileyTheme();
@@ -359,7 +333,7 @@ class phpFreeChatConfig
     
     // load version number from file
     $this->version = file_get_contents(dirname(__FILE__)."/../version");
-    
+
     $this->is_init = $ok;
   }
   
@@ -375,7 +349,7 @@ class phpFreeChatConfig
 
   function loadSmileyTheme()
   {
-    $theme = file($this->smileypath."/".$this->smileytheme."/theme");
+    $theme = file($this->getFilePathFromTheme("smileys/theme"));
     $result = array();
     foreach($theme as $line)
     {
@@ -383,7 +357,7 @@ class phpFreeChatConfig
         continue;
       else if (preg_match("/^([a-z_0-9]*(\.gif|\.png))(.*)$/i",$line,$res))
       {
-        $smiley_file = $this->smileyurl.'/'.$this->smileytheme.'/'.$res[1];
+        $smiley_file = $this->getFileUrlFromTheme('smileys/'.$res[1]);
         $smiley_str = trim($res[3])."\n";
         $smiley_str = str_replace("\n", "", $smiley_str);
         $smiley_str = str_replace("\t", " ", $smiley_str);
@@ -397,39 +371,6 @@ class phpFreeChatConfig
 
   function getId()
   {
-    // calculate the chat id
-    // do not put in the parameter list something which is modified in
-    // ->init() methode
-    if ($this->serverid == 0)
-    {
-      $spotted_atr = array();
-      $spotted_atr[] = dirname(__FILE__);
-      $spotted_atr[] = $this->title;
-      $spotted_atr[] = $this->channel;
-      //$spotted_atr[] = $this->prefix; /* do not use prefix here because it is used before the first getId call */
-      $spotted_atr[] = $this->debug;
-      //$spotted_atr[] = $this->client_script_path; /* do not uncomment because it can be set in ->init() methode */ 
-      //$spotted_atr[] = $this->server_script_path; /* do not uncomment because it can be set in ->init() methode */
-      $spotted_atr[] = $this->data_public_path; 
-      $spotted_atr[] = $this->data_private_path;
-      $spotted_atr[] = $this->xajaxpath;
-      $spotted_atr[] = $this->csstidypath;
-      $spotted_atr[] = $this->container_type;
-      $spotted_atr[] = $this->smileypath;
-      $spotted_atr[] = $this->smileytheme;
-      $spotted_atr[] = $this->tplpath;
-      $spotted_atr[] = $this->tpltheme;
-      $spotted_atr[] = $this->shownotice;
-      $spotted_atr[] = $this->frozen_nick;
-      $spotted_atr[] = $this->max_msg;
-      $spotted_atr[] = $this->clock;
-      $spotted_atr[] = $this->nickmarker;
-      $spotted_atr[] = $this->connect_at_startup;
-      $spotted_atr[] = $this->start_minimized;
-      $spotted_atr[] = $this->language;
-      $spotted_atr[] = $this->output_encoding;
-      $this->serverid = md5(serialize($spotted_atr));
-    }
     return $this->serverid;
   }  
 
@@ -545,6 +486,28 @@ class phpFreeChatConfig
       return false;
     }
     return @phpFreeChatTools::CopyR( $src_dir, $dst_dir );
+  }
+
+  function getFileUrlFromTheme($file)
+  {
+    if (file_exists($this->themepath."/".$this->theme."/".$file))
+      return $this->themeurl."/".$this->theme."/".$file;
+    else
+      if (file_exists($this->themepath_default."/default/".$file))
+	return $this->themeurl_default."/default/".$file;
+      else
+	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
+  }
+
+  function getFilePathFromTheme($file)
+  {
+    if (file_exists($this->themepath."/".$this->theme."/".$file))
+      return $this->themepath."/".$this->theme."/".$file;
+    else
+      if (file_exists($this->themepath_default."/default/".$file))
+	return $this->themepath_default."/default/".$file;
+      else
+	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
   }
 
 }

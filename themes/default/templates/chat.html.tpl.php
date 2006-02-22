@@ -1,5 +1,5 @@
 <div id="<?php echo $prefix; ?>container">
-  <img id="<?php echo $prefix; ?>minmax" onclick="pfc.swap_minimize_maximize()" src="<?php echo $themeurl."/".$theme; ?>/images/<?php if($start_minimized) { echo "maximize"; } else { echo "minimize"; } ?>.gif" alt=""/>
+  <img id="<?php echo $prefix; ?>minmax" onclick="pfc.swap_minimize_maximize()" src="<?php echo $c->getFileUrlFromTheme('images/'.($start_minimized?'maximize':'minimize').'.gif'); ?>" alt=""/>
   <h2 id="<?php echo $prefix; ?>title"><?php echo $title; ?></h2>
 
   <div id="<?php echo $prefix; ?>content_expandable">
@@ -22,9 +22,9 @@
     <div id="<?php echo $prefix; ?>cmd_container">
       <a href="http://www.phpfreechat.net" id="<?php echo $prefix; ?>logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" title="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" /></a>
       <input id="<?php echo $prefix; ?>handle" type="button" title="<?php echo _pfc("Enter your nickname here"); ?>" maxlength="<?php echo $max_nick_len; ?>" value="<?php echo $nick; ?>" onclick="if (!pfc.login_status) return false; pfc.handleRequest('/asknick');" />
-      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $themeurl."/".$theme; ?>/images/logout.gif" alt="" title="" id="<?php echo $prefix; ?>loginlogout" onclick="pfc.connect_disconnect()" /></div>
-      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $themeurl."/".$theme; ?>/images/color-on.gif" alt="" title="" id="<?php echo $prefix; ?>nickmarker" onclick="pfc.nickmarker_swap()" /></div>
-      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $themeurl."/".$theme; ?>/images/clock-on.gif" alt="" title="" id="<?php echo $prefix; ?>clock" onclick="pfc.clock_swap()" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>loginlogout" onclick="pfc.connect_disconnect()" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/color-on.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>nickmarker" onclick="pfc.nickmarker_swap()" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/clock-on.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>clock" onclick="pfc.clock_swap()" /></div>
 
     </div>
   </div>

@@ -93,6 +93,7 @@ class phpFreeChatI18N
   {
     $src_filenames = array( dirname(__FILE__)."/phpfreechat.class.php",
                             dirname(__FILE__)."/phpfreechattools.class.php",
+                            dirname(__FILE__)."/phpfreechattemplate.class.php",
                             dirname(__FILE__)."/phpfreechatconfig.class.php",
                             dirname(__FILE__)."/phpfreechatcontainer.class.php",
                             dirname(__FILE__)."/phpfreechatcontainerfile.class.php",
