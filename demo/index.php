@@ -32,7 +32,7 @@
       <li><a href="demo22_in_serbian_croatian.php">demo22 - the serbian croatian translation of the chat</a></li>
       <li><a href="demo23_in_italian.php">demo23 - the italian translation of the chat</a></li>
       <li><a href="demo24_in_spanish.php">demo24 - the spanish translation of the chat</a></li>
-      
+      <li><a href="demo25_in_indonesian.php">demo25 - the indonesian translation of the chat</a></li>
     </ul>
   </body>
   
