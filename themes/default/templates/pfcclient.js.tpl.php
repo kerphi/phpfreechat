@@ -317,13 +317,27 @@ pfcClient.prototype = {
     /* try to parse http adresses */
     rx = new RegExp('(http\:\/\/[^ ]*)','ig');
     msg = msg.replace(rx, '<a href="$1"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$1</a>');
+   
+    /* try to parse bbcode */
+    rx = new RegExp('\\[b\\](.+?)\\[\/b\\]','ig');
+    msg = msg.replace(rx, '<span style="font-weight: bold">$1</span>');    
+    rx = new RegExp('\\[i\\](.+?)\\[\/i\\]','ig');
+    msg = msg.replace(rx, '<span style="font-style: italic">$1</span>'); 
+    rx = new RegExp('\\[u\\](.+?)\\[\/u\\]','ig');
+    msg = msg.replace(rx, '<span style="text-decoration: underline">$1</span>'); 
+    rx = new RegExp('\\[s\\](.+?)\\[\/s\\]','ig');
+    msg = msg.replace(rx, '<span style="text-decoration: line-through">$1</span>'); 
+    rx = new RegExp('\\[email\\]([^\[]*?)\\[\/email\\]','ig');
+    msg = msg.replace(rx, '<a href="mailto:$1">$1</a>'); 
+    rx = new RegExp('\\[email=([^\[]*?)\\](.*?)\\[\/email\\]','ig');
+    msg = msg.replace(rx, '<a href="mailto:$1">$2</a>');
+    rx = new RegExp('\\[color=([a-zA-Z]*|\\#?[0-9a-fA-F]{6})](.*?)\\[\/color\\]','ig');
+    msg = msg.replace(rx, '<span style="color: $1">$2</span>');
 
     /* try to parse nickname for highlighting  */
     rx = new RegExp(RegExp.escape(this.nickname),'g');
     msg = msg.replace(rx, '<strong>'+ this.nickname +'</strong>');
     
-
-
     /* try to parse smileys */
     var sl = this.smileys.keys();
     for(var i = 0; i < sl.length; i++)
@@ -332,7 +346,6 @@ pfcClient.prototype = {
       msg = msg.replace(rx, '<img src="'+ this.smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
     }
 
-    
     return msg;
   },
 
