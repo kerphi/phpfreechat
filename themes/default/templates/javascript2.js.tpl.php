@@ -16,3 +16,5 @@ pfc.refresh_loginlogout();
 pfc.refresh_nickmarker();
 pfc.refresh_clock();
 pfc.refresh_minimize_maximize();
+pfc.refresh_Smileys();
+pfc.refresh_WhosOnline();
