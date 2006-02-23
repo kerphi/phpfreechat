@@ -34,7 +34,7 @@ div#<?php echo $prefix; ?>chat {
   border: 1px solid black;
   overflow: auto;
   width: 79%;
-  <?php if ($height!="") { ?>height: <?php echo $height; ?>;<?php } ?>
+  height: 100%;
   background-color: #FFF;
 }
 
