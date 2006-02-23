@@ -91,19 +91,12 @@ class phpFreeChatI18N
    */
   function UpdateMessageRessources()
   {
-    $src_filenames = array( dirname(__FILE__)."/phpfreechat.class.php",
-                            dirname(__FILE__)."/phpfreechattools.class.php",
-                            dirname(__FILE__)."/phpfreechattemplate.class.php",
-                            dirname(__FILE__)."/phpfreechatconfig.class.php",
-                            dirname(__FILE__)."/phpfreechatcontainer.class.php",
-                            dirname(__FILE__)."/phpfreechatcontainerfile.class.php",
-                            dirname(__FILE__)."/../templates/default/chat.html.tpl.php",
-                            dirname(__FILE__)."/../templates/default/javascript1.js.tpl.php",
-                            dirname(__FILE__)."/../templates/default/javascript2.js.tpl.php",
-                            dirname(__FILE__)."/../templates/default/style.css.tpl.php"
-                            );
+    $files = array();
+    $files = array_merge($files, glob(dirname(__FILE__)."/*.php"));
+    $files = array_merge($files, glob(dirname(__FILE__)."/../themes/default/templates/*.php"));
+
     $res = array();
-    foreach ( $src_filenames as $src_filename )
+    foreach ( $files as $src_filename )
     {
       $lines = file($src_filename);
       $line_nb = 1;

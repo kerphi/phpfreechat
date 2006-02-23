@@ -154,4 +154,17 @@ $GLOBALS["i18n"]["Mail"] = "Courriel";
 
 // line 39 in chat.html.tpl.php
 $GLOBALS["i18n"]["Color"] = "Couleur";
+
+// line 48 in phpfreechattemplate.class.php
+$GLOBALS["i18n"]["%s template could not be found"] = "le fichier model '%s' n'a pas été trouvé";
+
+// line 324 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["'serverid' parameter is mandatory by default use 'md5(__FILE__)' value"] = "Les paramètre 'serverid' est obligatoire, par défaut, vous pouvez utiliser la valeur 'md5(__FILE__)'";
+
+// line 512 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct"] = "Erreur: '%s' n'a pas été trouvé, vérifiez que votre répertoires de thème '%s' est bon et que le nom de votre thème '%s' existe bien";
+
+// line 75 in pfccommand.class.php
+$GLOBALS["i18n"]["%s must be implemented"] = "%s doit être implementé";
+
 ?>
