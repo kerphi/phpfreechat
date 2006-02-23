@@ -236,7 +236,7 @@ pfcClient.prototype = {
    */
   handleRequest: function(cmd, param)
   {
-    <?php echo $prefix; ?>handleRequest(cmd + " " + this.clientid + " " + param);
+    <?php echo $prefix; ?>handleRequest(cmd + " " + this.clientid + (param ? " " + param : ""));
   },
 
   /**
