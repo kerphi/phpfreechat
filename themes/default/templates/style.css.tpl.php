@@ -184,3 +184,7 @@ p#<?php echo $prefix; ?>errors {
   font-style: italic;
   color: #888;
 }
+
+div#<?php echo $prefix; ?>color {
+  display:none;
+}

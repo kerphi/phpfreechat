@@ -28,11 +28,26 @@ pfcClient.prototype = {
     this.nickmarker = (cookie == 'true');
     if (cookie == '' || cookie == null)
       this.nickmarker = <?php if ($nickmarker) { ?>true<?php } else { ?>false<?php } ?>;
+    
     cookie = getCookie('<?php echo $prefix; ?>clock');
     this.clock = (cookie == 'true');
     if (cookie == '' || cookie == null)
       this.clock = <?php if ($clock) { ?>true<?php } else { ?>false<?php } ?>;
 
+      /* Daffys */
+cookie = getCookie('<?php echo $prefix; ?>showSmileys');
+this.showSmileys = (cookie == 'true');
+if (cookie == '')
+  this.showSmileys = <?php if ($showSmileys) { ?>true<?php } else { ?>false<?php } ?>;
+
+cookie = getCookie('<?php echo $prefix; ?>showWhosOnline');
+this.showWhosOnline = (cookie == 'true');
+if (cookie == '')
+  this.showWhosOnline = <?php if ($showWhosOnline) { ?>true<?php } else { ?>false<?php } ?>;      
+     
+     /* Daffys */
+      
+       
     this.login_status  = false; // todo: initialize this variable with the cookie value
     this.nicklist      = Array();
     this.nickcolor     = Array();
@@ -236,7 +251,7 @@ pfcClient.prototype = {
    */
   handleRequest: function(cmd, param)
   {
-    <?php echo $prefix; ?>handleRequest(cmd + " " + this.clientid + (param ? " " + param : ""));
+    <?php echo $prefix; ?>handleRequest(cmd + " " + this.clientid + " " + param);
   },
 
   /**
@@ -317,27 +332,29 @@ pfcClient.prototype = {
     /* try to parse http adresses */
     rx = new RegExp('(http\:\/\/[^ ]*)','ig');
     msg = msg.replace(rx, '<a href="$1"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$1</a>');
-   
+
     /* try to parse bbcode */
     rx = new RegExp('\\[b\\](.+?)\\[\/b\\]','ig');
-    msg = msg.replace(rx, '<span style="font-weight: bold">$1</span>');    
+    msg = msg.replace(rx, '<strong>$1</strong>');    
     rx = new RegExp('\\[i\\](.+?)\\[\/i\\]','ig');
-    msg = msg.replace(rx, '<span style="font-style: italic">$1</span>'); 
+    msg = msg.replace(rx, '<em>$1</em>'); 
     rx = new RegExp('\\[u\\](.+?)\\[\/u\\]','ig');
     msg = msg.replace(rx, '<span style="text-decoration: underline">$1</span>'); 
     rx = new RegExp('\\[s\\](.+?)\\[\/s\\]','ig');
-    msg = msg.replace(rx, '<span style="text-decoration: line-through">$1</span>'); 
+    msg = msg.replace(rx, '<del>$1</del>'); 
     rx = new RegExp('\\[email\\]([^\[]*?)\\[\/email\\]','ig');
     msg = msg.replace(rx, '<a href="mailto:$1">$1</a>'); 
     rx = new RegExp('\\[email=([^\[]*?)\\](.*?)\\[\/email\\]','ig');
     msg = msg.replace(rx, '<a href="mailto:$1">$2</a>');
     rx = new RegExp('\\[color=([a-zA-Z]*|\\#?[0-9a-fA-F]{6})](.*?)\\[\/color\\]','ig');
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');
-
+      
     /* try to parse nickname for highlighting  */
     rx = new RegExp(RegExp.escape(this.nickname),'g');
     msg = msg.replace(rx, '<strong>'+ this.nickname +'</strong>');
     
+
+
     /* try to parse smileys */
     var sl = this.smileys.keys();
     for(var i = 0; i < sl.length; i++)
@@ -346,6 +363,7 @@ pfcClient.prototype = {
       msg = msg.replace(rx, '<img src="'+ this.smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
     }
 
+    
     return msg;
   },
 
@@ -425,6 +443,11 @@ pfcClient.prototype = {
       var root = $('<?php echo $prefix; ?>msg'+ msgids[i]);
       this.refresh_nickmarker(root);
       this.refresh_clock(root);
+      
+        /* Daffys */
+      this.refresh_Smileys();
+      this.refresh_WhosOnline();
+       /* Daffys */
     }
   },
 
@@ -697,5 +720,204 @@ pfcClient.prototype = {
       btn.title = btn.alt;
       content.style.display = 'block';
     }
+  },
+
+
+  
+  
+  
+  
+  
+  
+  
+  /**
+   * BBcode ToolBar
+   */
+  insert_text: function(open, close) 
+  {
+	var msgfield = $('<?php echo $prefix; ?>words');
+
+	// IE support
+	if (document.selection && document.selection.createRange)
+	{
+		msgfield.focus();
+		sel = document.selection.createRange();
+		sel.text = open + sel.text + close;
+		msgfield.focus();
+	}
+
+	// Moz support
+	else if (msgfield.selectionStart || msgfield.selectionStart == '0')
+	{
+		var startPos = msgfield.selectionStart;
+		var endPos = msgfield.selectionEnd;
+
+		msgfield.value = msgfield.value.substring(0, startPos) + open + msgfield.value.substring(startPos, endPos) + close + msgfield.value.substring(endPos, msgfield.value.length);
+		msgfield.selectionStart = msgfield.selectionEnd = endPos + open.length + close.length;
+		msgfield.focus();
+	}
+
+	// Fallback support for other browsers
+	else
+	{
+		msgfield.value += open + close;
+		msgfield.focus();
+	}
+    return;
+  },
+  
+  /**
+   * Minimize/Maximize none/inline
+   */
+  minimize_maximize: function()
+  {
+    var element = $('<?php echo $prefix; ?>color');
+	  if(element.style) {
+			if(element.style.display == 'inline' ) {
+				element.style.display = 'none';
+			} else {
+				element.style.display = 'inline';
+			}
+	  }
+  },
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+/**
+ * Smiley show/hide
+ */
+
+showHideSmileys: function()
+{
+  if (this.showSmileys)
+  {
+    this.showSmileys = false;
   }
+  else
+  {
+    this.showSmileys = true;
+  }
+  setCookie('<?php echo $prefix; ?>showSmileys', this.showSmileys);
+  this.refresh_Smileys();
+},
+
+refresh_Smileys: function()
+{
+  var content = $('<?php echo $prefix; ?>smileys');
+  var btn = $('<?php echo $prefix; ?>showHideSmileysbtn');
+
+    if (this.showSmileys)
+  {
+    btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-off.gif'); ?>";
+    btn.alt = "<?php echo _pfc("Magnify"); ?>";
+    btn.title = btn.alt;
+    content.style.display = 'none';
+  }
+  else
+  {
+    btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-on.gif'); ?>";
+    btn.alt = "<?php echo _pfc("Cut down"); ?>";
+    btn.title = btn.alt;
+    content.style.display = 'block';
+  }
+   this.refresh_Chat();
+   this.refresh_OnlineAndSmileys();
+},
+
+
+/**
+ * Show Hide who's online
+ */
+ 
+showHideWhosOnline: function()
+{
+  if (this.showWhosOnline)
+  {
+    this.showWhosOnline = false;
+  }
+  else
+  {
+    this.showWhosOnline = true;
+  }
+  setCookie('<?php echo $prefix; ?>showWhosOnline', this.showWhosOnline);
+  this.refresh_WhosOnline();
+},
+
+refresh_WhosOnline: function()
+{
+  var content = $('<?php echo $prefix; ?>online');
+  var btn = $('<?php echo $prefix; ?>showHideWhosOnlineBtn');
+  
+  if (this.showWhosOnline)
+  {
+    btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-off.gif'); ?>";
+    btn.alt = "<?php echo _pfc("Magnify"); ?>";
+    btn.title = btn.alt;
+    content.style.display = 'none';
+  }
+  else
+  {
+    btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-on.gif'); ?>";
+    btn.alt = "<?php echo _pfc("Cut down"); ?>";
+    btn.title = btn.alt;
+    content.style.display = 'block';
+  }
+   this.refresh_Chat();
+   this.refresh_OnlineAndSmileys();
+},
+
+/**
+ * Resize online and smileys
+ */
+
+
+refresh_OnlineAndSmileys: function()
+{
+  var onlinediv = $('<?php echo $prefix; ?>online');
+  var smileysdiv = $('<?php echo $prefix; ?>smileys');
+
+  if (this.showWhosOnline)
+  {
+      smileysdiv.style.height='100%';
+  }
+  else
+  {
+	  smileysdiv.style.height= '';
+  }
+  
+  if (this.showSmileys)
+  {
+      onlinediv.style.height='100%';
+  }
+  else
+  {
+      onlinediv.style.height= '';
+  }
+},
+
+/**
+ * Resize chat
+ */
+
+refresh_Chat: function()
+{
+var chatdiv = $('<?php echo $prefix; ?>chat');
+var wordsdiv = $('<?php echo $prefix; ?>words');
+	 if (this.showWhosOnline && this.showSmileys)
+		{
+		  chatdiv.style.width='100%';
+		  }
+	else
+		{
+		  chatdiv.style.width='';
+		  }
+}
+
 };
