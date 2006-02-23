@@ -34,6 +34,7 @@
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_em.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[i]','[/i]')" /></div>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_ins.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[u]','[/u]')" /></div>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_del.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[s]','[/s]')" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_pre.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[pre]','[/pre]')" /></div>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_mail.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[email]','[/email]')" /></div>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_color.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_color" onclick="pfc.minimize_maximize()" /></div>
       <div id="<?php echo $prefix; ?>color">

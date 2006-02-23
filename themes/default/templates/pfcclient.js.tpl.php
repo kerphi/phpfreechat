@@ -341,7 +341,9 @@ if (cookie == '')
     rx = new RegExp('\\[u\\](.+?)\\[\/u\\]','ig');
     msg = msg.replace(rx, '<span style="text-decoration: underline">$1</span>'); 
     rx = new RegExp('\\[s\\](.+?)\\[\/s\\]','ig');
-    msg = msg.replace(rx, '<del>$1</del>'); 
+    msg = msg.replace(rx, '<del>$1</del>');
+    rx = new RegExp('\\[pre\\](.+?)\\[\/pre\\]','ig');
+    msg = msg.replace(rx, '<pre>$1</pre>');  
     rx = new RegExp('\\[email\\]([^\[]*?)\\[\/email\\]','ig');
     msg = msg.replace(rx, '<a href="mailto:$1">$1</a>'); 
     rx = new RegExp('\\[email=([^\[]*?)\\](.*?)\\[\/email\\]','ig');
