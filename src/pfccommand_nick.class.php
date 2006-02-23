@@ -1,0 +1,71 @@
+<?php
+
+require_once(dirname(__FILE__)."/pfccommand.class.php");
+
+class pfcCommand_nick extends pfcCommand
+{
+  function run(&$xml_reponse, $clientid, $newnick)
+  {
+    $c =& $this->c;
+    $newnick = phpFreeChat::FilterNickname($newnick);
+
+    if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: newnick=".preg_quote($c->nick,'/'), "chat", $c->getId());
+
+    if ($newnick == "")
+    {
+      // the choosen nick is empty
+      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: the choosen nick is empty", "chat", $c->getId());
+      $cmd =& pfcCommand::Factory("asknick", $c);
+      $cmd->run($xml_reponse, $clientid, "");
+      return;
+    }
+   
+    $container =& $c->getContainerInstance();
+    $newnickid = $container->getNickId($newnick);
+    $oldnickid = $container->getNickId($c->nick);
+
+    if ( $newnickid == "undefined" )
+    {
+      // this is a real nickname change
+      $container->changeNick($newnick);
+      $oldnick = $c->nick;
+      $c->nick = $newnick;
+      $c->saveInSession();
+      $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
+      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
+      if ($oldnick != $newnick && $oldnick != "")
+      {
+	$cmd =& pfcCommand::Factory("notice", $c);
+	$cmd->run($xml_reponse, $clientid, _pfc("%s changes his nickname to %s",$oldnick,$newnick), 1);
+      }
+      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: first time nick is assigned -> newnick=".$c->nick." oldnick=".$oldnick, "chat", $c->getId());
+      
+      // new nickname is undefined (not used) and
+      // current nickname (oldnickname) is not mine or is undefined
+      if ($oldnickid != $c->sessionid)
+      {
+	$cmd =& pfcCommand::Factory("notice", $c);
+	$cmd->run($xml_reponse, $clientid, _pfc("%s is connected",$c->nick), 2);
+      }
+    }
+    else if ($newnickid == $c->sessionid)
+    {
+      // user didn't change his nickname
+      $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
+      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
+      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: user just reloded the page so let him keep his nickname without any warnings -> nickid=".$newnickid." nick=".$newnick, "chat", $c->getId());
+    }
+    else
+    {
+      // the wanted nick is allready used
+      if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: wanted nick is allready in use -> wantednickid=".$newnickid." wantednick=".$newnick, "chat", $c->getId());
+      $cmd =& pfcCommand::Factory("asknick", $c);
+      $cmd->run($xml_reponse, $clientid, $newnick);
+    }
+
+    // refresh users info on client side
+    $xml_reponse->addScript("pfc.nickname = '".$c->nick."';");
+  }
+}
+
+?>

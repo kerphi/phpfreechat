@@ -68,6 +68,7 @@ class phpFreeChatConfig
   var $ie7path             = ""; // default is dirname(__FILE__)."/../lib/IE7_0_9";
   var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2_stable";
   var $jspath              = ""; // default is dirname(__FILE__)."/../lib/javascript";
+  var $usecsstidy          = false;
   var $csstidypath         = ""; // default is dirname(__FILE__)."/../lib/csstidy-1.1";
   var $data_private_path   = ""; // default is dirname(__FILE__)."/../data/private";
   var $data_public_path    = ""; // default is dirname(__FILE__)."/../data/public";
