@@ -122,5 +122,36 @@ $GLOBALS["i18n"]["Enter your nickname here"] = "Entrez votre pseudonyme ici";
 // line 93 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "Erreur : paramètre inconnu ou obsolète '%s', corrigez ou enlevez ce paramètre";
 
+// line 86 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Hide smiley box"] = "Cacher les smileys";
 
+// line 87 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Show smiley box"] = "Afficher les smileys";
+
+// line 88 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Hide online users box"] = "Cacher les utilisateurs en ligne";
+
+// line 89 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Show online users box"] = "Afficher les utilisateurs en ligne";
+
+// line 33 in chat.html.tpl.php
+$GLOBALS["i18n"]["Bold"] = "Gras";
+
+// line 34 in chat.html.tpl.php
+$GLOBALS["i18n"]["Italics"] = "Italique";
+
+// line 35 in chat.html.tpl.php
+$GLOBALS["i18n"]["Underline"] = "Souligné";
+
+// line 36 in chat.html.tpl.php
+$GLOBALS["i18n"]["Delete"] = "Supprimé";
+
+// line 37 in chat.html.tpl.php
+$GLOBALS["i18n"]["Pre"] = "Texte préformaté";
+
+// line 38 in chat.html.tpl.php
+$GLOBALS["i18n"]["Mail"] = "Courriel";
+
+// line 39 in chat.html.tpl.php
+$GLOBALS["i18n"]["Color"] = "Couleur";
 ?>

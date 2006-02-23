@@ -82,7 +82,11 @@ if (cookie == '')
       logout:              '<?php echo _pfc("Disconnect"); ?>',
       login:               '<?php echo _pfc("Connect"); ?>',
       maximize:            '<?php echo _pfc("Magnify"); ?>',
-      minimize:            '<?php echo _pfc("Cut down"); ?>'
+      minimize:            '<?php echo _pfc("Cut down"); ?>',
+      hidesmiley:          '<?php echo _pfc("Hide smiley box"); ?>',
+      showsmiley:          '<?php echo _pfc("Show smiley box"); ?>',
+      hideonline:          '<?php echo _pfc("Hide online users box"); ?>',
+      showonline:          '<?php echo _pfc("Show online users box"); ?>'
     };
     this.i18n = $H(i18n);
 
@@ -818,14 +822,14 @@ refresh_Smileys: function()
     if (this.showSmileys)
   {
     btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-off.gif'); ?>";
-    btn.alt = "<?php echo _pfc("Magnify"); ?>";
+    btn.alt = this.i18n.showsmiley;
     btn.title = btn.alt;
     content.style.display = 'none';
   }
   else
   {
     btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-on.gif'); ?>";
-    btn.alt = "<?php echo _pfc("Cut down"); ?>";
+    btn.alt = this.i18n.hidesmiley;
     btn.title = btn.alt;
     content.style.display = 'block';
   }
@@ -860,14 +864,14 @@ refresh_WhosOnline: function()
   if (this.showWhosOnline)
   {
     btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-off.gif'); ?>";
-    btn.alt = "<?php echo _pfc("Magnify"); ?>";
+    btn.alt = this.i18n.showonline;
     btn.title = btn.alt;
     content.style.display = 'none';
   }
   else
   {
     btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-on.gif'); ?>";
-    btn.alt = "<?php echo _pfc("Cut down"); ?>";
+    btn.alt = this.i18n.hideonline;
     btn.title = btn.alt;
     content.style.display = 'block';
   }

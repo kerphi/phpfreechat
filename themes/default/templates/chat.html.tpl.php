@@ -30,13 +30,13 @@
     </div>
     
     <div id="<?php echo $prefix; ?>bbcode_container">
-      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_strong.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[b]','[/b]')" /></div>
-      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_em.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[i]','[/i]')" /></div>
-      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_ins.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[u]','[/u]')" /></div>
-      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_del.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[s]','[/s]')" /></div>
-      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_pre.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[pre]','[/pre]')" /></div>
-      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_mail.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[email]','[/email]')" /></div>
-      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_color.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>bt_color" onclick="pfc.minimize_maximize()" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_strong.gif'); ?>" alt="<?php echo _pfc("Bold"); ?>" title="<?php echo _pfc("Bold"); ?>" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[b]','[/b]')" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_em.gif'); ?>" alt="<?php echo _pfc("Italics"); ?>" title="<?php echo _pfc("Italics"); ?>" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[i]','[/i]')" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_ins.gif'); ?>" alt="<?php echo _pfc("Underline"); ?>" title="<?php echo _pfc("Underline"); ?>" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[u]','[/u]')" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_del.gif'); ?>" alt="<?php echo _pfc("Delete"); ?>" title="<?php echo _pfc("Delete"); ?>" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[s]','[/s]')" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_pre.gif'); ?>" alt="<?php echo _pfc("Pre"); ?>" title="<?php echo _pfc("Pre"); ?>" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[pre]','[/pre]')" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_mail.gif'); ?>" alt="<?php echo _pfc("Mail"); ?>" title="<?php echo _pfc("Mail"); ?>" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[email]','[/email]')" /></div>
+      <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_color.gif'); ?>" alt="<?php echo _pfc("Color"); ?>" title="<?php echo _pfc("Color"); ?>" id="<?php echo $prefix; ?>bt_color" onclick="pfc.minimize_maximize()" /></div>
       <div id="<?php echo $prefix; ?>color">
 		  <img src="<?php echo $c->getFileUrlFromTheme('images/color_FFFFFF.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>color" onclick="pfc.insert_text('[color=#FFFFFF]','[/color]')" />
 		  <img src="<?php echo $c->getFileUrlFromTheme('images/color_000000.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>color" onclick="pfc.insert_text('[color=#000000]','[/color]')" />
