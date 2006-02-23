@@ -251,7 +251,7 @@ pfcClient.prototype = {
    */
   handleRequest: function(cmd, param)
   {
-    <?php echo $prefix; ?>handleRequest(cmd + " " + this.clientid + " " + param);
+    <?php echo $prefix; ?>handleRequest(cmd + " " + this.clientid + (param ? " " + param : ""));
   },
 
   /**
@@ -334,14 +334,16 @@ pfcClient.prototype = {
     msg = msg.replace(rx, '<a href="$1"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$1</a>');
 
     /* try to parse bbcode */
+
+
     rx = new RegExp('\\[b\\](.+?)\\[\/b\\]','ig');
-    msg = msg.replace(rx, '<strong>$1</strong>');    
+    msg = msg.replace(rx, '<span style="font-weight: bold">$1</span>');
     rx = new RegExp('\\[i\\](.+?)\\[\/i\\]','ig');
-    msg = msg.replace(rx, '<em>$1</em>'); 
+    msg = msg.replace(rx, '<span style="font-style: italic">$1</span>');
     rx = new RegExp('\\[u\\](.+?)\\[\/u\\]','ig');
-    msg = msg.replace(rx, '<span style="text-decoration: underline">$1</span>'); 
+    msg = msg.replace(rx, '<span style="text-decoration: underline">$1</span>');
     rx = new RegExp('\\[s\\](.+?)\\[\/s\\]','ig');
-    msg = msg.replace(rx, '<del>$1</del>');
+    msg = msg.replace(rx, '<span style="text-decoration: line-through">$1</span>');
     rx = new RegExp('\\[pre\\](.+?)\\[\/pre\\]','ig');
     msg = msg.replace(rx, '<pre>$1</pre>');  
     rx = new RegExp('\\[email\\]([^\[]*?)\\[\/email\\]','ig');
