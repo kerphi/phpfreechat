@@ -34,20 +34,16 @@ pfcClient.prototype = {
     if (cookie == '' || cookie == null)
       this.clock = <?php if ($clock) { ?>true<?php } else { ?>false<?php } ?>;
 
-      /* Daffys */
-cookie = getCookie('<?php echo $prefix; ?>showSmileys');
-this.showSmileys = (cookie == 'true');
-if (cookie == '')
-  this.showSmileys = <?php if ($showSmileys) { ?>true<?php } else { ?>false<?php } ?>;
+    cookie = getCookie('<?php echo $prefix; ?>showSmileys');
+    this.showSmileys = (cookie == 'true');
+    if (cookie == '')
+      this.showSmileys = <?php if ($showsmileys) { ?>true<?php } else { ?>false<?php } ?>;
 
-cookie = getCookie('<?php echo $prefix; ?>showWhosOnline');
-this.showWhosOnline = (cookie == 'true');
-if (cookie == '')
-  this.showWhosOnline = <?php if ($showWhosOnline) { ?>true<?php } else { ?>false<?php } ?>;      
-     
-     /* Daffys */
-      
-       
+    cookie = getCookie('<?php echo $prefix; ?>showWhosOnline');
+    this.showWhosOnline = (cookie == 'true');
+    if (cookie == '')
+      this.showWhosOnline = <?php if ($showwhosonline) { ?>true<?php } else { ?>false<?php } ?>;      
+             
     this.login_status  = false; // todo: initialize this variable with the cookie value
     this.nicklist      = Array();
     this.nickcolor     = Array();
@@ -359,8 +355,6 @@ if (cookie == '')
     rx = new RegExp(RegExp.escape(this.nickname),'g');
     msg = msg.replace(rx, '<strong>'+ this.nickname +'</strong>');
     
-
-
     /* try to parse smileys */
     var sl = this.smileys.keys();
     for(var i = 0; i < sl.length; i++)
@@ -727,48 +721,40 @@ if (cookie == '')
       content.style.display = 'block';
     }
   },
-
-
-  
-  
-  
-  
-  
-  
   
   /**
    * BBcode ToolBar
    */
   insert_text: function(open, close) 
   {
-	var msgfield = $('<?php echo $prefix; ?>words');
-
-	// IE support
-	if (document.selection && document.selection.createRange)
-	{
-		msgfield.focus();
-		sel = document.selection.createRange();
-		sel.text = open + sel.text + close;
-		msgfield.focus();
-	}
-
-	// Moz support
-	else if (msgfield.selectionStart || msgfield.selectionStart == '0')
-	{
-		var startPos = msgfield.selectionStart;
-		var endPos = msgfield.selectionEnd;
-
-		msgfield.value = msgfield.value.substring(0, startPos) + open + msgfield.value.substring(startPos, endPos) + close + msgfield.value.substring(endPos, msgfield.value.length);
-		msgfield.selectionStart = msgfield.selectionEnd = endPos + open.length + close.length;
-		msgfield.focus();
-	}
-
-	// Fallback support for other browsers
-	else
-	{
-		msgfield.value += open + close;
-		msgfield.focus();
-	}
+    var msgfield = $('<?php echo $prefix; ?>words');
+    
+    // IE support
+    if (document.selection && document.selection.createRange)
+    {
+      msgfield.focus();
+      sel = document.selection.createRange();
+      sel.text = open + sel.text + close;
+      msgfield.focus();
+    }
+    
+    // Moz support
+    else if (msgfield.selectionStart || msgfield.selectionStart == '0')
+    {
+      var startPos = msgfield.selectionStart;
+      var endPos = msgfield.selectionEnd;
+      
+      msgfield.value = msgfield.value.substring(0, startPos) + open + msgfield.value.substring(startPos, endPos) + close + msgfield.value.substring(endPos, msgfield.value.length);
+      msgfield.selectionStart = msgfield.selectionEnd = endPos + open.length + close.length;
+      msgfield.focus();
+    }
+    
+    // Fallback support for other browsers
+    else
+    {
+      msgfield.value += open + close;
+      msgfield.focus();
+    }
     return;
   },
   
@@ -778,152 +764,141 @@ if (cookie == '')
   minimize_maximize: function()
   {
     var element = $('<?php echo $prefix; ?>color');
-	  if(element.style) {
-			if(element.style.display == 'inline' ) {
-				element.style.display = 'none';
-			} else {
-				element.style.display = 'inline';
-			}
-	  }
+    if(element.style)
+    {
+      if(element.style.display == 'inline' )
+      {
+        element.style.display = 'none';
+      }
+      else
+      {
+        element.style.display = 'inline';
+      }
+    }
   },
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-/**
- * Smiley show/hide
- */
-
-showHideSmileys: function()
-{
-  if (this.showSmileys)
+  /**
+   * Smiley show/hide
+   */
+  showHideSmileys: function()
   {
-    this.showSmileys = false;
-  }
-  else
-  {
-    this.showSmileys = true;
-  }
-  setCookie('<?php echo $prefix; ?>showSmileys', this.showSmileys);
-  this.refresh_Smileys();
-},
-
-refresh_Smileys: function()
-{
-  var content = $('<?php echo $prefix; ?>smileys');
-  var btn = $('<?php echo $prefix; ?>showHideSmileysbtn');
-
     if (this.showSmileys)
+    {
+      this.showSmileys = false;
+    }
+    else
+    {
+      this.showSmileys = true;
+    }
+    setCookie('<?php echo $prefix; ?>showSmileys', this.showSmileys);
+    this.refresh_Smileys();
+  },
+  refresh_Smileys: function()
   {
-    btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-off.gif'); ?>";
-    btn.alt = this.i18n.showsmiley;
-    btn.title = btn.alt;
-    content.style.display = 'none';
-  }
-  else
-  {
-    btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-on.gif'); ?>";
-    btn.alt = this.i18n.hidesmiley;
-    btn.title = btn.alt;
-    content.style.display = 'block';
-  }
-   this.refresh_Chat();
-   this.refresh_OnlineAndSmileys();
-},
-
-
-/**
- * Show Hide who's online
- */
- 
-showHideWhosOnline: function()
-{
-  if (this.showWhosOnline)
-  {
-    this.showWhosOnline = false;
-  }
-  else
-  {
-    this.showWhosOnline = true;
-  }
-  setCookie('<?php echo $prefix; ?>showWhosOnline', this.showWhosOnline);
-  this.refresh_WhosOnline();
-},
-
-refresh_WhosOnline: function()
-{
-  var content = $('<?php echo $prefix; ?>online');
-  var btn = $('<?php echo $prefix; ?>showHideWhosOnlineBtn');
+    var content = $('<?php echo $prefix; ?>smileys');
+    var btn = $('<?php echo $prefix; ?>showHideSmileysbtn');
+    
+    if (this.showSmileys)
+    {
+      btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-off.gif'); ?>";
+      btn.alt = this.i18n.showsmiley;
+      btn.title = btn.alt;
+      content.style.display = 'none';
+    }
+    else
+    {
+      btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-on.gif'); ?>";
+      btn.alt = this.i18n.hidesmiley;
+      btn.title = btn.alt;
+      content.style.display = 'block';
+    }
+    this.refresh_Chat();
+    this.refresh_OnlineAndSmileys();
+  },
   
-  if (this.showWhosOnline)
+  
+  /**
+   * Show Hide who's online
+   */
+  showHideWhosOnline: function()
   {
-    btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-off.gif'); ?>";
-    btn.alt = this.i18n.showonline;
-    btn.title = btn.alt;
-    content.style.display = 'none';
-  }
-  else
+    if (this.showWhosOnline)
+    {
+      this.showWhosOnline = false;
+    }
+    else
+    {
+      this.showWhosOnline = true;
+    }
+    setCookie('<?php echo $prefix; ?>showWhosOnline', this.showWhosOnline);
+    this.refresh_WhosOnline();
+  },
+  refresh_WhosOnline: function()
   {
-    btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-on.gif'); ?>";
-    btn.alt = this.i18n.hideonline;
-    btn.title = btn.alt;
-    content.style.display = 'block';
-  }
-   this.refresh_Chat();
-   this.refresh_OnlineAndSmileys();
-},
-
-/**
- * Resize online and smileys
- */
-
-
-refresh_OnlineAndSmileys: function()
-{
-  var onlinediv = $('<?php echo $prefix; ?>online');
-  var smileysdiv = $('<?php echo $prefix; ?>smileys');
-
-  if (this.showWhosOnline)
+    var content = $('<?php echo $prefix; ?>online');
+    var btn = $('<?php echo $prefix; ?>showHideWhosOnlineBtn');
+    
+    if (this.showWhosOnline)
+    {
+      btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-off.gif'); ?>";
+      btn.alt = this.i18n.showonline;
+      btn.title = btn.alt;
+      content.style.display = 'none';
+    }
+    else
+    {
+      btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-on.gif'); ?>";
+      btn.alt = this.i18n.hideonline;
+      btn.title = btn.alt;
+      content.style.display = 'block';
+    }
+    this.refresh_Chat();
+    this.refresh_OnlineAndSmileys();
+  },
+  
+  /**
+   * Resize online and smileys
+   */
+  refresh_OnlineAndSmileys: function()
   {
+    var onlinediv = $('<?php echo $prefix; ?>online');
+    var smileysdiv = $('<?php echo $prefix; ?>smileys');
+    
+    if (this.showWhosOnline)
+    {
       smileysdiv.style.height='100%';
-  }
-  else
+    }
+    else
+    {
+      smileysdiv.style.height= '';
+    }
+    
+    if (this.showSmileys)
+    {
+      onlinediv.style.height='100%';
+    }
+    else
+    {
+      onlinediv.style.height= '';
+    }
+  },
+  
+  /**
+   * Resize chat
+   */
+  refresh_Chat: function()
   {
-	  smileysdiv.style.height= '';
+    var chatdiv = $('<?php echo $prefix; ?>chat');
+    var wordsdiv = $('<?php echo $prefix; ?>words');
+    if (this.showWhosOnline && this.showSmileys)
+    {
+      chatdiv.style.width='100%';
+    }
+    else
+    {
+      chatdiv.style.width='';
+    }
   }
   
-  if (this.showSmileys)
-  {
-      onlinediv.style.height='100%';
-  }
-  else
-  {
-      onlinediv.style.height= '';
-  }
-},
-
-/**
- * Resize chat
- */
-
-refresh_Chat: function()
-{
-var chatdiv = $('<?php echo $prefix; ?>chat');
-var wordsdiv = $('<?php echo $prefix; ?>words');
-	 if (this.showWhosOnline && this.showSmileys)
-		{
-		  chatdiv.style.width='100%';
-		  }
-	else
-		{
-		  chatdiv.style.width='';
-		  }
-}
-
 };

@@ -49,7 +49,9 @@ class phpFreeChatConfig
   var $nickmarker          = true; // show/hide nicknames colors
   var $clock               = true; // show/hide dates and hours
   var $openlinknewwindow   = true; // used to open the links in a new window
-
+  var $showwhosonline      = true;
+  var $showsmileys         = true;
+  
   var $theme               = "default";
   var $themepath           = "";
   var $themeurl            = "";
