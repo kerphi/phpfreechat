@@ -314,6 +314,10 @@ pfcClient.prototype = {
   {
     var rx = null;
     
+    /* try to parse http adresses */
+    rx = new RegExp('(http\:\/\/[^ ]*)','ig');
+    msg = msg.replace(rx, '<a href="$1"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$1</a>');
+
     /* try to parse nickname for highlighting  */
     rx = new RegExp(RegExp.escape(this.nickname),'g');
     msg = msg.replace(rx, '<strong>'+ this.nickname +'</strong>');
