@@ -21,7 +21,7 @@
     <input id="<?php echo $prefix; ?>words" type="text" title="<?php echo _pfc("Enter your message here"); ?>" maxlength="<?php echo $max_text_len; ?>" />
     <div id="<?php echo $prefix; ?>cmd_container">
       <a href="http://www.phpfreechat.net" id="<?php echo $prefix; ?>logo"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" title="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" /></a>
-      <input id="<?php echo $prefix; ?>handle" type="button" title="<?php echo _pfc("Enter your nickname here"); ?>" maxlength="<?php echo $max_nick_len; ?>" value="<?php echo $nick; ?>" onclick="if (!pfc.login_status) return false; pfc.handleRequest('/asknick');" />
+      <input id="<?php echo $prefix; ?>handle" type="button" title="<?php echo _pfc("Enter your nickname here"); ?>" maxlength="<?php echo $max_nick_len; ?>" value="<?php echo $nick; ?>" onclick="if (!pfc.isconnected) return false; pfc.handleRequest('/asknick');" />
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>loginlogout" onclick="pfc.connect_disconnect()" /></div>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/color-on.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>nickmarker" onclick="pfc.nickmarker_swap()" /></div>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/clock-on.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>clock" onclick="pfc.clock_swap()" /></div>
