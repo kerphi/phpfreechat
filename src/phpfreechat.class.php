@@ -301,7 +301,10 @@ class phpFreeChat
     }
       
     // do not update twice
-    if ($rawcmd != "update" && $c->nick != "")
+    // do not update when the user just quit
+    if ($rawcmd != "update" &&
+	$rawcmd != "quit" &&
+	$c->nick != "")
     {
       // force an update just after a command is sent
       // thus the message user just poster is really fastly displayed
