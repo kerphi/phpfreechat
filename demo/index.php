@@ -35,7 +35,8 @@
       <li><a href="demo25_in_indonesian.php">demo25 - the indonesian translation of the chat</a></li>
       <li><a href="demo26_in_swedish.php">demo26 - the swedish translation of the chat</a></li>
       <li><a href="demo27_customized_command.php">demo27 - a customized command (/roll)</a></li>
-
+      <li><a href="demo28_blune_theme.php">demo28 - use a customized theme (Blune)</a></li>
+      <li><a href="demo28_mini_blune_theme.php">demo28 - use a customized theme (Blune) - mini</a></li>
     </ul>
   </body>
   
