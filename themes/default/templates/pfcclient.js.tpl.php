@@ -101,10 +101,7 @@ pfcClient.prototype = {
       echo $output;
       ?>
     }
-    //    this.smileys = ;
-    //var k = this.smileys.keys(); alert(k.inspect());
     this.smileys = $H(smileys);
-    //    this.smileyparser = new pfcSmileyParser($H(smileys));
   },
   
   callbackWords_OnKeydown: function(evt)
@@ -390,7 +387,6 @@ pfcClient.prototype = {
       var oldmsg    = msgs[mid][7];
 
       msgids.push(id);
-      //this.smileyparser.addMsgToParse(id);
 
       /* check the nickname is in the list or not */
       var nickfound = false;
@@ -445,11 +441,6 @@ pfcClient.prototype = {
       var root = $('<?php echo $prefix; ?>msg'+ msgids[i]);
       this.refresh_nickmarker(root);
       this.refresh_clock(root);
-      
-        /* Daffys */
-      //      this.refresh_Smileys();
-      //      this.refresh_WhosOnline();
-       /* Daffys */
     }
   },
 
