@@ -336,8 +336,8 @@ pfcClient.prototype = {
     msg = msg.replace(rx, '<span style="text-decoration: underline">$1</span>');
     rx = new RegExp('\\[s\\](.+?)\\[\/s\\]','ig');
     msg = msg.replace(rx, '<span style="text-decoration: line-through">$1</span>');
-    rx = new RegExp('\\[pre\\](.+?)\\[\/pre\\]','ig');
-    msg = msg.replace(rx, '<pre>$1</pre>');  
+    /*    rx = new RegExp('\\[pre\\](.+?)\\[\/pre\\]','ig');
+    msg = msg.replace(rx, '<pre>$1</pre>');  */
     rx = new RegExp('\\[email\\]([^\[]*?)\\[\/email\\]','ig');
     msg = msg.replace(rx, '<a href="mailto:$1">$1</a>'); 
     rx = new RegExp('\\[email=([^\[]*?)\\](.*?)\\[\/email\\]','ig');
