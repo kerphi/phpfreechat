@@ -22,6 +22,7 @@ class pfcCommand_quit extends pfcCommand
 
     // stop updates
     $xml_reponse->addScript("pfc.updateChat(false);");
+    $xml_reponse->addScript("pfc.isconnected = false; pfc.refresh_loginlogout();");
 
     if ($c->debug) pxlog("Cmd_quit[".$c->sessionid."]: a user just quit -> nick=".$c->nick, "chat", $c->getId());
   }

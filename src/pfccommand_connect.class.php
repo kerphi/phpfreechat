@@ -52,6 +52,7 @@ class pfcCommand_connect extends pfcCommand
     
     // start updates
     $xml_reponse->addScript("pfc.updateChat(true);");
+    $xml_reponse->addScript("pfc.isconnected = true; pfc.refresh_loginlogout();");
 
     return $clientid;
   }

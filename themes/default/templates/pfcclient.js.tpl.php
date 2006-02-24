@@ -45,7 +45,7 @@ pfcClient.prototype = {
     if (cookie == '' || cookie == null)
       this.showWhosOnline = <?php echo $showwhosonline ? "true" : "false"; ?>;
              
-    this.login_status  = false; // todo: initialize this variable with the cookie value
+    this.isconnected   = false;
     this.nicklist      = Array();
     this.nickcolor     = Array();
     this.colorlist     = Array();
@@ -106,7 +106,7 @@ pfcClient.prototype = {
   
   callbackWords_OnKeydown: function(evt)
   {
-    if (!this.login_status) return false;
+    if (!this.isconnected) return false;
     this.clearError(Array(this.el_words));
     var code = evt.keyCode;
     if (code == 13) /* enter key */
@@ -164,7 +164,7 @@ pfcClient.prototype = {
     /* don't disconnect users when they reload the window
      * this event doesn't only occurs when the page is closed but also when the page is reloaded */
     /*
-    if (!this.login_status) return false;
+    if (!this.isconnected) return false;
     this.handleRequest('/quit');
     */
   },
@@ -182,11 +182,6 @@ pfcClient.prototype = {
     if (!this.isdraging)
       if (this.el_words && !this.minmax_status)
         this.el_words.focus();
-  },
-  callbackOnQuit: function(evt)
-  {
-    if (!this.login_status) return false;
-    this.handleRequest('/quit');
   },
 
   /**
@@ -648,24 +643,17 @@ pfcClient.prototype = {
    */
   connect_disconnect: function()
   {
-    if (this.login_status)
-    {
+    if (this.isconnected)
       this.handleRequest('/quit');
-      this.login_status = false;
-    }
     else
-    {
       this.handleRequest('/connect');
-      this.login_status = true;
-    }
-    this.refresh_loginlogout()
   },
   refresh_loginlogout: function()
   {
     var loginlogout_icon = $('<?php echo $prefix; ?>loginlogout');
-    if (this.login_status)
+    if (this.isconnected)
     {
-      this.clearNickList();
+      this.updateNickList(this.nicklist);
       loginlogout_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>";
       loginlogout_icon.alt   = this.i18n.logout;
       loginlogout_icon.title = loginlogout_icon.alt;
@@ -673,7 +661,7 @@ pfcClient.prototype = {
     else
     {
       this.clearMessages();
-      this.updateNickList(this.nicklist);
+      this.clearNickList();
       loginlogout_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/login.gif'); ?>";
       loginlogout_icon.alt   = this.i18n.login;
       loginlogout_icon.title = loginlogout_icon.alt;
