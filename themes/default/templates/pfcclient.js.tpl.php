@@ -20,29 +20,30 @@ pfcClient.prototype = {
      * (2 clients can use the same session: then only the nickname is shared) */
     this.clientid      = '<?php echo md5(uniqid(rand(), true)); ?>';
 
-    this.minmax_status = <?php if ($start_minimized) { ?>true<?php } else { ?>false<?php } ?>;
+    this.minmax_status = <?php echo $start_minimized ? "true" : "false"; ?>;
     var cookie = getCookie('<?php echo $prefix; ?>minmax_status');
     if (cookie != null)
       this.minmax_status = (cookie == 'true');
+
     cookie = getCookie('<?php echo $prefix; ?>nickmarker');
     this.nickmarker = (cookie == 'true');
     if (cookie == '' || cookie == null)
-      this.nickmarker = <?php if ($nickmarker) { ?>true<?php } else { ?>false<?php } ?>;
+      this.nickmarker = <?php echo $nickmarker ? "true" : "false"; ?>;
     
     cookie = getCookie('<?php echo $prefix; ?>clock');
     this.clock = (cookie == 'true');
     if (cookie == '' || cookie == null)
-      this.clock = <?php if ($clock) { ?>true<?php } else { ?>false<?php } ?>;
+      this.clock = <?php echo $clock ? "true" : "false"; ?>;
 
     cookie = getCookie('<?php echo $prefix; ?>showSmileys');
     this.showSmileys = (cookie == 'true');
     if (cookie == '' || cookie == null)
-      this.showSmileys = <?php if ($showsmileys) { ?>true<?php } else { ?>false<?php } ?>;
+      this.showSmileys = <?php echo $showsmileys ? "true" : "false"; ?>;
 
     cookie = getCookie('<?php echo $prefix; ?>showWhosOnline');
     this.showWhosOnline = (cookie == 'true');
     if (cookie == '' || cookie == null)
-      this.showWhosOnline = <?php if ($showwhosonline) { ?>true<?php } else { ?>false<?php } ?>;      
+      this.showWhosOnline = <?php echo $showwhosonline ? "true" : "false"; ?>;
              
     this.login_status  = false; // todo: initialize this variable with the cookie value
     this.nicklist      = Array();
@@ -308,7 +309,7 @@ pfcClient.prototype = {
   {
     var nickdiv = this.el_online;
     var fc = nickdiv.firstChild;
-    nickdiv.removeChild(fc);
+    if (fc) nickdiv.removeChild(fc);
   },
 
 
@@ -446,8 +447,8 @@ pfcClient.prototype = {
       this.refresh_clock(root);
       
         /* Daffys */
-      this.refresh_Smileys();
-      this.refresh_WhosOnline();
+      //      this.refresh_Smileys();
+      //      this.refresh_WhosOnline();
        /* Daffys */
     }
   },

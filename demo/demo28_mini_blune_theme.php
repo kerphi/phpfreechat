@@ -2,19 +2,17 @@
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params =  array("title"          => "Blune PHPFreeChat",
                  "max_msg"        => 21,
-                 "prefix"         => "blune_",
-                 "clock"          => "false",
-                 "showwhosonline" => "false",
-                 "showsmileys"    => "false",
+		 "prefix"         => "blune_",
+                 "clock"          => false,
+                 "showwhosonline" => false,
+                 "showsmileys"    => false,
                  "height"         => "270px",
                  "width"          => "300px",
                  "serverid"       => md5(__FILE__),
-                 "theme"        => "blune",
+                 "theme"          => "blune",
                  );
 $chat = new phpFreeChat( $params );
 ?>
-<? /* echo "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"; */ ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
