@@ -155,7 +155,6 @@ div.<?php echo $prefix; ?>btn img {
 }
 div.<?php echo $prefix; ?>btn img:hover {
   border: 1px solid #000;
-  background-color: #4A4;
 }
 
 p#<?php echo $prefix; ?>errors {
