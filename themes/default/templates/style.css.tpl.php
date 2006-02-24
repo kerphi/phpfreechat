@@ -9,7 +9,7 @@ div#<?php echo $prefix; ?>container {
   border: black solid 1px;
   color: #338822;
   background-color: #d9edd8;
-  background-image: url(<?php echo $themeurl."/".$theme; ?>/images/shade.gif);
+  background-image: url(<?php echo $c->getFileUrlFromTheme('images/shade.gif'); ?>);
   background-position: right;
   background-repeat: repeat-y;
   padding: 10px;
