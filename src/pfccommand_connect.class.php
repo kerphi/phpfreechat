@@ -14,7 +14,8 @@ class pfcCommand_connect extends pfcCommand
 
     // reset the message id indicator
     // i.e. be ready to re-get all last posted messages
-    $_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid] = 0;
+    $container =& $c->getContainerInstance();
+    $_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid] = $container->getLastMsgId()-$c->max_msg;
 
     // reset the nickname cache
     $_SESSION[$c->prefix."nicklist_".$c->getId()."_".$clientid] = NULL;
