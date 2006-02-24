@@ -41,6 +41,7 @@ class phpFreeChatContainer
   function getOnlineNick()        { return array(); }
   function writeMsg($nick, $msg)  { return false; }
   function readNewMsg($from_id)   { return array(); }
+  function getLastMsgId()         { return 0; }
 }
 
 ?>

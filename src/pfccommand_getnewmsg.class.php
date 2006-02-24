@@ -20,10 +20,11 @@ class pfcCommand_getnewmsg extends pfcCommand
 
     // create a new lock
     $_SESSION[$c->prefix."lock_readnewmsg_".$c->getId()."_".$clientid] = time();
-    
-    $from_id = isset($_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid]) ? $_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid] : 0;
-    
+
     $container =& $c->getContainerInstance();
+    
+    $from_id = isset($_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid]) ? $_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid] : $container->getLastMsgId()-$c->max_msg;
+    
     $new_msg = $container->readNewMsg($from_id);
     $new_from_id = $new_msg["new_from_id"];
     $messages    = $new_msg["messages"];

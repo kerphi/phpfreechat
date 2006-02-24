@@ -275,7 +275,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $content = file($c->container_cfg_data_file);
   	
     // remove old messages
-    $content = array_slice($content, -$c->max_msg);
+    $content = array_slice($content, -50); // keep the last 50 messages into the file
     // save the new content (with removed old messages)
     $content_save = implode("\n", $content);
     $content_save = str_replace("\n\n","\n",$content_save);
@@ -284,7 +284,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     fwrite($fp, $content_save);
     flock ($fp, LOCK_UN); // unlock
     fclose($fp);
-  	  	
+    
     // format content in order to extract only necessary information
     $formated_content = array();
     $new_from_id = $from_id;
@@ -302,6 +302,18 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
 
     return array("messages" => $formated_content,
                  "new_from_id" => $new_from_id );
+  }
+
+  /**
+   * Returns the last posted message id
+   */
+  function getLastMsgId()
+  {
+    $c =& $this->c;
+    $content  = file($c->container_cfg_data_file);
+    $lastline = end($content);
+    $formated_lastline = explode( "\t", $lastline );
+    return isset($formated_lastline[0]) ? $formated_lastline[0] : 0;
   }
   
   function writeMsg($nickname, $message)
