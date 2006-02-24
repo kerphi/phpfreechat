@@ -286,7 +286,12 @@ class phpFreeChatConfig
     // test server script
     if ($ok)
     {
-      if ($this->server_script_path == "") $this->server_script_path = $this->client_script_path;
+      if ($this->server_script_path == "")
+      {
+        $this->server_script_path = $this->client_script_path;
+        if ($this->server_script_url == "")
+          $this->server_script_url  = $this->client_script_url;
+      }
       $filetotest = $this->server_script_path;
       // do not take into account the url parameters
       if (preg_match("/(.*)\?(.*)/",$this->server_script_path, $res))
@@ -298,7 +303,7 @@ class phpFreeChatConfig
       }
       if ($this->server_script_url == "")
       {
-	$this->server_script_url = $this->client_script_url;
+        $this->server_script_url = phpFreeChatTools::RelativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest);
       }
     }
     
@@ -375,7 +380,10 @@ class phpFreeChatConfig
 
   function getId()
   {
-    return $this->serverid;
+    /* channel is concatenated because it dynamic parameters
+     * further these parameter must be separated from global pfcconfig
+     * and can be changed dynamicaly in the user session */
+    return md5($this->serverid.$this->channel);
   }  
 
   /**
