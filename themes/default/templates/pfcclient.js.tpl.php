@@ -36,12 +36,12 @@ pfcClient.prototype = {
 
     cookie = getCookie('<?php echo $prefix; ?>showSmileys');
     this.showSmileys = (cookie == 'true');
-    if (cookie == '')
+    if (cookie == '' || cookie == null)
       this.showSmileys = <?php if ($showsmileys) { ?>true<?php } else { ?>false<?php } ?>;
 
     cookie = getCookie('<?php echo $prefix; ?>showWhosOnline');
     this.showWhosOnline = (cookie == 'true');
-    if (cookie == '')
+    if (cookie == '' || cookie == null)
       this.showWhosOnline = <?php if ($showwhosonline) { ?>true<?php } else { ?>false<?php } ?>;      
              
     this.login_status  = false; // todo: initialize this variable with the cookie value
@@ -259,12 +259,11 @@ pfcClient.prototype = {
    */
   updateChat: function(start)
   {
-    window.clearTimeout(this.timeout);
+    clearTimeout(this.timeout);
     if (start)
     {
       this.handleRequest('/update');
-      this.timeout = window.setTimeout('pfc.updateChat(true)',
-				       this.refresh_delay);
+      this.timeout = setTimeout('pfc.updateChat(true)', this.refresh_delay);
     }
   },
 
@@ -661,14 +660,11 @@ pfcClient.prototype = {
     {
       this.handleRequest('/quit');
       this.login_status = false;
-      this.clearNickList();
-      this.clearMessages();
     }
     else
     {
       this.handleRequest('/connect');
       this.login_status = true;
-      this.updateNickList(this.nicklist);
     }
     this.refresh_loginlogout()
   },
@@ -677,12 +673,15 @@ pfcClient.prototype = {
     var loginlogout_icon = $('<?php echo $prefix; ?>loginlogout');
     if (this.login_status)
     {
+      this.clearNickList();
       loginlogout_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>";
       loginlogout_icon.alt   = this.i18n.logout;
       loginlogout_icon.title = loginlogout_icon.alt;
     }
     else
     {
+      this.clearMessages();
+      this.updateNickList(this.nicklist);
       loginlogout_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/login.gif'); ?>";
       loginlogout_icon.alt   = this.i18n.login;
       loginlogout_icon.title = loginlogout_icon.alt;
