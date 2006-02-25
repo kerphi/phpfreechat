@@ -37,6 +37,7 @@
       <li><a href="demo27_customized_command.php">demo27 - a customized command (/roll)</a></li>
       <li><a href="demo28_blune_theme.php">demo28 - use a customized theme (Blune)</a></li>
       <li><a href="demo28_mini_blune_theme.php">demo28 - use a customized theme (Blune) - mini</a></li>
+      <li><a href="demo29_in_russian.php">demo29 - the russian translation of the chat</a></li>
     </ul>
   </body>
   
