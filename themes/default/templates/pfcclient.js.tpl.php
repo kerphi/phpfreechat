@@ -35,15 +35,15 @@ pfcClient.prototype = {
     if (cookie == '' || cookie == null)
       this.clock = <?php echo $clock ? "true" : "false"; ?>;
 
-    cookie = getCookie('<?php echo $prefix; ?>showSmileys');
-    this.showSmileys = (cookie == 'true');
+    cookie = getCookie('<?php echo $prefix; ?>showsmileys');
+    this.showsmileys = (cookie == 'true');
     if (cookie == '' || cookie == null)
-      this.showSmileys = <?php echo $showsmileys ? "true" : "false"; ?>;
-
-    cookie = getCookie('<?php echo $prefix; ?>showWhosOnline');
-    this.showWhosOnline = (cookie == 'true');
+      this.showsmileys = <?php echo $showsmileys ? "true" : "false"; ?>;
+    
+    cookie = getCookie('<?php echo $prefix; ?>showwhosonline');
+    this.showwhosonline = (cookie == 'true');
     if (cookie == '' || cookie == null)
-      this.showWhosOnline = <?php echo $showwhosonline ? "true" : "false"; ?>;
+      this.showwhosonline = <?php echo $showwhosonline ? "true" : "false"; ?>;
              
     this.isconnected   = false;
     this.nicklist      = Array();
@@ -764,35 +764,34 @@ pfcClient.prototype = {
    */
   showHideSmileys: function()
   {
-    if (this.showSmileys)
+    if (this.showsmileys)
     {
-      this.showSmileys = false;
+      this.showsmileys = false;
     }
     else
     {
-      this.showSmileys = true;
+      this.showsmileys = true;
     }
-    setCookie('<?php echo $prefix; ?>showSmileys', this.showSmileys);
+    setCookie('<?php echo $prefix; ?>showsmileys', this.showsmileys);
     this.refresh_Smileys();
   },
   refresh_Smileys: function()
   {
     var content = $('<?php echo $prefix; ?>smileys');
     var btn = $('<?php echo $prefix; ?>showHideSmileysbtn');
-    
-    if (this.showSmileys)
-    {
-      btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-off.gif'); ?>";
-      btn.alt = this.i18n.showsmiley;
-      btn.title = btn.alt;
-      content.style.display = 'none';
-    }
-    else
+    if (this.showsmileys)
     {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-on.gif'); ?>";
       btn.alt = this.i18n.hidesmiley;
       btn.title = btn.alt;
       content.style.display = 'block';
+    }
+    else
+    {
+      btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-off.gif'); ?>";
+      btn.alt = this.i18n.showsmiley;
+      btn.title = btn.alt;
+      content.style.display = 'none';
     }
     this.refresh_Chat();
     this.refresh_OnlineAndSmileys();
@@ -804,15 +803,15 @@ pfcClient.prototype = {
    */
   showHideWhosOnline: function()
   {
-    if (this.showWhosOnline)
+    if (this.showwhosonline)
     {
-      this.showWhosOnline = false;
+      this.showwhosonline = false;
     }
     else
     {
-      this.showWhosOnline = true;
+      this.showwhosonline = true;
     }
-    setCookie('<?php echo $prefix; ?>showWhosOnline', this.showWhosOnline);
+    setCookie('<?php echo $prefix; ?>showwhosonline', this.showwhosonline);
     this.refresh_WhosOnline();
   },
   refresh_WhosOnline: function()
@@ -820,19 +819,19 @@ pfcClient.prototype = {
     var content = $('<?php echo $prefix; ?>online');
     var btn = $('<?php echo $prefix; ?>showHideWhosOnlineBtn');
     
-    if (this.showWhosOnline)
-    {
-      btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-off.gif'); ?>";
-      btn.alt = this.i18n.showonline;
-      btn.title = btn.alt;
-      content.style.display = 'none';
-    }
-    else
+    if (this.showwhosonline)
     {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-on.gif'); ?>";
       btn.alt = this.i18n.hideonline;
       btn.title = btn.alt;
       content.style.display = 'block';
+    }
+    else
+    {
+      btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-off.gif'); ?>";
+      btn.alt = this.i18n.showonline;
+      btn.title = btn.alt;
+      content.style.display = 'none';
     }
     this.refresh_Chat();
     this.refresh_OnlineAndSmileys();
@@ -846,22 +845,22 @@ pfcClient.prototype = {
     var onlinediv = $('<?php echo $prefix; ?>online');
     var smileysdiv = $('<?php echo $prefix; ?>smileys');
     
-    if (this.showWhosOnline)
-    {
-      smileysdiv.style.height='100%';
-    }
-    else
+    if (this.showwhosonline)
     {
       smileysdiv.style.height= '';
     }
-    
-    if (this.showSmileys)
+    else
     {
-      onlinediv.style.height='100%';
+      smileysdiv.style.height='100%';
+    }
+    
+    if (this.showsmileys)
+    {
+      onlinediv.style.height= '';
     }
     else
     {
-      onlinediv.style.height= '';
+      onlinediv.style.height='100%';
     }
   },
   
@@ -872,7 +871,7 @@ pfcClient.prototype = {
   {
     var chatdiv = $('<?php echo $prefix; ?>chat');
     var wordsdiv = $('<?php echo $prefix; ?>words');
-    if (this.showWhosOnline && this.showSmileys)
+    if (!this.showwhosonline && !this.showsmileys)
     {
       chatdiv.style.width='100%';
     }
