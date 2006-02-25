@@ -8,10 +8,6 @@ class pfcCommand_connect extends pfcCommand
   {
     $c =& $this->c;
 
-    // set the chat active
-    $c->active = true;
-    $c->saveInSession();
-
     // reset the message id indicator
     // i.e. be ready to re-get all last posted messages
     $container =& $c->getContainerInstance();

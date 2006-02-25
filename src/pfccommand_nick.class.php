@@ -44,6 +44,10 @@ class pfcCommand_nick extends pfcCommand
       // current nickname (oldnickname) is not mine or is undefined
       if ($oldnickid != $c->sessionid)
       {
+        // set the chat active (allow periodic updates)
+        $c->active = true;
+        $c->saveInSession();
+
 	$cmd =& pfcCommand::Factory("notice", $c);
 	$cmd->run($xml_reponse, $clientid, _pfc("%s is connected",$c->nick), 2);
       }
