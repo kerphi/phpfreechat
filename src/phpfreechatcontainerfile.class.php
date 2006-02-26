@@ -310,10 +310,12 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
   function getLastMsgId()
   {
     $c =& $this->c;
-    $content  = file($c->container_cfg_data_file);
-    $lastline = end($content);
-    $formated_lastline = explode( "\t", $lastline );
-    return isset($formated_lastline[0]) ? $formated_lastline[0] : 0;
+
+    // read last message id
+    $lastid = file_get_contents($c->container_cfg_index_file);
+    if (!is_numeric($lastid)) $lastid = 0;
+    
+    return $lastid;
   }
   
   function writeMsg($nickname, $message)
@@ -341,6 +343,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
   }
 
   /**
+   * Return a unique id. Each time this function is called, the last id is incremented.
    * used internaly
    */ 
   function _requestMsgId()
