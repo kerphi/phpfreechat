@@ -37,10 +37,10 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $c =& $this->c;
     
     $cfg = array();
-    $cfg["chat_dir"]            = $c->data_private_path."/chat/".$c->channel."/";
-    $cfg["data_file"]           = $cfg["chat_dir"]."messages.data";
-    $cfg["index_file"]          = $cfg["chat_dir"]."messages.index";
-    $cfg["nickname_dir"]        = $cfg["chat_dir"]."nicknames/";
+    $cfg["chat_dir"]            = ""; // will be generated from the other parameters into the init step
+    $cfg["data_file"]           = ""; // will be generated from the chat_dir parameters into the init step
+    $cfg["index_file"]          = ""; // will be generated from the chat_dir parameters into the init step
+    $cfg["nickname_dir"]        = ""; // will be generated from the chat_dir parameters into the init step
     return $cfg;
   }
   
@@ -49,6 +49,16 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $c =& $this->c;
     $errors = array();
     $ok = true;
+
+    // generate the container parameters from other config parameters
+    if ($c->container_cfg_chat_dir == "")
+      $c->container_cfg_chat_dir = $c->data_private_path."/chat/".$c->channel;
+    if ($c->container_cfg_data_file == "")
+      $c->container_cfg_data_file = $c->container_cfg_chat_dir."/messages.data";
+    if ($c->container_cfg_index_file == "")
+      $c->container_cfg_index_file = $c->container_cfg_chat_dir."/messages.index";
+    if ($c->container_cfg_nickname_dir == "")
+      $c->container_cfg_nickname_dir = $c->container_cfg_chat_dir."/nicknames";
     
     // ---
     // test message file
@@ -148,7 +158,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $there = false;
     
     // update my online status file
-    $my_filename = $c->container_cfg_nickname_dir.$this->_encode($c->nick);
+    $my_filename = $c->container_cfg_nickname_dir."/".$this->_encode($c->nick);
     if (file_exists($my_filename)) $there = true;
     touch($my_filename);
     
@@ -164,7 +174,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     {
       $c =& $this->c;
       $nickid = "undefined";
-      $myfilename = $c->container_cfg_nickname_dir.$this->_encode($nickname);
+      $myfilename = $c->container_cfg_nickname_dir."/".$this->_encode($nickname);
       if (file_exists($myfilename))
       {
         $fsize = filesize($myfilename);
@@ -195,10 +205,10 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     // ie: do not delete nickname if it's not mine
     $oldnickid = $this->getNickId($c->nick);
     if ($nickid == $oldnickid)
-      unlink($c->container_cfg_nickname_dir.$this->_encode($c->nick));
+      unlink($c->container_cfg_nickname_dir."/".$this->_encode($c->nick));
     
     // write the nickid into the new nickname file
-    $fp = fopen($c->container_cfg_nickname_dir.$this->_encode($newnick),"w");
+    $fp = fopen($c->container_cfg_nickname_dir."/".$this->_encode($newnick),"w");
     flock ($fp, LOCK_EX); // lock
     fwrite($fp, $nickid);
     flock ($fp, LOCK_UN); // unlock
@@ -210,7 +220,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
   function removeNick($nick)
   {
     $c =& $this->c;
-    $nick_filename = $c->container_cfg_nickname_dir.$this->_encode($nick);
+    $nick_filename = $c->container_cfg_nickname_dir."/".$this->_encode($nick);
     $nickid = $this->getNickId($nick);
     // don't allow to remove foreign nicknames
     if ( $c->sessionid == $nickid &&
@@ -233,10 +243,10 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     while (false !== ($file = readdir($dir_handle)))
     {
       if ($file == "." || $file == "..") continue; // skip . and .. generic files
-      if (time() > (filemtime($c->container_cfg_nickname_dir.$file)+$c->timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
+      if (time() > (filemtime($c->container_cfg_nickname_dir."/".$file)+$c->timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
       {
         $deleted_user[] = $this->_decode($file);
-        unlink($c->container_cfg_nickname_dir.$file); // disconnect expired user
+        unlink($c->container_cfg_nickname_dir."/".$file); // disconnect expired user
       }
       else
       {

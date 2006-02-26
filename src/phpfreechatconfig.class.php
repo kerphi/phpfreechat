@@ -90,7 +90,21 @@ class phpFreeChatConfig
     // setup the local for translated messages
     phpFreeChatI18N::Init(isset($params["language"]) ? $params["language"] : "");
 
-    // set user's values
+    // load users container or keep default one
+    if (isset($params["container_type"]))
+      $this->container_type = $params["container_type"];
+    
+    // load default container's config
+    $container =& $this->getContainerInstance();
+    $container_cfg = $container->getDefaultConfig();
+    foreach( $container_cfg as $k => $v )
+    {
+      $attr = "container_cfg_".$k;
+      if (!isset($this->$attr))
+        $this->$attr = $v;
+    }
+   
+    // load all user's parameters which will override default ones
     foreach ( $params as $k => $v )
     {
       if (!isset($this->$k))
@@ -106,23 +120,15 @@ class phpFreeChatConfig
     if ($this->csstidypath == "")  $this->csstidypath  = dirname(__FILE__)."/../lib/csstidy-1.1";
     if ($this->data_private_path == "") $this->data_private_path = dirname(__FILE__)."/../data/private";
     if ($this->data_public_path == "")  $this->data_public_path  = dirname(__FILE__)."/../data/public";
-    
+
+    // @todo: do not move this into init() because channel parameter is used to generate the serverid
+    //        this will change with the 1.0 refactoring
     // choose a auto-generated channel name if user choose a title but didn't choose a channel name
     if ( $this->channel == "" )
       $this->channel = preg_replace("/[^a-z0-9]*/","",strtolower($this->title));
     else
       $this->channel = preg_replace("/[^a-z0-9]*/","",strtolower($this->channel));
-    
-    // load default container's config
-    $container =& $this->getContainerInstance();
-    $container_cfg = $container->getDefaultConfig();
-    foreach( $container_cfg as $k => $v )
-    {
-      $attr = "container_cfg_".$k;
-      if (!isset($this->$attr))
-        $this->$attr = $v;
-    }
-    
+
     $this->synchronizeWithSession();
   }
 
