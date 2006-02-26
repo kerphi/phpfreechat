@@ -167,4 +167,5 @@ $GLOBALS["i18n"]["Show online users box"] = "";
 // line 75 in pfccommand.class.php
 $GLOBALS["i18n"]["%s must be implemented"] = "";
 
+
 ?>

@@ -167,4 +167,5 @@ $GLOBALS["i18n"]["Error: '%s' could not be found, please check your themepath '%
 // line 75 in pfccommand.class.php
 $GLOBALS["i18n"]["%s must be implemented"] = "%s doit être implementé";
 
+
 ?>
