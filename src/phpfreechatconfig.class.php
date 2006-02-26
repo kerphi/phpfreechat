@@ -343,7 +343,15 @@ class phpFreeChatConfig
       $this->errors[] = _pfc("'max_msg' parameter must be a positive number");
       $ok = false;
     }
-    
+
+    // check the language is known
+    $lg_list = phpFreeChatI18N::GetAcceptedLanguage();
+    if ( !in_array($this->language, $lg_list) )
+    {
+      $this->errors[] = _pfc("'%s' parameter is not valid. Valid values are : '%s'", "language", implode(", ", $lg_list));
+      $ok = false;
+    }
+        
     // load smileys from file
     if ($ok)
       $this->loadSmileyTheme();
