@@ -275,7 +275,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $content = file($c->container_cfg_data_file);
   	
     // remove old messages
-    $content = array_slice($content, -50); // keep the last 50 messages into the file
+    $content = array_slice($content, -($c->max_msg+50)); // keep the last max_msg+50 messages into the file
     // save the new content (with removed old messages)
     $content_save = implode("\n", $content);
     $content_save = str_replace("\n\n","\n",$content_save);

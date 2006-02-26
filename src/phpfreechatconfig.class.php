@@ -2,7 +2,7 @@
 /**
  * phpfreechatconfig.class.php
  *
- * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
+ * Copyright Â© 2006 Stephane Gully <stephane.gully@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -329,6 +329,13 @@ class phpFreeChatConfig
     if ($this->serverid == "")
     {
       $this->errors[] = _pfc("'serverid' parameter is mandatory by default use 'md5(__FILE__)' value");
+      $ok = false;
+    }
+
+    // check the max_msg is >= 0
+    if (!is_numeric($this->max_msg) || $this->max_msg < 0)
+    {
+      $this->errors[] = _pfc("'max_msg' parameter must be a positive number");
       $ok = false;
     }
     
