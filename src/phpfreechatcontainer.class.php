@@ -32,16 +32,16 @@ class phpFreeChatContainer
   function phpFreeChatContainer(&$config) { $this->c =& $config; }
   function getDefaultConfig()     { return array(); }
   function init()                 { return array(); }  
-  function updateNick($nickname)  { return false; }
-  function getNickId($nickname)   { return "undefined"; }
-  function changeNick($newnick)   { return false; }
-  function removeNick($nick)      { return false; }
-  function removeObsoleteNick()   { return false; }
-  function changeMyNick($newnick) { return $newnick; }
-  function getOnlineNick()        { return array(); }
-  function writeMsg($nick, $msg)  { return false; }
-  function readNewMsg($from_id)   { return array(); }
-  function getLastMsgId()         { return 0; }
+  function updateNick($nickname)  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function getNickId($nickname)   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function changeNick($newnick)   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function removeNick($nick)      { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function removeObsoleteNick()   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function changeMyNick($newnick) { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function getOnlineNick()        { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function writeMsg($nick, $msg)  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function readNewMsg($from_id)   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function getLastMsgId()         { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
 }
 
 ?>

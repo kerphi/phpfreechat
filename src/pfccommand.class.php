@@ -72,7 +72,7 @@ class pfcCommand
    */
   function run(&$xml_reponse, $clientid, $param = "")
   {
-    die(_pfc("%s must be implemented", "run()"));
+    die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__));
   }
 }
 
