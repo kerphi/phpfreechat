@@ -23,7 +23,6 @@
 require_once dirname(__FILE__)."/pfccommand.class.php";
 require_once dirname(__FILE__)."/phpfreechatconfig.class.php";
 require_once dirname(__FILE__)."/phpfreechattemplate.class.php";
-require_once dirname(__FILE__)."/../debug/log.php";
 require_once dirname(__FILE__)."/../lib/utf8/utf8.php";
 
 /**
@@ -39,6 +38,9 @@ class phpFreeChat
   
   function phpFreeChat( $params = array() )
   {
+    if (isset($params["debug"]) && $params["debug"])
+      require_once dirname(__FILE__)."/../debug/log.php";
+
     // start the session : session is used for locking purpose and cache purpose
     session_name( "phpfreechat" );
     if (isset($_GET["init"])) unset($_COOKIE[session_name()]);
@@ -56,8 +58,7 @@ class phpFreeChat
     }
     // then init xajax engine
     if (!class_exists("xajax")) require_once $c->xajaxpath."/xajax.inc.php";
-    $this->xajax = new xajax($c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""),
-			     $c->prefix);
+    $this->xajax = new xajax($c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""), $c->prefix);
     //$this->xajax->debugOn();
     $this->xajax->waitCursorOff(); // do not show a wait cursor during chat updates
     $this->xajax->errorHandlerOn(); // used to have verbose error logs

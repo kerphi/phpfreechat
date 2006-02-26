@@ -20,7 +20,6 @@
  * Boston, MA  02110-1301  USA
  */
 
-require_once dirname(__FILE__)."/../debug/log.php";
 require_once dirname(__FILE__)."/phpfreechattools.class.php";
 require_once dirname(__FILE__)."/phpfreechati18n.class.php";
 
@@ -426,10 +425,7 @@ class phpFreeChatConfig
   {
     $session_id = $this->prefix."chatconfig_".$this->getId();
     $_SESSION[$session_id] = serialize(get_object_vars($this));
-    pxlog($this->nick, "chatconfig", $this->getId());
-    pxlog(debug_backtrace(), "chatconfig", $this->getId());
-
-    //    if ($this->debug) pxlog("saveInSession[".$this->getId()."]: nick=".$this->nick, "chatconfig", $this->getId());
+    if ($this->debug) pxlog("saveInSession[".$this->getId()."]: nick=".$this->nick, "chatconfig", $this->getId());
   }
 
 
