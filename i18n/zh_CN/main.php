@@ -121,52 +121,51 @@ $GLOBALS["i18n"]["Enter your message here"] = "在此输入聊天内容";
 $GLOBALS["i18n"]["Enter your nickname here"] = "在此输入您的昵称";
 
 // line 93 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "";
-
+$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "错误：%s是未定义或过时的参数，请修改或删除之。";
 
 // line 48 in phpfreechattemplate.class.php
-$GLOBALS["i18n"]["%s template could not be found"] = "";
+$GLOBALS["i18n"]["%s template could not be found"] = "找不到模版%s";
 
 // line 324 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'serverid' parameter is mandatory by default use 'md5(__FILE__)' value"] = "";
+$GLOBALS["i18n"]["'serverid' parameter is mandatory by default use 'md5(__FILE__)' value"] = "缺省情况下serverid参数是必须的，其值为'md5(__FILE__)'";
 
 // line 512 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct"] = "";
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct"] = "错误：找不到%s,请检查themepath %s和theme %s是否正确。";
 
 // line 33 in chat.html.tpl.php
-$GLOBALS["i18n"]["Bold"] = "";
+$GLOBALS["i18n"]["Bold"] = "粗体";
 
 // line 34 in chat.html.tpl.php
-$GLOBALS["i18n"]["Italics"] = "";
+$GLOBALS["i18n"]["Italics"] = "斜体";
 
 // line 35 in chat.html.tpl.php
-$GLOBALS["i18n"]["Underline"] = "";
+$GLOBALS["i18n"]["Underline"] = "下划线";
 
 // line 36 in chat.html.tpl.php
-$GLOBALS["i18n"]["Delete"] = "";
+$GLOBALS["i18n"]["Delete"] = "删除";
 
 // line 37 in chat.html.tpl.php
-$GLOBALS["i18n"]["Pre"] = "";
+$GLOBALS["i18n"]["Pre"] = "Pre";
 
 // line 38 in chat.html.tpl.php
-$GLOBALS["i18n"]["Mail"] = "";
+$GLOBALS["i18n"]["Mail"] = "e-Mail";
 
 // line 39 in chat.html.tpl.php
-$GLOBALS["i18n"]["Color"] = "";
+$GLOBALS["i18n"]["Color"] = "颜色";
 
 // line 86 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Hide smiley box"] = "";
+$GLOBALS["i18n"]["Hide smiley box"] = "隐藏表情符区";
 
 // line 87 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Show smiley box"] = "";
+$GLOBALS["i18n"]["Show smiley box"] = "显示表情符区";
 
 // line 88 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Hide online users box"] = "";
+$GLOBALS["i18n"]["Hide online users box"] = "隐藏在线用户区";
 
 // line 89 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Show online users box"] = "";
+$GLOBALS["i18n"]["Show online users box"] = "显示在线用户区";
 
 // line 75 in pfccommand.class.php
-$GLOBALS["i18n"]["%s must be implemented"] = "";
+$GLOBALS["i18n"]["%s must be implemented"] = "必须实现%s";
 
 ?>
