@@ -10,7 +10,7 @@ $params["frozen_nick"]    = true;     // do not allow to change the nickname
 $params["shownotice"]     = 0;        // 0 = nothing, 1 = just nickname changes, 2 = 1+connect/quit
 $params["max_nick_len"]   = 20;       // nickname length could not be longer than 10 caracteres
 $params["max_text_len"]   = 300;      // a message cannot be longer than 50 caracteres
-$params["refresh_delay"]  = 5000;     // chat refresh speed is 5 secondes (5000ms)
+$params["refresh_delay"]  = 10000;     // chat refresh speed is 10 secondes (10000ms)
 $params["max_msg"]        = 15;       // max message in the history is 15 (message seen when reloading the chat)
 $params["height"]         = "230px";  // height of chat area is 230px
 $params["width"]          = "800px";  // width of chat area is 800px
