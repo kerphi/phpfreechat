@@ -331,22 +331,50 @@ class phpFreeChatConfig
     // check the serverid is really defined
     if ($this->serverid == "")
     {
-      $this->errors[] = _pfc("'serverid' parameter is mandatory by default use 'md5(__FILE__)' value");
+      $this->errors[] = _pfc("'%s' parameter is mandatory by default use '%s' value", "serverid", "md5(__FILE__)");
       $ok = false;
     }
 
     // check the max_msg is >= 0
     if (!is_numeric($this->max_msg) || $this->max_msg < 0)
     {
-      $this->errors[] = _pfc("'max_msg' parameter must be a positive number");
+      $this->errors[] = _pfc("'%s' parameter must be a positive number", "max_msg");
       $ok = false;
     }
 
+    // check the max_nick_len is >= 0
+    if (!is_numeric($this->max_nick_len) || $this->max_nick_len < 0)
+    {
+      $this->errors[] = _pfc("'%s' parameter must be a positive number", "max_nick_len");
+      $ok = false;
+    }
+    
+    // check the max_text_len is >= 0
+    if (!is_numeric($this->max_text_len) || $this->max_text_len < 0)
+    {
+      $this->errors[] = _pfc("'%s' parameter must be a positive number", "max_text_len");
+      $ok = false;
+    }
+    
+    // check the refresh_delay is >= 0
+    if (!is_numeric($this->refresh_delay) || $this->refresh_delay < 0)
+    {
+      $this->errors[] = _pfc("'%s' parameter must be a positive number", "refresh_delay");
+      $ok = false;
+    }
+    
+    // check the timeout is >= 0
+    if (!is_numeric($this->timeout) || $this->timeout < 0)
+    {
+      $this->errors[] = _pfc("'%s' parameter must be a positive number", "timeout");
+      $ok = false;
+    }    
+    
     // check the language is known
     $lg_list = phpFreeChatI18N::GetAcceptedLanguage();
     if ( $this->language != "" && !in_array($this->language, $lg_list) )
     {
-      $this->errors[] = _pfc("'%s' parameter is not valid. Valid values are : '%s'", "language", implode(", ", $lg_list));
+      $this->errors[] = _pfc("'%s' parameter is not valid. Available values are : '%s'", "language", implode(", ", $lg_list));
       $ok = false;
     }
         
