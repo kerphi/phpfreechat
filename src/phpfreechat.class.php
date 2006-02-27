@@ -36,19 +36,19 @@ class phpFreeChat
   var $chatconfig;
   var $xajax;
   
-  function phpFreeChat( $params = array() )
+  function phpFreeChat( &$params )
   {
     if (isset($params["debug"]) && $params["debug"])
       require_once dirname(__FILE__)."/../debug/log.php";
 
-    // start the session : session is used for locking purpose and cache purpose
-    session_name( "phpfreechat" );
-    if (isset($_GET["init"])) unset($_COOKIE[session_name()]);
-    if(session_id() == "") session_start();
-
-    $params["sessionid"] = session_id();
-    
-    $c =& phpFreeChatConfig::Instance( $params );
+    // check if the given parameters is a simple array
+    // or a allready created phpfreechat object
+    $c = NULL;
+    if (is_object($params) &&
+        get_class($params) == "phpfreechatconfig")
+      $c =& $params;
+    else
+      $c =& phpFreeChatConfig::Instance( $params );
     
     // Xajax doesn't support yet static class methode call
     // I use basic functions to wrap to my statics methodes
@@ -61,6 +61,7 @@ class phpFreeChat
     $this->xajax = new xajax($c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""), $c->prefix);
     if ($c->debugxajax) $this->xajax->debugOn();
     $this->xajax->waitCursorOff(); // do not show a wait cursor during chat updates
+    $this->xajax->cleanBufferOff();
     $this->xajax->errorHandlerOn(); // used to have verbose error logs
     $this->xajax->registerFunction("handleRequest");
     $this->xajax->processRequests();

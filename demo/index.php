@@ -38,6 +38,10 @@
       <li><a href="demo28_blune_theme.php">demo28 - use a customized theme (Blune)</a></li>
       <li><a href="demo28_mini_blune_theme.php">demo28 - use a customized theme (Blune) - mini</a></li>
       <li><a href="demo29_in_russian.php">demo29 - the russian translation of the chat</a></li>
+      <li><a href="demo31_show_who_is_online-chat.php">demo31 - demo which show how to get the connected users list (chat script)</a></li>
+      <li><a href="demo31_show_who_is_online-whoisonline.php">demo31 - demo which show how to get the connected users list (whoisonline script)</a></li>
+      <li><a href="demo32_show_last_messages-chat.php">demo32 - demo which show how to get the last posted messages (chat script)</a></li>
+      <li><a href="demo32_show_last_messages-showlastmsg.php">demo32 - demo which show how to get the last posted messages (showlastmsg script)</a></li>
     </ul>
   </body>
   

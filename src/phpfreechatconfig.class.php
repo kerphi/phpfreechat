@@ -88,6 +88,13 @@ class phpFreeChatConfig
   
   function phpFreeChatConfig( $params = array() )
   {
+    // start the session : session is used for locking purpose and cache purpose
+    session_name( "phpfreechat" );
+    if (isset($_GET["init"])) unset($_COOKIE[session_name()]);
+    if(session_id() == "") session_start();
+
+    $params["sessionid"] = session_id();
+
     // setup the local for translated messages
     phpFreeChatI18N::Init(isset($params["language"]) ? $params["language"] : "");
 
