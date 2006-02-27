@@ -347,7 +347,7 @@ class phpFreeChatConfig
 
     // check the language is known
     $lg_list = phpFreeChatI18N::GetAcceptedLanguage();
-    if ( !in_array($this->language, $lg_list) )
+    if ( $this->language != "" && !in_array($this->language, $lg_list) )
     {
       $this->errors[] = _pfc("'%s' parameter is not valid. Valid values are : '%s'", "language", implode(", ", $lg_list));
       $ok = false;
