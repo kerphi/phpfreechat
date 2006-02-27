@@ -84,6 +84,7 @@ class phpFreeChatConfig
   var $sessionid           = 0; // the client sessionid, this is automatically set by phpfreechat instance
   var $debugurl            = "";
   var $debug               = false;
+  var $debugxajax          = false;
   
   function phpFreeChatConfig( $params = array() )
   {
