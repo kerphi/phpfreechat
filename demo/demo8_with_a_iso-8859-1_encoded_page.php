@@ -5,6 +5,7 @@ require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params["serverid"]        = md5(__FILE__); // calculate a unique id for this chat
 $params["title"]           = "A chat with a ISO-8859-1 encoded page";
 $params["language"]        = "fr_FR";
+$params["nick"]            = "äöü"; // a UTF-8 encoded nickname (I know, this is not consistent with output_encoding...)
 $params["output_encoding"] = "ISO-8859-1"; // same as the web page encoding
 $chat = new phpFreeChat( $params );
 
