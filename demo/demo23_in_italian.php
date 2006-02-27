@@ -3,7 +3,6 @@
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 
 $params["serverid"] = md5(__FILE__); // calculate a unique id for this chat
-$params["title"]    = "The italian translation of phpFreeChat";
 $params["language"] = "it_IT";
 $chat = new phpFreeChat( $params );
 
