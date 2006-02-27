@@ -125,11 +125,8 @@ class phpFreeChatConfig
     // @todo: do not move this into init() because channel parameter is used to generate the serverid
     //        this will change with the 1.0 refactoring
     // choose a auto-generated channel name if user choose a title but didn't choose a channel name
-    if ( $this->channel == "" )
-      $this->channel = preg_replace("/[^a-z0-9]*/","",strtolower($this->title));
-    else
-      $this->channel = preg_replace("/[^a-z0-9]*/","",strtolower($this->channel));
-
+    if ( $this->channel == "" ) $this->channel = $this->title;
+    
     $this->synchronizeWithSession();
   }
 

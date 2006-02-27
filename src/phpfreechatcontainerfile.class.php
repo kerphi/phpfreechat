@@ -41,6 +41,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $cfg["data_file"]           = ""; // will be generated from the chat_dir parameters into the init step
     $cfg["index_file"]          = ""; // will be generated from the chat_dir parameters into the init step
     $cfg["nickname_dir"]        = ""; // will be generated from the chat_dir parameters into the init step
+    $cfg['sm_type'] = "auto";
     return $cfg;
   }
   
@@ -52,7 +53,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
 
     // generate the container parameters from other config parameters
     if ($c->container_cfg_chat_dir == "")
-      $c->container_cfg_chat_dir = $c->data_private_path."/chat/".$c->channel;
+      $c->container_cfg_chat_dir = $c->data_private_path."/chat/s_".$c->serverid."/".$this->_encode($c->channel);
     if ($c->container_cfg_data_file == "")
       $c->container_cfg_data_file = $c->container_cfg_chat_dir."/messages.data";
     if ($c->container_cfg_index_file == "")
