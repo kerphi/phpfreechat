@@ -50,16 +50,18 @@ class phpFreeChatConfig
   var $openlinknewwindow   = true; // used to open the links in a new window
   var $showwhosonline      = true;
   var $showsmileys         = true;
-  
+  var $btn_sh_whosonline   = true; // display show/hide button for who is online
+  var $btn_sh_smileys      = true; // display show/hide button for smileys
+
   var $theme               = "default";
   var $themepath           = "";
   var $themeurl            = "";
   var $themepath_default   = "";
   var $themeurl_default    = "";
-  
+
   var $language            = "";      // could be something in i18n/* directory ("" means the language is guess from the server config)
   var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
-  var $container_type      = "File";  
+  var $container_type      = "File";
 
   var $client_script_path  = "";
   var $client_script_url   = ""; // default is calculated from 'client_script_path'

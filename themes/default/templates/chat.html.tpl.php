@@ -25,10 +25,14 @@
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>loginlogout" onclick="pfc.connect_disconnect()" /></div>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/color-on.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>nickmarker" onclick="pfc.nickmarker_swap()" /></div>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/clock-on.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>clock" onclick="pfc.clock_swap()" /></div>
+      <?php if ($c->btn_sh_smileys && $c->showsmileys) { ?>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/smiley-on.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>showHideSmileysbtn" onclick="pfc.showHideSmileys()" /></div>
+      <?php } ?>
+      <?php if ($c->btn_sh_whosonline && $c->showwhosonline) { ?>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/online-on.gif'); ?>" alt="" title="" id="<?php echo $prefix; ?>showHideWhosOnlineBtn" onclick="pfc.showHideWhosOnline()" /></div>
+      <?php } ?>
     </div>
-    
+
     <div id="<?php echo $prefix; ?>bbcode_container">
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_strong.gif'); ?>" alt="<?php echo _pfc("Bold"); ?>" title="<?php echo _pfc("Bold"); ?>" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[b]','[/b]')" /></div>
       <div class="<?php echo $prefix; ?>btn"><img src="<?php echo $c->getFileUrlFromTheme('images/bt_em.gif'); ?>" alt="<?php echo _pfc("Italics"); ?>" title="<?php echo _pfc("Italics"); ?>" id="<?php echo $prefix; ?>bt_strong" onclick="pfc.insert_text('[i]','[/i]')" /></div>
