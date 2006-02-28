@@ -39,7 +39,7 @@ $GLOBALS["i18n"]["Please enter your nickname"] = "Entrez votre pseudonyme";
 $GLOBALS["i18n"]["Text cannot be empty"] = "Le message ne peux pas être vide";
 
 // line 392 in phpfreechat.class.php
-$GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s s'appel maintenant %s";
+$GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s s'appelle maintenant %s";
 
 // line 398 in phpfreechat.class.php
 $GLOBALS["i18n"]["%s is connected"] = "%s vient de se connecter";
