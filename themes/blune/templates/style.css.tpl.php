@@ -28,3 +28,17 @@ div#<?php echo $prefix; ?>online {
 div#<?php echo $prefix; ?>smileys {
     height: 48%;
 }
+
+p#<?php echo $prefix; ?>errors {
+  display: none;
+  margin-top: 5px;
+  padding: 2px;
+  height: 18px;
+
+  border: black solid 1px;
+  color: #EC4A1F;
+  background-color: #BEC5D0;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+}
