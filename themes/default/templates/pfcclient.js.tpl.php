@@ -328,13 +328,13 @@ pfcClient.prototype = {
     /* try to parse bbcode */
 
 
-    rx = new RegExp('\\[b\\](.+?)\\[\/b\\]','ig');
+    rx = new RegExp('\\[b\\](.*?)\\[\/b\\]','ig');
     msg = msg.replace(rx, '<span style="font-weight: bold">$1</span>');
-    rx = new RegExp('\\[i\\](.+?)\\[\/i\\]','ig');
+    rx = new RegExp('\\[i\\](.*?)\\[\/i\\]','ig');
     msg = msg.replace(rx, '<span style="font-style: italic">$1</span>');
-    rx = new RegExp('\\[u\\](.+?)\\[\/u\\]','ig');
+    rx = new RegExp('\\[u\\](.*?)\\[\/u\\]','ig');
     msg = msg.replace(rx, '<span style="text-decoration: underline">$1</span>');
-    rx = new RegExp('\\[s\\](.+?)\\[\/s\\]','ig');
+    rx = new RegExp('\\[s\\](.*?)\\[\/s\\]','ig');
     msg = msg.replace(rx, '<span style="text-decoration: line-through">$1</span>');
     /*    rx = new RegExp('\\[pre\\](.+?)\\[\/pre\\]','ig');
     msg = msg.replace(rx, '<pre>$1</pre>');  */
