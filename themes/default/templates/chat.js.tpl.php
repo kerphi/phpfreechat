@@ -21,4 +21,15 @@ pfc.refresh_minimize_maximize();
 pfc.refresh_Smileys();
 pfc.refresh_WhosOnline();
 
+<?php if ($debugxajax) { ?>
+xajax.DebugMessage = function(text)
+{
+  var s = new String(text);
+  text = s.escapeHTML();
+  rx  = new RegExp('&lt;','g');
+  text = text.replace(rx, '\n&lt;');
+  $('debugxajax').innerHTML += '\n---------------\n' + text;
+}
+<?php } ?>
+
 <?php include($c->getFileUrlFromTheme('templates/chat-post.js.tpl.php')); ?>

@@ -82,3 +82,8 @@
 <?php if ($debug) { ?>
 <p>Debug is on, you can <a href="<?php echo $debugurl; ?>/console.php?chatid=<?php echo $serverid; ?>">open the debugging console</a>.</p>
 <?php } ?>
+
+<?php if ($debugxajax) { ?>
+<h2>XAJAX debug</h2>
+<pre id="debugxajax" style="border: 1px solid red; background-color: #FEE;"></pre>
+<?php } ?>
