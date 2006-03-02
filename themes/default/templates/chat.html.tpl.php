@@ -72,7 +72,7 @@
   <script type="text/javascript">
   <!--
   
-  <?php include("javascript2.js.tpl.php"); ?>
+  <?php include($c->getFileUrlFromTheme('templates/javascript2.js.tpl.php')); ?>
   
   -->
   </script>
