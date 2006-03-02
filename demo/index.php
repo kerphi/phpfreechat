@@ -37,8 +37,8 @@
       <li><a href="demo12_phoenity_smiley_theme.php">demo12 - A chat with a customized smiley theme (phoenity theme)</a></li>
       <li><a href="demo17_cerutti_smiley_theme.php">demo17 - A chat with a customized smiley theme (cerutti theme)</a></li>
       <li><a href="demo18_phpbb2_smiley_theme.php">demo18 - A chat with a customized smiley theme (phpbb2 theme)</a></li>
-      <li><a href="demo28_blune_theme.php">demo28 - use a customized theme (Blune)</a></li>
-      <li><a href="demo28_mini_blune_theme.php">demo28 - use a customized theme (Blune) - mini</a></li>
+      <li><a href="demo28_blune_theme.php">demo28 - use a customized theme (blune theme)</a></li>
+      <li><a href="demo28_mini_blune_theme.php">demo28 - use a customized theme (blune theme) - mini</a></li>
 </ul>
 
 <h2>Translations</h2>
