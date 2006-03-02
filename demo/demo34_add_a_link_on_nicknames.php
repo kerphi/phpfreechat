@@ -3,11 +3,8 @@
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 
 $params["serverid"]      = md5(__FILE__); // calculate a unique id for this chat
-$params["title"]         = "A chat with a customized stylesheet";
-$params["height"]        = "500px";
-$params["width"]         = "550px";
-$params["max_msg"]       = 21;
-$params["themepath"]     = dirname(__FILE__)."/demo5_customized_style_data";
+$params["title"]         = "A chat with a customized nickname list";
+$params["themepath"]     = dirname(__FILE__)."/demo34_add_a_link_on_nicknames";
 $params["theme"]         = "mytheme";
 $chat = new phpFreeChat( $params );
 
@@ -36,7 +33,7 @@ $chat = new phpFreeChat( $params );
 ?>
 
 <?php
-  $filename = dirname(__FILE__)."/demo5_customized_style_data/mytheme/templates/style.css.tpl.php";
+  $filename = dirname(__FILE__)."/demo34_add_a_link_on_nicknames/mytheme/templates/javascript2.js.tpl.php";
   echo "<p><code>".$filename."</code></p>";
   echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
   $content = file_get_contents($filename);

@@ -20,10 +20,13 @@
       <li><a href="demo15_multiple_channel.php">demo15 - a chat with multiple/dynamic channels</a></li>
       <li><a href="demo21_with_hardcoded_urls.php">demo21 - with hardcoded url: data_public_url, client_script_url ... (interesting for strange server configuration)</a></li>
       <li><a href="demo27_customized_command.php">demo27 - a customized command (/roll)</a></li>
+      <li><a href="demo34_add_a_link_on_nicknames.php">demo34 - Shows how to add a link on the nicknames list</a></li>
+<!--
       <li><a href="demo31_show_who_is_online-chat.php">demo31 - demo which show how to get the connected users list (chat script)</a></li>
       <li><a href="demo31_show_who_is_online-whoisonline.php">demo31 - demo which show how to get the connected users list (whoisonline script)</a></li>
       <li><a href="demo32_show_last_messages-chat.php">demo32 - demo which show how to get the last posted messages (chat script)</a></li>
       <li><a href="demo32_show_last_messages-showlastmsg.php">demo32 - demo which show how to get the last posted messages (showlastmsg script)</a></li>
+-->
 </ul>
 
 
