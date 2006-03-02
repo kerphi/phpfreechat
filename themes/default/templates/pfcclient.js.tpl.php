@@ -882,3 +882,5 @@ pfcClient.prototype = {
   }
   
 };
+
+<?php include($c->getFileUrlFromTheme('templates/pfcclient-custo.js.tpl.php')); ?>

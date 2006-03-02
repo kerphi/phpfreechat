@@ -1,3 +1,5 @@
+<?php include($c->getFileUrlFromTheme('templates/chat-pre.js.tpl.php')); ?>
+
 /* preload smileys */
 preloadImages(
   <?php foreach ($smileys as $s_file => $s_str) { ?>
@@ -18,3 +20,5 @@ pfc.refresh_clock();
 pfc.refresh_minimize_maximize();
 pfc.refresh_Smileys();
 pfc.refresh_WhosOnline();
+
+<?php include($c->getFileUrlFromTheme('templates/chat-post.js.tpl.php')); ?>
