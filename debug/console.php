@@ -37,7 +37,7 @@ $xajax->processRequests();
   <title>phpFreeChat debug console</title>
 <?php
 
-$xajax_js = phpFreeChatTools::RelativePath(dirname($_SERVER["SCRIPT_FILENAME"]),
+$xajax_js = relativePath(dirname($_SERVER["SCRIPT_FILENAME"]),
                                            dirname(__FILE__).'/../data/public/');
 $xajax->printJavascript($xajax_js, NULL, $xajax_js."/xajax_js/xajax.js");
 

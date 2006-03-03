@@ -113,7 +113,7 @@ class phpFreeChatConfig
       if (!isset($this->$attr))
         $this->$attr = $v;
     }
-   
+
     // load all user's parameters which will override default ones
     foreach ( $params as $k => $v )
     {
@@ -135,7 +135,7 @@ class phpFreeChatConfig
     //        this will change with the 1.0 refactoring
     // choose a auto-generated channel name if user choose a title but didn't choose a channel name
     if ( $this->channel == "" ) $this->channel = $this->title;
-    
+
     $this->synchronizeWithSession();
   }
 
@@ -260,7 +260,7 @@ class phpFreeChatConfig
     {
       // try to find the path into server configuration
       if ($this->client_script_path == "")
-	$this->client_script_path = phpFreeChatTools::GetScriptFilename();
+	$this->client_script_path = getScriptFilename();
       $filetotest = $this->client_script_path;
       // do not take into account the url parameters
       if (preg_match("/(.*)\?(.*)/", $filetotest, $res))
@@ -285,14 +285,14 @@ class phpFreeChatConfig
         
     // calculate the default theme url
     if ($this->themeurl_default == "")
-      $this->themeurl_default = phpFreeChatTools::RelativePath($this->client_script_path, $this->themepath_default);
+      $this->themeurl_default = relativePath($this->client_script_path, $this->themepath_default);
     if ($this->themeurl == "")
-      $this->themeurl = phpFreeChatTools::RelativePath($this->client_script_path, $this->themepath);
+      $this->themeurl = relativePath($this->client_script_path, $this->themepath);
     
     // calculate datapublic url
     if ($this->data_public_url == "")
     {
-      $this->data_public_url = phpFreeChatTools::RelativePath($this->client_script_path, $this->data_public_path);
+      $this->data_public_url = relativePath($this->client_script_path, $this->data_public_path);
     }
     // ---
     // test server script
@@ -315,7 +315,7 @@ class phpFreeChatConfig
       }
       if ($this->server_script_url == "")
       {
-        $this->server_script_url = phpFreeChatTools::RelativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest);
+        $this->server_script_url = relativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest);
       }
     }
     
@@ -335,7 +335,7 @@ class phpFreeChatConfig
     }
 
     // load debug url
-    $this->debugurl = phpFreeChatTools::RelativePath($this->client_script_path, dirname(__FILE__)."/../debug");
+    $this->debugurl = relativePath($this->client_script_path, dirname(__FILE__)."/../debug");
 
     // check the serverid is really defined
     if ($this->serverid == "")
@@ -493,7 +493,7 @@ class phpFreeChatConfig
       return false;
     }
     if (!is_dir($dir))
-      @phpFreeChatTools::RecursiveMkdir($dir);
+      @mkdir_r($dir);
     if (!is_dir($dir))
     {
       $this->errors[] = _pfc("%s can't be created",$dir);
@@ -533,7 +533,7 @@ class phpFreeChatConfig
       return false;
     }
     if (!is_dir($dst_dir))
-      @phpFreeChatTools::RecursiveMkdir($dst_dir);
+      @mkdir_r($dst_dir);
     return @copy( $src_file, $dst_file );
   }
 
@@ -549,7 +549,7 @@ class phpFreeChatConfig
       $this->errors[] = _pfc("%s is not readable", $src_dir);
       return false;
     }
-    return @phpFreeChatTools::CopyR( $src_dir, $dst_dir );
+    return @copyr( $src_dir, $dst_dir );
   }
 
   function getFileUrlFromTheme($file)

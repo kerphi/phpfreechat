@@ -41,7 +41,6 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $cfg["data_file"]           = ""; // will be generated from the chat_dir parameters into the init step
     $cfg["index_file"]          = ""; // will be generated from the chat_dir parameters into the init step
     $cfg["nickname_dir"]        = ""; // will be generated from the chat_dir parameters into the init step
-    $cfg['sm_type'] = "auto";
     return $cfg;
   }
   
@@ -53,18 +52,19 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
 
     // generate the container parameters from other config parameters
     if ($c->container_cfg_chat_dir == "")
-      $c->container_cfg_chat_dir = $c->data_private_path."/chat/s_".$c->serverid."/".$this->_encode($c->channel);
+      $c->container_cfg_chat_dir = $c->data_private_path."/chat/".preg_replace("/[^a-z0-9]*/","",strtolower($c->channel));
+      //      $c->container_cfg_chat_dir = $c->data_private_path."/chat/s_".$c->serverid."/".$this->_encode($c->channel);
     if ($c->container_cfg_data_file == "")
       $c->container_cfg_data_file = $c->container_cfg_chat_dir."/messages.data";
     if ($c->container_cfg_index_file == "")
       $c->container_cfg_index_file = $c->container_cfg_chat_dir."/messages.index";
     if ($c->container_cfg_nickname_dir == "")
       $c->container_cfg_nickname_dir = $c->container_cfg_chat_dir."/nicknames";
-    
+
     // ---
     // test message file
     if (!is_dir(dirname($c->container_cfg_data_file)))
-      @phpFreeChatTools::RecursiveMkdir(dirname($c->container_cfg_data_file));
+      @mkdir_r(dirname($c->container_cfg_data_file));
     if ($ok && !is_dir(dirname($c->container_cfg_data_file)))
     {
       $ok = false;
@@ -96,7 +96,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     // ---
     // file index test
     if (!is_dir(dirname($c->container_cfg_index_file)))
-      @phpFreeChatTools::RecursiveMkdir(dirname($c->container_cfg_index_file));
+      @mkdir_r(dirname($c->container_cfg_index_file));
     if ($ok && !is_dir(dirname($c->container_cfg_index_file)))
     {
       $ok = false;
@@ -134,7 +134,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     // ---
     // file nickname directory
     if (!is_dir($c->container_cfg_nickname_dir))
-      @phpFreeChatTools::RecursiveMkdir($c->container_cfg_nickname_dir);
+      @mkdir_r($c->container_cfg_nickname_dir);
     if ($ok && !is_dir($c->container_cfg_nickname_dir))
     {
       $ok = false;

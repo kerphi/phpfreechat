@@ -49,7 +49,7 @@ class phpFreeChat
       $c =& $params;
     else
       $c =& phpFreeChatConfig::Instance( $params );
-    
+
     // Xajax doesn't support yet static class methode call
     // I use basic functions to wrap to my statics methodes
     function handleRequest($request)
