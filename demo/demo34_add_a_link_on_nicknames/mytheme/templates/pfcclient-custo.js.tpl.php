@@ -10,7 +10,7 @@ pfcClient.prototype.updateNickList = function(lst)
     var a = document.createElement('a');
     a.setAttribute('href','http://www.google.com/search?q='+nicks[i]);
     a.setAttribute('target','_blank');
-    li.setAttribute('class', '<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(nicks[i]));
+    a.setAttribute('class', '<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(nicks[i]));
     var txt = document.createTextNode(nicks[i]);
     a.appendChild(txt);
     li.appendChild(a);
