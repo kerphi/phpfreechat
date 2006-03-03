@@ -20,7 +20,7 @@
  * Boston, MA  02110-1301  USA
  */
 
-require_once dirname(__FILE__)."/phpfreechattools.class.php";
+require_once dirname(__FILE__)."/pfctools.php";
 require_once dirname(__FILE__)."/phpfreechati18n.class.php";
 
 /**
