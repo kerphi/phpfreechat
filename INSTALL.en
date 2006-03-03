@@ -50,8 +50,9 @@
 
     <?php
 
-    require_once "phpfreechat.class.php"; // adjust to your own path
-    $chat = new phpFreeChat();
+    require_once "src/phpfreechat.class.php"; // adjust to your own path
+    $params["serverid"] = md5(__FILE__); // used to identify the chat
+    $chat = new phpFreeChat($params);
 
     ?>
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -75,7 +76,8 @@
 
     <?php
 
-    require_once "phpfreechat.class.php"; // adjust to your own path
+    require_once "src/phpfreechat.class.php"; // adjust to your own path
+    $params["serverid"] = md5(__FILE__);
     $params["refresh_delay"] = 2000; // 2000ms = 2s
     $chat = new phpFreeChat($params);
 
@@ -88,7 +90,8 @@
 
     <?php
 
-    require_once "phpfreechat.class.php"; // adjust to your own path
+    require_once "src/phpfreechat.class.php"; // adjust to your own path
+    $params["serverid"] = md5(__FILE__);
     $params["nick"] = "guest"; // it can be useful to take nicks from a database
     $chat = new phpFreeChat($params);
 
@@ -98,13 +101,19 @@
     Now for the full parameters list:
 
     serverid
-         This is the chat server id, "its IP" (comparable to the server host
-         in IRC). Two chat must have different serverid.
-         (by default this parameter is calculated from other parameters list)
+         This is the only mandatory parameter. It is the chat server id, "its
+         IP" (comparable to the server host in IRC) used to identify the
+         chat. Two chat must have different serverid. If you don't know what
+         to write, just try : $params["serverid"] = md5(__FILE__);
     nick
          If you have already identified the user (forum, portal...) you can
          force the user's nickname here, this will skip the "Please enter
          your nickname" popup.
+         Warning : Nicknames must be encoded in UTF-8. For example, if you
+         get nicks from a databases where they are ISO-8859-1 encoded, you
+         must ocnvert it: $params["nick"] = iconv("ISO-8859-1", "UTF-8",
+         $bdd_nickname); (of course, change the $bdd_nickname parameter for
+         your needs)
          ("" value by default, means users must choose a nickname when s/he
          connect)
     title
@@ -131,6 +140,10 @@
          request which asks the server if there are new messages to display.
          If there are no new messages, then a empty HTTP response is returned.
          ( 5000ms = 5s by default)
+    timeout
+         This is the time of inactivity to wait before to considere to
+         disconnecte user (in milliseconds).
+         ( 20000ms = 20s by default)
     max_msg
          This is the message history length. When a user connects, he can see
          the history. The number of messages s/he can see is defined by this
@@ -149,11 +162,6 @@
     width
          Width of the chat area.
          ("" by default, means it's given by the CSS)
-    css_file
-         Used to customize display (skin). You can define your own CSS (take
-         demo5 as an exemple) in order to change the default chat style. Just
-         give the path to your CSS customized file.
-         ("" value by default, means the default style sheet is used)
     shownotice
          Setting this to 0 will disable nickname change notices and
          connect/disconnect notices. Setting it to 1 will only disable
@@ -166,23 +174,32 @@
     clock
          Setting it to false will hide the date/hour column.
          (true value by default)
-    smileyurl
-         Used to specify the smiley browsable url (useful for url rewriting)
+    openlinknewwindow
+         Setting it to true will add the target="_blank" into parsed links.
+         This attribute is used to open the followed link in a new window.
+         (true value by default)
+    showwhosonline
+         Used to show/hide online users at startup.
+         (true value by default)
+    showsmileys
+         Used to show/hide the smiley list at startup.
+         (true value by default)
+    btn_sh_whosonline
+         Used to display or not the showwhosonline button.
+         (true value by default)
+    btn_sh_smileys
+         Used to display or not the showsmileys button.
+         (true value by default)
+    themeurl
+         Used to specify the theme root url (useful for url rewriting)
          (this parameter is automaticaly calculated by default)
-    smileypath
-         The absolute smiley directory path. Sub directories must contains
-         smileys theme directories.
-         (dirname(__FILE__)."/../smileys" by default)
-    smileytheme
-         Smiley themes can be defined, this parameter specifies which theme
-         this chat will use. See this explanation[24] if you want to create a
-         smiley theme.
+    themepath
+         The absolute theme directory path. Sub directories must contains
+         themes directories.
+         (dirname(__FILE__)."/../themes" by default)
+    theme
+         This parameter specifies which theme this chat will use.
          ("default" by default)
-    tplpath and tpltheme
-         As for simleys, these parameters are used to specify template
-         location.
-         (dirname(__FILE__)."/../templates" by default and "default" for
-         tpltheme)
     language
          Used to specify the chat labels language. Accepted values are i18n/*
          sub directories names.
@@ -211,7 +228,7 @@
          client script browable url (useful when using url rewriting).
          (by default these parameters are auto-detected)
     useie7
-         Setting this to false will disable IE7[25] scripts used to improve
+         Setting this to false will disable IE7[24] scripts used to improve
          display for the crappy Internet Explorer.
          (true value by default)
     ie7path
@@ -222,22 +239,27 @@
          Specify the javascript libraries path (md5, cookie ...).
          (dirname(__FILE__)."/../lib/javascript" by default)
     smartypath
-         Specify the Smarty[26] path. It's useful if you allready have a
+         Specify the Smarty[25] path. It's useful if you allready have a
          Smarty library installed and you want to save bytes on your server.
          (dirname(__FILE__)."/../lib/Smarty-2.6.7" by default)
+    usecsstidy
+         Setting this to false will disable CSSTidy library, css optimisation
+         (output size) will be disabled.
+         (false value by default because it make problems on strange server
+         configurations)
     csstidypath
-         Specify the CSS Tidy[27] library path. It's useful if you allready
+         Specify the CSS Tidy[26] library path. It's useful if you allready
          have a Smarty library installed and you want to save bytes on your
          server.
          (dirname(__FILE__)."/../lib/csstidy-1.1" by default)
     xajaxpath
-         Specify the xajax[28] path. It's useful if you allready have a xajax
+         Specify the xajax[27] path. It's useful if you allready have a xajax
          library installed and you want to save bytes on your server.
          (dirname(__FILE__)."/../lib/xajax_0.2_stable" by default);
     data_private_path
          Used by the filesystem container to store chat data. Used by smarty
          to store compiled templates. Tip: you can optimize your chat
-         performances, see this FAQ entry[29].
+         performances, see this FAQ entry[28].
          (dirname(__FILE__)."/../data/private" by default)
     data_public_path and data_public_url
          This path must be reachable by your web server. IE7 scripts and
@@ -248,6 +270,12 @@
          For developers, setting it to true will activate logging and
          debuging console.
          (false value by default)
+    debugxajax
+         For developers, setting it to true will activate xajax js popup used
+         to trace communication between client and server during ajax
+         requests. Useful to discover hidden bugs like php warnings on a ajax
+         request.
+         (false value by default)
     prefix
          Used to prefix all javascript functions, css ids and css class in
          order to avoid variables overlaps.
@@ -256,14 +284,15 @@
     ©2006 phpFreeChat
 
 
+
 --------------------------------------------------------------
 List of References
 
 Document's URL:  http://www.phpfreechat.net/install.en.html
 [23] faq.en.html#multiple-channels
-[24] customize.en.html#cust-smileys
-[25] http://dean.edwards.name/IE7/
-[26] http://smarty.php.net/
-[27] http://csstidy.sourceforge.net/index.php
-[28] http://www.xajaxproject.org/
-[29] faq.en.html#tmpfs
+[24] http://dean.edwards.name/IE7/
+[25] http://smarty.php.net/
+[26] http://csstidy.sourceforge.net/index.php
+[27] http://www.xajaxproject.org/
+[28] faq.en.html#tmpfs
+

@@ -54,8 +54,9 @@
 
     <?php
 
-    require_once "phpfreechat.class.php"; // pensez à ajuster le chemin
-    $chat = new phpFreeChat();
+    require_once "src/phpfreechat.class.php"; // pensez à ajuster le chemin
+    $params["serverid"] = md5(__FILE__); // permet d'identifier ce chat
+    $chat = new phpFreeChat($params);
 
     ?>
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -80,7 +81,8 @@
 
     <?php
 
-    require_once "phpfreechat.class.php"; // ajustez le chemin
+    require_once "src/phpfreechat.class.php"; // ajustez le chemin
+    $params["serverid"] = md5(__FILE__);
     $params["refresh_delay"] = 2000; // 2000ms = 2s
     $chat = new phpFreeChat($params);
 
@@ -95,7 +97,8 @@
 
     <?php
 
-    require_once "phpfreechat.class.php"; // ajustez le chemin
+    require_once "src/phpfreechat.class.php"; // ajustez le chemin
+    $params["serverid"] = md5(__FILE__);
     $params["nick"] = "guest"; // ce pseudo peut-être récupéré depuis une base de données
     $chat = new phpFreeChat($params);
 
@@ -105,11 +108,12 @@
     Maintenant voyons la liste exaustive des paramètres :
 
     serverid
-         C'est l'id identifiant du chat, "son IP" (comparable à l'adresse
-         (host) d'un serveur IRC). Deux chats doivent avoir des serverid
-         différents.
-         (par défaut ce paramètre est calculé à partir des autres paramètres
-         passés au chat)
+         C'est leur seule paramètre obligatoire. C'est l'identifiant du chat,
+         "son IP" (comparable à l'adresse (host) d'un serveur IRC) utilisé
+         pour différencer ce chat d'un autre. Deux chats doivent avoir des
+         serverid différents. Si vous ne savez pas quoi mettre, ceci
+         fonctionnera dans la majorité des cas : $params["serverid"] =
+         md5(__FILE__);
     nick
          Ce paramètre est très utile si vous connaissez à l'avance les
          pseudonymes des utilisateurs, par exemple si vous souhaitez intégrer
@@ -118,6 +122,11 @@
          l'utilisateur concerné dans cette option et l'utilisateur sera alors
          automatiquement connecté avec son pseudonyme, il n'aura pas à
          choisir son pseudo lors de la première connexion.
+         Attention : Les pseudonymes doivent être encodés en UTF-8. Si par
+         exemple vos pseudo viennent d'une base de donnée où ils sont encodés
+         en ISO-8859-1, vous devez les convertir : $params["nick"] =
+         iconv("ISO-8859-1", "UTF-8", $bdd_nickname); (bien sur changez la
+         variable $bdd_nickname à votre convenance)
          Remarque : Cette option peut-être utilisée conjointement à l'option
          frozen_nick pour empêcher l'utilisateur de changer de nom.
          ("" par défaut, signifie que les utilisateurs doivent choisir leur
@@ -139,7 +148,7 @@
          (false par défaut)
     max_nick_len
          C'est la longeur maximale que peut avoir un pseudonyme
-         (15 caractères par défaut)
+         (15de caractères par défaut)
     max_text_len
          C'est la longeur maximale que peut avoir un message.
          ( 250 caractères par défaut)
@@ -149,6 +158,10 @@
          si il y a quelque chose de nouveau à afficher ou pas. S'il n'y a
          rien de nouveau alors la réponse HTTP est vide.
          ( 5000ms = 5s par défaut)
+    timeout
+         Ceci est le temps d'inactivité à attendre avant de déconnecter un
+         utilisateur (en millisecondes).
+         ( 20000ms = 20s par défaut)
     max_msg
          Ceci est la taille de l'historique, c'est à dire le nombre de
          messages gardés en mémoire. Quand un utilisateur se connect, il voit
@@ -170,14 +183,6 @@
     width
          Largeur de la zone de chat
          ("" par défaut, signifie que la valeur est assignées dans les CSS)
-    css_file
-         Ce paramètre permet de paramétrer l'affichage de tout le chat
-         (skin). Vous pouvez écrire votre propre feuille de style (prennez
-         exemple sur la demo5) pour changer completement l'apaprence du chat.
-         Il suffit de passez en paramètre le chemin vers votre feuille de
-         style en utilisant cette option.
-         ("" par défaut, signifie que la feuille de style par défaut est
-         utilisée)
     shownotice
          Trois valeurs sont possibles : 0 pour ne rien afficher (ni les
          notices de connexion/deconnexion, ni les changements de pseudo), 1
@@ -192,25 +197,43 @@
          Mettre cette option à false désactivera l'affichage de la date et de
          l'heure.
          (true par défaut)
-    smileyurl
-         Utilisé pour indiquer l'url à taper dans le navigateur pour y
-         acceder (utile pour les réécriture d'url)
-         (ce paramètre est calculé automatiquement par défaut)
-    smileypath
-         Le chemin vers le répertoire racine des smileys. Les sous répertoire
-         de ce répertoire doivent contenir les différents themes de smiley
-         utilisables.
-         (dirname(__FILE__)."/../smileys" par défaut)
-    smileytheme
-         Plusieurs thèmes de smileys peuvent cohabiter, ce paramètre permet
-         de spécifier lequel utiliser. Voyez l'explication détailée de
-         comment créer un thème[24] dand la FAQ.
+    openlinknewwindow
+         Mettre cette option à true permettra d'ouvrire les liens des
+         convertations dans une nouvelle fenêtre. Techniquement cela rajoute
+         l'attribut target="_blank" dans la balise du lien.
+         (true par défaut)
+    showwhosonline
+         Permet de cacher/montrer la liste des utilisateurs connectés lors du
+         premier affichage du chat.
+         Utilisez btn_sh_whosonline pour désactiver complètement la
+         possibilité de voir la liste des pseudonymes.
+         (true par défaut)
+    showsmileys
+         Permet de cacher/montrer la liste des smileys lors du premier
+         affichage du chat.
+         Utilisez btn_sh_smileys pour désactiver complètement la possibilité
+         de voir la liste des smileys.
+         (true par défaut)
+    btn_sh_whosonline
+         Permet de cacher ou montrer le bouton showwhosonline (celui qui
+         permet de cacher/montrer la liste des pseudonymes)
+         (true par défaut)
+    btn_sh_smileys
+         Permet de cacher ou montrer le bouton showsmileys (celui qui permet
+         de cacher/montrer la liste des smileys)
+         (true par défaut)
+    themeurl
+         Permet de spécifier l'url à utiliser pour acceder aux themes (très
+         utile pour la réécriture d'url)
+         (ce paramètre est automatiquement calculé en fonction de themepath
+    themepath
+         Le chemin vers les themes. Les sous répertoires sont les différents
+         thems disponibles.
+         (dirname(__FILE__)."/../themes" par défaut)
+    theme
+         Ce peramètre permet de spécifier quelle theme utiliser. La liste des
+         themes possible sont les nom des sous répertoires de themepath.
          ("default" par défaut)
-    tplpath et tpltheme
-         Sur le même principe que les smiley, ces paramètres permettent
-         d'indiquer l'emplacement des templates à utiliser. .
-         (par défaut ils pointent vers le répertoire de template
-         dirname(__FILE__)."/../templates")
     language
          Permet d'afficher le chat dans une langue donnée. Les valeurs
          possibles sont les nom des sous répertoires de i18n.
@@ -247,7 +270,7 @@
          (par défaut pfc va essayer d'auto-detecter le script client en
          fonction des variables globales du serveur)
     useie7
-         Mettre ce paramètre à false désactivera l'ajout des scripts IE7[25]
+         Mettre ce paramètre à false désactivera l'ajout des scripts IE7[24]
          permettant un meilleur affichage dans Internet Explorer.
          (true par défaut)
     ie7path
@@ -259,13 +282,19 @@
          Spécifie le répertoire vers les librairies javascript (md5, cookie
          ...).
          (dirname(__FILE__)."/../lib/javascript" par défaut)
+    usecsstidy
+         Mettre ce paramètre à false désactivera l'utilisation de la
+         librairie CSSTidy utilisée pour optimiser (en taille) la génération
+         des CSS.
+         (false par défaut car sur certains serveur la librarie CSSTidy pose
+         des problèmes)
     csstidypath
-         Spécifie le répertoire vers la librairie CSS Tidy[26]. Ce paramètre
+         Spécifie le répertoire vers la librairie CSS Tidy[25]. Ce paramètre
          est utile si vous avez déjà installé une librairie csstidy et que
          vous voulez économiser des octets sur votre serveur.
          (dirname(__FILE__)."/../lib/csstidy-1.1" par défaut)
     xajaxpath
-         Spécifie le répertoire vers la librairie xajax[27]. Ce paramètre est
+         Spécifie le répertoire vers la librairie xajax[26]. Ce paramètre est
          utile si vous avez déjà installé une librairie xajax et que vous
          voulez économiser des octets sur votre serveur.
          (dirname(__FILE__)."/../lib/xajax_0.2_stable" par défaut)
@@ -273,7 +302,7 @@
          Ce répertoire est utilisé pour stoqué les données du chat ainsi que
          les templates compilés de smarty. Astuce: vous pouvez optimisez les
          performances coté serveur en spécifiant un répertoire en mémoire
-         vive (RAM disk, tmpfs), voyez cette section dans la FAQ[28].
+         vive (RAM disk, tmpfs), voyez cette section dans la FAQ[27].
          (dirname(__FILE__)."/../data/private" par défaut)
     data_public_path et data_public_url
          Ce répertoire doit être impérativement accessible par votre serveur
@@ -284,8 +313,14 @@
          (dirname(__FILE__)."/../data/public" par défaut, data_public_url lui
          est calculé automatiquement)
     debug
-         Cette option est pour les développeurs seulement. La mettre à true
+         Cette option est très utile pour les développeurs. La mettre à true
          va activer les messages de log et la console de debug.
+         (false par défaut)
+    debugxajax
+         Cette option est très utile pour découvrire les bug cachés (warning
+         php lors d'une requete xajax par exemple) . Mettre cette option à
+         true va activer les popup javascript de xajax pour tracer la
+         communication client/serveur.
          (false par défaut)
     prefix
          Ce prefix est utilisé pour chaques fonctions javascript, chaque id
@@ -297,13 +332,14 @@
 
     ©2006 phpFreeChat
 
+
+
 --------------------------------------------------------------
 List of References
 
 Document's URL:  http://www.phpfreechat.net/install.fr.html
 [23] faq.fr.html#multiple-channels
-[24] customize.fr.html#cust-smileys
-[25] http://dean.edwards.name/IE7/
-[26] http://csstidy.sourceforge.net/index.php
-[27] http://www.xajaxproject.org/
-[28] faq.fr.html#tmpfs
+[24] http://dean.edwards.name/IE7/
+[25] http://csstidy.sourceforge.net/index.php
+[26] http://www.xajaxproject.org/
+[27] faq.fr.html#tmpfs
