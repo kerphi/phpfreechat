@@ -346,9 +346,9 @@ pfcClient.prototype = {
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');
       
     /* try to parse nickname for highlighting  */
-    rx = new RegExp(RegExp.escape(this.nickname),'g');
-    msg = msg.replace(rx, '<strong>'+ this.nickname +'</strong>');
-    
+    rx = new RegExp('(^|[ :.,;])'+RegExp.escape(this.nickname)+'([ :.,;]|$)','gi');
+    msg = msg.replace(rx, '$1<strong>'+ this.nickname +'</strong>$2');
+
     /* try to parse smileys */
     var sl = this.smileys.keys();
     for(var i = 0; i < sl.length; i++)
