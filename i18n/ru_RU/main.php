@@ -168,4 +168,13 @@ $GLOBALS["i18n"]["Error: '%s' could not be found, please check your themepath '%
 $GLOBALS["i18n"]["%s must be implemented"] = "%s должно быть осуществлено";
 
 
+// line 343 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "";
+
+// line 378 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "";
+
+// line 386 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "";
+
 ?>

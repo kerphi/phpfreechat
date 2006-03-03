@@ -125,9 +125,6 @@ $GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or
 // line 48 in phpfreechattemplate.class.php
 $GLOBALS["i18n"]["%s template could not be found"] = "";
 
-// line 324 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'serverid' parameter is mandatory by default use 'md5(__FILE__)' value"] = "";
-
 // line 512 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct"] = "";
 
@@ -167,5 +164,14 @@ $GLOBALS["i18n"]["Show online users box"] = "";
 // line 75 in pfccommand.class.php
 $GLOBALS["i18n"]["%s must be implemented"] = "";
 
+
+// line 343 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "";
+
+// line 378 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "";
+
+// line 386 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "";
 
 ?>

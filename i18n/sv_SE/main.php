@@ -168,4 +168,13 @@ $GLOBALS["i18n"]["Show online users box"] = "";
 // line 75 in pfccommand.class.php
 $GLOBALS["i18n"]["%s must be implemented"] = "";
 
+// line 343 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "";
+
+// line 378 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "";
+
+// line 386 in phpfreechatconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "";
+
 ?>
