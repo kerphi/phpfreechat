@@ -779,6 +779,7 @@ pfcClient.prototype = {
   {
     var content = $('<?php echo $prefix; ?>smileys');
     var btn = $('<?php echo $prefix; ?>showHideSmileysbtn');
+    if (!btn) return;
     if (this.showsmileys)
     {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-on.gif'); ?>";
@@ -818,7 +819,7 @@ pfcClient.prototype = {
   {
     var content = $('<?php echo $prefix; ?>online');
     var btn = $('<?php echo $prefix; ?>showHideWhosOnlineBtn');
-    
+    if (!btn) return;
     if (this.showwhosonline)
     {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-on.gif'); ?>";
