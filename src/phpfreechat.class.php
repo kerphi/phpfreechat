@@ -182,7 +182,7 @@ class phpFreeChat
 
     // this is a IE6 workeround (IE7 works well) to resize correctly the smiley and online boxes
     // this is ugly but I didn't found a cleaner way to fix the problem...
-    $output .= '<link rel="stylesheet" type="text/css" href="http://" />';
+    $output .= '<link rel="stylesheet" type="text/css" href="http://www.phpfreechat.net/style/blank.css" />';
 
     if($return)
       return $output;
