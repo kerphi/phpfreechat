@@ -61,6 +61,7 @@ pfcClient.prototype = {
     this.el_errors    = $('<?php echo $prefix; ?>errors');
 
     /* the events callbacks */
+    this.el_words.onkeypress = this.callbackWords_OnKeypress.bindAsEventListener(this);
     this.el_words.onkeydown  = this.callbackWords_OnKeydown.bindAsEventListener(this);
     this.el_words.onfocus    = this.callbackWords_OnFocus.bindAsEventListener(this);
     this.el_handle.onkeydown = this.callbackHandle_OnKeydown.bindAsEventListener(this);
@@ -103,13 +104,42 @@ pfcClient.prototype = {
     }
     this.smileys = $H(smileys);
   },
-  
-  callbackWords_OnKeydown: function(evt)
+
+  /**
+   * Try to complete a nickname like on IRC when pressing the TAB key
+   * @todo: improve the algorithme, it should take into account the cursor position
+   */
+  completeNick: function()
   {
-    if (!this.isconnected) return false;
-    this.clearError(Array(this.el_words));
-    var code = evt.keyCode;
-    if (code == 13) /* enter key */
+    var w = this.el_words;
+    var nick_src = w.value.substring(w.value.lastIndexOf(' ')+1,w.value.length);
+    if (nick_src != '')
+    {
+      var ul_online = this.el_online.firstChild;
+      for (var i=0; i<ul_online.childNodes.length; i++)
+      {
+	var nick = ul_online.childNodes[i].innerHTML;
+	if (nick.indexOf(nick_src) == 0)
+	  w.value = w.value.replace(nick_src, nick);
+      }
+    }
+  },
+
+  /**
+   * Handle the pressed keys
+   * see also callbackWords_OnKeydown
+   */
+  callbackWords_OnKeypress: function(evt)
+  {
+    var code = (evt.which) ? evt.which : evt.keyCode
+    if (code == 9) /* tab key */
+    {
+      /* FF & Konqueror workaround : ignore TAB key here */
+      /* do the nickname completion work like on IRC */
+      this.completeNick();
+      return false; /* do not leave the tab key default behavior */
+    }
+    else if (code == 13) /* enter key */
     {
       var w = this.el_words;
       var wval = w.value;
@@ -129,23 +159,31 @@ pfcClient.prototype = {
       w.value = '';
       return false;
     }
-    else if (code == 39) /* right direction */
+    else
     {
-      var w = this.el_words;
-      var nick_src = w.value.substring(w.value.lastIndexOf(' ')+1,w.value.length);
-      if (nick_src != '')
-      {
-	var ul_online = this.el_online.firstChild;
-	for (var i=0; i<ul_online.childNodes.length; i++)
-	{
-	  var nick = ul_online.childNodes[i].innerHTML;
-	  if (nick.indexOf(nick_src) == 0)
-	    w.value = w.value.replace(nick_src, nick);
-	}
-      }
+      /* allow other keys */
+      return true;
+    }
+  },
+  /**
+   * Handle the pressed keys
+   * see also callbackWords_OnKeypress
+   */
+  callbackWords_OnKeydown: function(evt)
+  {
+    if (!this.isconnected) return false;
+    this.clearError(Array(this.el_words));
+    var code = (evt.which) ? evt.which : event.keyCode
+    if (code == 9) /* tab key */
+    {
+      /* IE workaround : ignore TAB key here */
+      /* do the nickname completion work like on IRC */
+      this.completeNick();
+      return false; /* do not leave the tab key default behavior */
     }
     else
     {
+      return true;
     }
   },
   callbackWords_OnFocus: function(evt)
