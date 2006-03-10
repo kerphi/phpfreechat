@@ -52,16 +52,15 @@
       <li><a href="demo14_in_german_formal_language.php">demo14 - the german (formal) translation of the chat</a></li>
       <li><a href="demo16_in_arabic.php">demo16 - the arabic translation of the chat</a></li>
       <li><a href="demo19_in_japanese.php">demo19 - the japanese translation of the chat</a></li>
-      <li><a href="demo20_in_brazilian_portuguese.php">demo20 - the brazilian portuguese translation of the chat</a></li>
+      <li><a href="demo20_in_brazilian_portuguese.php">demo20 - the portuguese from brazil translation of the chat</a></li>
       <li><a href="demo22_in_serbian_croatian.php">demo22 - the serbian croatian translation of the chat</a></li>
       <li><a href="demo23_in_italian.php">demo23 - the italian translation of the chat</a></li>
       <li><a href="demo24_in_spanish.php">demo24 - the spanish translation of the chat</a></li>
       <li><a href="demo25_in_indonesian.php">demo25 - the indonesian translation of the chat</a></li>
       <li><a href="demo26_in_swedish.php">demo26 - the swedish translation of the chat</a></li>
       <li><a href="demo29_in_russian.php">demo29 - the russian translation of the chat</a></li>
-      <li><a href="demo33_in_portuguese_from_portugal.php">demo33 - the Portuguese from Portugal translation of the chat</a></li>
-
-
+      <li><a href="demo33_in_portuguese_from_portugal.php">demo33 - the portuguese from portugal translation of the chat</a></li>
+      <li><a href="demo36_in_ukrainian.php">demo36 - the ukrainian translation of the chat</a></li>
     </ul>
   </body>
   
