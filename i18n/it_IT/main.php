@@ -42,7 +42,7 @@ $GLOBALS["i18n"]["Text cannot be empty"] = "Il testo non può essere vuoto";
 $GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s ha cambiato il suo pseudonimo in %s";
 
 // line 398 in phpfreechat.class.php
-$GLOBALS["i18n"]["%s is connected"] = "%s è connesso";
+$GLOBALS["i18n"]["%s is connected"] = "%s connesso";
 
 // line 452 in phpfreechat.class.php
 $GLOBALS["i18n"]["%s quit"] = "%s abbandona la chat";
@@ -120,61 +120,56 @@ $GLOBALS["i18n"]["Enter your message here"] = "Inserisci il tuo messaggio qui";
 $GLOBALS["i18n"]["Enter your nickname here"] = "Inserisci il tuo pseudonimo qui";
 
 // line 48 in phpfreechattemplate.class.php
-$GLOBALS["i18n"]["%s template could not be found"] = "";
+$GLOBALS["i18n"]["%s template could not be found"] = "%s non può essere trovato";
 
 // line 96 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "";
-
-// line 324 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'serverid' parameter is mandatory by default use 'md5(__FILE__)' value"] = "";
+$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "Errore: parametro '%s' obsoleto o non definito, correggerlo o rimuoverlo";
 
 // line 512 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct"] = "";
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct"] = "Errore: '%s' non può essere trovato, controlla se la directory dei temi '%s' e il tuo tema '%s' sono corrette";
 
 // line 33 in chat.html.tpl.php
-$GLOBALS["i18n"]["Bold"] = "";
+$GLOBALS["i18n"]["Bold"] = "Grassetto";
 
 // line 34 in chat.html.tpl.php
-$GLOBALS["i18n"]["Italics"] = "";
+$GLOBALS["i18n"]["Italics"] = "Corsivo";
 
 // line 35 in chat.html.tpl.php
-$GLOBALS["i18n"]["Underline"] = "";
+$GLOBALS["i18n"]["Underline"] = "Sottolineato";
 
 // line 36 in chat.html.tpl.php
-$GLOBALS["i18n"]["Delete"] = "";
+$GLOBALS["i18n"]["Delete"] = "Barrato";
 
 // line 37 in chat.html.tpl.php
-$GLOBALS["i18n"]["Pre"] = "";
+$GLOBALS["i18n"]["Pre"] = "Pre";
 
 // line 38 in chat.html.tpl.php
-$GLOBALS["i18n"]["Mail"] = "";
+$GLOBALS["i18n"]["Mail"] = "Indirizzo e-mail";
 
 // line 39 in chat.html.tpl.php
-$GLOBALS["i18n"]["Color"] = "";
+$GLOBALS["i18n"]["Color"] = "Colore";
 
 // line 86 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Hide smiley box"] = "";
+$GLOBALS["i18n"]["Hide smiley box"] = "Nascondi il box degli smile";
 
 // line 87 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Show smiley box"] = "";
+$GLOBALS["i18n"]["Show smiley box"] = "Mostra il box degli smile";
 
 // line 88 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Hide online users box"] = "";
+$GLOBALS["i18n"]["Hide online users box"] = "Nascondi il box degli utenti in linea";
 
 // line 89 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Show online users box"] = "";
+$GLOBALS["i18n"]["Show online users box"] = "Mostra il box degli utenti in linea";
 
 // line 75 in pfccommand.class.php
-$GLOBALS["i18n"]["%s must be implemented"] = "";
-
+$GLOBALS["i18n"]["%s must be implemented"] = "%s deve essere implementato";
 
 // line 343 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "";
+$GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "Il parametro '%s' è obbligatorio, usa il valore '%s'";
 
 // line 378 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "Il parametro '%s' deve essere impostato su un numero positivo";
 
 // line 386 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "";
-
+$GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "Il parametro '%s' non è valido. I valori disponibili sono : '%s'";
 ?>
