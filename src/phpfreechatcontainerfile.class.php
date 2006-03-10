@@ -76,7 +76,10 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
       $errors[] = dirname($c->container_cfg_data_file)." is not writable";
     }
     if ($ok && !file_exists($c->container_cfg_data_file))
+    {
       @touch($c->container_cfg_data_file);
+      @chmod($c->container_cfg_data_file, 0777);
+    }
     if ($ok && !file_exists($c->container_cfg_data_file))
     {
       $ok = false;
@@ -108,7 +111,10 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
       $errors[] = dirname($c->container_cfg_index_file)." is not writable";
     }    
     if ($ok && !file_exists($c->container_cfg_index_file))
+    {
       @touch($c->container_cfg_index_file);      
+      @chmod($c->container_cfg_index_file, 0777);
+    }
     if ($ok && !file_exists($c->container_cfg_index_file))
     {
       $ok = false;
@@ -162,6 +168,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $my_filename = $c->container_cfg_nickname_dir."/".$this->_encode($c->nick);
     if (file_exists($my_filename)) $there = true;
     touch($my_filename);
+    chmod($my_filename, 0777); 
     
     return $there;
   }

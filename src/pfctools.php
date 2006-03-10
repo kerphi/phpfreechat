@@ -103,7 +103,7 @@ function cleanPath($path)
 }
 
 
-function mkdir_r($path)
+function mkdir_r($path, $mode = 0777)
 {
   // This function creates the specified directory using mkdir().  Note
   // that the recursive feature on mkdir() is broken with PHP 5.0.4 for
@@ -112,8 +112,8 @@ function mkdir_r($path)
   {
     // The directory doesn't exist.  Recurse, passing in the parent
     // directory so that it gets created.
-    mkdir_r(dirname($path));
-    mkdir($path, 0777);
+    mkdir_r(dirname($path), $mode);
+    mkdir($path, $mode);
   }
 }
 
@@ -128,16 +128,18 @@ function mkdir_r($path)
  * @param       string   $dest      Destination path
  * @return      bool     Returns TRUE on success, FALSE on failure
  */
-function copyr($source, $dest)
+function copyr($source, $dest, $mode = 0777)
 {
   // Simple copy for a file
   if (is_file($source)) {
-    return copy($source, $dest);
+    $ret = copy($source, $dest);
+    chmod($dest, $mode);
+    return $ret;
   }
   
   // Make destination directory
   if (!is_dir($dest)) {
-    mkdir($dest);
+    mkdir($dest, $mode);
   }
   
   // Loop through the folder
@@ -150,7 +152,7 @@ function copyr($source, $dest)
     
     // Deep copy directories
     if ($dest !== "$source".DIRECTORY_SEPARATOR."$entry") {
-      copyr("$source".DIRECTORY_SEPARATOR."$entry", "$dest".DIRECTORY_SEPARATOR."$entry");
+      copyr("$source".DIRECTORY_SEPARATOR."$entry", "$dest".DIRECTORY_SEPARATOR."$entry", $mode);
     }
   }
   
