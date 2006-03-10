@@ -69,7 +69,6 @@ div#<?php echo $prefix; ?>online ul {
   padding: 0;
   margin-left: 8px;
   margin-right: 8px;
-  white-space: nowrap;
 }
 div#<?php echo $prefix; ?>online li {
   border-bottom: 1px solid #DDD;
@@ -186,4 +185,8 @@ p#<?php echo $prefix; ?>errors {
 
 div#<?php echo $prefix; ?>color {
   display:none;
+}
+
+.<?php echo $prefix; ?>nickmarker {
+  white-space: pre;
 }
