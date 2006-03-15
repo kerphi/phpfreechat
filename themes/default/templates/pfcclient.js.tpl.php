@@ -361,7 +361,9 @@ pfcClient.prototype = {
     
     /* try to parse http adresses */
     rx = new RegExp('(http\:\/\/[^ ]*)','ig');
-    msg = msg.replace(rx, '<a href="$1"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$1</a>');
+    /* msg = msg.replace(rx, '<a href="$1"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$1</a>'); */
+    msg = msg.replace(rx, '<a href="$1"<?php if($openlinknewwindow) echo ' onclick="window.open(this.url); return false;"'; ?>>$1</a>');
+
 
     /* try to parse bbcode */
 
