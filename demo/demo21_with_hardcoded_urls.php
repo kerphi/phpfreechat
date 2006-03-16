@@ -5,10 +5,18 @@ $params = array();
 $params["serverid"]       = md5(__FILE__); // calculate a unique id for this chat
 $params["title"]          = "A chat with a hardcoded urls";
 $params["nick"]           = "guest";  // setup the intitial nickname
+
+// setup urls
 $params["data_public_url"]   = "../data/public";
 $params["client_script_url"] = "./demo21_with_hardcoded_urls.php";
 $params["server_script_url"] = "./demo21_with_hardcoded_urls.php";
 $params["themeurl"]          = "../themes";
+$params["themeurl_default"]  = "../themes";
+
+// setup paths
+$params["container_type"]         = "File";
+$params["container_cfg_chat_dir"] = dirname(__FILE__)."/../data/private/chat";
+
 $chat = new phpFreeChat( $params );
 
 ?>
