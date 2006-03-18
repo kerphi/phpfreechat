@@ -15,7 +15,7 @@
 <h1>xajax Tests</h1>
 
 <ul>
-<li><a href="xajaxResponseTest.php">xajaxResponse Test</a></li>
+<li><a href="xajaxResponseTest.php">xajaxResponse Test</a> (<b>generates a new xajax.js file if missing</b>)</li>
 <li><a href="disabledFormElementsTest.php">Disabled Form Elements Test</a></li>
 <li><a href="preFunctionTest.php">Pre-function Test</a></li>
 <li><a href="catchAllFunctionTest.php">Catch-all Function Test</a></li>
@@ -31,6 +31,8 @@
 <li><a href="eventHandlerTest.php">Event Handler Test</a></li>
 <li><a href="searchReplaceTest.php">Search and Replace Test</a></li>
 <li><a href="phpWhitespaceTest.php">PHP Whitespace Test</a></li>
+<li><a href="redirectTest.php">Redirect Test</a></li>
+<li><a href="HTTPStatusTest.php">HTTP Status Test</a></li>
 </ul>
 
 </body>

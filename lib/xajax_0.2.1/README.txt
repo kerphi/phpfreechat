@@ -2,18 +2,22 @@
  xajax PHP Class Library
  The easiest way to develop asynchronous Ajax applications with PHP
 
- Version 0.2 (stable release)
+ Version 0.2.1 (stable release)
  README Text File
 
  ------------------------------------------------------
  | Release Notes:                                     |
- | http://wiki.xajaxproject.org/0.2_Release_Notes     |
+ | http://wiki.xajaxproject.org/0.2.1_Release_Notes   |
  |                                                    |
  | Lead Developers:                                   |
  | Jared White (jared@intuitivefuture.com)            |
  | J. Max Wilson (jmaxwilson@users.sourceforge.net)   |
+ | Eion Robb (eion@bigfoot.com)                       |
  ------------------------------------------------------
 ====================================================================
+
+ :: To find out what's changed since the 0.2 release of xajax, ::
+ :: view the Release Notes in the link above.                  ::
 
 1. Introduction
 
@@ -66,13 +70,9 @@ Unpack the contents of this archive and copy them to your main Web
 site folder. Or if you wish, you can put all of the files in a
 dedicated "xajax" folder on your Web server (make sure that you
 know what that URL is relative your site pages so you can provide
-xajax with the correct installed folder URL).
-
-Make sure that the "xajax_js" folder within the main xajax folder
-is set to be writable by the Web server, since xajax will need to
-compress the verbose Javascript file into a smaller file suitable
-for constant Web access. Also, the "thewall" folder in the
-"examples" folder needs to be writable by the Web server as well.
+xajax with the correct installed folder URL). Note that the
+"thewall" folder in the "examples" folder needs to be writable by
+the Web server for that example to function.
 
 Within the main xajax folder there are two folders: "examples"
 and "tests". You should be able to view these PHP pages from your
@@ -85,7 +85,7 @@ a message in our forums and someone may be able to help you.
 4. Documentation
 
 Detailed documentation for the xajax PHP classes is available on
-our wiki (URL listed above in section 2), and more in on the way
+our wiki (URL listed above in section 2), and more is on the way
 (particularly in regards to the Javascript component of xajax).
 Another good way of learning xajax is to look at the code for the
 examples and tests. If you need any help, pop in the forums and

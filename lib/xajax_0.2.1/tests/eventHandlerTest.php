@@ -44,7 +44,7 @@ function clickHandler2()
 <h1>Event Handler Test</h1>
 
 
-<div id="myDiv"" style="padding: 3px; display: table; border: 1px outset black; font-size: large; margin-bottom: 10px;">Click Me</div>
+<div id="myDiv" style="padding: 3px; display: table; border: 1px outset black; font-size: large; margin-bottom: 10px;">Click Me</div>
 
 <form id="testForm1" onsubmit="return false;">
 <div>

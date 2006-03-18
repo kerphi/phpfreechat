@@ -20,6 +20,7 @@ $xajax = new xajax();
 //$xajax->debugOn();
 $xajax->registerFunction("showOutput");
 $xajax->processRequests();
+$xajax->autoCompressJavascript("/Users/jwhite/Sites/workspace/xajax/xajax_js/xajax.js");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/2000/REC-xhtml1-20000126/DTD/xhtml1-transitional.dtd">

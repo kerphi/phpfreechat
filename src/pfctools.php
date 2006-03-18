@@ -129,31 +129,35 @@ function mkdir_r($path, $mode = 0777)
  * @return      bool     Returns TRUE on success, FALSE on failure
  */
 function copyr($source, $dest, $mode = 0777)
-{
+{ 
   // Simple copy for a file
   if (is_file($source)) {
     $ret = copy($source, $dest);
     chmod($dest, $mode);
     return $ret;
   }
-  
+
   // Make destination directory
   if (!is_dir($dest)) {
     mkdir($dest, $mode);
   }
+
+  // Take the directories entries
+  $dir = dir($source);
+  $entries = array();
+  while (false !== $entry = $dir->read())
+  {
+    $entries[] = $entry;
+  }
   
   // Loop through the folder
-  $dir = dir($source);
-  while (false !== $entry = $dir->read()) {
+  foreach ($entries as $e)
+  {
     // Skip pointers
-    if ($entry == '.' || $entry == '..') {
-      continue;
-    }
-    
+    if ($e == '.' || $e == '..') continue;
     // Deep copy directories
-    if ($dest !== "$source".DIRECTORY_SEPARATOR."$entry") {
-      copyr("$source".DIRECTORY_SEPARATOR."$entry", "$dest".DIRECTORY_SEPARATOR."$entry", $mode);
-    }
+    if ($dest !== $source . DIRECTORY_SEPARATOR . $e)
+      copyr($source . DIRECTORY_SEPARATOR . $e, $dest . DIRECTORY_SEPARATOR . $e, $mode);
   }
   
   // Clean up

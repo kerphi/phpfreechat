@@ -69,7 +69,7 @@ class phpFreeChatConfig
   var $server_script_url   = ""; // default is calculated from 'server_script_path'
   var $useie7              = true; // use IE7 lib : fix crappy IE display bugs
   var $ie7path             = ""; // default is dirname(__FILE__)."/../lib/IE7_0_9";
-  var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2_stable";
+  var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2.1";
   var $jspath              = ""; // default is dirname(__FILE__)."/../lib/javascript";
   var $usecsstidy          = false;
   var $csstidypath         = ""; // default is dirname(__FILE__)."/../lib/csstidy-1.1";
@@ -125,7 +125,7 @@ class phpFreeChatConfig
     // setup a defaut title if user didn't set it up
     if ($this->title == "")        $this->title        = _pfc("My Chat");
     if ($this->ie7path == "")      $this->ie7path      = dirname(__FILE__)."/../lib/IE7_0_9";
-    if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2_stable";
+    if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.1";
     if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
     if ($this->csstidypath == "")  $this->csstidypath  = dirname(__FILE__)."/../lib/csstidy-1.1";
     if ($this->data_private_path == "") $this->data_private_path = dirname(__FILE__)."/../data/private";
@@ -215,8 +215,8 @@ class phpFreeChatConfig
     
     $ok &= $this->_testWritableDir($this->data_public_path, "data_public_path");
     $ok &= $this->_testWritableDir($this->data_private_path, "data_private_path");
-    $ok &= $this->_installDir($this->jspath, $this->data_public_path."/javascript/");
-
+    $ok &= $this->_installDir($this->jspath, $this->data_public_path."/javascript");
+    
     // ---
     // test xajax lib existance
     $dir = $this->xajaxpath;
@@ -233,10 +233,10 @@ class phpFreeChatConfig
     if ($ok)
     {
       // install public xajax js to phpfreechat public directory
-      $ok &= $this->_installFile($this->xajaxpath."/xajax_js/xajaxCompress.php",
-                                 $this->data_public_path."/xajax_js/xajaxCompress.php");
       $ok &= $this->_installFile($this->xajaxpath."/xajax_js/xajax_uncompressed.js",
                                  $this->data_public_path."/xajax_js/xajax_uncompressed.js" );
+      $ok &= $this->_installFile($this->xajaxpath."/xajax_js/xajax.js",
+                                 $this->data_public_path."/xajax_js/xajax.js" );
     }
 
     // ---
@@ -253,7 +253,7 @@ class phpFreeChatConfig
       $this->errors[] = _pfc("%s not found, %s library can't be found", "ie7-core.js", "IE7");
     }
     $ok &= $this->_installDir($this->ie7path, $this->data_public_path."/ie7/");
-
+    
     // ---
     // test client script
     if ($ok)
@@ -493,7 +493,7 @@ class phpFreeChatConfig
       return false;
     }
     if (!is_dir($dir))
-      @mkdir_r($dir);
+      mkdir_r($dir);
     if (!is_dir($dir))
     {
       $this->errors[] = _pfc("%s can't be created",$dir);
@@ -533,8 +533,8 @@ class phpFreeChatConfig
       return false;
     }
     if (!is_dir($dst_dir))
-      @mkdir_r($dst_dir);
-    return @copy( $src_file, $dst_file );
+      mkdir_r($dst_dir);
+    return copy( $src_file, $dst_file );
   }
 
   function _installDir($src_dir, $dst_dir)
@@ -549,7 +549,7 @@ class phpFreeChatConfig
       $this->errors[] = _pfc("%s is not readable", $src_dir);
       return false;
     }
-    return @copyr( $src_dir, $dst_dir );
+    return copyr( $src_dir, $dst_dir );
   }
 
   function getFileUrlFromTheme($file)
