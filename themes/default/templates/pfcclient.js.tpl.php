@@ -44,6 +44,12 @@ pfcClient.prototype = {
     this.showwhosonline = (cookie == 'true');
     if (cookie == '' || cookie == null)
       this.showwhosonline = <?php echo $showwhosonline ? "true" : "false"; ?>;
+
+    /* '' means no forced color, let CSS choose the text color */
+    this.current_text_color = '';
+    cookie = getCookie('<?php echo $prefix; ?>current_text_color');
+    if (cookie != null)
+      this.switch_text_color(cookie);
              
     this.isconnected   = false;
     this.nicklist      = Array();
@@ -154,7 +160,15 @@ pfcClient.prototype = {
       else
       {
 	/* a classic 'send' command*/
-	this.handleRequest('/send', wval.substr(0,<?php echo $max_text_len; ?>));
+
+	/* truncate the text length */
+	wval = wval.substr(0, <?php echo $max_text_len; ?>);
+
+	/* colorize the text with current_text_color */
+	if (this.current_text_color != '')
+  	  wval = '[color=#' + this.current_text_color + ']' + wval + '[/color]';
+
+	this.handleRequest('/send', wval);
       }
       w.value = '';
       return false;
@@ -364,10 +378,7 @@ pfcClient.prototype = {
     /* msg = msg.replace(rx, '<a href="$1"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$1</a>'); */
     msg = msg.replace(rx, '<a href="$1"<?php if($openlinknewwindow) echo ' onclick="window.open(this.url); return false;"'; ?>>$1</a>');
 
-
     /* try to parse bbcode */
-
-
     rx = new RegExp('\\[b\\](.*?)\\[\/b\\]','ig');
     msg = msg.replace(rx, '<span style="font-weight: bold">$1</span>');
     rx = new RegExp('\\[i\\](.*?)\\[\/i\\]','ig');
@@ -382,9 +393,13 @@ pfcClient.prototype = {
     msg = msg.replace(rx, '<a href="mailto:$1">$1</a>'); 
     rx = new RegExp('\\[email=([^\[]*?)\\](.*?)\\[\/email\\]','ig');
     msg = msg.replace(rx, '<a href="mailto:$1">$2</a>');
-    rx = new RegExp('\\[color=([a-zA-Z]*|\\#?[0-9a-fA-F]{6})](.*?)\\[\/color\\]','ig');
+    rx = new RegExp('\\[color=([a-zA-Z]*|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.*?)\\[\/color\\]','ig');
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');
-      
+    // parse bbcode colors twice because the current_text_color is a bbcolor
+    // so it's possible to have a bbcode color imbrication
+    rx = new RegExp('\\[color=([a-zA-Z]*|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.*?)\\[\/color\\]','ig');
+    msg = msg.replace(rx, '<span style="color: $1">$2</span>');   
+
     /* try to parse nickname for highlighting  */
     rx = new RegExp('(^|[ :.,;])'+RegExp.escape(this.nickname)+'([ :.,;]|$)','gi');
     msg = msg.replace(rx, '$1<strong>'+ this.nickname +'</strong>$2');
@@ -562,7 +577,7 @@ pfcClient.prototype = {
   applyNickColor: function(root, nick, color)
   {
     var nicktochange = this.getElementsByClassName(root, '<?php echo $prefix; ?>nick_'+ hex_md5(nick), '')
-    for(var i = 0; nicktochange.length > i; i++)
+    for(var i = 0; nicktochange.length > i; i++) 
       nicktochange[i].style.color = color; 
   },
 
@@ -782,22 +797,36 @@ pfcClient.prototype = {
   /**
    * Minimize/Maximize none/inline
    */
-  minimize_maximize: function()
+  minimize_maximize: function(idname, type)
   {
-    var element = $('<?php echo $prefix; ?>color');
+    var element = $(idname);
     if(element.style)
     {
-      if(element.style.display == 'inline' )
+      if(element.style.display == type )
       {
         element.style.display = 'none';
       }
       else
       {
-        element.style.display = 'inline';
+        element.style.display = type;
       }
     }
   },
   
+  switch_text_color: function(color)
+  {
+    /* clear any existing borders on the color buttons */
+    var colorbtn = this.getElementsByClassName($('<?php echo $prefix; ?>colorlist'), '<?php echo $prefix; ?>color', '');
+    for(var i = 0; colorbtn.length > i; i++)
+      colorbtn[i].style.border = 'none';
+
+    /* assign the new border style to the selected button */
+    this.current_text_color = color;
+    setCookie('<?php echo $prefix; ?>current_text_color', this.current_text_color);
+    var idname = '<?php echo $prefix; ?>color_' + color;
+    $(idname).style.border = '1px solid #666';
+    $(idname).style.padding = '1px';
+  },
   
   /**
    * Smiley show/hide

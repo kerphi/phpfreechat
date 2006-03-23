@@ -183,8 +183,12 @@ p#<?php echo $prefix; ?>errors {
   color: #888;
 }
 
-div#<?php echo $prefix; ?>color {
-  display:none;
+div#<?php echo $prefix; ?>colorlist {
+  display: none;
+}
+img.<?php echo $prefix; ?>color {
+  padding: 1px;
+  cursor: pointer;
 }
 
 .<?php echo $prefix; ?>nickmarker {
