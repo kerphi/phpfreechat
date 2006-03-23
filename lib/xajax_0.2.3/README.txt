@@ -2,12 +2,12 @@
  xajax PHP Class Library
  The easiest way to develop asynchronous Ajax applications with PHP
 
- Version 0.2.1 (stable release)
+ Version 0.2.3 (stable release)
  README Text File
 
  ------------------------------------------------------
  | Release Notes:                                     |
- | http://wiki.xajaxproject.org/0.2.1_Release_Notes   |
+ | http://wiki.xajaxproject.org/0.2.3_Release_Notes   |
  |                                                    |
  | Lead Developers:                                   |
  | Jared White (jared@intuitivefuture.com)            |
@@ -16,8 +16,8 @@
  ------------------------------------------------------
 ====================================================================
 
- :: To find out what's changed since the 0.2 release of xajax, ::
- :: view the Release Notes in the link above.                  ::
+ :: To find out what's changed since the 0.2.2 release of xajax, ::
+ :: view the Release Notes in the link above.                    ::
 
 1. Introduction
 
@@ -71,7 +71,9 @@ site folder. Or if you wish, you can put all of the files in a
 dedicated "xajax" folder on your Web server (make sure that you
 know what that URL is relative your site pages so you can provide
 xajax with the correct installed folder URL). Note that the
+
 "thewall" folder in the "examples" folder needs to be writable by
+
 the Web server for that example to function.
 
 Within the main xajax folder there are two folders: "examples"

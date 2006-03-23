@@ -23,6 +23,7 @@
 <li><a href="registerObjectTest.php">Register Object Test</a></li>
 <li><a href="largeResponseTest.php">Large Response Test</a></li>
 <li><a href="formSubmissionTest.php">Form Submission Test</a></li>
+<li><a href="charEncodingTest.php">Character Encoding Test</a></li>
 <li><a href="customResponseClassTest.php">Custom Response Class Test</a></li>
 <li><a href="createFormInputTest.php">Create Form Input Test</a></li>
 <li><a href="errorHandlingTest.php">Error Handling Test</a></li>

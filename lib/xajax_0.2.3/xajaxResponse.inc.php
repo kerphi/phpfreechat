@@ -2,7 +2,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // xajaxResponse.inc.php :: xajax XML response class
 //
-// xajax version 0.2.1
+// xajax version 0.2.3
 // copyright (c) 2005 by Jared White & J. Max Wilson
 // http://www.xajaxproject.org
 //
@@ -52,14 +52,18 @@ class xajaxResponse
 {
 	var $xml;
 	var $sEncoding;
+	var $bOutputEntities;
 
 	// Constructor. Its main job is to set the character encoding for the response.
 	// $sEncoding is a string containing the character encoding string to use.
+	// $bOutputEntities lets you set if you want special characters in the output
+	//  converted to HTML entities
 	// * Note: to change the character encoding for all of the responses, set the
 	// XAJAX_DEFAULT_ENCODING constant near the beginning of the xajax.inc.php file
-	function xajaxResponse($sEncoding=XAJAX_DEFAULT_CHAR_ENCODING)
+	function xajaxResponse($sEncoding=XAJAX_DEFAULT_CHAR_ENCODING, $bOutputEntities=false)
 	{
 		$this->setCharEncoding($sEncoding);
+		$this->bOutputEntities = $bOutputEntities;
 	}
 	
 	// setCharEncoding() sets the character encoding for the response based on
@@ -70,6 +74,20 @@ class xajaxResponse
 	function setCharEncoding($sEncoding)
 	{
 		$this->sEncoding = $sEncoding;
+	}
+	
+	// outputEntitiesOn() tells the response object to convert special characters to
+	// HTML entities automatically (only works if the mb_string extension is available).
+	function outputEntitiesOn()
+	{
+		$this->bOutputEntities = true;
+	}
+	
+	// outputEntitiesOff() tells the response object to output special characters
+	// intact. (default behavior)
+	function outputEntitiesOff()
+	{
+		$this->bOutputEntities = false;
 	}
 	
 	// addAssign() adds an assign command message to the XML response
@@ -149,6 +167,7 @@ class xajaxResponse
 				$queryEnd = strlen($sURL);
 			$queryPart = substr($sURL, $queryStart, $queryEnd-$queryStart);
 			parse_str($queryPart, $queryParts);
+			$newQueryPart = "";
 			foreach($queryParts as $key => $value)
 			{
 				$newQueryPart .= rawurlencode($key).'='.rawurlencode($value).ini_get('arg_separator.output');
@@ -316,8 +335,14 @@ class xajaxResponse
 	// private method, used internally
 	function _cmdXML($aAttributes, $sData)
 	{
-		if (function_exists('mb_convert_encoding'))
-			$sData = call_user_func_array('mb_convert_encoding', array(&$sData, 'HTML-ENTITIES', $this->sEncoding));
+		if ($this->bOutputEntities) {
+			if (function_exists('mb_convert_encoding')) {
+				$sData = call_user_func_array('mb_convert_encoding', array(&$sData, 'HTML-ENTITIES', $this->sEncoding));
+			}
+			else {
+				trigger_error("The xajax XML response output could not be converted to HTML entities because the mb_convert_encoding function is not available", E_USER_NOTICE);
+			}
+		}
 		$xml = "<cmd";
 		foreach($aAttributes as $sAttribute => $sValue)
 			$xml .= " $sAttribute=\"$sValue\"";

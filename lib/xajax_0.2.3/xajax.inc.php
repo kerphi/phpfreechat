@@ -2,7 +2,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // xajax.inc.php :: Main xajax class and setup file
 //
-// xajax version 0.2.1
+// xajax version 0.2.3
 // copyright (c) 2005 by Jared White & J. Max Wilson
 // http://xajax.sourceforge.net
 //
@@ -61,18 +61,19 @@ class xajax
 	var $sCatchAllFunction;		// Name of the PHP function to call if no callable function was found
 	var $sPreFunction;			// Name of the PHP function to call before any other function
 	var $sRequestURI;			// The URI for making requests to the xajax object
+	var $sWrapperPrefix;			// The prefix to prepend to the javascript wraper function name
 	var $bDebug;					// Show debug messages (true/false)
+	var $bStatusMessages;			// Show debug messages (true/false)
 	var $bExitAllowed;			// Allow xajax to exit after processing a request (true/false)
+	var $bWaitCursor;			// Use wait cursor in browser (true/false)
 	var $bErrorHandler;			// Use an special xajax error handler so the errors are sent to the browser properly
 	var $sLogFile;				// Specify if xajax should log errors (and more information in a future release)
-	var $sWrapperPrefix;			// The prefix to prepend to the javascript wraper function name
-	var $bStatusMessages;			// Show debug messages (true/false)
-	var $bWaitCursor;			// Use wait cursor in browser (true/false)
 	var $bCleanBuffer;			// Clean all output buffers before outputting response (true/false)
+	var $sEncoding;				// String containing the character encoding used.
 	var $bDecodeUTF8Input;		// Decode input request args from UTF-8 (true/false)
+	var $bOutputEntities;			// Convert special characters to HTML entities (true/false)
 	var $aObjArray;				// Array for parsing complex objects
 	var $iPos;					// Position in $aObjArray
-	var $sEncoding;				// The Character Encoding to use
 	
 	// Contructor
 	// $sRequestURI - defaults to the current page
@@ -89,14 +90,16 @@ class xajax
 		if ($this->sRequestURI == "")
 			$this->sRequestURI = $this->_detectURI();
 		$this->sWrapperPrefix = $sWrapperPrefix;
-		$this->setCharEncoding($sEncoding);
 		$this->bDebug = $bDebug;
+		$this->bStatusMessages = false;
 		$this->bWaitCursor = true;
 		$this->bExitAllowed = true;
 		$this->bErrorHandler = false;
 		$this->sLogFile = "";
-		$this->bCleanBuffer = true;
-		$this->bDecodeUTF8Input;
+		$this->bCleanBuffer = false;
+		$this->setCharEncoding($sEncoding);
+		$this->bDecodeUTF8Input = false;
+		$this->bOutputEntities = false;
 	}
 		
 	// setRequestURI() sets the URI to which requests will be made
@@ -104,6 +107,13 @@ class xajax
 	function setRequestURI($sRequestURI)
 	{
 		$this->sRequestURI = $sRequestURI;
+	}
+
+	// setWrapperPrefix() sets the prefix that will be appended to the Javascript
+	// wrapper functions (default is "xajax_").
+	function setWrapperPrefix($sPrefix)
+	{
+		$this->sWrapperPrefix = $sPrefix;
 	}
 	
 	// debugOn() enables debug messages for xajax
@@ -117,7 +127,7 @@ class xajax
 	{
 		$this->bDebug = false;
 	}
-	
+		
 	// statusMessagesOn() enables messages in the statusbar for xajax
 	function statusMessagesOn()
 	{
@@ -189,25 +199,6 @@ class xajax
 	{
 		$this->bCleanBuffer = false;
 	}
-
-	// decodeUTF8InputOn() causes xajax to decode the input request args from UTF-8
-	function decodeUTF8InputOn()
-	{
-		$this->bDecodeUTF8Input = true;
-	}
-	// decodeUTF8InputOff() turns off decoding the input request args from UTF-8
-	// (default behavior)
-	function decodeUTF8InputOff()
-	{
-		$this->bDecodeUTF8Input = false;
-	}
-		
-	// setWrapperPrefix() sets the prefix that will be appended to the Javascript
-	// wrapper functions (default is "xajax_").
-	function setWrapperPrefix($sPrefix)
-	{
-		$this->sWrapperPrefix = $sPrefix;
-	}
 	
 	// setCharEncoding() sets the character encoding to be used by xajax
 	// usage: $xajax->setCharEncoding("utf-8");
@@ -217,7 +208,34 @@ class xajax
 	{
 		$this->sEncoding = $sEncoding;
 	}
+
+	// decodeUTF8InputOn() causes xajax to decode the input request args from UTF-8 to the
+	// current encoding.
+	function decodeUTF8InputOn()
+	{
+		$this->bDecodeUTF8Input = true;
+	}
+	// decodeUTF8InputOff() turns off decoding the input request args from UTF-8.
+	// (default behavior)
+	function decodeUTF8InputOff()
+	{
+		$this->bDecodeUTF8Input = false;
+	}
 	
+	// outputEntitiesOn() tells the response object to convert special characters to
+	// HTML entities automatically (only works if the mb_string extension is available).
+	function outputEntitiesOn()
+	{
+		$this->bOutputEntities = true;
+	}
+	
+	// outputEntitiesOff() tells the response object to output special characters
+	// intact. (default behavior)
+	function outputEntitiesOff()
+	{
+		$this->bOutputEntities = false;
+	}
+				
 	// registerFunction() registers a PHP function or method to be callable through
 	// xajax in your Javascript. If you want to register a function, pass in the name
 	// of that function. If you want to register a static class method, pass in an array
@@ -433,6 +451,10 @@ class xajax
 				{
 					$aArgs[$i] = $this->_xmlToArray("xjxquery",$aArgs[$i]);	
 				}
+				else if ($this->bDecodeUTF8Input)
+				{
+					$aArgs[$i] = $this->_decodeUTF8Data($aArgs[$i]);	
+				}
 			}
 
 			if ($this->sPreFunction) {
@@ -471,7 +493,7 @@ class xajax
 					$sResponse = $objResponse->getXML();
 				}
 				else if ($sPreResponse != "") {
-					$sNewResponse = new xajaxResponse();
+					$sNewResponse = new xajaxResponse($this->sEncoding, $this->bOutputEntities);
 					$sNewResponse->loadXML($sPreResponse);
 					$sNewResponse->loadXML($sResponse);
 					$sResponse = $sNewResponse->getXML();
@@ -766,12 +788,13 @@ class xajax
 		$this->iPos = 0;
 		$aArray = $this->_parseObjXml($rootTag);
 		
-		if (function_exists('iconv')) {
-            foreach ($aArray as $sKey => $sValue) {
-                if (is_string($sValue))
-                    $aArray[$sKey] = iconv("UTF-8", $this->sEncoding, $sValue);
-            }
-        }
+		if ($this->bDecodeUTF8Input)
+		{
+			foreach ($aArray as $sKey => $sValue)
+			{
+				$aArray[$sKey] = $this->_decodeUTF8Data($sValue);
+			}
+		}
         
 		return $aArray;
 	}
@@ -858,12 +881,55 @@ class xajax
 				}
 				$aArray = $newArray;
 			}
-			if ($this->bDecodeUTF8Input) {
-				$aArray = array_map("utf8_decode", $aArray);
-			}
 		}
 		
 		return $aArray;
+	}
+	
+	function _decodeUTF8Data($sData)
+	{
+		$sValue = $sData;
+		if ($this->bDecodeUTF8Input)
+		{
+			$sFuncToUse = NULL;
+			
+			if (function_exists('iconv'))
+			{
+				$sFuncToUse = "iconv";
+			}
+			else if (function_exists('mb_convert_encoding'))
+			{
+				$sFuncToUse = "mb_convert_encoding";
+			}
+			else if ($this->sEncoding == "ISO-8859-1")
+			{
+				$sFuncToUse = "utf8_decode";
+			}
+			else
+			{
+				trigger_error("The incoming xajax data could not be converted from UTF-8", E_USER_NOTICE);
+			}
+			
+			if ($sFuncToUse)
+			{
+				if (is_string($sValue))
+				{
+					if ($sFuncToUse == "iconv")
+					{
+						$sValue = iconv("UTF-8", $this->sEncoding.'//TRANSLIT', $sValue);
+					}
+					else if ($sFuncToUse == "mb_convert_encoding")
+					{
+						$sValue = mb_convert_encoding($sValue, $this->sEncoding, "UTF-8");
+					}
+					else
+					{
+						$sValue = utf8_decode($sValue);
+					}
+				}
+			}
+		}
+		return $sValue;	
 	}
 		
 }// end class xajax 

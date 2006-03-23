@@ -69,7 +69,7 @@ class phpFreeChatConfig
   var $server_script_url   = ""; // default is calculated from 'server_script_path'
   var $useie7              = true; // use IE7 lib : fix crappy IE display bugs
   var $ie7path             = ""; // default is dirname(__FILE__)."/../lib/IE7_0_9";
-  var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2.1";
+  var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2.3";
   var $jspath              = ""; // default is dirname(__FILE__)."/../lib/javascript";
   var $usecsstidy          = false;
   var $csstidypath         = ""; // default is dirname(__FILE__)."/../lib/csstidy-1.1";
@@ -125,7 +125,7 @@ class phpFreeChatConfig
     // setup a defaut title if user didn't set it up
     if ($this->title == "")        $this->title        = _pfc("My Chat");
     if ($this->ie7path == "")      $this->ie7path      = dirname(__FILE__)."/../lib/IE7_0_9";
-    if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.1";
+    if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.3";
     if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
     if ($this->csstidypath == "")  $this->csstidypath  = dirname(__FILE__)."/../lib/csstidy-1.1";
     if ($this->data_private_path == "") $this->data_private_path = dirname(__FILE__)."/../data/private";
