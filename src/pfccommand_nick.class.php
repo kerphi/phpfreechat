@@ -24,7 +24,22 @@ class pfcCommand_nick extends pfcCommand
     $newnickid = $container->getNickId($newnick);
     $oldnickid = $container->getNickId($c->nick);
 
-    if ( $newnickid == "undefined" )
+    // now check unsensitive case
+    // 'BoB' and 'bob' must be considered same nicknames
+    $nick_in_use = false;
+    $online_users = $container->getOnlineNick();
+    foreach($online_users as $ou)
+    {
+      if (preg_match("/^".preg_quote($ou)."$/i",$newnick))
+      {
+        // the nick match
+	// just allow the owner to change his capitalised letters
+        if ($container->getNickId($ou) != $oldnickid)
+          $nick_in_use = true;
+      }
+    }
+
+    if ( $newnickid == "undefined" && !$nick_in_use )
     {
       // this is a real nickname change
       $container->changeNick($newnick);
