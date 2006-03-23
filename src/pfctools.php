@@ -133,7 +133,7 @@ function copyr($source, $dest, $mode = 0777)
   // Simple copy for a file
   if (is_file($source)) {
     $ret = copy($source, $dest);
-    chmod($dest, $mode);
+    @chmod($dest, $mode);
     return $ret;
   }
 
