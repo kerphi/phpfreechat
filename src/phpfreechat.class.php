@@ -80,6 +80,10 @@ class phpFreeChat
     $c =& phpFreeChatConfig::Instance();
     phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
 
+    // this is a IE6 workeround (IE7 works well) to resize correctly the smiley and online boxes
+    // this is ugly but I didn't found a cleaner way to fix the problem...
+    $output .= '<script type="text/javascript" src="http://www.phpfreechat.net/blank.js"></script>';
+
     // include javascript libraries
     $js_path = $c->data_public_url."/javascript";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/md5.js\"></script>";
@@ -179,10 +183,6 @@ class phpFreeChat
     // output css
     phpFreeChatI18N::SwitchOutputEncoding();
     $output = "<style type=\"text/css\">\n".$output."\n</style>\n";
-
-    // this is a IE6 workeround (IE7 works well) to resize correctly the smiley and online boxes
-    // this is ugly but I didn't found a cleaner way to fix the problem...
-    $output .= '<link rel="stylesheet" type="text/css" href="http://www.phpfreechat.net/style/blank.css" />';
 
     if($return)
       return $output;
