@@ -20,6 +20,12 @@ pfcClient.prototype = {
      * (2 clients can use the same session: then only the nickname is shared) */
     this.clientid      = '<?php echo md5(uniqid(rand(), true)); ?>';
 
+    this.el_words     = $('<?php echo $prefix; ?>words');
+    this.el_handle    = $('<?php echo $prefix; ?>handle');
+    this.el_container = $('<?php echo $prefix; ?>container');
+    this.el_online    = $('<?php echo $prefix; ?>online');
+    this.el_errors    = $('<?php echo $prefix; ?>errors');
+
     this.minmax_status = <?php echo $start_minimized ? "true" : "false"; ?>;
     var cookie = getCookie('<?php echo $prefix; ?>minmax_status');
     if (cookie != null)
@@ -59,12 +65,6 @@ pfcClient.prototype = {
     this.blinktmp     = Array();
     this.blinkloop    = Array();
     this.blinktimeout = Array();
-
-    this.el_words     = $('<?php echo $prefix; ?>words');
-    this.el_handle    = $('<?php echo $prefix; ?>handle');
-    this.el_container = $('<?php echo $prefix; ?>container');
-    this.el_online    = $('<?php echo $prefix; ?>online');
-    this.el_errors    = $('<?php echo $prefix; ?>errors');
 
     /* the events callbacks */
     this.el_words.onkeypress = this.callbackWords_OnKeypress.bindAsEventListener(this);
@@ -826,6 +826,10 @@ pfcClient.prototype = {
     var idname = '<?php echo $prefix; ?>color_' + color;
     $(idname).style.border = '1px solid #666';
     $(idname).style.padding = '1px';
+
+    // assigne the new color to the input text box
+    this.el_words.style.color = '#'+color;
+    this.el_words.focus();
   },
   
   /**
