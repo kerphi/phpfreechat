@@ -166,7 +166,7 @@ pfcClient.prototype = {
 
 	/* colorize the text with current_text_color */
 	if (this.current_text_color != '' && wval.length != '')
-  	  wval = '[color=#' + this.current_text_color + ']' + wval + '[/color]';
+  	  wval = '[color=#' + this.current_text_color + ']' + wval + ' [/color]';
 
 	this.handleRequest('/send', wval);
       }
@@ -372,15 +372,10 @@ pfcClient.prototype = {
   parseMessage: function(msg)
   {
     var rx = null;
-    
-    /* try to parse http adresses */
-    rx = new RegExp('(http\:\/\/[^ ]*)','ig');
-    /* msg = msg.replace(rx, '<a href="$1"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$1</a>'); */
-    msg = msg.replace(rx, '<a href="$1"<?php if($openlinknewwindow) echo ' onclick="window.open(this.url); return false;"'; ?>>$1</a>');
 
-    /* try to parse nickname for highlighting  */
-    rx = new RegExp('(^|[ :.,;])'+RegExp.escape(this.nickname)+'([ :.,;]|$)','gi');
-    msg = msg.replace(rx, '$1<strong>'+ this.nickname +'</strong>$2');
+    // replace double spaces by &nbsp; entity
+    rx = new RegExp('  ','g');
+    msg = msg.replace(rx, '&nbsp;&nbsp;');
 
     /* try to parse smileys */
     var sl = this.smileys.keys();
@@ -411,6 +406,15 @@ pfcClient.prototype = {
     // so it's possible to have a bbcode color imbrication
     rx = new RegExp('\\[color=([a-zA-Z]*|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.*?)\\[\/color\\]','ig');
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');   
+
+    /* try to parse http adresses */
+    rx = new RegExp('([^\\"])(http\:\/\/[^ \\(\\[\\:\\;\\<\\>\\"]*)([^\\"])','ig');
+    msg = msg.replace(rx, '$1<a href="$2"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$2</a>$3');
+    //msg = msg.replace(rx, '$1<a href="$2"<?php if($openlinknewwindow) echo ' onclick="window.open(this.url); return false;"'; ?>>$2</a>$3');
+    
+    /* try to parse nickname for highlighting  */
+    rx = new RegExp('(^|[ :.,;])'+RegExp.escape(this.nickname)+'([ :.,;]|$)','gi');
+    msg = msg.replace(rx, '$1<strong>'+ this.nickname +'</strong>$2');
     
     return msg;
   },

@@ -267,7 +267,7 @@ class phpFreeChat
     $msg = str_replace("\r\n", "<br/>", $msg);
     $msg = str_replace("\n", "<br/>", $msg);
     $msg = str_replace("\t", "    ", $msg);*/
-    $msg = str_replace("  ", "&nbsp;&nbsp;", $msg);
+    //$msg = str_replace("  ", "&nbsp;&nbsp;", $msg);
     //    $msg = preg_replace('/(http\:\/\/[^\s]*)/i',  "<a href=\"$1\">$1</a>", $msg );
     return $msg;
   }
