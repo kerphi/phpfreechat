@@ -165,7 +165,7 @@ pfcClient.prototype = {
 	wval = wval.substr(0, <?php echo $max_text_len; ?>);
 
 	/* colorize the text with current_text_color */
-	if (this.current_text_color != '')
+	if (this.current_text_color != '' && wval.length != '')
   	  wval = '[color=#' + this.current_text_color + ']' + wval + '[/color]';
 
 	this.handleRequest('/send', wval);
