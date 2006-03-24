@@ -50,6 +50,10 @@ class pfcCommand_connect extends pfcCommand
     $xml_reponse->addScript("pfc.updateChat(true);");
     $xml_reponse->addScript("pfc.isconnected = true; pfc.refresh_loginlogout();");
 
+    // give focus the the input text box if wanted
+    if($c->focus_on_connect)
+      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
+    
     return $clientid;
   }
 }

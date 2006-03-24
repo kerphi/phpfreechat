@@ -47,7 +47,6 @@ class pfcCommand_nick extends pfcCommand
       $c->nick = $newnick;
       $c->saveInSession();
       $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
-      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
       if ($oldnick != $newnick && $oldnick != "")
       {
 	$cmd =& pfcCommand::Factory("notice", $c);
@@ -71,7 +70,6 @@ class pfcCommand_nick extends pfcCommand
     {
       // user didn't change his nickname
       $xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
-      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
       if ($c->debug) pxlog("Cmd_nick[".$c->sessionid."]: user just reloded the page so let him keep his nickname without any warnings -> nickid=".$newnickid." nick=".$newnick, "chat", $c->getId());
     }
     else
