@@ -215,10 +215,10 @@ pfcClient.prototype = {
   {
     /* don't disconnect users when they reload the window
      * this event doesn't only occurs when the page is closed but also when the page is reloaded */
-    /*
+    <?php if ($c->quit_on_closedwindow) { ?>
     if (!this.isconnected) return false;
     this.handleRequest('/quit');
-    */
+    <?php } ?>
   },
 
   callbackContainer_OnMousemove: function(evt)
