@@ -202,8 +202,8 @@ pfcClient.prototype = {
   },
   callbackWords_OnFocus: function(evt)
   {
-    if (this.el_handle && this.el_handle.value == '' && !this.minmax_status)
-      this.el_handle.focus();
+    //    if (this.el_handle && this.el_handle.value == '' && !this.minmax_status)
+    //      this.el_handle.focus();
   },
   callbackHandle_OnKeydown: function(evt)
   {
