@@ -63,6 +63,7 @@
       <li><a href="demo36_in_ukrainian.php">demo36 - the ukrainian translation of the chat</a></li>
       <li><a href="demo37_in_dutch_from_netherlands.php">demo37 - the dutch from netherlands translation of the chat</a></li>
       <li><a href="demo38_in_norwegian.php">demo38 - the norwegian translation of the chat</a></li>
+      <li><a href="demo39_in_bosnian.php">demo39 - the bosnian translation of the chat</a></li>
     </ul>
   </body>
   
