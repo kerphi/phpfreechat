@@ -35,7 +35,7 @@ div#<?php echo $prefix; ?>chat {
   overflow: auto;
   width: 79%;
   height: 100%;
-  background-color: #FFF;
+  background-color: #e0edde;
 }
 
 div#<?php echo $prefix; ?>smileys {
@@ -90,7 +90,6 @@ img#<?php echo $prefix; ?>minmax {
 }
 
 div.<?php echo $prefix; ?>message {
-  background-color: #e0edde;
   margin: 0;
 }
 .<?php echo $prefix; ?>words {
