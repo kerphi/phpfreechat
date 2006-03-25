@@ -18,7 +18,7 @@
   </div>
 
   <div id="<?php echo $prefix; ?>input_container">
-    <input id="<?php echo $prefix; ?>words" type="text" title="<?php echo _pfc("Enter your message here"); ?>" maxlength="<?php echo $max_text_len; ?>" />
+    <input id="<?php echo $prefix; ?>words" type="text" title="<?php echo _pfc("Enter your message here"); ?>" maxlength="<?php echo $max_text_len-24; ?>" />
     <div id="<?php echo $prefix; ?>cmd_container">
       <a href="http://www.phpfreechat.net" id="<?php echo $prefix; ?>logo"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" title="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" /></a>
       <input id="<?php echo $prefix; ?>handle" type="button" title="<?php echo _pfc("Enter your nickname here"); ?>" maxlength="<?php echo $max_nick_len; ?>" value="<?php echo $nick; ?>" onclick="if (!pfc.isconnected) return false; pfc.el_words.focus(); pfc.handleRequest('/asknick');" />

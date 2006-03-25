@@ -36,7 +36,7 @@ class phpFreeChatConfig
   var $channel             = ""; // default is a value calculated from title
   var $frozen_nick         = false;
   var $max_nick_len        = 15;
-  var $max_text_len        = 250;
+  var $max_text_len        = 400;
   var $refresh_delay       = 5000; // in mili-seconds (5 seconds)
   var $timeout             = 20000; // in mili-seconds (20 seconds)
   var $max_msg             = 20;
