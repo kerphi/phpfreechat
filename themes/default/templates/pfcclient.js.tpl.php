@@ -376,6 +376,7 @@ pfcClient.prototype = {
   {
     var rx = null;
 
+   
     // replace double spaces by &nbsp; entity
     rx = new RegExp('  ','g');
     msg = msg.replace(rx, '&nbsp;&nbsp;');
@@ -418,6 +419,17 @@ pfcClient.prototype = {
     /* try to parse nickname for highlighting  */
     rx = new RegExp('(^|[ :.,;])'+RegExp.escape(this.nickname)+'([ :.,;]|$)','gi');
     msg = msg.replace(rx, '$1<strong>'+ this.nickname +'</strong>$2');
+
+    // don't allow to post words bigger than 65 caracteres
+    // doesn't work with crappy IE !
+    rx = new RegExp('([^ \\:\\<\\>]{60})','ig');
+    var ttt = msg.split(rx);
+    if (ttt.length > 1)
+    {
+      msg = '';
+      for( var i = 0; i<ttt.length; i++)
+        msg = msg + ttt[i] + ' ';
+    }
     
     return msg;
   },
