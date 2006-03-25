@@ -160,13 +160,13 @@ pfcClient.prototype = {
       else
       {
 	/* a classic 'send' command*/
-
+        
 	/* truncate the text length */
 	wval = wval.substr(0, <?php echo $max_text_len; ?>);
 
 	/* colorize the text with current_text_color */
 	if (this.current_text_color != '' && wval.length != '')
-  	  wval = '[color=#' + this.current_text_color + ']' + wval + ' [/color]';
+  	  wval = '[color=#' + this.current_text_color + ']' + wval + '[/color]';
 
 	this.handleRequest('/send', wval);
       }
@@ -411,7 +411,7 @@ pfcClient.prototype = {
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');   
 
     /* try to parse http adresses */
-    rx = new RegExp('([^\\"])(http\:\/\/[^ \\(\\[\\:\\;\\<\\>\\"]*)([^\\"])','ig');
+    rx = new RegExp('(^|[^\\"])(http\:\/\/[^ \\(\\[\\:\\;\\<\\>\\"]*)([^\\"]|$)','ig');
     msg = msg.replace(rx, '$1<a href="$2"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$2</a>$3');
     //msg = msg.replace(rx, '$1<a href="$2"<?php if($openlinknewwindow) echo ' onclick="window.open(this.url); return false;"'; ?>>$2</a>$3');
     
