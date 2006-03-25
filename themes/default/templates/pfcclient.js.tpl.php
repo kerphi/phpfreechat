@@ -296,7 +296,7 @@ pfcClient.prototype = {
    */
   handleRequest: function(cmd, param)
   {
-    <?php echo $prefix; ?>handleRequest(cmd + " " + this.clientid + (param ? " " + param : ""));
+    return <?php echo $prefix; ?>handleRequest(cmd + " " + this.clientid + (param ? " " + param : ""));
   },
 
   /**
@@ -307,7 +307,10 @@ pfcClient.prototype = {
     clearTimeout(this.timeout);
     if (start)
     {
-      this.handleRequest('/update');
+      var res = this.handleRequest('/update');
+      // adjust the refresh_delay if the connection was lost
+      if (res == false) { this.refresh_delay = this.refresh_delay * 2; }
+      // setup the next update
       this.timeout = setTimeout('pfc.updateChat(true)', this.refresh_delay);
     }
   },
