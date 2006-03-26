@@ -4,11 +4,11 @@ require_once(dirname(__FILE__)."/pfccommand.class.php");
 
 class pfcCommand_notice extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $msg = "", $level = 2)
+  function run(&$xml_reponse, $clientid, $msg = "", $flags = 3)
   {
     $c =& $this->c;
     if ($c->shownotice > 0 &&
-        $c->shownotice >= $level)
+        ($c->shownotice & $flags) == $flags)
     {
       $container =& $c->getContainerInstance();
       $msg = phpFreeChat::FilterSpecialChar($msg);
