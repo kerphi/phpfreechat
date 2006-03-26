@@ -160,6 +160,10 @@ pfcClient.prototype = {
       else
       {
 	/* a classic 'send' command*/
+
+        // empty messages with only spaces
+        rx = new RegExp('^[ ]*$','g');
+        wval = wval.replace(rx,'');
         
 	/* truncate the text length */
 	wval = wval.substr(0, <?php echo $max_text_len; ?>);
@@ -375,7 +379,6 @@ pfcClient.prototype = {
   parseMessage: function(msg)
   {
     var rx = null;
-
    
     // replace double spaces by &nbsp; entity
     rx = new RegExp('  ','g');
