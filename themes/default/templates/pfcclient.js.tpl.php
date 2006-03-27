@@ -380,6 +380,30 @@ pfcClient.prototype = {
   {
     var rx = null;
    
+    // parse http adresses
+    rx = new RegExp('(^|[^\\"])(http\:\/\/[^ \\(\\[\\:\\;\\<\\>\\"]*)([^\\"]|$)','ig');
+    var ttt = msg.split(rx);
+    if (ttt.length > 1)
+    {
+      msg = '';
+      for( var i = 0; i<ttt.length; i++)
+      {
+        var offset = (ttt[i].length - 7) / 2;
+        var delta = (ttt[i].length - 7 - 60);
+        var range1 = 7+offset-delta;
+        var range2 = 7+offset+delta;
+        if (ttt[i].match(rx))
+          msg = msg + '<a href="' + ttt[i] + '">' + (delta>0 ? ttt[i].substring(7,range1)+ ' ... '+ ttt[i].substring(range2,ttt[i].length) :  ttt[i]) + '</a>';
+        else
+        {
+          msg = msg + ttt[i];
+        }
+      }
+    }
+    else
+      // fallback for IE6 which do not support split with regexp
+      msg = msg.replace(rx, '$1<a href="$2"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$2</a>$3');
+
     // replace double spaces by &nbsp; entity
     rx = new RegExp('  ','g');
     msg = msg.replace(rx, '&nbsp;&nbsp;');
@@ -413,11 +437,6 @@ pfcClient.prototype = {
     // so it's possible to have a bbcode color imbrication
     rx = new RegExp('\\[color=([a-zA-Z]*|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.*?)\\[\/color\\]','ig');
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');   
-
-    /* try to parse http adresses */
-    rx = new RegExp('(^|[^\\"])(http\:\/\/[^ \\(\\[\\:\\;\\<\\>\\"]*)([^\\"]|$)','ig');
-    msg = msg.replace(rx, '$1<a href="$2"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$2</a>$3');
-    //msg = msg.replace(rx, '$1<a href="$2"<?php if($openlinknewwindow) echo ' onclick="window.open(this.url); return false;"'; ?>>$2</a>$3');
     
     /* try to parse nickname for highlighting  */
     rx = new RegExp('(^|[ :.,;])'+RegExp.escape(this.nickname)+'([ :.,;]|$)','gi');
