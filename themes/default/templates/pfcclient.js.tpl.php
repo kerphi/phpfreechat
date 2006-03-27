@@ -425,7 +425,7 @@ pfcClient.prototype = {
 
     // don't allow to post words bigger than 65 caracteres
     // doesn't work with crappy IE !
-    rx = new RegExp('([^ \\:\\<\\>]{60})','ig');
+    rx = new RegExp('([^ \\:\\<\\>\\/]{60})','ig');
     var ttt = msg.split(rx);
     if (ttt.length > 1)
     {
