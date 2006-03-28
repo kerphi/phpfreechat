@@ -381,9 +381,9 @@ pfcClient.prototype = {
     var rx = null;
    
     // parse urls
-    rx = new RegExp('(^|[^\\"])([a-z]+\:\/\/[^ \\(\\[\\:\\<\\>\\"]*)([^\\"]|$)','ig');
-    var ttt = msg.split(rx);
-    if (ttt.length > 1 && ttt[0] != '' && ttt[1] != '')
+    var rx_url = new RegExp('(^|[^\\"])([a-z]+\:\/\/[^ \\(\\[\\:\\<\\>\\"]*)([^\\"]|$)','ig');
+    var ttt = msg.split(rx_url);
+    if (ttt.length > 1 && !navigator.appName.match("Explorer|Konqueror"))
     {
       msg = '';
       for( var i = 0; i<ttt.length; i++)
@@ -392,7 +392,7 @@ pfcClient.prototype = {
         var delta = (ttt[i].length - 7 - 60);
         var range1 = 7+offset-delta;
         var range2 = 7+offset+delta;
-        if (ttt[i].match(rx))
+        if (ttt[i].match(rx_url))
           msg = msg + '<a href="' + ttt[i] + '">' + (delta>0 ? ttt[i].substring(7,range1)+ ' ... '+ ttt[i].substring(range2,ttt[i].length) :  ttt[i]) + '</a>';
         else
         {
@@ -402,7 +402,8 @@ pfcClient.prototype = {
     }
     else
       // fallback for IE6/Konqueror which do not support split with regexp
-      msg = msg.replace(rx, '$1<a href="$2"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$2</a>$3');
+      msg = msg.replace(rx_url, '$1<a href="$2"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$2</a>$3');
+    
 
     // replace double spaces by &nbsp; entity
     rx = new RegExp('  ','g');
@@ -443,10 +444,10 @@ pfcClient.prototype = {
     msg = msg.replace(rx, '$1<strong>'+ this.nickname +'</strong>$2');
 
     // don't allow to post words bigger than 65 caracteres
-    // doesn't work with crappy IE !
+    // doesn't work with crappy IE and Konqueror !
     rx = new RegExp('([^ \\:\\<\\>\\/\\&\\;]{60})','ig');
     var ttt = msg.split(rx);
-    if (ttt.length > 1 && ttt[0] != '' && ttt[1] != '')
+    if (ttt.length > 1 && !navigator.appName.match("Explorer|Konqueror"))
     {
       msg = '';
       for( var i = 0; i<ttt.length; i++)
