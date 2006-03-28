@@ -381,7 +381,7 @@ pfcClient.prototype = {
     var rx = null;
    
     // parse http adresses
-    rx = new RegExp('(^|[^\\"])(http\:\/\/[^ \\(\\[\\:\\;\\<\\>\\"]*)([^\\"]|$)','ig');
+    rx = new RegExp('(^|[^\\"])(http\:\/\/[^ \\(\\[\\:\\<\\>\\"]*)([^\\"]|$)','ig');
     var ttt = msg.split(rx);
     if (ttt.length > 1)
     {
@@ -444,13 +444,16 @@ pfcClient.prototype = {
 
     // don't allow to post words bigger than 65 caracteres
     // doesn't work with crappy IE !
-    rx = new RegExp('([^ \\:\\<\\>\\/]{60})','ig');
+    rx = new RegExp('([^ \\:\\<\\>\\/\\&\\;]{60})','ig');
     var ttt = msg.split(rx);
     if (ttt.length > 1)
     {
+      alert(ttt.inspect());
       msg = '';
       for( var i = 0; i<ttt.length; i++)
+      {
         msg = msg + ttt[i] + ' ';
+      }
     }
     
     return msg;
