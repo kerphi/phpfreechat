@@ -380,8 +380,8 @@ pfcClient.prototype = {
   {
     var rx = null;
    
-    // parse http adresses
-    rx = new RegExp('(^|[^\\"])(http\:\/\/[^ \\(\\[\\:\\<\\>\\"]*)([^\\"]|$)','ig');
+    // parse urls
+    rx = new RegExp('(^|[^\\"])([a-z]+\:\/\/[^ \\(\\[\\:\\<\\>\\"]*)([^\\"]|$)','ig');
     var ttt = msg.split(rx);
     if (ttt.length > 1)
     {
