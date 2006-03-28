@@ -448,7 +448,6 @@ pfcClient.prototype = {
     var ttt = msg.split(rx);
     if (ttt.length > 1)
     {
-      alert(ttt.inspect());
       msg = '';
       for( var i = 0; i<ttt.length; i++)
       {
