@@ -383,7 +383,7 @@ pfcClient.prototype = {
     // parse urls
     rx = new RegExp('(^|[^\\"])([a-z]+\:\/\/[^ \\(\\[\\:\\<\\>\\"]*)([^\\"]|$)','ig');
     var ttt = msg.split(rx);
-    if (ttt.length > 1)
+    if (ttt.length > 1 && ttt[0] != '' && ttt[1] != '')
     {
       msg = '';
       for( var i = 0; i<ttt.length; i++)
@@ -401,7 +401,7 @@ pfcClient.prototype = {
       }
     }
     else
-      // fallback for IE6 which do not support split with regexp
+      // fallback for IE6/Konqueror which do not support split with regexp
       msg = msg.replace(rx, '$1<a href="$2"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$2</a>$3');
 
     // replace double spaces by &nbsp; entity
@@ -446,7 +446,7 @@ pfcClient.prototype = {
     // doesn't work with crappy IE !
     rx = new RegExp('([^ \\:\\<\\>\\/\\&\\;]{60})','ig');
     var ttt = msg.split(rx);
-    if (ttt.length > 1)
+    if (ttt.length > 1 && ttt[0] != '' && ttt[1] != '')
     {
       msg = '';
       for( var i = 0; i<ttt.length; i++)
