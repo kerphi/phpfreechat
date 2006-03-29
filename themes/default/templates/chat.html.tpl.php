@@ -98,14 +98,12 @@
 
 <!--[if lt IE 7]>
 <script type="text/javascript">
-<!--
   // this is a IE6 workeround (IE7 works well) to resize correctly the smiley and online boxes
   // this is ugly but I didn't found a cleaner way to fix the problem...
   var src = "http://www.phpfreechat.net/blank.js?";
   for (var i=0; i < 46 ; i++)
     src = src + "0000000000111111111122222222223333333333444444444455555555556666666666777777777788888888889999999999";
   document.writeln('<img src="'+src+'" alt="phpMyVisites" style="border:0; display: none;" />');
-//-->
 </script>
 <![endif]-->
 
