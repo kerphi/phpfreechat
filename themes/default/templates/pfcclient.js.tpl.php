@@ -170,7 +170,7 @@ pfcClient.prototype = {
 
 	/* colorize the text with current_text_color */
 	if (this.current_text_color != '' && wval.length != '')
-  	  wval = '[color=#' + this.current_text_color + ']' + wval + '[/color]';
+  	  wval = '[color=#' + this.current_text_color + '] ' + wval + ' [/color]';
 
 	this.handleRequest('/send', wval);
       }
