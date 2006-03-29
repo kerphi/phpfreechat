@@ -383,7 +383,9 @@ pfcClient.prototype = {
     // parse urls
     var rx_url = new RegExp('(^|[^\\"])([a-z]+\:\/\/[^ \\(\\[\\:\\<\\>\\"]*)([^\\"]|$)','ig');
     var ttt = msg.split(rx_url);
-    if (ttt.length > 1 && !navigator.appName.match("Explorer|Konqueror"))
+    if (ttt.length > 1 &&
+        !navigator.appName.match("Explorer|Konqueror") &&
+        !navigator.appVersion.match("KHTML"))
     {
       msg = '';
       for( var i = 0; i<ttt.length; i++)
@@ -447,7 +449,9 @@ pfcClient.prototype = {
     // doesn't work with crappy IE and Konqueror !
     rx = new RegExp('([^ \\:\\<\\>\\/\\&\\;]{60})','ig');
     var ttt = msg.split(rx);
-    if (ttt.length > 1 && !navigator.appName.match("Explorer|Konqueror"))
+    if (ttt.length > 1 &&
+        !navigator.appName.match("Explorer|Konqueror") &&
+        !navigator.appVersion.match("KHTML"))
     {
       msg = '';
       for( var i = 0; i<ttt.length; i++)
