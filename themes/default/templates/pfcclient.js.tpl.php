@@ -381,7 +381,7 @@ pfcClient.prototype = {
     var rx = null;
    
     // parse urls
-    var rx_url = new RegExp('(^|[^\\"])([a-z]+\:\/\/[^ \\(\\[\\:\\<\\>\\"]*)([^\\"]|$)','ig');
+    var rx_url = new RegExp('(^|[^\\"])([a-z]+\:\/\/[a-z0-9.\\/\\?\\=\\&\\-\\_]*)([^\\"]|$)','ig');
     var ttt = msg.split(rx_url);
     if (ttt.length > 1 &&
         !navigator.appName.match("Explorer|Konqueror") &&
@@ -411,14 +411,6 @@ pfcClient.prototype = {
     rx = new RegExp('  ','g');
     msg = msg.replace(rx, '&nbsp;&nbsp;');
 
-    /* try to parse smileys */
-    var sl = this.smileys.keys();
-    for(var i = 0; i < sl.length; i++)
-    {
-      rx = new RegExp(RegExp.escape(sl[i]),'g');
-      msg = msg.replace(rx, '<img src="'+ this.smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
-    }
-
     /* try to parse bbcode */
     rx = new RegExp('\\[b\\](.*?)\\[\/b\\]','ig');
     msg = msg.replace(rx, '<span style="font-weight: bold">$1</span>');
@@ -440,6 +432,14 @@ pfcClient.prototype = {
     // so it's possible to have a bbcode color imbrication
     rx = new RegExp('\\[color=([a-zA-Z]*|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.*?)\\[\/color\\]','ig');
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');   
+
+    /* try to parse smileys */
+    var sl = this.smileys.keys();
+    for(var i = 0; i < sl.length; i++)
+    {
+      rx = new RegExp(RegExp.escape(sl[i]),'g');
+      msg = msg.replace(rx, '<img src="'+ this.smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
+    }
     
     /* try to parse nickname for highlighting  */
     rx = new RegExp('(^|[ :,;])'+RegExp.escape(this.nickname)+'([ :,;]|$)','gi');
