@@ -440,7 +440,7 @@ pfcClient.prototype = {
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');   
     
     /* try to parse nickname for highlighting  */
-    rx = new RegExp('(^|[ :.,;])'+RegExp.escape(this.nickname)+'([ :.,;]|$)','gi');
+    rx = new RegExp('(^|[ :,;])'+RegExp.escape(this.nickname)+'([ :,;]|$)','gi');
     msg = msg.replace(rx, '$1<strong>'+ this.nickname +'</strong>$2');
 
     // don't allow to post words bigger than 65 caracteres
