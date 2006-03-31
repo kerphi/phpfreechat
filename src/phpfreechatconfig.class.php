@@ -391,7 +391,7 @@ class phpFreeChatConfig
 
     // check the width parameter is not used
     // because of a display bug in IE
-    if ( $this->width != "" ||
+    if ( $this->width != "" &&
 	 $this->width != "auto" )
     {
       $this->errors[] = "Do not uses 'width' parameter because of a display bug in IE6, please look at this workaround : http://www.phpfreechat.net/forum/viewtopic.php?pid=867#p867";
