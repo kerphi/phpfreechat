@@ -388,6 +388,15 @@ class phpFreeChatConfig
       $this->errors[] = _pfc("'%s' parameter is not valid. Available values are : '%s'", "language", implode(", ", $lg_list));
       $ok = false;
     }
+
+    // check the width parameter is not used
+    // because of a display bug in IE
+    if ( $this->width != "" ||
+	 $this->width != "auto" )
+    {
+      $this->errors[] = "Do not uses 'width' parameter because of a display bug in IE6, please look at this workaround : http://www.phpfreechat.net/forum/viewtopic.php?pid=867#p867";
+      $ok = false;
+    }
         
     // load smileys from file
     if ($ok)

@@ -5,7 +5,8 @@ require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params["serverid"]      = md5(__FILE__); // calculate a unique id for this chat
 $params["title"]         = "A chat with a customized stylesheet";
 $params["height"]        = "500px";
-$params["width"]         = "550px";
+// do not uses width parameter because of a display bug in IE6
+//$params["width"]         = "650px";
 $params["max_msg"]       = 21;
 $params["themepath"]     = dirname(__FILE__)."/demo5_customized_style_data";
 $params["theme"]         = "mytheme";
@@ -23,7 +24,11 @@ $chat = new phpFreeChat( $params );
   </head>
 
   <body>
+  
+  <div style="width: 650px; margin: auto;">
     <?php $chat->printChat(); ?>
+  </div>
+
 <?php
   // print the current file
   echo "<h2>The source code</h2>";
