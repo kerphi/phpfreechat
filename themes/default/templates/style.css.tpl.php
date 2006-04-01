@@ -23,7 +23,7 @@ cursor: pointer;
 div#<?php echo $prefix; ?>content {
   <?php if ($height!="") { ?>height: <?php echo $height; ?>;<?php } ?>
   position: relative;
-  margin-top: 1.5em;
+  margin-top: 0.5em;
   width: 100%;
 }
 
@@ -77,7 +77,6 @@ div#<?php echo $prefix; ?>online li {
 }
 
 h2#<?php echo $prefix; ?>title {
-  float: left;
   font-size: 110%;
 }
 
