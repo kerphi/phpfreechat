@@ -47,7 +47,7 @@ div#<?php echo $prefix; ?>smileys {
   height: 58%;
   overflow: auto;
   text-align: center;
-  border: 1px dotted black;
+  border: 1px solid black;
   background-color: #FFF;
 }
 
@@ -57,7 +57,7 @@ div#<?php echo $prefix; ?>online {
   top: 0;
   padding: 0;
   overflow: auto;
-  border: black dotted 1px;
+  border: black solid 1px;
   color: #000;
   background-color: #FFF;
   width: 20%;
