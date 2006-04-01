@@ -965,23 +965,28 @@ pfcClient.prototype = {
   {
     var onlinediv = $('<?php echo $prefix; ?>online');
     var smileysdiv = $('<?php echo $prefix; ?>smileys');
+    var style = $H();
     
     if (this.showwhosonline)
     {
-      smileysdiv.style.height= '';
+      style['height'] = '';
+      Element.setStyle(smileysdiv, style);
     }
     else
     {
-      smileysdiv.style.height='100%';
+      style['height'] = '100%';
+      Element.setStyle(smileysdiv, style);
     }
     
     if (this.showsmileys)
     {
-      onlinediv.style.height= '';
+      style['height'] = '';
+      Element.setStyle(onlinediv, style);
     }
     else
     {
-      onlinediv.style.height='100%';
+      style['height'] = '100%';
+      Element.setStyle(onlinediv, style);
     }
   },
   
@@ -991,14 +996,16 @@ pfcClient.prototype = {
   refresh_Chat: function()
   {
     var chatdiv = $('<?php echo $prefix; ?>chat');
-    var wordsdiv = $('<?php echo $prefix; ?>words');
+    var style = $H();
     if (!this.showwhosonline && !this.showsmileys)
     {
-      chatdiv.style.width='100%';
+      style['width'] = '100%';
+      Element.setStyle(chatdiv, style);
     }
     else
     {
-      chatdiv.style.width='';
+      style['width'] = '';
+      Element.setStyle(chatdiv, style);
     }
   }
   
