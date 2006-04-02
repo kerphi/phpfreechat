@@ -899,19 +899,24 @@ pfcClient.prototype = {
   {
     var content = $('<?php echo $prefix; ?>smileys');
     var btn = $('<?php echo $prefix; ?>showHideSmileysbtn');
-    if (!btn) return;
     if (this.showsmileys)
     {
-      btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-on.gif'); ?>";
-      btn.alt = this.i18n.hidesmiley;
-      btn.title = btn.alt;
+      if (btn)
+      {
+        btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-on.gif'); ?>";
+        btn.alt = this.i18n.hidesmiley;
+        btn.title = btn.alt;
+      }
       content.style.display = 'block';
     }
     else
     {
-      btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-off.gif'); ?>";
-      btn.alt = this.i18n.showsmiley;
-      btn.title = btn.alt;
+      if (btn)
+      {
+        btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-off.gif'); ?>";
+        btn.alt = this.i18n.showsmiley;
+        btn.title = btn.alt;
+      }
       content.style.display = 'none';
     }
     this.refresh_Chat();
@@ -977,7 +982,6 @@ pfcClient.prototype = {
       style['height'] = '100%';
       Element.setStyle(smileysdiv, style);
     }
-    
     if (this.showsmileys)
     {
       style['height'] = '';
