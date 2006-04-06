@@ -406,34 +406,33 @@ pfcClient.prototype = {
       // fallback for IE6/Konqueror which do not support split with regexp
       msg = msg.replace(rx_url, '$1<a href="$2"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$2</a>$3');
     
-
     // replace double spaces by &nbsp; entity
     rx = new RegExp('  ','g');
     msg = msg.replace(rx, '&nbsp;&nbsp;');
 
-    /* try to parse bbcode */
-    rx = new RegExp('\\[b\\](.*?)\\[\/b\\]','ig');
+    // try to parse bbcode
+    rx = new RegExp('\\[b\\](.+?)\\[\/b\\]','ig');
     msg = msg.replace(rx, '<span style="font-weight: bold">$1</span>');
-    rx = new RegExp('\\[i\\](.*?)\\[\/i\\]','ig');
+    rx = new RegExp('\\[i\\](.+?)\\[\/i\\]','ig');
     msg = msg.replace(rx, '<span style="font-style: italic">$1</span>');
-    rx = new RegExp('\\[u\\](.*?)\\[\/u\\]','ig');
+    rx = new RegExp('\\[u\\](.+?)\\[\/u\\]','ig');
     msg = msg.replace(rx, '<span style="text-decoration: underline">$1</span>');
-    rx = new RegExp('\\[s\\](.*?)\\[\/s\\]','ig');
+    rx = new RegExp('\\[s\\](.+?)\\[\/s\\]','ig');
     msg = msg.replace(rx, '<span style="text-decoration: line-through">$1</span>');
-    /*    rx = new RegExp('\\[pre\\](.+?)\\[\/pre\\]','ig');
-    msg = msg.replace(rx, '<pre>$1</pre>');  */
+    //    rx = new RegExp('\\[pre\\](.+?)\\[\/pre\\]','ig');
+    // msg = msg.replace(rx, '<pre>$1</pre>'); 
     rx = new RegExp('\\[email\\]([A-z0-9][\\w.-]*@[A-z0-9][\\w\\-\\.]+\\.[A-z0-9]{2,6})\\[\/email\\]','ig');
     msg = msg.replace(rx, '<a href="mailto:$1">$1</a>'); 
-    rx = new RegExp('\\[email=([A-z0-9][\\w.-]*@[A-z0-9][\\w\\-\\.]+\\.[A-z0-9]{2,6})\\](.*?)\\[\/email\\]','ig');
+    rx = new RegExp('\\[email=([A-z0-9][\\w.-]*@[A-z0-9][\\w\\-\\.]+\\.[A-z0-9]{2,6})\\](.+?)\\[\/email\\]','ig');
     msg = msg.replace(rx, '<a href="mailto:$1">$2</a>');
-    rx = new RegExp('\\[color=([a-zA-Z]*|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.*?)\\[\/color\\]','ig');
+    rx = new RegExp('\\[color=([a-zA-Z]+|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.+?)\\[\/color\\]','ig');
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');
     // parse bbcode colors twice because the current_text_color is a bbcolor
     // so it's possible to have a bbcode color imbrication
-    rx = new RegExp('\\[color=([a-zA-Z]*|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.*?)\\[\/color\\]','ig');
+    rx = new RegExp('\\[color=([a-zA-Z]+|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.+?)\\[\/color\\]','ig');
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');   
 
-    /* try to parse smileys */
+    // try to parse smileys
     var sl = this.smileys.keys();
     for(var i = 0; i < sl.length; i++)
     {
@@ -441,7 +440,7 @@ pfcClient.prototype = {
       msg = msg.replace(rx, '<img src="'+ this.smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
     }
     
-    /* try to parse nickname for highlighting  */
+    // try to parse nickname for highlighting 
     rx = new RegExp('(^|[ :,;])'+RegExp.escape(this.nickname)+'([ :,;]|$)','gi');
     msg = msg.replace(rx, '$1<strong>'+ this.nickname +'</strong>$2');
 
@@ -459,7 +458,6 @@ pfcClient.prototype = {
         msg = msg + ttt[i] + ' ';
       }
     }
-    
     return msg;
   },
 
