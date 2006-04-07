@@ -395,7 +395,7 @@ pfcClient.prototype = {
         var range1 = 7+offset-delta;
         var range2 = 7+offset+delta;
         if (ttt[i].match(rx_url))
-          msg = msg + '<a href="' + ttt[i] + '">' + (delta>0 ? ttt[i].substring(7,range1)+ ' ... '+ ttt[i].substring(range2,ttt[i].length) :  ttt[i]) + '</a>';
+          msg = msg + '<a href="' + ttt[i] + '"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>' + (delta>0 ? ttt[i].substring(7,range1)+ ' ... '+ ttt[i].substring(range2,ttt[i].length) :  ttt[i]) + '</a>';
         else
         {
           msg = msg + ttt[i];
