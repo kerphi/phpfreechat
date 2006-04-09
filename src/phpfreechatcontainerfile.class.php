@@ -168,7 +168,7 @@ class phpFreeChatContainerFile extends phpFreeChatContainer
     $my_filename = $c->container_cfg_nickname_dir."/".$this->_encode($c->nick);
     if (file_exists($my_filename)) $there = true;
     touch($my_filename);
-    chmod($my_filename, 0777); 
+    @chmod($my_filename, 0777); 
     
     return $there;
   }
