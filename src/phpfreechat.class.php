@@ -91,9 +91,9 @@ class phpFreeChat
     // print phpfreechat specific javascript
     $t = new phpFreeChatTemplate($c->getFilePathFromTheme("templates/pfcclient.js.tpl.php"));
     $t->assignObject($c);
-    $output .= "<script type=\"text/javascript\">\n<!--\n";
+    $output .= "<script type=\"text/javascript\">\n // <![CDATA[\n";
     $output .= $t->getOutput();
-    $output .= "\n-->\n</script>\n";
+    $output .= "\n // ]]>\n</script>\n";
     
     // print xajax javascript
     $output .= $this->xajax->getJavascript($c->data_public_url, NULL, $c->data_public_url."/xajax_js/xajax.js");
