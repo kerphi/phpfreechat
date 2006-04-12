@@ -612,6 +612,7 @@ pfcClient.prototype = {
       this.colorlist.splice(cid,1);
       this.nickcolor.push(new Array(nick, nc));
     }
+
     return nc;
   },
   
@@ -990,6 +991,10 @@ pfcClient.prototype = {
       style['height'] = '100%';
       Element.setStyle(onlinediv, style);
     }
+
+    // for IE7 CSS refresh
+    // if fixes the smiley and online boxes resize problem on IE6
+    if (document.recalc) setTimeout('document.recalc(true);', 0);
   },
   
   /**

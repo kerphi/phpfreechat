@@ -96,6 +96,11 @@
 <pre id="debugxajax" style="border: 1px solid red; background-color: #FEE;"></pre>
 <?php } ?>
 
+<?php
+// a cleaner workeround has been found (see pfcclient.js.php) :
+// if (document.recalc) setTimeout('document.recalc(true);', 0);
+
+/*
 <!--[if lt IE 7]>
 <script type="text/javascript">
   // this is a IE6 workeround (IE7 works well) to resize correctly the smiley and online boxes
@@ -107,3 +112,5 @@
 </script>
 <![endif]-->
 
+*/
+?>

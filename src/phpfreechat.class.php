@@ -106,6 +106,7 @@ class phpFreeChat
       $output .= "<!--[if lt IE 7]>\n";
       $output .= "  <script type=\"text/javascript\">IE7_PNG_SUFFIX = \".png\";</script>\n";
       $output .= "  <script type=\"text/javascript\" src=\"".$ie7_path."/ie7-standard-p.js\"></script>\n";
+      $output .= "  <script type=\"text/javascript\" src=\"".$ie7_path."/ie7-recalc.js\"></script>\n";
       $output .= "<![endif]-->\n";
     }
     phpFreeChatI18N::SwitchOutputEncoding();
