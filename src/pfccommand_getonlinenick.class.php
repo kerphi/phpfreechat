@@ -4,27 +4,27 @@ require_once(dirname(__FILE__)."/pfccommand.class.php");
 
 class pfcCommand_getonlinenick extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param ="")
+  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
 
     // get the actual nicklist
-    $nicklist_sid = $c->prefix."nicklist_".$c->getId()."_".$clientid;
+    $nicklist_sid = $c->prefix."nicklist_".$c->getId()."_".$clientid."_".$recipientid;
     $oldnicklist = isset($_SESSION[$nicklist_sid]) ? $_SESSION[$nicklist_sid] : array();
     
     $container =& $c->getContainerInstance();
-    $disconnected_users = $container->removeObsoleteNick();
+    $disconnected_users = $container->removeObsoleteNick($recipient,$c->timeout);
     foreach ($disconnected_users as $u)
     {
-      $cmd =& pfcCommand::Factory("notice", $c);
-      $cmd->run($xml_reponse, $clientid, _pfc("%s disconnected (timeout)",$u), 2);
+      $cmd =& pfcCommand::Factory("notice");
+      $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u), $sender, $recipient, $recipientid, 2);
     }
-    $users = $container->getOnlineNick();
+    $users = $container->getOnlineNick($recipient);
     sort($users);
     // check if the nickname list must be updated
     if ($oldnicklist != $users)
     {
-      if ($c->debug) pxlog("Cmd_getOnlineNick[".$c->sessionid."]: nicklist updated - nicklist=".var_export($users, true), "chat", $c->getId());
+      if ($c->debug) pxlog("/getonlinenick (nicklist updated - nicklist=".implode(",",$users).")", "chat", $c->getId());
 
       $_SESSION[$nicklist_sid] = $users;
 
@@ -36,8 +36,9 @@ class pfcCommand_getonlinenick extends pfcCommand
       }
       $js    = substr($js, 0, strlen($js)-1); // remove last ','
       
-      $xml_reponse->addScript("pfc.updateNickList(Array(".$js."));");
+      $xml_reponse->addScript("pfc.updateNickList('".$recipientid."',Array(".$js."));");
     }
+  
   }
 }
 

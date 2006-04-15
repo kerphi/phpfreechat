@@ -117,6 +117,16 @@ function mkdir_r($path, $mode = 0777)
   }
 }
 
+function rm_r($dir)
+{
+  if(!$dh = @opendir($dir)) return;
+  while (($obj = readdir($dh)))
+  {
+    if($obj=='.' || $obj=='..') continue;
+    if (!@unlink($dir.'/'.$obj)) rm_r($dir.'/'.$obj);
+  }
+  rmdir($dir);
+}
 
 /**
  * Copy a file, or recursively copy a folder and its contents
@@ -166,33 +176,199 @@ function copyr($source, $dest, $mode = 0777)
 }
 
 /**
+ * Check the functions really exists on this server
+ */
+function check_functions_exist( $f_list )
+{
+  $errors = array();
+  foreach( $f_list as $func => $err )
+  {
+    if (!function_exists( $func ))
+      $errors[] = _pfc("%s doesn't exist: %s", $func, $err);
+  }
+  return $errors;
+}
+
+
+function test_writable_dir($dir, $name = "")
+{
+  $errors = array();
+  if ($dir == "")
+    $errors[] = _pfc("%s directory must be specified", ($name!="" ? $name : $dir));
+  
+  if (is_file($dir))
+    $this->errors[] = _pfc("%s must be a directory",$dir);
+  if (!is_dir($dir))
+    mkdir_r($dir);
+  if (!is_dir($dir))
+    $errors[] = _pfc("%s can't be created",$dir);
+  if (!is_writeable($dir))
+    $errors[] = _pfc("%s is not writeable",$dir);
+  if (!is_readable($dir))
+    $errors[] = _pfc("%s is not readable",$dir);
+
+  return $errors;
+}
+
+function install_file($src_file, $dst_file)
+{
+  $errors = array();
+  
+  $src_dir = dirname($src_file);
+  $dst_dir = dirname($dst_file);
+  
+  if (!is_file($src_file))
+    $errors[] = _pfc("%s is not a file", $src_file);
+  if (!is_readable($src_file))
+    $errors[] = _pfc("%s is not readable", $src_file);
+  if (!is_dir($src_dir))
+    $errors[] = _pfc("%s is not a directory", $src_dir);
+  if (!is_dir($dst_dir))
+    mkdir_r($dst_dir);
+
+  copy( $src_file, $dst_file );
+
+  return $errors;
+}
+
+function install_dir($src_dir, $dst_dir)
+{
+  $errors = array();
+  
+  if (!is_dir($src_dir))
+    $errors[] = _pfc("%s is not a directory", $src_dir);
+  if (!is_readable($src_dir))
+    $errors[] = _pfc("%s is not readable", $src_dir);
+
+  copyr( $src_dir, $dst_dir );
+
+  return $errors;
+}
+
+
+
+/**
  * file_get_contents
  * define an alternative file_get_contents when this function doesn't exists on the used php version (<4.3.0)
  */
 if (!function_exists('file_get_contents'))
 {
   function file_get_contents($filename, $incpath = false, $resource_context = null)
+  {
+    if (false === $fh = fopen($filename, 'rb', $incpath))
     {
-      if (false === $fh = fopen($filename, 'rb', $incpath))
-      {
-        trigger_error('file_get_contents() failed to open stream: No such file or directory', E_USER_WARNING);
+      trigger_error('file_get_contents() failed to open stream: No such file or directory', E_USER_WARNING);
+      return false;
+    }
+    clearstatcache();
+    if ($fsize = filesize($filename))
+    {
+      $data = fread($fh, $fsize);
+    }
+    else
+    {
+      while (!feof($fh)) {
+        $data .= fread($fh, 8192);
+      }
+    }
+    fclose($fh);
+    return $data;
+  }
+}
+
+/**
+ * Replace file_put_contents()
+ *
+ * @category    PHP
+ * @package     PHP_Compat
+ * @link        http://php.net/function.file_put_contents
+ * @author      Aidan Lister <aidan@php.net>
+ * @version     $Revision: 1.25 $
+ * @internal    resource_context is not supported
+ * @since       PHP 5
+ * @require     PHP 4.0.0 (user_error)
+ */
+if (!defined('FILE_USE_INCLUDE_PATH')) {
+  define('FILE_USE_INCLUDE_PATH', 1);
+}
+
+if (!defined('LOCK_EX')) {
+  define('LOCK_EX', 2);
+}
+
+if (!defined('FILE_APPEND')) {
+  define('FILE_APPEND', 8);
+}
+if (!function_exists('file_put_contents')) {
+  function file_put_contents($filename, $content, $flags = null, $resource_context = null)
+    {
+      // If $content is an array, convert it to a string
+      if (is_array($content)) {
+        $content = implode('', $content);
+      }
+
+      // If we don't have a string, throw an error
+      if (!is_scalar($content)) {
+        user_error('file_put_contents() The 2nd parameter should be either a string or an array',
+                   E_USER_WARNING);
         return false;
       }
-      clearstatcache();
-      if ($fsize = filesize($filename))
-      {
-        $data = fread($fh, $fsize);
+
+      // Get the length of data to write
+      $length = strlen($content);
+
+      // Check what mode we are using
+      $mode = ($flags & FILE_APPEND) ?
+        'a' :
+        'wb';
+
+      // Check if we're using the include path
+      $use_inc_path = ($flags & FILE_USE_INCLUDE_PATH) ?
+        true :
+        false;
+
+      // Open the file for writing
+      if (($fh = @fopen($filename, $mode, $use_inc_path)) === false) {
+        user_error('file_put_contents() failed to open stream: Permission denied',
+                   E_USER_WARNING);
+        return false;
       }
-      else
-      {
-        while (!feof($fh)) {
-          $data .= fread($fh, 8192);
+
+      // Attempt to get an exclusive lock
+      $use_lock = ($flags & LOCK_EX) ? true : false ;
+      if ($use_lock === true) {
+        if (!flock($fh, LOCK_EX)) {
+          return false;
         }
       }
-      fclose($fh);
-      return $data;
+
+      // Write to the file
+      $bytes = 0;
+      if (($bytes = @fwrite($fh, $content)) === false) {
+        $errormsg = sprintf('file_put_contents() Failed to write %d bytes to %s',
+                            $length,
+                            $filename);
+        user_error($errormsg, E_USER_WARNING);
+        return false;
+      }
+
+      // Close the handle
+      @fclose($fh);
+
+      // Check all the data was written
+      if ($bytes != $length) {
+        $errormsg = sprintf('file_put_contents() Only %d of %d bytes written, possibly out of free disk space.',
+                            $bytes,
+                            $length);
+        user_error($errormsg, E_USER_WARNING);
+        return false;
+      }
+
+      // Return length
+      return $bytes;
     }
 }
+
 
 /**
  * iconv

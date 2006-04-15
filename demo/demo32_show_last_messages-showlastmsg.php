@@ -1,17 +1,15 @@
 <?php
 
-require_once dirname(__FILE__)."/demo32_show_last_messages-config.php";
-
-$container =& $pfc_config->getContainerInstance();
-$lastmsg_id = $container->getLastMsgId();
-$lastmsg_raw = $container->readNewMsg($lastmsg_id-10);
+require_once dirname(__FILE__)."/../src/pfcinfo.class.php";
+$info  = new pfcInfo( md5("Show last messages demo") );
+$lastmsg_raw = $info->getLastMsg(10);
 
 echo "<h1>A demo which explains how to get the last posted messages</h1>";
 
 echo '<div style="margin: auto; width: 70%; border: 1px solid red; background-color: #FDD; padding: 1em;">';
 $nbmsg = count($lastmsg_raw["messages"]);
 $info = "<strong>%d</strong> last messages on <strong>'%s'</strong> channel are:";
-echo "<p>".sprintf($info, $nbmsg, $pfc_config->channel)."</p>";
+echo "<p>".sprintf($info, $nbmsg, "")."</p>";
 
 $bg = 1;
 echo '<table style="margin: auto; width: 70%; border: 1px solid red; background-color: #FEE;">';

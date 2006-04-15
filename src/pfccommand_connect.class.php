@@ -4,15 +4,17 @@ require_once(dirname(__FILE__)."/pfccommand.class.php");
 
 class pfcCommand_connect extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param = "")
+  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
+    $u =& $this->u;
 
-    // reset the message id indicator
-    // i.e. be ready to re-get all last posted messages
+
+    // disconnect last connected users from the server if necessary 
     $container =& $c->getContainerInstance();
-    $_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid] = $container->getLastMsgId()-$c->max_msg;
+    $disconnected_users = $container->removeObsoleteNick(NULL, $c->timeout);
 
+    /*
     // reset the nickname cache
     $_SESSION[$c->prefix."nicklist_".$c->getId()."_".$clientid] = NULL;
     
@@ -23,37 +25,37 @@ class pfcCommand_connect extends pfcCommand
       $xml_reponse->addAssign($c->prefix."handle", "disabled", false);
 
     // disconnect last connected users if necessary 
-    $cmd =& pfcCommand::Factory("getonlinenick", $c);
+    $cmd =& pfcCommand::Factory("getonlinenick");
     $cmd->run($xml_reponse, $clientid);
     
     // check if the wanted nickname was allready known
     if ($c->debug)
     {
       $container =& $c->getContainerInstance();
-      $nickid    = $container->getNickId($c->nick);
-      pxlog("Cmd_connect[".$c->sessionid."]: nick=".$c->nick." nickid=".$nickid, "chat", $c->getId());
+      $nickid    = $container->getNickId($u->nick);
+      pxlog("/connect (nick=".$u->nick." nickid=".$nickid.")", "chat", $c->getId());
     }
 
-    if ($c->nick == "")
+    if ($u->nick == "")
     {
       // ask user to choose a nickname
-      $cmd =& pfcCommand::Factory("asknick", $c);
+      $cmd =& pfcCommand::Factory("asknick");
       $cmd->run($xml_reponse, $clientid, "");
     }
     else
     {
-      $cmd =& pfcCommand::Factory("nick", $c);
-      $cmd->run($xml_reponse, $clientid, $c->nick);
+      $cmd =& pfcCommand::Factory("nick");
+      $cmd->run($xml_reponse, $clientid, $u->nick);
     }
-    
-    // start updates
-    $xml_reponse->addScript("pfc.updateChat(true);");
-    $xml_reponse->addScript("pfc.isconnected = true; pfc.refresh_loginlogout();");
+    */
 
-    // give focus the the input text box if wanted
-    if($c->focus_on_connect)
-      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
-    
+    // start updates
+    //    $xml_reponse->addScript("pfc.updateChat(true);");
+    //    $xml_reponse->addScript("pfc.isconnected = true; pfc.refresh_loginlogout();");
+
+    // connect to the server
+    $xml_reponse->addScript("pfc.handleResponse('connect', 'ok', '');");
+        
     return $clientid;
   }
 }

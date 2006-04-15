@@ -1,11 +1,8 @@
 <?php
 
-require_once dirname(__FILE__)."/demo31_show_who_is_online-config.php";
-
-$container =& $pfc_config->getContainerInstance();
-$users = $container->getOnlineNick();
-$lastmsg = $container->readNewMsg(0);
-print_r($lastmsg);
+require_once dirname(__FILE__)."/../src/pfcinfo.class.php";
+$info  = new pfcInfo( md5("Whois online demo") );
+$users = $info->getOnlineNick();
 
 echo "<h1>A demo which explains how to get the connected users list</h1>";
 
@@ -16,7 +13,7 @@ if ($nb_users <= 1)
   $info = "<strong>%d</strong> user is connected to the <strong>'%s'</strong> channel !";
 else
   $info = "<strong>%d</strong> users are connected to the <strong>'%s'</strong> channel !";
-echo "<p>".sprintf($info, $nb_users, $pfc_config->channel)."</p>";
+echo "<p>".sprintf($info, $nb_users, "")."</p>";
 
 echo "<p>Here is the nicknames' list:</p>";
 echo "<ul>";

@@ -10,8 +10,17 @@ pfcClient.prototype = {
   
   initialize: function()
   {
+    this.gui = new pfcGui();
+    
     /* user description */
-    this.nickname      = '';
+    this.nickname      = '<?php echo $u->nick; ?>';
+
+    
+    this.channels      = Array();
+    this.channelids    = Array();
+    this.privmsgs      = Array();
+    this.privmsgids    = Array();
+    
     
     this.timeout       = null;
     this.refresh_delay = <?php echo $refresh_delay; ?>;
@@ -58,7 +67,7 @@ pfcClient.prototype = {
       this.switch_text_color(cookie);
              
     this.isconnected   = false;
-    this.nicklist      = Array();
+    this.nicklist      = $H();
     this.nickcolor     = Array();
     this.colorlist     = Array();
 
@@ -90,7 +99,10 @@ pfcClient.prototype = {
       hidesmiley:          '<?php echo _pfc("Hide smiley box"); ?>',
       showsmiley:          '<?php echo _pfc("Show smiley box"); ?>',
       hideonline:          '<?php echo _pfc("Hide online users box"); ?>',
-      showonline:          '<?php echo _pfc("Show online users box"); ?>'
+      showonline:          '<?php echo _pfc("Show online users box"); ?>',
+
+      enter_nickname:      '<?php echo _pfc("Please enter your nickname"); ?>',
+      private_message:     '<?php echo _pfc("Private message"); ?>'
     };
     this.i18n = $H(i18n);
 
@@ -111,6 +123,190 @@ pfcClient.prototype = {
     this.smileys = $H(smileys);
   },
 
+  /**
+   * Show a popup dialog to ask user to choose a nickname
+   */
+  askNick: function(nickname)
+  {
+    // ask to choose a nickname
+    if (nickname == '') nickname = this.nickname;
+    var newnick = prompt(this.i18n.enter_nickname, nickname);
+    if (newnick)
+      this.sendRequest('/nick', newnick);
+  },
+  
+  /**
+   * Reacte to the server response
+   */
+  handleResponse: function(cmd, resp, param)
+  {
+    if (cmd == "connect")
+    {
+      //alert(cmd + "-"+resp+"-"+param);
+      if (resp == "ok")
+      {                
+        if (this.nickname == '')
+          // ask to choose a nickname
+          this.askNick(this.nickname);
+        else
+        {
+          this.sendRequest('/nick', this.nickname);
+
+          // now join channels comming from sessions
+          // or the default one
+          <?php
+          if (count($u->channels) == 0)
+            echo "this.sendRequest('/join', '".addslashes($c->channel)."');\n";
+          foreach($u->channels as $ch)
+            echo "this.sendRequest('/join', '".addslashes($ch["name"])."');\n";
+          foreach($u->privmsg as $pv)
+            echo "this.sendRequest('/privmsg', '".addslashes($pv["name"])."');\n";
+          ?>
+        }
+        
+        // give focus the the input text box if wanted
+        <?php if($c->focus_on_connect) { ?>
+        this.el_words.focus();
+        <?php } ?>
+
+        this.isconnected = true;
+
+        // start the polling system
+        this.updateChat(true);
+      }
+      else
+        this.isconnected = false;
+      this.refresh_loginlogout();
+    }
+    else if (cmd == "quit")
+    {
+      if (resp =="ok")
+      {
+        // stop updates
+        this.updateChat(false);
+        this.isconnected = false;
+        this.refresh_loginlogout();
+      }
+    }
+    else if (cmd == "join")
+    {
+      if (resp =="ok")
+      {
+        // create the new channel
+        var tabid = param[0];
+        var name  = param[1];
+        this.gui.createTab(name, tabid, "ch");
+        this.gui.setTabById(tabid);
+        /*
+        this.channels.push(name);
+        this.channelids.push(tabid);
+        */
+      }
+      else
+        alert(cmd + "-"+resp+"-"+param);
+    }
+    else if (cmd == "leave")
+    {
+      //alert(cmd + "-"+resp+"-"+param);
+      if (resp =="ok")
+      {
+        // remove the channel
+        var tabid = param;
+        this.gui.removeTabById(tabid);
+
+        // synchronize the channel client arrays
+        var index = -1;
+        index = this.channelids.indexOf(tabid);
+        this.channelids = this.channelids.without(tabid);
+        this.channels   = this.channels.without(this.channels[index]);
+
+        // synchronize the privmsg client arrays
+        index = -1;
+        index = this.privmsgids.indexOf(tabid);
+        this.privmsgids = this.privmsgids.without(tabid);
+        this.privmsgs   = this.privmsgs.without(this.privmsgs[index]);
+        
+      }
+    }
+    else if (cmd == "privmsg")
+    {
+      if (resp == "ok")
+      {
+        // create the new channel
+        var tabid = param[0];
+        var name  = param[1];
+        this.gui.createTab(name, tabid, "pv");
+        this.gui.setTabById(tabid);
+        
+        this.privmsgs.push(name);
+        this.privmsgids.push(tabid);
+        
+      }
+      else if (resp == "unknown")
+      {
+        // speak to unknown user
+      }
+      else
+        alert(cmd + "-"+resp+"-"+param);
+    }
+    else if (cmd == "nick")
+    {
+      if (resp == "connected")
+      {
+        // now join channels comming from sessions
+        // or the default one
+        <?php
+        if (count($u->channels) == 0)
+          echo "this.sendRequest('/join', '".addslashes($c->channel)."');\n";
+        foreach($u->channels as $ch)
+          echo "this.sendRequest('/join', '".addslashes($ch["name"])."');\n";
+        foreach($u->privmsg as $pv)
+          echo "this.sendRequest('/privmsg', '".addslashes($pv["name"])."');\n";
+        ?>
+      }
+      if (resp == "ok" || resp == "notchanged" || resp == "changed" || resp == "connected")
+      {
+        this.el_handle.value = param;
+      }
+      else if (resp == "isused")
+      {
+        this.askNick(param);
+      }
+      else
+        alert(cmd + "-"+resp+"-"+param);
+    }
+    else if (cmd == "update")
+    {
+      if (resp == "ok")
+      {
+      }
+      else if (resp == "privmsg")
+      {
+        // check if the wanted privmsg exists or not
+        var index = this.privmsgs.indexOf(param);
+        if (index == -1)
+        {
+          // it doesn't exists, create it
+          this.sendRequest('/privmsg', param);
+        }
+        else
+        {
+          var tabid = this.privmsgids[index];
+          if (this.gui.getTabId() != tabid)
+          {
+            // alert user something occurs in the pv tab
+            //            alert("todo: highlight the '"+param+"' tab (tabid="+tabid+")");
+          }
+        }
+      }
+      //      else
+      //        alert(cmd + "-"+resp+"-"+param);
+    }
+
+    //if( cmd != "update")
+    //      alert(cmd + "-"+resp+"-"+param);
+  },
+  
   /**
    * Try to complete a nickname like on IRC when pressing the TAB key
    * @todo: improve the algorithme, it should take into account the cursor position
@@ -154,8 +350,8 @@ pfcClient.prototype = {
       {
 	/* a user command */
 	cmd   = wval.replace(re, '$1');
-	param = wval.replace(re, '$2');
-	this.handleRequest(cmd, param.substr(0,<?php echo $max_text_len; ?> + this.clientid.length));
+	param = wval.replace(re, '$3');
+	this.sendRequest(cmd, param.substr(0,<?php echo $max_text_len; ?> + this.clientid.length));
       }
       else
       {
@@ -172,7 +368,7 @@ pfcClient.prototype = {
 	if (this.current_text_color != '' && wval.length != '')
   	  wval = '[color=#' + this.current_text_color + '] ' + wval + ' [/color]';
 
-	this.handleRequest('/send', wval);
+	this.sendRequest('/send', wval);
       }
       w.value = '';
       return false;
@@ -221,7 +417,7 @@ pfcClient.prototype = {
      * this event doesn't only occurs when the page is closed but also when the page is reloaded */
     <?php if ($c->quit_on_closedwindow) { ?>
     if (!this.isconnected) return false;
-    this.handleRequest('/quit');
+    this.sendRequest('/quit');
     <?php } ?>
   },
 
@@ -294,13 +490,107 @@ pfcClient.prototype = {
     }
   },
 
+  handleComingRequest: function( cmds )
+  {
+    var msg_html = $H();
+    var msg_ids  = $H();
+    
+    //    alert(cmds.inspect());
+    
+    //    var html = '';
+    for(var mid = 0; mid < cmds.length ; mid++)
+    {
+      var id          = cmds[mid][0];
+      var date        = cmds[mid][1];
+      var time        = cmds[mid][2];
+      var sender      = cmds[mid][3];
+      var recipientid = cmds[mid][4];
+      var cmd         = cmds[mid][5];
+      var param       = cmds[mid][6];
+
+      //var fromtoday = cmds[mid][6];
+      //var oldmsg    = cmds[mid][7];
+
+      // format and post message
+      var line = '';
+      line += '<div id="<?php echo $prefix; ?>msg'+ id +'" class="<?php echo $prefix; ?>'+ cmd +' <?php echo $prefix; ?>message';
+      //      if (oldmsg == 1) line += ' <?php echo $prefix; ?>oldmsg';
+      line += '">';
+      line += '<span class="<?php echo $prefix; ?>date';
+      //      if (fromtoday == 1) line += ' <?php echo $prefix; ?>invisible';
+      line += '">'+ date +'</span> ';
+      line += '<span class="<?php echo $prefix; ?>heure">'+ time +'</span> ';
+      if (cmd == 'send')
+      {
+	line += ' <span class="<?php echo $prefix; ?>nick">';
+	line += '&#x2039;';
+	line += '<span ';
+        //	if (nickcolor != '') line += 'style="color: ' + nickcolor + '" ';
+	line += 'class="<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(sender)) +'">';
+	line += sender;
+	line += '</span>';
+	line += '&#x203A;';
+	line += '</span> ';
+      }
+      if (cmd == 'notice' || cmd == 'me')
+	line += '<span class="<?php echo $prefix; ?>words">* '+ this.parseMessage(param) +'</span> ';
+      else
+	line += '<span class="<?php echo $prefix; ?>words">'+ this.parseMessage(param) +'</span> ';
+      line += '</div>';
+
+      if (msg_html[recipientid] == null)
+        msg_html[recipientid] = line;
+      else
+        msg_html[recipientid] += line;
+
+      if (msg_ids[recipientid] == null)
+        msg_ids[recipientid] = Array(id);
+      else
+        msg_ids[recipientid].push(id);
+    }
+
+    // loop on all recipients and post messages
+    var keys = msg_html.keys();
+    for( var i=0; i<keys.length; i++)
+    {
+      var recipientid  = keys[i];
+      var tabid        = recipientid;
+
+      /* create the tab if it doesn't exists yet */
+      var recipientdiv = this.gui.getChatContentFromTabId(tabid);
+      
+      /* create a dummy div to avoid konqueror bug when setting nickmarkers */
+      var m = document.createElement('div');
+      m.innerHTML = msg_html[recipientid];
+      /* finaly append this to the message list */
+      recipientdiv.appendChild(m);
+
+      //      var a = msg_ids[recipientid];
+      //alert(a.inspect());
+      //      for(var j = 0; j < msg_ids[recipientid].length ; j++) 
+      {
+
+        this.gui.scrollDown(tabid, m/*$('<?php echo $prefix; ?>msg'+ msg_ids[recipientid][j])*/);
+
+        // colorize messages nicknames
+        //var root = $('<?php echo $prefix; ?>msg'+ msg_ids[j]);
+        //this.refresh_nickmarker(root);
+        //this.refresh_clock(root);
+      }
+      
+    }
+  },
+  
   /**
    * Call the ajax request function
    * Will query the server
    */
-  handleRequest: function(cmd, param)
+  sendRequest: function(cmd, param)
   {
-    return <?php echo $prefix; ?>handleRequest(cmd + " " + this.clientid + (param ? " " + param : ""));
+    var recipientid = this.gui.getTabId();
+    var req = cmd+" "+this.clientid+" "+(recipientid==''?'0':recipientid)+(param?" "+param : "");
+    //    if (cmd != "/update") alert(req);
+    return <?php echo $prefix; ?>handleRequest(req);
   },
 
   /**
@@ -311,7 +601,7 @@ pfcClient.prototype = {
     clearTimeout(this.timeout);
     if (start)
     {
-      var res = this.handleRequest('/update');
+      var res = this.sendRequest('/update');
       // adjust the refresh_delay if the connection was lost
       if (res == false) { this.refresh_delay = this.refresh_delay * 2; }
       // setup the next update
@@ -331,18 +621,50 @@ pfcClient.prototype = {
   /**
    * fill the nickname list with connected nicknames
    */
-  updateNickList: function(lst)
+  updateNickList: function(tabid,lst)
   {
-    this.nicklist = lst;
+    //    alert('updateNickList: tabid='+tabid+"-lst="+lst.inspect());
+    //var tabid = hex_md5(_to_utf8("ch_"+recipient));
+
+    this.nicklist[tabid] = lst;
     var nicks   = lst;
-    var nickdiv = this.el_online;
+    var nickdiv = this.gui.getOnlineContentFromTabId(tabid).firstChild;
     var ul = document.createElement('ul');
     for (var i=0; i<nicks.length; i++)
     {
-      var li = document.createElement('li');
-      li.setAttribute('class', '<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(nicks[i]));
-      var txt = document.createTextNode(nicks[i]);
-      li.appendChild(txt);
+      var li = document.createElement('li');     
+      Element.addClassName(li, '<?php echo $prefix; ?>nickmarker');
+      Element.addClassName(li, '<?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nicks[i])));
+
+      if (nicks[i] != this.nickname)
+      {
+        // this is someone -> create a privmsg link
+        var img = document.createElement('img');
+        img.setAttribute('src', '<?php echo $c->getFileUrlFromTheme('images/user.gif'); ?>');
+        img.alt = this.i18n.private_message;
+        img.title = img.alt;
+        img.style.marginRight = '5px';
+        var a = document.createElement('a');
+        a.setAttribute('href', 'opo');
+        a.pfc_nick = nicks[i];
+        a.onclick = function(){pfc.sendRequest('/privmsg', this.pfc_nick); return false;}
+        a.appendChild(img);
+        li.appendChild(a);
+      }
+      else
+      {
+        // this is myself -> do not create a privmsg link
+        var img = document.createElement('img');
+        img.setAttribute('src', '<?php echo $c->getFileUrlFromTheme('images/user-me.gif'); ?>');
+        img.alt = '';
+        img.title = img.alt;
+        img.style.marginRight = '5px';
+        li.appendChild(img);
+      }
+      
+      li.appendChild(document.createTextNode(nicks[i]));      
+      li.style.borderBottom = '1px solid #AAA';
+      
       ul.appendChild(li);
     }
     var fc = nickdiv.firstChild;
@@ -353,14 +675,22 @@ pfcClient.prototype = {
     this.colorizeNicks(nickdiv);
   },
 
+  test: function(evt)
+  {
+    alert(evt);
+    return false;
+  },
+  
   /**
    * clear the nickname list
    */
   clearNickList: function()
   {
+    /*
     var nickdiv = this.el_online;
     var fc = nickdiv.firstChild;
     if (fc) nickdiv.removeChild(fc);
+    */
   },
 
 
@@ -369,8 +699,8 @@ pfcClient.prototype = {
    */
   clearMessages: function()
   {
-    var msgdiv = $('<?php echo $prefix; ?>chat');
-    msgdiv.innerHTML = '';
+    //var msgdiv = $('<?php echo $prefix; ?>chat');
+    //msgdiv.innerHTML = '';
   },
 
   /**
@@ -466,6 +796,7 @@ pfcClient.prototype = {
    */
   parseAndPost: function(msgs)
   {
+    /*
     var msgdiv = $('<?php echo $prefix; ?>chat');
     var msgids = Array();
 
@@ -483,7 +814,7 @@ pfcClient.prototype = {
 
       msgids.push(id);
 
-      /* check the nickname is in the list or not */
+      // check the nickname is in the list or not
       var nickfound = false;
       for(var i = 0; i < this.nicklist.length && !nickfound; i++)
       {
@@ -493,7 +824,7 @@ pfcClient.prototype = {
       var nickcolor = '';
       if (nickfound) nickcolor = this.getAndAssignNickColor(nick);
 
-      /* format and post message */
+      // format and post message
       var line = '';
       line += '<div id="<?php echo $prefix; ?>msg'+ id +'" class="<?php echo $prefix; ?>'+ cmd +' <?php echo $prefix; ?>message';
       if (oldmsg == 1) line += ' <?php echo $prefix; ?>oldmsg';
@@ -508,7 +839,7 @@ pfcClient.prototype = {
 	line += '&#x2039;';
 	line += '<span ';
 	if (nickcolor != '') line += 'style="color: ' + nickcolor + '" ';
-	line += 'class="<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(nick) +'">';
+	line += 'class="<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nick)) +'">';
 	line += nick;
 	line += '</span>';
 	line += '&#x203A;';
@@ -522,30 +853,22 @@ pfcClient.prototype = {
       html += line;
     }
 
-    /* create a dummy div to avoid konqueror bug when setting nickmarkers */
+    // create a dummy div to avoid konqueror bug when setting nickmarkers
     var m = document.createElement('div');
     m.innerHTML = html;
 
-    /* finaly append this to the message list */
+    // finaly append this to the message list
     msgdiv.appendChild(m);
     
-    for(var i = 0; i < msgids.length ; i++) 
+    for(var i = 0; i < msgids.length ; i++)
     {
       this.scrolldown($('<?php echo $prefix; ?>msg'+ msgids[i]));
-      /* colorize messages nicknames */
+      // colorize messages nicknames
       var root = $('<?php echo $prefix; ?>msg'+ msgids[i]);
       this.refresh_nickmarker(root);
       this.refresh_clock(root);
     }
-  },
-
-
-  /**
-   * scroll down from the posted message height
-   */
-  scrolldown: function(elttoscroll)
-  {
-    $('<?php echo $prefix; ?>chat').scrollTop += elttoscroll.offsetHeight+2;
+    */
   },
 
   /**
@@ -553,12 +876,14 @@ pfcClient.prototype = {
    */
   colorizeNicks: function(root)
   {
+    /*
     for(var i = 0; i < this.nicklist.length; i++)
     {
       var cur_nick = this.nicklist[i];
       var cur_color = this.getAndAssignNickColor(cur_nick);
       this.applyNickColor(root, cur_nick, cur_color);
     }
+    */
   },
 
   /**
@@ -622,9 +947,11 @@ pfcClient.prototype = {
    */
   applyNickColor: function(root, nick, color)
   {
-    var nicktochange = this.getElementsByClassName(root, '<?php echo $prefix; ?>nick_'+ hex_md5(nick), '')
+    /*
+    var nicktochange = this.getElementsByClassName(root, '<?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nick)), '')
     for(var i = 0; nicktochange.length > i; i++) 
-      nicktochange[i].style.color = color; 
+      nicktochange[i].style.color = color;
+    */
   },
 
   /**
@@ -647,12 +974,14 @@ pfcClient.prototype = {
 
   showClass: function(root, clsName, clsIgnore, show)
   {
+    /*
     var elts = this.getElementsByClassName(root, clsName, clsIgnore);
     for(var i = 0; elts.length > i; i++)
     if (show)
       elts[i].style.display = 'inline';
     else
       elts[i].style.display = 'none';
+    */
   },
 
 
@@ -705,6 +1034,7 @@ pfcClient.prototype = {
   /**
    * Date/Hour show/hide
    */
+  /*
   clock_swap: function()
   {
     if (this.clock) {
@@ -735,26 +1065,27 @@ pfcClient.prototype = {
       this.showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', false);
       this.showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', false);
     }
-    /* browser automaticaly scroll up misteriously when showing the dates */
+    // browser automaticaly scroll up misteriously when showing the dates
     $('<?php echo $prefix; ?>chat').scrollTop += 30;
   },
-
+  */
+  
   /**
    * Connect/disconnect button
    */
   connect_disconnect: function()
   {
     if (this.isconnected)
-      this.handleRequest('/quit');
+      this.sendRequest('/quit');
     else
-      this.handleRequest('/connect');
+      this.sendRequest('/connect');
   },
   refresh_loginlogout: function()
   {
     var loginlogout_icon = $('<?php echo $prefix; ?>loginlogout');
     if (this.isconnected)
     {
-      this.updateNickList(this.nicklist);
+      //      this.updateNickList(this.nicklist);
       loginlogout_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>";
       loginlogout_icon.alt   = this.i18n.logout;
       loginlogout_icon.title = loginlogout_icon.alt;
@@ -1015,7 +1346,7 @@ pfcClient.prototype = {
       Element.setStyle(chatdiv, style);
     }
   }
-  
 };
+
 
 <?php include($c->getFileUrlFromTheme('templates/pfcclient-custo.js.tpl.php')); ?>

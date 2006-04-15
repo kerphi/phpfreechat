@@ -1,7 +1,13 @@
 <?php
 
-require_once dirname(__FILE__)."/demo31_show_who_is_online-config.php";
-$chat = new phpFreeChat($pfc_config);
+require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
+
+// calculate a unique id for this chat,
+// this id must be used by pfcInfo to get chat infos
+$params["serverid"] = md5("Whois online demo");
+$params["title"]    = "Whois online demo";
+
+$chat = new phpFreeChat( $params );
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

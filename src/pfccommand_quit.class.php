@@ -4,27 +4,34 @@ require_once(dirname(__FILE__)."/pfccommand.class.php");
 
 class pfcCommand_quit extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param ="")
+  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
-   
+    $u =& $this->u;
+
     // set the chat inactive
-    $c->active = false;
-    $c->saveInSession();
+    $u->active = false;
+    $u->saveInCache();
 
     // then remove the nickname file
     $container =& $c->getContainerInstance();
-    if ($container->removeNick($c->nick))
-    {
-      $cmd =& pfcCommand::Factory("notice", $c);
-      $cmd->run($xml_reponse, $clientid, _pfc("%s quit", $c->nick), 2);
-    }
+    foreach( $u->channels as $id => $chan )
+      if ($container->removeNick($chan, $u->nick))
+      {
+        $cmd =& pfcCommand::Factory("notice");
+        $cmd->run($xml_reponse, $clientid, _pfc("%s quit", $u->nick), $sender, $chan["recipient"], $id, 2);
+      }
+    foreach( $u->privmsg as $id => $pv )
+      if ($container->removeNick($pv, $u->nick))
+      {
+        $cmd =& pfcCommand::Factory("notice");
+        $cmd->run($xml_reponse, $clientid, _pfc("%s quit", $u->nick), $sender, $pv["recipient"], $id, 2);
+      }
 
-    // stop updates
-    $xml_reponse->addScript("pfc.updateChat(false);");
-    $xml_reponse->addScript("pfc.isconnected = false; pfc.refresh_loginlogout();");
 
-    if ($c->debug) pxlog("Cmd_quit[".$c->sessionid."]: a user just quit -> nick=".$c->nick, "chat", $c->getId());
+    $xml_reponse->addScript("pfc.handleResponse('quit', 'ok', '');");
+
+    if ($c->debug) pxlog("/quit (a user just quit -> nick=".$u->nick.")", "chat", $c->getId());
   }
 }
 

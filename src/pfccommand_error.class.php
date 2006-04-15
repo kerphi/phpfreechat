@@ -4,7 +4,7 @@ require_once(dirname(__FILE__)."/pfccommand.class.php");
 
 class pfcCommand_error extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $errors)
+  function run(&$xml_reponse, $clientid, $errors, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
     if (is_array($errors))

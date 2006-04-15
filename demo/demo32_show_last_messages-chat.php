@@ -1,7 +1,10 @@
 <?php
 
-require_once dirname(__FILE__)."/demo32_show_last_messages-config.php";
-$chat = new phpFreeChat($pfc_config);
+require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
+$params["serverid"] = md5("Show last messages demo"); // calculate a unique id for this chat
+$params["title"]    = "Show last posted messages channel";
+//$params["max_msg"]    = 1;
+$chat = new phpFreeChat($params);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

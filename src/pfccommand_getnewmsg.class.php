@@ -4,10 +4,15 @@ require_once(dirname(__FILE__)."/pfccommand.class.php");
 
 class pfcCommand_getnewmsg extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param ="")
+  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
 
+    // do nothing if the recipient is not defined
+    if ($recipient == "") return;
+    
+    //    $xml_reponse->addScript("alert('getnewmsg: sender=".addslashes($sender)." param=".addslashes($param)." recipient=".addslashes($recipient)." recipientid=".addslashes($recipientid)."');");
+    
     // check this methode is not being called
     if( isset($_SESSION[$c->prefix."lock_readnewmsg_".$c->getId()."_".$clientid]) )
     {
@@ -17,55 +22,64 @@ class pfcCommand_getnewmsg extends pfcCommand
       if ($last_lock < $last_10sec) $_SESSION[$c->prefix."lock_".$c->getId()."_".$clientid] = 0;
       if ( $_SESSION[$c->prefix."lock_readnewmsg_".$c->getId()."_".$clientid] != 0 ) exit;
     }
-
     // create a new lock
     $_SESSION[$c->prefix."lock_readnewmsg_".$c->getId()."_".$clientid] = time();
 
+
+    // read the last from_id value
     $container =& $c->getContainerInstance();
+    $from_id_sid = $c->prefix."from_id_".$c->getId()."_".$clientid."_".$recipientid;
+    $from_id = 0;
+    if (isset($_SESSION[$from_id_sid]))
+      $from_id = $_SESSION[$from_id_sid];
+    else
+    {
+      $from_id = $container->getLastId($recipient)-$c->max_msg;
+      if ($from_id < 0) $from_id = 0;
+    }
+
+    //$xml_reponse->addScript("alert('getnewmsg: fromidsid=".$from_id_sid."');");
+    //$xml_reponse->addScript("alert('getnewmsg: recipient=".$recipient." fromid=".$from_id."');");
+
+    //    $xml_reponse->addScript("alert('getnewmsg: recipientid=".$recipientid."');");
     
-    $from_id = isset($_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid]) ? $_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid] : $container->getLastMsgId()-$c->max_msg;
-    
-    $new_msg = $container->readNewMsg($from_id);
+    $new_msg     = $container->read($recipient, $from_id);
     $new_from_id = $new_msg["new_from_id"];
-    $messages    = $new_msg["messages"];
+    $data        = $new_msg["data"];
+    
+    //$xml_reponse->addScript("alert('getnewmsg: newmsg=".addslashes(var_export($data))."');");
 
     // transform new message in html format
     $js = '';
-    $msg_sent = false;
-    foreach ($messages as $msg)
+    $data_sent = false;
+    foreach ($data as $d)
     {
-      $m_id     = isset($msg[0]) ? $msg[0] : "";
-      $m_date   = isset($msg[1]) ? $msg[1] : "";
-      $m_heure  = isset($msg[2]) ? $msg[2] : "";
-      $m_nick   = isset($msg[3]) ? $msg[3] : "";
-      $m_words  = phpFreeChat::PostFilterMsg(isset($msg[4]) ? $msg[4] : "");
-      $m_cmd    = "cmd_msg";
-      if (preg_match("/\*([a-z]*)\*/i", $msg[3], $res))
-      {
-	if ($res[1] == "notice")
-	  $m_cmd = "cmd_notice";
-	else if ($res[1] == "me")
-	  $m_cmd = "cmd_me";
-      }
-
-      $js .= "Array(".$m_id.",'".addslashes($m_date)."','".addslashes($m_heure)."','".addslashes($m_nick)."','".addslashes($m_words)."','".addslashes($m_cmd)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($from_id == 0? 1 : 0)."),";
-      $msg_sent = true;
+      $m_id          = $d["id"];
+      $m_date        = $d["date"];
+      $m_time        = $d["time"];
+      $m_sender      = $d["sender"];
+      $m_recipientid = $recipientid;
+      $m_cmd         = $d["cmd"];
+      $m_param       = phpFreeChat::PostFilterMsg($d["param"]);
+      $js .= "Array(".$m_id.",'".addslashes($m_date)."','".addslashes($m_time)."','".addslashes($m_sender)."','".addslashes($m_recipientid)."','".addslashes($m_cmd)."','".addslashes($m_param)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($from_id == 0? 1 : 0)."),";
+      $data_sent = true;
     }
     if ($js != "")
     {
       $js = substr($js, 0, strlen($js)-1); // remove last ','
       $js = 'Array('.$js.')';
-      $xml_reponse->addScript("pfc.parseAndPost(".$js.");");
+      $xml_reponse->addScript("pfc.handleComingRequest(".$js.");");
     }
 
-    if ($msg_sent)
+    if ($data_sent)
     {
       // store the new msg id
-      $_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid] = $new_from_id;
+      $_SESSION[$from_id_sid] = $new_from_id;
     }
-
+    
     // remove the lock
     $_SESSION[$c->prefix."lock_readnewmsg_".$c->getId()."_".$clientid] = 0;
+    
   }
 }
 

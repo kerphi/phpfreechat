@@ -22,6 +22,7 @@
 
 require_once dirname(__FILE__)."/pfccommand.class.php";
 require_once dirname(__FILE__)."/phpfreechatconfig.class.php";
+require_once dirname(__FILE__)."/pfcuserconfig.class.php";
 require_once dirname(__FILE__)."/phpfreechattemplate.class.php";
 require_once dirname(__FILE__)."/../lib/utf8/utf8.php";
 
@@ -33,7 +34,6 @@ require_once dirname(__FILE__)."/../lib/utf8/utf8.php";
  */
 class phpFreeChat
 {
-  var $chatconfig;
   var $xajax;
   
   function phpFreeChat( &$params )
@@ -50,6 +50,9 @@ class phpFreeChat
     else
       $c =& phpFreeChatConfig::Instance( $params );
 
+    // need to initiate the user config object here because it uses sessions
+    $u =& pfcUserConfig::Instance();
+    
     // Xajax doesn't support yet static class methode call
     // I use basic functions to wrap to my statics methodes
     function handleRequest($request)
@@ -78,6 +81,9 @@ class phpFreeChat
   {
     $output = '';
     $c =& phpFreeChatConfig::Instance();
+    $u =& pfcUserConfig::Instance();
+    //trigger_error("u=".var_export($u));
+
     phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
     
     // include javascript libraries
@@ -87,11 +93,16 @@ class phpFreeChat
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/prototype.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/regex.js\"></script>";
+    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/utf8.js\"></script>";
     
     // print phpfreechat specific javascript
-    $t = new phpFreeChatTemplate($c->getFilePathFromTheme("templates/pfcclient.js.tpl.php"));
-    $t->assignObject($c);
+    $t = new phpFreeChatTemplate();
+    $t->assignObject($c,"c");
+    $t->assignObject($u,"u");
     $output .= "<script type=\"text/javascript\">\n // <![CDATA[\n";
+    $t->setTemplate($c->getFilePathFromTheme("templates/pfcgui.js.tpl.php"));
+    $output .= $t->getOutput();
+    $t->setTemplate($c->getFilePathFromTheme("templates/pfcclient.js.tpl.php"));
     $output .= $t->getOutput();
     $output .= "\n // ]]>\n</script>\n";
     
@@ -129,11 +140,17 @@ class phpFreeChat
   function printChat( $return = false )
   {
     $c =& phpFreeChatConfig::Instance();
+    $u =& pfcUserConfig::Instance();
+
     phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
+
     $t = new phpFreeChatTemplate($c->getFilePathFromTheme("templates/chat.html.tpl.php"));
-    $t->assignObject($c);
+    $t->assignObject($u,"u");
+    $t->assignObject($c,"c");
     $output = $t->getOutput();
+    
     phpFreeChatI18N::SwitchOutputEncoding();
+
     if($return) 
       return $output;
     else 
@@ -152,12 +169,15 @@ class phpFreeChat
   {
     $output = '';
     $c =& phpFreeChatConfig::Instance();
+    $u =& pfcUserConfig::Instance();
+
     phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
 
     $css_filename1 = dirname(__FILE__)."/../themes/default/templates/style.css.tpl.php";
     $css_filename2 = $c->getFilePathFromTheme("templates/style.css.tpl.php");
     $t = new phpFreeChatTemplate();
-    $t->assignObject($c);
+    $t->assignObject($u,"u");
+    $t->assignObject($c,"c");
     $t->setTemplate($css_filename1);
     $output .= $t->getOutput();
     if ($css_filename1 != $css_filename2)
@@ -180,6 +200,9 @@ class phpFreeChat
     phpFreeChatI18N::SwitchOutputEncoding();
     $output = "<style type=\"text/css\">\n".$output."\n</style>\n";
 
+    // tabpane
+    $output .= '<link id="luna-tab-style-sheet" type="text/css" rel="stylesheet" href="'.$c->data_public_url.'/tabpane/css/luna/tab.css" />';
+    
     if($return)
       return $output;
     else 
@@ -275,44 +298,97 @@ class phpFreeChat
   function HandleRequest($request)
   {
     $c =& phpFreeChatConfig::Instance();
+    $u =& pfcUserConfig::Instance();
+
     if ($c->debug) ob_start(); // capture output
  
     $xml_reponse = new xajaxResponse();
 
     // check the command
-    $rawcmd = "";
-    if (preg_match("/^\/([a-z]*)( ([0-9a-f]*)|)( (.*)|)/i", $request, $res))
+    $rawcmd    = "";
+    $clientid  = "";
+    $recipient   = "";
+    $recipientid = "";
+    $param     = "";
+    $sender    = "";
+    //if (preg_match("/^\/([a-z]*) ([0-9a-f]*) ([0-9a-f]*)( (.*)|)/", $request, $res))
+    //if (preg_match("/^\/([a-z]+) ([0-9a-f]+) ([0-9a-f]+) (.*)/", $request, $res))
+    if (preg_match("/^\/([a-z]+) ([0-9a-f]+) ([0-9a-f]+)( (.*)|)/", $request, $res))
     {
-      $rawcmd   = isset($res[1]) ? $res[1] : "";
-      $clientid = isset($res[3]) ? $res[3] : "";
-      $param    = isset($res[5]) ? $res[5] : "";
+      
+      $rawcmd      = isset($res[1]) ? $res[1] : "";
+      $clientid    = isset($res[2]) ? $res[2] : "";
+      $recipientid = isset($res[3]) ? $res[3] : "";
+      $param       = isset($res[5]) ? $res[5] : "";
+      $sender      = $u->nick;
+      //      $recipient   = "home";
+
+      //if ($rawcmd == "join")
+      //  trigger_error(var_export($res));
+
+    }
+
+    //if ($rawcmd == "join")
+    //trigger_error("channels=".var_export($u->channels));
+    //trigger_error("pvs=".var_export($u->privmsg));
+    
+    // translate the recipientid to the channel name
+    if (isset($u->channels[$recipientid]))
+    {
+      $recipient = $u->channels[$recipientid]["recipient"];
+    }
+    if (isset($u->privmsg[$recipientid]))
+    {
+      $recipient = $u->privmsg[$recipientid]["recipient"];
+
+      if ($rawcmd != "update")
+      {
+        // alert the other from the new pv
+        // (warn other user that someone talk to him)
+        $container =& $c->getContainerInstance();
+        $pvs = $container->getMeta("privmsg", "nickname", $u->privmsg[$recipientid]["name"]);
+        if (is_string($pvs)) $pvs = unserialize($pvs);
+        if (!is_array($pvs)) $pvs = array();
+        if (!in_array($u->nick,$pvs))
+        {
+          $pvs[] = $u->nick;
+          //          $xml_reponse->addScript("alert('pvs[]=".serialize($pvs)."');");
+          $container->setMeta(serialize($pvs), "privmsg", "nickname", $u->privmsg[$recipientid]["name"]);
+        }
+      }
     }
     
-    $cmd =& pfcCommand::Factory($rawcmd, $c);
+    $cmd =& pfcCommand::Factory($rawcmd);
     if ($cmd != NULL)
     {
       // call the command
       if ($c->debug)
-	$cmd->run($xml_reponse, $clientid, $param);
+	$cmd->run($xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
       else
-	@$cmd->run($xml_reponse, $clientid, $param);
+	@$cmd->run($xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
     }
     else
     {
-      $cmd =& pfcCommand::Factory("error", $c);
-      $cmd->run($xml_reponse, $clientid, _pfc("Unknown command [%s]",stripslashes("/".$rawcmd." ".$param)));
+      $cmd =& pfcCommand::Factory("error");
+      if ($c->debug)
+        $cmd->run($xml_reponse, $clientid, _pfc("Unknown command [%s]",stripslashes("/".$rawcmd." ".$param)), $sender, $recipient, $recipientid);
+      else
+        @$cmd->run($xml_reponse, $clientid, _pfc("Unknown command [%s]",stripslashes("/".$rawcmd." ".$param)), $sender, $recipient, $recipientid);
     }
-      
+    
     // do not update twice
     // do not update when the user just quit
     if ($rawcmd != "update" &&
 	$rawcmd != "quit" &&
-	$c->nick != "")
+	$u->nick != "")
     {
       // force an update just after a command is sent
       // thus the message user just poster is really fastly displayed
-      $cmd =& pfcCommand::Factory("update", $c);
-      $cmd->run($xml_reponse, $clientid);
+      $cmd =& pfcCommand::Factory("update");
+      if ($c->debug)
+	$cmd->run($xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
+      else
+	@$cmd->run($xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
     }
   
     if ($c->debug)
@@ -321,7 +397,7 @@ class phpFreeChat
       // if a content not empty is captured it is a php error in the code
       $data = ob_get_contents();
       if ($data != "")
-        pxlog("HandleRequest[".$c->sessionid."]: content=".$data, "chat", $c->getId());
+        pxlog("HandleRequest: content=".$data, "chat", $c->getId());
       ob_end_clean();
     }
     

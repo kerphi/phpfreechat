@@ -8,7 +8,7 @@ class pfcCommand_init extends pfcCommand
   {
     $c =& $this->c;
 
-    $cmd =& pfcCommand::Factory("quit", $c);
+    $cmd =& pfcCommand::Factory("quit");
     $cmd->run($xml_reponse, $clientid);
 
     if (isset($_COOKIE[session_name()]))

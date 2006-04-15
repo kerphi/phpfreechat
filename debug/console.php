@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__)."/../lib/xajax_0.2_stable/xajax.inc.php";
+require_once dirname(__FILE__)."/../lib/xajax_0.2.1/xajax.inc.php";
 require_once dirname(__FILE__)."/../src/pfctools.php";
 
 $chatid = $_GET["chatid"];

@@ -1,0 +1,79 @@
+<?php
+
+require_once(dirname(__FILE__)."/pfccommand.class.php");
+
+class pfcCommand_privmsg extends pfcCommand
+{
+  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  {
+    $c =& $this->c;
+    $u =& $this->u;
+
+    $pvname = $param;
+    
+    // check the pvname exists on the server
+    $container =& $c->getContainerInstance();
+    $pvnickid = $container->getNickId($pvname);
+    $nickid   = $container->getNickId($u->nick);
+
+    // error: can't speak to myself
+    if ($pvnickid == $nickid)
+    {
+      $xml_reponse->addScript("pfc.handleResponse('privmsg', 'ko', Array('".addslashes($pvname)."','speak to myself'));");
+      return;
+    }
+
+    // error: can't speak to unknown
+    if ($pvnickid == "undefined")
+    {
+      // remove this old pv from the privmsg list
+      $pvid_to_remove = "";
+      foreach( $u->privmsg as $pv_k => $pv_v )
+      {
+        if ($pv_v["name"] == $pvname)
+          $pvid_to_remove = $pv_k;
+      }
+      if ($pvid_to_remove != "")
+      {
+        unset($u->privmsg[$pvid_to_remove]);
+        $u->saveInCache();
+      }
+      
+      $xml_reponse->addScript("pfc.handleResponse('privmsg', 'unknown', Array('".addslashes($pvname)."','speak to unknown'));");
+      return;
+    }
+
+    // generate a pvid from the two nicknames ids
+    $a = array($pvnickid, $nickid); sort($a);
+    $pvrecipient = "pv_".$a[0]."_".$a[1];
+    $pvrecipientid = md5($pvrecipient);
+    
+    //    $xml_reponse->addScript("alert('privmsg: pvnickid=".$pvnickid."');");
+    //    $xml_reponse->addScript("alert('privmsg: pvname=".$pvname." pvrecipient=".$pvrecipient."');");
+    
+    // update the private message list
+    // in the sessions
+    if (!isset($u->privmsg[$pvrecipientid]))
+    {
+      $u->privmsg[$pvrecipientid]["recipient"] = $pvrecipient;
+      $u->privmsg[$pvrecipientid]["name"]      = $pvname;
+      $u->saveInCache();
+
+      // clear the cached nicknames list for the given channel
+      $nicklist_sid = $c->prefix."nicklist_".$c->getId()."_".$clientid."_".$pvrecipientid;
+      $_SESSION[$nicklist_sid] = NULL;
+      
+      // reset the message id indicator
+      // i.e. be ready to re-get all last posted messages
+      $from_id_sid = $c->prefix."from_id_".$c->getId()."_".$clientid."_".$pvrecipientid;
+      $from_id     = $container->getLastId($pvrecipient)-$c->max_msg;
+      $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
+    }
+
+    // return ok to the client
+    // then the client will create a new tab
+    $xml_reponse->addScript("pfc.handleResponse('privmsg', 'ok', Array('".$pvrecipientid."','".addslashes($pvname)."'));");    
+  }
+}
+
+?>

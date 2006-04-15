@@ -20,6 +20,7 @@
  * Boston, MA  02110-1301  USA
  */
 require_once dirname(__FILE__)."/phpfreechati18n.class.php";
+require_once dirname(__FILE__)."/pfcuserconfig.class.php";
 
 /**
  * pfcCommand is an abstract class (interface) which must be inherited by each concrete commands
@@ -41,12 +42,17 @@ class pfcCommand
    * This is the phpFreeChatConfig instance
    */
   var $c;
+  
+  /**
+   * This is the pfcUserConfig instance
+   */
+  var $u;
 
   /**
    * Used to instanciate a command
    * $tag is the command name : "nick", "me", "update" ...
    */
-  function &Factory($tag, &$config)
+  function &Factory($tag)
   {
     $cmd = NULL;
     $classname = "pfcCommand_".strtolower($tag);
@@ -54,23 +60,25 @@ class pfcCommand
        file_exists(dirname(__FILE__)."/".strtolower($classname).".class.php"))
       require_once(dirname(__FILE__)."/".strtolower($classname).".class.php");
     if(class_exists($classname))
-      $cmd =& new $classname($config);
+      $cmd =& new $classname($tag);
     return $cmd;
   }
 
   /**
    * Default constructor
    */
-  function pfcCommand(&$config)
+  function pfcCommand($tag)
   {
-    $this->c =& $config;
+    $this->tag = $tag;
+    $this->c   =& phpFreeChatConfig::Instance();
+    $this->u   =& pfcUserConfig::Instance();
   }
 
   /**
    * Virtual methode which must be implemented by concrete commands
    * It is called by the phpFreeChat::HandleRequest function to execute the wanted command
    */
-  function run(&$xml_reponse, $clientid, $param = "")
+  function run(&$xml_reponse, $clientid, &$param, &$sender, &$recipient, &$recipientid)
   {
     die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__));
   }

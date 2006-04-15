@@ -33,7 +33,7 @@ class phpFreeChatConfig
   var $serverid            = ""; // this is the chat server id (comparable to the server host in IRC)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
   var $title               = ""; // default is _pfc("My Chat")
-  var $channel             = ""; // default is a value calculated from title
+  var $channel             = ""; // default is _pfc("My room")
   var $frozen_nick         = false;
   var $max_nick_len        = 15;
   var $max_text_len        = 400;
@@ -50,6 +50,7 @@ class phpFreeChatConfig
   var $nickmarker          = true; // show/hide nicknames colors
   var $clock               = true; // show/hide dates and hours
   var $openlinknewwindow   = true; // used to open the links in a new window
+
   var $showwhosonline      = true;
   var $showsmileys         = true;
   var $btn_sh_whosonline   = true; // display show/hide button for who is online
@@ -82,22 +83,17 @@ class phpFreeChatConfig
   var $smileys             = array();
   var $errors              = array();
   var $prefix              = "pfc_";
-  var $active              = false; // used internaly
+  //  var $active              = false; // used internaly
   var $is_init             = false; // used internaly to know if the chat config is initialized
   var $version             = ""; // the phpfreechat version: taken from the 'version' file content
-  var $sessionid           = 0; // the client sessionid, this is automatically set by phpfreechat instance
+  //  var $sessionid           = 0; // the client sessionid, this is automatically set by phpfreechat instance
   var $debugurl            = "";
   var $debug               = false;
   var $debugxajax          = false;
   
   function phpFreeChatConfig( $params = array() )
   {
-    // start the session : session is used for locking purpose and cache purpose
-    session_name( "phpfreechat" );
-    if (isset($_GET["init"])) unset($_COOKIE[session_name()]);
-    if(session_id() == "") session_start();
-
-    $params["sessionid"] = session_id();
+    //    $params["sessionid"] = session_id();
 
     // setup the local for translated messages
     phpFreeChatI18N::Init(isset($params["language"]) ? $params["language"] : "");
@@ -124,21 +120,10 @@ class phpFreeChatConfig
       $this->$k = $v;
     }
 
-    // setup a defaut title if user didn't set it up
-    if ($this->title == "")        $this->title        = _pfc("My Chat");
-    if ($this->ie7path == "")      $this->ie7path      = dirname(__FILE__)."/../lib/IE7_0_9";
-    if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.3";
-    if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
-    if ($this->csstidypath == "")  $this->csstidypath  = dirname(__FILE__)."/../lib/csstidy-1.1";
     if ($this->data_private_path == "") $this->data_private_path = dirname(__FILE__)."/../data/private";
     if ($this->data_public_path == "")  $this->data_public_path  = dirname(__FILE__)."/../data/public";
 
-    // @todo: do not move this into init() because channel parameter is used to generate the serverid
-    //        this will change with the 1.0 refactoring
-    // choose a auto-generated channel name if user choose a title but didn't choose a channel name
-    if ( $this->channel == "" ) $this->channel = $this->title;
-
-    $this->synchronizeWithSession();
+    $this->synchronizeWithCache();
   }
 
   function &Instance( $params = array() )
@@ -173,29 +158,21 @@ class phpFreeChatConfig
   }
 
   /**
-   * Check the functions really exists on this server
-   */
-  function _checkUsedFunctions( $f_list )
-  {
-    $ok = true;
-    foreach( $f_list as $func => $err )
-    {
-      if (!function_exists( $func ))
-      {
-        $this->errors[] = _pfc("%s doesn't exist: %s", $func, $err);
-        $ok = false;
-      }
-    }
-    return $ok;
-  }
-
-  /**
    * Initialize the phpfreechat configuration
    * this initialisation is done once at startup then it is stored into a session cache
    */
   function init()
   {
     $ok = true;
+
+    if ($this->debug) pxlog("pfcGlobalConfig::init()", "chatconfig", $this->getId());
+
+    if ($this->title == "")        $this->title        = _pfc("My Chat");
+    if ($this->channel == "")      $this->channel      = _pfc("My room");
+    if ($this->ie7path == "")      $this->ie7path      = dirname(__FILE__)."/../lib/IE7_0_9";
+    if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.3";
+    if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
+    if ($this->csstidypath == "")  $this->csstidypath  = dirname(__FILE__)."/../lib/csstidy-1.1";
 
     // first of all, check the used functions
     $f_list["file_get_contents"] = _pfc("You need %s", "PHP 4 >= 4.3.0 or PHP 5");
@@ -213,71 +190,47 @@ class phpFreeChatConfig
     $f_list["ob_get_contents"] = $err_ob_x;
     $f_list["ob_end_clean"]    = $err_ob_x;
     $f_list["get_object_vars"] = _pfc("You need %s", "PHP 4 or PHP 5");
-    $ok &= $this->_checkUsedFunctions($f_list);
+    $this->errors = array_merge($this->errors, check_functions_exist($f_list));
     
-    $ok &= $this->_testWritableDir($this->data_public_path, "data_public_path");
-    $ok &= $this->_testWritableDir($this->data_private_path, "data_private_path");
-    $ok &= $this->_installDir($this->jspath, $this->data_public_path."/javascript");
+    $this->errors = array_merge($this->errors, @test_writable_dir($this->data_public_path, "data_public_path"));
+    $this->errors = array_merge($this->errors, @test_writable_dir($this->data_private_path, "data_private_path"));
+    $this->errors = array_merge($this->errors, @install_dir($this->jspath, $this->data_public_path."/javascript"));
+    $this->errors = array_merge($this->errors, @test_writable_dir(dirname(__FILE__)."/../data/private/cache", "data_public_path/cache"));
     
     // ---
     // test xajax lib existance
     $dir = $this->xajaxpath;
-    if ($ok && !is_dir($dir))
-    {
-      $ok = false;
+    if (!is_dir($dir))
       $this->errors[] = _pfc("%s doesn't exist, %s library can't be found", $dir, "XAJAX");
-    }
-    if ($ok && !file_exists($dir."/xajax.inc.php"))
-    {
-      $ok = false;
+    if (!file_exists($dir."/xajax.inc.php"))
       $this->errors[] = _pfc("%s not found, %s library can't be found", "xajax.inc.php", "XAJAX");
-    }
-    if ($ok)
-    {
-      // install public xajax js to phpfreechat public directory
-      $ok &= $this->_installFile($this->xajaxpath."/xajax_js/xajax_uncompressed.js",
-                                 $this->data_public_path."/xajax_js/xajax_uncompressed.js" );
-      $ok &= $this->_installFile($this->xajaxpath."/xajax_js/xajax.js",
-                                 $this->data_public_path."/xajax_js/xajax.js" );
-    }
-
+    // install public xajax js to phpfreechat public directory
+    $this->errors = array_merge($this->errors, @install_file($this->xajaxpath."/xajax_js/xajax.js",
+                                                             $this->data_public_path."/xajax_js/xajax.js"));
+    $this->errors = array_merge($this->errors, @install_file($this->xajaxpath."/xajax_js/xajax_uncompressed.js",
+                                                             $this->data_public_path."/xajax_js/xajax_uncompressed.js" ));
     // ---
     // test ie7 lib
     $dir = $this->ie7path;
-    if ($ok && !is_dir($dir))
-    {
-      $ok = false;
+    if (!is_dir($dir))
       $this->errors[] = _pfc("%s doesn't exist, %s library can't be found", $dir, "IE7");
-    }
-    if ($ok && !file_exists($dir."/ie7-core.js"))
-    {
-      $ok = false;
+    if (!file_exists($dir."/ie7-core.js"))
       $this->errors[] = _pfc("%s not found, %s library can't be found", "ie7-core.js", "IE7");
-    }
-    $ok &= $this->_installDir($this->ie7path, $this->data_public_path."/ie7/");
+    $this->errors = array_merge($this->errors, @install_dir($this->ie7path, $this->data_public_path."/ie7/"));
     
     // ---
     // test client script
-    if ($ok)
-    {
-      // try to find the path into server configuration
-      if ($this->client_script_path == "")
-	$this->client_script_path = getScriptFilename();
-      $filetotest = $this->client_script_path;
-      // do not take into account the url parameters
-      if (preg_match("/(.*)\?(.*)/", $filetotest, $res))
-	$filetotest = $res[1];
-      if ( !file_exists($filetotest) )
-      {
-	$ok = false;
-	$this->errors[] = _pfc("%s doesn't exist", $filetotest);
-      }
-
-      if ($this->client_script_url == "")
-      {
-	$this->client_script_url = "./".basename($filetotest);
-      }
-    }
+    // try to find the path into server configuration
+    if ($this->client_script_path == "")
+      $this->client_script_path = getScriptFilename();
+    $filetotest = $this->client_script_path;
+    // do not take into account the url parameters
+    if (preg_match("/(.*)\?(.*)/", $filetotest, $res))
+      $filetotest = $res[1];
+    if ( !file_exists($filetotest) )
+      $this->errors[] = _pfc("%s doesn't exist", $filetotest);   
+    if ($this->client_script_url == "")
+      $this->client_script_url = "./".basename($filetotest);
 
     // set the default theme path
     if ($this->themepath_default == "")
@@ -293,101 +246,63 @@ class phpFreeChatConfig
     
     // calculate datapublic url
     if ($this->data_public_url == "")
-    {
       $this->data_public_url = relativePath($this->client_script_path, $this->data_public_path);
-    }
     // ---
     // test server script
-    if ($ok)
+    if ($this->server_script_path == "")
     {
-      if ($this->server_script_path == "")
-      {
-        $this->server_script_path = $this->client_script_path;
-        if ($this->server_script_url == "")
-          $this->server_script_url  = $this->client_script_url;
-      }
-      $filetotest = $this->server_script_path;
-      // do not take into account the url parameters
-      if (preg_match("/(.*)\?(.*)/",$this->server_script_path, $res))
-        $filetotest = $res[1];
-      if ( !file_exists($filetotest) )
-      {
-	$ok = false;
-        $this->errors[] = _pfc("%s doesn't exist", $filetotest);
-      }
+      $this->server_script_path = $this->client_script_path;
       if ($this->server_script_url == "")
-      {
-        $this->server_script_url = relativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest);
-      }
+        $this->server_script_url  = $this->client_script_url;
     }
+    $filetotest = $this->server_script_path;
+    // do not take into account the url parameters
+    if (preg_match("/(.*)\?(.*)/",$this->server_script_path, $res))
+      $filetotest = $res[1];
+    if ( !file_exists($filetotest) )
+      $this->errors[] = _pfc("%s doesn't exist", $filetotest);
+    if ($this->server_script_url == "")
+      $this->server_script_url = relativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest);
     
     // ---
     // run specific container initialisation
-    if ($ok)
-    {
-      $container_classname = "phpFreeChatContainer".$this->container_type;
-      require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
-      $container = new $container_classname($this);
-      $container_errors = $container->init();
-      if (count($container_errors)>0)
-      {
-        $this->errors = array_merge($this->errors, $container_errors);
-        $ok = false;
-      }
-    }
-
+    $container_classname = "phpFreeChatContainer".$this->container_type;
+    require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
+    $container = new $container_classname($this);
+    $container_errors = $container->init();
+    $this->errors = array_merge($this->errors, $container_errors);
+    
     // load debug url
     $this->debugurl = relativePath($this->client_script_path, dirname(__FILE__)."/../debug");
 
     // check the serverid is really defined
     if ($this->serverid == "")
-    {
       $this->errors[] = _pfc("'%s' parameter is mandatory by default use '%s' value", "serverid", "md5(__FILE__)");
-      $ok = false;
-    }
-
+    
     // check the max_msg is >= 0
     if (!is_numeric($this->max_msg) || $this->max_msg < 0)
-    {
       $this->errors[] = _pfc("'%s' parameter must be a positive number", "max_msg");
-      $ok = false;
-    }
 
     // check the max_nick_len is >= 0
     if (!is_numeric($this->max_nick_len) || $this->max_nick_len < 0)
-    {
       $this->errors[] = _pfc("'%s' parameter must be a positive number", "max_nick_len");
-      $ok = false;
-    }
     
     // check the max_text_len is >= 0
     if (!is_numeric($this->max_text_len) || $this->max_text_len < 0)
-    {
       $this->errors[] = _pfc("'%s' parameter must be a positive number", "max_text_len");
-      $ok = false;
-    }
     
     // check the refresh_delay is >= 0
     if (!is_numeric($this->refresh_delay) || $this->refresh_delay < 0)
-    {
       $this->errors[] = _pfc("'%s' parameter must be a positive number", "refresh_delay");
-      $ok = false;
-    }
     
     // check the timeout is >= 0
     if (!is_numeric($this->timeout) || $this->timeout < 0)
-    {
       $this->errors[] = _pfc("'%s' parameter must be a positive number", "timeout");
-      $ok = false;
-    }    
     
     // check the language is known
     $lg_list = phpFreeChatI18N::GetAcceptedLanguage();
     if ( $this->language != "" && !in_array($this->language, $lg_list) )
-    {
       $this->errors[] = _pfc("'%s' parameter is not valid. Available values are : '%s'", "language", implode(", ", $lg_list));
-      $ok = false;
-    }
 
     // check the width parameter is not used
     // because of a display bug in IE
@@ -399,8 +314,7 @@ class phpFreeChatConfig
     }
         
     // load smileys from file
-    if ($ok)
-      $this->loadSmileyTheme();
+    $this->loadSmileyTheme();
     
     // do not froze nickname if it has not be specified
     if ($this->nick == "" && $this->frozen_nick)
@@ -409,7 +323,7 @@ class phpFreeChatConfig
     // load version number from file
     $this->version = file_get_contents(dirname(__FILE__)."/../version");
 
-    $this->is_init = $ok;
+    $this->is_init = (count($this->errors) == 0);
   }
   
   function isInit()
@@ -449,8 +363,76 @@ class phpFreeChatConfig
     /* channel is concatenated because it dynamic parameters
      * further these parameter must be separated from global pfcconfig
      * and can be changed dynamicaly in the user session */
-    return md5($this->serverid.$this->channel);
+    return $this->serverid;
   }  
+
+
+  /**
+   * save the pfcConfig object into cache if it doesn't exists yet
+   * else restore the old pfcConfig object
+   */
+  function synchronizeWithCache()
+  {
+    $cachefile = dirname(__FILE__)."/../data/private/cache/pfcglobalconfig_".$this->getId();
+
+    // destroy the cache if init is parameter is present into the url
+    if (isset($_GET["init"])) @unlink($cachefile);
+    
+    if (file_exists($cachefile))
+    {
+      $pfc_configvar = unserialize(file_get_contents($cachefile));
+      foreach($pfc_configvar as $key => $val)
+	$this->$key = $val;
+    }
+    else
+    {
+      if (!$this->isInit())
+        $this->init();
+      $errors =& $this->getErrors();
+      if (count($errors) > 0)
+      {
+        echo "<ul>"; foreach( $errors as $e ) echo "<li>".$e."</li>"; echo "</ul>";
+        exit;
+      }
+      // save the validated config in cache
+      $this->saveInCache();
+    }
+  }
+  function saveInCache()
+  {
+    $cachefile = dirname(__FILE__)."/../data/private/cache/pfcglobalconfig_".$this->getId();
+    file_put_contents($cachefile, serialize(get_object_vars($this)));
+    if ($this->debug) pxlog("pfcGlobalConfig::saveInCache()", "chatconfig", $this->getId());
+  }
+
+  function getFileUrlFromTheme($file)
+  {
+    if (file_exists($this->themepath."/".$this->theme."/".$file))
+      return $this->themeurl."/".$this->theme."/".$file;
+    else
+      if (file_exists($this->themepath_default."/default/".$file))
+	return $this->themeurl_default."/default/".$file;
+      else
+	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
+  }
+
+  function getFilePathFromTheme($file)
+  {
+    if (file_exists($this->themepath."/".$this->theme."/".$file))
+      return $this->themepath."/".$this->theme."/".$file;
+    else
+      if (file_exists($this->themepath_default."/default/".$file))
+	return $this->themepath_default."/default/".$file;
+      else
+	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
+  }
+
+
+  
+
+  /* ---------------------------- */
+  /* TO DELETE */
+
 
   /**
    * save the phpfreechatconfig object into sessions if necessary
@@ -489,102 +471,7 @@ class phpFreeChatConfig
   }
 
 
-
-  function _testWritableDir($dir, $name = "")
-  {
-    if ($dir == "")
-    {
-      $this->errors[] = _pfc("%s directory must be specified", ($name!="" ? $name : $dir));
-      return false;
-    }
-
-    if (is_file($dir))
-    {
-      $this->errors[] = _pfc("%s must be a directory",$dir);
-      return false;
-    }
-    if (!is_dir($dir))
-      mkdir_r($dir);
-    if (!is_dir($dir))
-    {
-      $this->errors[] = _pfc("%s can't be created",$dir);
-      return false;
-    }
-    if (!is_writeable($dir))
-    {
-      $this->errors[] = _pfc("%s is not writeable",$dir);
-      return false;
-    }
-    if (!is_readable($dir))
-    {
-      $this->errors[] = _pfc("%s is not readable",$dir);
-      return false;
-    }
-    return true;
-  }
-
-  function _installFile($src_file, $dst_file)
-  {
-    $src_dir = dirname($src_file);
-    $dst_dir = dirname($dst_file);
-    
-    if (!is_file($src_file))
-    {
-      $this->errors[] = _pfc("%s is not a file", $src_file);
-      return false;
-    }
-    if (!is_readable($src_file))
-    {
-      $this->errors[] = _pfc("%s is not readable", $src_file);
-      return false;
-    }      
-    if (!is_dir($src_dir))
-    {
-      $this->errors[] = _pfc("%s is not a directory", $src_dir);
-      return false;
-    }
-    if (!is_dir($dst_dir))
-      mkdir_r($dst_dir);
-    return copy( $src_file, $dst_file );
-  }
-
-  function _installDir($src_dir, $dst_dir)
-  {
-    if (!is_dir($src_dir))
-    {
-      $this->errors[] = _pfc("%s is not a directory", $src_dir);
-      return false;
-    }
-    if (!is_readable($src_dir))
-    {
-      $this->errors[] = _pfc("%s is not readable", $src_dir);
-      return false;
-    }
-    return copyr( $src_dir, $dst_dir );
-  }
-
-  function getFileUrlFromTheme($file)
-  {
-    if (file_exists($this->themepath."/".$this->theme."/".$file))
-      return $this->themeurl."/".$this->theme."/".$file;
-    else
-      if (file_exists($this->themepath_default."/default/".$file))
-	return $this->themeurl_default."/default/".$file;
-      else
-	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
-  }
-
-  function getFilePathFromTheme($file)
-  {
-    if (file_exists($this->themepath."/".$this->theme."/".$file))
-      return $this->themepath."/".$this->theme."/".$file;
-    else
-      if (file_exists($this->themepath_default."/default/".$file))
-	return $this->themepath_default."/default/".$file;
-      else
-	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
-  }
-
+  
 }
 
 ?>

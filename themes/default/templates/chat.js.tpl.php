@@ -1,3 +1,5 @@
+//function alert() {}
+
 <?php include($c->getFileUrlFromTheme('templates/chat-pre.js.tpl.php')); ?>
 
 /* preload smileys */
@@ -8,18 +10,20 @@ preloadImages(
   ''
 );
 
-/* create our client which will to all the work ! */
+/* create our client which will do all the work on the client side ! */
 var pfc = new pfcClient();
 
 <?php if ($connect_at_startup) { ?>
 pfc.connect_disconnect();
 <?php } ?>
+/*
 pfc.refresh_loginlogout();
 pfc.refresh_nickmarker();
 pfc.refresh_clock();
 pfc.refresh_minimize_maximize();
 pfc.refresh_Smileys();
 pfc.refresh_WhosOnline();
+*/
 
 <?php if ($debugxajax) { ?>
 xajax.DebugMessage = function(text)

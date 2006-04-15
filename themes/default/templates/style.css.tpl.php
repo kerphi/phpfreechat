@@ -6,7 +6,7 @@ div#<?php echo $prefix; ?>container * {
 
 div#<?php echo $prefix; ?>container {
   <?php if ($width!="") { ?>width: <?php echo $width; ?>;<?php } ?>
-  border: black solid 1px;
+  border: 1px solid #555;
   color: #338822;
   background-color: #d9edd8;
   background-image: url(<?php echo $c->getFileUrlFromTheme('images/shade.gif'); ?>);
@@ -17,41 +17,95 @@ div#<?php echo $prefix; ?>container {
 }
 
 #<?php echo $prefix; ?>minmax {
-cursor: pointer;
+  cursor: pointer;
+}
+div#<?php echo $prefix; ?>content_expandable {
+  margin-top: 0.2em;
 }
 
-div#<?php echo $prefix; ?>content {
+div#<?php echo $prefix; ?>channels_content {
+  z-index: 20;
   <?php if ($height!="") { ?>height: <?php echo $height; ?>;<?php } ?>
   position: relative;
-  margin-top: 0.5em;
   width: 100%;
+  border-right: 1px solid #555;
+  border-left: 1px solid #555;
+  border-bottom: 1px solid #555;
+  background-color: #e0edde;
+  margin-top: 5px;
+}
+div.<?php echo $prefix; ?>content {
 }
 
-div#<?php echo $prefix; ?>chat {
-  position: absolute;
-  left: 0;
-  top: 0;
-  border: 1px solid black;
-  overflow: auto;
-  width: 79%;
-  height: 100%;
+/* channels tabpanes */
+ul#<?php echo $prefix; ?>channels_list {
+  list-style-type: none;
+  display: block;
+  z-index: 50;
+  border-bottom: 1px solid #555;
+  margin-bottom: -5px;
+}
+ul#<?php echo $prefix; ?>channels_list li {
+  display: inline;
+  margin-left: 5px;
+}
+ul#<?php echo $prefix; ?>channels_list li div {
+  display: inline;
+  padding: 0 4px 0 4px;
+  border-top: 1px solid #555;
+  border-right: 1px solid #555;
+  border-left: 1px solid #555;
+  border-bottom: 1px solid #555;
+  background-color: #7dc073;
+}
+ul#<?php echo $prefix; ?>channels_list li.selected div {
+  background-color: #e0edde;
+  border-bottom: 1px solid #e0edde;
+  color: #000;
+  font-weight: bold;
+}
+ul#<?php echo $prefix; ?>channels_list li > div:hover {
   background-color: #e0edde;
 }
+ul#<?php echo $prefix; ?>channels_list li a {
+  color: #000;
+  text-decoration: none;  
+}
+ul#<?php echo $prefix; ?>channels_list li a.<?php echo $prefix; ?>tabtitle {
+  cursor: pointer;
+}
+ul#<?php echo $prefix; ?>channels_list li a.<?php echo $prefix; ?>tabtitle img {
+  padding-right: 4px;
+}
+ul#<?php echo $prefix; ?>channels_list li a.<?php echo $prefix; ?>tabclose {
+  margin-left: 4px;
+  cursor: pointer;
+}
 
-div#<?php echo $prefix; ?>smileys {
+
+div.<?php echo $prefix; ?>chat {
+  z-index: 100;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: auto;
+  width: 80%;
+  height: 100%;
+}
+
+div.<?php echo $prefix; ?>smileys {
   position: absolute;
   bottom: 0;
   right: 0;
   padding: 0;
   width: 20%;
-  height: 58%;
+  height: 60%;
   overflow: auto;
   text-align: center;
-  border: 1px solid black;
-  background-color: #FFF;
+  border: 1px solid #000;
+  background-color: #EEE;
 }
-
-div#<?php echo $prefix; ?>online {
+div.<?php echo $prefix; ?>online {
   position: absolute;
   right: 0;
   top: 0;
@@ -59,18 +113,18 @@ div#<?php echo $prefix; ?>online {
   overflow: auto;
   border: black solid 1px;
   color: #000;
-  background-color: #FFF;
+  background-color: #DDD;
   width: 20%;
-  height: 39%;
+  height: 40%;
 }
-div#<?php echo $prefix; ?>online ul {
+div.<?php echo $prefix; ?>online ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   margin-left: 8px;
   margin-right: 8px;
 }
-div#<?php echo $prefix; ?>online li {
+div.<?php echo $prefix; ?>online li {
   border-bottom: 1px solid #DDD;
   font-weight: bold;
   font-size: 90%;
@@ -112,9 +166,6 @@ span.<?php echo $prefix; ?>nick {
 div#<?php echo $prefix; ?>input_container {
   margin-top: 5px;
 }
-div<?php echo $prefix; ?>input_container table {
-  width: 100%;
-}
 
 input#<?php echo $prefix; ?>words {
   border: black solid 1px;
@@ -144,7 +195,7 @@ a#<?php echo $prefix; ?>logo {
 }
 
 div.<?php echo $prefix; ?>btn {
-  display: inline;
+  display: inline;  
   cursor: pointer;
 }
 div.<?php echo $prefix; ?>btn img {
@@ -192,3 +243,4 @@ img.<?php echo $prefix; ?>color {
 .<?php echo $prefix; ?>nickmarker {
   white-space: pre;
 }
+
