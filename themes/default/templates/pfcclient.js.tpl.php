@@ -302,6 +302,10 @@ pfcClient.prototype = {
       //      else
       //        alert(cmd + "-"+resp+"-"+param);
     }
+    else if (cmd == "rehash")
+    {
+      alert(cmd + "-"+resp+"-"+param);
+    }
 
     //if( cmd != "update")
     //      alert(cmd + "-"+resp+"-"+param);
