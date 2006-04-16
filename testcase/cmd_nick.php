@@ -6,7 +6,7 @@ $params = array();
 //$params["connect"] = false;
 //$params["debug"]   = true;
 $chat = new phpFreeChat( $params );
-$c =& phpFreeChatConfig::Instance();
+$c =& pfcGlobalConfig::Instance();
 
 //print_r($_SESSION);
 

@@ -43,7 +43,7 @@ class pfcCommand
   var $help;
 
   /**
-   * This is the phpFreeChatConfig instance
+   * This is the pfcGlobalConfig instance
    */
   var $c;
   
@@ -77,7 +77,7 @@ class pfcCommand
    */
   function pfcCommand()
   {
-    $this->c =& phpFreeChatConfig::Instance();
+    $this->c =& pfcGlobalConfig::Instance();
     $this->u =& pfcUserConfig::Instance();
   }
 

@@ -48,7 +48,7 @@ $chat = new phpFreeChat( $params );
 <?php
   echo "<h2>Debug</h2>";
   echo "<pre>";
-  $c =& phpFreeChatConfig::Instance();
+  $c =& pfcGlobalConfig::Instance();
   print_r($c);
   print_r($_SERVER);
   echo "</pre>";

@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__)."/phpfreechatconfig.class.php";
+require_once dirname(__FILE__)."/pfcglobalconfig.class.php";
 
 class pfcUserConfig
 {
@@ -44,7 +44,7 @@ class pfcUserConfig
   {
     if (!isset($this->$p))
     {
-      $c =& phpFreeChatConfig::Instance();
+      $c =& pfcGlobalConfig::Instance();
       $sessionid       = "pfcuserconfig_".$c->getId();
       $sessionid_param = $sessionid."_".$p;
       if (isset($_SESSION[$sessionid_param]))
@@ -55,7 +55,7 @@ class pfcUserConfig
 
   function _setParam($p, $v)
   {
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
     $sessionid       = "pfcuserconfig_".$c->getId();
     $sessionid_param = $sessionid."_".$p;
     $_SESSION[$sessionid_param] = $v;
@@ -78,7 +78,7 @@ class pfcUserConfig
     //    echo "init()<br>";
     $ok = true;
     
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
     if ($c)
     {
       $this->nick    = $c->nick;
@@ -105,7 +105,7 @@ class pfcUserConfig
 
   function getCacheFile()
   {
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
     $cachefile = "";
     if ($this->nick != "")
       $cachefile = $c->data_private_path."/cache/".$c->prefix."userconfig_".$c->getId()."_".md5($this->nick);
@@ -119,7 +119,7 @@ class pfcUserConfig
   function synchronizeWithCache()
   {
     //    echo "synchronizeWithCache()<br>";
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
     $cachefile = $this->getCacheFile();
     if ($c->debug) pxlog("pfcUserConfig::synchronizeWithCache: cachefile=".$cachefile, "chatconfig", $c->getId());
     if (file_exists($cachefile))
@@ -148,7 +148,7 @@ class pfcUserConfig
   function saveInCache()
   {
     //    echo "saveInCache()<br>";
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
 
     // do not save anything as long as nickname is not assigned
     if ($this->active && $this->nick != "")

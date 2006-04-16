@@ -1,6 +1,6 @@
 <?php
 /**
- * phpfreechatconfig.class.php
+ * pfcglobalconfig.class.php
  *
  * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
  *
@@ -24,11 +24,11 @@ require_once dirname(__FILE__)."/pfctools.php";
 require_once dirname(__FILE__)."/phpfreechati18n.class.php";
 
 /**
- * phpFreeChatConfig stock configuration data into sessions and initialize some stuff
+ * pfcGlobalConfig stock configuration data into sessions and initialize some stuff
  *
  * @author Stephane Gully <stephane.gully@gmail.com>
  */
-class phpFreeChatConfig
+class pfcGlobalConfig
 {
   var $serverid            = ""; // this is the chat server id (comparable to the server host in IRC)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
@@ -91,7 +91,7 @@ class phpFreeChatConfig
   var $debug               = false;
   var $debugxajax          = false;
   
-  function phpFreeChatConfig( $params = array() )
+  function pfcGlobalConfig( $params = array() )
   {
     //    $params["sessionid"] = session_id();
 
@@ -131,7 +131,7 @@ class phpFreeChatConfig
     static $i;
     
     if (!isset($i))
-      $i = new phpFreeChatConfig( $params );
+      $i = new pfcGlobalConfig( $params );
     return $i;
   }
 
@@ -143,7 +143,7 @@ class phpFreeChatConfig
   function &getContainerInstance()
   {
     // bug in php4: cant make a static phpFreeChatContainer instance because
-    // it make problems with phpFreeChatConfig references (not updated)
+    // it make problems with pfcGlobalConfig references (not updated)
     // it works well in php5, maybe there is a workeround but I don't have time to debug this
     // to reproduce the bug: uncomment the next lines and try to change your nickname
     //                       the old nickname will not be removed
@@ -435,8 +435,8 @@ class phpFreeChatConfig
 
 
   /**
-   * save the phpfreechatconfig object into sessions if necessary
-   * else restore the old phpfreechatconfig object
+   * save the pfcglobalconfig object into sessions if necessary
+   * else restore the old pfcglobalconfig object
    */
   function synchronizeWithSession()
   {

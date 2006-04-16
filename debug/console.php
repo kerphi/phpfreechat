@@ -88,7 +88,7 @@ div#debugchat {
 <body>
 
   
-  <div id="debugchatconfig"><h2>phpFreeChatConfig debug</h2></div>
+  <div id="debugchatconfig"><h2>pfcGlobalConfig debug</h2></div>
   <script type="text/javascript"><!--
   phpfreechat_getnewlog('<?php echo $chatid; ?>','chatconfig');
   --></script>

@@ -26,12 +26,12 @@ class pfcContainerTestcase extends PHPUnit_TestCase
   // here
   function setUp()
   {
-    require_once dirname(__FILE__)."/../src/phpfreechatconfig.class.php";   
+    require_once dirname(__FILE__)."/../src/pfcglobalconfig.class.php";   
     $params = array();
     $params["title"] = "testcase -> pfccontainer_".$this->type;
     $params["serverid"] = md5(__FILE__ . time());
     $params["container_type"] = $this->type;
-    $this->c  =& phpFreeChatConfig::Instance($params);
+    $this->c  =& pcGlobalConfig::Instance($params);
     $this->ct =& $this->c->getContainerInstance();
   }
 

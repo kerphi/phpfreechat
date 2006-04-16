@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__)."/phpfreechatconfig.class.php";
+require_once dirname(__FILE__)."/pfcglobalconfig.class.php";
 
-class pfcInfo extends phpFreeChatConfig
+class pfcInfo extends pfcGlobalConfig
 {
   var $container;
   

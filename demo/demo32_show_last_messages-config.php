@@ -4,6 +4,6 @@ require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params["serverid"] = md5(__FILE__); // calculate a unique id for this chat
 $params["title"]    = "Show last posted messages channel";
 $params["max_msg"]    = 1;
-$pfc_config =& phpFreeChatConfig::Instance( $params );
+$pfc_config =& pfcGlobalConfig::Instance( $params );
 
 ?>

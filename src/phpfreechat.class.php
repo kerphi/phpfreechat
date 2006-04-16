@@ -21,7 +21,7 @@
  */
 
 require_once dirname(__FILE__)."/pfccommand.class.php";
-require_once dirname(__FILE__)."/phpfreechatconfig.class.php";
+require_once dirname(__FILE__)."/pfcglobalconfig.class.php";
 require_once dirname(__FILE__)."/pfcuserconfig.class.php";
 require_once dirname(__FILE__)."/phpfreechattemplate.class.php";
 require_once dirname(__FILE__)."/../lib/utf8/utf8.php";
@@ -45,10 +45,10 @@ class phpFreeChat
     // or a allready created phpfreechat object
     $c = NULL;
     if (is_object($params) &&
-        get_class($params) == "phpfreechatconfig")
+        get_class($params) == "pfcglobalconfig")
       $c =& $params;
     else
-      $c =& phpFreeChatConfig::Instance( $params );
+      $c =& pfcGlobalConfig::Instance( $params );
 
     // need to initiate the user config object here because it uses sessions
     $u =& pfcUserConfig::Instance();
@@ -80,7 +80,7 @@ class phpFreeChat
   function printJavaScript( $return = false )
   {
     $output = '';
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
     //trigger_error("u=".var_export($u));
 
@@ -139,7 +139,7 @@ class phpFreeChat
    */
   function printChat( $return = false )
   {
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
 
     phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
@@ -168,7 +168,7 @@ class phpFreeChat
   function printStyle( $return = false )
   {
     $output = '';
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
 
     phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
@@ -225,7 +225,7 @@ class phpFreeChat
    */
   function FilterNickname($nickname)
   {
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
     //$nickname = str_replace("\\", "", $nickname); // '\' is a forbidden charactere for nicknames
     $nickname = trim($nickname);
     $nickname = utf8_substr($nickname, 0, $c->max_nick_len);
@@ -237,7 +237,7 @@ class phpFreeChat
    */
   function FilterSmiley($msg)
   {
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
     // build a preg_replace array
     $search = array();
     $replace = array();
@@ -268,7 +268,7 @@ class phpFreeChat
    */
   function PreFilterMsg($msg)
   {
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
     $msg = substr($msg, 0, $c->max_text_len);
     $msg = phpFreeChat::FilterSpecialChar($msg);
     
@@ -289,7 +289,7 @@ class phpFreeChat
    */
   function PostFilterMsg($msg)
   {
-    //$c =& phpFreeChatConfig::Instance();
+    //$c =& pfcGlobalConfig::Instance();
     //    $msg = preg_replace('/('.preg_quote($c->nick,'/').')/i', "<strong>$1</strong>", $msg );
     $msg = preg_replace('/\n/i', "", $msg );
     return $msg;
@@ -297,7 +297,7 @@ class phpFreeChat
 
   function HandleRequest($request)
   {
-    $c =& phpFreeChatConfig::Instance();
+    $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
 
     if ($c->debug) ob_start(); // capture output

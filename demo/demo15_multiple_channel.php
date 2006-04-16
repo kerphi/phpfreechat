@@ -28,7 +28,7 @@ $chat = new phpFreeChat( $params );
   </ul> 
 
 <?php
-  $c =& phpFreeChatConfig::Instance();
+  $c =& pfcGlobalConfig::Instance();
   echo "<p>You are in #".$c->channel."</p>";
 ?>
 <?php $chat->printChat(); ?>
