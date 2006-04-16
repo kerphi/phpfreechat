@@ -84,7 +84,7 @@ class phpFreeChat
     $u =& pfcUserConfig::Instance();
     //trigger_error("u=".var_export($u));
 
-    phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
+    pfcI18N::SwitchOutputEncoding($c->output_encoding);
     
     // include javascript libraries
     $js_path = $c->data_public_url."/javascript";
@@ -120,7 +120,7 @@ class phpFreeChat
       $output .= "  <script type=\"text/javascript\" src=\"".$ie7_path."/ie7-recalc.js\"></script>\n";
       $output .= "<![endif]-->\n";
     }
-    phpFreeChatI18N::SwitchOutputEncoding();
+    pfcI18N::SwitchOutputEncoding();
 	
     // display output
     if ($return)
@@ -142,14 +142,14 @@ class phpFreeChat
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
 
-    phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
+    pfcI18N::SwitchOutputEncoding($c->output_encoding);
 
     $t = new phpFreeChatTemplate($c->getFilePathFromTheme("templates/chat.html.tpl.php"));
     $t->assignObject($u,"u");
     $t->assignObject($c,"c");
     $output = $t->getOutput();
     
-    phpFreeChatI18N::SwitchOutputEncoding();
+    pfcI18N::SwitchOutputEncoding();
 
     if($return) 
       return $output;
@@ -171,7 +171,7 @@ class phpFreeChat
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
 
-    phpFreeChatI18N::SwitchOutputEncoding($c->output_encoding);
+    pfcI18N::SwitchOutputEncoding($c->output_encoding);
 
     $css_filename1 = dirname(__FILE__)."/../themes/default/templates/style.css.tpl.php";
     $css_filename2 = $c->getFilePathFromTheme("templates/style.css.tpl.php");
@@ -197,7 +197,7 @@ class phpFreeChat
     }
 
     // output css
-    phpFreeChatI18N::SwitchOutputEncoding();
+    pfcI18N::SwitchOutputEncoding();
     $output = "<style type=\"text/css\">\n".$output."\n</style>\n";
 
     // tabpane

@@ -21,7 +21,7 @@
  */
 
 require_once dirname(__FILE__)."/pfctools.php";
-require_once dirname(__FILE__)."/phpfreechati18n.class.php";
+require_once dirname(__FILE__)."/pfci18n.class.php";
 
 /**
  * pfcGlobalConfig stock configuration data into sessions and initialize some stuff
@@ -96,7 +96,7 @@ class pfcGlobalConfig
     //    $params["sessionid"] = session_id();
 
     // setup the local for translated messages
-    phpFreeChatI18N::Init(isset($params["language"]) ? $params["language"] : "");
+    pfcI18N::Init(isset($params["language"]) ? $params["language"] : "");
 
     // load users container or keep default one
     if (isset($params["container_type"]))
@@ -300,7 +300,7 @@ class pfcGlobalConfig
       $this->errors[] = _pfc("'%s' parameter must be a positive number", "timeout");
     
     // check the language is known
-    $lg_list = phpFreeChatI18N::GetAcceptedLanguage();
+    $lg_list = pfcI18N::GetAcceptedLanguage();
     if ( $this->language != "" && !in_array($this->language, $lg_list) )
       $this->errors[] = _pfc("'%s' parameter is not valid. Available values are : '%s'", "language", implode(", ", $lg_list));
 

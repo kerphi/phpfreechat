@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__)."/../src/phpfreechati18n.class.php");
-phpFreeChatI18N::UpdateMessageRessources();
+require_once(dirname(__FILE__)."/../src/pfci18n.class.php");
+pfcI18N::UpdateMessageRessources();
 
 ?>

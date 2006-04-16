@@ -1,6 +1,6 @@
 <?php
 /**
- * phpfreechati18n.class.php
+ * pfci18n.class.php
  *
  * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
  *
@@ -29,12 +29,12 @@ function _pfc()
   return call_user_func_array('sprintf', $args);
 }
 
-class phpFreeChatI18N
+class pfcI18N
 {
   function Init($language)
   {
-    if (!in_array($language, phpFreeChatI18N::GetAcceptedLanguage()))
-      $language = phpFreeChatI18N::GetDefaultLanguage();
+    if (!in_array($language, pfcI18N::GetAcceptedLanguage()))
+      $language = pfcI18N::GetDefaultLanguage();
     require_once(dirname(__FILE__)."/../i18n/".$language."/main.php");
     $GLOBALS["output_encoding"] = "UTF-8"; // by default client/server communication is utf8 encoded
   }
@@ -112,7 +112,7 @@ class phpFreeChatI18N
     }
 
     $dst_filenames = array();
-    foreach(phpFreeChatI18N::GetAcceptedLanguage() as $lg)
+    foreach(pfcI18N::GetAcceptedLanguage() as $lg)
       $dst_filenames[] = dirname(__FILE__)."/../i18n/".$lg."/main.php";
 
     foreach( $dst_filenames as $dst_filename )

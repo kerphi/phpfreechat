@@ -19,7 +19,7 @@
  * Free Software Foundation, 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
-require_once dirname(__FILE__)."/phpfreechati18n.class.php";
+require_once dirname(__FILE__)."/pfci18n.class.php";
 require_once dirname(__FILE__)."/pfcuserconfig.class.php";
 
 /**

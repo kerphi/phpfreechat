@@ -20,7 +20,7 @@
  * Boston, MA  02110-1301  USA
  */
 
-require_once dirname(__FILE__)."/phpfreechati18n.class.php";
+require_once dirname(__FILE__)."/pfci18n.class.php";
 
 /**
  * phpFreeChatTemplate is used to display chat templates (html and javascript)
