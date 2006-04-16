@@ -1,36 +1,36 @@
 <?php
 /**
-* phpfreechatcontainermemory.class.php
-*
-* Copyright © 2006 Bernhard J. M. Grün <Bernhard.Gruen@googlemail.com>
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the
-* Free Software Foundation, 51 Franklin St, Fifth Floor,
-* Boston, MA  02110-1301  USA
-*/
+ * pfccontainer_memory.class.php
+ *
+ * Copyright © 2006 Bernhard J. M. Grün <Bernhard.Gruen@googlemail.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, 51 Franklin St, Fifth Floor,
+ * Boston, MA  02110-1301  USA
+ */
 
-require_once dirname(__FILE__)."/phpfreechatcontainer.class.php";
-require_once dirname(__FILE__)."/../lib/pear/System/SharedMemory.php";
+require_once dirname(__FILE__)."/../pfccontainer.class.php";
+require_once dirname(__FILE__)."/../../lib/pear/System/SharedMemory.php";
 
 /**
-* phpFreeChatContainerMemory is a concrete container which stores data into
-* shared memory using a PEAR class.
-* Version: 2006-02-28#01
-*
-* @author Bernhard J. M. Grün <Bernhard.Gruen@googlemail.com>
-*/
-class phpFreeChatContainerMemory extends phpFreeChatContainer
+ * pfcContainer_Memory is a concrete container which stores data into
+ * shared memory using a PEAR class.
+ * Version: 2006-02-28#01
+ *
+ * @author Bernhard J. M. Grün <Bernhard.Gruen@googlemail.com>
+ */
+class pfcContainer_Memory extends pfcContainer
 {
   var $_users = NULL;
   var $_cache_nickid = array();

@@ -1,6 +1,6 @@
 <?php
 /**
- * phpfreechatcontainerfile.class.php
+ * pfccontainer_file.class.php
  *
  * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
  *
@@ -20,21 +20,21 @@
  * Boston, MA  02110-1301  USA
  */
 
-require_once dirname(__FILE__)."/phpfreechatcontainer.class.php";
+require_once dirname(__FILE__)."/../pfccontainer.class.php";
 
 /**
- * phpFreeChatContainerFile is a concret container which stock data into files
+ * pfcContainer_File is a concret container which stock data into files
  *
  * @author Stephane Gully <stephane.gully@gmail.com>
  */
-class phpFreeChatContainerFile extends phpFreeChatContainer
+class pfcContainer_File extends pfcContainer
 {
   //  var $_users = array();
   //var $_cache_nickid = array();
 
-  function phpFreeChatContainerFile(&$config)
+  function pfcContainer_File(&$config)
   {
-    phpFreeChatContainer::phpFreeChatContainer(&$config);
+    pfcContainer::pfcContainer(&$config);
     //    $this->loadPaths();
   }
 

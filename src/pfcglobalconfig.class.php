@@ -142,7 +142,7 @@ class pfcGlobalConfig
    */
   function &getContainerInstance()
   {
-    // bug in php4: cant make a static phpFreeChatContainer instance because
+    // bug in php4: cant make a static pfcContainer instance because
     // it make problems with pfcGlobalConfig references (not updated)
     // it works well in php5, maybe there is a workeround but I don't have time to debug this
     // to reproduce the bug: uncomment the next lines and try to change your nickname
@@ -150,8 +150,8 @@ class pfcGlobalConfig
     //    static $container;
     //    if (!isset($container))
     //    {
-    $container_classname = "phpFreeChatContainer".$this->container_type;
-    require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
+    $container_classname = "pfcContainer_".$this->container_type;
+    require_once dirname(__FILE__)."/containers/".strtolower($this->container_type).".class.php";
     $container =& new $container_classname($this);
     //    }
     return $container;
@@ -266,8 +266,8 @@ class pfcGlobalConfig
     
     // ---
     // run specific container initialisation
-    $container_classname = "phpFreeChatContainer".$this->container_type;
-    require_once dirname(__FILE__)."/".strtolower($container_classname).".class.php";
+    $container_classname = "pfcContainer_".$this->container_type;
+    require_once dirname(__FILE__)."/containers/".strtolower($this->container_type).".class.php";
     $container = new $container_classname($this);
     $container_errors = $container->init();
     $this->errors = array_merge($this->errors, $container_errors);

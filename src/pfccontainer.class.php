@@ -1,6 +1,6 @@
 <?php
 /**
- * phpfreechatcontainer.class.php
+ * pfccontainer.class.php
  *
  * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
  *
@@ -21,16 +21,16 @@
  */
 
 /**
- * phpFreeChatContainer is an abstract class which define interface
+ * pfcContainer is an abstract class which define interface
  * to be implemented by concrete container (example: File)
  *
  * @author Stephane Gully <stephane.gully@gmail.com>
  * @abstract
  */
-class phpFreeChatContainer
+class pfcContainer
 {
   var $c;
-  function phpFreeChatContainer(&$config) { $this->c =& $config; }  
+  function pfcContainer(&$config) { $this->c =& $config; }  
   function getDefaultConfig()     { return array(); }
   function init()                 { return array(); }  
 
