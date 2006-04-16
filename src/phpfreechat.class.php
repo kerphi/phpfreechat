@@ -23,7 +23,7 @@
 require_once dirname(__FILE__)."/pfccommand.class.php";
 require_once dirname(__FILE__)."/pfcglobalconfig.class.php";
 require_once dirname(__FILE__)."/pfcuserconfig.class.php";
-require_once dirname(__FILE__)."/phpfreechattemplate.class.php";
+require_once dirname(__FILE__)."/pfctemplate.class.php";
 require_once dirname(__FILE__)."/../lib/utf8/utf8.php";
 
 /**
@@ -96,7 +96,7 @@ class phpFreeChat
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/utf8.js\"></script>";
     
     // print phpfreechat specific javascript
-    $t = new phpFreeChatTemplate();
+    $t = new pfcTemplate();
     $t->assignObject($c,"c");
     $t->assignObject($u,"u");
     $output .= "<script type=\"text/javascript\">\n // <![CDATA[\n";
@@ -144,7 +144,7 @@ class phpFreeChat
 
     pfcI18N::SwitchOutputEncoding($c->output_encoding);
 
-    $t = new phpFreeChatTemplate($c->getFilePathFromTheme("templates/chat.html.tpl.php"));
+    $t = new pfcTemplate($c->getFilePathFromTheme("templates/chat.html.tpl.php"));
     $t->assignObject($u,"u");
     $t->assignObject($c,"c");
     $output = $t->getOutput();
@@ -175,7 +175,7 @@ class phpFreeChat
 
     $css_filename1 = dirname(__FILE__)."/../themes/default/templates/style.css.tpl.php";
     $css_filename2 = $c->getFilePathFromTheme("templates/style.css.tpl.php");
-    $t = new phpFreeChatTemplate();
+    $t = new pfcTemplate();
     $t->assignObject($u,"u");
     $t->assignObject($c,"c");
     $t->setTemplate($css_filename1);

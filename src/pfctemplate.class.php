@@ -1,6 +1,6 @@
 <?php
 /**
- * phpfreechattemplate.class.php
+ * pfctemplate.class.php
  *
  * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
  *
@@ -23,15 +23,15 @@
 require_once dirname(__FILE__)."/pfci18n.class.php";
 
 /**
- * phpFreeChatTemplate is used to display chat templates (html and javascript)
+ * pfcTemplate is used to display chat templates (html and javascript)
  * @author Stephane Gully <stephane.gully@gmail.com>
  */
-class phpFreeChatTemplate
+class pfcTemplate
 {
   var $tpl_filename;
   var $vars;
   
-  function phpFreeChatTemplate($tpl_filename = "")
+  function pfcTemplate($tpl_filename = "")
   {
     $this->tpl_filename = $tpl_filename;
   }
