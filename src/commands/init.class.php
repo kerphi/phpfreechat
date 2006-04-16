@@ -4,12 +4,12 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_init extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param ="")
+  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
 
     $cmd =& pfcCommand::Factory("quit");
-    $cmd->run($xml_reponse, $clientid);
+    $cmd->run($xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
 
     if (isset($_COOKIE[session_name()]))
     {

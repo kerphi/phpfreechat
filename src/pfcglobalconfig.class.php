@@ -371,18 +371,19 @@ class pfcGlobalConfig
    * save the pfcConfig object into cache if it doesn't exists yet
    * else restore the old pfcConfig object
    */
-  function synchronizeWithCache()
+  function synchronizeWithCache($destroy = false)
   {
     $cachefile = dirname(__FILE__)."/../data/private/cache/pfcglobalconfig_".$this->getId();
 
-    // destroy the cache if init is parameter is present into the url
-    if (isset($_GET["init"])) @unlink($cachefile);
+    // destroy the cache if init parameter is present into the url
+    if (isset($_GET["init"]) || $destroy) @unlink($cachefile);
     
     if (file_exists($cachefile))
     {
       $pfc_configvar = unserialize(file_get_contents($cachefile));
       foreach($pfc_configvar as $key => $val)
 	$this->$key = $val;
+      return true; // synchronized
     }
     else
     {
@@ -396,6 +397,7 @@ class pfcGlobalConfig
       }
       // save the validated config in cache
       $this->saveInCache();
+      return false; // new cache created
     }
   }
   function saveInCache()

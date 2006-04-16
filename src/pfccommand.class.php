@@ -58,11 +58,12 @@ class pfcCommand
    */
   function &Factory($name)
   {
-    $cmd = NULL;
+    $cmd       = NULL;
     $name      = strtolower($name);
     $classname = "pfcCommand_".$name;
-    $filename = dirname(__FILE__)."/commands/".$name.".class.php";
-    require_once($filename);
+    $filename  = dirname(__FILE__)."/commands/".$name.".class.php";
+    
+    if (file_exists($filename)) require_once($filename);
     if(class_exists($classname))
     {
       $cmd =& new $classname();
