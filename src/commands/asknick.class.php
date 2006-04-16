@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__)."/pfccommand.class.php");
+require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_asknick extends pfcCommand
 {

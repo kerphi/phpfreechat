@@ -32,9 +32,13 @@ require_once dirname(__FILE__)."/pfcuserconfig.class.php";
 class pfcCommand
 {
   /**
-   * Not used for now
+   * Command name (lowercase)
    */
   var $name;
+  
+  /**
+   * Not used for now
+   */
   var $desc;
   var $help;
 
@@ -52,26 +56,29 @@ class pfcCommand
    * Used to instanciate a command
    * $tag is the command name : "nick", "me", "update" ...
    */
-  function &Factory($tag)
+  function &Factory($name)
   {
     $cmd = NULL;
-    $classname = "pfcCommand_".strtolower($tag);
-    if(!class_exists($classname) &&
-       file_exists(dirname(__FILE__)."/".strtolower($classname).".class.php"))
-      require_once(dirname(__FILE__)."/".strtolower($classname).".class.php");
+    $name      = strtolower($name);
+    $classname = "pfcCommand_".$name;
+    $filename = dirname(__FILE__)."/commands/".$name.".class.php";
+    require_once($filename);
     if(class_exists($classname))
-      $cmd =& new $classname($tag);
+    {
+      $cmd =& new $classname();
+      $cmd->name = $name;
+    }
     return $cmd;
   }
 
   /**
-   * Default constructor
+   * Constructor
+   * @private
    */
-  function pfcCommand($tag)
+  function pfcCommand()
   {
-    $this->tag = $tag;
-    $this->c   =& phpFreeChatConfig::Instance();
-    $this->u   =& pfcUserConfig::Instance();
+    $this->c =& phpFreeChatConfig::Instance();
+    $this->u =& pfcUserConfig::Instance();
   }
 
   /**
