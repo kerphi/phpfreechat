@@ -6,8 +6,10 @@
 var pfcGui = Class.create();
 pfcGui.prototype = {
   
-  initialize: function()
+  initialize: function(i18n)
   {
+    this.i18n = i18n;
+    
     this.current_tab    = '';
     this.current_tab_id = '';
     this.tabs       = Array();
@@ -211,7 +213,7 @@ pfcGui.prototype = {
     var a2 = document.createElement('a');
     a2.pfc_tabid = tabid;
     a2.onclick = function(){pfc.sendRequest('/leave', this.pfc_tabid); return false;}
-    a2.alt   = '<?php echo _pfc("Close this tab"); ?>';
+    a2.alt   = this.i18n._('Close this tab');
     a2.title = a2.alt;
     Element.addClassName(a2, '<?php echo $prefix; ?>tabclose');
     var img = document.createElement('img');

@@ -231,6 +231,12 @@ p#<?php echo $prefix; ?>errors {
   font-style: italic;
   color: #888;
 }
+pre.<?php echo $prefix; ?>cmd_rehash,
+pre.<?php echo $prefix; ?>cmd_help
+{
+  color: #888;
+  font-style: italic;
+}
 
 div#<?php echo $prefix; ?>colorlist {
   display: none;

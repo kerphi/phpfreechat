@@ -9,9 +9,7 @@ var pfcClient = Class.create();
 pfcClient.prototype = {
   
   initialize: function()
-  {
-    this.gui = new pfcGui();
-    
+  {    
     /* user description */
     this.nickname      = '<?php echo $u->nick; ?>';
 
@@ -86,26 +84,27 @@ pfcClient.prototype = {
     this.el_container.onmouseup   = this.callbackContainer_OnMouseup.bindAsEventListener(this);
     document.body.onunload = this.callback_OnUnload.bindAsEventListener(this);
 
-    /* the i18n translations */
-    var i18n = {
-      hide_nickname_color: '<?php echo _pfc("Hide nickname marker"); ?>',
-      show_nickname_color: '<?php echo _pfc("Show nickname marker"); ?>',
-      hide_clock:          '<?php echo _pfc("Hide dates and hours"); ?>',
-      show_clock:          '<?php echo _pfc("Show dates and hours"); ?>',
-      logout:              '<?php echo _pfc("Disconnect"); ?>',
-      login:               '<?php echo _pfc("Connect"); ?>',
-      maximize:            '<?php echo _pfc("Magnify"); ?>',
-      minimize:            '<?php echo _pfc("Cut down"); ?>',
-      hidesmiley:          '<?php echo _pfc("Hide smiley box"); ?>',
-      showsmiley:          '<?php echo _pfc("Show smiley box"); ?>',
-      hideonline:          '<?php echo _pfc("Hide online users box"); ?>',
-      showonline:          '<?php echo _pfc("Show online users box"); ?>',
+    // the i18n translations
+    this.i18n = new pfcI18N();
+    this.i18n.setLabel('hide_nickname_color', '<?php echo _pfc("Hide nickname marker"); ?>');
+    this.i18n.setLabel('show_nickname_color', '<?php echo _pfc("Show nickname marker"); ?>');
+    this.i18n.setLabel('hide_clock',          '<?php echo _pfc("Hide dates and hours"); ?>');
+    this.i18n.setLabel('show_clock',          '<?php echo _pfc("Show dates and hours"); ?>');
+    this.i18n.setLabel('logout',              '<?php echo _pfc("Disconnect"); ?>');
+    this.i18n.setLabel('login',               '<?php echo _pfc("Connect"); ?>');
+    this.i18n.setLabel('maximize',            '<?php echo _pfc("Magnify"); ?>');
+    this.i18n.setLabel('minimize',            '<?php echo _pfc("Cut down"); ?>');
+    this.i18n.setLabel('hidesmiley',          '<?php echo _pfc("Hide smiley box"); ?>');
+    this.i18n.setLabel('showsmiley',          '<?php echo _pfc("Show smiley box"); ?>');
+    this.i18n.setLabel('hideonline',          '<?php echo _pfc("Hide online users box"); ?>');
+    this.i18n.setLabel('showonline',          '<?php echo _pfc("Show online users box"); ?>');
+    this.i18n.setLabel('enter_nickname',      '<?php echo _pfc("Please enter your nickname"); ?>');
+    this.i18n.setLabel('Private message',     '<?php echo _pfc("Private message"); ?>');
+    this.i18n.setLabel('Close this tab',      '<?php echo _pfc("Close this tab"); ?>');
 
-      enter_nickname:      '<?php echo _pfc("Please enter your nickname"); ?>',
-      private_message:     '<?php echo _pfc("Private message"); ?>'
-    };
-    this.i18n = $H(i18n);
-
+    // the graphical user interface
+    this.gui = new pfcGui(this.i18n);
+ 
     /* the smileys */
     var smileys = {
       <?php
@@ -130,7 +129,7 @@ pfcClient.prototype = {
   {
     // ask to choose a nickname
     if (nickname == '') nickname = this.nickname;
-    var newnick = prompt(this.i18n.enter_nickname, nickname);
+    var newnick = prompt(this.i18n._('enter_nickname'), nickname);
     if (newnick)
       this.sendRequest('/nick', newnick);
   },
@@ -304,11 +303,17 @@ pfcClient.prototype = {
     }
     else if (cmd == "rehash")
     {
-      alert(cmd + "-"+resp+"-"+param);
+      if (resp == "ok")
+      {
+        this.displayMsg( 'rehash', this.i18n._('Configuration has been rehashed') );
+      }
+      else if (resp == "ko")
+      {
+        this.displayMsg( 'rehash', this.i18n._('A problem occurs during rehash') );
+      }
     }
-
-    //if( cmd != "update")
-    //      alert(cmd + "-"+resp+"-"+param);
+    else
+      alert(cmd + "-"+resp+"-"+param);
   },
   
   /**
@@ -494,6 +499,20 @@ pfcClient.prototype = {
     }
   },
 
+  displayMsg: function( cmd, msg )
+  {
+    // get the current selected tab container
+    var tabid     = this.gui.getTabId();
+    var container = this.gui.getChatContentFromTabId(tabid);
+
+    // create a dummy div to avoid konqueror bug when setting nickmarkers
+    var m = document.createElement('div');
+    m.innerHTML = '<pre class="<?php echo $prefix; ?>cmd_'+cmd+'">'+msg+'</pre>';
+    // finaly append this to the message list
+    container.appendChild(m); 
+    this.gui.scrollDown(tabid, m);
+  },
+  
   handleComingRequest: function( cmds )
   {
     var msg_html = $H();
@@ -560,28 +579,15 @@ pfcClient.prototype = {
       var recipientid  = keys[i];
       var tabid        = recipientid;
 
-      /* create the tab if it doesn't exists yet */
+      // create the tab if it doesn't exists yet
       var recipientdiv = this.gui.getChatContentFromTabId(tabid);
       
-      /* create a dummy div to avoid konqueror bug when setting nickmarkers */
+      // create a dummy div to avoid konqueror bug when setting nickmarkers
       var m = document.createElement('div');
       m.innerHTML = msg_html[recipientid];
-      /* finaly append this to the message list */
+      // finaly append this to the message list
       recipientdiv.appendChild(m);
-
-      //      var a = msg_ids[recipientid];
-      //alert(a.inspect());
-      //      for(var j = 0; j < msg_ids[recipientid].length ; j++) 
-      {
-
-        this.gui.scrollDown(tabid, m/*$('<?php echo $prefix; ?>msg'+ msg_ids[recipientid][j])*/);
-
-        // colorize messages nicknames
-        //var root = $('<?php echo $prefix; ?>msg'+ msg_ids[j]);
-        //this.refresh_nickmarker(root);
-        //this.refresh_clock(root);
-      }
-      
+      this.gui.scrollDown(tabid, m);
     }
   },
   
@@ -645,7 +651,7 @@ pfcClient.prototype = {
         // this is someone -> create a privmsg link
         var img = document.createElement('img');
         img.setAttribute('src', '<?php echo $c->getFileUrlFromTheme('images/user.gif'); ?>');
-        img.alt = this.i18n.private_message;
+        img.alt = this.i18n._('Private message');
         img.title = img.alt;
         img.style.marginRight = '5px';
         var a = document.createElement('a');
@@ -1009,7 +1015,7 @@ pfcClient.prototype = {
     if (this.nickmarker)
     {
       nickmarker_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/color-on.gif'); ?>";
-      nickmarker_icon.alt   = this.i18n.hide_nickname_color;
+      nickmarker_icon.alt   = this.i18n._('hide_nickname_color');
       nickmarker_icon.title = nickmarker_icon.alt;
       this.colorizeNicks(root);
       this.colorizeNicks($('<?php echo $prefix; ?>online'));
@@ -1017,7 +1023,7 @@ pfcClient.prototype = {
     else
     {
       nickmarker_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/color-off.gif'); ?>";
-      nickmarker_icon.alt   = this.i18n.show_nickname_color;
+      nickmarker_icon.alt   = this.i18n._('show_nickname_color');
       nickmarker_icon.title = nickmarker_icon.alt;
       var elts = this.getElementsByClassName(root, '<?php echo $prefix; ?>nickmarker', '');
       for(var i = 0; elts.length > i; i++)
@@ -1056,7 +1062,7 @@ pfcClient.prototype = {
     if (this.clock)
     {
       clock_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/clock-on.gif'); ?>";
-      clock_icon.alt   = this.i18n.hide_clock;
+      clock_icon.alt   = this.i18n._('hide_clock');
       clock_icon.title = clock_icon.alt;
       this.showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', true);
       this.showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', true);
@@ -1064,7 +1070,7 @@ pfcClient.prototype = {
     else
     {
       clock_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/clock-off.gif'); ?>";
-      clock_icon.alt   = this.i18n.show_clock;
+      clock_icon.alt   = this.i18n._('show_clock');
       clock_icon.title = clock_icon.alt;
       this.showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', false);
       this.showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', false);
@@ -1091,7 +1097,7 @@ pfcClient.prototype = {
     {
       //      this.updateNickList(this.nicklist);
       loginlogout_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>";
-      loginlogout_icon.alt   = this.i18n.logout;
+      loginlogout_icon.alt   = this.i18n._('logout');
       loginlogout_icon.title = loginlogout_icon.alt;
     }
     else
@@ -1099,7 +1105,7 @@ pfcClient.prototype = {
       this.clearMessages();
       this.clearNickList();
       loginlogout_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/login.gif'); ?>";
-      loginlogout_icon.alt   = this.i18n.login;
+      loginlogout_icon.alt   = this.i18n._('login');
       loginlogout_icon.title = loginlogout_icon.alt;
     }
   },
@@ -1126,14 +1132,14 @@ pfcClient.prototype = {
     if (this.minmax_status)
     {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/maximize.gif'); ?>";
-      btn.alt = this.i18n.maximize;
+      btn.alt = this.i18n._('maximize');
       btn.title = btn.alt;
       content.style.display = 'none';
     }
     else
     {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/minimize.gif'); ?>";
-      btn.alt = this.i18n.minimize;
+      btn.alt = this.i18n._('minimize');
       btn.title = btn.alt;
       content.style.display = 'block';
     }
@@ -1238,7 +1244,7 @@ pfcClient.prototype = {
       if (btn)
       {
         btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-on.gif'); ?>";
-        btn.alt = this.i18n.hidesmiley;
+        btn.alt = this.i18n._('hidesmiley');
         btn.title = btn.alt;
       }
       content.style.display = 'block';
@@ -1248,7 +1254,7 @@ pfcClient.prototype = {
       if (btn)
       {
         btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-off.gif'); ?>";
-        btn.alt = this.i18n.showsmiley;
+        btn.alt = this.i18n._('showsmiley');
         btn.title = btn.alt;
       }
       content.style.display = 'none';
@@ -1282,14 +1288,14 @@ pfcClient.prototype = {
     if (this.showwhosonline)
     {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-on.gif'); ?>";
-      btn.alt = this.i18n.hideonline;
+      btn.alt = this.i18n._('hideonline');
       btn.title = btn.alt;
       content.style.display = 'block';
     }
     else
     {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-off.gif'); ?>";
-      btn.alt = this.i18n.showonline;
+      btn.alt = this.i18n._('showonline');
       btn.title = btn.alt;
       content.style.display = 'none';
     }

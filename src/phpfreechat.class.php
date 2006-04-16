@@ -100,6 +100,8 @@ class phpFreeChat
     $t->assignObject($c,"c");
     $t->assignObject($u,"u");
     $output .= "<script type=\"text/javascript\">\n // <![CDATA[\n";
+    $t->setTemplate($c->getFilePathFromTheme("templates/pfci18n.js.tpl.php"));
+    $output .= $t->getOutput();
     $t->setTemplate($c->getFilePathFromTheme("templates/pfcgui.js.tpl.php"));
     $output .= $t->getOutput();
     $t->setTemplate($c->getFilePathFromTheme("templates/pfcclient.js.tpl.php"));
