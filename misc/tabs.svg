@@ -49,34 +49,14 @@
       <stop
          id="stop2211"
          offset="1"
-         style="stop-color:#11c10b;stop-opacity:1;" />
+         style="stop-color:#12d20b;stop-opacity:1;" />
     </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient2207"
-       id="linearGradient3121"
-       x1="218.34671"
-       y1="390.89087"
-       x2="487.51208"
-       y2="390.89087"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.707107,0.707107,-0.707107,0.707107,375.535,-124.8455)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient4008"
        id="linearGradient4006"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.481697,0.481697,-0.481697,0.481697,108.1085,-205.5369)"
-       x1="218.34671"
-       y1="390.89087"
-       x2="487.51208"
-       y2="390.89087" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient2207"
-       id="linearGradient4016"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.433136,0.433136,-0.433136,0.433136,258.4198,110.8835)"
        x1="218.34671"
        y1="390.89087"
        x2="487.51208"
@@ -114,9 +94,9 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient2207"
-       id="linearGradient4055"
+       id="linearGradient4058"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.707107,0.707107,-0.707107,0.707107,373.9494,127.8586)"
+       gradientTransform="matrix(0.433136,0.433136,-0.433136,0.433136,256.8342,363.5876)"
        x1="218.34671"
        y1="390.89087"
        x2="487.51208"
@@ -124,9 +104,29 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient2207"
-       id="linearGradient4058"
+       id="linearGradient2208"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.433136,0.433136,-0.433136,0.433136,256.8342,363.5876)"
+       gradientTransform="matrix(0.707107,0.707107,-0.707107,0.707107,375.535,-124.8455)"
+       x1="218.34671"
+       y1="390.89087"
+       x2="487.51208"
+       y2="390.89087" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2207"
+       id="linearGradient2211"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.433136,0.433136,-0.433136,0.433136,258.4198,110.8835)"
+       x1="218.34671"
+       y1="390.89087"
+       x2="487.51208"
+       y2="390.89087" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2207"
+       id="linearGradient3962"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.707107,0.707107,-0.707107,0.707107,373.9494,127.8586)"
        x1="218.34671"
        y1="390.89087"
        x2="487.51208"
@@ -141,7 +141,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
      inkscape:cx="375"
-     inkscape:cy="405.71429"
+     inkscape:cy="625.49513"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:window-width="1050"
@@ -178,21 +178,24 @@
        inkscape:export-xdpi="5.3417435"
        inkscape:export-ydpi="5.3417435" />
     <g
-       id="g4032">
+       id="g3964"
+       inkscape:export-filename="/home/kerphi/public_html/pfc-1.0/trunk/themes/default/images/ch.png"
+       inkscape:export-xdpi="5.1439257"
+       inkscape:export-ydpi="5.1439257">
       <path
          inkscape:export-ydpi="5.1439257"
          inkscape:export-xdpi="5.1439257"
          inkscape:export-filename="/home/kerphi/public_html/pfc-1.0/trunk/themes/default/images/ch.png"
          id="path4014"
          d="M 233.35972,381.29665 C 184.20745,381.91999 144.71265,402.07196 144.71265,426.79743 C 144.71264,450.48607 180.96838,469.94746 227.23423,472.08764 C 228.4731,474.92662 229.81099,477.86326 231.25409,480.87385 C 245.64141,510.88894 296.31491,515.46035 272.08418,507.73022 C 261.41279,504.32582 252.67956,488.57099 246.26149,471.99192 C 291.53805,469.37723 326.71574,450.13292 326.71574,426.79743 C 326.71574,401.67949 285.95006,381.29665 235.71418,381.29665 C 234.92925,381.29665 234.1399,381.28676 233.35972,381.29665 z "
-         style="opacity:1;fill:url(#linearGradient4016);fill-opacity:1;fill-rule:nonzero;stroke:#3ca43c;stroke-width:7.60999441;stroke-linejoin:miter;stroke-miterlimit:2.5;stroke-dasharray:none;stroke-opacity:1" />
+         style="fill:url(#linearGradient2211);fill-opacity:1;fill-rule:nonzero;stroke:#2b752b;stroke-width:7.60999441;stroke-linejoin:miter;stroke-miterlimit:2.5;stroke-dasharray:none;stroke-opacity:1" />
       <path
          inkscape:export-ydpi="5.3160944"
          inkscape:export-xdpi="5.3160944"
          inkscape:export-filename="/home/kerphi/public_html/pfc-1.0/trunk/themes/default/images/pv.png"
          id="path1307"
          d="M 334.62371,316.61129 C 254.38131,317.62891 189.90496,350.52754 189.90496,390.89254 C 189.90495,429.5649 249.09343,461.33615 324.6237,464.83005 C 326.64618,469.46477 328.83032,474.2589 331.18621,479.17379 C 354.6739,528.17424 437.39977,535.63717 397.84245,523.01754 C 380.42111,517.45976 366.16388,491.73956 355.6862,464.67379 C 429.60142,460.40523 487.02996,428.98837 487.02995,390.89254 C 487.02995,349.88683 420.47888,316.61128 338.46745,316.61129 C 337.18602,316.61129 335.89739,316.59514 334.62371,316.61129 z "
-         style="opacity:1;fill:url(#linearGradient3121);fill-opacity:1;fill-rule:nonzero;stroke:#3ca43c;stroke-width:7.61000013;stroke-linejoin:miter;stroke-miterlimit:2.5;stroke-dasharray:none;stroke-opacity:1" />
+         style="fill:url(#linearGradient2208);fill-opacity:1;fill-rule:nonzero;stroke:#2b752b;stroke-width:7.61000013;stroke-linejoin:miter;stroke-miterlimit:2.5;stroke-dasharray:none;stroke-opacity:1" />
       <path
          inkscape:export-ydpi="5.3160944"
          inkscape:export-xdpi="5.3160944"
@@ -208,32 +211,26 @@
          id="path4030"
          style="fill:#40b340;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
-    <g
-       id="g4060"
+    <path
+       style="fill:url(#linearGradient3962);fill-opacity:1;fill-rule:nonzero;stroke:#2b752b;stroke-width:7.61000013;stroke-linejoin:miter;stroke-miterlimit:2.5;stroke-dasharray:none;stroke-opacity:1"
+       d="M 333.03813,569.31539 C 252.79573,570.33301 188.31938,603.23164 188.31938,643.59664 C 188.31937,682.269 247.50785,714.04025 323.03812,717.53415 C 325.0606,722.16887 327.24474,726.963 329.60063,731.87789 C 353.08832,780.87834 435.81419,788.34127 396.25687,775.72164 C 378.83553,770.16386 364.5783,744.44366 354.10062,717.37789 C 428.01584,713.10933 485.44438,681.69247 485.44437,643.59664 C 485.44437,602.59093 418.8933,569.31538 336.88187,569.31539 C 335.60044,569.31539 334.31181,569.29924 333.03813,569.31539 z "
+       id="path4042"
        inkscape:export-filename="/home/kerphi/public_html/pfc-1.0/trunk/themes/default/images/pv.png"
        inkscape:export-xdpi="5.3160944"
-       inkscape:export-ydpi="5.3160944">
-      <path
-         inkscape:export-ydpi="5.3160944"
-         inkscape:export-xdpi="5.3160944"
-         inkscape:export-filename="/home/kerphi/public_html/pfc-1.0/trunk/themes/default/images/pv.png"
-         id="path4042"
-         d="M 333.03813,569.31539 C 252.79573,570.33301 188.31938,603.23164 188.31938,643.59664 C 188.31937,682.269 247.50785,714.04025 323.03812,717.53415 C 325.0606,722.16887 327.24474,726.963 329.60063,731.87789 C 353.08832,780.87834 435.81419,788.34127 396.25687,775.72164 C 378.83553,770.16386 364.5783,744.44366 354.10062,717.37789 C 428.01584,713.10933 485.44438,681.69247 485.44437,643.59664 C 485.44437,602.59093 418.8933,569.31538 336.88187,569.31539 C 335.60044,569.31539 334.31181,569.29924 333.03813,569.31539 z "
-         style="fill:url(#linearGradient4055);fill-opacity:1;fill-rule:nonzero;stroke:#3ca43c;stroke-width:7.61000013;stroke-linejoin:miter;stroke-miterlimit:2.5;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         inkscape:export-ydpi="5.3160944"
-         inkscape:export-xdpi="5.3160944"
-         inkscape:export-filename="/home/kerphi/public_html/pfc-1.0/trunk/themes/default/images/pv.png"
-         d="M 220.54545,609.46419 C 224.97582,597.64358 233.41072,597.60795 244.57002,598.19856 C 258.8771,605.02931 271.71997,614.19723 286.93645,618.39683 C 300.41176,597.84009 294.8373,597.8761 326.79986,618.95141 C 341.11483,631.92803 312.84247,628.80461 327.85125,599.54552 C 339.6388,587.71009 398.04287,635.16256 351.76816,605.4233 C 375.60159,600.02611 365.52412,594.35026 398.29546,615.57074 C 371.05197,600.06673 387.97162,612.37197 412.5449,606.01422 C 415.93502,602.20389 420.52981,601.90384 424.94008,600.42516 L 446.29866,616.94146 C 442.39697,618.08408 437.81007,617.1715 434.80656,621.20448 C 410.39952,628.94913 395.10512,621.91375 373.50297,604.97187 C 378.71832,607.99313 403.40507,617.57766 372.23081,622.76431 C 318.38943,590.19406 349.79437,603.39512 350.45021,613.47771 C 336.70836,640.3188 321.89868,628.39132 302.1721,607.85539 C 317.66779,617.24672 325.97335,616.69573 308.213,634.85318 C 292.38309,631.97465 279.27996,623.23925 265.18576,615.11295 C 255.57748,613.71595 248.14611,612.30201 244.85482,622.82838 L 220.54545,609.46419 z "
-         id="path4044"
-         style="fill:#40b340;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:export-ydpi="5.3160944"
-         inkscape:export-xdpi="5.3160944"
-         inkscape:export-filename="/home/kerphi/public_html/pfc-1.0/trunk/themes/default/images/pv.png"
-         d="M 249.11688,658.03562 C 258.45103,634.3361 253.86072,633.45585 284.21407,652.4544 C 315.78397,688.73726 243.65728,634.69895 302.15277,671.34075 C 308.24601,675.15757 290.02652,663.61178 283.9634,659.74729 C 295.43114,664.62802 301.21132,659.1372 309.37754,651.67843 C 329.33843,659.63829 368.65221,695.18803 333.52088,670.06393 C 347.53882,667.73922 351.38378,652.44825 356.95858,641.02909 C 368.77724,642.55334 427.61292,688.14183 380.88221,657.84586 C 394.07882,662.17942 400.39133,655.85602 408.14719,646.26556 C 462.74164,680.59735 422.76281,653.5135 422.48065,653.30731 L 443.40962,670.11795 C 428.86132,662.47436 381.54411,634.92256 430.4992,662.20451 C 422.47769,670.73458 414.91495,678.24405 401.52336,675.17231 C 381.08355,662.83381 341.9547,633.47163 379.61876,656.05623 C 373.03882,667.58625 368.78091,682.8011 354.65762,686.81032 C 343.235,680.65281 280.91663,638.41295 331.76144,667.1771 C 323.27896,674.54399 316.47957,680.93522 304.41898,677.14935 C 276.55472,660.21726 287.83097,678.24527 259.11746,641.60637 C 287.50805,659.11706 279.14581,648.28391 273.42625,671.39981 L 249.11688,658.03562 z "
-         id="path4046"
-         style="fill:#40b340;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
+       inkscape:export-ydpi="5.3160944" />
+    <path
+       style="fill:#40b340;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path4044"
+       d="M 220.54545,609.46419 C 224.97582,597.64358 233.41072,597.60795 244.57002,598.19856 C 258.8771,605.02931 271.71997,614.19723 286.93645,618.39683 C 300.41176,597.84009 294.8373,597.8761 326.79986,618.95141 C 341.11483,631.92803 312.84247,628.80461 327.85125,599.54552 C 339.6388,587.71009 398.04287,635.16256 351.76816,605.4233 C 375.60159,600.02611 365.52412,594.35026 398.29546,615.57074 C 371.05197,600.06673 387.97162,612.37197 412.5449,606.01422 C 415.93502,602.20389 420.52981,601.90384 424.94008,600.42516 L 446.29866,616.94146 C 442.39697,618.08408 437.81007,617.1715 434.80656,621.20448 C 410.39952,628.94913 395.10512,621.91375 373.50297,604.97187 C 378.71832,607.99313 403.40507,617.57766 372.23081,622.76431 C 318.38943,590.19406 349.79437,603.39512 350.45021,613.47771 C 336.70836,640.3188 321.89868,628.39132 302.1721,607.85539 C 317.66779,617.24672 325.97335,616.69573 308.213,634.85318 C 292.38309,631.97465 279.27996,623.23925 265.18576,615.11295 C 255.57748,613.71595 248.14611,612.30201 244.85482,622.82838 L 220.54545,609.46419 z "
+       inkscape:export-filename="/home/kerphi/public_html/pfc-1.0/trunk/themes/default/images/pv.png"
+       inkscape:export-xdpi="5.3160944"
+       inkscape:export-ydpi="5.3160944" />
+    <path
+       style="fill:#40b340;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path4046"
+       d="M 249.11688,658.03562 C 258.45103,634.3361 253.86072,633.45585 284.21407,652.4544 C 315.78397,688.73726 243.65728,634.69895 302.15277,671.34075 C 308.24601,675.15757 290.02652,663.61178 283.9634,659.74729 C 295.43114,664.62802 301.21132,659.1372 309.37754,651.67843 C 329.33843,659.63829 368.65221,695.18803 333.52088,670.06393 C 347.53882,667.73922 351.38378,652.44825 356.95858,641.02909 C 368.77724,642.55334 427.61292,688.14183 380.88221,657.84586 C 394.07882,662.17942 400.39133,655.85602 408.14719,646.26556 C 462.74164,680.59735 422.76281,653.5135 422.48065,653.30731 L 443.40962,670.11795 C 428.86132,662.47436 381.54411,634.92256 430.4992,662.20451 C 422.47769,670.73458 414.91495,678.24405 401.52336,675.17231 C 381.08355,662.83381 341.9547,633.47163 379.61876,656.05623 C 373.03882,667.58625 368.78091,682.8011 354.65762,686.81032 C 343.235,680.65281 280.91663,638.41295 331.76144,667.1771 C 323.27896,674.54399 316.47957,680.93522 304.41898,677.14935 C 276.55472,660.21726 287.83097,678.24527 259.11746,641.60637 C 287.50805,659.11706 279.14581,648.28391 273.42625,671.39981 L 249.11688,658.03562 z "
+       inkscape:export-filename="/home/kerphi/public_html/pfc-1.0/trunk/themes/default/images/pv.png"
+       inkscape:export-xdpi="5.3160944"
+       inkscape:export-ydpi="5.3160944" />
   </g>
 </svg>
