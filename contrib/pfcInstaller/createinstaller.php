@@ -1,4 +1,10 @@
 <?php
+
+// on desactive le timeout car se script met bcp de temps a s'executer
+ini_set('max_execution_time', -1);
+// on desactive la limite de memoire car ce scrite peut manger bcp de memoire
+ini_set('memory_limit', -1);
+
 if (version_compare(phpversion(), '5.0.0', '<')){
 	die("PHP5 is required for this verson of the installer devkit");
 }
