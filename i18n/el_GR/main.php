@@ -39,52 +39,52 @@ $GLOBALS["i18n"]["Please enter your nickname"] = "Παρακαλώ εισάγε�
 $GLOBALS["i18n"]["Text cannot be empty"] = "Το κείμενο δεν μπορεί να είναι άδειο.";
 
 // line 392 in phpfreechat.class.php
-$GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s αλλάζει το ψευδώνυμο του σε %s";
+$GLOBALS["i18n"]["%s changes his nickname to %s"] = "Ο/Η %s αλλάζει το ψευδώνυμο του σε %s";
 
 // line 398 in phpfreechat.class.php
-$GLOBALS["i18n"]["%s is connected"] = "%s συνδέθηκε";
+$GLOBALS["i18n"]["%s is connected"] = " Ο/Η %s συνδέθηκε";
 
 // line 452 in phpfreechat.class.php
-$GLOBALS["i18n"]["%s quit"] = "%s έφυγε";
+$GLOBALS["i18n"]["%s quit"] = " Ο/Η %s έφυγε";
 
 // line 468 in phpfreechat.class.php
-$GLOBALS["i18n"]["%s disconnected (timeout)"] = "%s αποσυνδέθηκε (timeout)";
+$GLOBALS["i18n"]["%s disconnected (timeout)"] = " Ο/Η %s αποσυνδέθηκε (timeout)";
 
 // line 262 in phpfreechat.class.php
 $GLOBALS["i18n"]["Unknown command [%s]"] = "Άγνωστη εντολή [%s]";
 
 // line 149 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist: %s"] = "%s δεν υπάρχει: %s";
+$GLOBALS["i18n"]["%s doesn't exist: %s"] = "Το %s δεν υπάρχει: %s";
 
 // line 180 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["You need %s"] = "Χρειάζεσαι %s";
 
 // line 241 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist, %s library can't be found"] = "%s δεν υπάρχει, %s η βιβλιοθήκη δεν μπορεί να βρεθεί";
+$GLOBALS["i18n"]["%s doesn't exist, %s library can't be found"] = "Το %s δεν υπάρχει, %s η βιβλιοθήκη δεν μπορεί να βρεθεί";
 
 // line 280 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist"] = "%s δεν υπάρχει";
+$GLOBALS["i18n"]["%s doesn't exist"] = "Το %s δεν υπάρχει";
 
 // line 433 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s directory must be specified"] = "%s φάκελος πρέπει να είναι συγκεκριμένος.";
+$GLOBALS["i18n"]["%s directory must be specified"] = "Ο %s κατάλογος πρέπει να είναι συγκεκριμένος.";
 
 // line 439 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s must be a directory"] = "%s πρέπει να είναι φάκελος";
+$GLOBALS["i18n"]["%s must be a directory"] = "Το %s πρέπει να είναι κατάλογος";
 
 // line 446 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s can't be created"] = "%s δεν μπορεί να δημιουργηθεί";
+$GLOBALS["i18n"]["%s can't be created"] = "Το %s δεν μπορεί να δημιουργηθεί";
 
 // line 451 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not writeable"] = "%s δεν είναι δυνατόν να εγγραφεί.";
+$GLOBALS["i18n"]["%s is not writeable"] = "Το %s δεν είναι δυνατόν να εγγραφεί.";
 
 // line 496 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not readable"] = "%s δεν είναι δυνατόν να διαβαστεί";
+$GLOBALS["i18n"]["%s is not readable"] = "Το %s δεν είναι δυνατόν να διαβαστεί";
 
 // line 469 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not a file"] = "%s δεν είναι αρχείο";
+$GLOBALS["i18n"]["%s is not a file"] = "Το %s δεν είναι αρχείο";
 
 // line 491 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not a directory"] = "%s δεν είναι φάκελος";
+$GLOBALS["i18n"]["%s is not a directory"] = "Το %s δεν είναι κατάλογος";
 
 // line 23 in chat.html.tpl.php
 $GLOBALS["i18n"]["PHP FREE CHAT [powered by phpFreeChat-%s]"] = "PHP FREE CHAT [powered by phpFreeChat-%s]";
