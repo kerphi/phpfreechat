@@ -65,6 +65,7 @@
       <li><a href="demo38_in_norwegian_bokmal.php">demo38 - the norwegian bokmal translation of the chat</a></li>
       <li><a href="demo39_in_bosnian.php">demo39 - the bosnian translation of the chat</a></li>
       <li><a href="demo40_in_turkish.php">demo40 - the turkish translation of the chat</a></li>
+      <li><a href="demo41_in_greek.php">demo41 - the greek translation of the chat</a></li>
     </ul>
   </body>
   
