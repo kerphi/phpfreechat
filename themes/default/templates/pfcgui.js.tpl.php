@@ -14,6 +14,7 @@ pfcGui.prototype = {
     this.current_tab_id = '';
     this.tabs       = Array();
     this.tabids     = Array();
+    this.tabtypes   = Array();
     this.chatcontent   = $H();
     this.onlinecontent = $H();
     this.smileycontent = $H();
@@ -72,6 +73,8 @@ pfcGui.prototype = {
     // restore the scroll pos
     var content = this.getChatContentFromTabId(tabid);
     content.scrollTop = this.scrollpos[tabid];
+
+    this.unnotifyTab(tabid);
   },
   
   getTabId: function()
@@ -157,6 +160,7 @@ pfcGui.prototype = {
     var name = this.tabs[tabpos];
     this.tabids     = this.tabids.without(this.tabids[tabpos]);
     this.tabs       = this.tabs.without(this.tabs[tabpos]);
+    this.tabtypes   = this.tabtypes.without(this.tabtypes[tabpos]);
     //    this.tabprefixs = this.tabprefixs.without(this.tabprefixs[tabpos]);
     tabpos--; if (tabpos<0) tabpos = 0;
     this.setTabById(this.tabids[tabpos]);
@@ -188,6 +192,7 @@ pfcGui.prototype = {
     //alert(name+'='+tabid);
     this.tabs.push(name);
     this.tabids.push(tabid);
+    this.tabtypes.push(type);
     //    this.tabprefixs.push(prefix);
 
     var li_title = document.createElement('li');
@@ -197,6 +202,7 @@ pfcGui.prototype = {
     li_title.appendChild(li_div);
     
     var img = document.createElement('img');
+    img.setAttribute('id', '<?php echo $prefix; ?>tabimg'+tabid);
     if (type == 'ch')
       img.setAttribute('src', '<?php echo $c->getFileUrlFromTheme('images/ch.gif'); ?>');
     if (type == 'pv')
@@ -235,9 +241,48 @@ pfcGui.prototype = {
     
     $('<?php echo $prefix; ?>channels_list').appendChild(li_title);
     $('<?php echo $prefix; ?>channels_content').appendChild(div_content);
-
-
+    
     return tabid;
+  },
+
+  /**
+   * This function change the tab icon in order to catch the attention
+   */
+  notifyTab: function(tabid)
+  {
+    var tabpos = this.tabids.indexOf(tabid);
+    var tabtype = this.tabtypes[tabpos];
+    var img = $('<?php echo $prefix; ?>tabimg'+tabid);
+    if (img)
+    {
+      var src = '';
+      if (tabtype == 'ch')
+        src = '<?php echo $c->getFileUrlFromTheme('images/ch-active.gif'); ?>';
+      if (tabtype == 'pv')
+        src = '<?php echo $c->getFileUrlFromTheme('images/pv-active.gif'); ?>';
+      preloadImages(src);
+      img.src = src;
+    }
+  },
+
+  /**
+   * This function restore the tab icon to its default value
+   */
+  unnotifyTab: function(tabid)
+  {
+    var tabpos = this.tabids.indexOf(tabid);
+    var tabtype = this.tabtypes[tabpos];
+    var img = $('<?php echo $prefix; ?>tabimg'+tabid);
+    if (img)
+    {
+      var src = '';
+      if (tabtype == 'ch')
+        src = '<?php echo $c->getFileUrlFromTheme('images/ch.gif'); ?>';
+      if (tabtype == 'pv')
+        src = '<?php echo $c->getFileUrlFromTheme('images/pv.gif'); ?>';
+      preloadImages(src);
+      img.src = src;
+    }
   }
   
 };

@@ -19,7 +19,6 @@ pfcClient.prototype = {
     this.privmsgs      = Array();
     this.privmsgids    = Array();
     
-    
     this.timeout       = null;
     this.refresh_delay = <?php echo $refresh_delay; ?>;
     /* unique client id for each windows used to identify a open window
@@ -516,7 +515,6 @@ pfcClient.prototype = {
   handleComingRequest: function( cmds )
   {
     var msg_html = $H();
-    var msg_ids  = $H();
     
     //    alert(cmds.inspect());
     
@@ -575,11 +573,6 @@ pfcClient.prototype = {
         msg_html[recipientid] = line;
       else
         msg_html[recipientid] += line;
-
-      if (msg_ids[recipientid] == null)
-        msg_ids[recipientid] = Array(id);
-      else
-        msg_ids[recipientid].push(id);
     }
 
     // loop on all recipients and post messages
@@ -589,6 +582,9 @@ pfcClient.prototype = {
       var recipientid  = keys[i];
       var tabid        = recipientid;
 
+      if (this.gui.getTabId() != tabid)
+        this.gui.notifyTab(tabid);
+      
       // create the tab if it doesn't exists yet
       var recipientdiv = this.gui.getChatContentFromTabId(tabid);
       
@@ -693,12 +689,6 @@ pfcClient.prototype = {
     else
       nickdiv.appendChild(ul,fc);
     this.colorizeNicks(tabid,nickdiv);
-  },
-
-  test: function(evt)
-  {
-    alert(evt);
-    return false;
   },
   
   /**
