@@ -7,6 +7,9 @@ div#<?php echo $prefix; ?>container {
   color: black;
   margin: auto;
 }
+div#<?php echo $prefix; ?>chat {
+  background-color: #FFF;
+}
 
 div#<?php echo $prefix; ?>content {
   border: none;
@@ -51,4 +54,13 @@ div.<?php echo $prefix; ?>btn img {
 div.<?php echo $prefix; ?>btn img:hover {
   border: 1px solid #000;
   background-color: #CCC;
+}
+
+
+/* commands */
+.<?php echo $prefix; ?>cmd_notice {
+  color: red;
+}
+.<?php echo $prefix; ?>cmd_msg {
+  color: #555;
 }
