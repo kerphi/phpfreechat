@@ -48,7 +48,7 @@ class pfcCommand_getnewmsg extends pfcCommand
 	  $m_cmd = "cmd_me";
       }
 
-      $js .= "Array(".$m_id.",'".addslashes($m_date)."','".addslashes($m_heure)."','".addslashes($m_nick)."','".addslashes($m_words)."','".addslashes($m_cmd)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($from_id == 0? 1 : 0)."),";
+      $js .= "Array(".$m_id.",'".addslashes($m_date)."','".addslashes($m_heure)."','".addslashes($m_nick)."','".addslashes($m_words)."','".addslashes($m_cmd)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($from_id <= 0? 1 : 0)."),";
       $msg_sent = true;
     }
     if ($js != "")
