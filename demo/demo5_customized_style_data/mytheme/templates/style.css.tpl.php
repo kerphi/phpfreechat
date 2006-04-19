@@ -24,6 +24,7 @@ div.<?php echo $prefix; ?>message {
 
 div.<?php echo $prefix; ?>oldmsg {
   background-image: url(<?php echo $c->getFileUrlFromTheme('images/oldmsg.gif'); ?>);
+  background-color: #EEE;
 }
 
 span.<?php echo $prefix; ?>heure {

@@ -24,6 +24,7 @@ class pfcCommand_getnewmsg extends pfcCommand
     $container =& $c->getContainerInstance();
     
     $from_id = isset($_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid]) ? $_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid] : $container->getLastMsgId()-$c->max_msg;
+    $nbnewmsg = isset($_SESSION[$c->prefix."nbreadmsg_".$c->getId()."_".$clientid]) ? $_SESSION[$c->prefix."nbreadmsg_".$c->getId()."_".$clientid] : 0;
     
     $new_msg = $container->readNewMsg($from_id);
     $new_from_id = $new_msg["new_from_id"];
@@ -48,7 +49,7 @@ class pfcCommand_getnewmsg extends pfcCommand
 	  $m_cmd = "cmd_me";
       }
 
-      $js .= "Array(".$m_id.",'".addslashes($m_date)."','".addslashes($m_heure)."','".addslashes($m_nick)."','".addslashes($m_words)."','".addslashes($m_cmd)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($from_id <= 0? 1 : 0)."),";
+      $js .= "Array(".$m_id.",'".addslashes($m_date)."','".addslashes($m_heure)."','".addslashes($m_nick)."','".addslashes($m_words)."','".addslashes($m_cmd)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($nbnewmsg == 0 ? 1 : 0)."),";
       $msg_sent = true;
     }
     if ($js != "")
@@ -62,6 +63,7 @@ class pfcCommand_getnewmsg extends pfcCommand
     {
       // store the new msg id
       $_SESSION[$c->prefix."from_id_".$c->getId()."_".$clientid] = $new_from_id;
+      $_SESSION[$c->prefix."nbreadmsg_".$c->getId()."_".$clientid] = $nbnewmsg + count($messages);
     }
 
     // remove the lock
