@@ -78,11 +78,9 @@
   <div id="<?php echo $prefix; ?>misc6"></div>
   		
   <script type="text/javascript">
-  <!--
-  
-  <?php include($c->getFileUrlFromTheme('templates/chat.js.tpl.php')); ?>
-  
-  -->
+ // <![CDATA[
+  <?php  include($c->getFilePathFromTheme('templates/chat.js.tpl.php')); ?>
+ // ]]
   </script>
   </div>
 </div>

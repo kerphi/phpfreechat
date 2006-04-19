@@ -1,4 +1,4 @@
-<?php include($c->getFileUrlFromTheme('templates/chat-pre.js.tpl.php')); ?>
+<?php include($c->getFilePathFromTheme('templates/chat-pre.js.tpl.php')); ?>
 
 /* preload smileys */
 preloadImages(
@@ -32,4 +32,4 @@ xajax.DebugMessage = function(text)
 }
 <?php } ?>
 
-<?php include($c->getFileUrlFromTheme('templates/chat-post.js.tpl.php')); ?>
+<?php include($c->getFilePathFromTheme('templates/chat-post.js.tpl.php')); ?>
