@@ -255,13 +255,10 @@ pfcGui.prototype = {
     var img = $('<?php echo $prefix; ?>tabimg'+tabid);
     if (img)
     {
-      var src = '';
       if (tabtype == 'ch')
-        src = '<?php echo $c->getFileUrlFromTheme('images/ch-active.gif'); ?>';
+        img.src = '<?php echo $c->getFileUrlFromTheme('images/ch-active.gif'); ?>';
       if (tabtype == 'pv')
-        src = '<?php echo $c->getFileUrlFromTheme('images/pv-active.gif'); ?>';
-      preloadImages(src);
-      img.src = src;
+        img.src = '<?php echo $c->getFileUrlFromTheme('images/pv-active.gif'); ?>';
     }
   },
 
@@ -275,13 +272,10 @@ pfcGui.prototype = {
     var img = $('<?php echo $prefix; ?>tabimg'+tabid);
     if (img)
     {
-      var src = '';
       if (tabtype == 'ch')
-        src = '<?php echo $c->getFileUrlFromTheme('images/ch.gif'); ?>';
+        img.src = '<?php echo $c->getFileUrlFromTheme('images/ch.gif'); ?>';
       if (tabtype == 'pv')
-        src = '<?php echo $c->getFileUrlFromTheme('images/pv.gif'); ?>';
-      preloadImages(src);
-      img.src = src;
+        img.src = '<?php echo $c->getFileUrlFromTheme('images/pv.gif'); ?>';
     }
   }
   
