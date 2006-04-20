@@ -682,7 +682,11 @@ pfcClient.prototype = {
       // nobr is not xhtml valid but it's a workeround 
       // for IE which doesn't support 'white-space: pre' css rule
       var nobr = document.createElement('nobr');
-      nobr.appendChild(document.createTextNode(nicks[i]));
+      var span = document.createElement('span');
+      span.pfc_nick = nicks[i];
+      span.onclick = function(){pfc.insert_text(this.pfc_nick+", ",""); return false;}
+      span.appendChild(document.createTextNode(nicks[i]));
+      nobr.appendChild(span);
       li.appendChild(nobr);
       li.style.borderBottom = '1px solid #AAA';
       
