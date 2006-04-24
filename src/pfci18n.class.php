@@ -31,11 +31,14 @@ function _pfc()
 
 class pfcI18N
 {
-  function Init($language)
+  function Init($language,$type='admin')
   {
     if (!in_array($language, pfcI18N::GetAcceptedLanguage()))
       $language = pfcI18N::GetDefaultLanguage();
-    require_once(dirname(__FILE__)."/../i18n/".$language."/main.php");
+    if ($type=="admin")
+      require_once(dirname(__FILE__)."/../i18n/".$language."/admin.php");
+    else
+      require_once(dirname(__FILE__)."/../i18n/".$language."/main.php");
     $GLOBALS["output_encoding"] = "UTF-8"; // by default client/server communication is utf8 encoded
   }
 
