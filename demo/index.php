@@ -1,12 +1,53 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>phpFreeChat Demos</title>
+  <link rel="stylesheet" title="classic" type="text/css" href="../style/generic.css">
+  <link rel="stylesheet" title="classic" type="text/css" href="../style/header.css">
+  <link rel="stylesheet" title="classic" type="text/css" href="../style/footer.css">
+  <link rel="stylesheet" title="classic" type="text/css" href="../style/menu.css">
+  <link rel="stylesheet" title="classic" type="text/css" href="../style/content.css">   
+ </head>
+ <body>
 
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>phpFreeChat demos</title>
-  </head>
-    
-  <body>
+<div class="header">
+      <h1>phpFreeChat - Demos</h1>
+      <img alt="logo bulle" src="../style/bulle.png" class="logo2">
+</div>
+
+<div class="menu">
+      <ul>
+        <li class="sub title">General</li>
+        <li>
+          <ul class="sub">
+            <li class="item">
+              <a href="../index.php">PFC Index</a>
+            </li>
+          </ul>
+        </li>
+        <li class="sub title">Demos</li>
+        <li>
+          <ul class="sub">
+            <li class="item">
+              <a href="#Miscellaneous">Miscellaneous</a>
+            </li>
+            <li class="item">
+              <a href="#Themes">Themes</a>
+            </li>
+            <li class="item">
+              <a href="#Translations">Translations</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <p class="partner">
+        <a href="http://www.phpfreechat.net"><img alt="logo big" src="../style/logo_88x31.gif"></a>
+      </p>
+</div>
+
+<div class="content">
+
 <h2>Miscellaneous</h2>
 
 <ul>
@@ -68,6 +109,18 @@
       <li><a href="demo41_in_greek.php">demo41 - the greek translation of the chat</a></li>
       <li><a href="demo42_in_chinese_from_taiwan.php">demo42 - the Chinese from taiwan (traditional Chinese) translation of the chat</a></li>
     </ul>
-  </body>
-  
-</html>
+
+</div>
+
+<div class="footer">
+      <div class="valid">
+        <a href="http://validator.w3.org/check?uri=referer">
+          <img alt="Valid XHTML 1.0!" src="../style/valid-xhtml.png">
+        </a>
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+          <img alt="Valid CSS!" src="../style/valid-css.png">
+        </a>
+      </div>
+      <p>©2006 phpFreeChat</p>
+    </div>
+</body></html>
