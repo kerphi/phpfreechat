@@ -31,7 +31,7 @@ function _pfc()
 
 class pfcI18N
 {
-  function Init($language,$type='admin')
+  function Init($language,$type='main')
   {
     if (!in_array($language, pfcI18N::GetAcceptedLanguage()))
       $language = pfcI18N::GetDefaultLanguage();
