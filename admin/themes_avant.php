@@ -1,18 +1,18 @@
-<?
+<?php
 require_once("themes.class.php");
 $themes = new themes();
 
 
 ?>
 
-<?
+<?php
 // TOP //
 include("index_html_top.php");
 ?>
 
 <div class="content">
   <h2>Liste des themes disponibles</h2>
-<?
+<?php
   echo "<ul>";
   $themes_list = $themes->getThemesList();
   for($i=0;$i<count($themes_list);$i++) {
@@ -55,7 +55,7 @@ include("index_html_top.php");
 ?>
 </div>
 
-<?
+<?php
 // BOTTOM
 include("index_html_bottom.php");
 ?>

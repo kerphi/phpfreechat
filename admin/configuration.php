@@ -1,4 +1,4 @@
-<?
+<?php
 // TOP //
 include("index_html_top.php");
 ?>
@@ -8,7 +8,7 @@ include("index_html_top.php");
 
 </div>
 
-<?
+<?php
 // BOTTOM
 include("index_html_bottom.php");
 ?>

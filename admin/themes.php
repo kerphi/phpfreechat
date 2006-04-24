@@ -1,4 +1,4 @@
-<?
+<?php
 # lang
 require_once("../src/pfci18n.class.php");
 require_once("inc.conf.php");
@@ -10,14 +10,14 @@ $themes = new themes();
 
 ?>
 
-<?
+<?php
 // TOP //
 include("index_html_top.php");
 ?>
 
 <div class="content">
-  <h2><? echo _pfc("Available themes"); ?></h2>
-<?
+  <h2><?php echo _pfc("Available themes"); ?></h2>
+<?php
 
   $themes_list = $themes->getThemesList();
   for($i=0;$i<count($themes_list);$i++) {
@@ -60,7 +60,7 @@ include("index_html_top.php");
 ?>
 </div>
 
-<?
+<?php
 // BOTTOM
 include("index_html_bottom.php");
 ?>

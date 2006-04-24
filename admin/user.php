@@ -82,15 +82,15 @@ if(!empty($_POST['username'])){
 }
 ?>
 
-<?
+<?php
 // TOP //
 include("index_html_top.php");
 ?>
 
 <div class="content">
-<h2><? echo _pfc("Users management"); ?></h2>
+<h2><?php echo _pfc("Users management"); ?></h2>
 
-<?
+<?php
     if(!file_exists($ht->get_file_Htaccess()))
       echo "<div class=\"ko\"><h3><img src=\"style/check_off.png\" alt=\""._pfc("Authentication disable")."\"> "._pfc("Authentication disable")." - <a href=\"".$_SERVER['PHP_SELF']."?active=1\">"._pfc("Enable here")."</a></h3></div>";
     else{
@@ -155,7 +155,7 @@ include("index_html_top.php");
 
 </div>
 
-<?
+<?php
 // BOTTOM
 include("index_html_bottom.php");
 ?>
