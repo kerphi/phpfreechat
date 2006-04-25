@@ -26,10 +26,14 @@
  * @author Stephane Gully <stephane.gully@gmail.com>
  */
 
+$GLOBALS["i18n"]["lang"] = "Français";
+
 // admin/index.php
 $GLOBALS["i18n"]["Administration"] = "Administration";
+$GLOBALS["i18n"]["Available Languages"] = "Langues disponibles";
+$GLOBALS["i18n"]["PFC version verification"] = "Verification de la version de PFC";
 $GLOBALS["i18n"]["Internet connection is not possible"] = "La connexion à Internet n'est pas possible";
-$GLOBALS["i18n"]["PFC is update"] = "PFC est pas à jour";
+$GLOBALS["i18n"]["PFC is update"] = "PFC est à jour";
 $GLOBALS["i18n"]["PFC version"] = "version de PFC";
 $GLOBALS["i18n"]["The last official version"] = "La dernière version officielle";
 $GLOBALS["i18n"]["PFC is not update"] = "PFC n'est pas à jour";

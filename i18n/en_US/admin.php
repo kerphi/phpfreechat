@@ -26,15 +26,19 @@
  * @author Nemako <fred@nemako.net>
  */
 
+$GLOBALS["i18n"]["lang"] = "English";
+
 // admin/index.php
 $GLOBALS["i18n"]["Administration"] = "Administration";
+$GLOBALS["i18n"]["Available Languages"] = "Available Languages";
+$GLOBALS["i18n"]["PFC version verification"] = "PFC version verification";
 $GLOBALS["i18n"]["Internet connection is not possible"] = "Internet connection is not possible";
 $GLOBALS["i18n"]["PFC is update"] = "PFC is update";
 $GLOBALS["i18n"]["PFC version"] = "PFC version";
 $GLOBALS["i18n"]["The last official version"] = "The last official version";
 $GLOBALS["i18n"]["PFC is not update"] = "PFC is not update";
 $GLOBALS["i18n"]["Your version"] = "Your version";
-$GLOBALS["i18n"]["Download the last version %s here %s."] = "Télécharger la dernière version %s ici %s.";
+$GLOBALS["i18n"]["Download the last version %s here %s."] = "Download the last version %s here %s.";
 
 
 // admin/user.php
