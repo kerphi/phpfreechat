@@ -31,14 +31,18 @@ class version{
     * @return integer version
     */
     function getPFCOfficialCurrentVersion(){
-       if (file_exists($this->pfc_official_current_version)) {
+       $parse = parse_url($this->pfc_official_current_version);
+       $host = $parse['host'];
+       error_reporting(0); // It's maybe not the best thing to do...
+       if (!fsockopen ($host, 80, $errno, $errstr, 1)) {
+         return 0;
+       }
+       else{
          $fp =  fopen($this->pfc_official_current_version,"r");
          $version =  trim(fgets($fp));
          fclose($fp);
          return $version;
        }
-       else
-         return 0;
     }
  
 }
