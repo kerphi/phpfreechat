@@ -33,10 +33,10 @@ function _pfc()
 
 class pfcI18N
 {
-  function Init($language,$type='main')
+  function Init($language,$type="main")
   {
     if ($type=="admin")
-      if (!in_array($language, pfcI18N::GetAcceptedAdminLanguage()))
+      if (!in_array($language, pfcI18N::GetAcceptedLanguage("admin")))
         $language = pfcI18N::GetDefaultLanguage();
     if (!in_array($language, pfcI18N::GetAcceptedLanguage()))
       $language = pfcI18N::GetDefaultLanguage();
@@ -79,41 +79,37 @@ class pfcI18N
    * Return the language list supported bye i18n system
    * (content of the i18n directory)
    */
-  function GetAcceptedLanguage()
+  function GetAcceptedLanguage($type="main")
   {
-    if (isset($GLOBALS["accepted_languages"]))
-      return $GLOBALS["accepted_languages"]; // restore the cached languages list
-    $GLOBALS["accepted_languages"] = array();
-    $dir_handle = opendir(dirname(__FILE__)."/../i18n");
-    while (false !== ($file = readdir($dir_handle)))
-    {
-      // skip . and .. generic files
-      // skip also .svn directory
-      if ($file == "." || $file == ".." || preg_match("/^\..*/", $file)) continue;
-      $GLOBALS["accepted_languages"][] = $file;
+    if ($type=="admin"){
+      if (isset($GLOBALS["accepted_admin_languages"]))
+        return $GLOBALS["accepted_admin_languages"]; // restore the cached languages list
+      $GLOBALS["accepted_admin_languages"] = array();
+      $dir_handle = opendir(dirname(__FILE__)."/../i18n");
+      while (false !== ($file = readdir($dir_handle)))
+      {
+        // skip . and .. generic files
+        // skip also .svn directory
+        if ($file == "." || $file == ".." || strpos($file,".")===0) continue;
+        if (file_exists(dirname(__FILE__)."/../i18n/".$file."/admin.php"))
+        $GLOBALS["accepted_admin_languages"][] = $file;
+      }
+      return $GLOBALS["accepted_admin_languages"];
     }
-    return $GLOBALS["accepted_languages"];
-  }
-
-  /**
-   * Return the language list supported bye i18n system
-   * (content of the i18n directory)
-   */
-  function GetAcceptedAdminLanguage()
-  {
-    if (isset($GLOBALS["accepted_admin_languages"]))
-      return $GLOBALS["accepted_admin_languages"]; // restore the cached languages list
-    $GLOBALS["accepted_admin_languages"] = array();
-    $dir_handle = opendir(dirname(__FILE__)."/../i18n");
-    while (false !== ($file = readdir($dir_handle)))
-    {
-      // skip . and .. generic files
-      // skip also .svn directory
-      if ($file == "." || $file == ".." || preg_match("/^\..*/", $file)) continue;
-      if (file_exists(dirname(__FILE__)."/../i18n/".$file."/admin.php"))
-          $GLOBALS["accepted_admin_languages"][] = $file;
+    else{
+      if (isset($GLOBALS["accepted_languages"]))
+        return $GLOBALS["accepted_languages"]; // restore the cached languages list
+      $GLOBALS["accepted_languages"] = array();
+      $dir_handle = opendir(dirname(__FILE__)."/../i18n");
+      while (false !== ($file = readdir($dir_handle)))
+      {
+        // skip . and .. generic files
+        // skip also .svn directory
+        if ($file == "." || $file == ".." || strpos($file,".")===0) continue;
+        $GLOBALS["accepted_languages"][] = $file;
+      }
+      return $GLOBALS["accepted_languages"];
     }
-    return $GLOBALS["accepted_admin_languages"];
   }
   
   /**

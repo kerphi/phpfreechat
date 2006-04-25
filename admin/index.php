@@ -22,7 +22,7 @@ include("index_html_top.php");
       <li><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
           <select name="lang">
         <?php 
-        $available_admin_lang = pfcI18N::GetAcceptedAdminLanguage();
+        $available_admin_lang = pfcI18N::GetAcceptedLanguage("admin");
         for($i=0;$i<count($available_admin_lang);$i++) {
           if ($lang==$available_admin_lang[$i])
             $selected ="selected=\"selected\"";
