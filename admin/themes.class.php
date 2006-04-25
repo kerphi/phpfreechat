@@ -22,7 +22,7 @@ class themes{
        $i=0;
        $dir = opendir($this->dir_themes);
        while ($f = readdir($dir)) {
-         if(is_dir($this->dir_themes.$f) && $f!="." && $f!="..") {
+         if(is_dir($this->dir_themes.$f) && $f!="." && $f!=".." && strpos($f,".")===false) {
             $themes_list[$i] = $f;
             $i++;
           }
