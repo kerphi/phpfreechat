@@ -262,9 +262,11 @@ pfcClient.prototype = {
           echo "this.sendRequest('/privmsg', '".addslashes($pv["name"])."');\n";
         ?>
       }
+      
       if (resp == "ok" || resp == "notchanged" || resp == "changed" || resp == "connected")
       {
         this.el_handle.value = param;
+        this.nickname = param;
       }
       else if (resp == "isused")
       {
