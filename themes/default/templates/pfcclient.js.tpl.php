@@ -663,7 +663,7 @@ pfcClient.prototype = {
         img.title = img.alt;
         img.style.marginRight = '5px';
         var a = document.createElement('a');
-        a.setAttribute('href', 'opo');
+        a.setAttribute('href', '');
         a.pfc_nick = nicks[i];
         a.onclick = function(){pfc.sendRequest('/privmsg', this.pfc_nick); return false;}
         a.appendChild(img);
