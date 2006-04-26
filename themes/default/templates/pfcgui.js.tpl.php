@@ -155,6 +155,10 @@ pfcGui.prototype = {
     tabparent_t.removeChild(tab_t);
     tabparent_c.removeChild(tab_c);
 
+    // empty the chat div content
+    var div_chat = this.getChatContentFromTabId(tabid);
+    div_chat.innerHTML = '';
+
     // remove the tab from the list
     var tabpos = this.tabids.indexOf(tabid);
     var name = this.tabs[tabpos];
@@ -241,7 +245,7 @@ pfcGui.prototype = {
     
     $('<?php echo $prefix; ?>channels_list').appendChild(li_title);
     $('<?php echo $prefix; ?>channels_content').appendChild(div_content);
-    
+
     return tabid;
   },
 
