@@ -118,23 +118,7 @@ class pfcContainer_File extends pfcContainer
     flock ($fp, LOCK_UN); // unlock
     fclose($fp);
 
-
-    /**
-     * @todo: this is not the container' job to keep synchronized the user' metadatas !
-     */
-
-    // update the user's metadata (channels)
-    if ($chan != NULL)
-    {
-      $userchan = $this->getMeta("channels", "nickname", $nick);
-      $userchan = $userchan != NULL ? unserialize($userchan) : array();
-      if (!in_array($chan, $userchan))
-      {
-        $userchan[] = $chan;
-        $this->setMeta(serialize($userchan), "channels", "nickname", $nick);
-      }
-    }
-    
+   
     //    if (!in_array($nickname, $this->_users))
     //      $this->_users[] = $nickname; // _users will be used by getOnlineUserList
 
@@ -165,31 +149,6 @@ class pfcContainer_File extends pfcContainer
     }
 
     @unlink($nick_filename);
-
-
-
-    /**
-     * @todo: this is not the container' job to keep synchronized the user' metadatas !
-     */
-    
-    // update the user's metadata (channels)
-    if ($chan != NULL)
-    {
-      // the user just disconnect from a channel
-      $userchan = $this->getMeta("channels", "nickname", $nick);
-      $userchan = $userchan != NULL ? unserialize($userchan) : array();
-      if (in_array($chan, $userchan))
-      {
-        $key = array_search($chan, $userchan);
-        unset($userchan[$key]);
-        $this->setMeta(serialize($userchan), "channels", "nickname", $nick);
-      }
-    }
-    else
-    {
-      // the user disconnect from the whole server
-      $this->rmMeta("channels", "nickname", $nick);
-    }
 
     /*
     // remove the nickname from the cache list
