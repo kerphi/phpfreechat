@@ -1,7 +1,12 @@
-phpFreeChat, a free, simple, fast and customizable chat server
+    php Free Chat is a free, simple to install, fast, customizable and multi
+    languages chat that uses a simple filesystem for message and nickname
+    storage. It uses AJAX to smoothly refresh (no flicker) and display the
+    chat zone and the nickname zone. It supports customized themes based on
+    CSS and a plugin system that allows you to write your own storage
+    routines (ex: Mysql, IRC backends ...), and you own chat commands !
 
     Simple
-         You only have to copy/paste 3 lines of code[21] to have a nice
+         You only have to copy/paste 3 lines of code to have a nice
          working chat.
          No need to configure a database (Mysql), messages and nicknames are
          stored in files.
@@ -21,11 +26,11 @@ phpFreeChat, a free, simple, fast and customizable chat server
          data twice, only new messages are transmitted.
     Customizable
          You can write your own customized CSS stylesheets, to completely
-         change the appearance[22] of your chat.
+         change the appearance[24] of your chat.
          All chat functionalities are customizable. For example, you can
          change the messages refresh time, you can ban users for changing
          their usernames, etc.
-         The plugin system[23] allows you to write your own storage routines.
+         The plugin system[25] allows you to write your own storage routines.
          For example, you can write a plugin to store the conversations into
          your database.
     Opensource
@@ -34,31 +39,30 @@ phpFreeChat, a free, simple, fast and customizable chat server
          I just ask, by gratitude, to keep the linkback logo  on the pages of
          your chat.
 
-    All phpFreeChat commands are inspired by the irc[24] protocol, and its
-    interface is inspired by mIRC[25] and XChat[26], so that users won't be
+    All phpFreeChat commands are inspired by the irc[26] protocol, and its
+    interface is inspired by mIRC[27] and XChat[28], so that users won't be
     disoriented.
 
     Techonologies used by phpFreeChat are:
 
-       *  PHP[27] : on the server side : conversations are simply stored in
+       *  PHP[29] : on the server side : conversations are simply stored in
           filesystems.
-       *  XAJAX[28] : for the asynchronous communication between the client
+       *  XAJAX[30] : for the asynchronous communication between the client
           and the server
 
     (phpFreeChat does NOT require MySQL, or any SQL database)
 
-    ©2006 phpFreeChat
+
+    Â©2006 phpFreeChat
 
 
 --------------------------------------------------------------
 List of References
 
 Document's URL:  http://www.phpfreechat.net/overview.en.html
-[22] customize.en.html#cust-css
-[23] customize.en.html#container-plug
-[24] http://www.irc.org
-[25] http://www.mirc.com/
-[26] http://www.xchat.org/
-[27] http://www.php.net/
-[28] http://www.xajaxproject.org/
+[26] http://www.irc.org
+[27] http://www.mirc.com/
+[28] http://www.xchat.org/
+[29] http://www.php.net/
+[30] http://www.xajaxproject.org/
 

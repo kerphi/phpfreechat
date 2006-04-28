@@ -1,3 +1,45 @@
+Document's Title: PHP FREE CHAT - Free PHP + AJAX chat
+
+php Free Chat
+
+    logo bulle
+
+    This page in english[1] Cette page en français[2] [3]
+
+    phpMyVisites
+
+       *  General
+       *  o  News[4]
+             o  Overview[5]
+             o  Demo[6]
+             o  Screenshots[7]
+             o  Downloads[8]
+             o  Who uses it ?[9]
+             o  FAQ[10]
+             o  Contact us[11]
+             o  Partners[12]
+             o  Forum[13]
+       *  Documentation
+       *  o  Install[14]
+             o  Customize[15]
+             o  Required configuration[16]
+       *  Developers
+       *  o  Roadmap[17]
+             o  Bugs list[18]
+             o  ChangeLog[19]
+             o  Contributions[20]
+
+    logo big[21]
+
+    HotScripts.com[22]
+
+       
+
+          If you like our script, please rate it! 
+
+          Excellent! <<Rate>>
+
+
   Install
 
     To install phpFreeChat you need:
@@ -15,7 +57,7 @@
 
     Using the setup (the easy way):
 
-       1. Download phpfreechat-x.x-setup.php[21] (lastest version)
+       1. Download phpfreechat-x.x-setup.php[23] (lastest version)
        2. Upload the setup script on your server into a browsable directory
           (public directory)
        3. Browse the script with your personnal browser, it should launch a
@@ -25,7 +67,7 @@
 
     Using the ziped archives (for those who havn't gzip module in their php):
 
-       1. Download phpfreechat-x.x.zip (or .tar.gz for linux users)[22]
+       1. Download phpfreechat-x.x.zip (or .tar.gz for linux users)[24]
           (lastest version)
        2. Unzip the archive localy then upload the phpfreechat-x.x directory
           on your server into a browsable directory (public directory).
@@ -59,6 +101,7 @@
            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html>
       <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>phpFreeChat demo</title>
         <?php $chat->printJavascript(); ?>
         <?php $chat->printStyle(); ?>
@@ -123,10 +166,10 @@
     channel
          Used to create a room. Technicaly this parameter is used to choose
          the data (messages + nicknames) storage destination. For a better
-         explaination, see this FAQ entry[23].
+         explaination, see this FAQ entry[25].
          (auto-generated string based on the title parameter by default)
     frozen_nick
-         Setting this to true will forbid the user to change his nickname
+         Setting this to true will forbid the user to change his/her nickname
          later.
          (false value by default)
     max_nick_len
@@ -148,6 +191,18 @@
          This is the message history length. When a user connects, he can see
          the history. The number of messages s/he can see is defined by this
          (20 lines by default)
+    quit_on_closedwindow
+         Setting this to true will send a /quit command when the user close
+         his window (doesn't work on Firefox). It's not set to true by
+         default because on IE and Konqueror/Safari, when the user reload his
+         page this event occurs.
+         (false value by default)
+    focus_on_connect
+         Setting this to true will give the focus to the input text box when
+         connecting to the chat. It can be usefull not touch the focus when
+         integrating the chat into an existing website because when the focus
+         is changed, the viewport follows the focus location.
+         (true value by default)
     connect_at_startup
          Setting this to false will oblige user to click on the connect
          button if s/he wants to chat.
@@ -163,11 +218,11 @@
          Width of the chat area.
          ("" by default, means it's given by the CSS)
     shownotice
-         Setting this to 0 will disable nickname change notices and
-         connect/disconnect notices. Setting it to 1 will only disable
-         connect/disconnect notices. Setting it to 2 will show all notice
-         types.
-         (2 by default)
+         Setting this to 0 will show nothing. Setting it to 1 will show
+         nicknames changes. Setting it to 2 will show connect/disconnect
+         notifications. Setting it to 3 (1+2) will show nicknames and
+         connect/disconnect notifications.
+         (3 by default)
     nickmarker
          Setting it to false will disable nickname colorization.
          (true value by default)
@@ -228,7 +283,7 @@
          client script browable url (useful when using url rewriting).
          (by default these parameters are auto-detected)
     useie7
-         Setting this to false will disable IE7[24] scripts used to improve
+         Setting this to false will disable IE7[26] scripts used to improve
          display for the crappy Internet Explorer.
          (true value by default)
     ie7path
@@ -239,7 +294,7 @@
          Specify the javascript libraries path (md5, cookie ...).
          (dirname(__FILE__)."/../lib/javascript" by default)
     smartypath
-         Specify the Smarty[25] path. It's useful if you allready have a
+         Specify the Smarty[27] path. It's useful if you allready have a
          Smarty library installed and you want to save bytes on your server.
          (dirname(__FILE__)."/../lib/Smarty-2.6.7" by default)
     usecsstidy
@@ -248,18 +303,18 @@
          (false value by default because it make problems on strange server
          configurations)
     csstidypath
-         Specify the CSS Tidy[26] library path. It's useful if you allready
+         Specify the CSS Tidy[28] library path. It's useful if you allready
          have a Smarty library installed and you want to save bytes on your
          server.
          (dirname(__FILE__)."/../lib/csstidy-1.1" by default)
     xajaxpath
-         Specify the xajax[27] path. It's useful if you allready have a xajax
+         Specify the xajax[29] path. It's useful if you allready have a xajax
          library installed and you want to save bytes on your server.
          (dirname(__FILE__)."/../lib/xajax_0.2_stable" by default);
     data_private_path
          Used by the filesystem container to store chat data. Used by smarty
          to store compiled templates. Tip: you can optimize your chat
-         performances, see this FAQ entry[28].
+         performances, see this FAQ entry[30].
          (dirname(__FILE__)."/../data/private" by default)
     data_public_path and data_public_url
          This path must be reachable by your web server. IE7 scripts and
@@ -281,7 +336,11 @@
          order to avoid variables overlaps.
          ("phpfreechat_" by default)
 
-    �2006 phpFreeChat
+    RSS[31]
+
+    Valid XHTML 1.0![32] Valid CSS![33] Created with Amaya[34]
+
+    ©2006 phpFreeChat
 
 
 
@@ -289,10 +348,39 @@
 List of References
 
 Document's URL:  http://www.phpfreechat.net/install.en.html
-[23] faq.en.html#multiple-channels
-[24] http://dean.edwards.name/IE7/
-[25] http://smarty.php.net/
-[26] http://csstidy.sourceforge.net/index.php
-[27] http://www.xajaxproject.org/
-[28] faq.en.html#tmpfs
+style/generic.cssstyle/header.cssstyle/footer.cssstyle/menu.cssstyle/content.cssstyle/install.css
+[1] install.en.html
+[2] install.fr.html
+[3] install.ar.html
+[4] news.en.html
+[5] overview.en.html
+[6] demo.en.php
+[7] screenshot.en.html
+[8] download.en.html
+[9] whouses.en.html
+[10] faq.en.html
+[11] contact.en.html
+[12] partners.en.html
+[13] forum/
+[14] install.en.html
+[15] customize.en.html
+[16] requiredconfig.en.html
+[17] roadmap.en.html
+[18] buglist.en.html
+[19] changelog.en.html
+[20] contributions.en.html
+[21] http://www.phpfreechat.net
+[22] http://www.hotscripts.com/?RID=N452772
+[23] download.en.html
+[24] download.en.html
+[25] faq.en.html#multiple-channels
+[26] http://dean.edwards.name/IE7/
+[27] http://smarty.php.net/
+[28] http://csstidy.sourceforge.net/index.php
+[29] http://www.xajaxproject.org/
+[30] faq.en.html#tmpfs
+[31] forum/extern.php?action=active&amp;type=RSS&amp;fid=7
+[32] http://validator.w3.org/check?uri=referer
+[33] http://jigsaw.w3.org/css-validator/check/referer
+[34] http://www.w3.org/Amaya
 

@@ -1,41 +1,85 @@
+Document's Title: PHP FREE CHAT - Chat gratuit en PHP + AJAX
+
+php Free Chat
+
+    logo bulle
+
+    This page in english[1] Cette page en franÃ§ais[2] [3]
+
+    phpMyVisites
+
+       *  GÃ©nÃ©ral
+       *  o  Nouvelles[4]
+             o  PrÃ©sentation[5]
+             o  DÃ©monstration[6]
+             o  Captures d'Ã©crans[7]
+             o  TÃ©lÃ©charger[8]
+             o  Qui l'utilise ?[9]
+             o  FAQ[10]
+             o  Contactez nous[11]
+             o  Partenaires[12]
+             o  Forum [en][13]
+       *  Documentation
+       *  o  Installation[14]
+             o  ParamÃ©trage[15]
+             o  Configuration recommandÃ©e[16]
+       *  DÃ©veloppeurs
+       *  o  Feuille de route[17]
+             o  Liste de bug[18]
+             o  Historique[19]
+             o  Contributions[20]
+
+    logo big[21]
+
+    HotScripts.com[22]
+
+       
+
+          Si vous aimez ce script, votez! 
+
+          Excellent! <<Voter>>
+
+
+
+
   Installation
 
     Vous avez besoin de :
 
        *  Un serveur Web (apache, IIS ...) avec le module php (4 ou 5)
-       *  Un acces en écriture sur ce serveur Web (ssh, FTP ou autre)
+       *  Un acces en Ã©criture sur ce serveur Web (ssh, FTP ou autre)
 
-    Par défaut, vous n'avez pas besoin d'une base de donnée Mysql car des
-    simples fichiers sont utilisés pour stoquer les informations.
+    Par dÃ©faut, vous n'avez pas besoin d'une base de donnÃ©e Mysql car des
+    simples fichiers sont utilisÃ©s pour stoquer les informations.
 
        *  En avant!
-       *  Configuration avancée
+       *  Configuration avancÃ©e
 
     En avant!
 
     Pour les feignants:
 
-       1. Téléchargez le script d'installation auto-extractible :
-          phpfreechat-x.x-setup.php[21] (la dernière version de préférence)
-       2. Uploadez le script dans un répertoire accessible par votre
-          navigateur (répertoire publique)
-       3. Lancez votre navigateur et exécutez le script d'installation que
+       1. TÃ©lÃ©chargez le script d'installation auto-extractible :
+          phpfreechat-x.x-setup.php[23] (la derniÃ¨re version de prÃ©fÃ©rence)
+       2. Uploadez le script dans un rÃ©pertoire accessible par votre
+          navigateur (rÃ©pertoire publique)
+       3. Lancez votre navigateur et exÃ©cutez le script d'installation que
           vous venez d'uploader, ceci devrait lancer une interface
-          d'installation, suivez alors les étapes !
-          Astuce : supprimez le scripte d'installation une fois terminé pour
-          des raisons de sécurité.
+          d'installation, suivez alors les Ã©tapes !
+          Astuce : supprimez le scripte d'installation une fois terminÃ© pour
+          des raisons de sÃ©curitÃ©.
 
-    Pour les utilisateurs avancés ou pour ceux qui n'ont pas gzip installé
+    Pour les utilisateurs avancÃ©s ou pour ceux qui n'ont pas gzip installÃ©
     sur leur serveur:
 
-       1. Téléchargez l'archive zip (ou tag.gz pour les utilisateurs linux) :
-          phpfreechat-x.x.zip[22] (la dernière version de préférence)
-       2. Décompressez l'archive localement et uploadez le résultat sur votre
-          serveur dans un répertoire accessible par votre navigateur.
-          Astuce: si vous avez un accès SSH, je vous conseil d'uploader
-          l'archive tar.gz puis de la décompresser directement sur le serveur
-          avec la commande tar xzf phpfreechat-x.x.tar.gz
-       3. Donnez les droits en écriture aux répertoires
+       1. TÃ©lÃ©chargez l'archive zip (ou tag.gz pour les utilisateurs linux)
+          : phpfreechat-x.x.zip[24] (la derniÃ¨re version de prÃ©fÃ©rence)
+       2. DÃ©compressez l'archive localement et uploadez le rÃ©sultat sur
+          votre serveur dans un rÃ©pertoire accessible par votre navigateur.
+          Astuce: si vous avez un accÃ¨s SSH, je vous conseil d'uploader
+          l'archive tar.gz puis de la dÃ©compresser directement sur le
+          serveur avec la commande tar xzf phpfreechat-x.x.tar.gz
+       3. Donnez les droits en Ã©criture aux rÃ©pertoires
           phpfreechat-x.x/data/public et phpfreechat-x.x/data/private
           Si vous utilisez FTP, voici les commandes:
           CHMOD 777 phpfreechat-x.x/data/private
@@ -44,17 +88,17 @@
           Si vous utilisez SSH, voici les commandes:
           chmod a+w phpfreechat-x.x/data/*
 
-       4. Pour terminer : lancez votre navigateur et ouvrez le répertoire
+       4. Pour terminer : lancez votre navigateur et ouvrez le rÃ©pertoire
           phpfreechat-x.x sur votre serveur !
 
-    Vous désirez certainement paramétrer votre propre chat, pour cela prenez
-    exemple sur les scriptes du répertoire phpfreechat-x.x/demo.
+    Vous dÃ©sirez certainement paramÃ©trer votre propre chat, pour cela
+    prenez exemple sur les scriptes du rÃ©pertoire phpfreechat-x.x/demo.
 
-    Voila le script minimum pour que le chat fonctionne (inspiré de demo1) :
+    Voila le script minimum pour que le chat fonctionne (inspirÃ© de demo1) :
 
     <?php
 
-    require_once "src/phpfreechat.class.php"; // pensez à ajuster le chemin
+    require_once "src/phpfreechat.class.php"; // pensez Ã  ajuster le chemin
     $params["serverid"] = md5(__FILE__); // permet d'identifier ce chat
     $chat = new phpFreeChat($params);
 
@@ -63,6 +107,7 @@
            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html>
       <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>phpFreeChat demo</title>
         <?php $chat->printJavascript(); ?>
         <?php $chat->printStyle(); ?>
@@ -72,12 +117,12 @@
       </body>
     </html>
 
-    Configuration avancée
+    Configuration avancÃ©e
 
-    Le chat fonctionne très bien en laissant les paramètres par défaut mais
-    de nombreuses options peuvent être réglées. Par exemple, pour changer le
-    temps de rafraichissement à 2 secondes (par défaut c'est 5 secondes),
-    voila ce qu'il faut faire :
+    Le chat fonctionne trÃ¨s bien en laissant les paramÃ¨tres par dÃ©faut
+    mais de nombreuses options peuvent Ãªtre rÃ©glÃ©es. Par exemple, pour
+    changer le temps de rafraichissement Ã  2 secondes (par dÃ©faut c'est 5
+    secondes), voila ce qu'il faut faire :
 
     <?php
 
@@ -90,247 +135,268 @@
     [... copiez/coller le code HTML vu plus haut ...]
 
     Un autre exemple: vous souhaitez que vos utilisateur n'entrent pas de
-    pseudonymes à leur arrivé sur le chat et qu'un pseudo "invité" leur oit
-    assigné automatiquement (ceci est très utile pour integrer le chat dans
-    un forum, un portail ou tout autre système où l'utilisateur est déja
-    authentifié), voila ce qu'il faut faire :
+    pseudonymes Ã  leur arrivÃ© sur le chat et qu'un pseudo "invitÃ©" leur
+    oit assignÃ© automatiquement (ceci est trÃ¨s utile pour integrer le chat
+    dans un forum, un portail ou tout autre systÃ¨me oÃ¹ l'utilisateur est
+    dÃ©ja authentifiÃ©), voila ce qu'il faut faire :
 
     <?php
 
     require_once "src/phpfreechat.class.php"; // ajustez le chemin
     $params["serverid"] = md5(__FILE__);
-    $params["nick"] = "guest"; // ce pseudo peut-être récupéré depuis une base de données
+    $params["nick"] = "guest"; // ce pseudo peut-Ãªtre rÃ©cupÃ©rÃ© depuis une base de donnÃ©es
     $chat = new phpFreeChat($params);
 
     ?>
     [... copiez/coller le code HTML vu plus haut ...]
 
-    Maintenant voyons la liste exaustive des paramètres :
+    Maintenant voyons la liste exaustive des paramÃ¨tres :
 
     serverid
-         C'est leur seule paramètre obligatoire. C'est l'identifiant du chat,
-         "son IP" (comparable à l'adresse (host) d'un serveur IRC) utilisé
-         pour différencer ce chat d'un autre. Deux chats doivent avoir des
-         serverid différents. Si vous ne savez pas quoi mettre, ceci
-         fonctionnera dans la majorité des cas : $params["serverid"] =
+         C'est leur seule paramÃ¨tre obligatoire. C'est l'identifiant du
+         chat, "son IP" (comparable Ã  l'adresse (host) d'un serveur IRC)
+         utilisÃ© pour diffÃ©rencer ce chat d'un autre. Deux chats doivent
+         avoir des serverid diffÃ©rents. Si vous ne savez pas quoi mettre,
+         ceci fonctionnera dans la majoritÃ© des cas : $params["serverid"] =
          md5(__FILE__);
     nick
-         Ce paramètre est très utile si vous connaissez à l'avance les
-         pseudonymes des utilisateurs, par exemple si vous souhaitez intégrer
-         le chat à un forum ou a un portail qui possède déjà un système
-         d'authentification. Il suffit de renseigner le pseudonyme de
-         l'utilisateur concerné dans cette option et l'utilisateur sera alors
-         automatiquement connecté avec son pseudonyme, il n'aura pas à
-         choisir son pseudo lors de la première connexion.
-         Attention : Les pseudonymes doivent être encodés en UTF-8. Si par
-         exemple vos pseudo viennent d'une base de donnée où ils sont encodés
-         en ISO-8859-1, vous devez les convertir : $params["nick"] =
+         Ce paramÃ¨tre est trÃ¨s utile si vous connaissez Ã  l'avance les
+         pseudonymes des utilisateurs, par exemple si vous souhaitez
+         intÃ©grer le chat Ã  un forum ou a un portail qui possÃ¨de dÃ©jÃ  un
+         systÃ¨me d'authentification. Il suffit de renseigner le pseudonyme
+         de l'utilisateur concernÃ© dans cette option et l'utilisateur sera
+         alors automatiquement connectÃ© avec son pseudonyme, il n'aura pas
+         Ã  choisir son pseudo lors de la premiÃ¨re connexion.
+         Attention : Les pseudonymes doivent Ãªtre encodÃ©s en UTF-8. Si par
+         exemple vos pseudo viennent d'une base de donnÃ©e oÃ¹ ils sont
+         encodÃ©s en ISO-8859-1, vous devez les convertir : $params["nick"] =
          iconv("ISO-8859-1", "UTF-8", $bdd_nickname); (bien sur changez la
-         variable $bdd_nickname à votre convenance)
-         Remarque : Cette option peut-être utilisée conjointement à l'option
-         frozen_nick pour empêcher l'utilisateur de changer de nom.
-         ("" par défaut, signifie que les utilisateurs doivent choisir leur
+         variable $bdd_nickname Ã  votre convenance)
+         Remarque : Cette option peut-Ãªtre utilisÃ©e conjointement Ã 
+         l'option frozen_nick pour empÃªcher l'utilisateur de changer de nom.
+         ("" par dÃ©faut, signifie que les utilisateurs doivent choisir leur
          pseudonymes quand ils se connectent)
     title
-         Permet de changer le titre du chat, c'est à dire le texte qui
+         Permet de changer le titre du chat, c'est Ã  dire le texte qui
          s'affiche en haut.
-         ("My phpFreeChat" est la valeur par défaut)
+         ("My phpFreeChat" est la valeur par dÃ©faut)
     channel
-         Permet de créer un salon. Techniquement, ce paramètre permet de
-         choisir où vont être stockés les messages et les pseudonymes du
-         chat. Pour une explication plus détaillées voyez le paragraphe
-         suivant[23] dans la FAQ.
-         (par défaut, il est calculé automatiquement à partir du title)
+         Permet de crÃ©er un salon. Techniquement, ce paramÃ¨tre permet de
+         choisir oÃ¹ vont Ãªtre stockÃ©s les messages et les pseudonymes du
+         chat. Pour une explication plus dÃ©taillÃ©es voyez le paragraphe
+         suivant[25] dans la FAQ.
+         (par dÃ©faut, il est calculÃ© automatiquement Ã  partir du title)
     frozen_nick
-         Mettre cette option à true va tout simplement empêcher les
+         Mettre cette option Ã  true va tout simplement empÃªcher les
          utilisateurs de changer leur pseudonymes. Cela sous entends que le
-         pseudonyme à été automatiquement assigné (voir l'option nick)
-         (false par défaut)
+         pseudonyme Ã  Ã©tÃ© automatiquement assignÃ© (voir l'option nick)
+         (false par dÃ©faut)
     max_nick_len
          C'est la longeur maximale que peut avoir un pseudonyme
-         (15de caractères par défaut)
+         (15de caractÃ¨res par dÃ©faut)
     max_text_len
          C'est la longeur maximale que peut avoir un message.
-         ( 250 caractères par défaut)
+         ( 250 caractÃ¨res par dÃ©faut)
     refresh_delay
-         Ceci est le temps à attendre entre chaque rafrechissements. Un
-         rafrechissement correspond à une requete HTTP demandant au serveur
-         si il y a quelque chose de nouveau à afficher ou pas. S'il n'y a
-         rien de nouveau alors la réponse HTTP est vide.
-         ( 5000ms = 5s par défaut)
+         Ceci est le temps Ã  attendre entre chaque rafrechissements. Un
+         rafrechissement correspond Ã  une requete HTTP demandant au serveur
+         si il y a quelque chose de nouveau Ã  afficher ou pas. S'il n'y a
+         rien de nouveau alors la rÃ©ponse HTTP est vide.
+         ( 5000ms = 5s par dÃ©faut)
     timeout
-         Ceci est le temps d'inactivité à attendre avant de déconnecter un
+         Ceci est le temps d'inactivitÃ© Ã  attendre avant de dÃ©connecter un
          utilisateur (en millisecondes).
-         ( 20000ms = 20s par défaut)
+         ( 20000ms = 20s par dÃ©faut)
     max_msg
-         Ceci est la taille de l'historique, c'est à dire le nombre de
-         messages gardés en mémoire. Quand un utilisateur se connect, il voit
-         automatiquement les messages de l'historique. Le nombre de messages
-         qu'il voit est définit par ce paramètre
-         (20 lignes par défaut)
+         Ceci est la taille de l'historique, c'est Ã  dire le nombre de
+         messages gardÃ©s en mÃ©moire. Quand un utilisateur se connect, il
+         voit automatiquement les messages de l'historique. Le nombre de
+         messages qu'il voit est dÃ©finit par ce paramÃ¨tre
+         (20 lignes par dÃ©faut)
+    quit_on_closedwindow
+         Mettre ce paramÃ¨tre Ã  true permet d'envoyer une commande /quit
+         lorsque l'utilisateur ferme sa fenÃªtre (ne fonctionne pas sour
+         Firefox). Ce paramÃ¨tre n'est pas a true par dÃ©faut car sous IE,
+         Safari et Konqueror : lorsque l'utilisateur recharge sa fenÃªtre le
+         mÃªme Ã©venement est envoyÃ© ce qui surcharge de messages le chat.
+         (false par dÃ©faut)
+    focus_on_connect
+         Mettre ce parametre Ã  true permet de placer le curseur directement
+         dans la zone de saisie du chat aprÃ¨s la connexion. Il peut Ãªtre
+         intÃ©ressant de passer ce paramÃ¨tre Ã  false lorsque l'on intÃ©gre
+         le chat dans un site Web car lorsque le focus change, la vue de
+         l'utilisateur dans la fenÃªtre change aussi, elle suit le focus.
+         Lorsque la page est grande la bar de scroll peut alors se dÃ©placer
+         de faÃ§on involontaire.
+         (true par dÃ©faut)
     connect_at_startup
-         Mettre cette option à false obligera les utilisateurs à cliquer sur
-         l'icone de connexion pour tchater.
-         (true par défaut, signifie que les utilisateurs sont automatiquement
-         connectés lorsque la page du chat est ouverte)
+         Mettre cette option Ã  false obligera les utilisateurs Ã  cliquer
+         sur l'icone de connexion pour tchater.
+         (true par dÃ©faut, signifie que les utilisateurs sont
+         automatiquement connectÃ©s lorsque la page du chat est ouverte)
     start_minimized
-         Mettre cette option à true minimizera le chat au premier chargement
+         Mettre cette option Ã  true minimizera le chat au premier chargement
          de la page.
-         (false par défaut)
+         (false par dÃ©faut)
     height
          Hauteur de la zone de chat
-         (440px par défaut)
+         (440px par dÃ©faut)
     width
          Largeur de la zone de chat
-         ("" par défaut, signifie que la valeur est assignées dans les CSS)
+         ("" par dÃ©faut, signifie que la valeur est assignÃ©es dans les CSS)
     shownotice
          Trois valeurs sont possibles : 0 pour ne rien afficher (ni les
          notices de connexion/deconnexion, ni les changements de pseudo), 1
-         pour afficher seulement les changements de pseudo, 2 pour afficher
-         les changements de pseudo et les connexions/deconnexions.
-         (2 par défaut)
+         pour afficher les changements de pseudo, 2 pour afficher les
+         connexions/deconnexions, 3 (1+2) pour afficher les changements de
+         pseudo et les connexions/deconnexions.
+         (3 par dÃ©faut)
     nickmarker
-         Mettre cette option à false désactivera la colorisation des
+         Mettre cette option Ã  false dÃ©sactivera la colorisation des
          pseudonymes.
-         (true par défaut)
+         (true par dÃ©faut)
     clock
-         Mettre cette option à false désactivera l'affichage de la date et de
-         l'heure.
-         (true par défaut)
+         Mettre cette option Ã  false dÃ©sactivera l'affichage de la date et
+         de l'heure.
+         (true par dÃ©faut)
     openlinknewwindow
-         Mettre cette option à true permettra d'ouvrire les liens des
-         convertations dans une nouvelle fenêtre. Techniquement cela rajoute
+         Mettre cette option Ã  true permettra d'ouvrire les liens des
+         convertations dans une nouvelle fenÃªtre. Techniquement cela rajoute
          l'attribut target="_blank" dans la balise du lien.
-         (true par défaut)
+         (true par dÃ©faut)
     showwhosonline
-         Permet de cacher/montrer la liste des utilisateurs connectés lors du
-         premier affichage du chat.
-         Utilisez btn_sh_whosonline pour désactiver complètement la
-         possibilité de voir la liste des pseudonymes.
-         (true par défaut)
+         Permet de cacher/montrer la liste des utilisateurs connectÃ©s lors
+         du premier affichage du chat.
+         Utilisez btn_sh_whosonline pour dÃ©sactiver complÃ¨tement la
+         possibilitÃ© de voir la liste des pseudonymes.
+         (true par dÃ©faut)
     showsmileys
          Permet de cacher/montrer la liste des smileys lors du premier
          affichage du chat.
-         Utilisez btn_sh_smileys pour désactiver complètement la possibilité
-         de voir la liste des smileys.
-         (true par défaut)
+         Utilisez btn_sh_smileys pour dÃ©sactiver complÃ¨tement la
+         possibilitÃ© de voir la liste des smileys.
+         (true par dÃ©faut)
     btn_sh_whosonline
          Permet de cacher ou montrer le bouton showwhosonline (celui qui
          permet de cacher/montrer la liste des pseudonymes)
-         (true par défaut)
+         (true par dÃ©faut)
     btn_sh_smileys
          Permet de cacher ou montrer le bouton showsmileys (celui qui permet
          de cacher/montrer la liste des smileys)
-         (true par défaut)
+         (true par dÃ©faut)
     themeurl
-         Permet de spécifier l'url à utiliser pour acceder aux themes (très
-         utile pour la réécriture d'url)
-         (ce paramètre est automatiquement calculé en fonction de themepath
+         Permet de spÃ©cifier l'url Ã  utiliser pour acceder aux themes
+         (trÃ¨s utile pour la rÃ©Ã©criture d'url)
+         (ce paramÃ¨tre est automatiquement calculÃ© en fonction de themepath
     themepath
-         Le chemin vers les themes. Les sous répertoires sont les différents
-         thems disponibles.
-         (dirname(__FILE__)."/../themes" par défaut)
+         Le chemin vers les themes. Les sous rÃ©pertoires sont les
+         diffÃ©rents thems disponibles.
+         (dirname(__FILE__)."/../themes" par dÃ©faut)
     theme
-         Ce peramètre permet de spécifier quelle theme utiliser. La liste des
-         themes possible sont les nom des sous répertoires de themepath.
-         ("default" par défaut)
+         Ce peramÃ¨tre permet de spÃ©cifier quelle theme utiliser. La liste
+         des themes possible sont les nom des sous rÃ©pertoires de themepath.
+         ("default" par dÃ©faut)
     language
-         Permet d'afficher le chat dans une langue donnée. Les valeurs
-         possibles sont les nom des sous répertoires de i18n.
-         (par défaut la langue est celle du serveur qui héberge le chat)
+         Permet d'afficher le chat dans une langue donnÃ©e. Les valeurs
+         possibles sont les nom des sous rÃ©pertoires de i18n.
+         (par dÃ©faut la langue est celle du serveur qui hÃ©berge le chat)
     output_encoding
-         Permet de spécifier l'encodage à utiliser pour afficher les labels.
-         Concretement ce paramètre doit correspondre à l'encodage de la page
-         Web contenant le chat.
-         (par défaut UTF-8, c'est à dire aucun transcodage car les messages
-         sont stoqués en UTF-8 par défaut)
+         Permet de spÃ©cifier l'encodage Ã  utiliser pour afficher les
+         labels. Concretement ce paramÃ¨tre doit correspondre Ã  l'encodage
+         de la page Web contenant le chat.
+         (par dÃ©faut UTF-8, c'est Ã  dire aucun transcodage car les messages
+         sont stoquÃ©s en UTF-8 par dÃ©faut)
     container_type
-         Permet de spéficier le conteneur à utiliser. Pour le moment, seul le
-         conteneur File (système de fichier) est disponible mais dans le
+         Permet de spÃ©ficier le conteneur Ã  utiliser. Pour le moment, seul
+         le conteneur File (systÃ¨me de fichier) est disponible mais dans le
          future de nombreux conteneurs existerons surrement (mysql, irc, msn,
          jabber...).
-         ("File" par défaut)
+         ("File" par dÃ©faut)
     server_script_path et server_script_url
-         Ces paramètres permettent de spécifier un script externe qui sera
-         chargé des communication client/serveur du chat. Ce paramètre est
-         très utile lorsque le script du chat (client) consomme beaucoup de
+         Ces paramÃ¨tres permettent de spÃ©cifier un script externe qui sera
+         chargÃ© des communication client/serveur du chat. Ce paramÃ¨tre est
+         trÃ¨s utile lorsque le script du chat (client) consomme beaucoup de
          ressources (voyez la demo3 pour un exemple concret). Le premier
-         paramètre spécifie l'endroit du fichier lui même, le second
-         paramètre indique l'url où est situé le fichier (utile pour la
-         réécriture d'url)
-         (par défaut on utilise le même scripte que le script client pour les
-         communications)
+         paramÃ¨tre spÃ©cifie l'endroit du fichier lui mÃªme, le second
+         paramÃ¨tre indique l'url oÃ¹ est situÃ© le fichier (utile pour la
+         rÃ©Ã©criture d'url)
+         (par dÃ©faut on utilise le mÃªme scripte que le script client pour
+         les communications)
     client_script_path et client_script_url
-         Ces paramètres sont utilisés pour spécifier le chemin du script qui
-         va afficher le chat (script client). Ces options peuvent être utile
-         lorsque la configuration du serveur est peu commune. Le premier
-         paramètre spécifie l'endroit du fichier lui même, le second
-         paramètre indique l'url où est situé le fichier (utile pour la
-         réécriture d'url)
-         (par défaut pfc va essayer d'auto-detecter le script client en
+         Ces paramÃ¨tres sont utilisÃ©s pour spÃ©cifier le chemin du script
+         qui va afficher le chat (script client). Ces options peuvent Ãªtre
+         utile lorsque la configuration du serveur est peu commune. Le
+         premier paramÃ¨tre spÃ©cifie l'endroit du fichier lui mÃªme, le
+         second paramÃ¨tre indique l'url oÃ¹ est situÃ© le fichier (utile
+         pour la rÃ©Ã©criture d'url)
+         (par dÃ©faut pfc va essayer d'auto-detecter le script client en
          fonction des variables globales du serveur)
     useie7
-         Mettre ce paramètre à false désactivera l'ajout des scripts IE7[24]
-         permettant un meilleur affichage dans Internet Explorer.
-         (true par défaut)
+         Mettre ce paramÃ¨tre Ã  false dÃ©sactivera l'ajout des scripts
+         IE7[26] permettant un meilleur affichage dans Internet Explorer.
+         (true par dÃ©faut)
     ie7path
-         Spécifie le répertoire vers la librairie IE7. Ce paramètre est utile
-         si vous avez déjà installé une librairie smarty et que vous voulez
-         économiser des octets sur votre serveur.
-         (dirname(__FILE__)."/../lib/IE7_0_9" par défaut)
+         SpÃ©cifie le rÃ©pertoire vers la librairie IE7. Ce paramÃ¨tre est
+         utile si vous avez dÃ©jÃ  installÃ© une librairie smarty et que vous
+         voulez Ã©conomiser des octets sur votre serveur.
+         (dirname(__FILE__)."/../lib/IE7_0_9" par dÃ©faut)
     jspath
-         Spécifie le répertoire vers les librairies javascript (md5, cookie
+         SpÃ©cifie le rÃ©pertoire vers les librairies javascript (md5, cookie
          ...).
-         (dirname(__FILE__)."/../lib/javascript" par défaut)
+         (dirname(__FILE__)."/../lib/javascript" par dÃ©faut)
     usecsstidy
-         Mettre ce paramètre à false désactivera l'utilisation de la
-         librairie CSSTidy utilisée pour optimiser (en taille) la génération
-         des CSS.
-         (false par défaut car sur certains serveur la librarie CSSTidy pose
-         des problèmes)
+         Mettre ce paramÃ¨tre Ã  false dÃ©sactivera l'utilisation de la
+         librairie CSSTidy utilisÃ©e pour optimiser (en taille) la
+         gÃ©nÃ©ration des CSS.
+         (false par dÃ©faut car sur certains serveur la librarie CSSTidy pose
+         des problÃ¨mes)
     csstidypath
-         Spécifie le répertoire vers la librairie CSS Tidy[25]. Ce paramètre
-         est utile si vous avez déjà installé une librairie csstidy et que
-         vous voulez économiser des octets sur votre serveur.
-         (dirname(__FILE__)."/../lib/csstidy-1.1" par défaut)
+         SpÃ©cifie le rÃ©pertoire vers la librairie CSS Tidy[27]. Ce
+         paramÃ¨tre est utile si vous avez dÃ©jÃ  installÃ© une librairie
+         csstidy et que vous voulez Ã©conomiser des octets sur votre serveur.
+         (dirname(__FILE__)."/../lib/csstidy-1.1" par dÃ©faut)
     xajaxpath
-         Spécifie le répertoire vers la librairie xajax[26]. Ce paramètre est
-         utile si vous avez déjà installé une librairie xajax et que vous
-         voulez économiser des octets sur votre serveur.
-         (dirname(__FILE__)."/../lib/xajax_0.2_stable" par défaut)
+         SpÃ©cifie le rÃ©pertoire vers la librairie xajax[28]. Ce paramÃ¨tre
+         est utile si vous avez dÃ©jÃ  installÃ© une librairie xajax et que
+         vous voulez Ã©conomiser des octets sur votre serveur.
+         (dirname(__FILE__)."/../lib/xajax_0.2_stable" par dÃ©faut)
     data_private_path
-         Ce répertoire est utilisé pour stoqué les données du chat ainsi que
-         les templates compilés de smarty. Astuce: vous pouvez optimisez les
-         performances coté serveur en spécifiant un répertoire en mémoire
-         vive (RAM disk, tmpfs), voyez cette section dans la FAQ[27].
-         (dirname(__FILE__)."/../data/private" par défaut)
+         Ce rÃ©pertoire est utilisÃ© pour stoquÃ© les donnÃ©es du chat ainsi
+         que les templates compilÃ©s de smarty. Astuce: vous pouvez optimisez
+         les performances cotÃ© serveur en spÃ©cifiant un rÃ©pertoire en
+         mÃ©moire vive (RAM disk, tmpfs), voyez cette section dans la FAQ[29].
+         (dirname(__FILE__)."/../data/private" par dÃ©faut)
     data_public_path et data_public_url
-         Ce répertoire doit être impérativement accessible par votre serveur
-         Web. Les scripts IE7 et xajax necessaires au chat y seront stockés.
-         Le premier paramètre indique le répertoire absolue au niveau système
-         de fichier, et le second indique l'url pour y acceder depuis le
-         navigateur (utile pour la réécritude d'url)
-         (dirname(__FILE__)."/../data/public" par défaut, data_public_url lui
-         est calculé automatiquement)
+         Ce rÃ©pertoire doit Ãªtre impÃ©rativement accessible par votre
+         serveur Web. Les scripts IE7 et xajax necessaires au chat y seront
+         stockÃ©s. Le premier paramÃ¨tre indique le rÃ©pertoire absolue au
+         niveau systÃ¨me de fichier, et le second indique l'url pour y
+         acceder depuis le navigateur (utile pour la rÃ©Ã©critude d'url)
+         (dirname(__FILE__)."/../data/public" par dÃ©faut, data_public_url
+         lui est calculÃ© automatiquement)
     debug
-         Cette option est très utile pour les développeurs. La mettre à true
-         va activer les messages de log et la console de debug.
-         (false par défaut)
+         Cette option est trÃ¨s utile pour les dÃ©veloppeurs. La mettre Ã 
+         true va activer les messages de log et la console de debug.
+         (false par dÃ©faut)
     debugxajax
-         Cette option est très utile pour découvrire les bug cachés (warning
-         php lors d'une requete xajax par exemple) . Mettre cette option à
-         true va activer les popup javascript de xajax pour tracer la
-         communication client/serveur.
-         (false par défaut)
+         Cette option est trÃ¨s utile pour dÃ©couvrire les bug cachÃ©s
+         (warning php lors d'une requete xajax par exemple) . Mettre cette
+         option Ã  true va activer les popup javascript de xajax pour tracer
+         la communication client/serveur.
+         (false par dÃ©faut)
     prefix
-         Ce prefix est utilisé pour chaques fonctions javascript, chaque id
-         CSS et chaques classes CSS de façon à éviter les recouvrements de
+         Ce prefix est utilisÃ© pour chaques fonctions javascript, chaque id
+         CSS et chaques classes CSS de faÃ§on Ã  Ã©viter les recouvrements de
          variables entre phpfreechat et votre site web.
-         ("phpfreechat_" par défaut)
+         ("phpfreechat_" par dÃ©faut)
 
 
 
-    ©2006 phpFreeChat
+    RSS[30]
+
+    Valid XHTML 1.0![31] Valid CSS![32] Created with Amaya[33]
+
+    Â©2006 phpFreeChat
 
 
 
@@ -338,8 +404,38 @@
 List of References
 
 Document's URL:  http://www.phpfreechat.net/install.fr.html
-[23] faq.fr.html#multiple-channels
-[24] http://dean.edwards.name/IE7/
-[25] http://csstidy.sourceforge.net/index.php
-[26] http://www.xajaxproject.org/
-[27] faq.fr.html#tmpfs
+style/generic.cssstyle/header.cssstyle/footer.cssstyle/menu.cssstyle/content.cssstyle/install.css
+[1] install.en.html
+[2] install.fr.html
+[3] install.ar.html
+[4] news.fr.html
+[5] overview.fr.html
+[6] demo.fr.php
+[7] screenshot.fr.html
+[8] download.fr.html
+[9] whouses.en.html
+[10] faq.fr.html
+[11] contact.fr.html
+[12] partners.fr.html
+[13] forum/
+[14] install.fr.html
+[15] customize.fr.html
+[16] requiredconfig.fr.html
+[17] roadmap.fr.html
+[18] buglist.fr.html
+[19] changelog.fr.html
+[20] contributions.fr.html
+[21] http://www.phpfreechat.net
+[22] http://www.hotscripts.com/?RID=N452772
+[23] download.en.html
+[24] download.en.html
+[25] faq.fr.html#multiple-channels
+[26] http://dean.edwards.name/IE7/
+[27] http://csstidy.sourceforge.net/index.php
+[28] http://www.xajaxproject.org/
+[29] faq.fr.html#tmpfs
+[30] forum/extern.php?action=active&amp;type=RSS&amp;fid=7
+[31] http://validator.w3.org/check?uri=referer
+[32] http://jigsaw.w3.org/css-validator/check/referer
+[33] http://www.w3.org/Amaya
+

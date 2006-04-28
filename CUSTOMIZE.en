@@ -1,0 +1,79 @@
+
+    phpFreeChat was developped with an aim of simplicity and flexibilty.
+
+    Setting it up is relatively simple. All parameters are centralized in an
+    array and passed as parameters on the instantiation of the phpFreeChat
+    object.
+
+    We can thus :
+
+       *  Customization of the overall appearance (colors, sizes ...)
+       *  Customization of the smileys list
+       *  Write a new command
+       *  Write your own container
+
+    Customization of the overall appearance (colors, sizes ...)
+
+    You need to create a new theme (for example mytheme) :
+
+       1. Create a directory: phpfreechat/themes/mytheme/
+       2. Create a new CSS stylesheet:
+          phpfreechat/themes/mytheme/templates/style.css.tpl.php
+       3. Now insert CSS rules into this file, for example, to change the
+          date/hours color to red:
+          span.<?php echo $prefix; ?>heure, span.<?php echo $prefix; ?>date {
+            color: red;
+          }
+
+          Notice: use the <?php echo $prefix; ?> to prefix the CSS classes
+          selectors in order to keep compatibility if the prefix is changed
+          later.
+       4. Setup the theme parameter in your chat script:
+          $params["theme"] = "mytheme";
+
+
+    As an examples, see these demos: 1[23], 2[24]
+
+    Customization of the smileys list
+
+    Follow the above instructions for the theme creation. Then I suppose you
+    have a directory phpfreechat/themes/mytheme/.
+
+       1. Create a new smileys directory: phpfreechat/themes/mytheme/smileys/
+       2. Insert ping, jpeg or gif smileys images in the folder for example :
+          smiley1.png, smiley2.gif, and smiley3.jpg
+       3. Create a file phpfreechat/themes/mytheme/smileys/theme and enter
+          the keyboard to image mapping smileys' description, for example :
+          smiley1.png :) :-)
+          smiley2.gif :( :-(
+          smiley3.jpg :D :-D :o)
+
+          Each line begins with the image filename followed by the list of
+          the string characters to replace by that image. Only use spaces to
+          separate the smileys string matches.
+       4. Setup the theme parameter in your chat script:
+          $params["theme"] = "mytheme";
+
+
+
+    Write a new command
+
+    @todo : to write
+
+
+    Write your own container
+
+    @todo : to write
+
+
+
+
+    ©2006 phpFreeChat
+
+
+
+--------------------------------------------------------------
+List of References
+
+Document's URL:  http://www.phpfreechat.net/customize.en.html
+

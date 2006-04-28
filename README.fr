@@ -1,67 +1,72 @@
+    php Free Chat est un chat simple √† installer, gratuit, rapide,
+    param√©trable et multi langues. Par soucis de simplicit√©, des
+    r√©pertoires et fichiers sont utilis√©s pour stocker les pseudonymes et
+    les messages. AJAX est utilis√© pour mettre √† jour sans clignotement la
+    liste des messages et des pseudonymes. Le syst√®me de th√®mes bas√© sur
+    les feuilles de styles CSS permet de changer compl√®tement l'apparence et
+    le syst√®me de plugin permet d'√©crire ses propres routines de stockage
+    (ex: Mysql, IRC backends ...) et vos propres commandes de chat !
 
-phpFreeChat un serveur de chat libre, simple, rapide et paramÈtrable
 
     Simple
-         Vous avez seulement 3 lignes de php ‡ copier/coller[21] dans la page
-         de votre choix pour obtenir un chat fonctionnel.
-         En effet, pas besoin de paramÈtrer une base de donnÈe Mysql, les
-         conversations sont stockÈes simplement dans des fichiers.
-         Le chat fontionnera chez tout le monde car il est basÈ sur HTTP, il
-         vous suffit donc d'avoir un navigateur Web connectÈ ‡ internet pour
-         pouvoir chatter.
-         Tous les jeux de caractËres sont supportÈs ! Que vous soyez Russe,
-         Japonais, Turque, Chinois, ou Arabe, tous les caractËres
-         s'afficheront car phpfreechat utilise XML couplÈ ‡ UTF8 pour encoder
-         les caractËres.
+         Vous avez seulement 3 lignes de php √† copier/coller dans la
+         page de votre choix pour obtenir un chat fonctionnel.
+         En effet, pas besoin de param√©trer une base de donn√©e Mysql, les
+         conversations sont stock√©es simplement dans des fichiers.
+         Le chat fontionnera chez tout le monde car il est bas√© sur HTTP, il
+         vous suffit donc d'avoir un navigateur Web connect√© √† internet
+         pour pouvoir chatter.
+         Tous les jeux de caract√®res sont support√©s ! Que vous soyez Russe,
+         Japonais, Turque, Chinois, ou Arabe, tous les caract√®res
+         s'afficheront car phpfreechat utilise XML coupl√© √† UTF8 pour
+         encoder les caract√®res.
     Rapide
-         La technologie AJAX est utilisÈe pour afficher pÈriodiquement et
+         La technologie AJAX est utilis√©e pour afficher p√©riodiquement et
          sans effets de clignotement les nouveaux messages et les nouvelles
-         personnes connectÈes.
-         Les conversations sont stockÈes dans des fichiers, les ressources du
-         serveur sont donc ÈconomisÈes au maximum.
-         La bande passante est ÈconomisÈe car le serveur ne transmettra
-         jamais deux fois les mÍmes informations : seulement les nouveaux
+         personnes connect√©es.
+         Les conversations sont stock√©es dans des fichiers, les ressources
+         du serveur sont donc √©conomis√©es au maximum.
+         La bande passante est √©conomis√©e car le serveur ne transmettra
+         jamais deux fois les m√™mes informations : seulement les nouveaux
          messages sont transmis.
-    ParamÈtrable
-         Vous pouvez Ècrire vos feuilles de style (CSS) personnalisÈes pour
-         changer complËtement l'apparence[22] de votre chat.
-         Toutes les fonctionnalitÈs du chat ont ÈtÈ rendues paramÈtrables.
-         Par exemple, vous pouvez changer le temps de mise ‡ jour des
-         messages, vous pouvez interdire aux utilisateurs de changer leur
-         pseudo...
-         Vous pouvez Ègalement, gr‚ce au systËme de plugin[23], Ècrire vos
-         propres routines de stockage si vous prÈfÈrez stocker les
-         conversations dans votre base de donnÈes.
+    Param√©trable
+         Vous pouvez √©crire vos feuilles de style (CSS) personnalis√©es pour
+         changer compl√®tement l'apparence[24] de votre chat.
+         Toutes les fonctionnalit√©s du chat ont √©t√© rendues
+         param√©trables. Par exemple, vous pouvez changer le temps de mise √†
+         jour des messages, vous pouvez interdire aux utilisateurs de changer
+         leur pseudo...
+         Vous pouvez √©galement, gr√¢ce au syst√®me de plugin[25], √©crire
+         vos propres routines de stockage si vous pr√©f√©rez stocker les
+         conversations dans votre base de donn√©es.
     Libre
-         phpFreeChat est dÈveloppÈ en opensource (LGPL), vous pouvez donc
+         phpFreeChat est d√©velopp√© en opensource (LGPL), vous pouvez donc
          librement utiliser le programme et le modifier.
          Je demande juste, par gratitude, de ne pas enlever la signature logo
          sur les pages de votre chat.
 
-    Toutes les commandes de phpFreeChat sont inspirÈes du protocole irc[24],
-    et son interface est inspirÈe de mIRC[25] et XChat[26], vos utilisateurs
-    ne seront donc pas dÈpaysÈs.
+    Toutes les commandes de phpFreeChat sont inspir√©es du protocole irc[26],
+    et son interface est inspir√©e de mIRC[27] et XChat[28], vos utilisateurs
+    ne seront donc pas d√©pays√©s.
 
-    Les technologies utilisÈes par phpFreeChat sont :
+    Les technologies utilis√©es par phpFreeChat sont :
 
-       *  php[27] : pour le cotÈ serveur, les conversations sont simplement
-          enregistrÈes dans des fichiers
-       *  xajax[28] : pour la communication asynchrone entre le client et le
+       *  php[29] : pour le cot√© serveur, les conversations sont simplement
+          enregistr√©es dans des fichiers
+       *  xajax[30] : pour la communication asynchrone entre le client et le
           serveur
 
     (phpFreeChat n'utilise PAS mysql)
 
-    ©2006 phpFreeChat
+    ¬©2006 phpFreeChat
 
 
 --------------------------------------------------------------
 List of References
 
 Document's URL:  http://www.phpfreechat.net/overview.fr.html
-[22] customize.fr.html#custo-css
-[23] customize.fr.html#container-plug
-[24] http://www.irc.org
-[25] http://www.mirc.com/
-[26] http://www.xchat.org/
-[27] http://www.php.net/
-[28] http://www.xajaxproject.org/
+[26] http://www.irc.org
+[27] http://www.mirc.com/
+[28] http://www.xchat.org/
+[29] http://www.php.net/
+[30] http://www.xajaxproject.org/
