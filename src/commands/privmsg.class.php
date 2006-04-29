@@ -57,6 +57,7 @@ class pfcCommand_privmsg extends pfcCommand
     {
       $u->privmsg[$pvrecipientid]["recipient"] = $pvrecipient;
       $u->privmsg[$pvrecipientid]["name"]      = $pvname;
+      $u->privmsg[$pvrecipientid]["pvnickid"]  = $pvnickid;
       $u->saveInCache();
 
       // clear the cached nicknames list for the given channel

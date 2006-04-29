@@ -348,14 +348,14 @@ class phpFreeChat
         // alert the other from the new pv
         // (warn other user that someone talk to him)
         $container =& $c->getContainerInstance();
-        $pvs = $container->getMeta("privmsg", "nickname", $u->privmsg[$recipientid]["name"]);
+        $pvs = $container->getMeta("privmsg", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
         if (is_string($pvs)) $pvs = unserialize($pvs);
         if (!is_array($pvs)) $pvs = array();
         if (!in_array($u->nick,$pvs))
         {
           $pvs[] = $u->nick;
           //          $xml_reponse->addScript("alert('pvs[]=".serialize($pvs)."');");
-          $container->setMeta(serialize($pvs), "privmsg", "nickname", $u->privmsg[$recipientid]["name"]);
+          $container->setMeta(serialize($pvs), "privmsg", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
         }
       }
     }

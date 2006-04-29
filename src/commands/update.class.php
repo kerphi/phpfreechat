@@ -15,12 +15,13 @@ class pfcCommand_update extends pfcCommand
       // -----
       // check if other user talk to me or not
       $container =& $c->getContainerInstance();
-      $pvnicks = $container->getMeta("privmsg", "nickname", $u->nick);
+      $nickid = $container->getNickId($u->nick);
+      $pvnicks = $container->getMeta("privmsg", "nickname", $nickid);
       if (is_string($pvnicks)) $pvnicks = unserialize($pvnicks);
       if (!is_array($pvnicks)) $pvnicks = array();
       for( $i=0; $i < count($pvnicks); $i++)
         $xml_reponse->addScript("pfc.handleResponse('update', 'privmsg', '".addslashes($pvnicks[$i])."');");
-      $container->rmMeta("privmsg", "nickname", $u->nick);
+      $container->rmMeta("privmsg", "nickname", $nickid);
       // -----
 
       // update the user nickname timestamp
