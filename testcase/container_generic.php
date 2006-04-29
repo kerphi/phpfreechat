@@ -177,27 +177,27 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     // on the channel
     $this->ct->createNick($chan, $nick, $nickid);
     $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "nickname should be online on the channel");
+    $this->assertTrue(in_array($nick, $online_nick), "1-nickname should be online on the channel");
     sleep(2);
     $ret = $this->ct->updateNick($chan, $nick);
-    $this->assertTrue($ret, "nickname should be correctly updated on the channel");
+    $this->assertTrue($ret, "2-nickname should be correctly updated on the channel");
     $ret = $this->ct->removeObsoleteNick($chan, "1000");
-    $this->assertFalse(in_array($nick, $ret), "nickname should not be removed from the channel because it has been updated");
+    $this->assertFalse(in_array($nick, $ret), "3-nickname should not be removed from the channel because it has been updated");
     $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "nickname should be online on the channel");
+    $this->assertTrue(in_array($nick, $online_nick), "4-nickname should be online on the channel");
 
     // on the server
     $chan = NULL;
     $this->ct->createNick($chan, $nick, $nickid);
     $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "nickname should be online on the server");
+    $this->assertTrue(in_array($nick, $online_nick), "5-nickname should be online on the server");
     sleep(2);
     $ret = $this->ct->updateNick($chan, $nick);
-    $this->assertTrue($ret, "nickname should be correctly updated on the server");
+    $this->assertTrue($ret, "6-nickname should be correctly updated on the server");
     $ret = $this->ct->removeObsoleteNick($chan, "1000");
-    $this->assertFalse(in_array($nick, $ret), "nickname should not be removed from the server because it has been updated");
+    $this->assertFalse(in_array($nick, $ret), "7-nickname should not be removed from the server because it has been updated");
     $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "nickname should be online on the server");
+    $this->assertTrue(in_array($nick, $online_nick), "8-nickname should be online on the server");
   }
 
   function testchangeNick_Generic()

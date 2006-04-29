@@ -29,8 +29,8 @@ require_once dirname(__FILE__)."/../pfccontainer.class.php";
  */
 class pfcContainer_File extends pfcContainer
 {
-  //  var $_users = array();
-  //var $_cache_nickid = array();
+  var $_users = array();
+  var $_cache_nickid = array();
 
   function pfcContainer_File(&$config)
   {
@@ -118,10 +118,6 @@ class pfcContainer_File extends pfcContainer
     flock ($fp, LOCK_UN); // unlock
     fclose($fp);
 
-   
-    //    if (!in_array($nickname, $this->_users))
-    //      $this->_users[] = $nickname; // _users will be used by getOnlineUserList
-
     return true;
   }
 
@@ -150,14 +146,13 @@ class pfcContainer_File extends pfcContainer
 
     @unlink($nick_filename);
 
-    /*
     // remove the nickname from the cache list
-    if (in_array($nick, $this->_users))
+    if (isset($this->_users[$chan]) &&
+        in_array($nick, $this->_users[$chan]))
     {
-      $key = array_search($nick, $this->_users);
-      unset($this->_users[$key]);
+      $key = array_search($nick, $this->_users[$chan]);
+      unset($this->_users[$chan][$key]);
     }
-    */
     
     return true;
   }
@@ -182,6 +177,13 @@ class pfcContainer_File extends pfcContainer
     if (file_exists($nick_filename)) $there = true;
     @touch($nick_filename);
     @chmod($nick_filename, 0777); 
+
+    // append the nickname to the cache list
+    if (isset($this->_users[$chan]) &&
+        !in_array($nick, $this->_users[$chan]))
+    {
+      $this->_users[$chan][] = $nick;
+    }
     
     return $there;
   }
@@ -204,6 +206,20 @@ class pfcContainer_File extends pfcContainer
     $oldnick_filename = $nick_dir."/".$this->_encode($oldnick);
 
     $ok = @rename($oldnick_filename, $newnick_filename);
+
+    // update the nick cache list
+    if($ok)
+    {
+      if (isset($this->_users[$chan]) &&
+          in_array($oldnick, $this->_users[$chan]))
+      {
+        // remove the oldnick from the cache
+        $key = array_search($oldnick, $this->_users[$chan]);
+        unset($this->_users[$chan][$key]);
+        // append the new nick to the cache
+        $this->_users[$chan][] = $newnick;
+      }
+    }
     
     return $ok;
   }
@@ -216,32 +232,30 @@ class pfcContainer_File extends pfcContainer
    */
   function getNickId($nickname)
   {
-    //if (!isset($this->_cache_nickid[$nickname]))
-    //{
-    $c =& $this->c;
-    $nickid = "undefined";
-    
-    $nick_dir = $c->container_cfg_server_dir."/nicknames";
-    $nick_filename = $nick_dir."/".$this->_encode($nickname);
-    
-    if (file_exists($nick_filename))
+    if (!isset($this->_cache_nickid[$nickname]))
     {
-      $fsize = filesize($nick_filename);
-      if ($fsize>0)
+      $c =& $this->c;
+      $nickid = "undefined";
+      
+      $nick_dir = $c->container_cfg_server_dir."/nicknames";
+      $nick_filename = $nick_dir."/".$this->_encode($nickname);
+      
+      if (file_exists($nick_filename))
       {
-        // write the nickid into the new nickname file
-        $fp = fopen($nick_filename, "r");
-        $nickid = fread($fp, $fsize);
-        if ($nickid == "") $nickid = "undefined";
-        fclose($fp);
+        $fsize = filesize($nick_filename);
+        if ($fsize>0)
+        {
+          // write the nickid into the new nickname file
+          $fp = fopen($nick_filename, "r");
+          $nickid = fread($fp, $fsize);
+          if ($nickid == "") $nickid = "undefined";
+          fclose($fp);
+        }
       }
+      $this->_cache_nickid[$nickname] = $nickid;
     }
-    //$this->_cache_nickid[$nickname] = $nickid;
-    //if ($c->debug) pxlog("getNickId[".$c->sessionid."]: nickname=".$nickname." nickid=".$nickid, "chat", $c->getId());
-    //}
-    return $nickid; //$this->_cache_nickid[$nickname];
+    return $this->_cache_nickid[$nickname];
   }
-
 
   /**
    * Remove (disconnect/quit) the timeouted nickname from the server or from a channel
@@ -278,7 +292,8 @@ class pfcContainer_File extends pfcContainer
       }
     }
 
-    //    $this->_users =& $users; // _users will be used by getOnlineUserList
+    // cache the updated user list
+    $this->_users[$chan] =& $users;
     
     return $deleted_user;
   }
@@ -290,8 +305,10 @@ class pfcContainer_File extends pfcContainer
    */
   function getOnlineNick($chan)
   {
-    //    if (is_array($this->_users))
-    //      return $this->_users;
+    // return the cached user list if it exists
+    if (isset($this->_users[$chan]) &&
+        is_array($this->_users[$chan]))
+      return $this->_users[$chan];
    
     $c =& $this->c;
 
@@ -306,6 +323,10 @@ class pfcContainer_File extends pfcContainer
       if ($file == "." || $file == "..") continue; // skip . and .. generic files
       $users[] = $this->_decode($file);
     }
+
+    // cache the user list
+    $this->_users[$chan] =& $users;
+
     return $users;
   }
 
