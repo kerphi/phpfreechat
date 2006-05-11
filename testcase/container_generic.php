@@ -1,6 +1,7 @@
 <?php
 
-$classpath = ".:".dirname(__FILE__).'/../lib/pear/';
+$delim = DIRECTORY_SEPARATOR == "\\" ? ";" : ":";
+$classpath = "." . $delim . dirname(__FILE__).'/../lib/pear/';
 ini_set('include_path', $classpath);
 require_once "PHPUnit.php";
 
