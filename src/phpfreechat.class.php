@@ -343,7 +343,8 @@ class phpFreeChat
     {
       $recipient = $u->privmsg[$recipientid]["recipient"];
 
-      if ($rawcmd != "update")
+      if ($rawcmd != "update" &&
+          $rawcmd != "leave") // do not open the pv tab when other user close the tab
       {
         // alert the other from the new pv
         // (warn other user that someone talk to him)
