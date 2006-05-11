@@ -34,7 +34,7 @@ class pfcCommand_getonlinenick extends pfcCommand
       $js = "";
       foreach ($users as $u)
       {
-        $nickname = addslashes($u); // must escape ' charactere for javascript string
+        $nickname = addslashes($u["nick"]); // must escape ' charactere for javascript string
         $js      .= "'".$nickname."',";
       }
       $js    = substr($js, 0, strlen($js)-1); // remove last ','

@@ -22,7 +22,13 @@ class pfcCommand_send extends pfcCommand
       // now check if this user is currently online
       $container =& $c->getContainerInstance();
       $onlineusers = $container->getOnlineNick(NULL);
-      if (!in_array($pvnick,$onlineusers))
+      $uid = 0; $isonline = false;
+      while($uid < count($onlineusers) && !$isonline)
+      {
+        if ($onlineusers[$uid]["nick"] == $pvnick) $isonline = true;
+        $uid++;
+      }
+      if (!$isonline)
       {
         $cmd =& pfcCommand::Factory("error");
         $cmd->run($xml_reponse, $clientid, _pfc("Can't send the message, %s is offline", $pvnick));

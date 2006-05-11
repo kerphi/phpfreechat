@@ -147,11 +147,21 @@ class pfcContainer_File extends pfcContainer
     @unlink($nick_filename);
 
     // remove the nickname from the cache list
-    if (isset($this->_users[$chan]) &&
-        in_array($nick, $this->_users[$chan]))
+    if (isset($this->_users[$chan]))
     {
-      $key = array_search($nick, $this->_users[$chan]);
-      unset($this->_users[$chan][$key]);
+      $uid = 0; $isonline = false;
+      while($uid < count($this->_users[$chan]) && !$isonline)
+      {
+        if ($this->_users[$chan][$uid]["nick"] == $nick)
+          $isonline = true;
+        else
+          $uid++;
+      }
+      if ($isonline)
+      {
+        $key = $uid;
+        unset($this->_users[$chan][$key]);
+      }
     }
     
     return true;
@@ -179,10 +189,21 @@ class pfcContainer_File extends pfcContainer
     @chmod($nick_filename, 0777); 
 
     // append the nickname to the cache list
-    if (isset($this->_users[$chan]) &&
-        !in_array($nick, $this->_users[$chan]))
+    if (isset($this->_users[$chan]))
     {
-      $this->_users[$chan][] = $nick;
+      $uid = 0; $isonline = false;
+      while($uid < count($this->_users[$chan]) && !$isonline)
+      {
+        if ($this->_users[$chan][$uid]["nick"] == $nick)
+          $isonline = true;
+        else
+          $uid++;
+      }
+      if (!$isonline)
+      {
+        $this->_users[$chan][] = array("nick"      => $nick,
+                                       "timestamp" => filemtime($nick_filename));
+      }
     }
     
     return $there;
@@ -210,14 +231,22 @@ class pfcContainer_File extends pfcContainer
     // update the nick cache list
     if($ok)
     {
-      if (isset($this->_users[$chan]) &&
-          in_array($oldnick, $this->_users[$chan]))
+      if (isset($this->_users[$chan]))
       {
-        // remove the oldnick from the cache
-        $key = array_search($oldnick, $this->_users[$chan]);
-        unset($this->_users[$chan][$key]);
-        // append the new nick to the cache
-        $this->_users[$chan][] = $newnick;
+        $uid = 0; $isonline = false;
+        while($uid < count($this->_users[$chan]) && !$isonline)
+        {
+          if ($this->_users[$chan][$uid]["nick"] == $oldnick)
+            $isonline = true;
+          else
+            $uid++;
+        }
+        if ($isonline)
+        {
+          $key = $uid;
+          $this->_users[$chan][$key]["nick"]      = $newnick;
+          $this->_users[$chan][$key]["timestamp"] = filemtime($newnick_filename);
+        }
       }
     }
     
@@ -287,8 +316,9 @@ class pfcContainer_File extends pfcContainer
       }
       else
       {
-        // optimisation: cache user list for next getOnlineUserList call
-        $users[] = $this->_decode($file);
+        // optimisation: cache user list for next getOnlineNick call
+        $users[] = array("nick"      => $this->_decode($file),
+                         "timestamp" => filemtime($nick_dir."/".$file));
       }
     }
 
@@ -321,7 +351,8 @@ class pfcContainer_File extends pfcContainer
     while (false !== ($file = readdir($dir_handle)))
     {
       if ($file == "." || $file == "..") continue; // skip . and .. generic files
-      $users[] = $this->_decode($file);
+      $users[] = array("nick"      => $this->_decode($file),
+                       "timestamp" => filemtime($nick_dir."/".$file));
     }
 
     // cache the user list

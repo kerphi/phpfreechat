@@ -34,11 +34,11 @@ class pfcCommand_nick extends pfcCommand
     $online_users = $container->getOnlineNick(NULL);
     foreach($online_users as $ou)
     {
-      if (preg_match("/^".preg_quote($ou)."$/i",$newnick))
+      if (preg_match("/^".preg_quote($ou["nick"])."$/i",$newnick))
       {
         // the nick match
 	// just allow the owner to change his capitalised letters
-        if ($container->getNickId($ou) != $oldnickid)
+        if ($container->getNickId($ou["nick"]) != $oldnickid)
           $nick_in_use = true;
       }
     }
