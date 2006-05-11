@@ -6,33 +6,36 @@ class pfcCommand_send extends pfcCommand
 {
   function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
-    $c =& $this->c;
-    $u =& $this->u;
-
-    //$xml_reponse->addScript("alert('send: sender=".addslashes($sender)." param=".addslashes($param)." recipient=".addslashes($recipient)." recipientid=".addslashes($recipientid)."');");
-    
-    // check the nick is not allready known
+    $c    =& $this->c;
+    $u    =& $this->u;
     $nick = phpFreeChat::FilterSpecialChar($sender);
     $text = phpFreeChat::PreFilterMsg($param);
-        
+
+    
+    // if this channel is a pv (one to one channel),
+    // first of all, check if the other user is connected
+    // if he is not connected anymore, display an error
+    $can_send = true;
+    if (isset($u->privmsg[$recipientid]))
+    {
+      $pvnick = $u->privmsg[$recipientid]["name"];
+      // now check if this user is currently online
+      $container =& $c->getContainerInstance();
+      $onlineusers = $container->getOnlineNick(NULL);
+      if (!in_array($pvnick,$onlineusers))
+      {
+        $cmd =& pfcCommand::Factory("error");
+        $cmd->run($xml_reponse, $clientid, _pfc("Can't send the message, %s is offline", $pvnick));
+        $can_send = false;
+      }
+    }
+
+    
+    // check the sent text is not empty and the user has a none empty nickname
     $errors = array();
     if ($text == "") $errors[$c->prefix."words"]  = _pfc("Text cannot be empty");
     if ($nick == "") $errors[$c->prefix."handle"] = _pfc("Please enter your nickname");
-    if (count($errors) == 0)
-    {
-      $container =& $c->getContainerInstance();
-      $msgid = $container->write($recipient, $nick, "send", $text);
-      if ($c->debug) pxlog("/send ".$text." (a user just sent a message -> nick=".$u->nick.")", "chat", $c->getId());
-
-      //$xml_reponse->addScript("alert('send: msgid=".$msgid."');");
-      
-      // a message has been posted so :
-      // - clear errors
-      // - give focus to "words" field
-      $xml_reponse->addScript("pfc.clearError(Array('".$c->prefix."words"."','".$c->prefix."handle"."'));");
-      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
-    }
-    else
+    if (count($errors) > 0)
     {
       // an error occured, just ignore the message and display errors
       foreach($errors as $e)
@@ -41,6 +44,22 @@ class pfcCommand_send extends pfcCommand
       $cmd->run($xml_reponse, $clientid, $errors);
       if (isset($errors[$c->prefix."handle"])) // the nick is empty so give it focus
         $xml_reponse->addScript("$('".$c->prefix."handle').focus();");
+      $can_send = false;
+    }
+
+    
+    // Now send the message if there is no errors
+    if ($can_send)
+    {
+      $container =& $c->getContainerInstance();
+      $msgid = $container->write($recipient, $nick, "send", $text);
+      if ($c->debug) pxlog("/send ".$text." (a user just sent a message -> nick=".$u->nick.")", "chat", $c->getId());
+      
+      // a message has been posted so :
+      // - clear errors
+      // - give focus to "words" field
+      $xml_reponse->addScript("pfc.clearError(Array('".$c->prefix."words"."','".$c->prefix."handle"."'));");
+      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
     }
   }
 }

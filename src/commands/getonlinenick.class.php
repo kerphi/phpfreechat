@@ -13,6 +13,7 @@ class pfcCommand_getonlinenick extends pfcCommand
     $oldnicklist = isset($_SESSION[$nicklist_sid]) ? $_SESSION[$nicklist_sid] : array();
     
     $container =& $c->getContainerInstance();
+    $disconnected_users = $container->removeObsoleteNick(NULL,$c->timeout);
     $disconnected_users = $container->removeObsoleteNick($recipient,$c->timeout);
     foreach ($disconnected_users as $u)
     {
