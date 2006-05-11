@@ -12,9 +12,20 @@ class pfcCommand_update extends pfcCommand
     // do not update if user isn't active (didn't connect)
     if ($u->active)
     {
+      $container =& $c->getContainerInstance();
+
+      // take care to disconnect timeouted users on the server
+      $disconnected_users = $container->removeObsoleteNick(NULL,$c->timeout); 
+      // if whould be possible to echo these disconnected users on a server tab
+      // server tab is not yet available so I just commente the code
+      //       foreach ($disconnected_users as $u)
+      //       {
+      //         $cmd =& pfcCommand::Factory("notice");
+      //         $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u), $sender, $recipient, $recipientid, 2);
+      //       }
+      
       // -----
       // check if other user talk to me or not
-      $container =& $c->getContainerInstance();
       $nickid = $container->getNickId($u->nick);
       $pvnicks = $container->getMeta("privmsg", "nickname", $nickid);
       if (is_string($pvnicks)) $pvnicks = unserialize($pvnicks);

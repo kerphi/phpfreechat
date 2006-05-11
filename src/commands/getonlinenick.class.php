@@ -7,19 +7,21 @@ class pfcCommand_getonlinenick extends pfcCommand
   function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
-
-    // get the actual nicklist
-    $nicklist_sid = $c->prefix."nicklist_".$c->getId()."_".$clientid."_".$recipientid;
-    $oldnicklist = isset($_SESSION[$nicklist_sid]) ? $_SESSION[$nicklist_sid] : array();
-    
     $container =& $c->getContainerInstance();
-    $disconnected_users = $container->removeObsoleteNick(NULL,$c->timeout);
+
+    // take care to disconnect timeouted users on this channel
     $disconnected_users = $container->removeObsoleteNick($recipient,$c->timeout);
     foreach ($disconnected_users as $u)
     {
       $cmd =& pfcCommand::Factory("notice");
       $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u), $sender, $recipient, $recipientid, 2);
     }
+    
+    // get the cached nickname list
+    $nicklist_sid = $c->prefix."nicklist_".$c->getId()."_".$clientid."_".$recipientid;
+    $oldnicklist = isset($_SESSION[$nicklist_sid]) ? $_SESSION[$nicklist_sid] : array();
+
+    // get the real nickname list
     $users = $container->getOnlineNick($recipient);
     sort($users);
     // check if the nickname list must be updated
