@@ -113,18 +113,18 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->ct->createNick($chan, $nick, $nickid);
     sleep(2);
     $ret = $this->ct->removeObsoleteNick($chan, "1000");
-    $this->assertTrue(in_array($nick, $ret), "nickname should be removed from the channel");
+    $this->assertEquals(count($ret), 1, "1 nickname should be obsolete");
     $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
-    $this->assertFalse($isonline, "nickname shouldn't be online on the channel");
+    $this->assertFalse($isonline, "nickname shouldn't be online anymore");
     
     // on the server
     $chan = NULL;
     $this->ct->createNick($chan, $nick, $nickid);
     sleep(2);
     $ret = $this->ct->removeObsoleteNick($chan, "1000");
-    $this->assertTrue(in_array($nick, $ret), "nickname should be removed from the server");
+    $this->assertEquals(count($ret), 1, "1 nickname should be obsolete");
     $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
-    $this->assertFalse($isonline, "nickname shouldn't be online on the server");
+    $this->assertFalse($isonline, "nickname shouldn't be online anymore");
   }
   
   function testSetGetRmMeta_Generic()
@@ -138,25 +138,25 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     // set / get
     $this->ct->setMeta($nickid, "key1", "nickname", $nick);
     $metadata = $this->ct->getMeta("key1", "nickname", $nick);
-    $this->assertEquals($nickid, $metadata, "1-metadata value is not correct");
+    $this->assertEquals($nickid, $metadata, "metadata value is not correct");
 
     // set / rm / get
     $this->ct->setMeta($nickid, "key2", "nickname", $nick);
     $metadata = $this->ct->getMeta("key2", "nickname", $nick);
-    $this->assertEquals($nickid, $metadata, "2-metadata value is not correct");
+    $this->assertEquals($nickid, $metadata, "metadata value is not correct");
     $this->ct->rmMeta("key2", "nickname", $nick);
     $metadata = $this->ct->getMeta("key2", "nickname", $nick);
-    $this->assertNull($metadata, "3-metadata should not exists anymore");
+    $this->assertNull($metadata, "metadata should not exists anymore");
 
     // set / rm (all) / get
     $this->ct->setMeta($nickid, "key2", "nickname", $nick);
     $metadata = $this->ct->getMeta("key2", "nickname", $nick);
-    $this->assertEquals($nickid, $metadata, "4-metadata value is not correct");
+    $this->assertEquals($nickid, $metadata, "metadata value is not correct");
     $this->ct->rmMeta(NULL, "nickname", $nick);
     $metadata = $this->ct->getMeta("key2", "nickname", $nick);
-    $this->assertNull($metadata, "5-metadata should not exists anymore");
+    $this->assertNull($metadata, "metadata should not exists anymore");
     $metadata = $this->ct->getMeta("key1", "nickname", $nick);
-    $this->assertNull($metadata, "6-metadata should not exists anymore");
+    $this->assertNull($metadata, "metadata should not exists anymore");
   }
 
   function testupdateNick_Generic()

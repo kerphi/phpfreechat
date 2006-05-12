@@ -281,7 +281,7 @@ class pfcContainer_File extends pfcContainer
    * Notice: this function must remove all nicknames which are not uptodate from the given channel or from the server
    * @param $chan if NULL then check obsolete nick on the server, otherwise just check obsolete nick on the given channel
    * @param $timeout
-   * @return array() contains all disconnected nicknames
+   * @return array("nick"=>???, "timestamp"=>???) contains all disconnected nicknames and there timestamp
    */
   function removeObsoleteNick($chan, $timeout)
   {
@@ -299,16 +299,18 @@ class pfcContainer_File extends pfcContainer
     while (false !== ($file = readdir($dir_handle)))
     {
       if ($file == "." || $file == "..") continue; // skip . and .. generic files
-      if (time() > (filemtime($nick_dir."/".$file)+$timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
+      $f_time = filemtime($nick_dir."/".$file);
+      if (time() > ($f_time+$timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
       {
-        $deleted_user[] = $this->_decode($file);
-        unlink($nick_dir."/".$file); // disconnect expired user
+        $deleted_user[] = array("nick"      => $this->_decode($file),
+                                "timestamp" => $f_time);
+        @unlink($nick_dir."/".$file); // disconnect expired user
       }
       else
       {
         // optimisation: cache user list for next getOnlineNick call
         $users[] = array("nick"      => $this->_decode($file),
-                         "timestamp" => filemtime($nick_dir."/".$file));
+                         "timestamp" => $f_time);
       }
     }
 

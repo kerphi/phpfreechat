@@ -14,7 +14,7 @@ class pfcCommand_getonlinenick extends pfcCommand
     foreach ($disconnected_users as $u)
     {
       $cmd =& pfcCommand::Factory("notice");
-      $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u), $sender, $recipient, $recipientid, 2);
+      $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u["nick"]), $sender, $recipient, $recipientid, 2);
     }
     
     // get the cached nickname list
