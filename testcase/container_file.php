@@ -26,7 +26,7 @@ class pfcContainerTestcase_File extends pfcContainerTestcase
   {
     pfcContainerTestcase::tearDown();   
   }
-
+  
   // this is a specific test for the File container
   function testCreateNick_File()
   {
@@ -47,7 +47,7 @@ class pfcContainerTestcase_File extends pfcContainerTestcase
 }
 
 // on desactive le timeout car se script peut mettre bcp de temps a s'executer
-ini_set('max_execution_time', -1);
+ini_set('max_execution_time', 0);
 
 $suite = new PHPUnit_TestSuite();
 $suite->addTestSuite("pfcContainerTestcase_File");

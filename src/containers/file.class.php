@@ -118,6 +118,15 @@ class pfcContainer_File extends pfcContainer
     flock ($fp, LOCK_UN); // unlock
     fclose($fp);
 
+    // append the nickname to the cached nickname list
+    $id = $this->isNickOnline($chan, $nick);
+    $_chan = ($chan == NULL) ? "SERVER" : $chan;
+    if ($id<0)
+    {
+      $this->_users[$_chan][] = array("nick"      => $nick,
+                                      "timestamp" => filemtime($nick_filename));
+    }
+    
     return true;
   }
 
@@ -126,6 +135,7 @@ class pfcContainer_File extends pfcContainer
    * Notice: The caller must take care to update all joined channels.
    * @param $chan if NULL then remove the user on the server (disconnect), otherwise just remove the user from the given channel (quit)
    * @param $nick the nickname to remove
+   * @return true if the nickname was correctly removed
    */
   function removeNick($chan, $nick)
   {
@@ -144,27 +154,21 @@ class pfcContainer_File extends pfcContainer
         pxlog("removeNick(".$nick.") - Error: the nickname data file to remove doesn't exists", "chat", $c->getId());
     }
 
-    @unlink($nick_filename);
+    $ok = @unlink($nick_filename);
+
+    if ($c->debug)
+    {
+      // check the nickname file is correctly deleted
+      if (file_exists($nick_filename))
+        pxlog("removeNick(".$nick.") - Error: the nickname data file yet exists", "chat", $c->getId());
+    }
 
     // remove the nickname from the cache list
-    if (isset($this->_users[$chan]))
-    {
-      $uid = 0; $isonline = false;
-      while($uid < count($this->_users[$chan]) && !$isonline)
-      {
-        if ($this->_users[$chan][$uid]["nick"] == $nick)
-          $isonline = true;
-        else
-          $uid++;
-      }
-      if ($isonline)
-      {
-        $key = $uid;
-        unset($this->_users[$chan][$key]);
-      }
-    }
+    $id = $this->isNickOnline($chan, $nick);
+    $_chan = ($chan == NULL) ? "SERVER" : $chan;
+    if ($id >= 0) unset($this->_users[$_chan][$id]);
     
-    return true;
+    return $ok;
   }
 
   /**
@@ -189,21 +193,17 @@ class pfcContainer_File extends pfcContainer
     @chmod($nick_filename, 0777); 
 
     // append the nickname to the cache list
-    if (isset($this->_users[$chan]))
+    $_chan = ($chan == NULL) ? "SERVER" : $chan;
+    $id = $this->isNickOnline($chan, $nick);
+    if ($id < 0)
     {
-      $uid = 0; $isonline = false;
-      while($uid < count($this->_users[$chan]) && !$isonline)
-      {
-        if ($this->_users[$chan][$uid]["nick"] == $nick)
-          $isonline = true;
-        else
-          $uid++;
-      }
-      if (!$isonline)
-      {
-        $this->_users[$chan][] = array("nick"      => $nick,
-                                       "timestamp" => filemtime($nick_filename));
-      }
+      $this->_users[$_chan][] = array("nick"      => $nick,
+                                      "timestamp" => filemtime($nick_filename));
+    }
+    else
+    {
+      // just update the timestamp if the nickname is allready present in the cached list
+      $this->_users[$_chan][$id]["timestamp"] = filemtime($nick_filename);
     }
     
     return $there;
@@ -231,22 +231,12 @@ class pfcContainer_File extends pfcContainer
     // update the nick cache list
     if($ok)
     {
-      if (isset($this->_users[$chan]))
+      $_chan = ($chan == NULL) ? "SERVER" : $chan;
+      $id = $this->isNickOnline($chan, $oldnick);
+      if ($id >= 0)
       {
-        $uid = 0; $isonline = false;
-        while($uid < count($this->_users[$chan]) && !$isonline)
-        {
-          if ($this->_users[$chan][$uid]["nick"] == $oldnick)
-            $isonline = true;
-          else
-            $uid++;
-        }
-        if ($isonline)
-        {
-          $key = $uid;
-          $this->_users[$chan][$key]["nick"]      = $newnick;
-          $this->_users[$chan][$key]["timestamp"] = filemtime($newnick_filename);
-        }
+        $this->_users[$_chan][$id]["nick"]      = $newnick;
+        $this->_users[$_chan][$id]["timestamp"] = filemtime($newnick_filename);
       }
     }
     
@@ -323,7 +313,8 @@ class pfcContainer_File extends pfcContainer
     }
 
     // cache the updated user list
-    $this->_users[$chan] =& $users;
+    $_chan = ($chan == NULL) ? "SERVER" : $chan;
+    $this->_users[$_chan] =& $users;
     
     return $deleted_user;
   }
@@ -331,14 +322,14 @@ class pfcContainer_File extends pfcContainer
   /**
    * Returns the nickname list on the given channel or on the whole server
    * @param $chan if NULL then returns all connected user, otherwise just returns the channel nicknames
-   * @return array() contains a nickname list
+   * @return array(array("nick"=>???,"timestamp"=>???) contains the nickname list with the associated timestamp (laste update time)
    */
   function getOnlineNick($chan)
   {
     // return the cached user list if it exists
-    if (isset($this->_users[$chan]) &&
-        is_array($this->_users[$chan]))
-      return $this->_users[$chan];
+    $_chan = ($chan == NULL) ? "SERVER" : $chan;
+    if (isset($this->_users[$_chan]) && is_array($this->_users[$_chan]))
+      return $this->_users[$_chan];
    
     $c =& $this->c;
 
@@ -356,9 +347,35 @@ class pfcContainer_File extends pfcContainer
     }
 
     // cache the user list
-    $this->_users[$chan] =& $users;
+    $this->_users[$_chan] =& $users;
 
-    return $users;
+    return $this->_users[$_chan];
+  }
+  
+  /**
+   * Returns returns a positive number if the nick is online
+   * @param $chan if NULL then check if the user is online on the server, otherwise check if the user has joined the channel
+   * @return -1 if the user is off line, a positive (>=0) if the user is online
+   */
+  function isNickOnline($chan, $nick)
+  {
+    // get the nickname list
+    $_chan = ($chan == NULL) ? "SERVER" : $chan;
+    $online_users = isset($this->_users[$_chan]) ? $this->_users[$_chan] : $this->getOnlineNick($chan);
+
+    $uid = 0;
+    $isonline = false;
+    while($uid < count($online_users) && !$isonline)
+    {
+      if ($online_users[$uid]["nick"] == $nick)
+        $isonline = true;
+      else
+        $uid++;
+    }
+    if ($isonline)
+      return $uid;
+    else
+      return -1;
   }
 
   /**
@@ -401,10 +418,10 @@ class pfcContainer_File extends pfcContainer
 
   /**
    * Read the last posted commands from a channel or from the server
+   * Notice: the returned array must be ordered by id
    * @param $chan if NULL then read from the server, otherwise read from the given channel
    * @param $from_id read all message with a greater id
    * @return array() contains the command list
-   * @todo use one file (filename = msgid) for one message
    */
   function read($chan, $from_id)
   {
@@ -428,7 +445,8 @@ class pfcContainer_File extends pfcContainer
       if ($file == "." || $file == "..") continue; // skip . and .. generic files
       if ($file>$from_id)
       {
-        $new_from_id = $file;
+        if ($file > $new_from_id)
+          $new_from_id = $file;
         $newmsg[]    = $file;
       }
     }
@@ -448,10 +466,11 @@ class pfcContainer_File extends pfcContainer
         $data["sender"]= $formated_line[3];
         $data["cmd"]   = $formated_line[4];
         $data["param"] = $formated_line[5];
-        $datalist[] = $data;
+        $datalist[$data["id"]] = $data;
       }
     }
-
+    ksort($datalist);
+    
     return array("data" => $datalist,
                  "new_from_id" => $new_from_id );
   }

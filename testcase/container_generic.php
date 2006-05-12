@@ -45,7 +45,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     // remove the created files and directories
     $this->ct->clear();    
   }
-  
+
   function testCreateNick_Generic()
   {
     $c  =& $this->c;
@@ -56,14 +56,14 @@ class pfcContainerTestcase extends PHPUnit_TestCase
 
     // create on the channel
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);   
-    $this->assertTrue(in_array($nick, $online_nick), "nickname should be online on the channel");
+    $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
+    $this->assertTrue($isonline, "nickname should be online on the channel");
 
     // create on the server
     $chan = NULL;
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "nickname should be online on the server");
+    $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
+    $this->assertTrue($isonline, "nickname should be online on the server");
   }
 
   function testRemoveNick_Generic()
@@ -76,22 +76,18 @@ class pfcContainerTestcase extends PHPUnit_TestCase
 
     // on the channel
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "nickname should be online on the channel");
-    $this->ct->removeNick($chan,$nick);
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertFalse(in_array($nick, $online_nick), "nickname should not be online on the channel");   
+    $this->ct->removeNick($chan, $nick);
+    $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
+    $this->assertFalse($isonline, "nickname shouldn't be online on the channel");   
 
     // on the server
     $chan = NULL;
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "nickname should be online on the server");
-    $this->ct->removeNick($chan,$nick);
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertFalse(in_array($nick, $online_nick), "nickname should not be online on the server");   
+    $this->ct->removeNick($chan, $nick);
+    $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
+    $this->assertFalse($isonline, "nickname shouldn't be online on the server");    
   }
-
+  
   function testGetNickId_Generic()
   {
     $c  =& $this->c;
@@ -104,7 +100,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $ret = $this->ct->getNickId($nick);
     $this->assertEquals($nickid, $ret, "created nickname doesn't have a correct nickid");
   }
-
+  
   function testRemoveObsoleteNick_Generic()
   {
     $c  =& $this->c;
@@ -115,24 +111,20 @@ class pfcContainerTestcase extends PHPUnit_TestCase
 
     // on the channel
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "nickname should be online on the channel");
     sleep(2);
     $ret = $this->ct->removeObsoleteNick($chan, "1000");
     $this->assertTrue(in_array($nick, $ret), "nickname should be removed from the channel");
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertFalse(in_array($nick, $online_nick), "nickname should not be online on the channel");
-
+    $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
+    $this->assertFalse($isonline, "nickname shouldn't be online on the channel");
+    
     // on the server
     $chan = NULL;
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "nickname should be online on the server");
     sleep(2);
     $ret = $this->ct->removeObsoleteNick($chan, "1000");
     $this->assertTrue(in_array($nick, $ret), "nickname should be removed from the server");
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertFalse(in_array($nick, $online_nick), "nickname should not be online on the server");
+    $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
+    $this->assertFalse($isonline, "nickname shouldn't be online on the server");
   }
   
   function testSetGetRmMeta_Generic()
@@ -177,61 +169,55 @@ class pfcContainerTestcase extends PHPUnit_TestCase
 
     // on the channel
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "1-nickname should be online on the channel");
     sleep(2);
     $ret = $this->ct->updateNick($chan, $nick);
-    $this->assertTrue($ret, "2-nickname should be correctly updated on the channel");
+    $this->assertTrue($ret, "nickname should be correctly updated");
     $ret = $this->ct->removeObsoleteNick($chan, "1000");
-    $this->assertFalse(in_array($nick, $ret), "3-nickname should not be removed from the channel because it has been updated");
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "4-nickname should be online on the channel");
-
+    $this->assertFalse(in_array($nick, $ret), "nickname shouldn't be removed because it has been updated");
+    $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
+    $this->assertTrue($isonline, "nickname should be online");
+    
     // on the server
     $chan = NULL;
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "5-nickname should be online on the server");
     sleep(2);
     $ret = $this->ct->updateNick($chan, $nick);
-    $this->assertTrue($ret, "6-nickname should be correctly updated on the server");
+    $this->assertTrue($ret, "nickname should be correctly updated");
     $ret = $this->ct->removeObsoleteNick($chan, "1000");
-    $this->assertFalse(in_array($nick, $ret), "7-nickname should not be removed from the server because it has been updated");
-    $online_nick = $this->ct->getOnlineNick($chan);
-    $this->assertTrue(in_array($nick, $online_nick), "8-nickname should be online on the server");
+    $this->assertFalse(in_array($nick, $ret), "nickname shouldn't be removed because it has been updated");
+    $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
+    $this->assertTrue($isonline, "nickname should be online");
   }
 
   function testchangeNick_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
-    $nick   = $this->nick;
+    $nick1  = $this->nick;
     $nick2  = $this->nick."2";
     $nickid = $this->nickid;
     $chan   = $this->chan;
 
     // create on the channel
-    $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);   
-    $this->assertTrue(in_array($nick, $online_nick), "1-nickname should be online on the channel");
-    $ret = $this->ct->changeNick($chan, $nick2, $nick);
-    $this->assertTrue($ret, "2-nickname change function should returns true (succes)");
-    $online_nick = $this->ct->getOnlineNick($chan);   
-    $this->assertFalse(in_array($nick, $online_nick), "3-nickname should not be online on the channel");
-    $this->assertTrue(in_array($nick2, $online_nick), "4-nickname should be online on the channel");
-    
+    $this->ct->createNick($chan, $nick1, $nickid);
+    $ret = $this->ct->changeNick($chan, $nick2, $nick1);
+    $this->assertTrue($ret, "nickname change function should returns true (success)");
+    $isonline1 = ($this->ct->isNickOnline($chan, $nick1) >= 0);
+    $isonline2 = ($this->ct->isNickOnline($chan, $nick2) >= 0);
+    $this->assertFalse($isonline1, "nickname shouldn't be online");
+    $this->assertTrue($isonline2, "nickname shouldn't be online");
+      
     // create on the server
     $chan = NULL;
-    $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);   
-    $this->assertTrue(in_array($nick, $online_nick), "5-nickname should be online");
-    $ret = $this->ct->changeNick($chan, $nick2, $nick);
-    $this->assertTrue($ret, "6-nickname change function should returns true (succes)");
-    $online_nick = $this->ct->getOnlineNick($chan);   
-    $this->assertFalse(in_array($nick, $online_nick), "7-nickname should not be online");
-    $this->assertTrue(in_array($nick2, $online_nick), "8-nickname should be online on the channel");
+    $this->ct->createNick($chan, $nick1, $nickid);
+    $ret = $this->ct->changeNick($chan, $nick2, $nick1);
+    $this->assertTrue($ret, "nickname change function should returns true (success)");
+    $isonline1 = ($this->ct->isNickOnline($chan, $nick1) >= 0);
+    $isonline2 = ($this->ct->isNickOnline($chan, $nick2) >= 0);
+    $this->assertFalse($isonline1, "nickname shouldn't be online");
+    $this->assertTrue($isonline2, "nickname shouldn't be online");
   }
-
+  
   function testwrite_Generic()
   {
     $c  =& $this->c;
@@ -244,28 +230,24 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     
     // create message on the channel
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);   
-    $this->assertTrue(in_array($nick, $online_nick), "1-nickname should be online on the channel");
     $msgid = $this->ct->write($chan, $nick, $cmd, $msg);
-    $this->assertEquals($msgid, 1,"2- generated msg_id is not correct");
+    $this->assertEquals($msgid, 1,"generated msg_id is not correct");
     $res = $this->ct->read($chan, 0);
-    $this->assertEquals(1, count($res["data"]), "3- 1 messages should be read");
-    $this->assertEquals($msg, $res["data"][0]["param"] ,"4- messages data is not the same as the sent one");
-    $this->assertEquals($res["new_from_id"], 1 ,"6- new_from_id is not correct");
+    $this->assertEquals(1, count($res["data"]), "1 messages should be read");
+    $this->assertEquals($msg, $res["data"][1]["param"] ,"messages data is not the same as the sent one");
+    $this->assertEquals($res["new_from_id"], 1 ,"new_from_id is not correct");
 
     // create message on the server
     $chan = NULL;
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan);   
-    $this->assertTrue(in_array($nick, $online_nick), "7-nickname should be online on the channel");
     $msgid = $this->ct->write($chan, $nick, $cmd, $msg);
-    $this->assertEquals($msgid, 1,"8- generated msg_id is not correct");
+    $this->assertEquals($msgid, 1,"generated msg_id is not correct");
     $res = $this->ct->read($chan, 0);
-    $this->assertEquals(1, count($res["data"]), "9- 1 messages should be read");
-    $this->assertEquals($msg, $res["data"][0]["param"] ,"10- messages data is not the same as the sent one");
-    $this->assertEquals($res["new_from_id"], 1 ,"11- new_from_id is not correct");
+    $this->assertEquals(1, count($res["data"]), "1 messages should be read");
+    $this->assertEquals($msg, $res["data"][1]["param"] ,"messages data is not the same as the sent one");
+    $this->assertEquals($res["new_from_id"], 1 ,"new_from_id is not correct");
   }
-
+  
   function testread_Generic()
   {
     $c  =& $this->c;
@@ -278,27 +260,24 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     
     // create on the channel
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan); 
-    $this->assertTrue(in_array($nick, $online_nick), "1-nickname should be online on the channel");
     for($i = 0; $i < 10; $i++)
     {
       $msgid = $this->ct->write($chan, $nick, $cmd ,$msg . $i);
-      $this->assertEquals($msgid, $i+1,"2- generated msg_id is not correct");
+      $this->assertEquals($msgid, $i+1, "generated msg_id is not correct");
     }
 
     $res = $this->ct->read($chan, 0);
-    $this->assertEquals(10, count($res["data"]), "3- 10 messages should be read");
-    $this->assertEquals($msg."0", $res["data"][0]["param"] ,"4- messages data is not the same as the sent one");
-    $this->assertEquals($msg."9", $res["data"][9]["param"] ,"5- messages data is not the same as the sent one");
-    $this->assertEquals($res["new_from_id"], 10 ,"6- new_from_id is not correct");
-
+    $this->assertEquals(10, count($res["data"]), "10 messages should be read");
+    $this->assertEquals($msg."0", $res["data"][1]["param"] ,"messages data is not the same as the sent one");
+    $this->assertEquals($msg."8", $res["data"][9]["param"] ,"messages data is not the same as the sent one");
+    $this->assertEquals($res["new_from_id"], 10 ,"new_from_id is not correct");
+    
     $res = $this->ct->read($chan, 5);
-    $this->assertEquals(5, count($res["data"]), "7- 5 messages should be read");
-    $this->assertEquals($msg."5", $res["data"][0]["param"] ,"8- messages data is not the same as the sent one");
-    $this->assertEquals($msg."9", $res["data"][4]["param"] ,"9- messages data is not the same as the sent one");
-    $this->assertEquals($res["new_from_id"], 10 ,"10- new_from_id is not correct");
+    $this->assertEquals(5, count($res["data"]), "5 messages should be read");
+    $this->assertEquals($msg."5", $res["data"][6]["param"] ,"messages data is not the same as the sent one");
+    $this->assertEquals($msg."9", $res["data"][10]["param"] ,"messages data is not the same as the sent one");
+    $this->assertEquals($res["new_from_id"], 10 ,"new_from_id is not correct");
   }
-
 
   function testgetLastId_Generic()
   {
@@ -312,28 +291,24 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     
     // on the channel
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan); 
-    $this->assertTrue(in_array($nick, $online_nick), "1-nickname should be online on the channel");
     for($i = 0; $i < 10; $i++)
     {
       $msgid = $this->ct->write($chan, $nick, $cmd ,$msg . $i);
-      $this->assertEquals($msgid, $i+1,"2- generated msg_id is not correct");
+      $this->assertEquals($msgid, $i+1,"generated msg_id is not correct");
     }
     $msgid = $this->ct->getLastId($chan);
-    $this->assertEquals(10, $msgid, "3- last msgid is not correct");
+    $this->assertEquals(10, $msgid, "last msgid is not correct");
 
     // on the server
     $chan = NULL;
     $this->ct->createNick($chan, $nick, $nickid);
-    $online_nick = $this->ct->getOnlineNick($chan); 
-    $this->assertTrue(in_array($nick, $online_nick), "4-nickname should be online on the channel");
     for($i = 0; $i < 10; $i++)
     {
       $msgid = $this->ct->write($chan, $nick, $cmd ,$msg . $i);
-      $this->assertEquals($msgid, $i+1,"5- generated msg_id is not correct");
+      $this->assertEquals($msgid, $i+1,"generated msg_id is not correct");
     }
     $msgid = $this->ct->getLastId($chan);
-    $this->assertEquals(10, $msgid, "6- last msgid is not correct");
+    $this->assertEquals(10, $msgid, "last msgid is not correct");
   }
 }
 
