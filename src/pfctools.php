@@ -46,7 +46,7 @@ function getScriptFilename()
        !file_exists($sf))
   {
     echo "<pre>";
-    echo "<span style='color:red'>Error: GetScriptFilename function returns a wrong path. Please contact the pfc team (contact@phpfreechat.net) and copy/paste this array to help debugging.</span>\n";
+    echo "<span style='color:red'>Error: GetScriptFilename function returns a wrong path. Please contact the pfc team (contact@phpfreechat.net) and copy/paste these lines to help debugging.</span>\n";
     print_r($_SERVER);
     echo "</pre>";
     exit;
