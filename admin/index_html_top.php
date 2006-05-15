@@ -50,6 +50,15 @@
             </li>
           </ul>
         </li>
+        <li class="sub title">Connected User</li>
+        <li>
+          <ul>
+            <li class="item">
+              <a href="#"><?php echo empty($_SERVER['REMOTE_USER']) ?  "No user connected" : $_SERVER['REMOTE_USER']; ?></a>
+            </li>
+          </ul>
+        </li>
+        
       </ul>
       <p class="partner">
         <a href="http://www.phpfreechat.net"><img alt="logo big" src="style/logo_88x31.gif"></a>
