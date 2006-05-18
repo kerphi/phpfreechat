@@ -278,7 +278,7 @@ class phpFreeChatContainerMemory extends phpFreeChatContainer
              ($c->container_cfg_sm_messages);
 
     // remove old messages
-    $content = array_slice($content, -$c->max_msg);
+    $content = array_slice(is_array($content)?$content:array(), -$c->max_msg);
     $this->_memory->set
     ($c->container_cfg_sm_messages, $content);
 
