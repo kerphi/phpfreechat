@@ -72,7 +72,7 @@
   <script type="text/javascript">
  // <![CDATA[
   <?php  include($c->getFilePathFromTheme('templates/chat.js.tpl.php')); ?>
- // ]]
+ // ]]>
   </script>
   </div>
 </div>
