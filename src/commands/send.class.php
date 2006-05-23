@@ -11,6 +11,10 @@ class pfcCommand_send extends pfcCommand
     $nick = phpFreeChat::FilterSpecialChar($sender);
     $text = phpFreeChat::PreFilterMsg($param);
 
+
+
+    //        $offline = $container->getMeta("offline", "nickname", $u->privmsg[$recipientid]["name"]);
+
     
     // if this channel is a pv (one to one channel),
     // first of all, check if the other user is connected
