@@ -58,18 +58,36 @@ class pfcCommand
    */
   function &Factory($name)
   {
-    $cmd       = NULL;
-    $name      = strtolower($name);
-    $classname = "pfcCommand_".$name;
-    $filename  = dirname(__FILE__)."/commands/".$name.".class.php";
-    
-    if (file_exists($filename)) require_once($filename);
-    if(class_exists($classname))
+    $c =& pfcGlobalConfig::Instance();
+
+    // instanciate the real command
+    $cmd           = NULL;
+    $cmd_name      = strtolower($name);
+    $cmd_classname = "pfcCommand_".$name;
+    $cmd_filename  = dirname(__FILE__)."/commands/".$cmd_name.".class.php";
+    if (file_exists($cmd_filename)) require_once($cmd_filename);
+    if (class_exists($cmd_classname))
     {
-      $cmd =& new $classname();
-      $cmd->name = $name;
+      $cmd =& new $cmd_classname();
+      $cmd->name = $cmd_name;
     }
-    return $cmd;
+
+    // instanciate the proxy chains
+    $proxy           = NULL;
+    $proxy_name      = strtolower($c->proxy[0]);
+    $proxy_classname = "pfcProxyCommand_" . $proxy_name;
+    $proxy_filename  = dirname(__FILE__)."/proxys/".$proxy_name.".class.php";
+    if (file_exists($proxy_filename)) require_once($proxy_filename);
+    if (class_exists($proxy_classname))
+    {
+      $proxy =& new $proxy_classname();
+      $proxy->name      = $cmd_name;
+      $proxy->proxyname = $proxy_name;
+      $proxy->linkTo($cmd);
+    }
+
+    // return the proxy, not the command (the proxy will forward the request to the real command)
+    return $proxy;
   }
 
   /**

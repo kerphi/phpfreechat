@@ -32,12 +32,15 @@ class pfcGlobalConfig
 {
   var $serverid            = ""; // this is the chat server id (comparable to the server host in IRC)
 
+  var $admins              = array();
+  var $proxy               = array("auth");
+  
   // these parameters are dynamic (not cached)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
   var $channels            = array(); // the default joined channels when opening the chat
   var $privmsg             = array(); // the default privmsg chat to lauch when opening the chat
   var $active              = false;   // by default the user is not connected
-
+  
   // these parameters are static (cached)
   var $title               = ""; // default is _pfc("My Chat")
   var $channel             = ""; // default is _pfc("My room")
