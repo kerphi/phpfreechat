@@ -31,7 +31,14 @@ require_once dirname(__FILE__)."/pfci18n.class.php";
 class pfcGlobalConfig
 {
   var $serverid            = ""; // this is the chat server id (comparable to the server host in IRC)
+
+  // these parameters are dynamic (not cached)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
+  var $channels            = array(); // the default joined channels when opening the chat
+  var $privmsg             = array(); // the default privmsg chat to lauch when opening the chat
+  var $active              = false;   // by default the user is not connected
+
+  // these parameters are static (cached)
   var $title               = ""; // default is _pfc("My Chat")
   var $channel             = ""; // default is _pfc("My room")
   var $frozen_nick         = false;
@@ -124,6 +131,9 @@ class pfcGlobalConfig
     if ($this->data_public_path == "")  $this->data_public_path  = dirname(__FILE__)."/../data/public";
 
     $this->synchronizeWithCache();
+
+    // the nickname is not global, it must not be cached
+    $this->nick = $params["nick"];
   }
 
   function &Instance( $params = array() )
@@ -428,52 +438,6 @@ class pfcGlobalConfig
       else
 	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
   }
-
-
-  
-
-  /* ---------------------------- */
-  /* TO DELETE */
-
-
-  /**
-   * save the pfcglobalconfig object into sessions if necessary
-   * else restore the old pfcglobalconfig object
-   */
-  function synchronizeWithSession()
-  {
-    $session_id = $this->prefix."chatconfig_".$this->getId();
-    if (isset($_SESSION[$session_id]))
-    {
-      $pfc_configvar = unserialize($_SESSION[$session_id]);
-      foreach($pfc_configvar as $key => $val)
-	$this->$key = $val;
-      if ($this->debug) pxlog("synchronizeWithSession[".$this->getId()."]: restore chatconfig from session nick=".$this->nick, "chatconfig", $this->getId());
-    }
-    else
-    {
-      if (!$this->isInit())
-        $this->init();
-      $errors =& $this->getErrors();
-      if (count($errors) > 0)
-      {
-        echo "<ul>"; foreach( $errors as $e ) echo "<li>".$e."</li>"; echo "</ul>";
-        exit;
-      }
-      // save the validated config in session
-      $this->saveInSession();
-    }
-  }
-
-  function saveInSession()
-  {
-    $session_id = $this->prefix."chatconfig_".$this->getId();
-    $_SESSION[$session_id] = serialize(get_object_vars($this));
-    if ($this->debug) pxlog("saveInSession[".$this->getId()."]: nick=".$this->nick, "chatconfig", $this->getId());
-  }
-
-
-  
 }
 
 ?>

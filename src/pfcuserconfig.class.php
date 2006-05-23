@@ -10,7 +10,6 @@ class pfcUserConfig
   var $active;
   
   var $timeout;
-
   var $sessionid;
   
   var $is_init = false; // used internaly to know if the chat config is initialized
@@ -27,6 +26,7 @@ class pfcUserConfig
 
     $this->sessionid = session_id();
 
+    // user parameters are cached in sessions
     $this->_getParam("nick");
     if (!isset($this->nick)) $this->_setParam("nick","");
     $this->_getParam("active");
@@ -35,9 +35,6 @@ class pfcUserConfig
     if (!isset($this->channels)) $this->_setParam("channels",array());
     $this->_getParam("privmsg");
     if (!isset($this->privmsg)) $this->_setParam("privmsg",array());
-
-    //@ todo: save the nickname config into the cache
-    //$this->synchronizeWithCache();
   }
 
   function &_getParam($p)
@@ -49,6 +46,8 @@ class pfcUserConfig
       $sessionid_param = $sessionid."_".$p;
       if (isset($_SESSION[$sessionid_param]))
         $this->$p = $_SESSION[$sessionid_param];
+      else
+        $this->$p = $c->$p; // take the default parameter from the global config
     }
     return $this->$p;
   }
