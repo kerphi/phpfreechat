@@ -82,6 +82,7 @@
       <li><a href="demo18_phpbb2_smiley_theme.php">demo18 - A chat with a customized smiley theme (phpbb2 theme)</a></li>
       <li><a href="demo28_blune_theme.php">demo28 - use a customized theme (blune theme)</a></li>
       <li><a href="demo28_mini_blune_theme.php">demo28 - use a customized theme (blune theme) - mini</a></li>
+      <li><a href="demo44_green_theme.php">demo44 - use a customized theme (green)</a></li>
 </ul>
 
 <h2>Translations</h2>

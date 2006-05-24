@@ -7,11 +7,8 @@ div#<?php echo $prefix; ?>container * {
 div#<?php echo $prefix; ?>container {
   <?php if ($width!="") { ?>width: <?php echo $width; ?>;<?php } ?>
   border: 1px solid #555;
-  color: #338822;
-  background-color: #d9edd8;
-  background-image: url(<?php echo $c->getFileUrlFromTheme('images/shade.gif'); ?>);
-  background-position: right;
-  background-repeat: repeat-y;
+  color: #000;
+  background-color: #FFF;
   padding: 10px;
   min-height: 20px;
 }
@@ -31,7 +28,7 @@ div#<?php echo $prefix; ?>channels_content {
   border-right: 1px solid #555;
   border-left: 1px solid #555;
   border-bottom: 1px solid #555;
-  background-color: #e0edde;
+  background-color: #FAFAFA;
   margin-top: 5px;
 }
 div.<?php echo $prefix; ?>content {
@@ -56,16 +53,16 @@ ul#<?php echo $prefix; ?>channels_list li div {
   border-right: 1px solid #555;
   border-left: 1px solid #555;
   border-bottom: 1px solid #555;
-  background-color: #7dc073;
+  background-color: #DDD;
 }
 ul#<?php echo $prefix; ?>channels_list li.selected div {
-  background-color: #e0edde;
-  border-bottom: 1px solid #e0edde;
+  background-color: #FAFAFA;
+  border-bottom: 1px solid #FAFAFA;
   color: #000;
   font-weight: bold;
 }
 ul#<?php echo $prefix; ?>channels_list li > div:hover {
-  background-color: #e0edde;
+  background-color: #FAFAFA;
 }
 ul#<?php echo $prefix; ?>channels_list li a {
   color: #000;
@@ -102,8 +99,8 @@ div.<?php echo $prefix; ?>smileys {
   height: 60%;
   overflow: auto;
   text-align: center;
-  border: 1px solid #000;
-  background-color: #EEE;
+  background-color: #FFF;
+  /* borders are drawn by the javascript routines */
 }
 div.<?php echo $prefix; ?>online {
   position: absolute;
@@ -111,11 +108,11 @@ div.<?php echo $prefix; ?>online {
   top: 0;
   padding: 0;
   overflow: auto;
-  border: black solid 1px;
-  color: #000;
-  background-color: #DDD;
   width: 20%;
   height: 40%;
+  color: #000; /* colors can be overriden by js nickname colorization */
+  background-color: #FFF;
+  /* borders are drawn by the javascript routines */
 }
 div.<?php echo $prefix; ?>online ul {
   list-style-type: none;
@@ -125,9 +122,9 @@ div.<?php echo $prefix; ?>online ul {
   margin-right: 8px;
 }
 div.<?php echo $prefix; ?>online li {
-  border-bottom: 1px solid #DDD;
   font-weight: bold;
   font-size: 90%;
+  /* bottom borders are drawn by the javascript routines */
 }
 
 h2#<?php echo $prefix; ?>title {
@@ -150,7 +147,7 @@ div.<?php echo $prefix; ?>message {
 }
 
 div.<?php echo $prefix; ?>oldmsg {
-  background-color: #dde4dc;
+  background-color: #EEE;
 }
 
 span.<?php echo $prefix; ?>heure, span.<?php echo $prefix; ?>date {
@@ -168,7 +165,8 @@ div#<?php echo $prefix; ?>input_container {
 }
 
 input#<?php echo $prefix; ?>words {
-  border: black solid 1px;
+  border: #555 solid 1px;
+  background-color: #FAFAFA;
   width: 100%;
   height: 1.3em;
 }
@@ -199,10 +197,12 @@ div.<?php echo $prefix; ?>btn {
   cursor: pointer;
 }
 div.<?php echo $prefix; ?>btn img {
-  border: 1px solid #393; /* same as container color */
+  /* doesn't work */
+  /*  border: 1px solid #393;*/ /* same as container color */
 }
 div.<?php echo $prefix; ?>btn img:hover {
-  border: 1px solid #000;
+  /* doesn't work */
+  /*  border: 1px solid #000;*/
 }
 
 p#<?php echo $prefix; ?>errors {
@@ -212,7 +212,7 @@ p#<?php echo $prefix; ?>errors {
   height: 18px;
 
   border: black solid 1px;
-  color: #EC4A1F;
+  color: #FC4A1F;
   background-color: #FFBA76;
   text-align: center;
   font-style: italic;
