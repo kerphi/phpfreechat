@@ -8,9 +8,12 @@ div#<?php echo $prefix; ?>container {
   <?php if ($width!="") { ?>width: <?php echo $width; ?>;<?php } ?>
   border: 1px solid #555;
   color: #000;
-  background-color: #FFF;
   padding: 10px;
   min-height: 20px;
+  background-color: #FFF;
+  background-image: url(<?php echo $c->getFileUrlFromTheme('images/shade.gif'); ?>);
+  background-position: right;
+  background-repeat: repeat-y;
 }
 
 #<?php echo $prefix; ?>minmax {
