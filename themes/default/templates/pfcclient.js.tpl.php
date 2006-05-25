@@ -14,8 +14,10 @@ pfcClient.prototype = {
     this.nickname      = '<?php echo $u->nick; ?>';
 
     
+    /*
     this.channels      = Array();
     this.channelids    = Array();
+    */
     this.privmsgs      = Array();
     this.privmsgids    = Array();
     
@@ -203,6 +205,22 @@ pfcClient.prototype = {
       else
         alert(cmd + "-"+resp+"-"+param);
     }
+    else if (cmd == "join2")
+    {
+      if (resp =="ok")
+      {
+        // create the new channel
+        var tabid = param[0];
+        var name  = param[1];
+        this.gui.createTab(name, tabid, "ch");
+        // do not switch to the new created tab
+        // keep it in the background
+        //        this.gui.setTabById(tabid);
+        alert("ccc");
+      }
+      else
+        alert(cmd + "-"+resp+"-"+param);
+    }
     else if (cmd == "leave")
     {
       //alert(cmd + "-"+resp+"-"+param);
@@ -213,11 +231,13 @@ pfcClient.prototype = {
         this.gui.removeTabById(tabid);
 
         // synchronize the channel client arrays
+        /*
         var index = -1;
         index = this.channelids.indexOf(tabid);
         this.channelids = this.channelids.without(tabid);
         this.channels   = this.channels.without(this.channels[index]);
-
+        */
+        
         // synchronize the privmsg client arrays
         index = -1;
         index = this.privmsgids.indexOf(tabid);
@@ -239,6 +259,28 @@ pfcClient.prototype = {
         this.privmsgs.push(name);
         this.privmsgids.push(tabid);
         
+      }
+      else if (resp == "unknown")
+      {
+        // speak to unknown user
+      }
+      else
+        alert(cmd + "-"+resp+"-"+param);
+    }
+    else if (cmd == "privmsg2")
+    {
+      if (resp == "ok")
+      {
+        // create the new channel
+        var tabid = param[0];
+        var name  = param[1];
+        this.gui.createTab(name, tabid, "pv");
+        // do not switch to the new created tab
+        // keep it in the background
+        //        this.gui.setTabById(tabid);
+        
+        this.privmsgs.push(name);
+        this.privmsgids.push(tabid);
       }
       else if (resp == "unknown")
       {
@@ -286,8 +328,8 @@ pfcClient.prototype = {
         var index = this.privmsgs.indexOf(param);
         if (index == -1)
         {
-          // it doesn't exists, create it
-          this.sendRequest('/privmsg', param);
+          // it doesn't exists, create it in the background
+          this.sendRequest('/privmsg2', param);
         }
         else
         {
@@ -355,7 +397,7 @@ pfcClient.prototype = {
     {
       var w = this.el_words;
       var wval = w.value;
-      re = new RegExp("^(\/[a-z]+)( (.*)|)");
+      re = new RegExp("^(\/[a-z0-9]+)( (.*)|)");
       if (wval.match(re))
       {
 	/* a user command */
@@ -607,7 +649,7 @@ pfcClient.prototype = {
   {
     var recipientid = this.gui.getTabId();
     var req = cmd+" "+this.clientid+" "+(recipientid==''?'0':recipientid)+(param?" "+param : "");
-    //    if (cmd != "/update") alert(req);
+    if (cmd != "/update") alert(req);
     return <?php echo $prefix; ?>handleRequest(req);
   },
 

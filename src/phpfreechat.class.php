@@ -315,7 +315,7 @@ class phpFreeChat
     $sender    = "";
     //if (preg_match("/^\/([a-z]*) ([0-9a-f]*) ([0-9a-f]*)( (.*)|)/", $request, $res))
     //if (preg_match("/^\/([a-z]+) ([0-9a-f]+) ([0-9a-f]+) (.*)/", $request, $res))
-    if (preg_match("/^\/([a-z]+) ([0-9a-f]+) ([0-9a-f]+)( (.*)|)/", $request, $res))
+    if (preg_match("/^\/([a-z0-9]+) ([0-9a-f]+) ([0-9a-f]+)( (.*)|)/", $request, $res))
     {
       
       $rawcmd      = isset($res[1]) ? $res[1] : "";

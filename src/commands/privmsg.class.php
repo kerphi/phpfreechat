@@ -8,7 +8,7 @@ class pfcCommand_privmsg extends pfcCommand
   {
     $c =& $this->c;
     $u =& $this->u;
-
+    
     $pvname = $param;
     
     // check the pvname exists on the server
@@ -19,7 +19,7 @@ class pfcCommand_privmsg extends pfcCommand
     // error: can't speak to myself
     if ($pvnickid == $nickid)
     {
-      $xml_reponse->addScript("pfc.handleResponse('privmsg', 'ko', Array('".addslashes($pvname)."','speak to myself'));");
+      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko', Array('".addslashes($pvname)."','speak to myself'));");
       return;
     }
 
@@ -39,7 +39,7 @@ class pfcCommand_privmsg extends pfcCommand
         $u->saveInCache();
       }
       
-      $xml_reponse->addScript("pfc.handleResponse('privmsg', 'unknown', Array('".addslashes($pvname)."','speak to unknown'));");
+      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'unknown', Array('".addslashes($pvname)."','speak to unknown'));");
       return;
     }
 
@@ -73,7 +73,7 @@ class pfcCommand_privmsg extends pfcCommand
 
     // return ok to the client
     // then the client will create a new tab
-    $xml_reponse->addScript("pfc.handleResponse('privmsg', 'ok', Array('".$pvrecipientid."','".addslashes($pvname)."'));");    
+    $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', Array('".$pvrecipientid."','".addslashes($pvname)."'));");    
   }
 }
 

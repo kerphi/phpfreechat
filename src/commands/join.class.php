@@ -40,7 +40,7 @@ class pfcCommand_join extends pfcCommand
 
     // return ok to the client
     // then the client will create a new tab
-    $xml_reponse->addScript("pfc.handleResponse('join', 'ok', Array('".$chanid."','".addslashes($channame)."'));");
+    $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', Array('".$chanid."','".addslashes($channame)."'));");
   }
   
 }
