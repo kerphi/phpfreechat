@@ -232,7 +232,7 @@ pfcGui.prototype = {
     li_div.appendChild(a2);
     
     var div_content = document.createElement('div');
-    //div_content.style.display = 'none';
+    div_content.style.display = 'none';
     div_content.setAttribute('id', '<?php echo $prefix; ?>channel_content'+tabid);   
     Element.addClassName(div_content, '<?php echo $prefix; ?>content');
 
