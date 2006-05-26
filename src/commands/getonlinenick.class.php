@@ -27,7 +27,11 @@ class pfcCommand_getonlinenick extends pfcCommand
     // check if the nickname list must be updated
     if ($oldnicklist != $users)
     {
-      if ($c->debug) pxlog("/getonlinenick (nicklist updated - nicklist=".implode(",",$users).")", "chat", $c->getId());
+      if ($c->debug)
+      {
+        $nicklist = array(); foreach($users as $u) $nicklist[] = $u["nick"]; $nicklist = implode(",",$nicklist);
+        pxlog("/getonlinenick (nicklist updated - nicklist=".$nicklist.")", "chat", $c->getId());
+      }
 
       $_SESSION[$nicklist_sid] = $users;
 
