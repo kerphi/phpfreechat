@@ -190,7 +190,7 @@ class pfcContainer_File extends pfcContainer
     $nick_filename = $nick_dir."/".$this->_encode($nick);
     if (file_exists($nick_filename)) $there = true;
     @touch($nick_filename);
-    @chmod($nick_filename, 0777); 
+    @chmod($nick_filename, 0700); 
 
     // append the nickname to the cache list
     $_chan = ($chan == NULL) ? "SERVER" : $chan;
