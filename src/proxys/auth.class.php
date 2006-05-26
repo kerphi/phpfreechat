@@ -32,10 +32,22 @@ class pfcProxyCommand_auth extends pfcProxyCommand
 {
   function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
+    $c =& $this->c;
+    $u =& $this->u;
+
     //    $xml_reponse->addScript("alert('proxy auth');");
 
     //    if ($this->name == "send")
     //      $xml_reponse->addScript("alert('proxy auth');");
+
+    if ($this->name == "op")
+    {
+      if (!in_array($u->nick, $c->admins))
+      {
+        $xml_reponse->addScript("alert('not allowed to do /op');");
+      }
+    }
+
     
     // on passe la main a au prochain proxy (ou a la command finale)
     $this->next->run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);

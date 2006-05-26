@@ -322,24 +322,22 @@ pfcClient.prototype = {
       if (resp == "ok")
       {
       }
-      else if (resp == "privmsg")
+      else if (resp == "cmdtoplay")
       {
-        // check if the wanted privmsg exists or not
-        var index = this.privmsgs.indexOf(param);
-        if (index == -1)
+        if (param[0] == "privmsg2")
         {
-          // it doesn't exists, create it in the background
-          this.sendRequest('/privmsg2', param);
-        }
-        else
-        {
-          var tabid = this.privmsgids[index];
-          if (this.gui.getTabId() != tabid)
+          // do not open the same tab twice
+          // (it's not necessary to speak to the server if the tab is allready open)
+          // so we check if the wanted privmsg tab exists or not
+          var index = this.privmsgs.indexOf(param[1]);
+          if (index == -1)
           {
-            // alert user something occurs in the pv tab
-            //            alert("todo: highlight the '"+param+"' tab (tabid="+tabid+")");
+            // it doesn't exists, create it in the background
+            this.sendRequest("/"+param[0],param[1]);
           }
         }
+        else
+          this.sendRequest("/"+param[0],param[1]);
       }
       //      else
       //        alert(cmd + "-"+resp+"-"+param);
@@ -649,7 +647,7 @@ pfcClient.prototype = {
   {
     var recipientid = this.gui.getTabId();
     var req = cmd+" "+this.clientid+" "+(recipientid==''?'0':recipientid)+(param?" "+param : "");
-    if (cmd != "/update") alert(req);
+    <?php if ($debug) { ?> if (cmd != "/update") alert(req);<?php } ?>
     return <?php echo $prefix; ?>handleRequest(req);
   },
 

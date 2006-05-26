@@ -23,18 +23,21 @@ class pfcCommand_update extends pfcCommand
       //         $cmd =& pfcCommand::Factory("notice");
       //         $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u), $sender, $recipient, $recipientid, 2);
       //       }
-      
-      // -----
-      // check if other user talk to me or not
-      $nickid = $container->getNickId($u->nick);
-      $pvnicks = $container->getMeta("privmsg", "nickname", $nickid);
-      if (is_string($pvnicks)) $pvnicks = unserialize($pvnicks);
-      if (!is_array($pvnicks)) $pvnicks = array();
-      for( $i=0; $i < count($pvnicks); $i++)
-        $xml_reponse->addScript("pfc.handleResponse('update', 'privmsg', '".addslashes($pvnicks[$i])."');");
-      $container->rmMeta("privmsg", "nickname", $nickid);
-      // -----
 
+
+      // ---
+      // play the other commands
+      $nickid = $container->getNickId($u->nick);
+      $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
+      if (is_string($cmdtoplay)) $cmdtoplay = unserialize($cmdtoplay);
+      if (!is_array($cmdtoplay)) $cmdtoplay = array();
+      foreach($cmdtoplay as $cmdstr => $cmdparams)
+        foreach($cmdparams as $cmdparam)
+          $xml_reponse->addScript("pfc.handleResponse('update', 'cmdtoplay', Array('".$cmdstr."','".addslashes($cmdparam)."'));");
+      $container->rmMeta("cmdtoplay", "nickname", $nickid);
+      // ---
+
+      
       // update the user nickname timestamp
       $cmd =& pfcCommand::Factory("updatemynick");
       foreach( $u->channels as $id => $chan )

@@ -343,22 +343,27 @@ class phpFreeChat
     {
       $recipient = $u->privmsg[$recipientid]["recipient"];
 
+
+      // @todo: move this code in a proxy
       if ($rawcmd != "update" &&
-          $rawcmd != "leave") // do not open the pv tab when other user close the tab
+          $rawcmd != "leave" &&  // do not open the pv tab when other user close the tab
+          $rawcmd != "privmsg2")
       {
         // alert the other from the new pv
         // (warn other user that someone talk to him)
         $container =& $c->getContainerInstance();
-        $pvs = $container->getMeta("privmsg", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
-        if (is_string($pvs)) $pvs = unserialize($pvs);
-        if (!is_array($pvs)) $pvs = array();
-        if (!in_array($u->nick,$pvs))
+        $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
+        if (is_string($cmdtoplay)) $cmdtoplay = unserialize($cmdtoplay);
+        if (!is_array($cmdtoplay)) $cmdtoplay = array();
+        if (!isset($cmdtoplay["privmsg2"])) $cmdtoplay["privmsg2"] = array();
+        if (!in_array($u->nick, $cmdtoplay["privmsg2"]))
         {
-          $pvs[] = $u->nick;
-          //          $xml_reponse->addScript("alert('pvs[]=".serialize($pvs)."');");
-          $container->setMeta(serialize($pvs), "privmsg", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
+          $cmdtoplay["privmsg2"][] = $u->nick;
+          $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
+          //          $xml_reponse->addScript("alert('cmdtoplay[]=".serialize($cmdtoplay)."');");
         }
       }
+      
     }
     
     $cmd =& pfcCommand::Factory($rawcmd);
