@@ -185,6 +185,7 @@ class pfcContainer_File extends pfcContainer
     $nick_dir = ($chan != NULL) ?
       $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
       $c->container_cfg_server_dir."/nicknames";
+    if (!is_dir($nick_dir)) mkdir_r($nick_dir);
     
     // update my online status file
     $nick_filename = $nick_dir."/".$this->_encode($nick);
@@ -338,7 +339,8 @@ class pfcContainer_File extends pfcContainer
     $nick_dir = ($chan != NULL) ?
       $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
       $c->container_cfg_server_dir."/nicknames";
-
+    if (!is_dir($nick_dir)) mkdir_r($nick_dir);
+    
     $users = array();
     $dir_handle = opendir($nick_dir);
     while (false !== ($file = readdir($dir_handle)))
