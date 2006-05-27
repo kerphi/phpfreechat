@@ -136,7 +136,7 @@ class pfcGlobalConfig
     $this->synchronizeWithCache();
 
     // the nickname is not global, it must not be cached
-    $this->nick = $params["nick"];
+    if (isset($params["nick"])) $this->nick = $params["nick"];
   }
 
   function &Instance( $params = array() )
