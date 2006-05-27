@@ -15,20 +15,21 @@ class pfcCommand_quit extends pfcCommand
 
     // then remove the nickname file
     $container =& $c->getContainerInstance();
+    $quitmsg = $param == "" ? _pfc("%s quit", $u->nick) : _pfc("%s quit (%s)", $u->nick, $param);
     
     // from the channels
     foreach( $u->channels as $id => $chandetail )
       if ($container->removeNick($chandetail["recipient"], $u->nick))
       {
         $cmd =& pfcCommand::Factory("notice");
-        $cmd->run($xml_reponse, $clientid, _pfc("%s quit", $u->nick), $sender, $chandetail["recipient"], $id, 2);
+        $cmd->run($xml_reponse, $clientid, $quitmsg, $sender, $chandetail["recipient"], $id, 2);
       }
     // from the private messages
     foreach( $u->privmsg as $id => $pvdetail )
       if ($container->removeNick($pvdetail["recipient"], $u->nick))
       {
         $cmd =& pfcCommand::Factory("notice");
-        $cmd->run($xml_reponse, $clientid, _pfc("%s quit", $u->nick), $sender, $pvdetail["recipient"], $id, 2);
+        $cmd->run($xml_reponse, $clientid, $quitmsg, $sender, $pvdetail["recipient"], $id, 2);
       }
     // from the server
     $container->removeNick(NULL, $u->nick);

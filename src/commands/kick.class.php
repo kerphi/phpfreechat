@@ -10,37 +10,18 @@ class pfcCommand_kick extends pfcCommand
     $u =& $this->u;
 
 
-
-
+    // kicking a user just add a command to play to the aimed user metadata.
     $container =& $c->getContainerInstance();
     $nickid = $container->getNickId($param);
-
     if ($nickid != "undefined")
     {
       $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
       if (is_string($cmdtoplay)) $cmdtoplay = unserialize($cmdtoplay);
       if (!is_array($cmdtoplay)) $cmdtoplay = array();
       if (!isset($cmdtoplay["quit"])) $cmdtoplay["quit"] = array();
-      $cmdtoplay["quit"][] = "dummy param";
+      $cmdtoplay["quit"][] = _pfc("kicked by %s", $sender);
       $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $nickid);      
     }
-    $xml_reponse->addScript("alert('/kick $param command -> $nickid');");
-
-    
-    /*
-    $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
-    if (is_string($cmdtoplay)) $cmdtoplay = unserialize($cmdtoplay);
-    if (!is_array($cmdtoplay)) $cmdtoplay = array();
-    if (!isset($cmdtoplay["privmsg2"])) $cmdtoplay["privmsg2"] = array();
-    if (!in_array($u->nick, $cmdtoplay["privmsg2"]))
-    {
-      $cmdtoplay["privmsg2"][] = $u->nick;
-      $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
-      //          $xml_reponse->addScript("alert('cmdtoplay[]=".serialize($cmdtoplay)."');");
-    }
-    */
-
-    
     
   }
 }
