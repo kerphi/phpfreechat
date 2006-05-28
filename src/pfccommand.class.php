@@ -77,6 +77,7 @@ class pfcCommand
       $cmd->name = $cmd_name;
       
       // instanciate the proxy chains
+      // @todo instanciate the whole chain (from the 'proxys' parameter array)
       $proxy           = NULL;
       $proxy_name      = strtolower($c->proxys[0]);
       $proxy_classname = "pfcProxyCommand_" . $proxy_name;
