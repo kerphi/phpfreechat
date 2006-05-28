@@ -4,12 +4,28 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_op extends pfcCommand
 {
+  var $usage = "/op {nickname}";
+  
   function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
     $u =& $this->u;
 
-    $xml_reponse->addScript("alert('op command');");   
+    if (trim($param) == "")
+    {
+      // error
+      $msg = _pfc("Missing parameter");
+      $msg .= " (".$this->usage.")";
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $clientid, $msg, $sender, $recipient, $recipientid);
+      return;
+    }
+
+    // just change the "isadmin" meta flag
+    $nicktoop   = trim($param);
+    $container  =& $c->getContainerInstance();
+    $nicktoopid = $container->getNickId($nicktoop);
+    $container->setMeta(true, "isadmin", "nickname", $nicktoopid);
   }
 }
 

@@ -14,6 +14,17 @@ class pfcCommand_connect extends pfcCommand
     $container =& $c->getContainerInstance();
     $disconnected_users = $container->removeObsoleteNick(NULL, $c->timeout);
 
+
+    // setup some user meta
+    $nickid = $container->getNickId($u->nick);
+    // store the user ip
+    $container->setMeta($_SERVER["REMOTE_ADDR"], "ip", "nickname", $nickid);
+    // store the admin flag
+    if (in_array($c->nick, $c->admins))
+      $container->setMeta(true, "isadmin", "nickname", $nickid);
+    else
+      $container->setMeta(false, "isadmin", "nickname", $nickid);
+    
     // connect to the server
     $xml_reponse->addScript("pfc.handleResponse('connect', 'ok', '');");
         

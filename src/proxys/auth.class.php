@@ -42,12 +42,20 @@ class pfcProxyCommand_auth extends pfcProxyCommand
 
     if ($this->name == "op")
     {
-      if (!in_array($u->nick, $c->admins))
+      $container =& $c->getContainerInstance();
+      $nickid = $container->getNickId($sender);
+      $isadmin = $container->getMeta("isadmin", "nickname", $nickid);
+      if (!$isadmin)
       {
         $xml_reponse->addScript("alert('not allowed to do /op');");
+        return;
+      }
+      else
+      {
+        //        $xml_reponse->addScript("alert('allowed to do /op');");
       }
     }
-    if ($this->name == "join")
+    else if ($this->name == "join")
     {
       // check the user is not listed in the banished channel list
       $container   =& $c->getContainerInstance();
