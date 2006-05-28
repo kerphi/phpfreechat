@@ -126,7 +126,7 @@ pfcGui.prototype = {
     sc = document.createElement('div');
     sc.setAttribute('id', '<?php echo $prefix; ?>smileys_'+tabid);
     Element.addClassName(sc, '<?php echo $prefix; ?>smileys');
-    // I set the border style here because seting it in the CSS is not taken in account
+    // I set the border style here because setting it in the CSS is not take into account
     sc.style.borderTop = "1px solid #555";
     var div = document.createElement('div');
     div.style.padding = "5px";   
