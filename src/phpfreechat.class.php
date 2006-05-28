@@ -385,7 +385,7 @@ class phpFreeChat
       if ($cmdtmp != NULL)
       {
         // store the new cmdtoplay list (-1 item)
-        $cmdtoplay = $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $nickid);
+        $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $nickid);
 
         // play the command
         $cmd =& pfcCommand::Factory($cmdtmp[0]);
