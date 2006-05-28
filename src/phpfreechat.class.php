@@ -365,7 +365,6 @@ class phpFreeChat
 
     }
 
-    /*
     
     // before playing the wanted command
     // play the found commands into the meta 'cmdtoplay'
@@ -381,20 +380,27 @@ class phpFreeChat
       if ($cmdtmp != NULL)
       {
         // store the new cmdtoplay list (-1 item)
-        $cmdtoplay = $container->setMeta("cmdtoplay", "nickname", $nickid);
+        $cmdtoplay = $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $nickid);
 
         // play the command
+        $cmd =& pfcCommand::Factory($cmdtmp[0]);
+        if ($c->debug)
+          $cmd->run($xml_reponse, $clientid, $cmdtmp[1], $sender, $recipient, $recipientid);
+        else
+          @$cmd->run($xml_reponse, $clientid, $cmdtmp[1], $sender, $recipient, $recipientid);
+
+        if ($cmdtmp[0] == "leave")
+          $xml_reponse->addScript("alert('KICK');");
         
         // check if there is other command to play
         $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
-        $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
+        $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);        
       }
 
       $morecmd = (count($cmdtoplay) > 0);
     }
 
 
-    */
 
 
 

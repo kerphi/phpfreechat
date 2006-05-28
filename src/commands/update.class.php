@@ -25,6 +25,7 @@ class pfcCommand_update extends pfcCommand
       //       }
 
 
+      /*
       // ---
       // play the other commands
       $nickid = $container->getNickId($u->nick);
@@ -34,7 +35,7 @@ class pfcCommand_update extends pfcCommand
         $xml_reponse->addScript("pfc.handleResponse('update', 'cmdtoplay', Array('".$cmdtmp[0]."','".addslashes($cmdtmp[1])."'));");
       $container->rmMeta("cmdtoplay", "nickname", $nickid);
       // ---
-
+      */
       
       // update the user nickname timestamp
       $cmd =& pfcCommand::Factory("updatemynick");
