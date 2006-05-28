@@ -4,25 +4,27 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_nick extends pfcCommand
 {
+  var $usage = "/nick {newnickname}";
+  
   function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
     $u =& $this->u;
 
+    if (trim($param) == "")
+    {
+      // error
+      $msg = _pfc("Missing parameter");
+      $msg .= " (".$this->usage.")";
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $clientid, $msg, $sender, $recipient, $recipientid);
+      return;
+    }
+    
     $newnick = phpFreeChat::FilterNickname($param);
     $oldnick = $u->nick;
 
     if ($c->debug) pxlog("/nick ".$newnick, "chat", $c->getId());
-
-    if ($newnick == "")
-    {
-      // the choosen nick is empty
-      if ($c->debug) pxlog("/nick the choosen nick is empty", "chat", $c->getId());
-      $xml_reponse->addScript("pfc.handleResponse('nick', 'empty', '');");
-      //$cmd =& pfcCommand::Factory("asknick");
-      //$cmd->run($xml_reponse, $clientid, "", $sender, $recipient);
-      return;
-    }
    
     $container =& $c->getContainerInstance();
     $newnickid = $container->getNickId($newnick);
