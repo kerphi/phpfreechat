@@ -14,10 +14,10 @@ class pfcCommand_leave extends pfcCommand
     // tab to leave can be passed in the parameters
     // a reason can also be present (used for kick and ban commands)
     $id = ""; $reason = "";
-    if (preg_match("/([a-z0-9]*) (.*)/i", $param, $res))
+    if (preg_match("/([a-z0-9]*)( (.*)|)/i", $param, $res))
     {
       $id     = $res[1];
-      $reason = $res[2];
+      $reason = trim($res[2]);
     }
     if ($id == "") $id = $recipientid; // be default this is the current tab to leave
     
