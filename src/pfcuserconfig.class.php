@@ -12,8 +12,8 @@ class pfcUserConfig
   var $timeout;
   var $sessionid;
   
-  var $is_init = false; // used internaly to know if the chat config is initialized
-  var $errors = array();
+  //  var $is_init = false; // used internaly to know if the chat config is initialized
+  //  var $errors = array();
   
   function pfcUserConfig()
   {
@@ -71,7 +71,7 @@ class pfcUserConfig
     }
     return $i;
   }
-  
+  /*
   function init()
   {
     //    echo "init()<br>";
@@ -101,7 +101,9 @@ class pfcUserConfig
   {
     return $this->errors;
   }
+  */
 
+  /*
   function getCacheFile()
   {
     $c =& pfcGlobalConfig::Instance();
@@ -111,10 +113,12 @@ class pfcUserConfig
     //    echo "getCacheFile() = '$cachefile'<br>";
     return $cachefile;
   }
+  */
   /**
    * save the pfcUserConfig object into cache if it doesn't exists yet
    * else restore the old pfcConfig object
    */
+  /*
   function synchronizeWithCache()
   {
     //    echo "synchronizeWithCache()<br>";
@@ -144,6 +148,8 @@ class pfcUserConfig
       $this->saveInCache();
     }
   }
+  */
+  
   function saveInCache()
   {
     //    echo "saveInCache()<br>";
