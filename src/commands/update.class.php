@@ -23,19 +23,6 @@ class pfcCommand_update extends pfcCommand
       //         $cmd =& pfcCommand::Factory("notice");
       //         $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u), $sender, $recipient, $recipientid, 2);
       //       }
-
-
-      /*
-      // ---
-      // play the other commands
-      $nickid = $container->getNickId($u->nick);
-      $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
-      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
-      foreach($cmdtoplay as $cmdtmp)
-        $xml_reponse->addScript("pfc.handleResponse('update', 'cmdtoplay', Array('".$cmdtmp[0]."','".addslashes($cmdtmp[1])."'));");
-      $container->rmMeta("cmdtoplay", "nickname", $nickid);
-      // ---
-      */
       
       // update the user nickname timestamp
       $cmd =& pfcCommand::Factory("updatemynick");

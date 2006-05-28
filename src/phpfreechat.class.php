@@ -354,10 +354,15 @@ class phpFreeChat
         $container =& $c->getContainerInstance();
         $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
         $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
-        //if (!isset($cmdtoplay["privmsg2"])) $cmdtoplay["privmsg2"] = array();
-        if (!in_array(array("privmsg2", $u->nick), $cmdtoplay))
+        $cmdtmp = array("privmsg2",  /* cmdname */
+                        $u->nick,    /* param */
+                        $sender,     /* sender */
+                        $recipient,  /* recipient */
+                        $recipientid,/* recipientid */
+                        );
+        if (!in_array($cmdtmp, $cmdtoplay))
         {
-          $cmdtoplay[] = array("privmsg2", $u->nick);
+          $cmdtoplay[] = $cmdtmp;
           $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
           //$xml_reponse->addScript("alert('cmdtoplay[]=".serialize($cmdtoplay)."');");
         }
@@ -385,12 +390,16 @@ class phpFreeChat
         // play the command
         $cmd =& pfcCommand::Factory($cmdtmp[0]);
         if ($c->debug)
-          $cmd->run($xml_reponse, $clientid, $cmdtmp[1], $sender, $recipient, $recipientid);
+          $cmd->run($xml_reponse, $clientid, $cmdtmp[1], $cmdtmp[2], $cmdtmp[3], $cmdtmp[4]);
         else
-          @$cmd->run($xml_reponse, $clientid, $cmdtmp[1], $sender, $recipient, $recipientid);
+          @$cmd->run($xml_reponse, $clientid, $cmdtmp[1], $cmdtmp[2], $cmdtmp[3], $cmdtmp[4]);
 
+        // if the cmdtoplay is a 'leave' command, then show an alert to the kicked or banished user
         if ($cmdtmp[0] == "leave")
-          $xml_reponse->addScript("alert('KICK');");
+        {
+          if (preg_match("/([a-z0-9]*) (.*)/i", $cmdtmp[1], $res))
+            $xml_reponse->addScript("alert('".$res[2]."');");
+        }
         
         // check if there is other command to play
         $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);

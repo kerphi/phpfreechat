@@ -4,14 +4,25 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_join extends pfcCommand
 {
+  var $usage = "/join {channelname}";
+  
   function run(&$xml_reponse, $clientid, &$param, &$sender, &$recipient, &$recipientid)
   {
     $c =& $this->c;
     $u =& $this->u;
 
-    $channame  = $param;
+    $channame  = trim($param);
     $chanrecip = pfcCommand_join::GetRecipient($channame);
     $chanid    = pfcCommand_join::GetRecipientId($channame);
+    
+    if ($channame == "")
+    {
+      $msg = _pfc("Missing parameter");
+      $msg .= " (".$this->usage.")";
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $clientid, $msg, $sender, $recipient, $recipientid);
+      return;
+    }
     
     if(!isset($u->channels[$chanid]))
     {

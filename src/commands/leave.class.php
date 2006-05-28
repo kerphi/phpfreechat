@@ -4,13 +4,22 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_leave extends pfcCommand
 {
+  var $usage = "/leave [{recipientid} {reason}]";
+  
   function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
     $u =& $this->u;
 
     // tab to leave can be passed in the parameters
-    $id = ($param != "") ? $param : $recipientid;
+    // a reason can also be present (used for kick and ban commands)
+    $id = ""; $reason = "";
+    if (preg_match("/([a-z0-9]*) (.*)/i", $param, $res))
+    {
+      $id     = $res[1];
+      $reason = $res[2];
+    }
+    if ($id == "") $id = $recipientid; // be default this is the current tab to leave
     
     //    $xml_reponse->addScript("alert('sender=".addslashes($sender)."');");
     //    $xml_reponse->addScript("alert('recipientid=".addslashes($id)."');");
@@ -44,9 +53,11 @@ class pfcCommand_leave extends pfcCommand
     {
       if ($leavech)
       {
-        // show a leave message
+        // show a leave message with the showing the reason if present
+        $msg = _pfc("%s quit",$u->nick);
+        if ($reason != "") $msg .= " (".$reason.")";
         $cmd =& pfcCommand::Factory("notice");
-        $cmd->run($xml_reponse, $clientid, _pfc("%s quit",$u->nick), $sender, $leave_recip, $leave_id, 1);
+        $cmd->run($xml_reponse, $clientid, $msg, $sender, $leave_recip, $leave_id, 1);
       }
 
       // remove the nickname from the channel/pv
@@ -60,7 +71,10 @@ class pfcCommand_leave extends pfcCommand
     else
     {
       // error
-      $xml_reponse->addScript("alert('error leaving ".$id."');");
+      $msg = _pfc("Missing parameter");
+      $msg .= " (".$this->usage.")";
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $clientid, $msg, $sender, $recipient, $recipientid);
     }
   }
 }

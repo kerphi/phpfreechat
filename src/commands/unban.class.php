@@ -4,6 +4,8 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_unban extends pfcCommand
 {
+  var $usage = "/unban {id}";
+  
   function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
@@ -11,7 +13,16 @@ class pfcCommand_unban extends pfcCommand
 
     $container =& $c->getContainerInstance();
 
-
+    if (trim($param) == "")
+    {
+      // error
+      $msg = _pfc("Missing parameter");
+      $msg .= " (".$this->usage.")";
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $clientid, $msg, $sender, $recipient, $recipientid);
+      return;
+    }
+    
     $updated = false;
     $msg = "<p>"._pfc("Nobody has been unbanished")."</p>";
     

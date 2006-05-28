@@ -35,6 +35,11 @@ class pfcCommand
    * Command name (lowercase)
    */
   var $name;
+
+  /**
+   * Contains the command syntaxe (how to use the command)
+   */
+  var $usage;
   
   /**
    * Not used for now
