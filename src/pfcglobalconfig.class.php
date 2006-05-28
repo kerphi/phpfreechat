@@ -31,17 +31,16 @@ require_once dirname(__FILE__)."/pfci18n.class.php";
 class pfcGlobalConfig
 {
   var $serverid            = ""; // this is the chat server id (comparable to the server host in IRC)
-
-  var $admins              = array();
-  var $proxy               = array("auth");
   
   // these parameters are dynamic (not cached)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
+  var $isadmin             = false;
   var $channels            = array(); // the default joined channels when opening the chat
   var $privmsg             = array(); // the default privmsg chat to lauch when opening the chat
   var $active              = false;   // by default the user is not connected
   
   // these parameters are static (cached)
+  var $proxys              = array("auth");
   var $title               = ""; // default is _pfc("My Chat")
   var $channel             = ""; // default is _pfc("My room")
   var $frozen_nick         = false;
@@ -135,8 +134,10 @@ class pfcGlobalConfig
 
     $this->synchronizeWithCache();
 
-    // the nickname is not global, it must not be cached
-    if (isset($params["nick"])) $this->nick = $params["nick"];
+    // the 'nick' is dynamic, it must not be cached
+    if (isset($params["nick"]))    $this->nick    = $params["nick"];
+    // the 'isadmin' flag is dynamic, it must not be cached
+    if (isset($params["isadmin"])) $this->isadmin = $params["isadmin"];
   }
 
   function &Instance( $params = array() )

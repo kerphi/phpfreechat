@@ -79,7 +79,7 @@ class pfcCommand
 
     // instanciate the proxy chains
     $proxy           = NULL;
-    $proxy_name      = strtolower($c->proxy[0]);
+    $proxy_name      = strtolower($c->proxys[0]);
     $proxy_classname = "pfcProxyCommand_" . $proxy_name;
     $proxy_filename  = dirname(__FILE__)."/proxys/".$proxy_name.".class.php";
     if (file_exists($proxy_filename)) require_once($proxy_filename);
