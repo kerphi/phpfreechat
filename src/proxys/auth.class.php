@@ -75,7 +75,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
       }
     }
     
-    // on passe la main a au prochain proxy (ou a la command finale)
+    // forward the command to the next proxy or to the final command
     $this->next->run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
   }
 }
