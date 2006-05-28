@@ -214,7 +214,7 @@ p#<?php echo $prefix; ?>errors {
   padding: 2px;
   height: 18px;
 
-  border: black solid 1px;
+  border: 1px solid #555;
   color: #FC4A1F;
   background-color: #FFBA76;
   text-align: center;
@@ -234,11 +234,12 @@ p#<?php echo $prefix; ?>errors {
   font-style: italic;
   color: #888;
 }
-pre.<?php echo $prefix; ?>cmd_rehash,
-pre.<?php echo $prefix; ?>cmd_help
-{
+
+/* commands info */
+pre.<?php echo $prefix; ?>info {
   color: #888;
   font-style: italic;
+  background-color: #EEE;
 }
 
 div#<?php echo $prefix; ?>colorlist {

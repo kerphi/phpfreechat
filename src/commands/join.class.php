@@ -10,8 +10,8 @@ class pfcCommand_join extends pfcCommand
     $u =& $this->u;
 
     $channame  = $param;
-    $chanrecip = "ch_".$channame;
-    $chanid    = md5($channame);
+    $chanrecip = pfcCommand_join::GetRecipient($channame);
+    $chanid    = pfcCommand_join::GetRecipientId($channame);
     
     if(!isset($u->channels[$chanid]))
     {
@@ -41,6 +41,16 @@ class pfcCommand_join extends pfcCommand
     // return ok to the client
     // then the client will create a new tab
     $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', Array('".$chanid."','".addslashes($channame)."'));");
+  }
+
+  function GetRecipient($channame)
+  {
+    return "ch_".$channame;
+  }
+
+  function GetRecipientId($channame)
+  {
+    return md5(pfcCommand_join::GetRecipient($channame));
   }
   
 }

@@ -336,6 +336,10 @@ pfcClient.prototype = {
             this.sendRequest("/"+param[0],param[1]);
           }
         }
+        else if (param[0] == "leave")
+        {
+          this.sendRequest("/"+param[0],param[1]);
+        }
         else
           this.sendRequest("/"+param[0],param[1]);
       }
@@ -346,13 +350,47 @@ pfcClient.prototype = {
     {
       if (resp == "ok")
       {
-        this.displayMsg( 'rehash', this.i18n._('Configuration has been rehashed') );
+        this.displayMsg( cmd, this.i18n._('Configuration has been rehashed') );
       }
       else if (resp == "ko")
       {
-        this.displayMsg( 'rehash', this.i18n._('A problem occurs during rehash') );
+        this.displayMsg( cmd, this.i18n._('A problem occurs during rehash') );
       }
     }
+    else if (cmd == "banlist")
+    {
+      if (resp == "ok" || resp == "ko")
+      {
+        this.displayMsg( cmd, param );
+      }
+    }
+    else if (cmd == "unban")
+    {
+      if (resp == "ok" || resp == "ko")
+      {
+        this.displayMsg( cmd, param );
+      }
+    }
+    else if (cmd == "auth")
+    {
+      if (resp == "ban")
+      {
+        alert(param);
+      }
+    }
+    else if (cmd == "debug")
+    {
+      if (resp == "ok" || resp == "ko")
+      {
+        this.displayMsg( cmd, param );
+      }
+    }
+    else if (cmd == "clear")
+    {
+      var tabid     = this.gui.getTabId();
+      var container = this.gui.getChatContentFromTabId(tabid);
+      container.innerHTML = "";
+    }    
     else
       alert(cmd + "-"+resp+"-"+param);
   },
@@ -546,12 +584,20 @@ pfcClient.prototype = {
     var tabid     = this.gui.getTabId();
     var container = this.gui.getChatContentFromTabId(tabid);
 
-    // create a dummy div to avoid konqueror bug when setting nickmarkers
-    var m = document.createElement('div');
-    m.innerHTML = '<pre class="<?php echo $prefix; ?>cmd_'+cmd+'">'+msg+'</pre>';
+    div = document.createElement('div');
+    div.style.padding = "2px 5px 2px 5px";
+    
+    pre = document.createElement('pre');
+    Element.addClassName(pre, '<?php echo $prefix; ?>info');
+    Element.addClassName(pre, '<?php echo $prefix; ?>info_'+cmd);
+    pre.style.border  = "1px solid #555";
+    pre.style.padding = "5px";
+    pre.innerHTML = msg;
+    div.appendChild(pre); 
+    
     // finaly append this to the message list
-    container.appendChild(m); 
-    this.gui.scrollDown(tabid, m);
+    container.appendChild(div); 
+    this.gui.scrollDown(tabid, div);
   },
   
   handleComingRequest: function( cmds )
