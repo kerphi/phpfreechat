@@ -24,7 +24,14 @@ class pfcCommand_debug extends pfcCommand
       $msg = str_replace("\n","",addslashes(nl2br($msg)));
       $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
     }
-
+    if ($param == "phpserver")
+    {
+      $msg   = "";
+      $msg  .= var_export($_SERVER, true);
+      $msg = str_replace("\n","",addslashes(nl2br($msg)));
+      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
+    }
+    
   }
 }
 
