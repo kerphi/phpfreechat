@@ -509,7 +509,7 @@ class pfcContainer_File extends pfcContainer
    * @param $key is the index which identify a metadata
    * @param $type is used to "group" some metadata
    * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
-   * @return mixed the value assigned to the key
+   * @return mixed the value assigned to the key, NULL if not found
    */
   function getMeta($key, $type, $subtype = NULL)
   {
@@ -538,6 +538,7 @@ class pfcContainer_File extends pfcContainer
    * @param $value is the value associated to the key
    * @param $type is used to "group" some metadata
    * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
+   * @return true on success, false on error
    */
   function setMeta($value, $key, $type, $subtype = NULL)
   {
@@ -568,6 +569,7 @@ class pfcContainer_File extends pfcContainer
    * @param $key is the key to delete, use NULL to delete all the metadata
    * @param $type is used to "group" some metadata
    * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
+   * @return true on success, false on error
    */
   function rmMeta($key, $type, $subtype = NULL)
   {
@@ -612,6 +614,7 @@ class pfcContainer_File extends pfcContainer
   /**
    * Return a unique id. Each time this function is called, the last id is incremented.
    * used internaly
+   * @private
    */ 
   function _requestMsgId($chan)
   {
@@ -647,12 +650,20 @@ class pfcContainer_File extends pfcContainer
 
     return $msg_id;
   }
-  
+
+  /**
+   * Used to encode UTF8 strings to ASCII filenames
+   * @private
+   */  
   function _encode($str)
   {
     return base64_encode(urlencode($str));
   }
   
+  /**
+   * Used to decode ASCII filenames to UTF8 strings
+   * @private
+   */  
   function _decode($str)
   {
     return urldecode(base64_decode($str));
