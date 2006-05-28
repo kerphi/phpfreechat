@@ -16,10 +16,8 @@ class pfcCommand_kick extends pfcCommand
     if ($nickid != "undefined")
     {
       $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
-      if (is_string($cmdtoplay)) $cmdtoplay = unserialize($cmdtoplay);
-      if (!is_array($cmdtoplay)) $cmdtoplay = array();
-      if (!isset($cmdtoplay["leave"])) $cmdtoplay["leave"] = array();
-      $cmdtoplay["leave"][] = $recipientid; // kick the user from the current channel //_pfc("kicked by %s", $sender);
+      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
+      $cmdtoplay[] = array("leave", $recipientid); // kick the user from the current channel //_pfc("kicked by %s", $sender);
       $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $nickid);      
     }
   }

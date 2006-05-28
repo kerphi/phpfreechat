@@ -353,18 +353,52 @@ class phpFreeChat
         // (warn other user that someone talk to him)
         $container =& $c->getContainerInstance();
         $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
-        if (is_string($cmdtoplay)) $cmdtoplay = unserialize($cmdtoplay);
-        if (!is_array($cmdtoplay)) $cmdtoplay = array();
-        if (!isset($cmdtoplay["privmsg2"])) $cmdtoplay["privmsg2"] = array();
-        if (!in_array($u->nick, $cmdtoplay["privmsg2"]))
+        $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
+        //if (!isset($cmdtoplay["privmsg2"])) $cmdtoplay["privmsg2"] = array();
+        if (!in_array(array("privmsg2", $u->nick), $cmdtoplay))
         {
-          $cmdtoplay["privmsg2"][] = $u->nick;
+          $cmdtoplay[] = array("privmsg2", $u->nick);
           $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
-          //          $xml_reponse->addScript("alert('cmdtoplay[]=".serialize($cmdtoplay)."');");
+          //$xml_reponse->addScript("alert('cmdtoplay[]=".serialize($cmdtoplay)."');");
         }
       }
-      
+
     }
+
+    /*
+    
+    // before playing the wanted command
+    // play the found commands into the meta 'cmdtoplay'
+    $container =& $c->getContainerInstance();
+    $nickid = $container->getNickId($u->nick);
+    $morecmd = true;
+    while($morecmd)
+    {
+      // take a command from the list
+      $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
+      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
+      $cmdtmp = array_pop($cmdtoplay);
+      if ($cmdtmp != NULL)
+      {
+        // store the new cmdtoplay list (-1 item)
+        $cmdtoplay = $container->setMeta("cmdtoplay", "nickname", $nickid);
+
+        // play the command
+        
+        // check if there is other command to play
+        $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
+        $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
+      }
+
+      $morecmd = (count($cmdtoplay) > 0);
+    }
+
+
+    */
+
+
+
+
     
     $cmd =& pfcCommand::Factory($rawcmd);
     if ($cmd != NULL)

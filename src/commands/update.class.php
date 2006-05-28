@@ -29,11 +29,9 @@ class pfcCommand_update extends pfcCommand
       // play the other commands
       $nickid = $container->getNickId($u->nick);
       $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
-      if (is_string($cmdtoplay)) $cmdtoplay = unserialize($cmdtoplay);
-      if (!is_array($cmdtoplay)) $cmdtoplay = array();
-      foreach($cmdtoplay as $cmdstr => $cmdparams)
-        foreach($cmdparams as $cmdparam)
-          $xml_reponse->addScript("pfc.handleResponse('update', 'cmdtoplay', Array('".$cmdstr."','".addslashes($cmdparam)."'));");
+      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
+      foreach($cmdtoplay as $cmdtmp)
+        $xml_reponse->addScript("pfc.handleResponse('update', 'cmdtoplay', Array('".$cmdtmp[0]."','".addslashes($cmdtmp[1])."'));");
       $container->rmMeta("cmdtoplay", "nickname", $nickid);
       // ---
 
