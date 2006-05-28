@@ -36,7 +36,7 @@ class pfcContainer
 
   /**
    * Create (connect/join) the nickname into the server or the channel locations
-   * Notice: this function must update all channels the users joined (use stored channel list into metadata)
+   * Notice: the caller must take care to update all channels the users joined (use stored channel list into metadata)
    * @param $chan if NULL then create the user on the server (connect), otherwise create the user on the given channel (join)
    * @param $nick the nickname to create
    * @param $nickid is the corresponding nickname id (taken from session)
@@ -46,9 +46,10 @@ class pfcContainer
 
   /**
    * Remove (disconnect/quit) the nickname from the server or from a channel
-   * Notice: this function must update all channels if the user disconnect completly (use stored channel list into metadata)
-   * @param $chan if NULL then remove the user on the server (disconnect) and on all the joined channels, otherwise just remove the user from the given channel (quit)
+   * Notice: The caller must take care to update all joined channels.
+   * @param $chan if NULL then remove the user on the server (disconnect), otherwise just remove the user from the given channel (quit)
    * @param $nick the nickname to remove
+   * @return true if the nickname was correctly removed
    */
   function removeNick($chan, $nickname)
   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
@@ -62,9 +63,11 @@ class pfcContainer
   function updateNick($chan, $nick)
   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
 
+
   /**
    * Change the user' nickname
-   * Notice: this function must update all channels the users joined (use stored channel list into metadata)
+   * Notice: this call must take care to update all channels the user joined
+   * @param $chan where to update the nick, if null then update the server nick
    * @param $newnick
    * @param $oldnick
    */
@@ -85,7 +88,7 @@ class pfcContainer
    * Notice: this function must remove all nicknames which are not uptodate from the given channel or from the server
    * @param $chan if NULL then check obsolete nick on the server, otherwise just check obsolete nick on the given channel
    * @param $timeout
-   * @return array() contains all disconnected nicknames
+   * @return array("nick"=>???, "timestamp"=>???) contains all disconnected nicknames and there timestamp
    */
   function removeObsoleteNick($chan, $timeout)
   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
@@ -93,26 +96,37 @@ class pfcContainer
   /**
    * Returns the nickname list on the given channel or on the whole server
    * @param $chan if NULL then returns all connected user, otherwise just returns the channel nicknames
-   * @return array() contains a nickname list
-   */
+   * @return array(array("nick"=>???,"timestamp"=>???) contains the nickname list with the associated timestamp (laste update time)
+   */  
   function getOnlineNick($chan)
   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
 
   /**
-   * Write a message to the given channel or to the server
+   * Returns returns a positive number if the nick is online
+   * @param $chan if NULL then check if the user is online on the server, otherwise check if the user has joined the channel
+   * @return -1 if the user is off line, a positive (>=0) if the user is online
+   */
+  function isNickOnline($chan, $nick)
+  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+
+  /**
+   * Write a command to the given channel or to the server
    * Notice: a message is very generic, it can be a misc command (notice, me, ...)
    * @param $chan if NULL then write the message on the server, otherwise just write the message on the channel message pool
    * @param $nick is the sender nickname
-   * @param $msg is the raw message to write
+   * @param $cmd is the command name (ex: "send", "nick", "kick" ...)
+   * @param $param is the command' parameters (ex: param of the "send" command is the message)
+   * @return $msg_id the created message identifier
    */
   function write($chan, $nick, $msg)
   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
 
   /**
-   * Read the last posted messages from a channel or from the server
+   * Read the last posted commands from a channel or from the server
+   * Notice: the returned array must be ordered by id
    * @param $chan if NULL then read from the server, otherwise read from the given channel
    * @param $from_id read all message with a greater id
-   * @return array() contains the messages list
+   * @return array() contains the command list
    */
   function read($chan, $from_id)
   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
@@ -123,7 +137,7 @@ class pfcContainer
    * @param $chan if NULL then read if from the server, otherwise read if from the given channel
    * @return int is the last posted message id
    */
-  function getLastMsgId()
+  function getLastId($chan)
   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
 
   /**
@@ -132,7 +146,7 @@ class pfcContainer
    * @param $key is the index which identify a metadata
    * @param $type is used to "group" some metadata
    * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
-   * @return mixed the value assigned to the key
+   * @return mixed the value assigned to the key, NULL if not found
    */
   function getMeta($key, $type, $subtype = NULL)
   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
@@ -144,15 +158,18 @@ class pfcContainer
    * @param $value is the value associated to the key
    * @param $type is used to "group" some metadata
    * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
+   * @return true on success, false on error
    */
-  function setMeta($key, $value, $type, $subtype = NULL)
+  function setMeta($value, $key, $type, $subtype = NULL)
   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+
   /**
    * Remove a meta data key/value couple
    * Notice: if key is NULL then all the meta data must be removed
    * @param $key is the key to delete, use NULL to delete all the metadata
    * @param $type is used to "group" some metadata
    * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
+   * @return true on success, false on error
    */
   function rmMeta($key, $type, $subtype = NULL)
   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
