@@ -252,5 +252,6 @@ img.<?php echo $prefix; ?>color {
 
 .<?php echo $prefix; ?>nickmarker {
   white-space: pre;
+  cursor: crosshair;
 }
 

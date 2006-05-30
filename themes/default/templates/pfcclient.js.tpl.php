@@ -645,6 +645,7 @@ pfcClient.prototype = {
 	line += '&#x2039;';
 	line += '<span ';
         if (nickcolor != '') line += 'style="color: ' + nickcolor + '" ';
+        line += 'onclick="pfc.insert_text(\'' + sender + ', \',\'\')" ';
 	line += 'class="<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(sender)) +'">';
 	line += sender;
 	line += '</span>';
