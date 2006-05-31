@@ -136,11 +136,11 @@ pfcGui.prototype = {
     s.setAttribute('src','<?php echo $s_file; ?>');
     s.setAttribute('alt','<?php echo $s_str[0]; ?>');
     s.setAttribute('title','<?php echo $s_str[0]; ?>');
-    s.setAttribute('onclick','pfc.insertSmiley(\'<?php echo $s_str[0]; ?>\');');
+    s.setAttribute('onclick','pfc.insertSmiley(String(\'<?php echo $s_str[0]; ?>\').unescapeHTML());');
     div.appendChild(s);
     <?php } ?>
     sc.appendChild(div);
-    
+
     this.smileycontent[tabid] = sc;
     return sc;
   },
