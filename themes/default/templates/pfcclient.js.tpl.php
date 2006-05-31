@@ -618,17 +618,6 @@ pfcClient.prototype = {
       var param       = cmds[mid][6];
       //var fromtoday = cmds[mid][6];
       //var oldmsg    = cmds[mid][7];
-
-
-      // check the nickname is in the list or not
-      var nickfound = false;
-      for(var i = 0; i < this.nicklist[recipientid].length && !nickfound; i++)
-      {
-	if (this.nicklist[recipientid][i] == sender)
-	  nickfound = true;
-      }
-      var nickcolor = '';
-      if (nickfound) nickcolor = this.getAndAssignNickColor(sender);
       
       // format and post message
       var line = '';
@@ -644,7 +633,6 @@ pfcClient.prototype = {
 	line += ' <span class="<?php echo $prefix; ?>nick">';
 	line += '&#x2039;';
 	line += '<span ';
-        if (nickcolor != '') line += 'style="color: ' + nickcolor + '" ';
         line += 'onclick="pfc.insert_text(\'' + sender + ', \',\'\')" ';
 	line += 'class="<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(sender)) +'">';
 	line += sender;
@@ -683,6 +671,7 @@ pfcClient.prototype = {
       // finaly append this to the message list
       recipientdiv.appendChild(m);
       this.gui.scrollDown(tabid, m);
+      this.colorizeNicks(m);
     }
   },
   
@@ -737,10 +726,7 @@ pfcClient.prototype = {
     var ul = document.createElement('ul');
     for (var i=0; i<nicks.length; i++)
     {
-      var li = document.createElement('li');     
-      Element.addClassName(li, '<?php echo $prefix; ?>nickmarker');
-      Element.addClassName(li, '<?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nicks[i])));
-
+      var li = document.createElement('li');
       if (nicks[i] != this.nickname)
       {
         // this is someone -> create a privmsg link
@@ -775,6 +761,8 @@ pfcClient.prototype = {
       span.pfc_nick = nicks[i];
       span.onclick = function(){pfc.insert_text(this.pfc_nick+", ",""); return false;}
       span.appendChild(document.createTextNode(nicks[i]));
+      Element.addClassName(span, '<?php echo $prefix; ?>nickmarker');
+      Element.addClassName(span, '<?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nicks[i])));
       nobr.appendChild(span);
       li.appendChild(nobr);
       li.style.borderBottom = '1px solid #AAA';
@@ -786,7 +774,7 @@ pfcClient.prototype = {
       nickdiv.replaceChild(ul,fc);
     else
       nickdiv.appendChild(ul,fc);
-    this.colorizeNicks(tabid,nickdiv);
+    this.colorizeNicks(nickdiv);
   },
   
   /**
@@ -902,9 +890,9 @@ pfcClient.prototype = {
   /**
    * parse messages and append it to the message list
    */
+/*
   parseAndPost: function(msgs)
   {
-    /*
     var msgdiv = $('<?php echo $prefix; ?>chat');
     var msgids = Array();
 
@@ -976,22 +964,23 @@ pfcClient.prototype = {
       this.refresh_nickmarker(root);
       this.refresh_clock(root);
     }
-    */
   },
+*/
 
   /**
    * apply nicknames color to the root childs
    */
-  colorizeNicks: function(tabid, root)
+  colorizeNicks: function(root)
   {
-    for(var i = 0; i < this.nicklist[tabid].length; i++)
+    var nicklist = this.getElementsByClassName(root, '<?php echo $prefix; ?>nickmarker', '');
+    for(var i = 0; i < nicklist.length; i++)
     {
-      var cur_nick = this.nicklist[tabid][i];
+      var cur_nick = nicklist[i].innerHTML;
       var cur_color = this.getAndAssignNickColor(cur_nick);
-      this.applyNickColor(root, cur_nick, cur_color);
+      nicklist[i].style.color = cur_color;
     }
   },
-
+  
   /**
    * Initialize the color array used to colirize the nicknames
    */
@@ -1107,14 +1096,13 @@ pfcClient.prototype = {
   refresh_nickmarker: function(root)
   {
     var nickmarker_icon = $('<?php echo $prefix; ?>nickmarker');
-    if (!root) root = $('<?php echo $prefix; ?>chat');
+    if (!root) root = $('<?php echo $prefix; ?>channels_content');
     if (this.nickmarker)
     {
       nickmarker_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/color-on.gif'); ?>";
       nickmarker_icon.alt   = this.i18n._('hide_nickname_color');
       nickmarker_icon.title = nickmarker_icon.alt;
-      //      this.colorizeNicks(root);
-      //      this.colorizeNicks($('<?php echo $prefix; ?>online'));
+      this.colorizeNicks(root);
     }
     else
     {
@@ -1124,13 +1112,7 @@ pfcClient.prototype = {
       var elts = this.getElementsByClassName(root, '<?php echo $prefix; ?>nickmarker', '');
       for(var i = 0; elts.length > i; i++)
       {
-	/* this is not supported in konqueror =>>>  elts[i].removeAttribute('style');*/
-	elts[i].style.color = '';
-      }
-      var elts = this.getElementsByClassName($('<?php echo $prefix; ?>online'), '<?php echo $prefix; ?>nickmarker', '');
-      for(var i = 0; elts.length > i; i++)
-      {
-	/* this is not supported in konqueror =>>>  elts[i].removeAttribute('style');*/
+	// this is not supported in konqueror =>>>  elts[i].removeAttribute('style');
 	elts[i].style.color = '';
       }
     }
