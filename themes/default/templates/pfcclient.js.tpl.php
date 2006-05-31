@@ -201,6 +201,8 @@ pfcClient.prototype = {
         this.channels.push(name);
         this.channelids.push(tabid);
         */
+        this.refresh_Smileys();
+        this.refresh_WhosOnline();
       }
       else
         alert(cmd + "-"+resp+"-"+param);
@@ -216,7 +218,8 @@ pfcClient.prototype = {
         // do not switch to the new created tab
         // keep it in the background
         //        this.gui.setTabById(tabid);
-        alert("ccc");
+        this.refresh_Smileys();
+        this.refresh_WhosOnline();
       }
       else
         alert(cmd + "-"+resp+"-"+param);
@@ -1312,7 +1315,19 @@ pfcClient.prototype = {
   },
   refresh_Smileys: function()
   {
-    var content = $('<?php echo $prefix; ?>smileys');
+    // first of all : show/hide the smiley box
+    var root = $('<?php echo $prefix; ?>channels_content');
+    var contentlist = this.getElementsByClassName(root, '<?php echo $prefix; ?>smileys', '');
+    for(var i = 0; i < contentlist.length; i++)
+    {
+      var content = contentlist[i];
+      if (this.showsmileys)
+        content.style.display = 'block';
+      else
+        content.style.display = 'none';
+    }
+
+    // then switch the button icon
     var btn = $('<?php echo $prefix; ?>showHideSmileysbtn');
     if (this.showsmileys)
     {
@@ -1322,7 +1337,6 @@ pfcClient.prototype = {
         btn.alt = this.i18n._('hidesmiley');
         btn.title = btn.alt;
       }
-      content.style.display = 'block';
     }
     else
     {
@@ -1332,7 +1346,6 @@ pfcClient.prototype = {
         btn.alt = this.i18n._('showsmiley');
         btn.title = btn.alt;
       }
-      content.style.display = 'none';
     }
     this.refresh_Chat();
     this.refresh_OnlineAndSmileys();
@@ -1357,7 +1370,19 @@ pfcClient.prototype = {
   },
   refresh_WhosOnline: function()
   {
-    var content = $('<?php echo $prefix; ?>online');
+    // first of all : show/hide the nickname list box
+    var root = $('<?php echo $prefix; ?>channels_content');
+    var contentlist = this.getElementsByClassName(root, '<?php echo $prefix; ?>online', '');
+    for(var i = 0; i < contentlist.length; i++)
+    {
+      var content = contentlist[i];
+      if (this.showwhosonline)
+        content.style.display = 'block';
+      else
+        content.style.display = 'none';
+    }
+
+    // then refresh the button icon
     var btn = $('<?php echo $prefix; ?>showHideWhosOnlineBtn');
     if (!btn) return;
     if (this.showwhosonline)
@@ -1365,14 +1390,12 @@ pfcClient.prototype = {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-on.gif'); ?>";
       btn.alt = this.i18n._('hideonline');
       btn.title = btn.alt;
-      content.style.display = 'block';
     }
     else
     {
       btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-off.gif'); ?>";
       btn.alt = this.i18n._('showonline');
       btn.title = btn.alt;
-      content.style.display = 'none';
     }
     this.refresh_Chat();
     this.refresh_OnlineAndSmileys();
@@ -1383,29 +1406,41 @@ pfcClient.prototype = {
    */
   refresh_OnlineAndSmileys: function()
   {
-    var onlinediv = $('<?php echo $prefix; ?>online');
-    var smileysdiv = $('<?php echo $prefix; ?>smileys');
     var style = $H();
-    
-    if (this.showwhosonline)
+    var root = $('<?php echo $prefix; ?>channels_content');
+
+    // resize the smiley area
+    var contentlist = this.getElementsByClassName(root, '<?php echo $prefix; ?>smileys', '');
+    for(var i = 0; i < contentlist.length; i++)
     {
-      style['height'] = '';
-      Element.setStyle(smileysdiv, style);
+      var smileydiv = contentlist[i];
+      if (this.showwhosonline)
+      {
+        style['height'] = '';
+        Element.setStyle(smileydiv, style);
+      }
+      else
+      {
+        style['height'] = '100%';
+        Element.setStyle(smileydiv, style);
+      }
     }
-    else
+
+    // resize the nickname list area
+    var contentlist = this.getElementsByClassName(root, '<?php echo $prefix; ?>online', '');
+    for(var i = 0; i < contentlist.length; i++)
     {
-      style['height'] = '100%';
-      Element.setStyle(smileysdiv, style);
-    }
-    if (this.showsmileys)
-    {
-      style['height'] = '';
-      Element.setStyle(onlinediv, style);
-    }
-    else
-    {
-      style['height'] = '100%';
-      Element.setStyle(onlinediv, style);
+      var onlinediv = contentlist[i];
+      if (this.showsmileys)
+      {
+        style['height'] = '';
+        Element.setStyle(onlinediv, style);
+      }
+      else
+      {
+        style['height'] = '100%';
+        Element.setStyle(onlinediv, style);
+      }
     }
 
     // for IE7 CSS refresh
@@ -1418,17 +1453,23 @@ pfcClient.prototype = {
    */
   refresh_Chat: function()
   {
-    var chatdiv = $('<?php echo $prefix; ?>chat');
-    var style = $H();
-    if (!this.showwhosonline && !this.showsmileys)
+    // resize all the tabs content
+    var root = $('<?php echo $prefix; ?>channels_content');
+    var contentlist = this.getElementsByClassName(root, '<?php echo $prefix; ?>chat', '');
+    for(var i = 0; i < contentlist.length; i++)
     {
-      style['width'] = '100%';
-      Element.setStyle(chatdiv, style);
-    }
-    else
-    {
-      style['width'] = '';
-      Element.setStyle(chatdiv, style);
+      var chatdiv = contentlist[i];
+      var style = $H();
+      if (!this.showwhosonline && !this.showsmileys)
+      {
+        style['width'] = '100%';
+        Element.setStyle(chatdiv, style);
+      }
+      else
+      {
+        style['width'] = '';
+        Element.setStyle(chatdiv, style);
+      }
     }
   }
 };
