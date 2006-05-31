@@ -27,6 +27,7 @@ pfcGui.prototype = {
    */
   scrollDown: function(tabid, elttoscroll)
   {
+    if (this.getTabId() != tabid) return; /* do nothing if this is not the current tab or it will reset the scrollbar position to 0 */
     var content = this.getChatContentFromTabId(tabid);
     content.scrollTop += elttoscroll.offsetHeight+2;
     this.scrollpos[tabid] = content.scrollTop;
