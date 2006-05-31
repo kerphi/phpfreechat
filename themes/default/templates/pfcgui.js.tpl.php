@@ -19,7 +19,6 @@ pfcGui.prototype = {
     this.onlinecontent = $H();
     this.smileycontent = $H();
     this.scrollpos     = $H();
-    //    this.tabprefixs = Array();
   },
 
   /**
@@ -166,8 +165,8 @@ pfcGui.prototype = {
     this.tabids     = this.tabids.without(this.tabids[tabpos]);
     this.tabs       = this.tabs.without(this.tabs[tabpos]);
     this.tabtypes   = this.tabtypes.without(this.tabtypes[tabpos]);
-    //    this.tabprefixs = this.tabprefixs.without(this.tabprefixs[tabpos]);
-    tabpos--; if (tabpos<0) tabpos = 0;
+    tabpos = this.tabids.indexOf(this.getTabId());
+    if (tabpos<0) tabpos = 0;
     this.setTabById(this.tabids[tabpos]);
     return name;    
   },
@@ -198,7 +197,6 @@ pfcGui.prototype = {
     this.tabs.push(name);
     this.tabids.push(tabid);
     this.tabtypes.push(type);
-    //    this.tabprefixs.push(prefix);
 
     var li_title = document.createElement('li');
     li_title.setAttribute('id', '<?php echo $prefix; ?>channel_title'+tabid);
@@ -223,7 +221,10 @@ pfcGui.prototype = {
     
     var a2 = document.createElement('a');
     a2.pfc_tabid = tabid;
-    a2.onclick = function(){pfc.sendRequest('/leave', this.pfc_tabid); return false;}
+    a2.onclick = function(){
+      var res = confirm('<?php echo _pfc("Do you really want to leave this room ?"); ?>');
+      if (res == true) pfc.sendRequest('/leave', this.pfc_tabid); return false;
+    }
     a2.alt   = this.i18n._('Close this tab');
     a2.title = a2.alt;
     Element.addClassName(a2, '<?php echo $prefix; ?>tabclose');
