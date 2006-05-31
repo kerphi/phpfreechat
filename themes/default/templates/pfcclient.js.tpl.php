@@ -668,10 +668,11 @@ pfcClient.prototype = {
       // create a dummy div to avoid konqueror bug when setting nickmarkers
       var m = document.createElement('div');
       m.innerHTML = msg_html[recipientid];
+      this.colorizeNicks(m);
+      this.refresh_clock(m);
       // finaly append this to the message list
       recipientdiv.appendChild(m);
       this.gui.scrollDown(tabid, m);
-      this.colorizeNicks(m);
     }
   },
   
@@ -1069,14 +1070,12 @@ pfcClient.prototype = {
 
   showClass: function(root, clsName, clsIgnore, show)
   {
-    /*
     var elts = this.getElementsByClassName(root, clsName, clsIgnore);
     for(var i = 0; elts.length > i; i++)
     if (show)
       elts[i].style.display = 'inline';
     else
       elts[i].style.display = 'none';
-    */
   },
 
 
@@ -1122,7 +1121,6 @@ pfcClient.prototype = {
   /**
    * Date/Hour show/hide
    */
-  /*
   clock_swap: function()
   {
     if (this.clock) {
@@ -1136,7 +1134,7 @@ pfcClient.prototype = {
   refresh_clock: function( root )
   {
     var clock_icon = $('<?php echo $prefix; ?>clock');
-    if (!root) root = $('<?php echo $prefix; ?>chat');
+    if (!root) root = $('<?php echo $prefix; ?>channels_content');
     if (this.clock)
     {
       clock_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/clock-on.gif'); ?>";
@@ -1154,9 +1152,8 @@ pfcClient.prototype = {
       this.showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', false);
     }
     // browser automaticaly scroll up misteriously when showing the dates
-    $('<?php echo $prefix; ?>chat').scrollTop += 30;
+    //    $('<?php echo $prefix; ?>chat').scrollTop += 30;
   },
-  */
   
   /**
    * Connect/disconnect button
