@@ -13,6 +13,12 @@ pfcClient.prototype = {
     /* user description */
     this.nickname      = '<?php echo $u->nick; ?>';
 
+    // this array contains all the sent command
+    // used the up and down key to navigate in the history
+    // (doesn't work on IE6)
+    this.cmdhistory   = Array();
+    this.cmdhistoryid = -1;
+    this.cmdhistoryissearching = false;
     
     /*
     this.channels      = Array();
@@ -425,17 +431,24 @@ pfcClient.prototype = {
   callbackWords_OnKeypress: function(evt)
   {
     var code = (evt.which) ? evt.which : evt.keyCode
-    if (code == 9) /* tab key */
+    if (code == Event.KEY_TAB) /* tab key */
     {
       /* FF & Konqueror workaround : ignore TAB key here */
       /* do the nickname completion work like on IRC */
       this.completeNick();
       return false; /* do not leave the tab key default behavior */
     }
-    else if (code == 13) /* enter key */
+    else if (code == Event.KEY_RETURN) /* enter key */
     {
       var w = this.el_words;
       var wval = w.value;
+
+      // append the string to the history
+      this.cmdhistory.push(wval);
+      this.cmdhistoryid = this.cmdhistory.length;
+      this.cmdhistoryissearching = false;
+
+      // send the string to the server
       re = new RegExp("^(\/[a-z0-9]+)( (.*)|)");
       if (wval.match(re))
       {
@@ -463,6 +476,34 @@ pfcClient.prototype = {
       }
       w.value = '';
       return false;
+    }
+    else if (code == Event.KEY_UP) /* up key */
+    {
+      // write the last command in the history
+      if (this.cmdhistory.length>0)
+      {
+        var w = this.el_words;
+        if (this.cmdhistoryissearching == false && w.value != "")
+          this.cmdhistory.push(w.value);
+        this.cmdhistoryissearching = true;
+        this.cmdhistoryid = this.cmdhistoryid-1;
+        if (this.cmdhistoryid<0) this.cmdhistoryid = this.cmdhistory.length-1;
+        w.value = this.cmdhistory[this.cmdhistoryid];
+      }
+    }
+    else if (code == Event.KEY_DOWN) /* down key */
+    {
+      // write the next command in the history
+      if (this.cmdhistory.length>0)
+      {
+        var w = this.el_words;
+        if (this.cmdhistoryissearching == false && w.value != "")
+          this.cmdhistory.push(w.value);
+        this.cmdhistoryissearching = true;
+        this.cmdhistoryid = this.cmdhistoryid+1;
+        if (this.cmdhistoryid>=this.cmdhistory.length) this.cmdhistoryid = 0;
+        w.value = this.cmdhistory[this.cmdhistoryid];
+      }
     }
     else
     {
