@@ -35,27 +35,22 @@ class pfcProxyCommand_auth extends pfcProxyCommand
     $c =& $this->c;
     $u =& $this->u;
 
-    //    $xml_reponse->addScript("alert('proxy auth');");
-
-    //    if ($this->name == "send")
-    //      $xml_reponse->addScript("alert('proxy auth');");
-
-    if ($this->name == "op")
+    // protect admin commands
+    $admincmd = array("kick", "ban", "unban", "op", "deop", "debug", "rehash", "init");
+    if ( in_array($this->name, $admincmd) )
     {
       $container =& $c->getContainerInstance();
       $nickid = $container->getNickId($sender);
       $isadmin = $container->getMeta("isadmin", "nickname", $nickid);
       if (!$isadmin)
       {
-        $xml_reponse->addScript("alert('not allowed to do /op');");
+        $xml_reponse->addScript("alert('".addslashes(_pfc("You are not allowed to run '%s' command", $this->name))."');");
         return;
       }
-      else
-      {
-        //        $xml_reponse->addScript("alert('allowed to do /op');");
-      }
     }
-    else if ($this->name == "join")
+
+    // protect channel from the banished users
+    if ($this->name == "join")
     {
       // check the user is not listed in the banished channel list
       $container   =& $c->getContainerInstance();
