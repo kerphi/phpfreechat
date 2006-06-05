@@ -93,21 +93,21 @@ pfcClient.prototype = {
 
     // the i18n translations
     this.i18n = new pfcI18N();
-    this.i18n.setLabel('hide_nickname_color', '<?php echo _pfc("Hide nickname marker"); ?>');
-    this.i18n.setLabel('show_nickname_color', '<?php echo _pfc("Show nickname marker"); ?>');
-    this.i18n.setLabel('hide_clock',          '<?php echo _pfc("Hide dates and hours"); ?>');
-    this.i18n.setLabel('show_clock',          '<?php echo _pfc("Show dates and hours"); ?>');
-    this.i18n.setLabel('logout',              '<?php echo _pfc("Disconnect"); ?>');
-    this.i18n.setLabel('login',               '<?php echo _pfc("Connect"); ?>');
-    this.i18n.setLabel('maximize',            '<?php echo _pfc("Magnify"); ?>');
-    this.i18n.setLabel('minimize',            '<?php echo _pfc("Cut down"); ?>');
-    this.i18n.setLabel('hidesmiley',          '<?php echo _pfc("Hide smiley box"); ?>');
-    this.i18n.setLabel('showsmiley',          '<?php echo _pfc("Show smiley box"); ?>');
-    this.i18n.setLabel('hideonline',          '<?php echo _pfc("Hide online users box"); ?>');
-    this.i18n.setLabel('showonline',          '<?php echo _pfc("Show online users box"); ?>');
-    this.i18n.setLabel('enter_nickname',      '<?php echo _pfc("Please enter your nickname"); ?>');
-    this.i18n.setLabel('Private message',     '<?php echo _pfc("Private message"); ?>');
-    this.i18n.setLabel('Close this tab',      '<?php echo _pfc("Close this tab"); ?>');
+    this.i18n.setLabel('hide_nickname_color', '<?php echo addslashes(_pfc("Hide nickname marker")); ?>');
+    this.i18n.setLabel('show_nickname_color', '<?php echo addslashes(_pfc("Show nickname marker")); ?>');
+    this.i18n.setLabel('hide_clock',          '<?php echo addslashes(_pfc("Hide dates and hours")); ?>');
+    this.i18n.setLabel('show_clock',          '<?php echo addslashes(_pfc("Show dates and hours")); ?>');
+    this.i18n.setLabel('logout',              '<?php echo addslashes(_pfc("Disconnect")); ?>');
+    this.i18n.setLabel('login',               '<?php echo addslashes(_pfc("Connect")); ?>');
+    this.i18n.setLabel('maximize',            '<?php echo addslashes(_pfc("Magnify")); ?>');
+    this.i18n.setLabel('minimize',            '<?php echo addslashes(_pfc("Cut down")); ?>');
+    this.i18n.setLabel('hidesmiley',          '<?php echo addslashes(_pfc("Hide smiley box")); ?>');
+    this.i18n.setLabel('showsmiley',          '<?php echo addslashes(_pfc("Show smiley box")); ?>');
+    this.i18n.setLabel('hideonline',          '<?php echo addslashes(_pfc("Hide online users box")); ?>');
+    this.i18n.setLabel('showonline',          '<?php echo addslashes(_pfc("Show online users box")); ?>');
+    this.i18n.setLabel('enter_nickname',      '<?php echo addslashes(_pfc("Please enter your nickname")); ?>');
+    this.i18n.setLabel('Private message',     '<?php echo addslashes(_pfc("Private message")); ?>');
+    this.i18n.setLabel('Close this tab',      '<?php echo addslashes(_pfc("Close this tab")); ?>');
 
     // the graphical user interface
     this.gui = new pfcGui(this.i18n);
