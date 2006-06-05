@@ -386,6 +386,10 @@ pfcClient.prototype = {
       {
         alert(param);
       }
+      else if (resp == "nick")
+      {
+        this.displayMsg( cmd, param );
+      }
     }
     else if (cmd == "debug")
     {

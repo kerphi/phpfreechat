@@ -230,4 +230,8 @@ $GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "You are not allow
 
 // line 67 in auth.class.php
 $GLOBALS["i18n"]["Can't join %s because you are banished"] = "Can't join %s because you are banished";
+
+// line 79 in auth.class.php
+$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "You are not allowed to change your nickname";
+
 ?>

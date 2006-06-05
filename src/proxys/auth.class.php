@@ -69,6 +69,18 @@ class pfcProxyCommand_auth extends pfcProxyCommand
         return;
       }
     }
+
+    // disallow to change nickname if frozen_nick is true
+    if ($this->name == "nick")
+    {
+      if ($param != $c->nick &&
+          $c->frozen_nick == true)
+      {
+        $msg = _pfc("You are not allowed to change your nickname", $param);
+        $xml_reponse->addScript("pfc.handleResponse('".$this->proxyname."', 'nick', '".addslashes($msg)."');");
+        return;
+      }
+    }
     
     // forward the command to the next proxy or to the final command
     $this->next->run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
