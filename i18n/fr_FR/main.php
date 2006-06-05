@@ -174,4 +174,60 @@ $GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "Le paramètre '%
 // line 386 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "Le paramètre '%s' n'est pas valide. Les valeurs authorisées sont : '%s'";
 
+// line 185 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["My room"] = "Mon salon";
+
+// line 109 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Private message"] = "Message privé";
+
+// line 110 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Close this tab"] = "Fermer l'onglet";
+
+// line 225 in pfcgui.js.tpl.php
+$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "Voulez vous vraiment quitter ce salon ?";
+
+// line 19 in unban.class.php
+$GLOBALS["i18n"]["Missing parameter"] = "Paramètre manquant";
+
+// line 38 in ban.class.php
+$GLOBALS["i18n"]["banished from %s by %s"] = "bannis du salon %s par %s";
+
+// line 23 in banlist.class.php
+$GLOBALS["i18n"]["The banished user's id list is:"] = "La liste des id bannis est :";
+
+// line 32 in banlist.class.php
+$GLOBALS["i18n"]["Empty"] = "Vide";
+
+// line 34 in banlist.class.php
+$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "'/unban {id}' va débannir l'utilisateur identifié par {id}";
+
+// line 35 in banlist.class.php
+$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "'/unban all' va débannir tous les bannis de ce salon";
+
+// line 24 in update.class.php
+$GLOBALS["i18n"]["%s quit (timeout)"] = "%s à quitté (timeout)";
+
+// line 46 in join.class.php
+$GLOBALS["i18n"]["%s joins %s"] = "%s a rejoint %s";
+
+// line 31 in kick.class.php
+$GLOBALS["i18n"]["kicked from %s by %s"] = "kické de %s par %s";
+
+// line 38 in send.class.php
+$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "Le message n'a pas été envoyé, %s n'est pas connecté";
+
+// line 27 in unban.class.php
+$GLOBALS["i18n"]["Nobody has been unbanished"] = "Personne n'a été débanni";
+
+// line 42 in unban.class.php
+$GLOBALS["i18n"]["%s has been unbanished"] = "%s a été débanni";
+
+// line 49 in unban.class.php
+$GLOBALS["i18n"]["%s users have been unbanished"] = "%s utilisateurs ont été débanni";
+
+// line 47 in auth.class.php
+$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "Vous n'êtes pas authorisé à lancer la commande '%s'";
+
+// line 67 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because you are banished"] = "Vous ne pouvez pas rejoindre %s car vous êtes bannis";
 ?>
