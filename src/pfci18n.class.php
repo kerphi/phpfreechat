@@ -119,6 +119,9 @@ class pfcI18N
   {
     $files = array();
     $files = array_merge($files, glob(dirname(__FILE__)."/*.php"));
+    $files = array_merge($files, glob(dirname(__FILE__)."/commands/*.php")); 
+    $files = array_merge($files, glob(dirname(__FILE__)."/containers/*.php"));
+    $files = array_merge($files, glob(dirname(__FILE__)."/proxys/*.php"));    
     $files = array_merge($files, glob(dirname(__FILE__)."/../themes/default/templates/*.php"));
 
     $res = array();
@@ -153,8 +156,9 @@ class pfcI18N
       $new_content = "";
       foreach($res as $str => $com)
       {
-        //        echo "str=".$str."\n";
-        if (preg_match("/".preg_quote($str)."/", $old_content) == 0)
+        //echo "com=".$com."\n";
+        //echo "str=".$str."\n";
+        if (preg_match("/".preg_quote($str,'/')."/", $old_content) == 0)
           $new_content .= $com."\n\$GLOBALS[\"i18n\"][\"".$str."\"] = \"\";\n\n";
       }
       $content = "<?php" . $old_content . $new_content . "?>";
