@@ -209,7 +209,7 @@ class pfcGlobalConfig
     $this->errors = array_merge($this->errors, @test_writable_dir($this->data_public_path, "data_public_path"));
     $this->errors = array_merge($this->errors, @test_writable_dir($this->data_private_path, "data_private_path"));
     $this->errors = array_merge($this->errors, @install_dir($this->jspath, $this->data_public_path."/javascript"));
-    $this->errors = array_merge($this->errors, @test_writable_dir(dirname(__FILE__)."/../data/private/cache", "data_public_path/cache"));
+    $this->errors = array_merge($this->errors, @test_writable_dir($this->data_private_path."/cache", "data_private_path/cache"));
     
     // ---
     // test xajax lib existance
@@ -387,7 +387,7 @@ class pfcGlobalConfig
    */
   function synchronizeWithCache($destroy = false)
   {
-    $cachefile = dirname(__FILE__)."/../data/private/cache/pfcglobalconfig_".$this->getId();
+    $cachefile = $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
 
     // destroy the cache if init parameter is present into the url
     if (isset($_GET["init"]) || $destroy) @unlink($cachefile);
@@ -416,7 +416,7 @@ class pfcGlobalConfig
   }
   function saveInCache()
   {
-    $cachefile = dirname(__FILE__)."/../data/private/cache/pfcglobalconfig_".$this->getId();
+    $cachefile = $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
     file_put_contents($cachefile, serialize(get_object_vars($this)));
     if ($this->debug) pxlog("pfcGlobalConfig::saveInCache()", "chatconfig", $this->getId());
   }
