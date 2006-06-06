@@ -14,7 +14,8 @@ class pfcCommand_rehash extends pfcCommand
   function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
-    $synchro = $c->synchronizeWithCache(true); // true => destroy the cache
+    $c->destroy();
+    $synchro = $c->synchronizeWithCache();
 
     if ($synchro)
       $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko', '');");

@@ -17,9 +17,10 @@ class pfcUserConfig
   
   function pfcUserConfig()
   {
+    $c =& pfcGlobalConfig::Instance();
+
     // start the session : session is used for locking purpose and cache purpose
     session_name( "phpfreechat" );
-    if (isset($_GET["init"])) unset($_COOKIE[session_name()]);
     if(session_id() == "") session_start();
     
     //    echo "pfcUserConfig()<br>";
@@ -28,7 +29,7 @@ class pfcUserConfig
 
     // user parameters are cached in sessions
     $this->_getParam("nick");
-    if (!isset($this->nick)) $this->_setParam("nick","");
+    if (!isset($this->nick)) $this->_setParam("nick",$c->nick);
     $this->_getParam("active");
     if (!isset($this->active)) $this->_setParam("active",false);   
     $this->_getParam("channels");
@@ -46,8 +47,6 @@ class pfcUserConfig
       $sessionid_param = $sessionid."_".$p;
       if (isset($_SESSION[$sessionid_param]))
         $this->$p = $_SESSION[$sessionid_param];
-      else
-        $this->$p = $c->$p; // take the default parameter from the global config
     }
     return $this->$p;
   }
@@ -59,6 +58,15 @@ class pfcUserConfig
     $sessionid_param = $sessionid."_".$p;
     $_SESSION[$sessionid_param] = $v;
     $this->$p = $v;
+  }
+
+  function _rmParam($p)
+  {
+    $c =& pfcGlobalConfig::Instance();
+    $sessionid       = "pfcuserconfig_".$c->getId();
+    $sessionid_param = $sessionid."_".$p;
+    unset($_SESSION[$sessionid_param]);
+    unset($this->$p);
   }
   
   function &Instance()
@@ -149,6 +157,14 @@ class pfcUserConfig
     }
   }
   */
+
+  function destroy()
+  {
+    $this->_rmParam("nick");
+    $this->_rmParam("active");
+    $this->_rmParam("channels");
+    $this->_rmParam("privmsg");
+  }
   
   function saveInCache()
   {

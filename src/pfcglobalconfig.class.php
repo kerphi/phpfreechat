@@ -35,14 +35,12 @@ class pfcGlobalConfig
   // these parameters are dynamic (not cached)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
   var $isadmin             = false;
-  var $channels            = array(); // the default joined channels when opening the chat
-  var $privmsg             = array(); // the default privmsg chat to lauch when opening the chat
-  var $active              = false;   // by default the user is not connected
   
   // these parameters are static (cached)
   var $proxys              = array("auth");
   var $title               = ""; // default is _pfc("My Chat")
-  var $channel             = ""; // default is _pfc("My room")
+  var $channels            = array(); // the default joined channels when opening the chat
+  var $privmsg             = array(); // the default privmsg chat to lauch when opening the chat
   var $frozen_nick         = false;
   var $max_nick_len        = 15;
   var $max_text_len        = 400;
@@ -182,12 +180,12 @@ class pfcGlobalConfig
     if ($this->debug) pxlog("pfcGlobalConfig::init()", "chatconfig", $this->getId());
 
     if ($this->title == "")        $this->title        = _pfc("My Chat");
-    if ($this->channel == "")      $this->channel      = _pfc("My room");
     if ($this->ie7path == "")      $this->ie7path      = dirname(__FILE__)."/../lib/IE7_0_9";
     if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.3";
     if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
     if ($this->csstidypath == "")  $this->csstidypath  = dirname(__FILE__)."/../lib/csstidy-1.1";
-
+    if (count($this->channels) == 0) $this->channels   = array(_pfc("My room"));
+      
     // first of all, check the used functions
     $f_list["file_get_contents"] = _pfc("You need %s", "PHP 4 >= 4.3.0 or PHP 5");
     $err_session_x = "You need PHP 4 or PHP 5";
@@ -374,23 +372,22 @@ class pfcGlobalConfig
 
   function getId()
   {
-    /* channel is concatenated because it dynamic parameters
-     * further these parameter must be separated from global pfcconfig
-     * and can be changed dynamicaly in the user session */
     return $this->serverid;
   }  
 
-
+  function destroy()
+  {
+    $cachefile = $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
+    @unlink($cachefile);
+  }
+  
   /**
    * save the pfcConfig object into cache if it doesn't exists yet
    * else restore the old pfcConfig object
    */
-  function synchronizeWithCache($destroy = false)
+  function synchronizeWithCache()
   {
     $cachefile = $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
-
-    // destroy the cache if init parameter is present into the url
-    if (isset($_GET["init"]) || $destroy) @unlink($cachefile);
     
     if (file_exists($cachefile))
     {

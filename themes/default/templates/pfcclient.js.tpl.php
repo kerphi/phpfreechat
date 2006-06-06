@@ -162,7 +162,8 @@ pfcClient.prototype = {
           // or the default one
           <?php
           if (count($u->channels) == 0)
-            echo "this.sendRequest('/join', '".addslashes($c->channel)."');\n";
+            foreach($c->channels as $ch)
+              echo "this.sendRequest('/join', '".addslashes($ch)."');\n";
           foreach($u->channels as $ch)
             echo "this.sendRequest('/join', '".addslashes($ch["name"])."');\n";
           foreach($u->privmsg as $pv)
@@ -306,7 +307,8 @@ pfcClient.prototype = {
         // or the default one
         <?php
         if (count($u->channels) == 0)
-          echo "this.sendRequest('/join', '".addslashes($c->channel)."');\n";
+          foreach($c->channels as $ch)
+            echo "this.sendRequest('/join', '".addslashes($ch)."');\n";
         foreach($u->channels as $ch)
           echo "this.sendRequest('/join', '".addslashes($ch["name"])."');\n";
         foreach($u->privmsg as $pv)
