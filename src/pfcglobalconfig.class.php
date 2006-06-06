@@ -40,7 +40,7 @@ class pfcGlobalConfig
   var $proxys              = array("auth");
   var $title               = ""; // default is _pfc("My Chat")
   var $channels            = array(); // the default joined channels when opening the chat
-  var $privmsg             = array(); // the default privmsg chat to lauch when opening the chat
+  var $frozen_channels     = array(); // by default allow users to create there own channels
   var $frozen_nick         = false;
   var $max_nick_len        = 15;
   var $max_text_len        = 400;

@@ -49,24 +49,34 @@ class pfcProxyCommand_auth extends pfcProxyCommand
       }
     }
 
-    // protect channel from the banished users
+    // channels protection
     if ($this->name == "join")
     {
-      // check the user is not listed in the banished channel list
       $container   =& $c->getContainerInstance();
       $channame    = $param;
+      
+      // check the user is not listed in the banished channel list
       $chanid      = pfcCommand_join::GetRecipientId($channame);
       $banlist     = $container->getMeta("banlist_nickid", "channel", $chanid);
       if ($banlist == NULL) $banlist = array(); else $banlist = unserialize($banlist);
-
       $nickid = $container->getNickId($u->nick);
       if (in_array($nickid,$banlist))
       {
-        
         // the user is banished, show a message and don't forward the /join command
         $msg = _pfc("Can't join %s because you are banished", $param);
         $xml_reponse->addScript("pfc.handleResponse('".$this->proxyname."', 'ban', '".addslashes($msg)."');");
         return;
+      }
+
+      if (count($c->frozen_channels)>0)
+      {
+        if (!in_array($channame,$c->frozen_channels))
+        {
+          // the user is banished, show a message and don't forward the /join command
+          $msg = _pfc("Can't join %s because the channels list is restricted", $param);
+          $xml_reponse->addScript("pfc.handleResponse('".$this->proxyname."', 'frozen', '".addslashes($msg)."');");
+          return;
+        }
       }
     }
 

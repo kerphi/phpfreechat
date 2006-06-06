@@ -234,4 +234,7 @@ $GLOBALS["i18n"]["Can't join %s because you are banished"] = "Can't join %s beca
 // line 79 in auth.class.php
 $GLOBALS["i18n"]["You are not allowed to change your nickname"] = "You are not allowed to change your nickname";
 
+// line 76 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "Can't join %s because the channels list is restricted";
+
 ?>

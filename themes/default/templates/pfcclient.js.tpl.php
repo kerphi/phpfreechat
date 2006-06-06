@@ -388,6 +388,10 @@ pfcClient.prototype = {
       {
         alert(param);
       }
+      if (resp == "frozen")
+      {
+        alert(param);
+      }
       else if (resp == "nick")
       {
         this.displayMsg( cmd, param );
