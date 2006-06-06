@@ -36,7 +36,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
     $u =& $this->u;
 
     // protect admin commands
-    $admincmd = array("kick", "ban", "unban", "op", "deop", "debug", "rehash", "init");
+    $admincmd = array("kick", "ban", "unban", "op", "deop", "debug", "rehash");
     if ( in_array($this->name, $admincmd) )
     {
       $container =& $c->getContainerInstance();
