@@ -439,7 +439,7 @@ pfcClient.prototype = {
    */
   callbackWords_OnKeypress: function(evt)
   {
-    var code = (evt.which) ? evt.which : evt.keyCode
+    var code = (evt.which) ? evt.which : evt.keyCode;
     if (code == Event.KEY_TAB) /* tab key */
     {
       /* FF & Konqueror workaround : ignore TAB key here */
@@ -486,7 +486,7 @@ pfcClient.prototype = {
       w.value = '';
       return false;
     }
-    else if (code == Event.KEY_UP) /* up key */
+    else if (code == 33) /* page up key */
     {
       // write the last command in the history
       if (this.cmdhistory.length>0)
@@ -500,7 +500,7 @@ pfcClient.prototype = {
         w.value = this.cmdhistory[this.cmdhistoryid];
       }
     }
-    else if (code == Event.KEY_DOWN) /* down key */
+    else if (code == 34) /* page down key */
     {
       // write the next command in the history
       if (this.cmdhistory.length>0)
