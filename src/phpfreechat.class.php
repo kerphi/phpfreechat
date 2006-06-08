@@ -201,9 +201,6 @@ class phpFreeChat
     // output css
     pfcI18N::SwitchOutputEncoding();
     $output = "<style type=\"text/css\">\n".$output."\n</style>\n";
-
-    // tabpane
-    $output .= '<link id="luna-tab-style-sheet" type="text/css" rel="stylesheet" href="'.$c->data_public_url.'/tabpane/css/luna/tab.css" />';
     
     if($return)
       return $output;
