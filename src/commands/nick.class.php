@@ -88,13 +88,15 @@ class pfcCommand_nick extends pfcCommand
         $u->saveInCache();
 
         $xml_reponse->addScript("alert('join: u->nick=".$u->nick);
-        
+
+        /*
 	$cmd =& pfcCommand::Factory("notice");
         foreach($u->channels as $id => $chan)
           $cmd->run($xml_reponse, $clientid, _pfc("%s is connected", $u->nick), $sender, $chan["recipient"], $id, 2);
         foreach($u->privmsg as $id => $pv)
           $cmd->run($xml_reponse, $clientid, _pfc("%s is connected", $u->nick), $sender, $pv["recipient"], $id, 2);
-
+        */
+        
         $xml_reponse->addScript("pfc.handleResponse('nick', 'connected', '".$newnick."');");
       
         if ($c->debug)
