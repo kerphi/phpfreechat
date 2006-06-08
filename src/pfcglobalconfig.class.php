@@ -244,17 +244,6 @@ class pfcGlobalConfig
     if ($this->client_script_url == "")
       $this->client_script_url = "./".basename($filetotest);
 
-    // set the default theme path
-    if ($this->themepath_default == "")
-      $this->themepath_default = dirname(__FILE__)."/../themes";
-    if ($this->themepath == "")
-      $this->themepath = $this->themepath_default;
-        
-    // calculate the default theme url
-    if ($this->themeurl_default == "")
-      $this->themeurl_default = relativePath($this->client_script_path, $this->themepath_default);
-    if ($this->themeurl == "")
-      $this->themeurl = relativePath($this->client_script_path, $this->themepath);
     
     // calculate datapublic url
     if ($this->data_public_url == "")
@@ -275,6 +264,24 @@ class pfcGlobalConfig
       $this->errors[] = _pfc("%s doesn't exist", $filetotest);
     if ($this->server_script_url == "")
       $this->server_script_url = relativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest);
+
+    // check if the themepath parameter are correctly setup
+    if ($this->themepath_default == "" || !is_dir($this->themepath_default))
+      $this->themepath_default = dirname(__FILE__)."/../themes";
+    if ($this->themepath == "" || !is_dir($this->themepath))
+      $this->themepath = $this->themepath_default;
+    // copy the themes into the public directory
+    $this->errors = array_merge($this->errors, @install_dir($this->themepath_default, $this->data_public_path."/themes"));
+    $this->errors = array_merge($this->errors, @install_dir($this->themepath,         $this->data_public_path."/themes"));
+    // now it's copied, so update the themepath parameters to the new location
+    $this->themepath_default = $this->data_public_path."/themes";
+    $this->themepath         = $this->data_public_path."/themes";
+    // calculate the corresponding theme url
+    if ($this->themeurl_default == "")
+      $this->themeurl_default = relativePath($this->client_script_path, $this->data_public_path."/themes");
+    if ($this->themeurl == "")
+      $this->themeurl         = relativePath($this->client_script_path, $this->data_public_path."/themes");
+
     
     // ---
     // run specific container initialisation
@@ -356,7 +363,7 @@ class pfcGlobalConfig
     {
       if (preg_match("/^#.*/",$line))
         continue;
-      else if (preg_match("/^([a-z_0-9]*(\.gif|\.png))(.*)$/i",$line,$res))
+      else if (preg_match("/^([a-z_\-0-9]*(\.gif|\.png))(.*)$/i",$line,$res))
       {
         $smiley_file = $this->getFileUrlFromTheme('smileys/'.$res[1]);
         $smiley_str = trim($res[3])."\n";
@@ -378,7 +385,10 @@ class pfcGlobalConfig
   function destroy()
   {
     $cachefile = $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
-    @unlink($cachefile);
+    if (!file_exists($cachefile))
+      return false;
+    $this->is_init = false;
+    return @unlink($cachefile);
   }
   
   /**
@@ -388,7 +398,7 @@ class pfcGlobalConfig
   function synchronizeWithCache()
   {
     $cachefile = $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
-    
+
     if (file_exists($cachefile))
     {
       $pfc_configvar = unserialize(file_get_contents($cachefile));
