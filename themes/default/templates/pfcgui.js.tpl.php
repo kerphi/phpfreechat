@@ -17,7 +17,6 @@ pfcGui.prototype = {
     this.tabtypes   = Array();
     this.chatcontent   = $H();
     this.onlinecontent = $H();
-    this.smileycontent = $H();
     this.scrollpos     = $H();
   },
 
@@ -93,7 +92,7 @@ pfcGui.prototype = {
     cc.setAttribute('id', '<?php echo $prefix; ?>chat_'+tabid);
     Element.addClassName(cc, '<?php echo $prefix; ?>chat');
     // I set the border style here because seting it in the CSS is not taken in account
-    cc.style.borderRight = "1px solid #555";
+    //cc.style.borderRight = "1px solid #555";
     this.chatcontent[tabid] = cc;
     return cc;
   },
@@ -107,7 +106,7 @@ pfcGui.prototype = {
     oc.setAttribute('id', '<?php echo $prefix; ?>online_'+tabid);
     Element.addClassName(oc, '<?php echo $prefix; ?>online');
     // I set the border style here because seting it in the CSS is not taken in account
-    oc.style.borderBottom = "1px solid #555";
+    oc.style.borderLeft = "1px solid #555";
 
     // Create a dummy div to add padding
     var div = document.createElement('div');
@@ -116,33 +115,6 @@ pfcGui.prototype = {
 
     this.onlinecontent[tabid] = oc;
     return oc;
-  },
-  getSmileysContentFromTabId: function(tabid)
-  {
-    // return the smileys content if it exists
-    var sc = this.smileycontent[tabid];
-    if (sc) return sc;
-
-    sc = document.createElement('div');
-    sc.setAttribute('id', '<?php echo $prefix; ?>smileys_'+tabid);
-    Element.addClassName(sc, '<?php echo $prefix; ?>smileys');
-    // I set the border style here because setting it in the CSS is not take into account
-    sc.style.borderTop = "1px solid #555";
-    var div = document.createElement('div');
-    div.style.padding = "5px";   
-    var s = null;
-    <?php foreach($smileys as $s_file => $s_str) { ?>
-    s = document.createElement('img');
-    s.setAttribute('src','<?php echo $s_file; ?>');
-    s.setAttribute('alt','<?php echo $s_str[0]; ?>');
-    s.setAttribute('title','<?php echo $s_str[0]; ?>');
-    s.setAttribute('onclick','pfc.insertSmiley(String(\'<?php echo $s_str[0]; ?>\').unescapeHTML());');
-    div.appendChild(s);
-    <?php } ?>
-    sc.appendChild(div);
-
-    this.smileycontent[tabid] = sc;
-    return sc;
   },
   
   removeTabById: function(tabid)
@@ -240,10 +212,8 @@ pfcGui.prototype = {
 
     var div_chat    = this.getChatContentFromTabId(tabid);
     var div_online  = this.getOnlineContentFromTabId(tabid);
-    var div_smileys = this.getSmileysContentFromTabId(tabid);
     div_content.appendChild(div_chat);
     div_content.appendChild(div_online);
-    div_content.appendChild(div_smileys);
     
     $('<?php echo $prefix; ?>channels_list').appendChild(li_title);
     $('<?php echo $prefix; ?>channels_content').appendChild(div_content);

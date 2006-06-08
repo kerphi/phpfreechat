@@ -225,7 +225,6 @@ pfcClient.prototype = {
         // do not switch to the new created tab
         // keep it in the background
         //        this.gui.setTabById(tabid);
-        this.refresh_Smileys();
         this.refresh_WhosOnline();
       }
       else
@@ -1367,16 +1366,11 @@ pfcClient.prototype = {
   refresh_Smileys: function()
   {
     // first of all : show/hide the smiley box
-    var root = $('<?php echo $prefix; ?>channels_content');
-    var contentlist = this.getElementsByClassName(root, '<?php echo $prefix; ?>smileys', '');
-    for(var i = 0; i < contentlist.length; i++)
-    {
-      var content = contentlist[i];
-      if (this.showsmileys)
-        content.style.display = 'block';
-      else
-        content.style.display = 'none';
-    }
+    var content = $('<?php echo $prefix; ?>smileys');
+    if (this.showsmileys)
+      content.style.display = 'block';
+    else
+      content.style.display = 'none';
 
     // then switch the button icon
     var btn = $('<?php echo $prefix; ?>showHideSmileysbtn');
@@ -1398,8 +1392,6 @@ pfcClient.prototype = {
         btn.title = btn.alt;
       }
     }
-    this.refresh_Chat();
-    this.refresh_OnlineAndSmileys();
   },
   
   
@@ -1449,56 +1441,8 @@ pfcClient.prototype = {
       btn.title = btn.alt;
     }
     this.refresh_Chat();
-    this.refresh_OnlineAndSmileys();
   },
-  
-  /**
-   * Resize online and smileys
-   */
-  refresh_OnlineAndSmileys: function()
-  {
-    var style = $H();
-    var root = $('<?php echo $prefix; ?>channels_content');
 
-    // resize the smiley area
-    var contentlist = this.getElementsByClassName(root, '<?php echo $prefix; ?>smileys', '');
-    for(var i = 0; i < contentlist.length; i++)
-    {
-      var smileydiv = contentlist[i];
-      if (this.showwhosonline)
-      {
-        style['height'] = '';
-        Element.setStyle(smileydiv, style);
-      }
-      else
-      {
-        style['height'] = '100%';
-        Element.setStyle(smileydiv, style);
-      }
-    }
-
-    // resize the nickname list area
-    var contentlist = this.getElementsByClassName(root, '<?php echo $prefix; ?>online', '');
-    for(var i = 0; i < contentlist.length; i++)
-    {
-      var onlinediv = contentlist[i];
-      if (this.showsmileys)
-      {
-        style['height'] = '';
-        Element.setStyle(onlinediv, style);
-      }
-      else
-      {
-        style['height'] = '100%';
-        Element.setStyle(onlinediv, style);
-      }
-    }
-
-    // for IE7 CSS refresh
-    // if fixes the smiley and online boxes resize problem on IE6
-    if (document.recalc) setTimeout('document.recalc(true);', 0);
-  },
-  
   /**
    * Resize chat
    */
@@ -1511,7 +1455,7 @@ pfcClient.prototype = {
     {
       var chatdiv = contentlist[i];
       var style = $H();
-      if (!this.showwhosonline && !this.showsmileys)
+      if (!this.showwhosonline)
       {
         style['width'] = '100%';
         Element.setStyle(chatdiv, style);

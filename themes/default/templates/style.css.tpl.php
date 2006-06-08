@@ -95,18 +95,6 @@ div.<?php echo $prefix; ?>chat {
   overflow: auto;
 }
 
-div.<?php echo $prefix; ?>smileys {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: 0;
-  width: 20%;
-  height: 60%;
-  overflow: auto;
-  text-align: center;
-  background-color: #FFF;
-  /* borders are drawn by the javascript routines */
-}
 div.<?php echo $prefix; ?>online {
   position: absolute;
   right: 0;
@@ -114,7 +102,7 @@ div.<?php echo $prefix; ?>online {
   padding: 0;
   overflow: auto;
   width: 20%;
-  height: 40%;
+  height: 100%;
   color: #000; /* colors can be overriden by js nickname colorization */
   background-color: #FFF;
   /* borders are drawn by the javascript routines */
@@ -257,3 +245,13 @@ img.<?php echo $prefix; ?>color {
   cursor: crosshair;
 }
 
+div#<?php echo $prefix; ?>smileys {
+  background-color: #FFF;
+  border: 1px solid #555;
+  padding: 4px;
+  margin-top: 4px;
+}
+
+div#<?php echo $prefix; ?>smileys img {
+ cursor: pointer;
+}

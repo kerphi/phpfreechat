@@ -58,7 +58,13 @@
     echo '<img src="'.$c->getFileUrlFromTheme('images/color_'.$bbc.'.gif').'" alt="color '.$bbc.'" onclick="pfc.switch_text_color(\''.$bbc.'\')" id="'.$prefix.'color_'.$bbc.'" class="'.$prefix.'color" /> ';
   }
 ?>
-      </div>
+  </div>
+
+  <div id="<?php echo $prefix; ?>smileys">
+  <?php foreach($smileys as $s_file => $s_str) { ?>
+    <img src="<?php echo $s_file; ?>" alt="<?php echo $s_str[0]; ?>" title="<?php echo $s_str[0]; ?>" onclick="pfc.insertSmiley(String('<?php echo $s_str[0]; ?>').unescapeHTML());" />
+<?php } ?>
+  </div>
 		
     </div>
   </div>
