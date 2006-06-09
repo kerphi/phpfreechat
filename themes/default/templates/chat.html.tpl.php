@@ -62,7 +62,7 @@
 
   <div id="<?php echo $prefix; ?>smileys">
   <?php foreach($smileys as $s_file => $s_str) { ?>
-    <img src="<?php echo $s_file; ?>" alt="<?php echo $s_str[0]; ?>" title="<?php echo $s_str[0]; ?>" onclick="pfc.insertSmiley(String('<?php echo $s_str[0]; ?>').unescapeHTML());" />
+    <img src="<?php echo $s_file; ?>" alt="<?php echo $s_str[0]; ?>" title="<?php echo $s_str[0]; ?>" onclick="pfc.insertSmiley('<?php echo $s_str[0]; ?>');" />
 <?php } ?>
   </div>
 		
