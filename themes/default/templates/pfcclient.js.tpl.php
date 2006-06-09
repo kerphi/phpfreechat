@@ -486,7 +486,7 @@ pfcClient.prototype = {
       w.value = '';
       return false;
     }
-    else if (code == 33) /* page up key */
+    else if (code == 33 && false) // page up key
     {
       // write the last command in the history
       if (this.cmdhistory.length>0)
@@ -500,7 +500,7 @@ pfcClient.prototype = {
         w.value = this.cmdhistory[this.cmdhistoryid];
       }
     }
-    else if (code == 34) /* page down key */
+    else if (code == 34 && false) // page down key
     {
       // write the next command in the history
       if (this.cmdhistory.length>0)
