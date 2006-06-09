@@ -699,6 +699,14 @@ pfcClient.prototype = {
 	line += '<span class="<?php echo $prefix; ?>words">'+ this.parseMessage(param) +'</span> ';
       line += '</div>';
 
+      // notify the hidden tab a message has been received
+      if (cmd == 'send' || cmd == 'me')
+      {
+        var tabid = recipientid;
+        if (this.gui.getTabId() != tabid)
+          this.gui.notifyTab(tabid);
+      }
+        
       if (msg_html[recipientid] == null)
         msg_html[recipientid] = line;
       else
@@ -711,9 +719,6 @@ pfcClient.prototype = {
     {
       var recipientid  = keys[i];
       var tabid        = recipientid;
-
-      if (this.gui.getTabId() != tabid)
-        this.gui.notifyTab(tabid);
       
       // create the tab if it doesn't exists yet
       var recipientdiv = this.gui.getChatContentFromTabId(tabid);
