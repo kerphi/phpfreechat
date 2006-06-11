@@ -1,0 +1,12 @@
+cd ..
+echo "<?php"
+for f in `find . -name "*.php"`
+do
+  sum=`md5sum $f | sed "s/\s.*$//g"`
+  echo 'if (md5(file_get_contents("'$f'")) == "'$sum'")'
+  echo '  echo "ok - '$f'\n";'
+  echo 'else'
+  echo '  echo "corrupted - '$f' (please replace this file by a correct one)\n";'
+done
+echo "?>"
+cd -
