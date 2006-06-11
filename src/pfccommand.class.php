@@ -69,30 +69,40 @@ class pfcCommand
     $cmd           = NULL;
     $cmd_name      = strtolower($name);
     $cmd_classname = "pfcCommand_".$name;
-    $cmd_filename  = dirname(__FILE__)."/commands/".$cmd_name.".class.php";
-    if (file_exists($cmd_filename)) require_once($cmd_filename);
+    if (!class_exists($cmd_classname))
+    {
+      $cmd_filename  = dirname(__FILE__)."/commands/".$cmd_name.".class.php";
+      if (file_exists($cmd_filename)) require_once($cmd_filename);
+    }
     if (class_exists($cmd_classname))
     {
       $cmd =& new $cmd_classname();
       $cmd->name = $cmd_name;
       
-      // instanciate the proxy chains
-      // @todo instanciate the whole chain (from the 'proxys' parameter array)
-      $proxy           = NULL;
-      $proxy_name      = strtolower($c->proxys[0]);
-      $proxy_classname = "pfcProxyCommand_" . $proxy_name;
-      $proxy_filename  = dirname(__FILE__)."/proxys/".$proxy_name.".class.php";
-      if (file_exists($proxy_filename)) require_once($proxy_filename);
-      if (class_exists($proxy_classname))
+      // instanciate the proxys chaine
+      $firstproxy =& $cmd;
+      for($i = count($c->proxys)-1; $i >= 0; $i--)
       {
-        $proxy =& new $proxy_classname();
-        $proxy->name      = $cmd_name;
-        $proxy->proxyname = $proxy_name;
-        $proxy->linkTo($cmd);
+        $proxy_name      = strtolower($c->proxys[$i]);
+        $proxy_classname = "pfcProxyCommand_" . $proxy_name;
+        if (!class_exists($proxy_classname))
+        {
+          // try to include the proxy class file
+          $proxy_filename  = dirname(__FILE__)."/proxys/".$proxy_name.".class.php";
+          if (file_exists($proxy_filename)) require_once($proxy_filename);
+        }
+        if (class_exists($proxy_classname))
+        {
+          // instanciate the proxy
+          $proxy =& new $proxy_classname();
+          $proxy->name      = $cmd_name;
+          $proxy->proxyname = $proxy_name;
+          $proxy->linkTo($firstproxy);
+          $firstproxy =& $proxy;
+        }
       }
-      
       // return the proxy, not the command (the proxy will forward the request to the real command)
-      return $proxy;
+      return $firstproxy;
     }
     return $cmd;
   }

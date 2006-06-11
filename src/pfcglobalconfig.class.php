@@ -37,7 +37,9 @@ class pfcGlobalConfig
   var $isadmin             = false;
   
   // these parameters are static (cached)
-  var $proxys              = array("auth");
+  var $proxys              = array("auth", "noflood");
+  var $proxys_cfg          = array("auth" => array(),
+                                   "noflood" => array("limit"=>10,"delay"=>5));
   var $title               = ""; // default is _pfc("My Chat")
   var $channels            = array(); // the default joined channels when opening the chat
   var $frozen_channels     = array(); // by default allow users to create there own channels
