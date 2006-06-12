@@ -66,7 +66,7 @@ pfcGui.prototype = {
         tabcontent.style.display = 'none';
       }
     }
-    
+
     // show the new selected tab
     tab_to_show.style.display = 'block';
     // restore the scroll pos
@@ -91,8 +91,8 @@ pfcGui.prototype = {
     cc = document.createElement('div');
     cc.setAttribute('id', '<?php echo $prefix; ?>chat_'+tabid);
     Element.addClassName(cc, '<?php echo $prefix; ?>chat');
-    // I set the border style here because seting it in the CSS is not taken in account
-    //cc.style.borderRight = "1px solid #555";
+    cc.style.display = "block"; // needed by IE6 to show the online div at startup (first loaded page)
+
     this.chatcontent[tabid] = cc;
     return cc;
   },
@@ -107,7 +107,8 @@ pfcGui.prototype = {
     Element.addClassName(oc, '<?php echo $prefix; ?>online');
     // I set the border style here because seting it in the CSS is not taken in account
     oc.style.borderLeft = "1px solid #555";
-
+    oc.style.display = "block"; // needed by IE6 to show the online div at startup (first loaded page)
+    
     // Create a dummy div to add padding
     var div = document.createElement('div');
     div.style.padding = "5px";
@@ -206,9 +207,9 @@ pfcGui.prototype = {
     li_div.appendChild(a2);
     
     var div_content = document.createElement('div');
-    div_content.style.display = 'none';
     div_content.setAttribute('id', '<?php echo $prefix; ?>channel_content'+tabid);   
     Element.addClassName(div_content, '<?php echo $prefix; ?>content');
+    div_content.style.display = 'none';
 
     var div_chat    = this.getChatContentFromTabId(tabid);
     var div_online  = this.getOnlineContentFromTabId(tabid);

@@ -111,17 +111,6 @@ class phpFreeChat
     // print xajax javascript
     $output .= $this->xajax->getJavascript($c->data_public_url, NULL, $c->data_public_url."/xajax_js/xajax.js");
 
-    // include microsoft IE6 patches
-    if ($c->useie7)
-    {
-      $ie7_path = $c->data_public_url."/ie7";
-      $output .= "<!-- compliance patch for microsoft browsers -->\n";
-      $output .= "<!--[if lt IE 7]>\n";
-      $output .= "  <script type=\"text/javascript\">IE7_PNG_SUFFIX = \".png\";</script>\n";
-      $output .= "  <script type=\"text/javascript\" src=\"".$ie7_path."/ie7-standard-p.js\"></script>\n";
-      $output .= "  <script type=\"text/javascript\" src=\"".$ie7_path."/ie7-recalc.js\"></script>\n";
-      $output .= "<![endif]-->\n";
-    }
     pfcI18N::SwitchOutputEncoding();
 	
     // display output

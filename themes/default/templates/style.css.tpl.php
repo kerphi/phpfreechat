@@ -246,6 +246,7 @@ img.<?php echo $prefix; ?>color {
 }
 
 div#<?php echo $prefix; ?>smileys {
+  display: none; /* will be shown by javascript routines */
   background-color: #FFF;
   border: 1px solid #555;
   padding: 4px;

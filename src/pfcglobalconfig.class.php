@@ -79,8 +79,6 @@ class pfcGlobalConfig
   var $client_script_url   = ""; // default is calculated from 'client_script_path'
   var $server_script_path  = "";
   var $server_script_url   = ""; // default is calculated from 'server_script_path'
-  var $useie7              = true; // use IE7 lib : fix crappy IE display bugs
-  var $ie7path             = ""; // default is dirname(__FILE__)."/../lib/IE7_0_9";
   var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2.3";
   var $jspath              = ""; // default is dirname(__FILE__)."/../lib/javascript";
   var $usecsstidy          = false;
@@ -182,7 +180,6 @@ class pfcGlobalConfig
     if ($this->debug) pxlog("pfcGlobalConfig::init()", "chatconfig", $this->getId());
 
     if ($this->title == "")        $this->title        = _pfc("My Chat");
-    if ($this->ie7path == "")      $this->ie7path      = dirname(__FILE__)."/../lib/IE7_0_9";
     if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.3";
     if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
     if ($this->csstidypath == "")  $this->csstidypath  = dirname(__FILE__)."/../lib/csstidy-1.1";
@@ -223,15 +220,6 @@ class pfcGlobalConfig
                                                              $this->data_public_path."/xajax_js/xajax.js"));
     $this->errors = array_merge($this->errors, @install_file($this->xajaxpath."/xajax_js/xajax_uncompressed.js",
                                                              $this->data_public_path."/xajax_js/xajax_uncompressed.js" ));
-    // ---
-    // test ie7 lib
-    $dir = $this->ie7path;
-    if (!is_dir($dir))
-      $this->errors[] = _pfc("%s doesn't exist, %s library can't be found", $dir, "IE7");
-    if (!file_exists($dir."/ie7-core.js"))
-      $this->errors[] = _pfc("%s not found, %s library can't be found", "ie7-core.js", "IE7");
-    $this->errors = array_merge($this->errors, @install_dir($this->ie7path, $this->data_public_path."/ie7/"));
-    
     // ---
     // test client script
     // try to find the path into server configuration
