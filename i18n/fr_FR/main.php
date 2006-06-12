@@ -205,7 +205,7 @@ $GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "'/un
 $GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "'/unban all' va débannir tous les bannis de ce salon";
 
 // line 24 in update.class.php
-$GLOBALS["i18n"]["%s quit (timeout)"] = "%s à quitté (timeout)";
+$GLOBALS["i18n"]["%s quit (timeout)"] = "%s a quitté (timeout)";
 
 // line 46 in join.class.php
 $GLOBALS["i18n"]["%s joins %s"] = "%s a rejoint %s";
