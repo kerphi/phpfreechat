@@ -14,6 +14,7 @@ div#<?php echo $prefix; ?>container {
   background-image: url(<?php echo $c->getFileUrlFromTheme('images/shade.gif'); ?>);
   background-position: right;
   background-repeat: repeat-y;
+  font-family: Verdana, Sans-Serif; /* without this rule, the tabs are not correctly display on FF */
 }
 
 #<?php echo $prefix; ?>minmax {
