@@ -92,6 +92,7 @@ pfcGui.prototype = {
     cc.setAttribute('id', '<?php echo $prefix; ?>chat_'+tabid);
     Element.addClassName(cc, '<?php echo $prefix; ?>chat');
     cc.style.display = "block"; // needed by IE6 to show the online div at startup (first loaded page)
+    cc.style.marginLeft = "5px";
 
     this.chatcontent[tabid] = cc;
     return cc;

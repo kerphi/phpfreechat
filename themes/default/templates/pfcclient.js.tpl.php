@@ -657,7 +657,7 @@ pfcClient.prototype = {
   {
     var msg_html = $H();
     
-    //    alert(cmds.inspect());
+    //alert(cmds.inspect());
     
     //    var html = '';
     for(var mid = 0; mid < cmds.length ; mid++)
@@ -669,16 +669,16 @@ pfcClient.prototype = {
       var recipientid = cmds[mid][4];
       var cmd         = cmds[mid][5];
       var param       = cmds[mid][6];
-      //var fromtoday = cmds[mid][6];
-      //var oldmsg    = cmds[mid][7];
+      var fromtoday   = cmds[mid][7];
+      var oldmsg      = cmds[mid][8];
       
       // format and post message
       var line = '';
       line += '<div id="<?php echo $prefix; ?>msg'+ id +'" class="<?php echo $prefix; ?>'+ cmd +' <?php echo $prefix; ?>message';
-      //      if (oldmsg == 1) line += ' <?php echo $prefix; ?>oldmsg';
+      if (oldmsg == 1) line += ' <?php echo $prefix; ?>oldmsg';
       line += '">';
       line += '<span class="<?php echo $prefix; ?>date';
-      //      if (fromtoday == 1) line += ' <?php echo $prefix; ?>invisible';
+      if (fromtoday == 1) line += ' <?php echo $prefix; ?>invisible';
       line += '">'+ date +'</span> ';
       line += '<span class="<?php echo $prefix; ?>heure">'+ time +'</span> ';
       if (cmd == 'send')
