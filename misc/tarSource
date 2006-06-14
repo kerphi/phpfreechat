@@ -1,13 +1,17 @@
 #!/bin/sh
 
-echo "-- creating archive --"
+NAME=phpfreechat-`cat ../version`
+
+echo "-- creating archive $NAME --"
 echo "-> copying files"
-rm -rf phpfreechat-`cat ../version`
-svn export .. ./phpfreechat-`cat ../version`
+rm -rf ./$NAME
+svn export .. ./$NAME
+echo "-> creating checkmd5.php file"
+./checkmd5 ./$NAME ./$NAME/checkmd5.php
 echo "-> creating .tar.gz"
-tar czfp phpfreechat-`cat ../version`.tar.gz phpfreechat-`cat ../version`/ 
+tar czfp $NAME.tar.gz ./$NAME 
 echo "-> creating .zip"
-zip -Tq9r phpfreechat-`cat ../version`.zip phpfreechat-`cat ../version`/
+zip -Tq9r $NAME.zip ./$NAME
 echo "-> removing temporary files"
-rm -rf phpfreechat-`cat ../version`
-echo "-- creating archive, done --"
+rm -rf ./$NAME
+echo "-- creating archive $NAME, done --"
