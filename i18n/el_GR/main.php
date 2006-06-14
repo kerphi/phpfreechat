@@ -118,4 +118,125 @@ $GLOBALS["i18n"]["Enter your message here"] = "Εισάγετε το μήνυμ�
 
 // line 24 in chat.html.tpl.php
 $GLOBALS["i18n"]["Enter your nickname here"] = "Εισάγετε το ψευδώνυμο σας εδώ";
+
+// line 59 in pfcproxycommand.class.php
+$GLOBALS["i18n"]["%s must be implemented"] = "";
+
+// line 126 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "";
+
+// line 186 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["My room"] = "";
+
+// line 289 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "";
+
+// line 309 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "";
+
+// line 314 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "";
+
+// line 440 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct"] = "";
+
+// line 48 in pfctemplate.class.php
+$GLOBALS["i18n"]["%s template could not be found"] = "";
+
+// line 19 in unban.class.php
+$GLOBALS["i18n"]["Missing parameter"] = "";
+
+// line 38 in ban.class.php
+$GLOBALS["i18n"]["banished from %s by %s"] = "";
+
+// line 23 in banlist.class.php
+$GLOBALS["i18n"]["The banished user's id list is:"] = "";
+
+// line 32 in banlist.class.php
+$GLOBALS["i18n"]["Empty"] = "";
+
+// line 34 in banlist.class.php
+$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "";
+
+// line 35 in banlist.class.php
+$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "";
+
+// line 24 in update.class.php
+$GLOBALS["i18n"]["%s quit (timeout)"] = "";
+
+// line 46 in join.class.php
+$GLOBALS["i18n"]["%s joins %s"] = "";
+
+// line 31 in kick.class.php
+$GLOBALS["i18n"]["kicked from %s by %s"] = "";
+
+// line 38 in send.class.php
+$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "";
+
+// line 27 in unban.class.php
+$GLOBALS["i18n"]["Nobody has been unbanished"] = "";
+
+// line 42 in unban.class.php
+$GLOBALS["i18n"]["%s has been unbanished"] = "";
+
+// line 49 in unban.class.php
+$GLOBALS["i18n"]["%s users have been unbanished"] = "";
+
+// line 47 in auth.class.php
+$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "";
+
+// line 66 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because you are banished"] = "";
+
+// line 76 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "";
+
+// line 89 in auth.class.php
+$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "";
+
+// line 56 in noflood.class.php
+$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "";
+
+// line 29 in chat.html.tpl.php
+$GLOBALS["i18n"]["Bold"] = "";
+
+// line 30 in chat.html.tpl.php
+$GLOBALS["i18n"]["Italics"] = "";
+
+// line 31 in chat.html.tpl.php
+$GLOBALS["i18n"]["Underline"] = "";
+
+// line 32 in chat.html.tpl.php
+$GLOBALS["i18n"]["Delete"] = "";
+
+// line 33 in chat.html.tpl.php
+$GLOBALS["i18n"]["Pre"] = "";
+
+// line 34 in chat.html.tpl.php
+$GLOBALS["i18n"]["Mail"] = "";
+
+// line 35 in chat.html.tpl.php
+$GLOBALS["i18n"]["Color"] = "";
+
+// line 104 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Hide smiley box"] = "";
+
+// line 105 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Show smiley box"] = "";
+
+// line 106 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Hide online users box"] = "";
+
+// line 107 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Show online users box"] = "";
+
+// line 109 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Private message"] = "";
+
+// line 110 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Close this tab"] = "";
+
+// line 199 in pfcgui.js.tpl.php
+$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "";
+
 ?>

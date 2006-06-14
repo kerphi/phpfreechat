@@ -172,4 +172,71 @@ $GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "'%s' parametresi
 
 // line 386 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "'%s' parametresi geçerli değil. Geçerli değerler: '%s'";
+
+// line 186 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["My room"] = "";
+
+// line 19 in unban.class.php
+$GLOBALS["i18n"]["Missing parameter"] = "";
+
+// line 38 in ban.class.php
+$GLOBALS["i18n"]["banished from %s by %s"] = "";
+
+// line 23 in banlist.class.php
+$GLOBALS["i18n"]["The banished user's id list is:"] = "";
+
+// line 32 in banlist.class.php
+$GLOBALS["i18n"]["Empty"] = "";
+
+// line 34 in banlist.class.php
+$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "";
+
+// line 35 in banlist.class.php
+$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "";
+
+// line 24 in update.class.php
+$GLOBALS["i18n"]["%s quit (timeout)"] = "";
+
+// line 46 in join.class.php
+$GLOBALS["i18n"]["%s joins %s"] = "";
+
+// line 31 in kick.class.php
+$GLOBALS["i18n"]["kicked from %s by %s"] = "";
+
+// line 38 in send.class.php
+$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "";
+
+// line 27 in unban.class.php
+$GLOBALS["i18n"]["Nobody has been unbanished"] = "";
+
+// line 42 in unban.class.php
+$GLOBALS["i18n"]["%s has been unbanished"] = "";
+
+// line 49 in unban.class.php
+$GLOBALS["i18n"]["%s users have been unbanished"] = "";
+
+// line 47 in auth.class.php
+$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "";
+
+// line 66 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because you are banished"] = "";
+
+// line 76 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "";
+
+// line 89 in auth.class.php
+$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "";
+
+// line 56 in noflood.class.php
+$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "";
+
+// line 109 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Private message"] = "";
+
+// line 110 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Close this tab"] = "";
+
+// line 199 in pfcgui.js.tpl.php
+$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "";
+
 ?>
