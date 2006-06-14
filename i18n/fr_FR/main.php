@@ -237,4 +237,7 @@ $GLOBALS["i18n"]["You are not allowed to change your nickname"] = "Vous n'êtes 
 // line 76 in auth.class.php
 $GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "Vous ne pouvez pas rejoindre %s car il n'est pas dans la liste des salons autorisés";
 
+// line 56 in noflood.class.php
+$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "Svp, ne postez pas autant de messages à la suite, le flood n'est pas toléré";
+
 ?>
