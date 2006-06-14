@@ -61,6 +61,40 @@ $chat = new phpFreeChat( $params );
       <p class="partner">
         <a href="http://www.phpfreechat.net"><img alt="logo big" src="style/logo_88x31.gif" /></a>
       </p>
+      
+      <div class="rating">
+        <form action="http://www.hotscripts.com/rate/56184.html" method="get">
+          <input type="hidden" name="RID" value="N452772"/>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>If you like our script, please rate it! <input type="hidden" name="external" value="1"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <select name="rate" size="1">
+                            <option value="5" selected="selected">Excellent!</option>
+                            <option value="4">Very Good</option>
+                            <option value="3">Good</option>
+                            <option value="2">Fair</option>
+                            <option value="1">Poor</option>
+                          </select>
+                          <input type="submit" name="submit" value="Cast My Vote!"/>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
 </div>
 
 <div class="content">
@@ -78,6 +112,6 @@ $chat = new phpFreeChat( $params );
           <img alt="Valid CSS!" src="style/valid-css.png" />
         </a>
       </div>
-      <p>©2006 phpFreeChat</p>
+      <p>@2006 phpFreeChat</p>
     </div>
 </body></html>

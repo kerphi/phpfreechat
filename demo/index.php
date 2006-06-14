@@ -1,19 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <title>phpFreeChat Demos</title>
-  <link rel="stylesheet" title="classic" type="text/css" href="../style/generic.css">
-  <link rel="stylesheet" title="classic" type="text/css" href="../style/header.css">
-  <link rel="stylesheet" title="classic" type="text/css" href="../style/footer.css">
-  <link rel="stylesheet" title="classic" type="text/css" href="../style/menu.css">
-  <link rel="stylesheet" title="classic" type="text/css" href="../style/content.css">   
+  <link rel="stylesheet" title="classic" type="text/css" href="../style/generic.css" />
+  <link rel="stylesheet" title="classic" type="text/css" href="../style/header.css" />
+  <link rel="stylesheet" title="classic" type="text/css" href="../style/footer.css" />
+  <link rel="stylesheet" title="classic" type="text/css" href="../style/menu.css" />
+  <link rel="stylesheet" title="classic" type="text/css" href="../style/content.css" />   
  </head>
  <body>
 
 <div class="header">
       <h1>phpFreeChat - Demos</h1>
-      <img alt="logo bulle" src="../style/bulle.png" class="logo2">
+      <img alt="logo bulle" src="../style/bulle.png" class="logo2" />
 </div>
 
 <div class="menu">
@@ -30,25 +30,58 @@
         <li>
           <ul class="sub">
             <li class="item">
-              <a href="#Miscellaneous">Miscellaneous</a>
+              <a href="#demo-misc">Miscellaneous</a>
             </li>
             <li class="item">
-              <a href="#Themes">Themes</a>
+              <a href="#demo-themes">Themes</a>
             </li>
             <li class="item">
-              <a href="#Translations">Translations</a>
+              <a href="#demo-translations">Translations</a>
             </li>
           </ul>
         </li>
       </ul>
       <p class="partner">
-        <a href="http://www.phpfreechat.net"><img alt="logo big" src="../style/logo_88x31.gif"></a>
+        <a href="http://www.phpfreechat.net"><img alt="logo big" src="../style/logo_88x31.gif" /></a>
       </p>
+      <div class="rating">
+        <form action="http://www.hotscripts.com/rate/56184.html" method="get">
+          <input type="hidden" name="RID" value="N452772"/>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>If you like our script, please rate it! <input type="hidden" name="external" value="1"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <select name="rate" size="1">
+                            <option value="5" selected="selected">Excellent!</option>
+                            <option value="4">Very Good</option>
+                            <option value="3">Good</option>
+                            <option value="2">Fair</option>
+                            <option value="1">Poor</option>
+                          </select>
+                          <input type="submit" name="submit" value="Cast My Vote!"/>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
 </div>
 
 <div class="content">
 
-<h2>Miscellaneous</h2>
+<h2 id="demo-misc">Miscellaneous</h2>
 
 <ul>
       <li><a href="demo1_simple.php">demo1 - demo with default parameters</a></li>
@@ -73,7 +106,7 @@
 </ul>
 
 
-<h2>Themes</h2>
+<h2 id="demo-themes">Themes</h2>
 
 <ul>
       <li><a href="demo11_famfamfam_smiley_theme.php">demo11 - A chat with a customized smiley theme (famfamfam theme)</a></li>
@@ -85,7 +118,7 @@
       <li><a href="demo44_green_theme.php">demo44 - use a customized theme (green)</a></li>
 </ul>
 
-<h2>Translations</h2>
+<h2 id="demo-translations">Translations</h2>
     <ul>
       <li><a href="demo6_in_french.php">demo6 - french translation of the chat</a></li>
       <li><a href="demo7_in_english.php">demo7 - english translation of the chat</a></li>
@@ -123,6 +156,6 @@
           <img alt="Valid CSS!" src="../style/valid-css.png">
         </a>
       </div>
-      <p>©2006 phpFreeChat</p>
+      <p>@2006 phpFreeChat</p>
     </div>
 </body></html>
