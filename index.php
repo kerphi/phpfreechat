@@ -66,6 +66,7 @@ $chat = new phpFreeChat( $params );
 <div class="content">
   <h2>See the quick demo</h2>
   <?php $chat->printChat(); ?>
+  <?php if (file_exists(dirname(__FILE__)."/checkmd5.php")) require_once dirname(__FILE__)."/checkmd5.php"; ?>
 </div>
 
 <div class="footer">

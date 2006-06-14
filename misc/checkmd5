@@ -27,7 +27,7 @@ echo "--> Creating $DST"
 
 cd $PFC_PATH
 echo "<?php" > $TMP
-echo 'echo "<h1>Checking phpfreechat files validity</h1>";' >> $TMP
+echo 'echo "<h2>Checking phpfreechat files validity</h2>";' >> $TMP
 echo 'echo "<pre>\n";' >> $TMP
 for f in `find . -type f`
 do
