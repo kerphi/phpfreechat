@@ -5,7 +5,7 @@
   <div id="<?php echo $prefix; ?>content_expandable">                
 
   <div id="<?php echo $prefix; ?>channels">
-    <ul id="<?php echo $prefix; ?>channels_list"></ul>
+    <ul id="<?php echo $prefix; ?>channels_list"><li></li></ul>
     <div id="<?php echo $prefix; ?>channels_content"></div>
   </div>
 

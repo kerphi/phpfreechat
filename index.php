@@ -64,7 +64,7 @@ $chat = new phpFreeChat( $params );
       
       <div class="rating">
         <form action="http://www.hotscripts.com/rate/56184.html" method="get">
-          <input type="hidden" name="RID" value="N452772"/>
+          <p><input type="hidden" name="RID" value="N452772" /></p>
           <table>
             <tbody>
               <tr>
