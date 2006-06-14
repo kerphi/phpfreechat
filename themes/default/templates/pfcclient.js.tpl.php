@@ -672,7 +672,7 @@ pfcClient.prototype = {
       
       // format and post message
       var line = '';
-      line += '<div id="<?php echo $prefix; ?>msg'+ id +'" class="<?php echo $prefix; ?>'+ cmd +' <?php echo $prefix; ?>message';
+      line += '<div id="<?php echo $prefix; ?>msg'+ id +'" class="<?php echo $prefix; ?>cmd_'+ cmd +' <?php echo $prefix; ?>message';
       if (oldmsg == 1) line += ' <?php echo $prefix; ?>oldmsg';
       line += '">';
       line += '<span class="<?php echo $prefix; ?>date';
