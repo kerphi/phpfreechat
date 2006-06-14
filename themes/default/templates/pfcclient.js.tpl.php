@@ -157,18 +157,6 @@ pfcClient.prototype = {
         else
         {
           this.sendRequest('/nick', this.nickname);
-
-          // now join channels comming from sessions
-          // or the default one
-          <?php
-          if (count($u->channels) == 0)
-            foreach($c->channels as $ch)
-              echo "this.sendRequest('/join', '".addslashes($ch)."');\n";
-          foreach($u->channels as $ch)
-            echo "this.sendRequest('/join', '".addslashes($ch["name"])."');\n";
-          foreach($u->privmsg as $pv)
-            echo "this.sendRequest('/privmsg', '".addslashes($pv["name"])."');\n";
-          ?>
         }
         
         // give focus the the input text box if wanted
@@ -300,16 +288,26 @@ pfcClient.prototype = {
     }
     else if (cmd == "nick")
     {
-      if (resp == "connected")
+      if (resp == "connected" || resp == "notchanged")
       {
         // now join channels comming from sessions
         // or the default one
         <?php
         if (count($u->channels) == 0)
-          foreach($c->channels as $ch)
-            echo "this.sendRequest('/join', '".addslashes($ch)."');\n";
-        foreach($u->channels as $ch)
-          echo "this.sendRequest('/join', '".addslashes($ch["name"])."');\n";
+          // the last joined channel must be the last entry in the parameter list
+          for($i=0; $i<count($c->channels); $i++)
+          {
+            $ch = $c->channels[$i];
+            $cmd = $i < count($c->channels)-1 ? "/join2" : "/join";
+            echo "this.sendRequest('".$cmd."', '".addslashes($ch)."');\n";
+          }
+        // the last joined channel must be the last entry in the parameter list
+        for($i=0; $i<count($u->channels); $i++)
+        {
+          $ch = $u->channels[$i];
+          $cmd = $i < count($u->channels)-1 ? "/join2" : "/join";
+          echo "this.sendRequest('".$cmd."', '".addslashes($ch)."');\n";
+        }
         foreach($u->privmsg as $pv)
           echo "this.sendRequest('/privmsg', '".addslashes($pv["name"])."');\n";
         ?>
