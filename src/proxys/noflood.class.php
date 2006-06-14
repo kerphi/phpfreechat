@@ -53,8 +53,9 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
       if ($nbflood>$c->proxys_cfg[$this->proxyname]["limit"])
       {
         // kick the flooder
-        $msg = _pfc("you are a flooder");
+        $msg = _pfc("Please don't post so many message, flood is not tolerated");
         $xml_reponse->addScript("alert('".addslashes($msg)."');");
+	// @todo kick the user
         return;
       }
 
