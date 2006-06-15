@@ -14,9 +14,8 @@ class pfcCommand_connect extends pfcCommand
     $container =& $c->getContainerInstance();
     $disconnected_users = $container->removeObsoleteNick(NULL, $c->timeout);
 
-
     // setup some user meta
-    $nickid = $container->getNickId($u->nick);
+    $nickid = $u->nickid;
     // store the user ip
     $container->setMeta($_SERVER["REMOTE_ADDR"], "ip", "nickname", $nickid);
     // store the admin flag
