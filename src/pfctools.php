@@ -132,7 +132,6 @@ function rm_r($dir)
  * Copy a file, or recursively copy a folder and its contents
  *
  * @author      Aidan Lister <aidan@php.net>
- * @version     1.0.1
  * @link        http://aidanlister.com/repos/v/function.copyr.php
  * @param       string   $source    Source path
  * @param       string   $dest      Destination path
@@ -143,7 +142,7 @@ function copyr($source, $dest, $mode = 0700)
   // Simple copy for a file
   if (is_file($source)) {
     $ret = copy($source, $dest);
-    @chmod($dest, $mode);
+    chmod($dest, $mode);
     return $ret;
   }
 
@@ -163,8 +162,8 @@ function copyr($source, $dest, $mode = 0700)
   // Loop through the folder
   foreach ($entries as $e)
   {
-    // Skip pointers
-    if ($e == '.' || $e == '..') continue;
+    // Skip pointers and subversion directories
+    if ($e == '.' || $e == '..' || $e == '.svn') continue;
     // Deep copy directories
     if ($dest !== $source . DIRECTORY_SEPARATOR . $e)
       copyr($source . DIRECTORY_SEPARATOR . $e, $dest . DIRECTORY_SEPARATOR . $e, $mode);
@@ -283,7 +282,6 @@ if (!function_exists('file_get_contents'))
  * @package     PHP_Compat
  * @link        http://php.net/function.file_put_contents
  * @author      Aidan Lister <aidan@php.net>
- * @version     $Revision: 1.25 $
  * @internal    resource_context is not supported
  * @since       PHP 5
  * @require     PHP 4.0.0 (user_error)

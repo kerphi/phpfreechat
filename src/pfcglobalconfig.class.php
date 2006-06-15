@@ -372,9 +372,14 @@ class pfcGlobalConfig
     return $this->serverid;
   }  
 
+  function _getCacheFile()
+  {
+    return $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
+  }
+  
   function destroy()
   {
-    $cachefile = $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
+    $cachefile = $this->_getCacheFile();
     if (!file_exists($cachefile))
       return false;
     $this->is_init = false;
@@ -382,15 +387,19 @@ class pfcGlobalConfig
   }
   
   /**
-   * save the pfcConfig object into cache if it doesn't exists yet
+   * Save the pfcConfig object into cache if it doesn't exists yet
    * else restore the old pfcConfig object
    */
   function synchronizeWithCache()
   {
-    $cachefile = $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
-
+    $cachefile = $this->_getCacheFile();
+    $cachefile_lock = $cachefile."_lock";
+    
     if (file_exists($cachefile))
     {
+      // if a cache file exists, remove the lock file because config has been succesfully stored
+      if (file_exists($cachefile_lock)) @unlink($cachefile_lock);
+
       $pfc_configvar = unserialize(file_get_contents($cachefile));
       foreach($pfc_configvar as $key => $val)
 	$this->$key = $val;
@@ -398,6 +407,11 @@ class pfcGlobalConfig
     }
     else
     {
+      if (file_exists($cachefile_lock))
+        return false; // do nothing if the lock file exists
+      else
+        @touch($cachefile_lock); // create the lockfile
+      
       if (!$this->isInit())
         $this->init();
       $errors =& $this->getErrors();
@@ -413,7 +427,7 @@ class pfcGlobalConfig
   }
   function saveInCache()
   {
-    $cachefile = $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
+    $cachefile = $this->_getCacheFile();
     file_put_contents($cachefile, serialize(get_object_vars($this)));
     if ($this->debug) pxlog("pfcGlobalConfig::saveInCache()", "chatconfig", $this->getId());
   }
