@@ -34,13 +34,13 @@ class pfcCommand_nick extends pfcCommand
     // 'BoB' and 'bob' must be considered same nicknames
     $nick_in_use = false;
     $online_users = $container->getOnlineNick(NULL);
-    foreach($online_users as $ou)
+    foreach($online_users["nickid"] as $nid)
     {
-      if (preg_match("/^".preg_quote($ou["nick"])."$/i",$newnick))
+      if (preg_match("/^".preg_quote($container->getNickname($nid))."$/i",$newnick))
       {
         // the nick match
 	// just allow the owner to change his capitalised letters
-        if ($container->getNickId($ou["nick"]) != $oldnickid)
+        if ($nid != $oldnickid)
           $nick_in_use = true;
       }
     }
@@ -55,14 +55,11 @@ class pfcCommand_nick extends pfcCommand
           $oldnick != $newnick && $oldnick != "")
       {
         // really change the nick (rename it)
-        $container->changeNick(NULL, $newnick, $oldnick);
-        foreach($u->channels as $chan)
-          $container->changeNick($chan["recipient"], $newnick, $oldnick);
-        foreach( $u->privmsg as $pv )
-          $container->changeNick($pv["recipient"], $newnick, $oldnick);
+        $container->changeNick($newnick, $oldnick);
         $u->nick = $newnick;
         $u->saveInCache();
 
+        // notify all the joined channels/privmsg
         $cmd =& pfcCommand::Factory("notice");
         foreach($u->channels as $id => $chan)
           $cmd->run($xml_reponse, $clientid, _pfc("%s changes his nickname to %s",$oldnick,$newnick), $sender, $chan["recipient"], $id, 1);

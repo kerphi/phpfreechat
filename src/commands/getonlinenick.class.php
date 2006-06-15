@@ -11,10 +11,10 @@ class pfcCommand_getonlinenick extends pfcCommand
 
     // take care to disconnect timeouted users on this channel
     $disconnected_users = $container->removeObsoleteNick($recipient,$c->timeout);
-    foreach ($disconnected_users as $u)
+    foreach ($disconnected_users["nickid"] as $nid)
     {
       $cmd =& pfcCommand::Factory("notice");
-      $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u["nick"]), $sender, $recipient, $recipientid, 2);
+      $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$container->getNickname($nid)), $sender, $recipient, $recipientid, 2);
     }
     
     // get the cached nickname list
@@ -23,26 +23,30 @@ class pfcCommand_getonlinenick extends pfcCommand
 
     // get the real nickname list
     $users = $container->getOnlineNick($recipient);
-    sort($users);
-    // check if the nickname list must be updated
-    if ($oldnicklist != $users)
+    if ($oldnicklist != $users["nickid"]) // check if the nickname list must be updated on the client side
     {
+      $_SESSION[$nicklist_sid] = $users["nickid"];
+
+      // sort the nicknames
+      $nicklist = array();
+      foreach($users["nickid"] as $nid)
+        $nicklist[] = $container->getNickname($nid);
+      sort($nicklist);
+      
       if ($c->debug)
       {
-        $nicklist = array(); foreach($users as $u) $nicklist[] = $u["nick"]; $nicklist = implode(",",$nicklist);
+        $nicklist = implode(",",$nicklist);
         pxlog("/getonlinenick (nicklist updated - nicklist=".$nicklist.")", "chat", $c->getId());
       }
 
-      $_SESSION[$nicklist_sid] = $users;
-
+      // build and send the nickname list
       $js = "";
-      foreach ($users as $u)
+      foreach ($nicklist as $nick)
       {
-        $nickname = addslashes($u["nick"]); // must escape ' charactere for javascript string
+        $nickname = addslashes($nick); // must escape ' charactere for javascript string
         $js      .= "'".$nickname."',";
       }
-      $js    = substr($js, 0, strlen($js)-1); // remove last ','
-      
+      $js = substr($js, 0, strlen($js)-1); // remove last ','
       $xml_reponse->addScript("pfc.updateNickList('".$recipientid."',Array(".$js."));");
     }
   

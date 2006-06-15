@@ -19,7 +19,7 @@ class pfcCommand_connect extends pfcCommand
     {
       // check if the user is alone on the server, and give it the admin status if yes
       $users = $container->getOnlineNick(NULL);
-      if (count($users) == 0) $isadmin = true;
+      if (count($users["nickid"]) == 0) $isadmin = true;
     }
     
     // setup some user meta

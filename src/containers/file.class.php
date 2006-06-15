@@ -29,8 +29,8 @@ require_once dirname(__FILE__)."/../pfccontainer.class.php";
  */
 class pfcContainer_File extends pfcContainer
 {
-  var $_users = array();
-  var $_cache_nickid = array();
+  var $_users = array("nickid"    => array(),
+                      "timestamp" => array());
 
   function pfcContainer_File(&$config)
   {
@@ -130,8 +130,8 @@ class pfcContainer_File extends pfcContainer
     $_chan = ($chan == NULL) ? "SERVER" : $chan;
     if ($id<0)
     {
-      $this->_users[$_chan][] = array("nickid"    => $nickid,
-                                      "timestamp" => filemtime($nickid_filename));
+      $this->_users[$_chan]["nickid"][]    = $nickid;
+      $this->_users[$_chan]["timestamp"][] = filemtime($nickid_filename);
     }
     
     return true;
@@ -184,7 +184,11 @@ class pfcContainer_File extends pfcContainer
     // remove the nickname from the cache list
     $id = $this->isNickOnline($chan, $nick);
     $_chan = ($chan == NULL) ? "SERVER" : $chan;
-    if ($id >= 0) unset($this->_users[$_chan][$id]);
+    if ($id >= 0)
+    {
+      unset($this->_users[$_chan]["nickid"][$id]);
+      unset($this->_users[$_chan]["timestamp"][$id]);
+    }
     
     return $ok;
   }
@@ -220,13 +224,13 @@ class pfcContainer_File extends pfcContainer
     $id = $this->isNickOnline($chan, $nick);
     if ($id < 0)
     {
-      $this->_users[$_chan][] = array("nickid"    => $nickid,
-                                      "timestamp" => filemtime($nickid_filename));
+      $this->_users[$_chan]["nickid"][]    = $nickid;
+      $this->_users[$_chan]["timestamp"][] = filemtime($nickid_filename);
     }
     else
     {
       // just update the timestamp if the nickname is allready present in the cached list
-      $this->_users[$_chan][$id]["timestamp"] = filemtime($nickid_filename);
+      $this->_users[$_chan]["timestamp"][$id] = filemtime($nickid_filename);
     }
     
     return $there;
@@ -309,7 +313,7 @@ class pfcContainer_File extends pfcContainer
    * Notice: this function must remove all nicknames which are not uptodate from the given channel or from the server
    * @param $chan if NULL then check obsolete nick on the server, otherwise just check obsolete nick on the given channel
    * @param $timeout
-   * @return array("nickid"=>???, "timestamp"=>???) contains all disconnected nickids and there timestamp
+   * @return array("nickid"=>array("nickid1", ...),"timestamp"=>array(timestamp1, ...)) contains all disconnected nickids and there timestamp
    */
   function removeObsoleteNick($chan, $timeout)
   {
@@ -322,7 +326,7 @@ class pfcContainer_File extends pfcContainer
     $errors = @test_writable_dir($nick_dir, $chan."/nicknames");
     
     $deleted_user = array();
-    $users = array();
+    $online_user  = array();
     $dir_handle = opendir($nick_dir);
     while (false !== ($file = readdir($dir_handle)))
     {
@@ -330,31 +334,31 @@ class pfcContainer_File extends pfcContainer
       $f_time = filemtime($nick_dir."/".$file);
       if (time() > ($f_time+$timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
       {
-        $deleted_user[] = array("nickid"    => $file,
-                                "timestamp" => $f_time);
+        $deleted_user["nickid"][]    = $file;
+        $deleted_user["timestamp"][] = $f_time;
         @unlink($nick_dir."/".$file); // disconnect expired user
       }
       else
       {
         // optimisation: cache user list for next getOnlineNick call
-        $users[] = array("nickid"    => $file,
-                         "timestamp" => $f_time);
+        $online_user["nickid"][]    = $file;
+        $online_user["timestamp"][] = $f_time;
       }
     }
 
     // remove the user metadata if he is disconnected from the server
-    if ($chan == NULL)
+    if ($chan == NULL && isset($deleted_user["nickid"]))
     {
-      foreach($deleted_user as $du)
+      foreach($deleted_user["nickid"] as $du_nid)
       {
-        $this->rmMeta("nickid", "fromnickname", $this->getNickname($du["nickid"]));
-        $this->rmMeta("nickname", "fromnickid", $du["nickid"]);
+        $this->rmMeta("nickid",   "fromnickname", $this->getNickname($du_nid));
+        $this->rmMeta("nickname", "fromnickid",   $du_nid);
       }
     }
     
     // cache the updated user list
     $_chan = ($chan == NULL) ? "SERVER" : $chan;
-    $this->_users[$_chan] =& $users;
+    $this->_users[$_chan] =& $online_user;
     
     return $deleted_user;
   }
@@ -362,7 +366,7 @@ class pfcContainer_File extends pfcContainer
   /**
    * Returns the nickname list on the given channel or on the whole server
    * @param $chan if NULL then returns all connected user, otherwise just returns the channel nicknames
-   * @return array(array("nickid"=>???,"timestamp"=>???) contains the nickid list with the associated timestamp (laste update time)
+   * @return array("nickid"=>array("nickid1", ...),"timestamp"=>array(timestamp1, ...)) contains the nickid list with the associated timestamp (laste update time)
    */
   function getOnlineNick($chan)
   {
@@ -378,17 +382,17 @@ class pfcContainer_File extends pfcContainer
       $c->container_cfg_server_dir."/nicknames";
     if (!is_dir($nick_dir)) mkdir_r($nick_dir);
     
-    $users = array();
+    $online_user = array();
     $dir_handle = opendir($nick_dir);
     while (false !== ($file = readdir($dir_handle)))
     {
       if ($file == "." || $file == "..") continue; // skip . and .. generic files
-      $users[] = array("nickid"    => $file,
-                       "timestamp" => filemtime($nick_dir."/".$file));
+      $online_user["nickid"][]    = $file;
+      $online_user["timestamp"][] = filemtime($nick_dir."/".$file);
     }
 
     // cache the user list
-    $this->_users[$_chan] =& $users;
+    $this->_users[$_chan] =& $online_user;
 
     return $this->_users[$_chan];
   }
@@ -412,16 +416,19 @@ class pfcContainer_File extends pfcContainer
 
     return file_exists($nick_dir."/".$nickid);
     */
+
+    $nickid = $this->getNickId($nick);
     
     // get the nickname list
     $_chan = ($chan == NULL) ? "SERVER" : $chan;
-    $online_users = isset($this->_users[$_chan]) ? $this->_users[$_chan] : $this->getOnlineNick($chan);
-
+    $online_user = isset($this->_users[$_chan]) ? $this->_users[$_chan] : $this->getOnlineNick($chan);
+    
     $uid = 0;
     $isonline = false;
-    while($uid < count($online_users) && !$isonline)
+    if (!isset($online_user["nickid"])) return -1;
+    while($uid < count($online_user["nickid"]) && !$isonline)
     {
-      if ($online_users[$uid]["nick"] == $nick)
+      if ($online_user["nickid"][$uid] == $nickid)
         $isonline = true;
       else
         $uid++;

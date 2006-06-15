@@ -112,7 +112,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->ct->createNick($chan, $nick, $nickid);
     sleep(2);
     $ret = $this->ct->removeObsoleteNick($chan, 1000);
-    $this->assertEquals(count($ret), 1, "1 nickname should be obsolete");
+    $this->assertEquals(count($ret["nickid"]), 1, "1 nickname should be obsolete");
     $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
     $this->assertFalse($isonline, "nickname shouldn't be online anymore");
     
@@ -121,7 +121,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->ct->createNick($chan, $nick, $nickid);
     sleep(2);
     $ret = $this->ct->removeObsoleteNick($chan, 1000);
-    $this->assertEquals(count($ret), 1, "1 nickname should be obsolete");
+    $this->assertEquals(count($ret["nickid"]), 1, "1 nickname should be obsolete");
     $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
     $this->assertFalse($isonline, "nickname shouldn't be online anymore");
   }
