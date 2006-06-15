@@ -51,7 +51,7 @@ class pfcCommand_nick extends pfcCommand
       // current nickname (oldnick) is mine and
       // oldnick is different from new nick
       // -> this is a nickname change
-      if ($oldnickid == $u->sessionid &&
+      if ($oldnickid == $u->nickid &&
           $oldnick != $newnick && $oldnick != "")
       {
         // really change the nick (rename it)
@@ -75,14 +75,14 @@ class pfcCommand_nick extends pfcCommand
       // new nickname is undefined (not used) and
       // current nickname (oldnick) is not mine or is undefined
       // -> this is a first connection
-      if ($oldnickid != $u->sessionid)
+      if ($oldnickid != $u->nickid)
       {
         // this is a first connection (create the nickname)
-        $container->createNick(NULL, $newnick, $u->sessionid);
+        $container->createNick(NULL, $newnick, $u->nickid);
         foreach($u->channels as $chan)
-          $container->createNick($chan["recipient"], $newnick, $u->sessionid);
+          $container->createNick($chan["recipient"], $newnick, $u->nickid);
         foreach($u->privmsg as $pv)
-          $container->createNick($pv["recipient"], $newnick, $u->sessionid);
+          $container->createNick($pv["recipient"], $newnick, $u->nickid);
         $u->nick   = $newnick;
         $u->active = true;
         $u->saveInCache();
@@ -108,7 +108,7 @@ class pfcCommand_nick extends pfcCommand
       //$xml_reponse->addScript("$('".$c->prefix."words').focus();");
       
     }
-    else if ($newnickid == $u->sessionid)
+    else if ($newnickid == $u->nickid)
     {
       // user didn't change his nickname
       //$xml_reponse->addAssign($c->prefix."handle", "value", $newnick);

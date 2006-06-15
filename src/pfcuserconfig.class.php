@@ -10,7 +10,7 @@ class pfcUserConfig
   var $active;
   
   var $timeout;
-  var $sessionid;
+  var $nickid;
   
   //  var $is_init = false; // used internaly to know if the chat config is initialized
   //  var $errors = array();
@@ -25,7 +25,7 @@ class pfcUserConfig
     
     //    echo "pfcUserConfig()<br>";
 
-    $this->sessionid = session_id();
+    $this->nickid = session_id();
 
     // user parameters are cached in sessions
     $this->_getParam("nick");
@@ -43,10 +43,10 @@ class pfcUserConfig
     if (!isset($this->$p))
     {
       $c =& pfcGlobalConfig::Instance();
-      $sessionid       = "pfcuserconfig_".$c->getId();
-      $sessionid_param = $sessionid."_".$p;
-      if (isset($_SESSION[$sessionid_param]))
-        $this->$p = $_SESSION[$sessionid_param];
+      $nickid       = "pfcuserconfig_".$c->getId();
+      $nickid_param = $nickid."_".$p;
+      if (isset($_SESSION[$nickid_param]))
+        $this->$p = $_SESSION[$nickid_param];
     }
     return $this->$p;
   }
@@ -54,18 +54,18 @@ class pfcUserConfig
   function _setParam($p, $v)
   {
     $c =& pfcGlobalConfig::Instance();
-    $sessionid       = "pfcuserconfig_".$c->getId();
-    $sessionid_param = $sessionid."_".$p;
-    $_SESSION[$sessionid_param] = $v;
+    $nickid       = "pfcuserconfig_".$c->getId();
+    $nickid_param = $nickid."_".$p;
+    $_SESSION[$nickid_param] = $v;
     $this->$p = $v;
   }
 
   function _rmParam($p)
   {
     $c =& pfcGlobalConfig::Instance();
-    $sessionid       = "pfcuserconfig_".$c->getId();
-    $sessionid_param = $sessionid."_".$p;
-    unset($_SESSION[$sessionid_param]);
+    $nickid       = "pfcuserconfig_".$c->getId();
+    $nickid_param = $nickid."_".$p;
+    unset($_SESSION[$nickid_param]);
     unset($this->$p);
   }
   
@@ -182,11 +182,11 @@ class pfcUserConfig
       /*
 
       // save nickname and active status into sessions
-      $sessionid        = $c->prefix."pfcuserconfig_".$c->getId();
-      $sessionid_nick   = $sessionid."_nick";
-      $sessionid_active = $sessionid."_active";
-      $_SESSION[$sessionid_nick] = $this->nick;
-      $_SESSION[$sessionid_active] = $this->active;
+      $nickid        = $c->prefix."pfcuserconfig_".$c->getId();
+      $nickid_nick   = $nickid."_nick";
+      $nickid_active = $nickid."_active";
+      $_SESSION[$nickid_nick] = $this->nick;
+      $_SESSION[$nickid_active] = $this->active;
       */
       
       

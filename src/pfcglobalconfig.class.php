@@ -90,18 +90,14 @@ class pfcGlobalConfig
   var $smileys             = array();
   var $errors              = array();
   var $prefix              = "pfc_";
-  //  var $active              = false; // used internaly
   var $is_init             = false; // used internaly to know if the chat config is initialized
   var $version             = ""; // the phpfreechat version: taken from the 'version' file content
-  //  var $sessionid           = 0; // the client sessionid, this is automatically set by phpfreechat instance
   var $debugurl            = "";
   var $debug               = false;
   var $debugxajax          = false;
   
   function pfcGlobalConfig( $params = array() )
   {
-    //    $params["sessionid"] = session_id();
-
     // setup the local for translated messages
     pfcI18N::Init(isset($params["language"]) ? $params["language"] : "");
 
