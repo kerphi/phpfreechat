@@ -31,7 +31,8 @@ class pfcContainer_File extends pfcContainer
 {
   var $_users = array("nickid"    => array(),
                       "timestamp" => array());
-
+  var $_meta = array();
+  
   function pfcContainer_File(&$config)
   {
     pfcContainer::pfcContainer(&$config);
@@ -571,22 +572,25 @@ class pfcContainer_File extends pfcContainer
    */
   function getMeta($key, $type, $subtype = NULL)
   {
-    $c =& $this->c;
-    
     // encode parameters
     $enc_key     = $this->_encode($key);
     $enc_type    = $this->_encode($type);
-    $enc_subtype = ($subtype == NULL) ? "" : $this->_encode($subtype);
-
+    $enc_subtype = ($subtype == NULL) ? "NULL" : $this->_encode($subtype);
+    if (isset($this->_meta[$enc_type][$enc_subtype][$enc_key]))
+      return $this->_meta[$enc_type][$enc_subtype][$enc_key];
+    
     // read data from metadata file
+    $c =& $this->c;
     $dir_base = $c->container_cfg_meta_dir;
-    $dir = $dir_base."/".$enc_type.($enc_subtype == "" ? "" : "/".$enc_subtype);
+    $dir = $dir_base."/".$enc_type.($enc_subtype == "NULL" ? "" : "/".$enc_subtype);
     $filename = $dir."/".$enc_key;
     $ret = @file_get_contents($filename);
-    if ($ret == false)
-      return NULL;
-    else
-      return $ret;
+    if ($ret == false) $ret = NULL;
+
+    // store the result in the cache
+    $this->_meta[$enc_type][$enc_subtype][$enc_key] = $ret;
+    
+    return $ret;
   }
   
   /**
@@ -600,21 +604,24 @@ class pfcContainer_File extends pfcContainer
    */
   function setMeta($value, $key, $type, $subtype = NULL)
   {
-    $c =& $this->c;
-    
     // encode parameters
     $enc_key     = $this->_encode($key);
     $enc_type    = $this->_encode($type);
-    $enc_subtype = ($subtype == NULL) ? "" : $this->_encode($subtype);
-
+    $enc_subtype = ($subtype == NULL) ? "NULL" : $this->_encode($subtype);
+    
     // create directories
+    $c =& $this->c;
     $dir_base = $c->container_cfg_meta_dir;
-    $dir = $dir_base."/".$enc_type.($enc_subtype == "" ? "" : "/".$enc_subtype);
+    $dir = $dir_base."/".$enc_type.($enc_subtype == "NULL" ? "" : "/".$enc_subtype);
     if (!is_dir($dir)) mkdir_r($dir);
 
     // create or replace metadata file
     $filename = $dir."/".$enc_key;
     $ret = @file_put_contents($filename, $value);
+
+    // store the value in the cache
+    if ($ret) $this->_meta[$enc_type][$enc_subtype][$enc_key] = $value;
+
     if ($ret == false)
       return false;
     else
@@ -634,24 +641,30 @@ class pfcContainer_File extends pfcContainer
     $c =& $this->c;
     
     // encode parameters
-    $enc_key     = ($key == NULL) ? "" : $this->_encode($key);
+    $enc_key     = ($key == NULL) ? "NULL" : $this->_encode($key);
     $enc_type    = $this->_encode($type);
-    $enc_subtype = ($subtype == NULL) ? "" : $this->_encode($subtype);
+    $enc_subtype = ($subtype == NULL) ? "NULL" : $this->_encode($subtype);
 
     // rm data from metadata file
     $dir_base = $c->container_cfg_meta_dir;
-    $dir = $dir_base."/".$enc_type.($enc_subtype == "" ? "" : "/".$enc_subtype);
+    $dir = $dir_base."/".$enc_type.($enc_subtype == "NULL" ? "" : "/".$enc_subtype);
     $ret = true;
-    if ($enc_key == "")
+    if ($enc_key == "NULL")
     {
       // remove all keys (the complete directory)
       @rm_r($dir);
+
+      // remove the cached data
+      unset($this->_meta[$enc_type][$enc_subtype]);
     }
     else
     {
       // just remove one key
       $filename = $dir."/".$enc_key;
       $ret = @unlink($filename);
+      
+      // remove the cached data
+      unset($this->_meta[$enc_type][$enc_subtype][$enc_key]);
     }
 
     return $ret;
@@ -666,7 +679,11 @@ class pfcContainer_File extends pfcContainer
     $c =& $this->c;
     // remove the created files and directories
     $dir = $c->container_cfg_server_dir;
-    rm_r($dir);
+    @rm_r($dir);
+    // empty the cache
+    $this->_meta = array();
+    $this->_users = array("nickid"    => array(),
+                          "timestamp" => array());
   }
   
   /**
