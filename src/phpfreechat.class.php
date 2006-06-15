@@ -360,7 +360,7 @@ class phpFreeChat
     // before playing the wanted command
     // play the found commands into the meta 'cmdtoplay'
     $container =& $c->getContainerInstance();
-    $nickid = $container->getNickId($u->nick);
+    $nickid = $u->nickid;
     $morecmd = true;
     while($morecmd)
     {

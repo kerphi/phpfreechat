@@ -39,7 +39,7 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
     if ( in_array($this->name, $cmdtocheck) )
     {
       $container =& $c->getContainerInstance();
-      $nickid        = $container->getNickId($sender);
+      $nickid        = $u->nickid;
       $isadmin       = $container->getMeta("isadmin", "nickname", $nickid);
       $lastfloodtime = $container->getMeta("floodtime", "nickname", $nickid);
       $nbflood       = $container->getMeta("nbflood", "nickname", $nickid);

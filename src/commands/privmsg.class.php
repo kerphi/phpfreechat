@@ -14,7 +14,7 @@ class pfcCommand_privmsg extends pfcCommand
     // check the pvname exists on the server
     $container =& $c->getContainerInstance();
     $pvnickid = $container->getNickId($pvname);
-    $nickid   = $container->getNickId($u->nick);
+    $nickid   = $u->nickid;
 
     // error: can't speak to myself
     if ($pvnickid == $nickid)

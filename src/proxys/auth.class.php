@@ -40,15 +40,15 @@ class pfcProxyCommand_auth extends pfcProxyCommand
     if ( in_array($this->name, $admincmd) )
     {
       $container =& $c->getContainerInstance();
-      $nickid = $container->getNickId($sender);
+      $nickid = $u->nickid;
       $isadmin = $container->getMeta("isadmin", "nickname", $nickid);
       if (!$isadmin)
       {
         $xml_reponse->addScript("alert('".addslashes(_pfc("You are not allowed to run '%s' command", $this->name))."');");
         return;
       }
-    }
-
+    }    
+    
     // channels protection
     if ($this->name == "join")
     {
@@ -59,7 +59,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
       $chanid      = pfcCommand_join::GetRecipientId($channame);
       $banlist     = $container->getMeta("banlist_nickid", "channel", $chanid);
       if ($banlist == NULL) $banlist = array(); else $banlist = unserialize($banlist);
-      $nickid = $container->getNickId($u->nick);
+      $nickid = $u->nickid;
       if (in_array($nickid,$banlist))
       {
         // the user is banished, show a message and don't forward the /join command
