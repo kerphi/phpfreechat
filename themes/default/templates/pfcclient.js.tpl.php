@@ -304,7 +304,7 @@ pfcClient.prototype = {
         // the last joined channel must be the last entry in the parameter list
         for($i=0; $i<count($u->channels); $i++)
         {
-          $ch = $u->channels[$i];
+          $ch = $u->channels[$i]["name"];
           $cmd = $i < count($u->channels)-1 ? "/join2" : "/join";
           echo "this.sendRequest('".$cmd."', '".addslashes($ch)."');\n";
         }
