@@ -111,7 +111,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     // on the channel
     $this->ct->createNick($chan, $nick, $nickid);
     sleep(2);
-    $ret = $this->ct->removeObsoleteNick($chan, "1000");
+    $ret = $this->ct->removeObsoleteNick($chan, 1000);
     $this->assertEquals(count($ret), 1, "1 nickname should be obsolete");
     $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
     $this->assertFalse($isonline, "nickname shouldn't be online anymore");
@@ -120,7 +120,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $chan = NULL;
     $this->ct->createNick($chan, $nick, $nickid);
     sleep(2);
-    $ret = $this->ct->removeObsoleteNick($chan, "1000");
+    $ret = $this->ct->removeObsoleteNick($chan, 1000);
     $this->assertEquals(count($ret), 1, "1 nickname should be obsolete");
     $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
     $this->assertFalse($isonline, "nickname shouldn't be online anymore");
@@ -171,7 +171,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     sleep(2);
     $ret = $this->ct->updateNick($chan, $nick);
     $this->assertTrue($ret, "nickname should be correctly updated");
-    $ret = $this->ct->removeObsoleteNick($chan, "1000");
+    $ret = $this->ct->removeObsoleteNick($chan, 1000);
     $this->assertFalse(in_array($nick, $ret), "nickname shouldn't be removed because it has been updated");
     $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
     $this->assertTrue($isonline, "nickname should be online");
@@ -182,7 +182,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     sleep(2);
     $ret = $this->ct->updateNick($chan, $nick);
     $this->assertTrue($ret, "nickname should be correctly updated");
-    $ret = $this->ct->removeObsoleteNick($chan, "1000");
+    $ret = $this->ct->removeObsoleteNick($chan, 1000);
     $this->assertFalse(in_array($nick, $ret), "nickname shouldn't be removed because it has been updated");
     $isonline = ($this->ct->isNickOnline($chan, $nick) >= 0);
     $this->assertTrue($isonline, "nickname should be online");
@@ -197,19 +197,9 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $nickid = $this->nickid;
     $chan   = $this->chan;
 
-    // create on the channel
+    // create a nick on a channel and change it
     $this->ct->createNick($chan, $nick1, $nickid);
-    $ret = $this->ct->changeNick($chan, $nick2, $nick1);
-    $this->assertTrue($ret, "nickname change function should returns true (success)");
-    $isonline1 = ($this->ct->isNickOnline($chan, $nick1) >= 0);
-    $isonline2 = ($this->ct->isNickOnline($chan, $nick2) >= 0);
-    $this->assertFalse($isonline1, "nickname shouldn't be online");
-    $this->assertTrue($isonline2, "nickname shouldn't be online");
-      
-    // create on the server
-    $chan = NULL;
-    $this->ct->createNick($chan, $nick1, $nickid);
-    $ret = $this->ct->changeNick($chan, $nick2, $nick1);
+    $ret = $this->ct->changeNick($nick2, $nick1);
     $this->assertTrue($ret, "nickname change function should returns true (success)");
     $isonline1 = ($this->ct->isNickOnline($chan, $nick1) >= 0);
     $isonline2 = ($this->ct->isNickOnline($chan, $nick2) >= 0);

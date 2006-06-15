@@ -89,6 +89,10 @@ class pfcContainer_File extends pfcContainer
    */
   function createNick($chan, $nick, $nickid)
   {
+    // store nickid -> nickname and nickname -> nickid correspondance
+    $this->setMeta($nick, "nickname", "fromnickid", $nickid);
+    $this->setMeta($nickid, "nickid", "fromnickname", $nick);
+
     $c =& $this->c;
     $nick_dir = ($chan != NULL) ?
       $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
@@ -99,10 +103,10 @@ class pfcContainer_File extends pfcContainer
     if ($c->debug)
     {
       if (count($errors)>0)
-        pxlog("createNick(".$nick.", ".$nickid.") - Error: ".var_export($errors), "chat", $c->getId());
+        pxlog("createNick(".$nick.", ".$nickid.") - Error: ".var_export($errors,true), "chat", $c->getId());
     }
     
-    $nick_filename = $nick_dir."/".$this->_encode($nick);
+    $nickid_filename = $nick_dir."/".$nickid; //$this->_encode($nick);
 
     // check the if the file exists only in debug mode!
     if ($c->debug)
@@ -112,19 +116,22 @@ class pfcContainer_File extends pfcContainer
     }
     
     // trust the caller : this nick is not used
-    $fp = fopen($nick_filename, "w");
+    touch($nickid_filename);
+    /*
+    $fp = fopen($nickid_filename, "w");
     flock ($fp, LOCK_EX); // lock
     fwrite($fp, $nickid);
     flock ($fp, LOCK_UN); // unlock
     fclose($fp);
-
+    */
+    
     // append the nickname to the cached nickname list
     $id = $this->isNickOnline($chan, $nick);
     $_chan = ($chan == NULL) ? "SERVER" : $chan;
     if ($id<0)
     {
-      $this->_users[$_chan][] = array("nick"      => $nick,
-                                      "timestamp" => filemtime($nick_filename));
+      $this->_users[$_chan][] = array("nickid"    => $nickid,
+                                      "timestamp" => filemtime($nickid_filename));
     }
     
     return true;
@@ -139,27 +146,38 @@ class pfcContainer_File extends pfcContainer
    */
   function removeNick($chan, $nick)
   {
+    // retrive the nickid to remove
+    $nickid = $this->getNickId($nick);
+    if ($nickid == "undefined") return false;
+
     $c =& $this->c;
     $nick_dir = ($chan != NULL) ?
       $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
       $c->container_cfg_server_dir."/nicknames";
-    $nick_filename = $nick_dir."/".$this->_encode($nick);
+    $nickid_filename = $nick_dir."/".$nickid; //$this->_encode($nick);
 
     if ($c->debug)
     {
       // @todo: check if the removed nick is mine in debug mode!
       
       // check the nickname file really exists
-      if (!file_exists($nick_filename))
+      if (!file_exists($nickid_filename))
         pxlog("removeNick(".$nick.") - Error: the nickname data file to remove doesn't exists", "chat", $c->getId());
     }
 
-    $ok = @unlink($nick_filename);
+    $ok = @unlink($nickid_filename);
 
+    // remove the user metadata if he is disconnected from the server
+    if ($chan == NULL)
+    {
+      $this->rmMeta("nickid", "fromnickname", $nick);
+      $this->rmMeta("nickname", "fromnickid", $nickid);
+    }
+    
     if ($c->debug)
     {
       // check the nickname file is correctly deleted
-      if (file_exists($nick_filename))
+      if (file_exists($nickid_filename))
         pxlog("removeNick(".$nick.") - Error: the nickname data file yet exists", "chat", $c->getId());
     }
 
@@ -179,6 +197,10 @@ class pfcContainer_File extends pfcContainer
    */
   function updateNick($chan, $nick)
   {
+    // retrive the nickid to update
+    $nickid = $this->getNickId($nick);
+    if ($nickid == "undefined") return false;
+    
     $c =& $this->c;
     $there = false;
     
@@ -188,23 +210,23 @@ class pfcContainer_File extends pfcContainer
     if (!is_dir($nick_dir)) mkdir_r($nick_dir);
     
     // update my online status file
-    $nick_filename = $nick_dir."/".$this->_encode($nick);
-    if (file_exists($nick_filename)) $there = true;
-    @touch($nick_filename);
-    @chmod($nick_filename, 0700); 
+    $nickid_filename = $nick_dir."/".$nickid; //$this->_encode($nick);
+    if (file_exists($nickid_filename)) $there = true;
+    @touch($nickid_filename);
+    @chmod($nickid_filename, 0700); 
 
     // append the nickname to the cache list
     $_chan = ($chan == NULL) ? "SERVER" : $chan;
     $id = $this->isNickOnline($chan, $nick);
     if ($id < 0)
     {
-      $this->_users[$_chan][] = array("nick"      => $nick,
-                                      "timestamp" => filemtime($nick_filename));
+      $this->_users[$_chan][] = array("nickid"    => $nickid,
+                                      "timestamp" => filemtime($nickid_filename));
     }
     else
     {
       // just update the timestamp if the nickname is allready present in the cached list
-      $this->_users[$_chan][$id]["timestamp"] = filemtime($nick_filename);
+      $this->_users[$_chan][$id]["timestamp"] = filemtime($nickid_filename);
     }
     
     return $there;
@@ -212,25 +234,37 @@ class pfcContainer_File extends pfcContainer
 
   /**
    * Change the user' nickname
-   * Notice: this call must take care to update all channels the user joined
-   * @param $chan where to update the nick, if null then update the server nick
+   * Notice: the caller will just call this function one time, this function must take care to update if necessary all channels the user joined
    * @param $newnick
    * @param $oldnick
+   * @return true on success, false on failure
    */
-  function changeNick($chan, $newnick, $oldnick)
+  function changeNick($newnick, $oldnick)
   {
-    $c =& $this->c;
+    $oldnickid = $this->getNickId($oldnick);
+    $newnickid = $this->getNickId($newnick);
+    if ($oldnickid == "undefined") return false; // the oldnick must be connected
+    if ($newnickid != "undefined") return false; // the newnick must not be inuse
 
+    $this->rmMeta("nickid", "fromnickname", $oldnick); // remove the oldnickname -> oldnickid association
+    $this->setMeta($newnick, "nickname", "fromnickid", $oldnickid);
+    $this->setMeta($oldnickid, "nickid", "fromnickname", $newnick);
+
+    /*
+    $c =& $this->c;
     $nick_dir = ($chan != NULL) ?
       $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
       $c->container_cfg_server_dir."/nicknames";
-    $newnick_filename = $nick_dir."/".$this->_encode($newnick);
-    $oldnick_filename = $nick_dir."/".$this->_encode($oldnick);
-
+    //    $newnickid_filename = $nick_dir."/".$this->_encode($newnick);
+    $oldnickid_filename = $nick_dir."/".$oldnickid; //$this->_encode($oldnick);
+        
     $ok = @rename($oldnick_filename, $newnick_filename);
+    */
 
     // update the nick cache list
-    if($ok)
+    
+    //if($ok)
+    /*
     {
       $_chan = ($chan == NULL) ? "SERVER" : $chan;
       $id = $this->isNickOnline($chan, $oldnick);
@@ -240,41 +274,34 @@ class pfcContainer_File extends pfcContainer
         $this->_users[$_chan][$id]["timestamp"] = filemtime($newnick_filename);
       }
     }
-    
-    return $ok;
+    */
+
+    return true;
   }
 
   /**
-   * Returns the nickid, this is a unique id used to identify a user (taken from session)
-   * By default this nickid is just stored into the user' metadata, same as :->getNickMeta("nickid")
+   * Returns the nickid corresponding to the given nickname
+   * The nickid is a unique id used to identify a user (generated from the browser sessionid)
    * @param $nick
    * @return string the nick id
    */
-  function getNickId($nickname)
+  function getNickId($nick)
   {
-    if (!isset($this->_cache_nickid[$nickname]))
-    {
-      $c =& $this->c;
-      $nickid = "undefined";
-      
-      $nick_dir = $c->container_cfg_server_dir."/nicknames";
-      $nick_filename = $nick_dir."/".$this->_encode($nickname);
-      
-      if (file_exists($nick_filename))
-      {
-        $fsize = filesize($nick_filename);
-        if ($fsize>0)
-        {
-          // write the nickid into the new nickname file
-          $fp = fopen($nick_filename, "r");
-          $nickid = fread($fp, $fsize);
-          if ($nickid == "") $nickid = "undefined";
-          fclose($fp);
-        }
-      }
-      $this->_cache_nickid[$nickname] = $nickid;
-    }
-    return $this->_cache_nickid[$nickname];
+    $nickid = $this->getMeta("nickid", "fromnickname", $nick);
+    if ($nickid == NULL) $nickid = "undefined";
+    return $nickid;
+  }
+
+  /**
+   * Returns the nickname corresponding the the given nickid
+   * @param $nickid
+   * @return string the corresponding nickname
+   */
+  function getNickname($nickid)
+  {
+    $nick = $this->getMeta("nickname", "fromnickid", $nickid);
+    if ($nick == NULL) $nick = "";
+    return $nick;
   }
 
   /**
@@ -282,7 +309,7 @@ class pfcContainer_File extends pfcContainer
    * Notice: this function must remove all nicknames which are not uptodate from the given channel or from the server
    * @param $chan if NULL then check obsolete nick on the server, otherwise just check obsolete nick on the given channel
    * @param $timeout
-   * @return array("nick"=>???, "timestamp"=>???) contains all disconnected nicknames and there timestamp
+   * @return array("nickid"=>???, "timestamp"=>???) contains all disconnected nickids and there timestamp
    */
   function removeObsoleteNick($chan, $timeout)
   {
@@ -303,18 +330,28 @@ class pfcContainer_File extends pfcContainer
       $f_time = filemtime($nick_dir."/".$file);
       if (time() > ($f_time+$timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
       {
-        $deleted_user[] = array("nick"      => $this->_decode($file),
+        $deleted_user[] = array("nickid"    => $file,
                                 "timestamp" => $f_time);
         @unlink($nick_dir."/".$file); // disconnect expired user
       }
       else
       {
         // optimisation: cache user list for next getOnlineNick call
-        $users[] = array("nick"      => $this->_decode($file),
+        $users[] = array("nickid"    => $file,
                          "timestamp" => $f_time);
       }
     }
 
+    // remove the user metadata if he is disconnected from the server
+    if ($chan == NULL)
+    {
+      foreach($deleted_user as $du)
+      {
+        $this->rmMeta("nickid", "fromnickname", $this->getNickname($du["nickid"]));
+        $this->rmMeta("nickname", "fromnickid", $du["nickid"]);
+      }
+    }
+    
     // cache the updated user list
     $_chan = ($chan == NULL) ? "SERVER" : $chan;
     $this->_users[$_chan] =& $users;
@@ -325,7 +362,7 @@ class pfcContainer_File extends pfcContainer
   /**
    * Returns the nickname list on the given channel or on the whole server
    * @param $chan if NULL then returns all connected user, otherwise just returns the channel nicknames
-   * @return array(array("nick"=>???,"timestamp"=>???) contains the nickname list with the associated timestamp (laste update time)
+   * @return array(array("nickid"=>???,"timestamp"=>???) contains the nickid list with the associated timestamp (laste update time)
    */
   function getOnlineNick($chan)
   {
@@ -346,7 +383,7 @@ class pfcContainer_File extends pfcContainer
     while (false !== ($file = readdir($dir_handle)))
     {
       if ($file == "." || $file == "..") continue; // skip . and .. generic files
-      $users[] = array("nick"      => $this->_decode($file),
+      $users[] = array("nickid"    => $file,
                        "timestamp" => filemtime($nick_dir."/".$file));
     }
 
@@ -363,6 +400,19 @@ class pfcContainer_File extends pfcContainer
    */
   function isNickOnline($chan, $nick)
   {
+    // @todo optimise with this piece of code
+    /*
+    $nickid = $this->getNickId($nick);
+    if ($nickid == "undefined") return false;
+
+    $nick_dir = ($chan != NULL) ?
+      $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
+      $c->container_cfg_server_dir."/nicknames";
+    if (!is_dir($nick_dir)) mkdir_r($nick_dir);
+
+    return file_exists($nick_dir."/".$nickid);
+    */
+    
     // get the nickname list
     $_chan = ($chan == NULL) ? "SERVER" : $chan;
     $online_users = isset($this->_users[$_chan]) ? $this->_users[$_chan] : $this->getOnlineNick($chan);
