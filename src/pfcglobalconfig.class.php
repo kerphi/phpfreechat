@@ -376,6 +376,10 @@ class pfcGlobalConfig
     if (!file_exists($cachefile))
       return false;
     $this->is_init = false;
+    // destroy the cache lock file
+    $cachefile_lock = $cachefile."_lock";
+    if (file_exists($cachefile_lock)) @unlink($cachefile_lock);
+    // destroy the cache file
     return @unlink($cachefile);
   }
   

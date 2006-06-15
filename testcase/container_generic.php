@@ -41,9 +41,8 @@ class pfcContainerTestcase extends PHPUnit_TestCase
   // here
   function tearDown()
   {
-    $ct =& $this->ct;
-    // remove the created files and directories
-    $this->ct->clear();    
+    $this->ct->clear();
+    $this->c->destroyCache();
   }
 
   function testCreateNick_Generic()
