@@ -14,7 +14,7 @@ class pfcCommand_rehash extends pfcCommand
   function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
   {
     $c =& $this->c;
-    $destroyed = $c->destroy();
+    $destroyed = $c->destroyCache();    
     $synchro   = $c->synchronizeWithCache();
 
     if ($destroyed && $synchro)

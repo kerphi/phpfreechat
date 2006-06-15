@@ -263,9 +263,6 @@ class pfcGlobalConfig
     // copy the themes into the public directory
     $this->errors = array_merge($this->errors, @install_dir($this->themepath_default, $this->data_public_path."/themes"));
     $this->errors = array_merge($this->errors, @install_dir($this->themepath,         $this->data_public_path."/themes"));
-    // now it's copied, so update the themepath parameters to the new location
-    $this->themepath_default = $this->data_public_path."/themes";
-    $this->themepath         = $this->data_public_path."/themes";
     // calculate the corresponding theme url
     if ($this->themeurl_default == "")
       $this->themeurl_default = relativePath($this->client_script_path, $this->data_public_path."/themes");
@@ -377,7 +374,7 @@ class pfcGlobalConfig
     return $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
   }
   
-  function destroy()
+  function destroyCache()
   {
     $cachefile = $this->_getCacheFile();
     if (!file_exists($cachefile))
