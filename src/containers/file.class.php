@@ -334,6 +334,7 @@ class pfcContainer_File extends pfcContainer
       $f_time = filemtime($nick_dir."/".$file);
       if (time() > ($f_time+$timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
       {
+        $deleted_user["nick"][]      = $this->getNickname($file);
         $deleted_user["nickid"][]    = $file;
         $deleted_user["timestamp"][] = $f_time;
         @unlink($nick_dir."/".$file); // disconnect expired user

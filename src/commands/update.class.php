@@ -11,19 +11,7 @@ class pfcCommand_update extends pfcCommand
     
     // do not update if user isn't active (didn't connect)
     if ($u->active)
-    {
-      $container =& $c->getContainerInstance();
-
-      // take care to disconnect timeouted users on the server
-      $disconnected_users = $container->removeObsoleteNick(NULL,$c->timeout); 
-      // if whould be possible to echo these disconnected users on a server tab
-      // server tab is not yet available so I just commente the code
-      //       foreach ($disconnected_users as $u)
-      //       {
-      //         $cmd =& pfcCommand::Factory("notice");
-      //         $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u), $sender, $recipient, $recipientid, 2);
-      //       }
-      
+    {      
       // update the user nickname timestamp
       $cmd =& pfcCommand::Factory("updatemynick");
       foreach( $u->channels as $id => $chan )
@@ -46,6 +34,17 @@ class pfcCommand_update extends pfcCommand
       foreach( $u->privmsg as $id => $pv )
         $cmd->run($xml_reponse, $clientid, $param, $sender, $pv["recipient"], $id);
 
+      // take care to disconnect timeouted users on the server
+      $container =& $c->getContainerInstance();
+      $disconnected_users = $container->removeObsoleteNick(NULL,$c->timeout); 
+      // if whould be possible to echo these disconnected users on a server tab
+      // server tab is not yet available so I just commente the code
+      //       foreach ($disconnected_users as $u)
+      //       {
+      //         $cmd =& pfcCommand::Factory("notice");
+      //         $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u), $sender, $recipient, $recipientid, 2);
+      //       }
+      
       $xml_reponse->addScript("pfc.handleResponse('update', 'ok', '');");
     }
     else
