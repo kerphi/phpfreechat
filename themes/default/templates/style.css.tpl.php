@@ -11,7 +11,7 @@ div#<?php echo $prefix; ?>container {
   padding: 10px;
   min-height: 20px;
   background-color: #FFF;
-  background-image: url(<?php echo $c->getFileUrlFromTheme('images/shade.gif'); ?>);
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/shade.gif'); ?>");
   background-position: right;
   background-repeat: repeat-y;
   font-family: Verdana, Sans-Serif; /* without this rule, the tabs are not correctly display on FF */
@@ -89,7 +89,7 @@ div.<?php echo $prefix; ?>chat {
   position: absolute;
   top: 0;
   left: 0;
-  width: 79.9%;
+  width: 80%;
   height: 100%;
   overflow: auto;
 }
@@ -104,6 +104,9 @@ div.<?php echo $prefix; ?>online {
   height: 100%;
   color: #000; /* colors can be overriden by js nickname colorization */
   background-color: #FFF;
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/online-separator.gif'); ?>");
+  background-position: left;
+  background-repeat: repeat-y;
   /* borders are drawn by the javascript routines */
 }
 div.<?php echo $prefix; ?>online ul {
@@ -140,8 +143,7 @@ div.<?php echo $prefix; ?>message {
 div.<?php echo $prefix; ?>oldmsg {
   background-image: url("<?php echo $c->getFileUrlFromTheme('images/oldmsg.gif'); ?>");
   background-position: right;
-  background-repeat: repeat-y;
- 
+  background-repeat: repeat-y; 
 }
 
 span.<?php echo $prefix; ?>heure, span.<?php echo $prefix; ?>date {
