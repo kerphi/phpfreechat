@@ -37,6 +37,13 @@ class pfcCommand_getnewmsg extends pfcCommand
       $from_id = $container->getLastId($recipient)-$c->max_msg;
       if ($from_id < 0) $from_id = 0;
     }
+    // check if this is the first time you get messages
+    $oldmsg_sid = $c->prefix."oldmsg_".$c->getId()."_".$clientid."_".$recipientid;
+    if (isset($_SESSION[$oldmsg_sid]))
+    {
+      unset($_SESSION[$oldmsg_sid]);
+      $oldmsg = true;
+    }
 
     //$xml_reponse->addScript("alert('getnewmsg: fromidsid=".$from_id_sid."');");
     //$xml_reponse->addScript("alert('getnewmsg: recipient=".$recipient." fromid=".$from_id."');");
@@ -61,7 +68,7 @@ class pfcCommand_getnewmsg extends pfcCommand
       $m_recipientid = $recipientid;
       $m_cmd         = $d["cmd"];
       $m_param       = phpFreeChat::PostFilterMsg($d["param"]);
-      $js .= "Array(".$m_id.",'".addslashes($m_date)."','".addslashes($m_time)."','".addslashes($m_sender)."','".addslashes($m_recipientid)."','".addslashes($m_cmd)."','".addslashes($m_param)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($from_id == 0? 1 : 0)."),";
+      $js .= "Array(".$m_id.",'".addslashes($m_date)."','".addslashes($m_time)."','".addslashes($m_sender)."','".addslashes($m_recipientid)."','".addslashes($m_cmd)."','".addslashes($m_param)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($oldmsg ? 1 : 0)."),";
       $data_sent = true;
     }
     if ($js != "")
