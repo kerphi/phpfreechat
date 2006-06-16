@@ -44,8 +44,9 @@ class pfcCommand_update extends pfcCommand
       //         $cmd =& pfcCommand::Factory("notice");
       //         $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u), $sender, $recipient, $recipientid, 2);
       //       }
-      
-      $xml_reponse->addScript("pfc.handleResponse('update', 'ok', '');");
+
+      // do not send a response in order to save some bandwidth
+      //      $xml_reponse->addScript("pfc.handleResponse('update', 'ok', '');");
     }
     else
       $xml_reponse->addScript("pfc.handleResponse('update', 'ko', '');");
