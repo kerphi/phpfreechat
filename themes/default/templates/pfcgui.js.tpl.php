@@ -18,6 +18,7 @@ pfcGui.prototype = {
     this.chatcontent   = $H();
     this.onlinecontent = $H();
     this.scrollpos     = $H();
+    this.elttoscroll   = $H();
   },
 
   /**
@@ -25,7 +26,12 @@ pfcGui.prototype = {
    */
   scrollDown: function(tabid, elttoscroll)
   {
-    if (this.getTabId() != tabid) return; /* do nothing if this is not the current tab or it will reset the scrollbar position to 0 */
+    if (this.getTabId() != tabid)
+    {
+      if (!this.elttoscroll[tabid]) this.elttoscroll[tabid] = Array();
+      this.elttoscroll[tabid].push(elttoscroll);
+      return;
+    }
     var content = this.getChatContentFromTabId(tabid);
     content.scrollTop += elttoscroll.offsetHeight+2;
     this.scrollpos[tabid] = content.scrollTop;
@@ -38,7 +44,7 @@ pfcGui.prototype = {
   
   setTabById: function(tabid)
   {
-    // first of all save the scroll post of the visible tab
+    // first of all save the scroll pos of the visible tab
     var content = this.getChatContentFromTabId(this.current_tab_id);
     this.scrollpos[this.current_tab_id] = content.scrollTop;
     
@@ -46,7 +52,7 @@ pfcGui.prototype = {
     this.current_tab     = '';
     this.current_tab_id  = '';
     var tab_to_show = null;
-    // try to fine the tab to select and select it!
+    // try to fine the tab to select and select it! 
     for (var i=0; i<this.tabids.length; i++)
     {
       var tabtitle   = $('<?php echo $prefix; ?>channel_title'+this.tabids[i]);
@@ -69,6 +75,16 @@ pfcGui.prototype = {
 
     // show the new selected tab
     tab_to_show.style.display = 'block';
+
+    // scroll the new posted message
+    if (this.elttoscroll[tabid])
+    {
+      // on by one
+      for (var i=0; i<this.elttoscroll[tabid].length; i++)
+        this.scrollDown(tabid,this.elttoscroll[tabid][i]);
+      this.elttoscroll[tabid] = Array();
+    }
+    
     // restore the scroll pos
     var content = this.getChatContentFromTabId(tabid);
     content.scrollTop = this.scrollpos[tabid];
