@@ -332,29 +332,6 @@ pfcClient.prototype = {
       if (resp == "ok")
       {
       }
-      else if (resp == "cmdtoplay")
-      {
-        if (param[0] == "privmsg2")
-        {
-          // do not open the same tab twice
-          // (it's not necessary to speak to the server if the tab is allready open)
-          // so we check if the wanted privmsg tab exists or not
-          var index = this.privmsgs.indexOf(param[1]);
-          if (index == -1)
-          {
-            // it doesn't exists, create it in the background
-            this.sendRequest("/"+param[0],param[1]);
-          }
-        }
-        else if (param[0] == "leave")
-        {
-          this.sendRequest("/"+param[0],param[1]);
-        }
-        else
-          this.sendRequest("/"+param[0],param[1]);
-      }
-      //      else
-      //        alert(cmd + "-"+resp+"-"+param);
     }
     else if (cmd == "rehash")
     {
