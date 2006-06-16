@@ -1,3 +1,7 @@
+var is_ie = navigator.appName.match("Explorer");
+var is_khtml = navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML");
+var is_ff = navigator.appName.match("Netscape");
+
 /**
  * This class is the client part of phpFreeChat
  * (depends on prototype library)
@@ -545,12 +549,12 @@ pfcClient.prototype = {
   },
   callbackContainer_OnMousedown: function(evt)
   {
-    if (evt.button == 0)
+    if ( (is_ie && evt.button == 1) || (is_ff && evt.button == 0) )
       this.isdraging = false;
   },
   callbackContainer_OnMouseup: function(evt)
   {
-    if (evt.button == 0)
+    if ( (is_ie && evt.button == 1) || (is_ff && evt.button == 0) )
       if (!this.isdraging)
         if (this.el_words && !this.minmax_status)
           this.el_words.focus();
