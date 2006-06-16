@@ -32,7 +32,7 @@ div#<?php echo $prefix; ?>channels_content {
   border-right: 1px solid #555;
   border-left: 1px solid #555;
   border-bottom: 1px solid #555;
-  background-color: #FAFAFA;
+  background-color: #FFF;
   margin-top: 5px;
 }
 div.<?php echo $prefix; ?>content {
@@ -60,13 +60,13 @@ ul#<?php echo $prefix; ?>channels_list li div {
   background-color: #DDD;
 }
 ul#<?php echo $prefix; ?>channels_list li.selected div {
-  background-color: #FAFAFA;
-  border-bottom: 1px solid #FAFAFA;
+  background-color: #FFF;
+  border-bottom: 1px solid #FFF;
   color: #000;
   font-weight: bold;
 }
 ul#<?php echo $prefix; ?>channels_list li > div:hover {
-  background-color: #FAFAFA;
+  background-color: #FFF;
 }
 ul#<?php echo $prefix; ?>channels_list li a {
   color: #000;
@@ -89,7 +89,7 @@ div.<?php echo $prefix; ?>chat {
   position: absolute;
   top: 0;
   left: 0;
-  width: 79.5%;
+  width: 79.9%;
   height: 100%;
   overflow: auto;
 }
@@ -132,14 +132,16 @@ img#<?php echo $prefix; ?>minmax {
 }
 
 div.<?php echo $prefix; ?>message {
-  margin: 0;
 }
 .<?php echo $prefix; ?>words {
   font-size: 90%;
 }
 
 div.<?php echo $prefix; ?>oldmsg {
-  color: #AAA;
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/oldmsg.gif'); ?>");
+  background-position: right;
+  background-repeat: repeat-y;
+ 
 }
 
 span.<?php echo $prefix; ?>heure, span.<?php echo $prefix; ?>date {
