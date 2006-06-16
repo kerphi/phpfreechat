@@ -549,12 +549,12 @@ pfcClient.prototype = {
   },
   callbackContainer_OnMousedown: function(evt)
   {
-    if ( (is_ie && evt.button == 1) || (is_ff && evt.button == 0) )
+    if ( ((is_ie || is_khtml) && evt.button == 1) || (is_ff && evt.button == 0) )
       this.isdraging = false;
   },
   callbackContainer_OnMouseup: function(evt)
   {
-    if ( (is_ie && evt.button == 1) || (is_ff && evt.button == 0) )
+    if ( ((is_ie || is_khtml) && evt.button == 1) || (is_ff && evt.button == 0) )
       if (!this.isdraging)
         if (this.el_words && !this.minmax_status)
           this.el_words.focus();
