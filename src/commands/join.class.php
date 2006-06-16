@@ -34,18 +34,13 @@ class pfcCommand_join extends pfcCommand
       $nicklist_sid = $c->prefix."nicklist_".$c->getId()."_".$clientid."_".$chanid;
       $_SESSION[$nicklist_sid] = NULL;
 
-      // reset the message id indicator
-      // i.e. be ready to re-get all last posted messages
-      $container =& $c->getContainerInstance();
-      $from_id_sid = $c->prefix."from_id_".$c->getId()."_".$clientid."_".$chanid;
-      $from_id     = $container->getLastId($chanrecip)-$c->max_msg;
-      $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
-
       // show a join message
       $cmd =& pfcCommand::Factory("notice");
       $cmd->run($xml_reponse, $clientid, _pfc("%s joins %s",$u->nick, $channame), $sender, $chanrecip, $chanid, 1);
     }
-    //$xml_reponse->addScript("alert('join: chan=".$channame."');");
+
+
+    //$xml_reponse->addScript("alert('join: chan=".$channame.", from_id=".$from_id."');");
     //    $xml_reponse->addScript("alert('join: u->nick=".$u->nick." chanid=".$chanid." channame=".addslashes($channame)."');");
     //    $xml_reponse->addScript("alert('join: fromidsid=".$from_id_sid."');");
 

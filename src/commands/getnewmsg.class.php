@@ -11,7 +11,7 @@ class pfcCommand_getnewmsg extends pfcCommand
     // do nothing if the recipient is not defined
     if ($recipient == "") return;
     
-    //    $xml_reponse->addScript("alert('getnewmsg: sender=".addslashes($sender)." param=".addslashes($param)." recipient=".addslashes($recipient)." recipientid=".addslashes($recipientid)."');");
+    //$xml_reponse->addScript("alert('getnewmsg: sender=".addslashes($sender)." param=".addslashes($param)." recipient=".addslashes($recipient)." recipientid=".addslashes($recipientid)."');");
     
     // check this methode is not being called
     if( isset($_SESSION[$c->prefix."lock_readnewmsg_".$c->getId()."_".$clientid]) )
