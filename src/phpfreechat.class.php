@@ -443,6 +443,9 @@ class phpFreeChat
         pxlog("HandleRequest: content=".$data, "chat", $c->getId());
       ob_end_clean();
     }
+
+    // do nothing else if the xml response is empty
+    //if ($xml_reponse->xml == "") die();
     
     return $xml_reponse->getXML();
   }
