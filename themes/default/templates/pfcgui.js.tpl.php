@@ -75,9 +75,13 @@ pfcGui.prototype = {
 
     // show the new selected tab
     tab_to_show.style.display = 'block';
+    
+    // restore the scroll pos
+    var content = this.getChatContentFromTabId(tabid);
+    content.scrollTop = this.scrollpos[tabid];
 
     // scroll the new posted message
-    if (this.elttoscroll[tabid])
+    if (this.elttoscroll[tabid].length > 0)
     {
       // on by one
       for (var i=0; i<this.elttoscroll[tabid].length; i++)
@@ -85,10 +89,6 @@ pfcGui.prototype = {
       this.elttoscroll[tabid] = Array();
     }
     
-    // restore the scroll pos
-    var content = this.getChatContentFromTabId(tabid);
-    content.scrollTop = this.scrollpos[tabid];
-
     this.unnotifyTab(tabid);
   },
   
