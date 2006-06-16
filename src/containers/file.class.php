@@ -35,7 +35,7 @@ class pfcContainer_File extends pfcContainer
   
   function pfcContainer_File(&$config)
   {
-    pfcContainer::pfcContainer(&$config);
+    pfcContainer::pfcContainer($config);
     //    $this->loadPaths();
   }
 
