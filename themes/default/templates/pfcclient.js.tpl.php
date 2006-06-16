@@ -880,7 +880,7 @@ pfcClient.prototype = {
         var range1 = 7+offset-delta;
         var range2 = 7+offset+delta;
         if (ttt[i].match(rx_url))
-          msg = msg + '<a href="' + ttt[i] + '"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>' + (delta>0 ? ttt[i].substring(7,range1)+ ' ... '+ ttt[i].substring(range2,ttt[i].length) :  ttt[i]) + '</a>';
+          msg = msg + '<a href="' + ttt[i] + '"<?php if($openlinknewwindow) echo ' onclick="window.open(this.href,\\\'_blank\\\');return false;"'; ?>>' + (delta>0 ? ttt[i].substring(7,range1)+ ' ... '+ ttt[i].substring(range2,ttt[i].length) :  ttt[i]) + '</a>';
         else
         {
           msg = msg + ttt[i];
@@ -889,7 +889,7 @@ pfcClient.prototype = {
     }
     else
       // fallback for IE6/Konqueror which do not support split with regexp
-      msg = msg.replace(rx_url, '$1<a href="$2"<?php if($openlinknewwindow) echo ' target="_blank"'; ?>>$2</a>$3');
+      msg = msg.replace(rx_url, '$1<a href="$2"<?php if($openlinknewwindow) echo ' onclick="window.open(this.href,\\\'_blank\\\');return false;"'; ?>>$2</a>$3');
     
     // replace double spaces by &nbsp; entity
     rx = new RegExp('  ','g');
