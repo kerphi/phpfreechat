@@ -568,13 +568,15 @@ pfcClient.prototype = {
   },
   callbackContainer_OnMousedown: function(evt)
   {
-    this.isdraging = false;
+    if (evt.button == 0)
+      this.isdraging = false;
   },
   callbackContainer_OnMouseup: function(evt)
   {
-    if (!this.isdraging)
-      if (this.el_words && !this.minmax_status)
-        this.el_words.focus();
+    if (evt.button == 0)
+      if (!this.isdraging)
+        if (this.el_words && !this.minmax_status)
+          this.el_words.focus();
   },
 
   /**
