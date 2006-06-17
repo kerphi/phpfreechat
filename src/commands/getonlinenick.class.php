@@ -24,15 +24,15 @@ class pfcCommand_getonlinenick extends pfcCommand
 
     // get the real nickname list
     $users = $container->getOnlineNick($recipient);
-    if ($oldnicklist != $users["nickid"]) // check if the nickname list must be updated on the client side
-    {
-      $_SESSION[$nicklist_sid] = $users["nickid"];
-
-      // sort the nicknames
-      $nicklist = array();
+    $nicklist = array();
+    if (isset($users["nickid"]))
       foreach($users["nickid"] as $nid)
         $nicklist[] = $container->getNickname($nid);
-      sort($nicklist);
+    sort($nicklist);
+
+    if ($oldnicklist != $nicklist) // check if the nickname list must be updated on the client side
+    {
+      $_SESSION[$nicklist_sid] = $nicklist;
       
       if ($c->debug)
       {
