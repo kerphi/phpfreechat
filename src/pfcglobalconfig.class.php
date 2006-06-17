@@ -386,7 +386,7 @@ class pfcGlobalConfig
   {
     $cachefile = $this->_getCacheFile();
     $cachefile_lock = $cachefile."_lock";
-    
+
     if (file_exists($cachefile))
     {
       // if a cache file exists, remove the lock file because config has been succesfully stored
@@ -406,7 +406,14 @@ class pfcGlobalConfig
     else
     {
       if (file_exists($cachefile_lock))
-        return false; // do nothing if the lock file exists
+      {
+        // delete too old lockfiles (more than 15 seconds)
+        $locktime = filemtime($cachefile_lock);
+        if ($locktime+15 < time())
+          unlink($cachefile_lock);
+        else
+          return false; // do nothing if the lock file exists
+      }
       else
         @touch($cachefile_lock); // create the lockfile
       
@@ -415,6 +422,7 @@ class pfcGlobalConfig
       $errors =& $this->getErrors();
       if (count($errors) > 0)
       {
+        @unlink($cachefile_lock); // destroy the lock file for the next attempt
         echo "<ul>"; foreach( $errors as $e ) echo "<li>".$e."</li>"; echo "</ul>";
         exit;
       }
