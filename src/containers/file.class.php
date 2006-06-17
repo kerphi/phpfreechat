@@ -112,7 +112,7 @@ class pfcContainer_File extends pfcContainer
     // check the if the file exists only in debug mode!
     if ($c->debug)
     {
-      if (file_exists($nick_filename))
+      if (file_exists($nickid_filename))
         pxlog("createNick(".$nick.", ".$nickid.") - Error: another nickname data file exists, we are overwriting it (nickname takeover)!", "chat", $c->getId());
     }
     

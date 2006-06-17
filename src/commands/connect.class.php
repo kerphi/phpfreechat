@@ -40,7 +40,8 @@ class pfcCommand_connect extends pfcCommand
     if (!$isadmin)
     {
       $users = $container->getOnlineNick(NULL);
-      if (count($users["nickid"]) == 0) $isadmin = true;
+      if (isset($users["nickid"]) &&
+          count($users["nickid"]) == 0) $isadmin = true;
     }
     
     // setup some user meta

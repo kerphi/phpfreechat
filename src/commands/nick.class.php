@@ -34,16 +34,17 @@ class pfcCommand_nick extends pfcCommand
     // 'BoB' and 'bob' must be considered same nicknames
     $nick_in_use = false;
     $online_users = $container->getOnlineNick(NULL);
-    foreach($online_users["nickid"] as $nid)
-    {
-      if (preg_match("/^".preg_quote($container->getNickname($nid))."$/i",$newnick))
+    if (isset($online_users["nickid"]))
+      foreach($online_users["nickid"] as $nid)
       {
-        // the nick match
-	// just allow the owner to change his capitalised letters
-        if ($nid != $oldnickid)
-          $nick_in_use = true;
+        if (preg_match("/^".preg_quote($container->getNickname($nid))."$/i",$newnick))
+        {
+          // the nick match
+          // just allow the owner to change his capitalised letters
+          if ($nid != $oldnickid)
+            $nick_in_use = true;
+        }
       }
-    }
 
     if ( $newnickid == "undefined" && !$nick_in_use )
     {

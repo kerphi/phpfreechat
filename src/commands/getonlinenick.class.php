@@ -11,11 +11,12 @@ class pfcCommand_getonlinenick extends pfcCommand
 
     // take care to disconnect timeouted users on this channel
     $disconnected_users = $container->removeObsoleteNick($recipient,$c->timeout);
-    foreach ($disconnected_users["nick"] as $n)
-    {
-      $cmd =& pfcCommand::Factory("notice");
-      $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)", $n), $sender, $recipient, $recipientid, 2);
-    }
+    if (isset($disconnected_users["nick"]))
+      foreach ($disconnected_users["nick"] as $n)
+      {
+        $cmd =& pfcCommand::Factory("notice");
+        $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)", $n), $sender, $recipient, $recipientid, 2);
+      }
     
     // get the cached nickname list
     $nicklist_sid = $c->prefix."nicklist_".$c->getId()."_".$clientid."_".$recipientid;
@@ -35,8 +36,8 @@ class pfcCommand_getonlinenick extends pfcCommand
       
       if ($c->debug)
       {
-        $nicklist = implode(",",$nicklist);
-        pxlog("/getonlinenick (nicklist updated - nicklist=".$nicklist.")", "chat", $c->getId());
+        $nicklist2 = implode(",",$nicklist);
+        pxlog("/getonlinenick (nicklist updated - nicklist=".$nicklist2.")", "chat", $c->getId());
       }
 
       // build and send the nickname list
