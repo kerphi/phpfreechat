@@ -38,7 +38,7 @@ class pfcGlobalConfig
   
   // these parameters are static (cached)
   var $proxys              = array("auth", "noflood");
-  var $proxys_cfg          = array("auth" => array(),
+  var $proxys_cfg          = array("auth"    => array(),
                                    "noflood" => array("limit"=>10,"delay"=>5));
   var $title               = ""; // default is _pfc("My Chat")
   var $channels            = array(); // the default joined channels when opening the chat
@@ -127,11 +127,6 @@ class pfcGlobalConfig
     if ($this->data_public_path == "")  $this->data_public_path  = dirname(__FILE__)."/../data/public";
 
     $this->synchronizeWithCache();
-
-    // the 'nick' is dynamic, it must not be cached
-    if (isset($params["nick"]))    $this->nick    = $params["nick"];
-    // the 'isadmin' flag is dynamic, it must not be cached
-    if (isset($params["isadmin"])) $this->isadmin = $params["isadmin"];
   }
 
   function &Instance( $params = array() )
@@ -399,7 +394,13 @@ class pfcGlobalConfig
 
       $pfc_configvar = unserialize(file_get_contents($cachefile));
       foreach($pfc_configvar as $key => $val)
-	$this->$key = $val;
+      {
+        // the 'nick' and 'isadmin' are dynamic parameters, it must not be cached
+        if ($key != "nick" &&
+            $key != "isadmin")
+          $this->$key = $val;
+      }
+      
       return true; // synchronized
     }
     else
