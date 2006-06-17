@@ -199,29 +199,29 @@ class pfcGlobalConfig
     $this->errors = array_merge($this->errors, @install_dir($this->jspath, $this->data_public_path."/javascript"));
     $this->errors = array_merge($this->errors, @test_writable_dir($this->data_private_path."/cache", "data_private_path/cache"));
 
-    // check the copyr and rm_r function works
+    // check the copy_r and rm_r function works
     if (count($this->errors) == 0)
     {
-      $copyr_ok = true;
-      $dir1  = $this->data_private_path."/copyr1";
+      $copy_r_ok = true;
+      $dir1  = $this->data_private_path."/copy_r1";
       $file1 = $dir1."/dummy";
-      $dir2  = $this->data_private_path."/copyr2";
+      $dir2  = $this->data_private_path."/copy_r2";
       $file2 = $dir2."/dummy";
       // create a dummy directory
       mkdir($dir1);
       // check the directory exists
-      if (!file_exists($dir1) || !is_dir($dir1)) $copyr_ok = false;
+      if (!file_exists($dir1) || !is_dir($dir1)) $copy_r_ok = false;
       // create a dummy file
       touch($file1);
       // check the file exists
-      if (!file_exists($file1)) $copyr_ok = false;
-      // copyr the dummy dir
-      copyr($dir1,$dir2);
+      if (!file_exists($file1)) $copy_r_ok = false;
+      // copy_r the dummy dir
+      copy_r($dir1,$dir2);
       // check the directory exists
-      if (!file_exists($dir2) || !is_dir($dir2)) $copyr_ok = false;
+      if (!file_exists($dir2) || !is_dir($dir2)) $copy_r_ok = false;
       // check the file exists
-      if (!file_exists($file2)) $copyr_ok = false;
-      if (!$copyr_ok)
+      if (!file_exists($file2)) $copy_r_ok = false;
+      if (!$copy_r_ok)
         $this->errors[] = _pfc("Recursive copy doesn't works");
 
       // try to remove recursively the directory
@@ -232,7 +232,7 @@ class pfcGlobalConfig
       if (file_exists($dir1) || file_exists($dir2))   $rm_r_ok = false;
       // check the file doesn't exists
       if (file_exists($file1) || file_exists($file2)) $rm_r_ok = false;
-      if (!$copyr_ok)
+      if (!$copy_r_ok)
         $this->errors[] = _pfc("Recursive remove doesn't works");
     }
     

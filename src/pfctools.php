@@ -137,7 +137,7 @@ function rm_r($dir)
  * @param       string   $dest      Destination path
  * @return      bool     Returns TRUE on success, FALSE on failure
  */
-function copyr($source, $dest, $mode = 0700)
+function copy_r($source, $dest, $mode = 0700)
 { 
   // Simple copy for a file
   if (is_file($source)) {
@@ -166,7 +166,7 @@ function copyr($source, $dest, $mode = 0700)
     if ($e == '.' || $e == '..' || $e == '.svn') continue;
     // Deep copy directories
     if ($dest !== $source . DIRECTORY_SEPARATOR . $e)
-      copyr($source . DIRECTORY_SEPARATOR . $e, $dest . DIRECTORY_SEPARATOR . $e, $mode);
+      copy_r($source . DIRECTORY_SEPARATOR . $e, $dest . DIRECTORY_SEPARATOR . $e, $mode);
   }
   
   // Clean up
@@ -239,7 +239,7 @@ function install_dir($src_dir, $dst_dir)
   if (!is_readable($src_dir))
     $errors[] = _pfc("%s is not readable", $src_dir);
 
-  copyr( $src_dir, $dst_dir );
+  copy_r( $src_dir, $dst_dir );
 
   return $errors;
 }
