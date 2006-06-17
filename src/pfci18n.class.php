@@ -26,7 +26,9 @@ function _pfc()
 {
   $args = func_get_args();
   $args[0] = isset($GLOBALS["i18n"][$args[0]]) && $GLOBALS["i18n"][$args[0]] != "" ?
-    iconv("UTF-8", $GLOBALS["output_encoding"], $GLOBALS["i18n"][$args[0]]) :
+    ($GLOBALS["output_encoding"] == "UTF-8" ?
+       $GLOBALS["i18n"][$args[0]] :
+       iconv("UTF-8", $GLOBALS["output_encoding"], $GLOBALS["i18n"][$args[0]])) :
     "_".$args[0]."_";
   return call_user_func_array('sprintf', $args);
 }
