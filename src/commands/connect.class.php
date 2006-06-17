@@ -16,9 +16,14 @@ class pfcCommand_connect extends pfcCommand
     // reset the message id indicator (see getnewmsg.class.php)
     // i.e. be ready to re-get all last posted messages
     require_once(dirname(__FILE__)."/join.class.php");
-    foreach($u->channels as $chan)
+    $channels = array();
+    if (count($u->channels) == 0)
+      $channels = $c->channels;
+    else
+      foreach($u->channels as $chan)
+        $channels[] = $chan["name"];
+    foreach($channels as $channame)
     {
-      $channame  = $chan["name"];
       $chanrecip = pfcCommand_join::GetRecipient($channame);
       $chanid    = pfcCommand_join::GetRecipientId($channame);
       // reset the fromid flag
