@@ -32,7 +32,7 @@ class pfcCommand_send extends pfcCommand
       {
         // send an error because the user is not online
         $cmd =& pfcCommand::Factory("error");
-        $cmd->run($xml_reponse, $clientid, _pfc("Can't send the message, %s is offline", $pvnick));
+        $cmd->run($xml_reponse, $clientid, _pfc("Can't send the message, %s is offline", $pvnick), $sender, $recipient, $recipientid);
         $can_send = false;
       }
     }
@@ -48,7 +48,7 @@ class pfcCommand_send extends pfcCommand
       foreach($errors as $e)
         if ($c->debug) pxlog("error /send, user can't send a message -> nick=".$u->nick." err=".$e, "chat", $c->getId());
       $cmd =& pfcCommand::Factory("error");
-      $cmd->run($xml_reponse, $clientid, $errors);
+      $cmd->run($xml_reponse, $clientid, $errors, $sender, $recipient, $recipientid);
       if (isset($errors[$c->prefix."handle"])) // the nick is empty so give it focus
         $xml_reponse->addScript("$('".$c->prefix."handle').focus();");
       $can_send = false;
