@@ -8,6 +8,7 @@ var pfc = new pfcClient();
 <?php if ($connect_at_startup) { ?>
 pfc.connect_disconnect();
 <?php } ?>
+pfc.refresh_Smileys();
 
 <?php if ($debugxajax) { ?>
 xajax.DebugMessage = function(text)
