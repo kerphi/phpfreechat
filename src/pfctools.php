@@ -103,7 +103,7 @@ function cleanPath($path)
 }
 
 
-function mkdir_r($path, $mode = 0700)
+function mkdir_r($path, $modedir = 0700)
 {
   // This function creates the specified directory using mkdir().  Note
   // that the recursive feature on mkdir() is broken with PHP 5.0.4 for
@@ -112,8 +112,8 @@ function mkdir_r($path, $mode = 0700)
   {
     // The directory doesn't exist.  Recurse, passing in the parent
     // directory so that it gets created.
-    mkdir_r(dirname($path), $mode);
-    mkdir($path, $mode);
+    mkdir_r(dirname($path), $modedir);
+    mkdir($path, $modedir);
   }
 }
 
@@ -137,18 +137,18 @@ function rm_r($dir)
  * @param       string   $dest      Destination path
  * @return      bool     Returns TRUE on success, FALSE on failure
  */
-function copy_r($source, $dest, $mode = 0700)
+function copy_r($source, $dest, $modedir = 0700, $modefile = 0644)
 { 
   // Simple copy for a file
   if (is_file($source)) {
     $ret = copy($source, $dest);
-    chmod($dest, $mode);
+    chmod($dest, $modefile);
     return $ret;
   }
 
   // Make destination directory
   if (!is_dir($dest)) {
-    mkdir($dest, $mode);
+    mkdir($dest, $modedir);
   }
 
   // Take the directories entries
@@ -166,7 +166,7 @@ function copy_r($source, $dest, $mode = 0700)
     if ($e == '.' || $e == '..' || $e == '.svn') continue;
     // Deep copy directories
     if ($dest !== $source . DIRECTORY_SEPARATOR . $e)
-      copy_r($source . DIRECTORY_SEPARATOR . $e, $dest . DIRECTORY_SEPARATOR . $e, $mode);
+      copy_r($source . DIRECTORY_SEPARATOR . $e, $dest . DIRECTORY_SEPARATOR . $e, $modedir, $modefile);
   }
   
   // Clean up
