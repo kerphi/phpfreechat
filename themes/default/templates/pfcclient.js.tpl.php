@@ -390,6 +390,10 @@ pfcClient.prototype = {
       var container = this.gui.getChatContentFromTabId(tabid);
       container.innerHTML = "";
     }    
+    else if (cmd == "identify")
+    {
+      this.displayMsg( cmd, param );
+    }
     else
       alert(cmd + "-"+resp+"-"+param);
   },

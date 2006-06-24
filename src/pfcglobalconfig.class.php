@@ -35,6 +35,7 @@ class pfcGlobalConfig
   // these parameters are dynamic (not cached)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
   var $isadmin             = false;
+  var $admins              = array("admin" => ""); // nicknames is the key, password is the value
   
   // these parameters are static (cached)
   var $proxys              = array("auth", "noflood");
