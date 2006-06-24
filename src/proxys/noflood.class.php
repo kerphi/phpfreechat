@@ -35,7 +35,7 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
     $c =& $this->c;
     $u =& $this->u;
 
-    $cmdtocheck = array("send", "nick", "me", "notice");
+    $cmdtocheck = array("send", "nick", "me");
     if ( in_array($this->name, $cmdtocheck) )
     {
       $container =& $c->getContainerInstance();
@@ -56,6 +56,14 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
         $msg = _pfc("Please don't post so many message, flood is not tolerated");
         $xml_reponse->addScript("alert('".addslashes($msg)."');");
 	// @todo kick the user
+
+
+        $msg = $recipientid." ";
+        $msg .=_pfc("kicked from %s by %s", $u->channels[$recipientid]["name"], "noflood");
+        $cmd =& pfcCommand::Factory("leave");
+        $cmd->run($xml_reponse, $clientid, $msg, $sender, $recipient, $recipientid);
+
+
         return;
       }
 
