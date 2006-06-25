@@ -143,6 +143,7 @@
       <li><a href="demo41_in_greek.php">demo41 - the greek translation of the chat</a></li>
       <li><a href="demo42_in_chinese_from_taiwan.php">demo42 - the Chinese from taiwan (traditional Chinese) translation of the chat</a></li>
       <li><a href="demo45_in_bulgarian.php">demo45 - the Bulgarian translation of the chat</a></li>
+      <li><a href="demo46_in_hungarian.php">demo46 - the Hungarian translation of the chat</a></li>
     </ul>
 
 </div>
