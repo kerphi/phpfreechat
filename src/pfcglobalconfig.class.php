@@ -175,7 +175,7 @@ class pfcGlobalConfig
     if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.3";
     if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
     if ($this->csstidypath == "")  $this->csstidypath  = dirname(__FILE__)."/../lib/csstidy-1.1";
-    if (count($this->channels) == 0) $this->channels   = array(_pfc("My room"));
+    if (is_array($this->channels) && count($this->channels) == 0) $this->channels   = array(_pfc("My room"));
       
     // first of all, check the used functions
     $f_list["file_get_contents"] = _pfc("You need %s", "PHP 4 >= 4.3.0 or PHP 5");
@@ -313,7 +313,17 @@ class pfcGlobalConfig
     // check the serverid is really defined
     if ($this->serverid == "")
       $this->errors[] = _pfc("'%s' parameter is mandatory by default use '%s' value", "serverid", "md5(__FILE__)");
-    
+
+    // check if channels parameter is a strings array
+    if (!is_array($this->channels))
+      $this->errors[] = _pfc("'%s' parameter must be an array", "channels");
+    else
+      foreach($this->channels as $chan)
+      {
+        if (!is_string($chan))
+          $this->errors[] = _pfc("'%s' value must be a string", serialize($chan));
+      }
+
     // check the max_msg is >= 0
     if (!is_numeric($this->max_msg) || $this->max_msg < 0)
       $this->errors[] = _pfc("'%s' parameter must be a positive number", "max_msg");
