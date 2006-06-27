@@ -33,11 +33,11 @@ class pfcCommand_join extends pfcCommand
       // clear the cached nicknames list for the given channel
       $nicklist_sid = $c->prefix."nicklist_".$c->getId()."_".$clientid."_".$chanid;
       $_SESSION[$nicklist_sid] = NULL;
-
-      // show a join message
-      $cmd =& pfcCommand::Factory("notice");
-      $cmd->run($xml_reponse, $clientid, _pfc("%s joins %s",$u->nick, $channame), $sender, $chanrecip, $chanid, 1);
     }
+
+    // show a join message
+    $cmd =& pfcCommand::Factory("notice");
+    $cmd->run($xml_reponse, $clientid, _pfc("%s joins %s",$u->nick, $channame), $sender, $chanrecip, $chanid, 1);
 
 
     //$xml_reponse->addScript("alert('join: chan=".$channame.", from_id=".$from_id."');");
