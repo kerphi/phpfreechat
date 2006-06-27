@@ -12,7 +12,14 @@ class pfcCommand_send extends pfcCommand
     $text = phpFreeChat::PreFilterMsg($param);
 
 
-
+    // send an error because the current user is not connected
+    if (!$u->active)
+    {
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $clientid, _pfc("Your must be connected to send a message"), $sender, $recipient, $recipientid);
+      return;
+    }
+    
     //        $offline = $container->getMeta("offline", "nickname", $u->privmsg[$recipientid]["name"]);
 
     
