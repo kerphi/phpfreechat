@@ -204,7 +204,7 @@ pfcGui.prototype = {
     Element.addClassName(a1, '<?php echo $prefix; ?>tabtitle');
     a1.appendChild(img);
     a1.appendChild(document.createTextNode(name));
-    a1.setAttribute('href', '');
+    a1.setAttribute('href', '#');
     a1.pfc_tabid = tabid;
     a1.onclick = function(){pfc.gui.setTabById(this.pfc_tabid); return false;}
     li_div.appendChild(a1);
