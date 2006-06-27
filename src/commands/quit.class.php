@@ -21,15 +21,15 @@ class pfcCommand_quit extends pfcCommand
     foreach( $u->channels as $id => $chandetail )
       if ($container->removeNick($chandetail["recipient"], $u->nick))
       {
-        $cmd =& pfcCommand::Factory("notice");
-        $cmd->run($xml_reponse, $clientid, $quitmsg, $sender, $chandetail["recipient"], $id, 2);
+        $cmd =& pfcCommand::Factory("leave");
+        $cmd->run($xml_reponse, $clientid, $id, $sender, $chandetail["recipient"], $id, 2);
       }
     // from the private messages
     foreach( $u->privmsg as $id => $pvdetail )
       if ($container->removeNick($pvdetail["recipient"], $u->nick))
       {
-        $cmd =& pfcCommand::Factory("notice");
-        $cmd->run($xml_reponse, $clientid, $quitmsg, $sender, $pvdetail["recipient"], $id, 2);
+        $cmd =& pfcCommand::Factory("leave");
+        $cmd->run($xml_reponse, $clientid, $id, $sender, $pvdetail["recipient"], $id, 2);
       }
     // from the server
     $container->removeNick(NULL, $u->nick);
