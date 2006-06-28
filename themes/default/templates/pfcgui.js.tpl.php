@@ -81,7 +81,8 @@ pfcGui.prototype = {
     content.scrollTop = this.scrollpos[tabid];
 
     // scroll the new posted message
-    if (this.elttoscroll[tabid].length > 0)
+    if (this.elttoscroll[tabid] &&
+        this.elttoscroll[tabid].length > 0)
     {
       // on by one
       for (var i=0; i<this.elttoscroll[tabid].length; i++)
