@@ -628,8 +628,10 @@ pfcClient.prototype = {
     div.style.padding = "2px 5px 2px 5px";
     
     pre = document.createElement('pre');
-    Element.addClassName(pre, '<?php echo $prefix; ?>info');
-    Element.addClassName(pre, '<?php echo $prefix; ?>info_'+cmd);
+    pre.setAttribute('class', '<?php echo $prefix; ?>info <?php echo $prefix; ?>info_'+cmd);
+    pre.setAttribute('className', '<?php echo $prefix; ?>info <?php echo $prefix; ?>info_'+cmd); // for IE6
+    //    Element.addClassName(pre, '<?php echo $prefix; ?>info');
+    //    Element.addClassName(pre, '<?php echo $prefix; ?>info_'+cmd);
     pre.style.border  = "1px solid #555";
     pre.style.padding = "5px";
     pre.innerHTML = msg;
