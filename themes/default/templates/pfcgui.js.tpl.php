@@ -39,7 +39,14 @@ pfcGui.prototype = {
   
   isCreated: function(tabid)
   {
-    return (this.tabids.indexOf(tabid) >= 0);
+    /*
+    for (var i = 0; i < this.tabids.length ; i++)
+    {
+      if (this.tabids[i] == tabid) return true;
+    }
+    return false;
+    */
+    return (indexOf(this.tabids, tabid) >= 0);
   },
   
   setTabById: function(tabid)
@@ -60,7 +67,9 @@ pfcGui.prototype = {
       if (this.tabids[i] == tabid)
       {
         // select the tab
-        Element.addClassName(tabtitle, 'selected');
+        tabtitle.setAttribute('class', 'selected');
+        tabtitle.setAttribute('className', 'selected'); // for IE6
+        //Element.addClassName(tabtitle, 'selected');
         tab_to_show = tabcontent;
         this.current_tab     = this.tabs[i];
         this.current_tab_id  = tabid;
@@ -68,7 +77,9 @@ pfcGui.prototype = {
       else
       {
         // unselect the tab
-        Element.removeClassName(tabtitle, 'selected');
+        tabtitle.setAttribute('class', '');
+        tabtitle.setAttribute('className', ''); // for IE6
+        //Element.removeClassName(tabtitle, 'selected');
         tabcontent.style.display = 'none';
       }
     }
@@ -107,7 +118,10 @@ pfcGui.prototype = {
     // if the chat content doesn't exists yet, just create a cached one
     cc = document.createElement('div');
     cc.setAttribute('id', '<?php echo $prefix; ?>chat_'+tabid);
-    Element.addClassName(cc, '<?php echo $prefix; ?>chat');
+    cc.setAttribute('class', '<?php echo $prefix; ?>chat');
+    cc.setAttribute('className', '<?php echo $prefix; ?>chat'); // for IE6
+
+    //    Element.addClassName(cc, '<?php echo $prefix; ?>chat');
     cc.style.display = "block"; // needed by IE6 to show the online div at startup (first loaded page)
     //    cc.style.marginLeft = "5px";
 
@@ -122,7 +136,9 @@ pfcGui.prototype = {
 
     oc = document.createElement('div');
     oc.setAttribute('id', '<?php echo $prefix; ?>online_'+tabid);
-    Element.addClassName(oc, '<?php echo $prefix; ?>online');
+    oc.setAttribute('class', '<?php echo $prefix; ?>online');
+    oc.setAttribute('className', '<?php echo $prefix; ?>online'); // for IE6
+    //Element.addClassName(oc, '<?php echo $prefix; ?>online');
     // I set the border style here because seting it in the CSS is not taken in account
     //    oc.style.borderLeft = "1px solid #555";
     oc.style.display = "block"; // needed by IE6 to show the online div at startup (first loaded page)
@@ -151,12 +167,12 @@ pfcGui.prototype = {
     div_chat.innerHTML = '';
 
     // remove the tab from the list
-    var tabpos = this.tabids.indexOf(tabid);
+    var tabpos = indexOf(this.tabids, tabid);
     var name = this.tabs[tabpos];
-    this.tabids     = this.tabids.without(this.tabids[tabpos]);
-    this.tabs       = this.tabs.without(this.tabs[tabpos]);
-    this.tabtypes   = this.tabtypes.without(this.tabtypes[tabpos]);
-    tabpos = this.tabids.indexOf(this.getTabId());
+    this.tabids     = without(this.tabids, this.tabids[tabpos]);
+    this.tabs       = without(this.tabs, this.tabs[tabpos]);
+    this.tabtypes   = without(this.tabtypes, this.tabtypes[tabpos]);
+    tabpos = indexOf(this.tabids, this.getTabId());
     if (tabpos<0) tabpos = 0;
     this.setTabById(this.tabids[tabpos]);
     return name;    
@@ -182,13 +198,15 @@ pfcGui.prototype = {
 
     // do not create twice a the same tab
     if (this.isCreated(tabid)) return;
-    
+
     //    var tabid = hex_md5(_to_utf8(name));
     //alert(name+'='+tabid);
     this.tabs.push(name);
     this.tabids.push(tabid);
     this.tabtypes.push(type);
 
+    //alert(this.tabs.toString());
+    
     var li_title = document.createElement('li');
     li_title.setAttribute('id', '<?php echo $prefix; ?>channel_title'+tabid);
 
@@ -202,7 +220,9 @@ pfcGui.prototype = {
     if (type == 'pv')
       img.setAttribute('src', '<?php echo $c->getFileUrlFromTheme('images/pv.gif'); ?>');
     var a1 = document.createElement('a');
-    Element.addClassName(a1, '<?php echo $prefix; ?>tabtitle');
+    //    Element.addClassName(a1, '<?php echo $prefix; ?>tabtitle');
+    a1.setAttribute('class', '<?php echo $prefix; ?>tabtitle');
+    a1.setAttribute('className', '<?php echo $prefix; ?>tabtitle'); // for IE6    
     a1.appendChild(img);
     a1.appendChild(document.createTextNode(name));
     a1.setAttribute('href', '#');
@@ -218,7 +238,9 @@ pfcGui.prototype = {
     }
     a2.alt   = this.i18n._('Close this tab');
     a2.title = a2.alt;
-    Element.addClassName(a2, '<?php echo $prefix; ?>tabclose');
+    //    Element.addClassName(a2, '<?php echo $prefix; ?>tabclose');
+    a2.setAttribute('class', '<?php echo $prefix; ?>tabclose');
+    a2.setAttribute('className', '<?php echo $prefix; ?>tabclose'); // for IE6
     var img = document.createElement('img');
     img.setAttribute('src', '<?php echo $c->getFileUrlFromTheme('images/tab_remove.gif'); ?>');
     a2.appendChild(img);
@@ -226,7 +248,9 @@ pfcGui.prototype = {
     
     var div_content = document.createElement('div');
     div_content.setAttribute('id', '<?php echo $prefix; ?>channel_content'+tabid);   
-    Element.addClassName(div_content, '<?php echo $prefix; ?>content');
+    //    Element.addClassName(div_content, '<?php echo $prefix; ?>content');
+    div_content.setAttribute('class', '<?php echo $prefix; ?>content');
+    div_content.setAttribute('className', '<?php echo $prefix; ?>content'); // for IE6    
     div_content.style.display = 'none';
 
     var div_chat    = this.getChatContentFromTabId(tabid);
@@ -245,7 +269,7 @@ pfcGui.prototype = {
    */
   notifyTab: function(tabid)
   {
-    var tabpos = this.tabids.indexOf(tabid);
+    var tabpos = indexOf(this.tabids, tabid);
     var tabtype = this.tabtypes[tabpos];
     var img = $('<?php echo $prefix; ?>tabimg'+tabid);
     if (img)
@@ -262,7 +286,7 @@ pfcGui.prototype = {
    */
   unnotifyTab: function(tabid)
   {
-    var tabpos = this.tabids.indexOf(tabid);
+    var tabpos = indexOf(this.tabids, tabid);
     var tabtype = this.tabtypes[tabpos];
     var img = $('<?php echo $prefix; ?>tabimg'+tabid);
     if (img)

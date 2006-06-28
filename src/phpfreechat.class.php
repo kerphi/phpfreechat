@@ -91,7 +91,7 @@ class phpFreeChat
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/md5.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/cookie.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
-    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/prototype.js\"></script>";
+    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/myprototype.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/regex.js\"></script>";
     $output .= "<script type=\"text/javascript\" src=\"".$js_path."/utf8.js\"></script>";
     

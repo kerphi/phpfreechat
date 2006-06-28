@@ -241,9 +241,9 @@ pfcClient.prototype = {
         
         // synchronize the privmsg client arrays
         index = -1;
-        index = this.privmsgids.indexOf(tabid);
-        this.privmsgids = this.privmsgids.without(tabid);
-        this.privmsgs   = this.privmsgs.without(this.privmsgs[index]);
+        index = indexOf(this.privmsgids, tabid);
+        this.privmsgids = without(this.privmsgids, tabid);
+        this.privmsgs   = without(this.privmsgs, this.privmsgs[index]);
         
       }
     }
@@ -412,7 +412,7 @@ pfcClient.prototype = {
       for (var i=0; i<ul_online.childNodes.length; i++)
       {
 	var nick = ul_online.childNodes[i].innerHTML;
-	if (nick.indexOf(nick_src) == 0)
+	if (indexOf(nick, nick_src) == 0)
 	  w.value = w.value.replace(nick_src, nick);
       }
     }
@@ -807,8 +807,11 @@ pfcClient.prototype = {
       span.pfc_nick = nicks[i];
       span.onclick = function(){pfc.insert_text(this.pfc_nick+", ",""); return false;}
       span.appendChild(document.createTextNode(nicks[i]));
-      Element.addClassName(span, '<?php echo $prefix; ?>nickmarker');
-      Element.addClassName(span, '<?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nicks[i])));
+      span.setAttribute('class', '<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nicks[i])));
+      span.setAttribute('className', '<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nicks[i]))); // for IE6
+
+      //      Element.addClassName(span, '<?php echo $prefix; ?>nickmarker');
+      //      Element.addClassName(span, '<?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nicks[i])));
       nobr.appendChild(span);
       li.appendChild(nobr);
       li.style.borderBottom = '1px solid #AAA';
@@ -1450,12 +1453,16 @@ pfcClient.prototype = {
       if (!this.showwhosonline)
       {
         style['width'] = '100%';
-        Element.setStyle(chatdiv, style);
+        chatdiv.setAttribute('style', 'width:100%');
+        chatdiv.setAttribute('cssText', 'width:100%'); // for IE6
+        //        Element.setStyle(chatdiv, style);
       }
       else
       {
         style['width'] = '';
-        Element.setStyle(chatdiv, style);
+        chatdiv.setAttribute('style', '');
+        chatdiv.setAttribute('cssText', ''); // for IE6
+        //        Element.setStyle(chatdiv, style);
       }
     }
   }
