@@ -1,8 +1,9 @@
 <?php
 
 require_once dirname(__FILE__)."/../src/pfcinfo.class.php";
-$info  = new pfcInfo( md5("Show last messages demo") );
-$lastmsg_raw = $info->getLastMsg(10);
+$info  = new pfcInfo( md5("Show last posted messages channel") );
+$lastmsg_raw = $info->getLastMsg("channel1", 10);
+print_r($lastmsg_raw);
 
 echo "<h1>A demo which explains how to get the last posted messages</h1>";
 

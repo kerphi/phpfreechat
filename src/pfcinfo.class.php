@@ -14,18 +14,27 @@ class pfcInfo extends pfcGlobalConfig
       $this->$key = $val;
   }
 
-  function getOnlineNick()
+  /**
+   * @return array(string) a list of online nicknames
+   */
+  function getOnlineNick($channel = NULL)
   {
     $container =& $this->getContainerInstance();
-    $users = $container->getOnlineNick();
+    $res = $container->getOnlineNick($channel);
+    $users = array();
+    if (isset($res["nickid"]))
+      foreach($res["nickid"] as $nickid)
+        $users[] = $container->getNickname($nickid);
     return $users;
   }
 
-  function getLastMsg($nb)
+  function getLastMsg($channel, $nb)
   {
     $container   =& $this->getContainerInstance();
-    $lastmsg_id  = $container->getLastMsgId();
-    $lastmsg_raw = $container->readNewMsg($lastmsg_id-10);
+    $lastmsg_id  = $container->getLastId($channel);
+    echo $lastmsg_id;
+    die();
+    $lastmsg_raw = $container->read($channel, $lastmsg_id-10);
     return $lastmsg_raw;
   }
 }

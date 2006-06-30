@@ -2,7 +2,9 @@
 
 require_once dirname(__FILE__)."/../src/pfcinfo.class.php";
 $info  = new pfcInfo( md5("Whois online demo") );
-$users = $info->getOnlineNick();
+// NULL is used to get all the connected users, but you can specify
+// a channel name to get only the connected user on a specific channel
+$users = $info->getOnlineNick(NULL);
 
 echo "<h1>A demo which explains how to get the connected users list</h1>";
 
@@ -10,10 +12,10 @@ echo '<div style="margin: auto; width: 70%; border: 1px solid red; background-co
 $info = "";
 $nb_users = count($users);
 if ($nb_users <= 1)
-  $info = "<strong>%d</strong> user is connected to the <strong>'%s'</strong> channel !";
+  $info = "<strong>%d</strong> user is connected to the server !";
 else
-  $info = "<strong>%d</strong> users are connected to the <strong>'%s'</strong> channel !";
-echo "<p>".sprintf($info, $nb_users, "")."</p>";
+  $info = "<strong>%d</strong> users are connected to the server !";
+echo "<p>".sprintf($info, $nb_users)."</p>";
 
 echo "<p>Here is the nicknames' list:</p>";
 echo "<ul>";
