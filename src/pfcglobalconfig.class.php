@@ -210,15 +210,15 @@ class pfcGlobalConfig
       $dir2  = $this->data_private_path."/copy_r2";
       $file2 = $dir2."/dummy";
       // create a dummy directory
-      mkdir($dir1);
+      @mkdir($dir1);
       // check the directory exists
       if (!file_exists($dir1) || !is_dir($dir1)) $copy_r_ok = false;
       // create a dummy file
-      touch($file1);
+      @touch($file1);
       // check the file exists
       if (!file_exists($file1)) $copy_r_ok = false;
       // copy_r the dummy dir
-      copy_r($dir1,$dir2);
+      @copy_r($dir1,$dir2);
       // check the directory exists
       if (!file_exists($dir2) || !is_dir($dir2)) $copy_r_ok = false;
       // check the file exists
@@ -228,8 +228,8 @@ class pfcGlobalConfig
 
       // try to remove recursively the directory
       $rm_r_ok = true;
-      rm_r($dir2);
-      rm_r($dir1);
+      @rm_r($dir2);
+      @rm_r($dir1);
       // check the directory doesn't exists
       if (file_exists($dir1) || file_exists($dir2))   $rm_r_ok = false;
       // check the file doesn't exists
