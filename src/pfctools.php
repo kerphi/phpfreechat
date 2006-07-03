@@ -119,14 +119,13 @@ function mkdir_r($path, $modedir = 0700)
 
 function rm_r($dir)
 {
-  $dir = realpath($dir);
   if(!$dh = @opendir($dir)) return;
   while (($obj = readdir($dh)))
   {
     if($obj=='.' || $obj=='..') continue;
     if (!@unlink($dir.'/'.$obj)) rm_r($dir.'/'.$obj);
   }
-  rmdir($dir);
+  @rmdir($dir);
 }
 
 /**
