@@ -103,31 +103,45 @@ class pfcGlobalConfig
     // setup the local for translated messages
     pfcI18N::Init(isset($params["language"]) ? $params["language"] : "");
 
-    // load users container or keep default one
-    if (isset($params["container_type"]))
-      $this->container_type = $params["container_type"];
-    
-    // load default container's config
-    $container =& $this->getContainerInstance();
-    $container_cfg = $container->getDefaultConfig();
-    foreach( $container_cfg as $k => $v )
+    // check if a cached configuration allready exists
+    // don't load parameters if the cache exists
+    $cachefile = $this->_getCacheFile();
+    if (!file_exists($cachefile))
     {
-      $attr = "container_cfg_".$k;
-      if (!isset($this->$attr))
-        $this->$attr = $v;
+      // load users container or keep default one
+      if (isset($params["container_type"]))
+        $this->container_type = $params["container_type"];
+      
+      // load default container's config
+      $container =& $this->getContainerInstance();
+      $container_cfg = $container->getDefaultConfig();
+      foreach( $container_cfg as $k => $v )
+      {
+        $attr = "container_cfg_".$k;
+        if (!isset($this->$attr))
+          $this->$attr = $v;
+      }
+      
+      // load all user's parameters which will override default ones
+      foreach ( $params as $k => $v )
+      {
+        if (!isset($this->$k))
+          $this->errors[] = _pfc("Error: undefined or obsolete parameter '%s', please correct or remove this parameter", $k);
+        if ($k == "proxys_cfg")
+        {
+          // don't replace all the proxy_cfg parameters, just replace the specified ones
+          foreach ( $params["proxys_cfg"] as $k2 => $v2 )
+            $this->proxys_cfg[$k2] = $v2;
+        }
+        else
+          $this->$k = $v;
+      }
+
+      if ($this->data_private_path == "") $this->data_private_path = dirname(__FILE__)."/../data/private";
+      if ($this->data_public_path == "")  $this->data_public_path  = dirname(__FILE__)."/../data/public";
     }
 
-    // load all user's parameters which will override default ones
-    foreach ( $params as $k => $v )
-    {
-      if (!isset($this->$k))
-        $this->errors[] = _pfc("Error: undefined or obsolete parameter '%s', please correct or remove this parameter", $k);
-      $this->$k = $v;
-    }
-
-    if ($this->data_private_path == "") $this->data_private_path = dirname(__FILE__)."/../data/private";
-    if ($this->data_public_path == "")  $this->data_public_path  = dirname(__FILE__)."/../data/public";
-
+    // now load or save the configuration in the cache
     $this->synchronizeWithCache();
   }
 
