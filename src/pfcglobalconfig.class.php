@@ -103,6 +103,21 @@ class pfcGlobalConfig
     // setup the local for translated messages
     pfcI18N::Init(isset($params["language"]) ? $params["language"] : "");
 
+    // check the serverid is really defined
+    if (!isset($params["serverid"]))
+      $this->errors[] = _pfc("'%s' parameter is mandatory by default use '%s' value", "serverid", "md5(__FILE__)");
+    $this->serverid = $params["serverid"];
+
+    // _getCacheFile needs data_private_path 
+    if (!isset($params["data_private_path"]))
+      $this->data_private_path = dirname(__FILE__)."/../data/private";
+    else
+      $this->data_private_path = $params["data_private_path"];
+    if (!isset($params["data_public_path"]))
+      $this->data_public_path  = dirname(__FILE__)."/../data/public";
+    else
+      $this->data_public_path = $params["data_public_path"];
+    
     // check if a cached configuration allready exists
     // don't load parameters if the cache exists
     $cachefile = $this->_getCacheFile();
@@ -136,9 +151,6 @@ class pfcGlobalConfig
         else
           $this->$k = $v;
       }
-
-      if ($this->data_private_path == "") $this->data_private_path = dirname(__FILE__)."/../data/private";
-      if ($this->data_public_path == "")  $this->data_public_path  = dirname(__FILE__)."/../data/public";
     }
 
     // now load or save the configuration in the cache
@@ -325,10 +337,6 @@ class pfcGlobalConfig
     // load debug url
     $this->debugurl = relativePath($this->client_script_path, dirname(__FILE__)."/../debug");
 
-    // check the serverid is really defined
-    if ($this->serverid == "")
-      $this->errors[] = _pfc("'%s' parameter is mandatory by default use '%s' value", "serverid", "md5(__FILE__)");
-
     // check if channels parameter is a strings array
     if (!is_array($this->channels))
       $this->errors[] = _pfc("'%s' parameter must be an array", "channels");
@@ -414,9 +422,11 @@ class pfcGlobalConfig
     return $this->serverid;
   }  
 
-  function _getCacheFile()
+  function _getCacheFile($serverid = "", $data_private_path = "")
   {
-    return $this->data_private_path."/cache/pfcglobalconfig_".$this->getId();
+    if ($serverid == "")          $serverid = $this->getId();
+    if ($data_private_path == "") $data_private_path = $this->data_private_path;
+    return $data_private_path."/cache/pfcglobalconfig_".$serverid;
   }
   
   function destroyCache()

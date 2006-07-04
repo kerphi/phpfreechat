@@ -1,19 +1,40 @@
 <?php
 
 require_once dirname(__FILE__)."/pfcglobalconfig.class.php";
+require_once dirname(__FILE__)."/pfci18n.class.php";
+require_once dirname(__FILE__)."/commands/join.class.php";
 
 class pfcInfo extends pfcGlobalConfig
 {
   var $container;
+  var $errors = array();
   
-  function pfcInfo( $serverid )
+  function pfcInfo( $serverid, $data_private_path = "" )
   {
-    $cachefile = dirname(__FILE__)."/../data/private/cache/pfcglobalconfig_".$serverid;
-    $pfc_configvar = unserialize(file_get_contents($cachefile));
-    foreach($pfc_configvar as $key => $val)
-      $this->$key = $val;
+    // check if the cache allready exists
+    // if it doesn't exists, just stop the process
+    // because we can't initialize the chat from the external API
+    if ($data_private_path == "") $data_private_path = dirname(__FILE__)."/../data/private";
+    $cachefile = $this->_getCacheFile( $serverid, $data_private_path );
+    if (!file_exists($cachefile))
+    {
+      $this->errors[] = _pfc("Error: the cached config file doesn't exists");
+      return;
+    }    
+    // then intitialize the pfcglobalconfig
+    $params["serverid"]          = $serverid;
+    $params["data_private_path"] = $data_private_path;
+    pfcGlobalConfig::pfcGlobalConfig($params);    
   }
-
+  
+  /**
+   * @return array(string) a list of errors
+   */
+  function getErrors()
+  {
+    return $this->errors;
+  }
+  
   /**
    * @return array(string) a list of online nicknames
    */
@@ -30,10 +51,12 @@ class pfcInfo extends pfcGlobalConfig
 
   function getLastMsg($channel, $nb)
   {
-    $container   =& $this->getContainerInstance();
+    // to get the channel recipient name
+    // @todo must use another function to get a private message last messages
+    $channel = pfcCommand_join::GetRecipient($channel);
+    
+    $container   =& $this->getContainerInstance();    
     $lastmsg_id  = $container->getLastId($channel);
-    echo $lastmsg_id;
-    die();
     $lastmsg_raw = $container->read($channel, $lastmsg_id-10);
     return $lastmsg_raw;
   }
