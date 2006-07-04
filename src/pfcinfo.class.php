@@ -36,16 +36,23 @@ class pfcInfo extends pfcGlobalConfig
   }
   
   /**
+   * @param $channel the returned list is the list of nicknames present on the given channel (NULL for the whole server)
+   * @param $timeout is the time to wait before a nickname is considered offline
    * @return array(string) a list of online nicknames
    */
-  function getOnlineNick($channel = NULL)
+  function getOnlineNick($channel = NULL, $timeout = 20)
   {
     $container =& $this->getContainerInstance();
     $res = $container->getOnlineNick($channel);
     $users = array();
     if (isset($res["nickid"]))
-      foreach($res["nickid"] as $nickid)
-        $users[] = $container->getNickname($nickid);
+    {
+      for($i = 0; $i < count($res["nickid"]); $i++)
+      {
+        if (time()-$timeout < $res["timestamp"][$i])
+          $users[] = $container->getNickname($res["nickid"][$i]);
+      }
+    }
     return $users;
   }
 
