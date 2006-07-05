@@ -48,7 +48,7 @@ pfcClient.prototype = {
     var cookie = getCookie('<?php echo $prefix; ?>minmax_status');
     if (cookie != null)
       this.minmax_status = (cookie == 'true');
-
+    
     cookie = getCookie('<?php echo $prefix; ?>nickmarker');
     this.nickmarker = (cookie == 'true');
     if (cookie == '' || cookie == null)
@@ -131,6 +131,10 @@ pfcClient.prototype = {
       ?>
     }
     this.smileys = $H(smileys);
+
+    // refresh the gui
+    this.refresh_loginlogout();
+    this.refresh_minimize_maximize();
   },
 
   /**
