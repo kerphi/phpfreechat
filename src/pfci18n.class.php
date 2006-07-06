@@ -20,7 +20,7 @@
  * Boston, MA  02110-1301  USA
  */
  
-require_once("pfctools.php");
+require_once(dirname(__FILE__)."/pfctools.php");
 
 function _pfc()
 {
