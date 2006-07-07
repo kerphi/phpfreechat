@@ -13,8 +13,7 @@ $params["max_text_len"]   = 300;      // a message cannot be longer than 50 cara
 $params["refresh_delay"]  = 10000;     // chat refresh speed is 10 secondes (10000ms)
 $params["max_msg"]        = 15;       // max message in the history is 15 (message seen when reloading the chat)
 $params["height"]         = "230px";  // height of chat area is 230px
-// do not uses width parameter because of a display bug in IE6
-//$params["width"]          = "800px";  // width of chat area is 800px
+$params["width"]          = "800px";  // width of chat area is 800px
 $params["debug"]          = true;     // activate debug console
 $params["debugxajax"]     = true;     // activate xajax debug (js popup)
 $params["connect_at_startup"] = false;
