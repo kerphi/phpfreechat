@@ -1424,6 +1424,7 @@ pfcClient.prototype = {
         content.style.display = 'block';
       else
         content.style.display = 'none';
+      content.style.zIndex = '100'; // for IE6, force the nickname list borders to be shown
     }
 
     // then refresh the button icon
@@ -1458,17 +1459,11 @@ pfcClient.prototype = {
       var style = $H();
       if (!this.showwhosonline)
       {
-        style['width'] = '100%';
-        chatdiv.setAttribute('style', 'width:100%');
-        chatdiv.setAttribute('cssText', 'width:100%'); // for IE6
-        //        Element.setStyle(chatdiv, style);
+        chatdiv.style.width = '100%';
       }
       else
       {
-        style['width'] = '';
-        chatdiv.setAttribute('style', '');
-        chatdiv.setAttribute('cssText', ''); // for IE6
-        //        Element.setStyle(chatdiv, style);
+        chatdiv.style.width = '';
       }
     }
   }
