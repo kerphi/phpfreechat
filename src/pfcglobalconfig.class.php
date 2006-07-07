@@ -36,9 +36,12 @@ class pfcGlobalConfig
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
   var $isadmin             = false;
   var $admins              = array("admin" => ""); // nicknames is the key, password is the value
+
+  var $islocked            = false; // set this parameter to true to lock the chat for all users
+  var $lockurl             = "http://www.phpfreechat.net"; // this is the url where the users must be redirected when the chat is locked
   
   // these parameters are static (cached)
-  var $proxys              = array("auth", "noflood", "censor");
+  var $proxys              = array("lock", "auth", "noflood", "censor");
   var $proxys_cfg          = array("auth"    => array(),
                                    "noflood" => array("limit"=>10,"delay"=>5),
                                    "censor"  => array("words"=>array("fuck","sex","bitch"),"replaceby"=>"*"));
@@ -459,9 +462,10 @@ class pfcGlobalConfig
       $pfc_configvar = unserialize(file_get_contents($cachefile));
       foreach($pfc_configvar as $key => $val)
       {
-        // the 'nick' and 'isadmin' are dynamic parameters, it must not be cached
+        // the 'nick', 'isadmin', and 'islocked' are dynamic parameters, it must not be cached
         if ($key != "nick" &&
-            $key != "isadmin")
+            $key != "isadmin" &&
+            $key != "islocked" )
           $this->$key = $val;
       }
       
