@@ -40,7 +40,8 @@ done
 
 echo 'echo "<h2>Checking phpfreechat files validity</h2>";' >> $TMP
 echo 'echo "<pre>\n";' >> $TMP
-echo 'foreach(array_merge($files_ko,$files_ok) as $file);' >> $TMP
+echo '$arr = array_merge($files_ko,$files_ok);' >> $TMP
+echo 'foreach($arr as $file);' >> $TMP
 echo '  echo $file;' >> $TMP
 echo 'echo "</pre>\n";' >> $TMP
 echo "?>" >> $TMP
