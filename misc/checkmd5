@@ -27,16 +27,21 @@ echo "--> Creating $DST"
 
 cd $PFC_PATH
 echo "<?php" > $TMP
-echo 'echo "<h2>Checking phpfreechat files validity</h2>";' >> $TMP
-echo 'echo "<pre>\n";' >> $TMP
+echo '$files_ok = array();' >> $TMP
+echo '$files_ko = array();' >> $TMP
 for f in `find . -type f`
 do
   sum=`md5sum $f | sed "s/\s.*$//g"`
   echo 'if (md5(file_get_contents("'$f'")) == "'$sum'")' >> $TMP
-  echo '  echo "<span style=\"color:#3A3\">ok - '$f'</span>\n";' >> $TMP
+  echo '  $files_ok[] = "<span style=\"color:#3A3\">ok - '$f'</span>\n";' >> $TMP
   echo 'else' >> $TMP
-  echo '  echo "<span style=\"color:#F33\">corrupted - '$f' (please replace this file by a correct one)</span>\n";' >> $TMP
+  echo '  $files_ko[] = "<span style=\"color:#F33\">corrupted - '$f' (please replace this file by a correct one)</span>\n";' >> $TMP
 done
+
+echo 'echo "<h2>Checking phpfreechat files validity</h2>";' >> $TMP
+echo 'echo "<pre>\n";' >> $TMP
+echo 'foreach(array_merge($files_ko,$files_ok as $file);' >> $TMP
+echo '  echo $file;' >> $TMP
 echo 'echo "</pre>\n";' >> $TMP
 echo "?>" >> $TMP
 cd - >/dev/null
