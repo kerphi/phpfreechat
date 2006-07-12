@@ -100,6 +100,7 @@ class pfcGlobalConfig
   var $debugurl            = "";
   var $debug               = false;
   var $debugxajax          = false;
+  var $dyn_params          = array("nick","isadmin","islocked","admins");
   
   function pfcGlobalConfig( $params = array() )
   {
@@ -155,6 +156,10 @@ class pfcGlobalConfig
           $this->$k = $v;
       }
     }
+
+    // load dynamic parameter even if the config exists in the cache
+    foreach ( $this->dyn_params as $dp )
+      $this->$dp = $params[$dp];
 
     // now load or save the configuration in the cache
     $this->synchronizeWithCache();
@@ -464,12 +469,11 @@ class pfcGlobalConfig
       // if a cache file exists, remove the lock file because config has been succesfully stored
       if (file_exists($cachefile_lock)) @unlink($cachefile_lock);
 
-      $dyn_params = array("nick","isadmin","islocked","admins");
       $pfc_configvar = unserialize(file_get_contents($cachefile));
       foreach($pfc_configvar as $key => $val)
       {
         // the dynamics parameters must not be cached
-        if (!in_array($key,$dyn_params))
+        if (!in_array($key,$this->dyn_params))
           $this->$key = $val;
       }
       
