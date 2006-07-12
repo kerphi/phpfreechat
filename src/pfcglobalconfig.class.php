@@ -340,6 +340,11 @@ class pfcGlobalConfig
     // load debug url
     $this->debugurl = relativePath($this->client_script_path, dirname(__FILE__)."/../debug");
 
+
+    // check the frozen_nick parameter is used with a none empty nickname
+    if ($this->frozen_nick && $this->nick == "")
+      $this->errors[] = _pfc("frozen_nick can't be used with a empty nick");
+
     // check if channels parameter is a strings array
     if (!is_array($this->channels))
       $this->errors[] = _pfc("'%s' parameter must be an array", "channels");
@@ -459,13 +464,12 @@ class pfcGlobalConfig
       // if a cache file exists, remove the lock file because config has been succesfully stored
       if (file_exists($cachefile_lock)) @unlink($cachefile_lock);
 
+      $dyn_params = array("nick","isadmin","islocked","admins");
       $pfc_configvar = unserialize(file_get_contents($cachefile));
       foreach($pfc_configvar as $key => $val)
       {
-        // the 'nick', 'isadmin', and 'islocked' are dynamic parameters, it must not be cached
-        if ($key != "nick" &&
-            $key != "isadmin" &&
-            $key != "islocked" )
+        // the dynamics parameters must not be cached
+        if (!in_array($key,$dyn_params))
           $this->$key = $val;
       }
       
