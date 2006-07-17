@@ -64,14 +64,20 @@ function relativePath($p1, $p2)
   $res = "";
   //echo $p1."<br>";
   //echo $p2."<br>";
-  while( $p1 != "" && $p1 != "/" && strpos($p2, $p1) === FALSE)
+  while( $p1 != "" && $p1 != "/" && strpos($p2, $p1) !== 0)
   {
     $res .= "../";
     $p1 = dirname($p1);
   }
-  $p2 = (isset($_SERVER["WINDIR"]) || isset($_SERVER["windir"])) ?
-    str_replace("\\","/",substr($p2, strlen($p1)+1, strlen($p2)-strlen($p1))) :
-    substr($p2, strlen($p1)+1, strlen($p2)-strlen($p1));
+  if (isset($_SERVER["WINDIR"]) || isset($_SERVER["windir"])) {
+      $p2 = str_replace("\\","/",substr($p2, strlen($p1)+1, strlen($p2)-strlen($p1)));
+  } else {
+      if ($p1 === "/" || $p1 === "") {
+          $p2 = substr($p2, strlen($p1));
+      } else {
+          $p2 = substr($p2, strlen($p1)+1);
+      }
+  }
   $res .= $p2;
   // remove the last "/"
   if (preg_match("/.*\/$/", $res)) $res = preg_replace("/(.*)\//","$1",$res);
