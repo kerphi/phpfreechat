@@ -58,13 +58,16 @@ class pfcInfo extends pfcGlobalConfig
 
   function getLastMsg($channel, $nb)
   {
+    // to be sure the $nb params is a positive number
+    if ( !( $nb >= 0 ) ) $nb = 10;
+    
     // to get the channel recipient name
     // @todo must use another function to get a private message last messages
     $channel = pfcCommand_join::GetRecipient($channel);
     
     $container   =& $this->getContainerInstance();    
     $lastmsg_id  = $container->getLastId($channel);
-    $lastmsg_raw = $container->read($channel, $lastmsg_id-10);
+    $lastmsg_raw = $container->read($channel, $lastmsg_id-$nb);
     return $lastmsg_raw;
   }
 }
