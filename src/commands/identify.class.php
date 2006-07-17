@@ -38,13 +38,14 @@ class pfcCommand_identify extends pfcCommand
 
     $password = trim($param);
     $isadmin = false;
-    
-    // @todo simplify the search in the admins config array using a native php function (array_search?)
-    foreach($c->admins as $a_nick => $a_pass)
-    {
-      if ($a_nick == $sender && $a_pass == $password)
-        $isadmin = true;
-    }
+
+//     $xml_reponse->addScript("alert('sender=".$sender."');");
+//     $xml_reponse->addScript("alert('password=".$password."');");  
+//     $xml_reponse->addScript("alert('admins=".var_export($c->admins, true)."');");  
+  
+    if( isset($c->admins[$sender]) &&
+	$c->admins[$sender] == $password )
+      $isadmin = true;
 
     $msg   = "";
     if ($isadmin)

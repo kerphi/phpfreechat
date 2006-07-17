@@ -35,7 +35,7 @@ class pfcGlobalConfig
   // these parameters are dynamic (not cached)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
   var $isadmin             = false;
-  var $admins              = array("admin" => ""); // nicknames is the key, password is the value
+  var $admins              = array("admin" => ""); // the key is the nickname, the value is the password
 
   var $islocked            = false; // set this parameter to true to lock the chat for all users
   var $lockurl             = "http://www.phpfreechat.net"; // this is the url where the users must be redirected when the chat is locked
@@ -159,7 +159,8 @@ class pfcGlobalConfig
 
     // load dynamic parameter even if the config exists in the cache
     foreach ( $this->dyn_params as $dp )
-      $this->$dp = $params[$dp];
+      if (isset($params[$dp]))
+	$this->$dp = $params[$dp];
 
     // now load or save the configuration in the cache
     $this->synchronizeWithCache();
