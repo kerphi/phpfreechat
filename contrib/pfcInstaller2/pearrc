@@ -1,0 +1,2 @@
+#PEAR_Config 0.9
+a:9:{s:8:"test_dir";s:10:"./tmp/test";s:10:"__channels";a:2:{s:12:"pecl.php.net";a:0:{}s:5:"__uri";a:0:{}}s:7:"bin_dir";s:5:"./bin";s:7:"doc_dir";s:9:"./tmp/doc";s:7:"php_dir";s:2:"./";s:8:"data_dir";s:10:"./tmp/data";s:9:"cache_dir";s:11:"./tmp/cache";s:12:"download_dir";s:11:"./tmp/cache";s:8:"temp_dir";s:10:"./tmp/temp";}

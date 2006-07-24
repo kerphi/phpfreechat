@@ -1,0 +1,16 @@
+a:17:{s:8:"provides";a:0:{}s:8:"filelist";a:3:{s:8:"Type.php";a:4:{s:4:"role";s:3:"php";s:14:"baseinstalldir";s:4:"MIME";s:12:"replacements";a:2:{i:0;a:3:{s:4:"from";s:9:"@version@";s:2:"to";s:7:"version";s:4:"type";s:12:"package-info";}i:1;a:3:{s:4:"from";s:9:"@package@";s:2:"to";s:7:"package";s:4:"type";s:12:"package-info";}}s:12:"installed_as";s:15:"./MIME/Type.php";}s:13:"Parameter.php";a:4:{s:4:"role";s:3:"php";s:14:"baseinstalldir";s:9:"MIME/Type";s:12:"replacements";a:2:{i:0;a:3:{s:4:"from";s:9:"@version@";s:2:"to";s:7:"version";s:4:"type";s:12:"package-info";}i:1;a:3:{s:4:"from";s:9:"@package@";s:2:"to";s:7:"package";s:4:"type";s:12:"package-info";}}s:12:"installed_as";s:25:"./MIME/Type/Parameter.php";}s:11:"example.php";a:4:{s:4:"role";s:3:"php";s:14:"baseinstalldir";s:14:"docs/MIME_Type";s:12:"replacements";a:2:{i:0;a:3:{s:4:"from";s:9:"@package@";s:2:"to";s:7:"package";s:4:"type";s:12:"package-info";}i:1;a:3:{s:4:"from";s:9:"@doc_dir@";s:2:"to";s:7:"doc_dir";s:4:"type";s:11:"pear-config";}}s:12:"installed_as";s:28:"./docs/MIME_Type/example.php";}}s:10:"xsdversion";s:3:"1.0";s:7:"package";s:9:"MIME_Type";s:7:"summary";s:41:"Utility class for dealing with MIME types";s:11:"description";s:316:"Provide functionality for dealing with MIME types.
+* Parse MIME type.
+* Supports full RFC2045 specification.
+* Many utility functions for working with and determining info about types.
+* Most functions can be called statically.
+* Autodetect a file's mime-type, either with mime_content_type() or the 'file' command.
+";s:11:"maintainers";a:1:{i:0;a:4:{s:6:"handle";s:5:"ieure";s:4:"name";s:8:"Ian Eure";s:5:"email";s:13:"ieure@php.net";s:4:"role";s:4:"lead";}}s:7:"version";s:5:"1.0.0";s:12:"release_date";s:10:"2005-01-26";s:15:"release_license";s:15:"PHP License 3.0";s:13:"release_state";s:6:"stable";s:13:"release_notes";s:31:"- No changes since 1.0.0beta3.
+";s:12:"release_deps";a:2:{i:1;a:4:{s:4:"type";s:3:"pkg";s:3:"rel";s:2:"ge";s:7:"version";s:5:"1.2.1";s:4:"name";s:4:"PEAR";}i:2;a:4:{s:4:"type";s:3:"pkg";s:3:"rel";s:3:"has";s:8:"optional";s:3:"yes";s:4:"name";s:14:"System_Command";}}s:9:"changelog";a:3:{i:0;a:4:{s:7:"version";s:10:"1.0.0beta3";s:12:"release_date";s:10:"2004-08-07";s:13:"release_state";s:4:"beta";s:13:"release_notes";s:97:"* Add $parameters class var. (Fixes #2083)
+* Quote filenames in _fileAutoDetect() (Fixes #2078)
+
+";}i:1;a:4:{s:7:"version";s:10:"1.0.0beta2";s:12:"release_date";s:10:"2004-06-16";s:13:"release_state";s:4:"beta";s:13:"release_notes";s:63:"* Make changes as requested during the proposal/vote process.
+
+";}i:2;a:4:{s:7:"version";s:10:"1.0.0beta1";s:12:"release_date";s:10:"2004-04-16";s:13:"release_state";s:4:"beta";s:13:"release_notes";s:76:"Initial PEARification
+* Split most functionality off from MIME_ContentType
+
+";}}s:12:"_lastversion";N;s:7:"dirtree";a:4:{s:6:"./MIME";b:1;s:11:"./MIME/Type";b:1;s:16:"./docs/MIME_Type";b:1;s:6:"./docs";b:1;}s:13:"_lastmodified";i:1153741286;}
