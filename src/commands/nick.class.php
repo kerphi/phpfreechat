@@ -102,7 +102,6 @@ class pfcCommand_nick extends pfcCommand
         $u->active = true;
         $u->saveInCache();
 
-        $xml_reponse->addScript("alert('TODO?! remove this unused code ?');");
         $xml_reponse->addScript("pfc.handleResponse('nick', 'connected', '".$newnick."');");
       
         if ($c->debug)
