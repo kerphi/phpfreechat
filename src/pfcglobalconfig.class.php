@@ -60,7 +60,7 @@ class pfcGlobalConfig
   var $start_minimized     = false;
   var $height              = "440px";
   var $width               = "";
-  var $shownotice          = 3; // show: 0 = nothing, 1 = just nickname changes, 2 = connect/quit, 3 = 1+2
+  var $shownotice          = 3; // show: 0 = nothing, 1 = just nickname changes, 2 = join/quit, 3 = 1+2
   var $nickmarker          = true; // show/hide nicknames colors
   var $clock               = true; // show/hide dates and hours
   var $openlinknewwindow   = true; // used to open the links in a new window
