@@ -4,8 +4,14 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_getonlinenick extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+
     $c =& $this->c;
     $container =& $c->getContainerInstance();
 
@@ -14,8 +20,11 @@ class pfcCommand_getonlinenick extends pfcCommand
     if (isset($disconnected_users["nick"]))
       foreach ($disconnected_users["nick"] as $n)
       {
+        $cmdp = $p;
+        $cmdp["param"] = _pfc("%s quit (timeout)", $n);
+        $cmdp["flag"] = 2;
         $cmd =& pfcCommand::Factory("notice");
-        $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)", $n), $sender, $recipient, $recipientid, 2);
+        $cmd->run($xml_reponse, $cmdp);
       }
     
     // get the cached nickname list

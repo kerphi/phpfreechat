@@ -6,18 +6,25 @@ class pfcCommand_nick extends pfcCommand
 {
   var $usage = "/nick {newnickname}";
   
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+
     $c =& $this->c;
     $u =& $this->u;
 
     if (trim($param) == "")
     {
       // error
-      $msg = _pfc("Missing parameter");
-      $msg .= " (".$this->usage.")";
+      $cmdp = $p;
+      $cmdp["param"] = _pfc("Missing parameter");
+      $cmdp["param"] .= " (".$this->usage.")";
       $cmd =& pfcCommand::Factory("error");
-      $cmd->run($xml_reponse, $clientid, $msg, $sender, $recipient, $recipientid);
+      $cmd->run($xml_reponse, $cmdp);
       return;
     }
     
@@ -61,12 +68,22 @@ class pfcCommand_nick extends pfcCommand
         $u->saveInCache();
 
         // notify all the joined channels/privmsg
+        $cmdp = $p;
+        $cmdp["param"] = _pfc("%s changes his nickname to %s",$oldnick,$newnick);
+        $cmdp["flag"]  = 1;
         $cmd =& pfcCommand::Factory("notice");
         foreach($u->channels as $id => $chan)
-          $cmd->run($xml_reponse, $clientid, _pfc("%s changes his nickname to %s",$oldnick,$newnick), $sender, $chan["recipient"], $id, 1);
+        {
+          $cmdp["recipient"]   = $chan["recipient"];
+          $cmdp["recipientid"] = $id;
+          $cmd->run($xml_reponse, $cmdp);
+        }
         foreach( $u->privmsg as $id => $pv )
-          $cmd->run($xml_reponse, $clientid, _pfc("%s changes his nickname to %s",$oldnick,$newnick), $sender, $pv["recipient"], $id, 1);
-
+        {
+          $cmdp["recipient"]   = $pv["recipient"];
+          $cmdp["recipientid"] = $id;
+          $cmd->run($xml_reponse, $cmdp);
+        }
         $xml_reponse->addScript("pfc.handleResponse('nick', 'changed', '".$newnick."');");
       }
       
@@ -85,16 +102,7 @@ class pfcCommand_nick extends pfcCommand
         $u->active = true;
         $u->saveInCache();
 
-        $xml_reponse->addScript("alert('join: u->nick=".$u->nick);
-
-        /*
-	$cmd =& pfcCommand::Factory("notice");
-        foreach($u->channels as $id => $chan)
-          $cmd->run($xml_reponse, $clientid, _pfc("%s is connected", $u->nick), $sender, $chan["recipient"], $id, 2);
-        foreach($u->privmsg as $id => $pv)
-          $cmd->run($xml_reponse, $clientid, _pfc("%s is connected", $u->nick), $sender, $pv["recipient"], $id, 2);
-        */
-        
+        $xml_reponse->addScript("alert('TODO?! remove this unused code ?');");
         $xml_reponse->addScript("pfc.handleResponse('nick', 'connected', '".$newnick."');");
       
         if ($c->debug)

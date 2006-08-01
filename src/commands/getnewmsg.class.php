@@ -4,10 +4,15 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_getnewmsg extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+    
     $c =& $this->c;
-
     // do nothing if the recipient is not defined
     if ($recipient == "") return;
     

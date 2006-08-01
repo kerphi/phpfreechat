@@ -121,7 +121,7 @@ class pfcCommand
    * Virtual methode which must be implemented by concrete commands
    * It is called by the phpFreeChat::HandleRequest function to execute the wanted command
    */
-  function run(&$xml_reponse, $clientid, &$param, &$sender, &$recipient, &$recipientid)
+  function run(&$xml_reponse, $p)
   {
     die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__));
   }

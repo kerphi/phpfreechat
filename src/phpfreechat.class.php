@@ -375,10 +375,16 @@ class phpFreeChat
 
         // play the command
         $cmd =& pfcCommand::Factory($cmdtmp[0]);
+        $cmdp = array();
+        $cmdp["clientid"]    = $clientid;
+        $cmdp["param"]       = $cmdtmp[1];
+        $cmdp["sender"]      = $cmdtmp[2];
+        $cmdp["recipient"]   = $cmdtmp[3];
+        $cmdp["recipientid"] = $cmdtmp[4];
         if ($c->debug)
-          $cmd->run($xml_reponse, $clientid, $cmdtmp[1], $cmdtmp[2], $cmdtmp[3], $cmdtmp[4]);
+          $cmd->run($xml_reponse, $cmdp);
         else
-          @$cmd->run($xml_reponse, $clientid, $cmdtmp[1], $cmdtmp[2], $cmdtmp[3], $cmdtmp[4]);
+          @$cmd->run($xml_reponse, $cmdp);
 
         // if the cmdtoplay is a 'leave' command, then show an alert to the kicked or banished user
         if ($cmdtmp[0] == "leave")
@@ -395,28 +401,35 @@ class phpFreeChat
       $morecmd = (count($cmdtoplay) > 0);
     }
 
-
-
-
-
-
     
     $cmd =& pfcCommand::Factory($rawcmd);
+    $cmdp = array();
+    $cmdp["clientid"]    = $clientid;
+    $cmdp["param"]       = $param;
+    $cmdp["sender"]      = $sender;
+    $cmdp["recipient"]   = $recipient;
+    $cmdp["recipientid"] = $recipientid;
     if ($cmd != NULL)
     {
       // call the command
       if ($c->debug)
-	$cmd->run($xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
+	$cmd->run($xml_reponse, $cmdp);
       else
-	@$cmd->run($xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
+	@$cmd->run($xml_reponse, $cmdp);
     }
     else
     {
       $cmd =& pfcCommand::Factory("error");
+      $cmdp = array();
+      $cmdp["clientid"]    = $clientid;
+      $cmdp["param"]       = _pfc("Unknown command [%s]",stripslashes("/".$rawcmd." ".$param));
+      $cmdp["sender"]      = $sender;
+      $cmdp["recipient"]   = $recipient;
+      $cmdp["recipientid"] = $recipientid;
       if ($c->debug)
-        $cmd->run($xml_reponse, $clientid, _pfc("Unknown command [%s]",stripslashes("/".$rawcmd." ".$param)), $sender, $recipient, $recipientid);
+        $cmd->run($xml_reponse, $cmdp);
       else
-        @$cmd->run($xml_reponse, $clientid, _pfc("Unknown command [%s]",stripslashes("/".$rawcmd." ".$param)), $sender, $recipient, $recipientid);
+        @$cmd->run($xml_reponse, $cmdp);
     }
     
     // do not update twice
@@ -428,10 +441,16 @@ class phpFreeChat
       // force an update just after a command is sent
       // thus the message user just poster is really fastly displayed
       $cmd =& pfcCommand::Factory("update");
+      $cmdp = array();
+      $cmdp["clientid"]    = $clientid;
+      $cmdp["param"]       = $param;
+      $cmdp["sender"]      = $sender;
+      $cmdp["recipient"]   = $recipient;
+      $cmdp["recipientid"] = $recipientid;
       if ($c->debug)
-	$cmd->run($xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
+	$cmd->run($xml_reponse, $cmdp);
       else
-	@$cmd->run($xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
+	@$cmd->run($xml_reponse, $cmdp);
     }
   
     if ($c->debug)

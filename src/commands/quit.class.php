@@ -4,8 +4,14 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_quit extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+    
     $c =& $this->c;
     $u =& $this->u;
 
@@ -21,15 +27,23 @@ class pfcCommand_quit extends pfcCommand
     foreach( $u->channels as $id => $chandetail )
       if ($container->removeNick($chandetail["recipient"], $u->nick))
       {
+        $cmdp = $p;
+        $cmdp["param"] = $id;
+        $cmdp["recipient"] = $chandetail["recipient"];
+        $cmdp["recipientid"] = $id;
         $cmd =& pfcCommand::Factory("leave");
-        $cmd->run($xml_reponse, $clientid, $id, $sender, $chandetail["recipient"], $id, 2);
+        $cmd->run($xml_reponse, $cmdp);
       }
     // from the private messages
     foreach( $u->privmsg as $id => $pvdetail )
       if ($container->removeNick($pvdetail["recipient"], $u->nick))
       {
+        $cmdp = $p;
+        $cmdp["param"] = $id;
+        $cmdp["recipient"] = $pvdetail["recipient"];
+        $cmdp["recipientid"] = $id;        
         $cmd =& pfcCommand::Factory("leave");
-        $cmd->run($xml_reponse, $clientid, $id, $sender, $pvdetail["recipient"], $id, 2);
+        $cmd->run($xml_reponse, $cmdp);
       }
     // from the server
     $container->removeNick(NULL, $u->nick);

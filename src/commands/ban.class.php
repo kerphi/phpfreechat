@@ -6,7 +6,7 @@ class pfcCommand_ban extends pfcCommand
 {
   var $usage = "/ban {nickname}";
   
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
     $c =& $this->c;
     $u =& $this->u;
@@ -14,26 +14,27 @@ class pfcCommand_ban extends pfcCommand
     if (trim($param) == "")
     {
       // error
-      $msg = _pfc("Missing parameter");
-      $msg .= " (".$this->usage.")";
+      $cmdp = $p;
+      $cmdp["param"] = _pfc("Missing parameter");
+      $cmdp["param"] .= " (".$this->usage.")";
       $cmd =& pfcCommand::Factory("error");
-      $cmd->run($xml_reponse, $clientid, $msg, $sender, $recipient, $recipientid);
+      $cmd->run($xml_reponse, $cmdp);
       return;
     }
 
 
     $container =& $c->getContainerInstance();
-    $nickid = $container->getNickId($param);
+    $nickid = $container->getNickId($p["param"]);
     if ($nickid != "undefined")
     {
       $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
       $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
 
       $cmdtmp = array("leave",     /* cmdname */
-                      $recipientid,/* param */
-                      $sender,     /* sender */
-                      $recipient,  /* recipient */
-                      $recipientid,/* recipientid */
+                      $p["recipientid"],/* param */
+                      $p["sender"],     /* sender */
+                      $p["recipient"],  /* recipient */
+                      $p["recipientid"],/* recipientid */
                       );
       //_pfc("banished from %s by %s", $recipient, $sender);
       $cmdtoplay[] = $cmdtmp; // ban the user from the current channel
@@ -41,13 +42,13 @@ class pfcCommand_ban extends pfcCommand
     }
 
     // update the recipient banlist
-    $banlist = $container->getMeta("banlist_nickid", "channel", $recipientid);
+    $banlist = $container->getMeta("banlist_nickid", "channel", $p["recipientid"]);
     if ($banlist == NULL)
       $banlist = array();
     else
       $banlist = unserialize($banlist);
     $banlist[] = $nickid; // append the nickid to the banlist
-    $container->setMeta(serialize($banlist), "banlist_nickid", "channel", $recipientid);
+    $container->setMeta(serialize($banlist), "banlist_nickid", "channel", $p["recipientid"]);
   }
 }
 

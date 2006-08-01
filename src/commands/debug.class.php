@@ -4,12 +4,12 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_debug extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
     $c =& $this->c;
     $u =& $this->u;
 
-    if ($param == "userconfig")
+    if ($p["param"] == "userconfig")
     {
       $msg   = "";
       $msg  .= var_export($u, true);
@@ -17,14 +17,14 @@ class pfcCommand_debug extends pfcCommand
       $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
     }
 
-    if ($param == "globalconfig")
+    if ($p["param"] == "globalconfig")
     {
       $msg   = "";
       $msg  .= var_export($c, true);
       $msg = str_replace("\n","",addslashes(nl2br($msg)));
       $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
     }
-    if ($param == "phpserver")
+    if ($p["param"] == "phpserver")
     {
       $msg   = "";
       $msg  .= var_export($_SERVER, true);

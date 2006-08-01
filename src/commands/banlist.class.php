@@ -11,13 +11,13 @@ class pfcCommand_banlist extends pfcCommand
 {
   var $desc = "This command list the banished users on the given channel";
   
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
     $c =& $this->c;
     $u =& $this->u;
     
     $container =& $c->getContainerInstance();
-    $banlist = $container->getMeta("banlist_nickid", "channel", $recipientid);
+    $banlist = $container->getMeta("banlist_nickid", "channel", $p["recipientid"]);
     if ($banlist == NULL) $banlist = array(); else $banlist = unserialize($banlist);
     $msg  = "";
     $msg .= "<p>"._pfc("The banished user's id list is:")."</p>";

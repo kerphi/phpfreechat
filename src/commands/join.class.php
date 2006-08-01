@@ -6,8 +6,14 @@ class pfcCommand_join extends pfcCommand
 {
   var $usage = "/join {channelname}";
   
-  function run(&$xml_reponse, $clientid, &$param, &$sender, &$recipient, &$recipientid)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+
     $c =& $this->c;
     $u =& $this->u;
 
@@ -17,10 +23,11 @@ class pfcCommand_join extends pfcCommand
     
     if ($channame == "")
     {
-      $msg = _pfc("Missing parameter");
-      $msg .= " (".$this->usage.")";
+      $cmdp = $p;
+      $cmdp["param"] = _pfc("Missing parameter");
+      $cmdp["param"] .= " (".$this->usage.")";
       $cmd =& pfcCommand::Factory("error");
-      $cmd->run($xml_reponse, $clientid, $msg, $sender, $recipient, $recipientid);
+      $cmd->run($xml_reponse, $cmdp);
       return;
     }
     
@@ -36,8 +43,13 @@ class pfcCommand_join extends pfcCommand
     }
 
     // show a join message
+    $cmdp = $p;
+    $cmdp["param"] = _pfc("%s joins %s",$u->nick, $channame);
+    $cmdp["recipient"] = $chanrecip;
+    $cmdp["recipientid"] = $chanid;
+    $cmdp["flag"] = 2;
     $cmd =& pfcCommand::Factory("notice");
-    $cmd->run($xml_reponse, $clientid, _pfc("%s joins %s",$u->nick, $channame), $sender, $chanrecip, $chanid, 1);
+    $cmd->run($xml_reponse, $cmdp);
 
 
     //$xml_reponse->addScript("alert('join: chan=".$channame.", from_id=".$from_id."');");

@@ -6,8 +6,14 @@ class pfcCommand_unban extends pfcCommand
 {
   var $usage = "/unban {id}";
   
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+    
     $c =& $this->c;
     $u =& $this->u;
 
@@ -16,10 +22,11 @@ class pfcCommand_unban extends pfcCommand
     if (trim($param) == "")
     {
       // error
-      $msg = _pfc("Missing parameter");
-      $msg .= " (".$this->usage.")";
+      $cmdp = $p;
+      $cmdp["param"] = _pfc("Missing parameter");
+      $cmdp["param"] .= " (".$this->usage.")";
       $cmd =& pfcCommand::Factory("error");
-      $cmd->run($xml_reponse, $clientid, $msg, $sender, $recipient, $recipientid);
+      $cmd->run($xml_reponse, $cmdp);
       return;
     }
     

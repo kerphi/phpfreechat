@@ -52,13 +52,6 @@ class pfcProxyCommand extends pfcCommand
   {
     $this->next = $cmd;
   }
-
-  /*
-  function run(&$xml_reponse, $clientid, &$param, &$sender, &$recipient, &$recipientid)
-  {
-    die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__));
-  }
-  */
 }
 
 ?>

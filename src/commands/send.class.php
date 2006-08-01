@@ -4,8 +4,14 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_send extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+    
     $c    =& $this->c;
     $u    =& $this->u;
     $nick = phpFreeChat::FilterSpecialChar($sender);
@@ -15,8 +21,10 @@ class pfcCommand_send extends pfcCommand
     // send an error because the current user is not connected
     if (!$u->active)
     {
+      $cmdp = $p;
+      $cmdp["param"] = _pfc("Your must be connected to send a message");
       $cmd =& pfcCommand::Factory("error");
-      $cmd->run($xml_reponse, $clientid, _pfc("Your must be connected to send a message"), $sender, $recipient, $recipientid);
+      $cmd->run($xml_reponse, $cmdp);
       return;
     }
     
@@ -38,8 +46,10 @@ class pfcCommand_send extends pfcCommand
       if (!in_array($pvnickid, $onlineusers["nickid"]))
       {
         // send an error because the user is not online
+        $cmdp = $p;
+        $cmdp["param"] = _pfc("Can't send the message, %s is offline", $pvnick);
         $cmd =& pfcCommand::Factory("error");
-        $cmd->run($xml_reponse, $clientid, _pfc("Can't send the message, %s is offline", $pvnick), $sender, $recipient, $recipientid);
+        $cmd->run($xml_reponse, $cmdp);
         $can_send = false;
       }
     }
@@ -54,8 +64,10 @@ class pfcCommand_send extends pfcCommand
       // an error occured, just ignore the message and display errors
       foreach($errors as $e)
         if ($c->debug) pxlog("error /send, user can't send a message -> nick=".$u->nick." err=".$e, "chat", $c->getId());
+      $cmdp = $p;
+      $cmdp["param"] = $errors;
       $cmd =& pfcCommand::Factory("error");
-      $cmd->run($xml_reponse, $clientid, $errors, $sender, $recipient, $recipientid);
+      $cmd->run($xml_reponse, $cmdp);
       if (isset($errors[$c->prefix."handle"])) // the nick is empty so give it focus
         $xml_reponse->addScript("$('".$c->prefix."handle').focus();");
       $can_send = false;

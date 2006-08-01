@@ -30,8 +30,14 @@ require_once dirname(__FILE__)."/../pfcproxycommand.class.php";
  */
 class pfcProxyCommand_lock extends pfcProxyCommand
 {
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+    
     $c =& $this->c;
     $u =& $this->u;
 
@@ -43,7 +49,12 @@ class pfcProxyCommand_lock extends pfcProxyCommand
     else
     {
       // forward the command to the next proxy or to the final command
-      $this->next->run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid);
+      $p["clientid"]    = $clientid;
+      $p["param"]       = $param;
+      $p["sender"]      = $sender;
+      $p["recipient"]   = $recipient;
+      $p["recipientid"] = $recipientid;
+      $this->next->run(&$xml_reponse, $p);      
     }
   }
 }

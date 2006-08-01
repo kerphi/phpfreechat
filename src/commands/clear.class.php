@@ -4,7 +4,7 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_clear extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
     $c =& $this->c;
     $u =& $this->u;

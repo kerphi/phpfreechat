@@ -4,8 +4,14 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_connect extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+    
     $c =& $this->c;
     $u =& $this->u;
 
@@ -52,8 +58,6 @@ class pfcCommand_connect extends pfcCommand
     $container->setMeta($isadmin, "isadmin", "nickname", $nickid);
     // connect to the server
     $xml_reponse->addScript("pfc.handleResponse('connect', 'ok', '');");
-        
-    return $clientid;
   }
 }
 

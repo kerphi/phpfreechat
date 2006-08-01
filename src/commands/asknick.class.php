@@ -4,8 +4,14 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_asknick extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+
     $c =& $this->c;
     $u =& $this->u;
     
@@ -14,8 +20,10 @@ class pfcCommand_asknick extends pfcCommand
     if ($c->frozen_nick)
     {
       // assign a random nick
+      $cmdp = $p;
+      $cmdp["param"] = $nicktochange."".rand(1,1000);
       $cmd =& pfcCommand::Factory("nick");
-      $cmd->run($xml_reponse, $clientid, $nicktochange."".rand(1,1000));
+      $cmd->run($xml_reponse, $cmdp);
     }
     else
     {

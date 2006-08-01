@@ -6,8 +6,14 @@ class pfcCommand_leave extends pfcCommand
 {
   var $usage = "/leave [{recipientid} {reason}]";
   
-  function run(&$xml_reponse, $clientid, $param, $sender, $recipient, $recipientid)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+
     $c =& $this->c;
     $u =& $this->u;
 
@@ -54,10 +60,14 @@ class pfcCommand_leave extends pfcCommand
       if ($leavech)
       {
         // show a leave message with the showing the reason if present
-        $msg = _pfc("%s quit",$u->nick);
-        if ($reason != "") $msg .= " (".$reason.")";
+        $cmdp = $p;
+        $cmdp["recipient"]   = $leave_recip;
+        $cmdp["recipientid"] = $leave_id;
+        $cmdp["flag"]        = 2;
+        $cmdp["param"] = _pfc("%s quit",$u->nick);
+        if ($reason != "") $cmdp["param"] .= " (".$reason.")";
         $cmd =& pfcCommand::Factory("notice");
-        $cmd->run($xml_reponse, $clientid, $msg, $sender, $leave_recip, $leave_id, 1);
+        $cmd->run($xml_reponse, $cmdp);
       }
 
       // remove the nickname from the channel/pv
@@ -71,10 +81,11 @@ class pfcCommand_leave extends pfcCommand
     else
     {
       // error
-      $msg = _pfc("Missing parameter");
-      $msg .= " (".$this->usage.")";
+      $cmdp = $p;
+      $cmdp["param"] = _pfc("Missing parameter");
+      $cmdp["param"] .= " (".$this->usage.")";
       $cmd =& pfcCommand::Factory("error");
-      $cmd->run($xml_reponse, $clientid, $msg, $sender, $recipient, $recipientid);
+      $cmd->run($xml_reponse, $cmdp);
     }
   }
 }
