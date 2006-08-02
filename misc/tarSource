@@ -6,6 +6,7 @@ echo "-- creating archive $NAME --"
 echo "-> copying files"
 rm -rf ./$NAME
 svn export .. ./$NAME
+rm -rf ./$NAME/contrib
 echo "-> creating checkmd5.php file"
 ./checkmd5 ./$NAME ./$NAME/checkmd5.php
 echo "-> creating .tar.gz"
