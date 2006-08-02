@@ -60,14 +60,18 @@ class phpFreeChat
       return phpFreeChat::HandleRequest($request);
     }
     // then init xajax engine
-    if (!class_exists("xajax")) require_once $c->xajaxpath."/xajax.inc.php";
-    $this->xajax = new xajax($c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""), $c->prefix);
-    if ($c->debugxajax) $this->xajax->debugOn();
-    $this->xajax->waitCursorOff(); // do not show a wait cursor during chat updates
-    $this->xajax->cleanBufferOff();
-    $this->xajax->errorHandlerOn(); // used to have verbose error logs
-    $this->xajax->registerFunction("handleRequest");
-    $this->xajax->processRequests();
+    if (!class_exists("xajax"))
+      if (file_exists($c->xajaxpath."/xajax.inc.php"))
+      {
+        require_once $c->xajaxpath."/xajax.inc.php";
+        $this->xajax = new xajax($c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""), $c->prefix);
+        if ($c->debugxajax) $this->xajax->debugOn();
+        $this->xajax->waitCursorOff(); // do not show a wait cursor during chat updates
+        $this->xajax->cleanBufferOff();
+        $this->xajax->errorHandlerOn(); // used to have verbose error logs
+        $this->xajax->registerFunction("handleRequest");
+        $this->xajax->processRequests();
+      }
   }
 
   /**
