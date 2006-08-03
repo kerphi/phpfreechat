@@ -24,10 +24,11 @@
  * Russian translation of the messages (utf8 encoded!)
  *
  * @author Stanislav Kondratyuk <antazy@gmail.com>
+ * @author Kamashev Maim <m.kamashev@gmail.com>
  */
 
 // line 45 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["My Chat"] = "Мой Чат";
+$GLOBALS["i18n"]["My Chat"] = "Мой чат";
 
 // line 201 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s не найдена, библиотека %s не обнаружена";
@@ -93,7 +94,7 @@ $GLOBALS["i18n"]["PHP FREE CHAT [powered by phpFreeChat-%s]"] = "PHP FREE CHAT [
 $GLOBALS["i18n"]["Hide nickname marker"] = "Скрыть цвета ников";
 
 // line 304 in javascript1.js.tpl.php
-$GLOBALS["i18n"]["Show nickname marker"] = "Показавть цвета ников";
+$GLOBALS["i18n"]["Show nickname marker"] = "Показывать цвета ников";
 
 // line 389 in javascript1.js.tpl.php
 $GLOBALS["i18n"]["Disconnect"] = "Отключиться";
@@ -147,10 +148,10 @@ $GLOBALS["i18n"]["Underline"] = "Подчеркнутый";
 $GLOBALS["i18n"]["Delete"] = "Удалить";
 
 // line 37 in chat.html.tpl.php
-$GLOBALS["i18n"]["Pre"] = "Pre";
+$GLOBALS["i18n"]["Pre"] = "Пре";
 
 // line 38 in chat.html.tpl.php
-$GLOBALS["i18n"]["Mail"] = "Mail";
+$GLOBALS["i18n"]["Mail"] = "Почта";
 
 // line 39 in chat.html.tpl.php
 $GLOBALS["i18n"]["Color"] = "Цвет";
@@ -167,80 +168,79 @@ $GLOBALS["i18n"]["Error: '%s' could not be found, please check your themepath '%
 // line 75 in pfccommand.class.php
 $GLOBALS["i18n"]["%s must be implemented"] = "%s должно быть осуществлено";
 
-
 // line 343 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "";
+$GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "'%s' параметр обязателен, по умолчанию используется значение '%s'";
 
 // line 378 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "'%s' параметр должен иметь правильный номер";
 
 // line 386 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "";
+$GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "'%s' параметр не верен. Разрешены значения : '%s'";
 
 // line 186 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["My room"] = "";
+$GLOBALS["i18n"]["My room"] = "Моя комната";
 
 // line 19 in unban.class.php
-$GLOBALS["i18n"]["Missing parameter"] = "";
+$GLOBALS["i18n"]["Missing parameter"] = "Неверный параметр";
 
 // line 38 in ban.class.php
-$GLOBALS["i18n"]["banished from %s by %s"] = "";
+$GLOBALS["i18n"]["banished from %s by %s"] = "Забанен из %s по %s";
 
 // line 23 in banlist.class.php
-$GLOBALS["i18n"]["The banished user's id list is:"] = "";
+$GLOBALS["i18n"]["The banished user's id list is:"] = "Список забаненых пользователей:";
 
 // line 32 in banlist.class.php
-$GLOBALS["i18n"]["Empty"] = "";
+$GLOBALS["i18n"]["Empty"] = "Пусто";
 
 // line 34 in banlist.class.php
-$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "";
+$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "'/unban {id}' разбанить пользователя по {id}";
 
 // line 35 in banlist.class.php
-$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "";
+$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "'/unban all'  разбанить всех пользователей в комнате";
 
 // line 24 in update.class.php
-$GLOBALS["i18n"]["%s quit (timeout)"] = "";
+$GLOBALS["i18n"]["%s quit (timeout)"] = "%s вышел (timeout)";
 
 // line 46 in join.class.php
-$GLOBALS["i18n"]["%s joins %s"] = "";
+$GLOBALS["i18n"]["%s joins %s"] = "%s вошёл в %s";
 
 // line 31 in kick.class.php
-$GLOBALS["i18n"]["kicked from %s by %s"] = "";
+$GLOBALS["i18n"]["kicked from %s by %s"] = "кикнут из %s по %s";
 
 // line 38 in send.class.php
-$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "";
+$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "Нельзя отправить сообщение, %s в оффлайн";
 
 // line 27 in unban.class.php
-$GLOBALS["i18n"]["Nobody has been unbanished"] = "";
+$GLOBALS["i18n"]["Nobody has been unbanished"] = "Никто не был разбанен";
 
 // line 42 in unban.class.php
-$GLOBALS["i18n"]["%s has been unbanished"] = "";
+$GLOBALS["i18n"]["%s has been unbanished"] = "%s был разбанен";
 
 // line 49 in unban.class.php
-$GLOBALS["i18n"]["%s users have been unbanished"] = "";
+$GLOBALS["i18n"]["%s users have been unbanished"] = "%s пользователи были разбанены";
 
 // line 47 in auth.class.php
-$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "";
+$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "Вам не разрешено использовать команды '%s'";
 
 // line 66 in auth.class.php
-$GLOBALS["i18n"]["Can't join %s because you are banished"] = "";
+$GLOBALS["i18n"]["Can't join %s because you are banished"] = "Невозможно войти %s потому что вы забанены";
 
 // line 76 in auth.class.php
-$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "";
+$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "Не могу войти в комнату %s, так как список комнат ограничен";
 
 // line 89 in auth.class.php
-$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "";
+$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "Вам запрещено изменять ваш ник";
 
 // line 56 in noflood.class.php
-$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "";
+$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "Пожалуйста, не присылайте мне много сообщений, флуд не приветствуется";
 
 // line 109 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Private message"] = "";
+$GLOBALS["i18n"]["Private message"] = "Личное сообщение";
 
 // line 110 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Close this tab"] = "";
+$GLOBALS["i18n"]["Close this tab"] = "Закрыть вкладку";
 
 // line 199 in pfcgui.js.tpl.php
-$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "";
+$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "Вы на самом деле хотите покинуть эту комнату?";
 
 ?>
