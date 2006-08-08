@@ -384,7 +384,7 @@ pfcClient.prototype = {
     var rx = null;
    
     // parse urls
-    var rx_url = new RegExp('(^|[^\\"])([a-z]+\:\/\/[a-z0-9.\\/\\?\\=\\&\\-\\_\\#]*)([^\\"]|$)','ig');
+    var rx_url = new RegExp('(^|[^\\"])([a-z]+\:\/\/[a-z0-9.\\/\\?\\=\\&\\-\\_\\#;:]*)([^\\"]|$)','ig');
     var ttt = msg.split(rx_url);
     if (ttt.length > 1 &&
         !navigator.appName.match("Explorer|Konqueror") &&
