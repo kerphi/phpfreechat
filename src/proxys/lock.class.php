@@ -54,7 +54,7 @@ class pfcProxyCommand_lock extends pfcProxyCommand
       $p["sender"]      = $sender;
       $p["recipient"]   = $recipient;
       $p["recipientid"] = $recipientid;
-      $this->next->run(&$xml_reponse, $p);      
+      $this->next->run($xml_reponse, $p);      
     }
   }
 }
