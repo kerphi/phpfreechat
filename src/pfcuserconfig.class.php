@@ -11,6 +11,7 @@ class pfcUserConfig
   
   var $timeout;
   var $nickid;
+  var $serverid;
   
   //  var $is_init = false; // used internaly to know if the chat config is initialized
   //  var $errors = array();
@@ -36,6 +37,8 @@ class pfcUserConfig
     if (!isset($this->channels)) $this->_setParam("channels",array());
     $this->_getParam("privmsg");
     if (!isset($this->privmsg)) $this->_setParam("privmsg",array());
+    $this->_getParam("serverid");
+    if (!isset($this->privmsg)) $this->_setParam("serverid",$c->serverid);
   }
 
   function &_getParam($p)
@@ -164,6 +167,7 @@ class pfcUserConfig
     $this->_rmParam("active");
     $this->_rmParam("channels");
     $this->_rmParam("privmsg");
+    $this->_rmParam("serverid");
   }
   
   function saveInCache()
@@ -178,6 +182,7 @@ class pfcUserConfig
       $this->_setParam("active",$this->active);
       $this->_setParam("channels",$this->channels);
       $this->_setParam("privmsg",$this->privmsg);
+      $this->_setParam("serverid",$this->serverid);
 
       /*
 

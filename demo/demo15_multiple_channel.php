@@ -5,7 +5,7 @@ require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params["serverid"] = md5(__FILE__); // calculate a unique id for this chat
 $params["title"]    = "A simple chat with multiple/dynamic channels (rooms)";
 $params["nick"]     = "guest";  // setup the intitial nickname
-$params["channel"]  = isset($_GET["channel"]) ? $_GET["channel"] : "room1";
+//$params["channel"]  = isset($_GET["channel"]) ? $_GET["channel"] : "room1";
 $chat = new phpFreeChat( $params );
 
 ?>
@@ -23,14 +23,10 @@ $chat = new phpFreeChat( $params );
   <body>
   <p>Rooms list:</p>
   <ul>
-    <li><a href="?channel=room1">#room1</a></li>
-    <li><a href="?channel=room2">#room2</a></li>
+    <li><a href="#" onclick="pfc.sendRequest('/join', 'room1');">room1</a></li>
+    <li><a href="#" onclick="pfc.sendRequest('/join', 'room2');">room2</a></li>
   </ul> 
 
-<?php
-  $c =& pfcGlobalConfig::Instance();
-  echo "<p>You are in #".$c->channel."</p>";
-?>
 <?php $chat->printChat(); ?>
 
 <?php

@@ -14,8 +14,12 @@ pfcClient.prototype = {
   
   initialize: function()
   {    
-    /* user description */
-    this.nickname      = '<?php echo $u->nick; ?>';
+    // load the graphical user interface builder
+    this.gui = new pfcGui();
+    // load the resources manager (labels and urls)
+    this.res = new pfcResource();
+
+    this.nickname      = pfc_nickname;
 
     // this array contains all the sent command
     // used the up and down key to navigate in the history
@@ -32,49 +36,12 @@ pfcClient.prototype = {
     this.privmsgids    = Array();
     
     this.timeout       = null;
-    this.refresh_delay = <?php echo $refresh_delay; ?>;
+    this.refresh_delay = pfc_refresh_delay;
     /* unique client id for each windows used to identify a open window
      * this id is passed every time the JS communicate with server
      * (2 clients can use the same session: then only the nickname is shared) */
-    this.clientid      = '<?php echo md5(uniqid(rand(), true)); ?>';
+    this.clientid      = pfc_clientid;
 
-    this.el_words     = $('<?php echo $prefix; ?>words');
-    this.el_handle    = $('<?php echo $prefix; ?>handle');
-    this.el_container = $('<?php echo $prefix; ?>container');
-    this.el_online    = $('<?php echo $prefix; ?>online');
-    this.el_errors    = $('<?php echo $prefix; ?>errors');
-
-    this.minmax_status = <?php echo $start_minimized ? "true" : "false"; ?>;
-    var cookie = getCookie('<?php echo $prefix; ?>minmax_status');
-    if (cookie != null)
-      this.minmax_status = (cookie == 'true');
-    
-    cookie = getCookie('<?php echo $prefix; ?>nickmarker');
-    this.nickmarker = (cookie == 'true');
-    if (cookie == '' || cookie == null)
-      this.nickmarker = <?php echo $nickmarker ? "true" : "false"; ?>;
-    
-    cookie = getCookie('<?php echo $prefix; ?>clock');
-    this.clock = (cookie == 'true');
-    if (cookie == '' || cookie == null)
-      this.clock = <?php echo $clock ? "true" : "false"; ?>;
-
-    cookie = getCookie('<?php echo $prefix; ?>showsmileys');
-    this.showsmileys = (cookie == 'true');
-    if (cookie == '' || cookie == null)
-      this.showsmileys = <?php echo $showsmileys ? "true" : "false"; ?>;
-    
-    cookie = getCookie('<?php echo $prefix; ?>showwhosonline');
-    this.showwhosonline = (cookie == 'true');
-    if (cookie == '' || cookie == null)
-      this.showwhosonline = <?php echo $showwhosonline ? "true" : "false"; ?>;
-
-    /* '' means no forced color, let CSS choose the text color */
-    this.current_text_color = '';
-    cookie = getCookie('<?php echo $prefix; ?>current_text_color');
-    if (cookie != null)
-      this.switch_text_color(cookie);
-             
     this.isconnected   = false;
     this.nicklist      = $H();
     this.nickcolor     = Array();
@@ -83,6 +50,16 @@ pfcClient.prototype = {
     this.blinktmp     = Array();
     this.blinkloop    = Array();
     this.blinktimeout = Array();
+
+  },
+
+  connectListener: function()
+  {
+    this.el_words     = $('pfc_words');
+    this.el_handle    = $('pfc_handle');
+    this.el_container = $('pfc_container');
+    this.el_online    = $('pfc_online');
+    this.el_errors    = $('pfc_errors');
 
     /* the events callbacks */
     this.el_words.onkeypress = this.callbackWords_OnKeypress.bindAsEventListener(this);
@@ -94,47 +71,45 @@ pfcClient.prototype = {
     this.el_container.onmousedown = this.callbackContainer_OnMousedown.bindAsEventListener(this);
     this.el_container.onmouseup   = this.callbackContainer_OnMouseup.bindAsEventListener(this);
     document.body.onunload = this.callback_OnUnload.bindAsEventListener(this);
+  },
 
-    // the i18n translations
-    this.i18n = new pfcI18N();
-    this.i18n.setLabel('hide_nickname_color', '<?php echo addslashes(_pfc("Hide nickname marker")); ?>');
-    this.i18n.setLabel('show_nickname_color', '<?php echo addslashes(_pfc("Show nickname marker")); ?>');
-    this.i18n.setLabel('hide_clock',          '<?php echo addslashes(_pfc("Hide dates and hours")); ?>');
-    this.i18n.setLabel('show_clock',          '<?php echo addslashes(_pfc("Show dates and hours")); ?>');
-    this.i18n.setLabel('logout',              '<?php echo addslashes(_pfc("Disconnect")); ?>');
-    this.i18n.setLabel('login',               '<?php echo addslashes(_pfc("Connect")); ?>');
-    this.i18n.setLabel('maximize',            '<?php echo addslashes(_pfc("Magnify")); ?>');
-    this.i18n.setLabel('minimize',            '<?php echo addslashes(_pfc("Cut down")); ?>');
-    this.i18n.setLabel('hidesmiley',          '<?php echo addslashes(_pfc("Hide smiley box")); ?>');
-    this.i18n.setLabel('showsmiley',          '<?php echo addslashes(_pfc("Show smiley box")); ?>');
-    this.i18n.setLabel('hideonline',          '<?php echo addslashes(_pfc("Hide online users box")); ?>');
-    this.i18n.setLabel('showonline',          '<?php echo addslashes(_pfc("Show online users box")); ?>');
-    this.i18n.setLabel('enter_nickname',      '<?php echo addslashes(_pfc("Please enter your nickname")); ?>');
-    this.i18n.setLabel('Private message',     '<?php echo addslashes(_pfc("Private message")); ?>');
-    this.i18n.setLabel('Close this tab',      '<?php echo addslashes(_pfc("Close this tab")); ?>');
+  refreshGUI: function()
+  {
+    this.minmax_status = pfc_start_minimized;
+    var cookie = getCookie('pfc_minmax_status');
+    if (cookie != null)
+      this.minmax_status = (cookie == 'true');
+    
+    cookie = getCookie('pfc_nickmarker');
+    this.nickmarker = (cookie == 'true');
+    if (cookie == '' || cookie == null)
+      this.nickmarker = pfc_nickmarker;
+    
+    cookie = getCookie('pfc_clock');
+    this.clock = (cookie == 'true');
+    if (cookie == '' || cookie == null)
+      this.clock = pfc_clock;
 
-    // the graphical user interface
-    this.gui = new pfcGui(this.i18n);
- 
-    /* the smileys */
-    var smileys = {
-      <?php
-      $output = "";
-      foreach($smileys as $s_file => $s_str) { 
-	for($j = 0; $j<count($s_str) ; $j++) {
-	  $s = $s_str[$j];
-	  $output .= "'".$s."': '".$s_file."',";
-	}
-      }
-      $output = substr($output, 0, strlen($output)-1); // remove last ','
-      echo $output;
-      ?>
-    }
-    this.smileys = $H(smileys);
+    cookie = getCookie('pfc_showsmileys');
+    this.showsmileys = (cookie == 'true');
+    if (cookie == '' || cookie == null)
+      this.showsmileys = pfc_showsmileys;
+    
+    cookie = getCookie('pfc_showwhosonline');
+    this.showwhosonline = (cookie == 'true');
+    if (cookie == '' || cookie == null)
+      this.showwhosonline = pfc_showwhosonline;
 
-    // refresh the gui
+    // '' means no forced color, let CSS choose the text color
+    this.current_text_color = '';
+    cookie = getCookie('pfc_current_text_color');
+    if (cookie != null)
+      this.switch_text_color(cookie);
+
     this.refresh_loginlogout();
     this.refresh_minimize_maximize();
+    this.refresh_Smileys();
+    this.refresh_nickmarker();
   },
 
   /**
@@ -144,7 +119,7 @@ pfcClient.prototype = {
   {
     // ask to choose a nickname
     if (nickname == '') nickname = this.nickname;
-    var newnick = prompt(this.i18n._('enter_nickname'), nickname);
+    var newnick = prompt(this.res.getLabel('Please enter your nickname'), nickname);
     if (newnick)
       this.sendRequest('/nick', newnick);
   },
@@ -168,9 +143,7 @@ pfcClient.prototype = {
         }
         
         // give focus the the input text box if wanted
-        <?php if($c->focus_on_connect) { ?>
-        this.el_words.focus();
-        <?php } ?>
+        if (pfc_focus_on_connect) this.el_words.focus();
 
         this.isconnected = true;
 
@@ -300,27 +273,30 @@ pfcClient.prototype = {
       {
         // now join channels comming from sessions
         // or the default one
-        <?php
-        if (count($u->channels) == 0)
-          // the last joined channel must be the last entry in the parameter list
-          for($i=0; $i<count($c->channels); $i++)
-          {
-            $ch = $c->channels[$i];
-            $cmd = $i < count($c->channels)-1 ? "/join2" : "/join";
-            echo "this.sendRequest('".$cmd."', '".addslashes($ch)."');\n";
-          }
-        // the last joined channel must be the last entry in the parameter list
-        $i = 0;
-        foreach($u->channels as $ch)
+        cmd = '';
+        if (pfc_userchan.length == 0)
         {
-          $ch = $ch["name"];
-          $cmd = $i < count($u->channels)-1 ? "/join2" : "/join";
-          echo "this.sendRequest('".$cmd."', '".addslashes($ch)."');\n";
-          $i++;
+          for (var i=0; i<pfc_defaultchan.length; i++)
+          {
+            if (i<pfc_defaultchan.length-1)
+              cmd = "/join2";
+            else
+              cmd = "/join";
+            this.sendRequest(cmd, pfc_defaultchan[i]);
+          }
         }
-        foreach($u->privmsg as $pv)
-          echo "this.sendRequest('/privmsg', '".addslashes($pv["name"])."');\n";
-        ?>
+        for (var i=0; i<pfc_userchan.length; i++)
+        {
+          if (i<pfc_userchan.length-1)
+            cmd = "/join2";
+          else
+            cmd = "/join";
+          this.sendRequest(cmd, pfc_userchan[i]);
+        }
+        for (var i=0; i<pfc_privmsg.length; i++)
+        {
+          this.sendRequest("/privmsg", pfc_privmsg[i]);
+        }
       }
       
       if (resp == "ok" || resp == "notchanged" || resp == "changed" || resp == "connected")
@@ -345,11 +321,11 @@ pfcClient.prototype = {
     {
       if (resp == "ok")
       {
-        this.displayMsg( cmd, this.i18n._('Configuration has been rehashed') );
+        this.displayMsg( cmd, this.res.getLabel('Configuration has been rehashed') );
       }
       else if (resp == "ko")
       {
-        this.displayMsg( cmd, this.i18n._('A problem occurs during rehash') );
+        this.displayMsg( cmd, this.res.getLabel('A problem occurs during rehash') );
       }
     }
     else if (cmd == "banlist")
@@ -453,7 +429,7 @@ pfcClient.prototype = {
 	/* a user command */
 	cmd   = wval.replace(re, '$1');
 	param = wval.replace(re, '$3');
-	this.sendRequest(cmd, param.substr(0,<?php echo $max_text_len; ?> + this.clientid.length));
+	this.sendRequest(cmd, param.substr(0, pfc_max_text_len + this.clientid.length));
       }
       else
       {
@@ -464,7 +440,7 @@ pfcClient.prototype = {
         wval = wval.replace(rx,'');
         
 	/* truncate the text length */
-	wval = wval.substr(0, <?php echo $max_text_len; ?>);
+	wval = wval.substr(0,pfc_max_text_len);
 
 	/* colorize the text with current_text_color */
 	if (this.current_text_color != '' && wval.length != '')
@@ -545,10 +521,11 @@ pfcClient.prototype = {
   {
     /* don't disconnect users when they reload the window
      * this event doesn't only occurs when the page is closed but also when the page is reloaded */
-    <?php if ($c->quit_on_closedwindow) { ?>
-    if (!this.isconnected) return false;
-    this.sendRequest('/quit');
-    <?php } ?>
+    if (pfc_quit_on_closedwindow)
+    {
+      if (!this.isconnected) return false;
+      this.sendRequest('/quit');
+    }
   },
 
   callbackContainer_OnMousemove: function(evt)
@@ -632,10 +609,10 @@ pfcClient.prototype = {
     div.style.padding = "2px 5px 2px 5px";
     
     pre = document.createElement('pre');
-    pre.setAttribute('class', '<?php echo $prefix; ?>info <?php echo $prefix; ?>info_'+cmd);
-    pre.setAttribute('className', '<?php echo $prefix; ?>info <?php echo $prefix; ?>info_'+cmd); // for IE6
-    //    Element.addClassName(pre, '<?php echo $prefix; ?>info');
-    //    Element.addClassName(pre, '<?php echo $prefix; ?>info_'+cmd);
+    pre.setAttribute('class', 'pfc_info pfc_info_'+cmd);
+    pre.setAttribute('className', 'pfc_info pfc_info_'+cmd); // for IE6
+    //    Element.addClassName(pre, 'pfc_info');
+    //    Element.addClassName(pre, 'pfc_info_'+cmd);
     pre.style.border  = "1px solid #555";
     pre.style.padding = "5px";
     pre.innerHTML = msg;
@@ -667,29 +644,29 @@ pfcClient.prototype = {
       
       // format and post message
       var line = '';
-      line += '<div id="<?php echo $prefix; ?>msg'+ id +'" class="<?php echo $prefix; ?>cmd_'+ cmd +' <?php echo $prefix; ?>message';
-      if (oldmsg == 1) line += ' <?php echo $prefix; ?>oldmsg';
+      line += '<div id="pfc_msg'+ id +'" class="pfc_cmd_'+ cmd +' pfc_message';
+      if (oldmsg == 1) line += ' pfc_oldmsg';
       line += '">';
-      line += '<span class="<?php echo $prefix; ?>date';
-      if (fromtoday == 1) line += ' <?php echo $prefix; ?>invisible';
+      line += '<span class="pfc_date';
+      if (fromtoday == 1) line += ' pfc_invisible';
       line += '">'+ date +'</span> ';
-      line += '<span class="<?php echo $prefix; ?>heure">'+ time +'</span> ';
+      line += '<span class="pfc_heure">'+ time +'</span> ';
       if (cmd == 'send')
       {
-	line += ' <span class="<?php echo $prefix; ?>nick">';
+	line += ' <span class="pfc_nick">';
 	line += '&#x2039;';
 	line += '<span ';
         line += 'onclick="pfc.insert_text(\'' + sender + ', \',\'\')" ';
-	line += 'class="<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(sender)) +'">';
+	line += 'class="pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(sender)) +'">';
 	line += sender;
 	line += '</span>';
 	line += '&#x203A;';
 	line += '</span> ';
       }
       if (cmd == 'notice' || cmd == 'me')
-	line += '<span class="<?php echo $prefix; ?>words">* '+ this.parseMessage(param) +'</span> ';
+	line += '<span class="pfc_words">* '+ this.parseMessage(param) +'</span> ';
       else
-	line += '<span class="<?php echo $prefix; ?>words">'+ this.parseMessage(param) +'</span> ';
+	line += '<span class="pfc_words">'+ this.parseMessage(param) +'</span> ';
       line += '</div>';
 
       // notify the hidden tab a message has been received
@@ -735,8 +712,9 @@ pfcClient.prototype = {
   {
     var recipientid = this.gui.getTabId();
     var req = cmd+" "+this.clientid+" "+(recipientid==''?'0':recipientid)+(param?" "+param : "");
-    <?php if ($debug) { ?> if (cmd != "/update") alert(req);<?php } ?>
-    return <?php echo $prefix; ?>handleRequest(req);
+    if (pfc_debug)
+      if (cmd != "/update") alert(req);
+    return eval('pfc_handleRequest(req);');
   },
 
   /**
@@ -783,8 +761,8 @@ pfcClient.prototype = {
       {
         // this is someone -> create a privmsg link
         var img = document.createElement('img');
-        img.setAttribute('src', '<?php echo $c->getFileUrlFromTheme('images/user.gif'); ?>');
-        img.alt = this.i18n._('Private message');
+        img.setAttribute('src', this.res.getFileUrl('images/user.gif'));
+        img.alt = this.res.getLabel('Private message');
         img.title = img.alt;
         img.style.marginRight = '5px';
         var a = document.createElement('a');
@@ -798,7 +776,7 @@ pfcClient.prototype = {
       {
         // this is myself -> do not create a privmsg link
         var img = document.createElement('img');
-        img.setAttribute('src', '<?php echo $c->getFileUrlFromTheme('images/user-me.gif'); ?>');
+        img.setAttribute('src', this.res.getFileUrl('images/user-me.gif'));
         img.alt = '';
         img.title = img.alt;
         img.style.marginRight = '5px';
@@ -813,11 +791,11 @@ pfcClient.prototype = {
       span.pfc_nick = nicks[i];
       span.onclick = function(){pfc.insert_text(this.pfc_nick+", ",""); return false;}
       span.appendChild(document.createTextNode(nicks[i]));
-      span.setAttribute('class', '<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nicks[i])));
-      span.setAttribute('className', '<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nicks[i]))); // for IE6
+      span.setAttribute('class', 'pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(nicks[i])));
+      span.setAttribute('className', 'pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(nicks[i]))); // for IE6
 
-      //      Element.addClassName(span, '<?php echo $prefix; ?>nickmarker');
-      //      Element.addClassName(span, '<?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nicks[i])));
+      //      Element.addClassName(span, 'pfc_nickmarker');
+      //      Element.addClassName(span, 'pfc_nick_'+ hex_md5(_to_utf8(nicks[i])));
       nobr.appendChild(span);
       li.appendChild(nobr);
       li.style.borderBottom = '1px solid #AAA';
@@ -850,7 +828,7 @@ pfcClient.prototype = {
    */
   clearMessages: function()
   {
-    //var msgdiv = $('<?php echo $prefix; ?>chat');
+    //var msgdiv = $('pfc_chat');
     //msgdiv.innerHTML = '';
   },
 
@@ -862,7 +840,7 @@ pfcClient.prototype = {
     var rx = null;
    
     // parse urls
-    var rx_url = new RegExp('(^|[^\\"])([a-z]+\:\/\/[a-z0-9.\\/\\?\\=\\&\\-\\_\\#]*)([^\\"]|$)','ig');
+    var rx_url = new RegExp('(^|[^\\"])([a-z]+\:\/\/[a-z0-9.\\/\\?\\=\\&\\-\\_\\#:;]*)([^\\"]|$)','ig');
     var ttt = msg.split(rx_url);
     if (ttt.length > 1 &&
         !navigator.appName.match("Explorer|Konqueror") &&
@@ -876,7 +854,12 @@ pfcClient.prototype = {
         var range1 = 7+offset-delta;
         var range2 = 7+offset+delta;
         if (ttt[i].match(rx_url))
-          msg = msg + '<a href="' + ttt[i] + '"<?php if($openlinknewwindow) echo ' onclick="window.open(this.href,\\\'_blank\\\');return false;"'; ?>>' + (delta>0 ? ttt[i].substring(7,range1)+ ' ... '+ ttt[i].substring(range2,ttt[i].length) :  ttt[i]) + '</a>';
+        {
+          msg = msg + '<a href="' + ttt[i] + '"';
+          if (pfc_openlinknewwindow)
+            msg = msg + ' onclick="window.open(this.href,\'_blank\');return false;"';
+          msg = msg + '>' + (delta>0 ? ttt[i].substring(7,range1)+ ' ... ' + ttt[i].substring(range2,ttt[i].length) :  ttt[i]) + '</a>';
+        }
         else
         {
           msg = msg + ttt[i];
@@ -884,8 +867,14 @@ pfcClient.prototype = {
       }
     }
     else
+    {
       // fallback for IE6/Konqueror which do not support split with regexp
-      msg = msg.replace(rx_url, '$1<a href="$2"<?php if($openlinknewwindow) echo ' onclick="window.open(this.href,\\\'_blank\\\');return false;"'; ?>>$2</a>$3');
+      replace = '$1<a href="$2"';
+      if (pfc_openlinknewwindow)
+        replace = replace + ' onclick="window.open(this.href,\'_blank\');return false;"';
+      replace = replace + '>$2</a>$3';
+      msg = msg.replace(rx_url, replace);
+    }
     
     // replace double spaces by &nbsp; entity
     rx = new RegExp('  ','g');
@@ -914,11 +903,12 @@ pfcClient.prototype = {
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');   
 
     // try to parse smileys
-    var sl = this.smileys.keys();
+    var smileys = this.res.getSmileyHash();
+    var sl = smileys.keys();
     for(var i = 0; i < sl.length; i++)
     {
       rx = new RegExp(RegExp.escape(sl[i]),'g');
-      msg = msg.replace(rx, '<img src="'+ this.smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
+      msg = msg.replace(rx, '<img src="'+ smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
     }
     
     // try to parse nickname for highlighting 
@@ -943,96 +933,19 @@ pfcClient.prototype = {
   },
 
   /**
-   * parse messages and append it to the message list
-   */
-/*
-  parseAndPost: function(msgs)
-  {
-    var msgdiv = $('<?php echo $prefix; ?>chat');
-    var msgids = Array();
-
-    var html = '';
-    for(var mid = 0; mid < msgs.length ; mid++)
-    {      
-      var id        = msgs[mid][0];
-      var date      = msgs[mid][1];
-      var heure     = msgs[mid][2];
-      var nick      = msgs[mid][3];
-      var words     = msgs[mid][4];
-      var cmd       = msgs[mid][5];
-      var fromtoday = msgs[mid][6];
-      var oldmsg    = msgs[mid][7];
-
-      msgids.push(id);
-
-      // check the nickname is in the list or not
-      var nickfound = false;
-      for(var i = 0; i < this.nicklist.length && !nickfound; i++)
-      {
-	if (this.nicklist[i] == nick)
-	  nickfound = true;
-      }
-      var nickcolor = '';
-      if (nickfound) nickcolor = this.getAndAssignNickColor(nick);
-
-      // format and post message
-      var line = '';
-      line += '<div id="<?php echo $prefix; ?>msg'+ id +'" class="<?php echo $prefix; ?>'+ cmd +' <?php echo $prefix; ?>message';
-      if (oldmsg == 1) line += ' <?php echo $prefix; ?>oldmsg';
-      line += '">';
-      line += '<span class="<?php echo $prefix; ?>date';
-      if (fromtoday == 1) line += ' <?php echo $prefix; ?>invisible';
-      line += '">'+ date +'</span> ';
-      line += '<span class="<?php echo $prefix; ?>heure">'+ heure +'</span> ';
-      if (cmd == 'cmd_msg')
-      {
-	line += ' <span class="<?php echo $prefix; ?>nick">';
-	line += '&#x2039;';
-	line += '<span ';
-	if (nickcolor != '') line += 'style="color: ' + nickcolor + '" ';
-	line += 'class="<?php echo $prefix; ?>nickmarker <?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nick)) +'">';
-	line += nick;
-	line += '</span>';
-	line += '&#x203A;';
-	line += '</span> ';
-      }
-      if (cmd == 'cmd_notice' || cmd == 'cmd_me')
-	line += '<span class="<?php echo $prefix; ?>words">* '+ this.parseMessage(words) +'</span> ';
-      else
-	line += '<span class="<?php echo $prefix; ?>words">'+ this.parseMessage(words) +'</span> ';
-      line += '</div>';
-      html += line;
-    }
-
-    // create a dummy div to avoid konqueror bug when setting nickmarkers
-    var m = document.createElement('div');
-    m.innerHTML = html;
-
-    // finaly append this to the message list
-    msgdiv.appendChild(m);
-    
-    for(var i = 0; i < msgids.length ; i++)
-    {
-      this.scrolldown($('<?php echo $prefix; ?>msg'+ msgids[i]));
-      // colorize messages nicknames
-      var root = $('<?php echo $prefix; ?>msg'+ msgids[i]);
-      this.refresh_nickmarker(root);
-      this.refresh_clock(root);
-    }
-  },
-*/
-
-  /**
    * apply nicknames color to the root childs
    */
   colorizeNicks: function(root)
   {
-    var nicklist = this.getElementsByClassName(root, '<?php echo $prefix; ?>nickmarker', '');
-    for(var i = 0; i < nicklist.length; i++)
+    if (this.nickmarker)
     {
-      var cur_nick = nicklist[i].innerHTML;
-      var cur_color = this.getAndAssignNickColor(cur_nick);
-      nicklist[i].style.color = cur_color;
+      var nicklist = this.getElementsByClassName(root, 'pfc_nickmarker', '');
+      for(var i = 0; i < nicklist.length; i++)
+      {
+        var cur_nick = nicklist[i].innerHTML;
+        var cur_color = this.getAndAssignNickColor(cur_nick);
+        nicklist[i].style.color = cur_color;
+      }
     }
   },
   
@@ -1041,23 +954,7 @@ pfcClient.prototype = {
    */
   reloadColorList: function()
   {
-    this.colorlist = Array('#CCCCCC',
-			   '#000000',
-			   '#3636B2',
-			   '#2A8C2A',
-			   '#C33B3B',
-			   '#C73232',
-			   '#80267F',
-			   '#66361F',
-			   '#D9A641',
-			   '#3DCC3D',
-			   '#1A5555',
-			   '#2F8C74',
-			   '#4545E6',
-			   '#B037B0',
-			   '#4C4C4C',
-			   '#959595'
-			   );
+    this.colorlist = pfc_nickname_color_list;
   },
   
 
@@ -1098,7 +995,7 @@ pfcClient.prototype = {
   applyNickColor: function(root, nick, color)
   {
     
-    var nicktochange = this.getElementsByClassName(root, '<?php echo $prefix; ?>nick_'+ hex_md5(_to_utf8(nick)), '')
+    var nicktochange = this.getElementsByClassName(root, 'pfc_nick_'+ hex_md5(_to_utf8(nick)), '')
     for(var i = 0; nicktochange.length > i; i++) 
       nicktochange[i].style.color = color;
     
@@ -1144,25 +1041,25 @@ pfcClient.prototype = {
       this.nickmarker = true;
     }
     this.refresh_nickmarker()
-    setCookie('<?php echo $prefix; ?>nickmarker', this.nickmarker);
+    setCookie('pfc_nickmarker', this.nickmarker);
   },
   refresh_nickmarker: function(root)
   {
-    var nickmarker_icon = $('<?php echo $prefix; ?>nickmarker');
-    if (!root) root = $('<?php echo $prefix; ?>channels_content');
+    var nickmarker_icon = $('pfc_nickmarker');
+    if (!root) root = $('pfc_channels_content');
     if (this.nickmarker)
     {
-      nickmarker_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/color-on.gif'); ?>";
-      nickmarker_icon.alt   = this.i18n._('hide_nickname_color');
+      nickmarker_icon.src   = this.res.getFileUrl('images/color-on.gif');
+      nickmarker_icon.alt   = this.res.getLabel("Hide nickname marker");
       nickmarker_icon.title = nickmarker_icon.alt;
       this.colorizeNicks(root);
     }
     else
     {
-      nickmarker_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/color-off.gif'); ?>";
-      nickmarker_icon.alt   = this.i18n._('show_nickname_color');
+      nickmarker_icon.src   = this.res.getFileUrl('images/color-off.gif');
+      nickmarker_icon.alt   = this.res.getLabel("Show nickname marker");
       nickmarker_icon.title = nickmarker_icon.alt;
-      var elts = this.getElementsByClassName(root, '<?php echo $prefix; ?>nickmarker', '');
+      var elts = this.getElementsByClassName(root, 'pfc_nickmarker', '');
       for(var i = 0; elts.length > i; i++)
       {
 	// this is not supported in konqueror =>>>  elts[i].removeAttribute('style');
@@ -1183,30 +1080,30 @@ pfcClient.prototype = {
       this.clock = true;
     }
     this.refresh_clock();
-    setCookie('<?php echo $prefix; ?>clock', this.clock);
+    setCookie('pfc_clock', this.clock);
   },
   refresh_clock: function( root )
   {
-    var clock_icon = $('<?php echo $prefix; ?>clock');
-    if (!root) root = $('<?php echo $prefix; ?>channels_content');
+    var clock_icon = $('pfc_clock');
+    if (!root) root = $('pfc_channels_content');
     if (this.clock)
     {
-      clock_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/clock-on.gif'); ?>";
-      clock_icon.alt   = this.i18n._('hide_clock');
+      clock_icon.src   = this.res.getFileUrl('images/clock-on.gif');
+      clock_icon.alt   = this.res.getLabel('Hide dates and hours');
       clock_icon.title = clock_icon.alt;
-      this.showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', true);
-      this.showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', true);
+      this.showClass(root, 'pfc_date', 'pfc_invisible', true);
+      this.showClass(root, 'pfc_heure', 'pfc_invisible', true);
     }
     else
     {
-      clock_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/clock-off.gif'); ?>";
-      clock_icon.alt   = this.i18n._('show_clock');
+      clock_icon.src   = this.res.getFileUrl('images/clock-off.gif');
+      clock_icon.alt   = this.res.getLabel('Show dates and hours');
       clock_icon.title = clock_icon.alt;
-      this.showClass(root, '<?php echo $prefix; ?>date', '<?php echo $prefix; ?>invisible', false);
-      this.showClass(root, '<?php echo $prefix; ?>heure', '<?php echo $prefix; ?>invisible', false);
+      this.showClass(root, 'pfc_date', 'pfc_invisible', false);
+      this.showClass(root, 'pfc_heure', 'pfc_invisible', false);
     }
     // browser automaticaly scroll up misteriously when showing the dates
-    //    $('<?php echo $prefix; ?>chat').scrollTop += 30;
+    //    $('pfc_chat').scrollTop += 30;
   },
   
   /**
@@ -1221,20 +1118,20 @@ pfcClient.prototype = {
   },
   refresh_loginlogout: function()
   {
-    var loginlogout_icon = $('<?php echo $prefix; ?>loginlogout');
+    var loginlogout_icon = $('pfc_loginlogout');
     if (this.isconnected)
     {
       //      this.updateNickList(this.nicklist);
-      loginlogout_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>";
-      loginlogout_icon.alt   = this.i18n._('logout');
+      loginlogout_icon.src   = this.res.getFileUrl('images/logout.gif');
+      loginlogout_icon.alt   = this.res.getLabel('Disconnect');
       loginlogout_icon.title = loginlogout_icon.alt;
     }
     else
     {
       this.clearMessages();
       this.clearNickList();
-      loginlogout_icon.src   = "<?php echo $c->getFileUrlFromTheme('images/login.gif'); ?>";
-      loginlogout_icon.alt   = this.i18n._('login');
+      loginlogout_icon.src   = this.res.getFileUrl('images/login.gif');
+      loginlogout_icon.alt   = this.res.getLabel('Connect');
       loginlogout_icon.title = loginlogout_icon.alt;
     }
   },
@@ -1251,24 +1148,24 @@ pfcClient.prototype = {
     } else {
       this.minmax_status = true;
     }
-    setCookie('<?php echo $prefix; ?>minmax_status', this.minmax_status);
+    setCookie('pfc_minmax_status', this.minmax_status);
     this.refresh_minimize_maximize();
   },
   refresh_minimize_maximize: function()
   {
-    var content = $('<?php echo $prefix; ?>content_expandable');
-    var btn     = $('<?php echo $prefix; ?>minmax');
+    var content = $('pfc_content_expandable');
+    var btn     = $('pfc_minmax');
     if (this.minmax_status)
     {
-      btn.src = "<?php echo $c->getFileUrlFromTheme('images/maximize.gif'); ?>";
-      btn.alt = this.i18n._('maximize');
+      btn.src = this.res.getFileUrl('images/maximize.gif');
+      btn.alt = this.res.getLabel('Magnify');
       btn.title = btn.alt;
       content.style.display = 'none';
     }
     else
     {
-      btn.src = "<?php echo $c->getFileUrlFromTheme('images/minimize.gif'); ?>";
-      btn.alt = this.i18n._('minimize');
+      btn.src = this.res.getFileUrl('images/minimize.gif');
+      btn.alt = this.res.getLabel('Cut down');
       btn.title = btn.alt;
       content.style.display = 'block';
     }
@@ -1279,7 +1176,7 @@ pfcClient.prototype = {
    */
   insert_text: function(open, close) 
   {
-    var msgfield = $('<?php echo $prefix; ?>words');
+    var msgfield = $('pfc_words');
     
     // IE support
     if (document.selection && document.selection.createRange)
@@ -1332,14 +1229,14 @@ pfcClient.prototype = {
   switch_text_color: function(color)
   {
     /* clear any existing borders on the color buttons */
-    var colorbtn = this.getElementsByClassName($('<?php echo $prefix; ?>colorlist'), '<?php echo $prefix; ?>color', '');
+    var colorbtn = this.getElementsByClassName($('pfc_colorlist'), 'pfc_color', '');
     for(var i = 0; colorbtn.length > i; i++)
       colorbtn[i].style.border = 'none';
 
     /* assign the new border style to the selected button */
     this.current_text_color = color;
-    setCookie('<?php echo $prefix; ?>current_text_color', this.current_text_color);
-    var idname = '<?php echo $prefix; ?>color_' + color;
+    setCookie('pfc_current_text_color', this.current_text_color);
+    var idname = 'pfc_color_' + color;
     $(idname).style.border = '1px solid #666';
     $(idname).style.padding = '1px';
 
@@ -1361,26 +1258,26 @@ pfcClient.prototype = {
     {
       this.showsmileys = true;
     }
-    setCookie('<?php echo $prefix; ?>showsmileys', this.showsmileys);
+    setCookie('pfc_showsmileys', this.showsmileys);
     this.refresh_Smileys();
   },
   refresh_Smileys: function()
   {
     // first of all : show/hide the smiley box
-    var content = $('<?php echo $prefix; ?>smileys');
+    var content = $('pfc_smileys');
     if (this.showsmileys)
       content.style.display = 'block';
     else
       content.style.display = 'none';
 
     // then switch the button icon
-    var btn = $('<?php echo $prefix; ?>showHideSmileysbtn');
+    var btn = $('pfc_showHideSmileysbtn');
     if (this.showsmileys)
     {
       if (btn)
       {
-        btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-on.gif'); ?>";
-        btn.alt = this.i18n._('hidesmiley');
+        btn.src = this.res.getFileUrl('images/smiley-on.gif');
+        btn.alt = this.res.getLabel('Hide smiley box');
         btn.title = btn.alt;
       }
     }
@@ -1388,8 +1285,8 @@ pfcClient.prototype = {
     {
       if (btn)
       {
-        btn.src = "<?php echo $c->getFileUrlFromTheme('images/smiley-off.gif'); ?>";
-        btn.alt = this.i18n._('showsmiley');
+        btn.src = this.res.getFileUrl('images/smiley-off.gif');
+        btn.alt = this.res.getLabel('Show smiley box');
         btn.title = btn.alt;
       }
     }
@@ -1409,14 +1306,14 @@ pfcClient.prototype = {
     {
       this.showwhosonline = true;
     }
-    setCookie('<?php echo $prefix; ?>showwhosonline', this.showwhosonline);
+    setCookie('pfc_showwhosonline', this.showwhosonline);
     this.refresh_WhosOnline();
   },
   refresh_WhosOnline: function()
   {
     // first of all : show/hide the nickname list box
-    var root = $('<?php echo $prefix; ?>channels_content');
-    var contentlist = this.getElementsByClassName(root, '<?php echo $prefix; ?>online', '');
+    var root = $('pfc_channels_content');
+    var contentlist = this.getElementsByClassName(root, 'pfc_online', '');
     for(var i = 0; i < contentlist.length; i++)
     {
       var content = contentlist[i];
@@ -1428,18 +1325,18 @@ pfcClient.prototype = {
     }
 
     // then refresh the button icon
-    var btn = $('<?php echo $prefix; ?>showHideWhosOnlineBtn');
+    var btn = $('pfc_showHideWhosOnlineBtn');
     if (!btn) return;
     if (this.showwhosonline)
     {
-      btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-on.gif'); ?>";
-      btn.alt = this.i18n._('hideonline');
+      btn.src = this.res.getFileUrl('images/online-on.gif');
+      btn.alt = this.res.getLabel('Hide online users box');
       btn.title = btn.alt;
     }
     else
     {
-      btn.src = "<?php echo $c->getFileUrlFromTheme('images/online-off.gif'); ?>";
-      btn.alt = this.i18n._('showonline');
+      btn.src = this.res.getFileUrl('images/online-off.gif');
+      btn.alt = this.res.getLabel('Show online users box');
       btn.title = btn.alt;
     }
     this.refresh_Chat();
@@ -1451,8 +1348,8 @@ pfcClient.prototype = {
   refresh_Chat: function()
   {
     // resize all the tabs content
-    var root = $('<?php echo $prefix; ?>channels_content');
-    var contentlist = this.getElementsByClassName(root, '<?php echo $prefix; ?>chat', '');
+    var root = $('pfc_channels_content');
+    var contentlist = this.getElementsByClassName(root, 'pfc_chat', '');
     for(var i = 0; i < contentlist.length; i++)
     {
       var chatdiv = contentlist[i];
@@ -1468,6 +1365,3 @@ pfcClient.prototype = {
     }
   }
 };
-
-
-<?php include($c->getFilePathFromTheme('templates/pfcclient-custo.js.tpl.php')); ?>

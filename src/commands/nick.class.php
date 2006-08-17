@@ -84,7 +84,7 @@ class pfcCommand_nick extends pfcCommand
           $cmdp["recipientid"] = $id;
           $cmd->run($xml_reponse, $cmdp);
         }
-        $xml_reponse->addScript("pfc.handleResponse('nick', 'changed', '".$newnick."');");
+        $xml_reponse->addScript("pfc.handleResponse('nick', 'changed', '".addslashes($newnick)."');");
       }
       
       // new nickname is undefined (not used) and
@@ -102,7 +102,7 @@ class pfcCommand_nick extends pfcCommand
         $u->active = true;
         $u->saveInCache();
 
-        $xml_reponse->addScript("pfc.handleResponse('nick', 'connected', '".$newnick."');");
+        $xml_reponse->addScript("pfc.handleResponse('nick', 'connected', '".addslashes($newnick)."');");
       
         if ($c->debug)
           pxlog("/nick ".$newnick." (first connection, oldnick=".$oldnick.")", "chat", $c->getId());
@@ -117,7 +117,7 @@ class pfcCommand_nick extends pfcCommand
     {
       // user didn't change his nickname
       //$xml_reponse->addAssign($c->prefix."handle", "value", $newnick);
-      $xml_reponse->addScript("pfc.handleResponse('nick', 'notchanged', '".$newnick."');");
+      $xml_reponse->addScript("pfc.handleResponse('nick', 'notchanged', '".addslashes($newnick)."');");
 
       if ($c->debug)
         pxlog("/nick ".$newnick." (user just reloded the page so let him keep his nickname without any warnings -> nickid=".$newnickid.")", "chat", $c->getId());
@@ -128,7 +128,7 @@ class pfcCommand_nick extends pfcCommand
       //$cmd =& pfcCommand::Factory("asknick");
       //$cmd->run($xml_reponse, $clientid, $newnick, $sender, $recipient);
 
-      $xml_reponse->addScript("pfc.handleResponse('nick', 'isused', '".$newnick."');");
+      $xml_reponse->addScript("pfc.handleResponse('nick', 'isused', '".addslashes($newnick)."');");
       
       if ($c->debug)
         pxlog("/nick ".$newnick." (wanted nick is allready in use -> wantednickid=".$newnickid.")", "chat", $c->getId());

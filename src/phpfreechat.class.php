@@ -86,41 +86,72 @@ class phpFreeChat
     $output = '';
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
-    //trigger_error("u=".var_export($u));
 
-    pfcI18N::SwitchOutputEncoding($c->output_encoding);
+$output .= '<script type="text/javascript">
+var xajaxRequestUri="'.$c->server_script_url.'";
+var xajaxDebug=false;
+var xajaxStatusMessages=false;
+var xajaxWaitCursor=false;
+var xajaxDefinedGet=0;
+var xajaxDefinedPost=1;
+var xajaxLoaded=false;
+function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
+</script>
+';
     
     // include javascript libraries
-    $js_path = $c->data_public_url."/javascript";
-    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/md5.js\"></script>";
-    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/cookie.js\"></script>";
-    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/image_preloader.js\"></script>";
-    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/myprototype.js\"></script>";
-    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/regex.js\"></script>";
-    $output .= "<script type=\"text/javascript\" src=\"".$js_path."/utf8.js\"></script>";
-    
-    // print phpfreechat specific javascript
-    $t = new pfcTemplate();
-    $t->assignObject($c,"c");
-    $t->assignObject($u,"u");
-    $output .= "<script type=\"text/javascript\">\n // <![CDATA[\n";
-    $t->setTemplate($c->getFilePathFromTheme("templates/pfci18n.js.tpl.php"));
-    $output .= $t->getOutput();
-    $t->setTemplate($c->getFilePathFromTheme("templates/pfcgui.js.tpl.php"));
-    $output .= $t->getOutput();
-    $t->setTemplate($c->getFilePathFromTheme("templates/pfcclient.js.tpl.php"));
-    $output .= $t->getOutput();
-    $output .= "\n // ]]>\n</script>\n";
-    
-    // print xajax javascript
-    $output .= $this->xajax->getJavascript($c->data_public_url, NULL, $c->data_public_url."/xajax_js/xajax.js");
-
-    pfcI18N::SwitchOutputEncoding();
+    $js = array();
+    $js[] = "lib/xajax_0.2.3/xajax_js/xajax.js";
+    $js[] = "lib/javascript/md5.js";
+    $js[] = "lib/javascript/cookie.js";
+    $js[] = "lib/javascript/image_preloader.js";
+    $js[] = "lib/javascript/myprototype.js";
+    $js[] = "lib/javascript/regex.js";
+    $js[] = "lib/javascript/utf8.js";
+    $js[] = "src/client/pfcclient.js";
+    $js[] = "src/client/pfcgui.js";
+    $js[] = "src/client/pfcresource.js";
+    foreach( $js as $j )
+    {
+      $output .= "<script type=\"text/javascript\" src=\"".$c->data_public_url."/".$c->getId()."/proxy.php?p=".$j."\"></script>\n";
+    }
+    $output .= "<script type=\"text/javascript\" src=\"".$c->getFileUrlByProxy("customize.js")."\"></script>\n";
 	
     // display output
     if ($return)
       return $output;
     else
+      echo $output;
+  }
+
+  /**
+   * printStyle must be called in the header
+   * it inserts CSS in order to style the chat
+   * usage:
+   * <code>
+   *   <?php $chat->printStyle(); ?>
+   * </code>
+   */
+  function printStyle( $return = false )
+  {
+    $c =& pfcGlobalConfig::Instance();
+
+    $output = '';
+    if ($c->isDefaultFile("style.css"))
+      $output .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$c->getFileUrlByProxy("style.css")."\" />\n";
+    else
+    {
+      // user has a customized stylesheet
+      // first of all include the default stylesheet
+      // then the user stylesheet
+      $defaultstyle = $c->themepath_default."/default/style.css";
+      $output .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$c->data_public_url."/".$c->getId()."/proxy.php?p=default/style.css\" />\n";
+      $output .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$c->getFileUrlByProxy("style.css")."\" />\n";
+    }
+    
+    if($return)
+      return $output;
+    else 
       echo $output;
   }
 
@@ -137,70 +168,37 @@ class phpFreeChat
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
 
+
+    $output = "<div id=\"pfc_container\">";
+
+    // Please do not remove these lines,
+    // or keep a backling to http://www.phpfreechat on your partner page
+    // it helps phpfreechat promotion over the Web.
+    // (remember it's a free program)
+    $output .= "<a href=\"http://www.phpfreechat.net\" id=\"pfc_logo\"".($c->openlinknewwindow ? ' onclick="window.open(this.href,\'_blank\');return false;"' : '')."><img src=\"http://www.phpfreechat.net/pub/logo_80x15.gif\" alt=\""._pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $c->version)."\" title=\""._pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $c->version)."\" /></a>";
+    $output .= "</div>";
+
+    $output .= "<script type=\"text/javascript\">\n";
+    $output .= " // <![CDATA[\n";
+
     pfcI18N::SwitchOutputEncoding($c->output_encoding);
 
-    $t = new pfcTemplate($c->getFilePathFromTheme("templates/chat.html.tpl.php"));
+    $t = new pfcTemplate(dirname(__FILE__)."/client/chat.js.tpl.php");
     $t->assignObject($u,"u");
     $t->assignObject($c,"c");
-    $output = $t->getOutput();
+    $output .= $t->getOutput();
     
     pfcI18N::SwitchOutputEncoding();
-
+    
+    $output .= " // ]]>\n";
+    $output .= "</script>\n";
+    
     if($return) 
       return $output;
     else 
       echo $output;
   }
   
-  /**
-   * printStyle must be called in the header
-   * it inserts CSS in order to style the chat
-   * usage:
-   * <code>
-   *   <?php $chat->printStyle(); ?>
-   * </code>
-   */
-  function printStyle( $return = false )
-  {
-    $output = '';
-    $c =& pfcGlobalConfig::Instance();
-    $u =& pfcUserConfig::Instance();
-
-    pfcI18N::SwitchOutputEncoding($c->output_encoding);
-
-    $css_filename1 = dirname(__FILE__)."/../themes/default/templates/style.css.tpl.php";
-    $css_filename2 = $c->getFilePathFromTheme("templates/style.css.tpl.php");
-    $t = new pfcTemplate();
-    $t->assignObject($u,"u");
-    $t->assignObject($c,"c");
-    $t->setTemplate($css_filename1);
-    $output .= $t->getOutput();
-    if ($css_filename1 != $css_filename2)
-    {
-      $t->setTemplate($css_filename2);
-      $output .= $t->getOutput();
-    }
-
-    if ($c->usecsstidy)
-    {
-      // optimize css
-      require_once $c->csstidypath."/css_parser.php";
-      $csstidy = new csstidy();
-      $csstidy->set_cfg('remove_last_;',TRUE);
-      $csstidy->parse($output);
-      $output = $csstidy->print_code(NULL, true); 
-    }
-
-    // output css
-    pfcI18N::SwitchOutputEncoding();
-    $output = "<style type=\"text/css\">\n".$output."\n</style>\n";
-    
-    if($return)
-      return $output;
-    else 
-      echo $output;
-  }
-
   /**
    * Encode special caracteres and remove extra slashes
    */

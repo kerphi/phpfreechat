@@ -121,10 +121,14 @@ class pfcGlobalConfig
       $this->data_public_path  = dirname(__FILE__)."/../data/public";
     else
       $this->data_public_path = $params["data_public_path"];
+
+    // delete the cache if no proxy.php file is found
+    if (!file_exists($this->_getProxyFile()))
+      @unlink($this->_getCacheFile());
     
     // check if a cached configuration allready exists
     // don't load parameters if the cache exists
-    $cachefile = $this->_getCacheFile();
+    $cachefile = $this->_getCacheFile();    
     if (!file_exists($cachefile))
     {
       // load users container or keep default one
@@ -233,7 +237,7 @@ class pfcGlobalConfig
     
     $this->errors = array_merge($this->errors, @test_writable_dir($this->data_public_path, "data_public_path"));
     $this->errors = array_merge($this->errors, @test_writable_dir($this->data_private_path, "data_private_path"));
-    $this->errors = array_merge($this->errors, @install_dir($this->jspath, $this->data_public_path."/javascript"));
+    //    $this->errors = array_merge($this->errors, @install_dir($this->jspath, $this->data_public_path."/javascript"));
     $this->errors = array_merge($this->errors, @test_writable_dir($this->data_private_path."/cache", "data_private_path/cache"));
 
     // check the copy_r and rm_r function works
@@ -281,10 +285,10 @@ class pfcGlobalConfig
     if (!file_exists($dir."/xajax.inc.php"))
       $this->errors[] = _pfc("%s not found, %s library can't be found", "xajax.inc.php", "XAJAX");
     // install public xajax js to phpfreechat public directory
-    $this->errors = array_merge($this->errors, @install_file($this->xajaxpath."/xajax_js/xajax.js",
-                                                             $this->data_public_path."/xajax_js/xajax.js"));
-    $this->errors = array_merge($this->errors, @install_file($this->xajaxpath."/xajax_js/xajax_uncompressed.js",
-                                                             $this->data_public_path."/xajax_js/xajax_uncompressed.js" ));
+    //    $this->errors = array_merge($this->errors, @install_file($this->xajaxpath."/xajax_js/xajax.js",
+    //                                                             $this->data_public_path."/xajax_js/xajax.js"));
+    //    $this->errors = array_merge($this->errors, @install_file($this->xajaxpath."/xajax_js/xajax_uncompressed.js",
+    //                                                             $this->data_public_path."/xajax_js/xajax_uncompressed.js" ));
     // ---
     // test client script
     // try to find the path into server configuration
@@ -322,12 +326,12 @@ class pfcGlobalConfig
 
     // check if the themepath parameter are correctly setup
     if ($this->themepath_default == "" || !is_dir($this->themepath_default))
-      $this->themepath_default = dirname(__FILE__)."/../themes";
+      $this->themepath_default = realpath(dirname(__FILE__)."/../themes");
     if ($this->themepath == "" || !is_dir($this->themepath))
       $this->themepath = $this->themepath_default;
     // copy the themes into the public directory
-    $this->errors = array_merge($this->errors, @install_dir($this->themepath_default, $this->data_public_path."/themes"));
-    $this->errors = array_merge($this->errors, @install_dir($this->themepath,         $this->data_public_path."/themes"));
+    //    $this->errors = array_merge($this->errors, @install_dir($this->themepath_default, $this->data_public_path."/themes"));
+    //    $this->errors = array_merge($this->errors, @install_dir($this->themepath,         $this->data_public_path."/themes"));
     // calculate the corresponding theme url
     if ($this->themeurl_default == "")
       $this->themeurl_default = relativePath($this->client_script_path, $this->data_public_path."/themes");
@@ -385,7 +389,28 @@ class pfcGlobalConfig
     $lg_list = pfcI18N::GetAcceptedLanguage();
     if ( $this->language != "" && !in_array($this->language, $lg_list) )
       $this->errors[] = _pfc("'%s' parameter is not valid. Available values are : '%s'", "language", implode(", ", $lg_list));
-        
+
+    // install the proxy file
+    $proxyfile = $this->_getProxyFile();
+    $allowedpath_string  = "";
+    $allowedpath_string .= "\$allowedpath[] = '".realpath(dirname(__FILE__)."/../lib")."';\n";
+    $allowedpath_string .= "\$allowedpath[] = '".realpath(dirname(__FILE__)."/../src/client")."';\n";
+    $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath_default)."/..';\n";
+    $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath_default)."';\n";
+    $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath)."/..';\n";
+    $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath)."';\n";
+    $proxycontent = file_get_contents(dirname(__FILE__)."/client/proxy.php.tpl");
+    $proxycontent = str_replace("//%allowedpath%", $allowedpath_string, $proxycontent);
+    if (!file_exists(dirname($proxyfile)))
+      mkdir(dirname($proxyfile));
+    if (file_exists($proxyfile) &&
+        !is_writable($proxyfile))
+      $this->errors[] = _pfc("'%s' must be writable", $proxyfile);
+    else
+    {
+      file_put_contents($proxyfile, $proxycontent);
+    }
+    
     // load smileys from file
     $this->loadSmileyTheme();
     
@@ -419,7 +444,7 @@ class pfcGlobalConfig
         continue;
       else if (preg_match("/^([a-z_\-0-9]*(\.gif|\.png))(.*)$/i",$line,$res))
       {
-        $smiley_file = $this->getFileUrlFromTheme('smileys/'.$res[1]);
+        $smiley_file = 'smileys/'.$res[1];//$this->getFileUrlFromTheme('smileys/'.$res[1]);
         $smiley_str = trim($res[3])."\n";
         $smiley_str = str_replace("\n", "", $smiley_str);
         $smiley_str = str_replace("\t", " ", $smiley_str);
@@ -436,6 +461,13 @@ class pfcGlobalConfig
     return $this->serverid;
   }  
 
+  function _getProxyFile($serverid = "", $data_public_path = "")
+  {
+    if ($serverid == "")          $serverid = $this->getId();
+    if ($data_public_path == "") $data_public_path = $this->data_public_path;
+    return $data_public_path."/".$serverid."/proxy.php";
+  }
+  
   function _getCacheFile($serverid = "", $data_private_path = "")
   {
     if ($serverid == "")          $serverid = $this->getId();
@@ -515,6 +547,24 @@ class pfcGlobalConfig
     if ($this->debug) pxlog("pfcGlobalConfig::saveInCache()", "chatconfig", $this->getId());
   }
 
+  function isDefaultFile($file)
+  {
+    $fexists1 = file_exists($this->themepath."/default/".$file);
+    $fexists2 = file_exists($this->themepath."/".$this->theme."/".$file);
+    return ($this->theme == "default" ? $fexists1 : !$fexists2);
+  }
+  
+  function getFileUrlByProxy($file, $addprefix = true)
+  {
+    if (file_exists($this->themepath."/".$this->theme."/".$file))
+      return ($addprefix ? $this->data_public_url."/".$this->getId()."/proxy.php" : "")."?p=".$this->theme."/".$file;
+    else
+      if (file_exists($this->themepath_default."/default/".$file))
+        return ($addprefix ? $this->data_public_url."/".$this->getId()."/proxy.php" : "")."?p=default/".$file;
+      else
+	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
+  }
+  
   function getFileUrlFromTheme($file)
   {
     if (file_exists($this->themepath."/".$this->theme."/".$file))
@@ -525,7 +575,7 @@ class pfcGlobalConfig
       else
 	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
   }
-
+  
   function getFilePathFromTheme($file)
   {
     if (file_exists($this->themepath."/".$this->theme."/".$file))
