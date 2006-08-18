@@ -301,7 +301,7 @@ pfcClient.prototype = {
       
       if (resp == "ok" || resp == "notchanged" || resp == "changed" || resp == "connected")
       {
-        this.el_handle.value = param;
+        this.el_handle.innerHTML = param;
         this.nickname = param;
       }
       else if (resp == "isused")

@@ -381,11 +381,10 @@ pfcGui.prototype = {
     cmdcontainer.appendChild(logo);
 
     // handle box : <input id="pfc_handle" type="button" ...
-    var handle = document.createElement('input');
+    var handle = document.createElement('p');
     handle.setAttribute('id', 'pfc_handle');
-    handle.setAttribute('type', 'button');
     handle.setAttribute('title', pfc.res.getLabel("Enter your nickname here"));
-    handle.setAttribute('value', pfc.nickname);
+    handle.appendChild(document.createTextNode(pfc.nickname));
     handle.onclick = function(){ pfc.askNick(''); } 
     cmdcontainer.appendChild(handle);
 

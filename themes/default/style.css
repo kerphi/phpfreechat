@@ -172,15 +172,24 @@ input#pfc_words {
 div#pfc_cmd_container {
   position: relative;
   margin-top: 5px;
+  margin-bottom: 5px;
   width: 100%;
 }
+div#pfc_cmd_container * {
+  margin-right: 2px;
+}
 
-input#pfc_handle {
-  border: black solid 1px;
-  padding: 0 4px 0 4px;
+p#pfc_handle {
+  display: inline;
+  cursor: pointer;
+  border: 1px solid #555;
+  padding: 2px 10px 2px 10px;
   color: black;
-  text-align: center;
   margin-bottom: 5px;
+  font-weight: bold;
+  background-color: #EEE;
+  font-size: 70%;          /* these two line fix a display problem in IE6 : */
+  vertical-align: middle;  /* the nickname box bottom border is hidden without these lines */
 }
 
 a#pfc_logo {
@@ -200,6 +209,10 @@ div.pfc_btn img {
 div.pfc_btn img:hover {
   /* doesn't work */
   /*  border: 1px solid #000;*/
+}
+
+div#pfc_bbcode_container * {
+  margin-right: 2px;
 }
 
 div#pfc_errors {
@@ -254,6 +267,9 @@ div#pfc_smileys {
   border: 1px solid #555;
   padding: 4px;
   margin-top: 4px;
+}
+div#pfc_smileys * {
+  margin-right: 2px;
 }
 
 div#pfc_smileys img {
