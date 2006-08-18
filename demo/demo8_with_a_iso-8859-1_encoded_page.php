@@ -1,5 +1,8 @@
 <?php
 
+// force the encoding because off some strange configured server
+header("Content-Type: text/html; charset=ISO-8859-1");
+
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 
 $params["serverid"]        = md5(__FILE__); // calculate a unique id for this chat

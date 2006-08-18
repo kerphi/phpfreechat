@@ -1,5 +1,5 @@
 var pfc_version               = '<?php echo $version; ?>';
-var pfc_nickname              = '<?php echo addslashes($u->nick); ?>';
+var pfc_nickname              = '<?php echo ($GLOBALS["output_encoding"]=="UTF-8" ? addslashes($u->nick) : iconv("UTF-8", $GLOBALS["output_encoding"],addslashes($u->nick))); ?>';
 var pfc_clientid              = '<?php echo md5(uniqid(rand(), true)); ?>';
 var pfc_title                 = '<?php echo addslashes($title); ?>';
 var pfc_refresh_delay         = <?php echo $refresh_delay; ?>;
