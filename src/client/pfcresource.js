@@ -19,10 +19,11 @@ pfcResource.prototype = {
     this.labels[key] = value;
   },
 
-  getLabel: function(key, params)
+  getLabel: function()
   {
+    var key = this.getLabel.arguments[0];
     if (this.labels[key])
-      return this.labels[key];
+      return String.sprintf2(this.getLabel.arguments); //this.labels[key];
     else
       return "";
   },
@@ -62,3 +63,20 @@ pfcResource.prototype = {
   }
   
 };
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+
+
+

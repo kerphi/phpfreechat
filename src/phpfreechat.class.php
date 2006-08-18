@@ -108,6 +108,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     $js[] = "lib/javascript/myprototype.js";
     $js[] = "lib/javascript/regex.js";
     $js[] = "lib/javascript/utf8.js";
+    $js[] = "lib/javascript/sprintf2.js";
     $js[] = "src/client/pfcclient.js";
     $js[] = "src/client/pfcgui.js";
     $js[] = "src/client/pfcresource.js";
