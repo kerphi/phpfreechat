@@ -175,7 +175,8 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     // or keep a backling to http://www.phpfreechat on your partner page
     // it helps phpfreechat promotion over the Web.
     // (remember it's a free program)
-    $output .= "<a href=\"http://www.phpfreechat.net\" id=\"pfc_logo\"".($c->openlinknewwindow ? ' onclick="window.open(this.href,\'_blank\');return false;"' : '')."><img src=\"http://www.phpfreechat.net/pub/logo_80x15.gif\" alt=\""._pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $c->version)."\" title=\""._pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $c->version)."\" /></a>";
+    $output .= "<p>"._pfc("Error: the chat cannot be loaded, check the public directory rights or ask some help on the forum")." <a href=\"http://www.phpfreechat.net/forum/\">www.phpfreechat.net/forum</a></p>";
+    $output .= "<a href=\"http://www.phpfreechat.net\"><img src=\"http://www.phpfreechat.net/pub/logo_80x15.gif\" alt=\"PHP FREE CHAT [powered by phpFreeChat-".$c->version."]\" title=\"PHP FREE CHAT [powered by phpFreeChat-".$c->version."]\" /></a>";
     $output .= "</div>";
 
     $output .= "<script type=\"text/javascript\">\n";

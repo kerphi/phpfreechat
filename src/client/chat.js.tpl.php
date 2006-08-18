@@ -1,3 +1,4 @@
+var pfc_version               = '<?php echo $version; ?>';
 var pfc_nickname              = '<?php echo addslashes($u->nick); ?>';
 var pfc_clientid              = '<?php echo md5(uniqid(rand(), true)); ?>';
 var pfc_title                 = '<?php echo addslashes($title); ?>';
@@ -80,10 +81,11 @@ array( "Do you really want to leave this room ?",
        "Delete",
        "Mail",
        "Color",
+       "PHP FREE CHAT [powered by phpFreeChat-%s]",
        );
 foreach($labels_to_load as $l)
 {
-  echo "pfc.res.setLabel('".$l."','".addslashes(_pfc($l))."');\n";
+  echo "pfc.res.setLabel('".$l."','".addslashes(_pfc2($l))."');\n";
 }
 
 $fileurl_to_load =

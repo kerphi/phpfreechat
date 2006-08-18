@@ -32,6 +32,20 @@ function _pfc()
     "_".$args[0]."_";
   return call_user_func_array('sprintf', $args);
 }
+/**
+ * Just like _pfc but just return the raw translated string, keeping the %s into it
+ * (used byt the javascript resources (i18n) class)
+ */
+function _pfc2()
+{
+  $args = func_get_args();
+  $args[0] = isset($GLOBALS["i18n"][$args[0]]) && $GLOBALS["i18n"][$args[0]] != "" ?
+    ($GLOBALS["output_encoding"] == "UTF-8" ?
+       $GLOBALS["i18n"][$args[0]] :
+       iconv("UTF-8", $GLOBALS["output_encoding"], $GLOBALS["i18n"][$args[0]])) :
+    "_".$args[0]."_";
+  return $args[0];
+}
 
 class pfcI18N
 {

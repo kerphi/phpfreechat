@@ -320,8 +320,7 @@ pfcGui.prototype = {
   {
     var container = $('pfc_container');
 
-    // move the logo
-    var logo = $('pfc_logo');
+    // clean the chat box
     container.innerHTML = '';
 
     // minimize/maximize button
@@ -378,8 +377,18 @@ pfcGui.prototype = {
     inputcontainer.appendChild(cmdcontainer);
 
     // move the phpfreechat logo into the cmd container box
-    cmdcontainer.appendChild(logo);
-
+    var a = document.createElement('a');
+    a.setAttribute('id', 'pfc_logo');
+    a.setAttribute('href','http://www.phpfreechat.net');
+    if (pfc_openlinknewwindow)
+      a.onclick = function(){ window.open(this.href,'_blank'); return false; } 
+    var img = document.createElement('img');
+    img.setAttribute('src', 'http://www.phpfreechat.net/pub/logo_80x15.gif');
+    img.setAttribute('alt', pfc.res.getLabel("PHP FREE CHAT [powered by phpFreeChat-%s]",pfc_version));
+    img.title = img.alt;
+    a.appendChild(img);
+    cmdcontainer.appendChild(a);
+    
     // handle box : <input id="pfc_handle" type="button" ...
     var handle = document.createElement('p');
     handle.setAttribute('id', 'pfc_handle');
