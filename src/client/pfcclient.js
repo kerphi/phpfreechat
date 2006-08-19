@@ -670,12 +670,14 @@ pfcClient.prototype = {
       line += '</div>';
 
       // notify the hidden tab a message has been received
-      if (cmd == 'send' || cmd == 'me')
-      {
-        var tabid = recipientid;
-        if (this.gui.getTabId() != tabid)
-          this.gui.notifyTab(tabid);
-      }
+      // don't notify anything if this is old messages
+      if (oldmsg == 0)
+        if (cmd == 'send' || cmd == 'me')
+        {
+          var tabid = recipientid;
+          if (this.gui.getTabId() != tabid)
+            this.gui.notifyTab(tabid);
+        }
         
       if (msg_html[recipientid] == null)
         msg_html[recipientid] = line;
