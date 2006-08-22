@@ -12,7 +12,7 @@ $chat = new phpFreeChat( $params );
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-	<title>Blune PHPFreeChat</title>
+	<title> PHPFreeChat - Green theme</title>
     <?php $chat->printJavascript(); ?>
     <?php $chat->printStyle(); ?>
 	</head>

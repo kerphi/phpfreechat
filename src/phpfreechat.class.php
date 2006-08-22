@@ -170,7 +170,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     $u =& pfcUserConfig::Instance();
 
 
-    $output = "<div id=\"pfc_container\">";
+    $output = "<div id=\"pfc_container\"".($c->width != "" ? "style=\"width:".$c->width."\"": "").">";
 
     // Please do not remove these lines,
     // or keep a backling to http://www.phpfreechat on your partner page
