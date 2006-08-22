@@ -474,7 +474,7 @@ pfcGui.prototype = {
     img.setAttribute('className', 'pfc_bt_strong'); // for IE6
     img.setAttribute('title', pfc.res.getLabel("Bold"));
     img.setAttribute('src', pfc.res.getFileUrl('images/bt_strong.gif'));
-    img.onclick = function(){ pfc.insert_text('[b]','[/b]'); }
+    img.onclick = function(){ pfc.insert_text('[b]','[/b]',true); }
     btn.appendChild(img);
     bbcontainer.appendChild(btn);
 
@@ -487,7 +487,7 @@ pfcGui.prototype = {
     img.setAttribute('className', 'pfc_bt_italics'); // for IE6
     img.setAttribute('title', pfc.res.getLabel("Italics"));
     img.setAttribute('src', pfc.res.getFileUrl('images/bt_em.gif'));
-    img.onclick = function(){ pfc.insert_text('[i]','[/i]'); }
+    img.onclick = function(){ pfc.insert_text('[i]','[/i]',true); }
     btn.appendChild(img);
     bbcontainer.appendChild(btn);
 
@@ -500,7 +500,7 @@ pfcGui.prototype = {
     img.setAttribute('className', 'pfc_bt_underline'); // for IE6
     img.setAttribute('title', pfc.res.getLabel("Underline"));
     img.setAttribute('src', pfc.res.getFileUrl('images/bt_ins.gif'));
-    img.onclick = function(){ pfc.insert_text('[u]','[/u]'); }
+    img.onclick = function(){ pfc.insert_text('[u]','[/u]',true); }
     btn.appendChild(img);
     bbcontainer.appendChild(btn);
 
@@ -513,7 +513,7 @@ pfcGui.prototype = {
     img.setAttribute('className', 'pfc_bt_delete'); // for IE6
     img.setAttribute('title', pfc.res.getLabel("Delete"));
     img.setAttribute('src', pfc.res.getFileUrl('images/bt_del.gif'));
-    img.onclick = function(){ pfc.insert_text('[s]','[/s]'); }
+    img.onclick = function(){ pfc.insert_text('[s]','[/s]',true); }
     btn.appendChild(img);
     bbcontainer.appendChild(btn);
 
@@ -526,7 +526,7 @@ pfcGui.prototype = {
     img.setAttribute('className', 'pfc_bt_mail'); // for IE6
     img.setAttribute('title', pfc.res.getLabel("Mail"));
     img.setAttribute('src', pfc.res.getFileUrl('images/bt_mail.gif'));
-    img.onclick = function(){ pfc.insert_text('[email]','[/email]'); }
+    img.onclick = function(){ pfc.insert_text('[email]','[/email]',true); }
     btn.appendChild(img);
     bbcontainer.appendChild(btn);
 

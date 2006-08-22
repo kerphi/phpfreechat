@@ -656,7 +656,7 @@ pfcClient.prototype = {
 	line += ' <span class="pfc_nick">';
 	line += '&#x2039;';
 	line += '<span ';
-        line += 'onclick="pfc.insert_text(\'' + sender + ', \',\'\')" ';
+        line += 'onclick="pfc.insert_text(\'' + sender + ', \',\'\',false)" ';
 	line += 'class="pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(sender)) +'">';
 	line += sender;
 	line += '</span>';
@@ -791,7 +791,7 @@ pfcClient.prototype = {
       var nobr = document.createElement('nobr');
       var span = document.createElement('span');
       span.pfc_nick = nicks[i];
-      span.onclick = function(){pfc.insert_text(this.pfc_nick+", ",""); return false;}
+      span.onclick = function(){pfc.insert_text(this.pfc_nick+", ","",false); return false;}
       span.appendChild(document.createTextNode(nicks[i]));
       span.setAttribute('class', 'pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(nicks[i])));
       span.setAttribute('className', 'pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(nicks[i]))); // for IE6
@@ -1176,7 +1176,7 @@ pfcClient.prototype = {
   /**
    * BBcode ToolBar
    */
-  insert_text: function(open, close) 
+  insert_text: function(open, close, promptifselempty) 
   {
     var msgfield = $('pfc_words');
     
@@ -1186,9 +1186,10 @@ pfcClient.prototype = {
       msgfield.focus();
       sel = document.selection.createRange();
       var text = sel.text;
-      if (text == "")
+      if (text == "" && promptifselempty)
         text = prompt(this.res.getLabel('Enter the text to format'),'');
-      if (text.length > 0)
+      if (text == null) text = "";
+      if (text.length > 0 || !promptifselempty)
       {
         sel.text = open + text + close;
         // @todo move the cursor just after the BBCODE, this doesn't work when the text to enclose is selected, IE6 keeps the whole selection active after the operation.
@@ -1204,12 +1205,12 @@ pfcClient.prototype = {
       
       var text = msgfield.value.substring(startPos, endPos);
       var extralength = 0;
-      if (startPos == endPos)
+      if (startPos == endPos && promptifselempty)
       {
         text = prompt(this.res.getLabel('Enter the text to format'),'');
         extralength = text.length;
       }
-      if (text.length > 0)
+      if (text.length > 0 || !promptifselempty)
       {
         msgfield.value = msgfield.value.substring(0, startPos) + open + text + close + msgfield.value.substring(endPos, msgfield.value.length);
         msgfield.selectionStart = msgfield.selectionEnd = endPos + open.length + extralength + close.length;
@@ -1221,7 +1222,7 @@ pfcClient.prototype = {
     else
     {
       var text = prompt(this.res.getLabel('Enter the text to format'),'');
-      if (text.length > 0)
+      if (text.length > 0 || !promptifselempty)
       {
         msgfield.value += open + text + close;
         msgfield.focus();
