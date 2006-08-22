@@ -5,13 +5,19 @@
 require_once dirname(__FILE__)."/../src/pfccommand.class.php";
 class pfcCommand_roll extends pfcCommand
 {
-  function run(&$xml_reponse, $clientid, $msg)
+  function run(&$xml_reponse, $p)
   {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+    
     $c =& $this->c;
     
     $nick      = $c->nick;
     $container =& $c->getContainerInstance();
-    $text      = trim($msg);
+    $text      = trim($param);
     
     // Call parse roll
     require_once dirname(__FILE__).'/demo27_dice.class.php';
@@ -19,13 +25,15 @@ class pfcCommand_roll extends pfcCommand
     if (!$dice->check($text))
     { 
       $result = $dice->error_get();
+      $cmdp = $p;
+      $cmdp["param"] = "Cmd_roll failed: " . $result;
       $cmd =& pfcCommand::Factory("error", $c);
-      $cmd->run($xml_reponse, $clientid, "Cmd_roll failed: " . $result);
+      $cmd->run($xml_reponse, $cmdp);
     }
     else
     {
       $result = $dice->roll();
-      $container->writeMsg($nick, $result);
+      $container->write($recipient, $nick, "send", $result);
     }
     if ($c->debug) pxlog("Cmd_roll[".$c->sessionid."]: msg=".$result, "chat", $c->getId());
   }
