@@ -5,7 +5,7 @@ div.content {
   margin-left: 12.2em;
   background-color: #FFF;
   border: 1px #acd233 solid;
-  min-height: 15em;
+  /*min-height: 15em;*/
 }
 div.content * { margin-top: 0.5em; margin-bottom: 0.5em; }
 div.content h2 { border-bottom: 1px #444 solid; }
