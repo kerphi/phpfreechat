@@ -57,31 +57,32 @@ var pfc = new pfcClient();
 <?php
 
 $labels_to_load =
-array( "Do you really want to leave this room ?",
-       "Hide nickname marker",
-       "Show nickname marker",
-       "Hide dates and hours",
-       "Show dates and hours",
-       "Disconnect",
-       "Connect",
-       "Magnify",
-       "Cut down",
-       "Hide smiley box",
-       "Show smiley box",
-       "Hide online users box",
-       "Show online users box",
-       "Please enter your nickname",
-       "Private message",
-       "Close this tab",
-       "Enter your message here",
-       "Enter your nickname here",
-       "Bold",
-       "Italics",
-       "Underline",
-       "Delete",
-       "Mail",
-       "Color",
-       "PHP FREE CHAT [powered by phpFreeChat-%s]",
+array( "Do you really want to leave this room ?", // _pfc
+       "Hide nickname marker", // _pfc
+       "Show nickname marker", // _pfc
+       "Hide dates and hours", // _pfc
+       "Show dates and hours", // _pfc
+       "Disconnect", // _pfc
+       "Connect", // _pfc
+       "Magnify", // _pfc
+       "Cut down", // _pfc
+       "Hide smiley box", // _pfc
+       "Show smiley box", // _pfc
+       "Hide online users box", // _pfc
+       "Show online users box", // _pfc
+       "Please enter your nickname", // _pfc
+       "Private message", // _pfc
+       "Close this tab", // _pfc
+       "Enter your message here", // _pfc
+       "Enter your nickname here", // _pfc
+       "Bold", // _pfc
+       "Italics", // _pfc
+       "Underline", // _pfc
+       "Delete", // _pfc
+       "Mail", // _pfc
+       "Color", // _pfc
+       "PHP FREE CHAT [powered by phpFreeChat-%s]", // _pfc
+       "Enter the text to format", // _pfc
        );
 foreach($labels_to_load as $l)
 {

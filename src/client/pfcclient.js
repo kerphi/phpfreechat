@@ -1185,8 +1185,15 @@ pfcClient.prototype = {
     {
       msgfield.focus();
       sel = document.selection.createRange();
-      sel.text = open + sel.text + close;
-      msgfield.focus();
+      var text = sel.text;
+      if (text == "")
+        text = prompt(this.res.getLabel('Enter the text to format'),'');
+      if (text.length > 0)
+      {
+        sel.text = open + text + close;
+        // @todo move the cursor just after the BBCODE, this doesn't work when the text to enclose is selected, IE6 keeps the whole selection active after the operation.
+        msgfield.focus();
+      }
     }
     
     // Moz support
@@ -1195,16 +1202,30 @@ pfcClient.prototype = {
       var startPos = msgfield.selectionStart;
       var endPos = msgfield.selectionEnd;
       
-      msgfield.value = msgfield.value.substring(0, startPos) + open + msgfield.value.substring(startPos, endPos) + close + msgfield.value.substring(endPos, msgfield.value.length);
-      msgfield.selectionStart = msgfield.selectionEnd = endPos + open.length + close.length;
-      msgfield.focus();
+      var text = msgfield.value.substring(startPos, endPos);
+      var extralength = 0;
+      if (startPos == endPos)
+      {
+        text = prompt(this.res.getLabel('Enter the text to format'),'');
+        extralength = text.length;
+      }
+      if (text.length > 0)
+      {
+        msgfield.value = msgfield.value.substring(0, startPos) + open + text + close + msgfield.value.substring(endPos, msgfield.value.length);
+        msgfield.selectionStart = msgfield.selectionEnd = endPos + open.length + extralength + close.length;
+        msgfield.focus();
+      }
     }
     
     // Fallback support for other browsers
     else
     {
-      msgfield.value += open + close;
-      msgfield.focus();
+      var text = prompt(this.res.getLabel('Enter the text to format'),'');
+      if (text.length > 0)
+      {
+        msgfield.value += open + text + close;
+        msgfield.focus();
+      }
     }
     return;
   },
