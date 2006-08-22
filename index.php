@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__)."/src/phpfreechat.class.php";
 $params = array();
+$params["title"] = "Quick chat";
 $params["nick"] = "guest".rand(1,10);  // setup the intitial nickname
 $params["isadmin"] = true; // just for debug ;)
 $params["serverid"] = md5(__FILE__); // calculate a unique id for this chat
@@ -12,7 +13,7 @@ $chat = new phpFreeChat( $params );
 <html>
  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <title>phpFreeChat Sources Index</title>
+  <title>phpFreeChat- Sources Index</title>
   <link rel="stylesheet" title="classic" type="text/css" href="style/generic.css" />
   <link rel="stylesheet" title="classic" type="text/css" href="style/header.css" />
   <link rel="stylesheet" title="classic" type="text/css" href="style/footer.css" />
@@ -25,7 +26,7 @@ $chat = new phpFreeChat( $params );
 
 <div class="header">
       <h1>phpFreeChat - Sources Index</h1>
-      <img alt="logo bulle" src="style/bulle.png" class="logo2" />
+      <img alt="logo bulle" src="style/bulle.gif" class="logo2" />
 </div>
 
 <div class="menu">
@@ -36,9 +37,16 @@ $chat = new phpFreeChat( $params );
             <li class="item">
               <a href="demo/">Demos</a>
             </li>
+            <?php if (file_exists(dirname(__FILE__)."/checkmd5.php")) { ?>
+            <li>
+              <a href="checkmd5.php">Check md5</a>
+            </li>
+            <?php } ?>
+            <!--
             <li class="item">
               <a href="admin/">Administration</a>
             </li>
+            -->
           </ul>
         </li>
         <li class="sub title">Documentation</li>
@@ -60,59 +68,16 @@ $chat = new phpFreeChat( $params );
         </li>
       </ul>
       <p class="partner">
-        <a href="http://www.phpfreechat.net"><img alt="logo big" src="style/logo_88x31.gif" /></a>
+        <a href="http://www.phpfreechat.net"><img alt="phpfreechat.net" src="style/logo_88x31.gif" /></a><br/>
+        <a href="http://sourceforge.net/projects/phpfreechat"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=158880&amp;type=1" alt="SourceForge.net Logo" height="31px" width="88px" /></a><br/><br/>
+        <a href="http://www.hotscripts.com/?RID=N452772">hotscripts.com</a><br/>
+        <a href="http://www.jeu-gratuit.net/?refer=phpfreechat">jeu-gratuit.net</a><br/>
+        <a href="http://www.pronofun.com/?refer=phpfreechat">pronofun.com</a><br/>
       </p>
-      
-      <div class="rating">
-        <form action="http://www.hotscripts.com/rate/56184.html" method="get">
-          <p><input type="hidden" name="RID" value="N452772" /></p>
-          <table>
-            <tbody>
-              <tr>
-                <td>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>If you like our script, please rate it! <input type="hidden" name="external" value="1"/>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <select name="rate" size="1">
-                            <option value="5" selected="selected">Excellent!</option>
-                            <option value="4">Very Good</option>
-                            <option value="3">Good</option>
-                            <option value="2">Fair</option>
-                            <option value="1">Poor</option>
-                          </select>
-                          <input type="submit" name="submit" value="Cast My Vote!"/>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </form>
-      </div>
 </div>
 
 <div class="content">
-  <h2>See the quick demo</h2>
   <?php $chat->printChat(); ?>
-  <?php if (file_exists(dirname(__FILE__)."/checkmd5.php")) require_once dirname(__FILE__)."/checkmd5.php"; ?>
 </div>
 
-<div class="footer">
-      <div class="valid">
-        <a href="http://validator.w3.org/check?uri=referer">
-          <img alt="Valid XHTML 1.0!" src="style/valid-xhtml.png" />
-        </a>
-        <a href="http://jigsaw.w3.org/css-validator/check/referer">
-          <img alt="Valid CSS!" src="style/valid-css.png" />
-        </a>
-      </div>
-      <p>@2006 phpFreeChat</p>
-    </div>
 </body></html>
