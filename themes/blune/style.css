@@ -1,32 +1,32 @@
 
-div#<?php echo $prefix; ?>container {
+div#pfc_container {
   color: #2A4064;
   background-color: #BEC5D0;
-  background-image: url(<?php echo $c->getFileUrlFromTheme('images/shade.gif'); ?>);
+  background-image: url("proxy.php?p=default/images/shade.gif");
 }
 
-div.<?php echo $prefix; ?>chat {
+div.pfc_chat {
   background-color:#CED4DF;
 }
 
-div.<?php echo $prefix; ?>message {
+div.pfc_message {
   background-color:#CED4DF;
 }
 
-div.<?php echo $prefix; ?>oldmsg {
-  background-image: none;
-  background-color:#DCDEE4;
+div.pfc_oldmsg {
+  /*background-image: none;
+  background-color:#DCDEE4;*/
 }
 
-span.<?php echo $prefix; ?>nick {
+span.pfc_nick {
   color:#2A4064;
 }
 
-div.<?php echo $prefix; ?>btn img:hover {
+div.pfc_btn img:hover {
   border: 1px solid #000;
 }
 
-p#<?php echo $prefix; ?>errors {
+p#pfc_errors {
   display: none;
   margin-top: 5px;
   padding: 2px;
@@ -40,20 +40,20 @@ p#<?php echo $prefix; ?>errors {
   font-weight: bold;
 }
 
-ul#<?php echo $prefix; ?>channels_list li div {
+ul#pfc_channels_list li div {
   background-color: #bec5d0;
   border-bottom: 1px solid #bec5d0;
 }
-ul#<?php echo $prefix; ?>channels_list li.selected div {
+ul#pfc_channels_list li.selected div {
   background-color: #CED4DF;
   border-bottom: 1px solid #CED4DF;
   color: #000;
   font-weight: bold;
 }
-ul#<?php echo $prefix; ?>channels_list li > div:hover {
+ul#pfc_channels_list li > div:hover {
   background-color: #CED4DF;
   border-bottom: 1px solid #CED4DF;
 }
-ul#<?php echo $prefix; ?>channels_list li.selected > div:hover {
+ul#pfc_channels_list li.selected > div:hover {
   background-color: #CED4DF;
 }
