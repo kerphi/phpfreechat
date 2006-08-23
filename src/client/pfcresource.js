@@ -23,7 +23,10 @@ pfcResource.prototype = {
   {
     var key = this.getLabel.arguments[0];
     if (this.labels[key])
-      return String.sprintf2(this.getLabel.arguments); //this.labels[key];
+    {
+      this.getLabel.arguments[0] = this.labels[key];
+      return String.sprintf2(this.getLabel.arguments);
+    }
     else
       return "";
   },
