@@ -41,10 +41,11 @@ class pfcGlobalConfig
   var $lockurl             = "http://www.phpfreechat.net"; // this is the url where the users must be redirected when the chat is locked
   
   // these parameters are static (cached)
-  var $proxys              = array("lock", "auth", "noflood", "censor");
+  var $proxys              = array("lock", "auth", "noflood", "censor", "log");
   var $proxys_cfg          = array("auth"    => array(),
                                    "noflood" => array("limit"=>10,"delay"=>5),
-                                   "censor"  => array("words"=>array("fuck","sex","bitch"),"replaceby"=>"*"));
+                                   "censor"  => array("words"=>array("fuck","sex","bitch"),"replaceby"=>"*"),
+                                   "log"     => array("path"=>""));
   var $title               = ""; // default is _pfc("My Chat")
   var $channels            = array(); // the default joined channels when opening the chat
   var $frozen_channels     = array(); // by default allow users to create there own channels
