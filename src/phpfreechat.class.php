@@ -150,6 +150,14 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
       $output .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$c->getFileUrlByProxy("style.css")."\" />\n";
     }
     
+    // since php can't be embeded into the css themes files, special styles parameter must be setup here
+    if ($c->height != "")
+    {
+      $output .= "<style type=\"text/css\">";
+      $output .= "div#pfc_channels_content { height: ".$c->height."; }";
+      $output .= "</style>\n";
+    }
+    
     if($return)
       return $output;
     else 
