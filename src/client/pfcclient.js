@@ -956,7 +956,7 @@ pfcClient.prototype = {
    */
   reloadColorList: function()
   {
-    this.colorlist = pfc_nickname_color_list;
+    this.colorlist = $A(pfc_nickname_color_list);
   },
   
 
