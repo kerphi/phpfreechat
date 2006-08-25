@@ -33,19 +33,13 @@ var pfc_privmsg = Array(<?php
                         echo implode(",", $list);
                         ?>);
 var pfc_openlinknewwindow = <?php echo $openlinknewwindow ? "true" : "false"; ?>;
-<?php
-$bbcode_clist = array("FFFFFF","000000","000055","008000","FF0000","800000","800080","FF5500","FFFF00","00FF00","008080","00FFFF","0000FF","FF00FF","7F7F7F","D2D2D2");
-?>
 var pfc_bbcode_color_list = Array(<?php
-                        $list = array(); foreach($bbcode_clist as $v) {$list[] = $v;}
-                        $list = array_map("quoteandescape",$list);
-                        echo implode(",", $list);
-                        ?>);
-<?php
-$nickname_clist = array('#CCCCCC','#000000','#3636B2','#2A8C2A','#C33B3B','#C73232','#80267F','#66361F','#D9A641','#3DCC3D','#1A5555','#2F8C74','#4545E6','#B037B0','#4C4C4C','#959595');
-?>
+                                  $list = array(); foreach($bbcode_colorlist as $v) {$list[] = substr($v,1);}
+                                  $list = array_map("quoteandescape",$list);
+                                  echo implode(",", $list);
+                                  ?>);
 var pfc_nickname_color_list = Array(<?php
-                                    $list = array(); foreach($nickname_clist as $v) {$list[] = $v;}
+                                    $list = array(); foreach($nickname_colorlist as $v) {$list[] = $v;}
                                     $list = array_map("quoteandescape",$list);
                                     echo implode(",", $list);
                                     ?>);
@@ -118,9 +112,8 @@ array( 'images/ch.gif',
        );
 
 // convert bbcode color value list to a bbcode color url list
-function get_bbcode_color_url($v) { return 'images/color_'.$v.'.gif'; }
-$bbcode_clist = array_map("get_bbcode_color_url",$bbcode_clist);
-
+function get_bbcode_color_url($v) { return 'images/color_'.substr($v,1).'.gif'; }
+$bbcode_clist = array_map("get_bbcode_color_url", $bbcode_colorlist);
 $fileurl_to_load = array_merge($fileurl_to_load, $bbcode_clist);
 foreach($fileurl_to_load as $f)
 {

@@ -70,7 +70,9 @@ class pfcGlobalConfig
   var $showsmileys         = true;
   var $btn_sh_whosonline   = true; // display show/hide button for who is online
   var $btn_sh_smileys      = true; // display show/hide button for smileys
-
+  var $bbcode_colorlist    = array("#FFFFFF","#000000","#000055","#008000","#FF0000","#800000","#800080","#FF5500","#FFFF00","#00FF00","#008080","#00FFFF","#0000FF","#FF00FF","#7F7F7F","#D2D2D2");
+  var $nickname_colorlist  = array('#CCCCCC','#000000','#3636B2','#2A8C2A','#C33B3B','#C73232','#80267F','#66361F','#D9A641','#3DCC3D','#1A5555','#2F8C74','#4545E6','#B037B0','#4C4C4C','#959595');
+  
   var $theme               = "default";
   var $themepath           = "";
   var $themeurl            = "";
