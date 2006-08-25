@@ -31,7 +31,7 @@ require_once dirname(__FILE__)."/../pfcproxycommand.class.php";
 class pfcProxyCommand_log extends pfcProxyCommand
 {
   function run(&$xml_reponse, $p)
-  {       
+  {
     $cmdtocheck = array("send", "me", "notice");
     if ( in_array($this->name, $cmdtocheck) )
     {
@@ -46,14 +46,15 @@ class pfcProxyCommand_log extends pfcProxyCommand
       $logpath = ($c->proxys_cfg[$this->proxyname]["path"] == "" ? $c->data_public_path :
                                                                    $c->proxys_cfg[$this->proxyname]["path"]);
       $logfile = $logpath."/".$c->getId()."/chat.log";
-
-      if (!is_writable($logpath))
+      if (is_writable($logpath))
       {
-        if ((file_exists($logfile) && is_writable($logpath)) ||
-            (!file_exists($logfile)))
+        $f_exists = file_exists($logfile);
+        if (($f_exists && is_writable($logpath)) ||
+            !$f_exists)
         {
-          $fp = fopen($logfile, file_exists($logfile) ? 'a' : 'w');
-          fwrite($fp, $recipient." -> ".$param."\n");
+          $fp = fopen($logfile, $f_exists ? 'a' : 'w');
+          // @todo write logs in a cleaner structured language (xml, html ... ?)
+          fwrite($fp, $recipient."\t".$sender."\t".$param."\n");
           fclose($fp);
         }
       }
