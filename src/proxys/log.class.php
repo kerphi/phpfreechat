@@ -52,8 +52,9 @@ class pfcProxyCommand_log extends pfcProxyCommand
         if ((file_exists($logfile) && is_writable($logpath)) ||
             (!file_exists($logfile)))
         {
-          $fp = fopen($logfile, 'a');
+          $fp = fopen($logfile, file_exists($logfile) ? 'a' : 'w');
           fwrite($fp, $recipient." -> ".$param."\n");
+          fclose($fp);
         }
       }
     }
