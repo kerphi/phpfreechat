@@ -64,7 +64,10 @@ function relativePath($p1, $p2)
   $res = "";
   //echo $p1."<br>";
   //echo $p2."<br>";
-  while( $p1 != "" && $p1 != "/" && strpos($p2, $p1) !== 0)
+  while( $p1 != "" &&
+         $p1 != "/" && // for unix root dir
+         !preg_match("/[a-z]\:\\\/i",$p1) && // for windows rootdir
+         strpos($p2, $p1) !== 0)
   {
     $res .= "../";
     $p1 = dirname($p1);
