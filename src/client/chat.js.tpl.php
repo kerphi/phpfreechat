@@ -77,6 +77,8 @@ array( "Do you really want to leave this room ?", // _pfc
        "Color", // _pfc
        "PHP FREE CHAT [powered by phpFreeChat-%s]", // _pfc
        "Enter the text to format", // _pfc
+       "Configuration has been rehashed", // _pfc
+       "A problem occurs during rehash", // _pfc
        );
 foreach($labels_to_load as $l)
 {
