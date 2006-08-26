@@ -211,7 +211,7 @@ $GLOBALS["i18n"]["%s quit (timeout)"] = "%s が退出しました (タイムア�
 $GLOBALS["i18n"]["%s joins %s"] = "%s が %s に参加しました。";
 
 // line 31 in kick.class.php
-$GLOBALS["i18n"]["kicked from %s by %s"] = "%2$s により %1$\s から追い出されました。";
+$GLOBALS["i18n"]["kicked from %s by %s"] = "%2s により %1s から追い出されました。";
 
 // line 38 in send.class.php
 $GLOBALS["i18n"]["Can't send the message, %s is offline"] = "%s はオフラインなのでメッセージを送ることができませんでした。";
