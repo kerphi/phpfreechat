@@ -33,6 +33,7 @@ div#pfc_channels_content {
   background-color: #FFF;
   margin-top: 5px;
   height: 300px;
+  font-family: serif; /* needed by IE6 in order to display correctly chinese characteres */
 }
 div.pfc_content {
 }
