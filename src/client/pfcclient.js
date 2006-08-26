@@ -601,28 +601,26 @@ pfcClient.prototype = {
 
   displayMsg: function( cmd, msg )
   {
+    this.setError(msg);
+
+    // @todo find a better crossbrowser way to display messages
+/*
     // get the current selected tab container
     var tabid     = this.gui.getTabId();
     var container = this.gui.getChatContentFromTabId(tabid);
 
+    // to fix IE6 display bug
+    // http://sourceforge.net/tracker/index.php?func=detail&aid=1545403&group_id=158880&atid=809601
     div = document.createElement('div');
-    div.style.padding = "2px 5px 2px 5px";
-    
-    pre = document.createElement('pre');
-    pre.setAttribute('class', 'pfc_info pfc_info_'+cmd);
-    pre.setAttribute('className', 'pfc_info pfc_info_'+cmd); // for IE6
-    //    Element.addClassName(pre, 'pfc_info');
-    //    Element.addClassName(pre, 'pfc_info_'+cmd);
-    pre.style.border  = "1px solid #555";
-    pre.style.padding = "5px";
-    pre.innerHTML = msg;
-    div.appendChild(pre); 
-    
+    // div.style.padding = "2px 5px 2px 5px"; // this will clear the screen in IE6
+    div.innerHTML = '<div class="pfc_info pfc_info_'+cmd+'" style="margin:5px">'+msg+'</div>';
+
     // finaly append this to the message list
     container.appendChild(div); 
     this.gui.scrollDown(tabid, div);
+*/
   },
-  
+
   handleComingRequest: function( cmds )
   {
     var msg_html = $H();

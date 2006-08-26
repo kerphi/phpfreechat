@@ -217,16 +217,13 @@ div#pfc_bbcode_container * {
 
 div#pfc_errors {
   display: none;
-  margin-top: 5px;
-  padding: 2px;
-  height: 18px;
-
+  padding: 5px;
   border: 1px solid #555;
-  color: #FC4A1F;
-  background-color: #FFBA76;
-  text-align: center;
+  color: #EC4B0F;
+  background-color: #FFBB77;
   font-style: italic;
-  font-weight: bold;
+  font-family: monospace;
+  font-size: 90%;
 }
 
 /* commands */
@@ -243,11 +240,18 @@ div#pfc_errors {
 }
 
 /* commands info */
-pre.pfc_info {
+.pfc_info {
   color: #888;
+
+  /* to fix IE6 display bug */
+  /* http://sourceforge.net/tracker/index.php?func=detail&aid=1545403&group_id=158880&atid=809601 */
+  font-family: sans-serif; /* do NOT setup monospace font or it will not work in IE6 */
+
   font-style: italic;
   background-color: #EEE;
+  font-size: 80%;
 }
+
 
 div#pfc_colorlist {
   display: none;

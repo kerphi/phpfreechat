@@ -561,16 +561,16 @@ pfcGui.prototype = {
       clist.appendChild(img);
     }
 
+    // error box : <p id="pfc_errors">
+    var errorbox = document.createElement('div');
+    errorbox.setAttribute('id', 'pfc_errors');
+    inputcontainer.appendChild(errorbox);
+
     // smiley box :  <div id="pfc_smileys">
     var smileybox = document.createElement('div');
     smileybox.setAttribute('id', 'pfc_smileys');
     inputcontainer.appendChild(smileybox);
     this.loadSmileyBox();
-
-    // error box : <p id="pfc_errors">
-    var errorbox = document.createElement('div');
-    errorbox.setAttribute('id', 'pfc_errors');
-    contentexp.appendChild(errorbox);
   }
   
 };
