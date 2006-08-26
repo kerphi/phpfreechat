@@ -475,6 +475,11 @@ class pfcContainer_File extends pfcContainer
 
     // write message
     file_put_contents($msg_filename, $data);
+
+    // delete the obsolete message
+    $old_msg_id = $msg_id - $c->max_msg - 20;
+    if ($old_msg_id > 0 && file_exists($msg_dir."/".$old_msg_id))
+      @unlink($msg_dir."/".$old_msg_id);
     
     return $msg_id;
   }
