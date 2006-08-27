@@ -107,7 +107,7 @@ class PEAR_PackageFile_v2_Validator
               isset($test['dependencies']['required']) &&
               isset($test['dependencies']['required']['pearinstaller']) &&
               isset($test['dependencies']['required']['pearinstaller']['min']) &&
-              version_compare('1.4.10',
+              version_compare('1.4.11',
                 $test['dependencies']['required']['pearinstaller']['min'], '<')) {
             $this->_pearVersionTooLow($test['dependencies']['required']['pearinstaller']['min']);
             return false;
@@ -1284,7 +1284,7 @@ class PEAR_PackageFile_v2_Validator
         $this->_stack->push(__FUNCTION__, 'error',
             array('version' => $version),
             'This package.xml requires PEAR version %version% to parse properly, we are ' .
-            'version 1.4.10');
+            'version 1.4.11');
     }
 
     function _invalidTagOrder($oktags, $actual, $root)

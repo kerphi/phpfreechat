@@ -35,7 +35,7 @@ require_once 'PEAR/PackageFile/v2.php';
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.10
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -52,7 +52,7 @@ class PEAR_PackageFile_Generator_v1
 
     function getPackagerVersion()
     {
-        return '1.4.10';
+        return '1.4.11';
     }
 
     /**
@@ -206,7 +206,7 @@ class PEAR_PackageFile_Generator_v1
             );
         $ret = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
         $ret .= "<!DOCTYPE package SYSTEM \"http://pear.php.net/dtd/package-1.0\">\n";
-        $ret .= "<package version=\"1.0\" packagerversion=\"1.4.10\">\n" .
+        $ret .= "<package version=\"1.0\" packagerversion=\"1.4.11\">\n" .
 " <name>$pkginfo[package]</name>";
         if (isset($pkginfo['extends'])) {
             $ret .= "\n<extends>$pkginfo[extends]</extends>";

@@ -33,7 +33,7 @@ require_once 'PEAR/Command/Common.php';
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  2005-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.10
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.1
  */

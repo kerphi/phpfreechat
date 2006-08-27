@@ -35,7 +35,7 @@ require_once 'System.php';
  * @author     Stephan Schmidt (original XML_Serializer code)
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.10
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -114,7 +114,7 @@ http://pear.php.net/dtd/package-2.0.xsd',
      */
     function getPackagerVersion()
     {
-        return '1.4.10';
+        return '1.4.11';
     }
 
     /**
@@ -358,7 +358,7 @@ http://pear.php.net/dtd/package-2.0.xsd',
             }
             $this->options['beautifyFilelist'] = true;
         }
-        $arr['attribs']['packagerversion'] = '1.4.10';
+        $arr['attribs']['packagerversion'] = '1.4.11';
         if ($this->serialize($arr, $options)) {
             return $this->_serializedData . "\n";
         }

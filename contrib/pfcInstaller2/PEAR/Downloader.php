@@ -45,7 +45,7 @@ define('PEAR_INSTALLER_ERROR_NO_PREF_STATE', 2);
  * @author     Martin Jansen <mj@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.10
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.3.0
  */
@@ -1432,7 +1432,7 @@ class PEAR_Downloader extends PEAR_Common
             $ifmodifiedsince = ($lastmodified ? "If-Modified-Since: $lastmodified\r\n" : '');
         }
         $request .= "Host: $host:$port\r\n" . $ifmodifiedsince .
-            "User-Agent: PEAR/1.4.10/PHP/" . PHP_VERSION . "\r\n";
+            "User-Agent: PEAR/1.4.11/PHP/" . PHP_VERSION . "\r\n";
         if (isset($this)) { // only pass in authentication for non-static calls
             $username = $config->get('username');
             $password = $config->get('password');
