@@ -89,8 +89,6 @@ class pfcGlobalConfig
   var $server_script_url   = ""; // default is calculated from 'server_script_path'
   var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2.3";
   var $jspath              = ""; // default is dirname(__FILE__)."/../lib/javascript";
-  var $usecsstidy          = false;
-  var $csstidypath         = ""; // default is dirname(__FILE__)."/../lib/csstidy-1.1";
   var $data_private_path   = ""; // default is dirname(__FILE__)."/../data/private";
   var $data_public_path    = ""; // default is dirname(__FILE__)."/../data/public";
   var $data_public_url     = ""; // default is calculated from 'data_public_path' path
@@ -217,7 +215,6 @@ class pfcGlobalConfig
     if ($this->title == "")        $this->title        = _pfc("My Chat");
     if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.3";
     if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
-    if ($this->csstidypath == "")  $this->csstidypath  = dirname(__FILE__)."/../lib/csstidy-1.1";
     if (is_array($this->channels) && count($this->channels) == 0) $this->channels   = array(_pfc("My room"));
       
     // first of all, check the used functions
