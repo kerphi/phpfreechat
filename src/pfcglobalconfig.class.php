@@ -419,7 +419,7 @@ class pfcGlobalConfig
       $this->frozen_nick = false;
     
     // load version number from file
-    $this->version = file_get_contents(dirname(__FILE__)."/../version");
+    $this->version = trim(file_get_contents(dirname(__FILE__)."/../version"));
 
     $this->is_init = (count($this->errors) == 0);
   }

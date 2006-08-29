@@ -1,18 +1,43 @@
 #!/bin/sh
 
 NAME=phpfreechat-`cat ../version`
+PFCSETUPNAME=pfcsetup-`cat ../version`
 
 echo "-- creating archive $NAME --"
 echo "-> copying files"
 rm -rf ./$NAME
 svn export .. ./$NAME
 rm -rf ./$NAME/contrib
+
 echo "-> creating checkmd5.php file"
 ./checkmd5 ./$NAME ./$NAME/checkmd5.php
+
 echo "-> creating .tar.gz"
 tar czfp $NAME.tar.gz ./$NAME 
+
 echo "-> creating .zip"
 zip -Tq9r $NAME.zip ./$NAME
+
+echo "-> creating $PFCSETUPNAME"
+rm -rf ./$PFCSETUPNAME
+svn export ../contrib/pfcInstaller2 $PFCSETUPNAME
+rm -rf ./$PFCSETUPNAME/.registry
+rm -rf ./$PFCSETUPNAME/.depdblock
+rm -rf ./$PFCSETUPNAME/.lock
+rm -rf ./$PFCSETUPNAME/.channels
+rm -rf ./$PFCSETUPNAME/tmp
+rm -rf ./$PFCSETUPNAME/bin
+rm -rf ./$PFCSETUPNAME/PEAR
+rm -rf ./$PFCSETUPNAME/System.php
+rm -rf ./$PFCSETUPNAME/peclcmd.php
+rm -rf ./$PFCSETUPNAME/pearcmd.php
+rm -rf ./$PFCSETUPNAME/pear.sh
+rm -rf ./$PFCSETUPNAME/pearrc
+rm -rf ./$PFCSETUPNAME/OS
+echo "$NAME.tar.gz" > $PFCSETUPNAME/archive
+tar czfp $PFCSETUPNAME.tar.gz ./$PFCSETUPNAME
+
 echo "-> removing temporary files"
 rm -rf ./$NAME
+rm -rf ./$PFCSETUPNAME
 echo "-- creating archive $NAME, done --"
