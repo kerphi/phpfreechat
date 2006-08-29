@@ -17,6 +17,9 @@
 <?php
 if (!$isinstalled)
 {
+  // delete the old archive
+  @unlink($dstpath."/".$archivename);
+  
   $param = array();
   if (isset($_GET["host"])) $http["proxy_host"] = $_GET["host"];
   if (isset($_GET["port"])) $http["proxy_port"] = $_GET["port"];
@@ -27,18 +30,39 @@ if (!$isinstalled)
   // loop over the mirrors
   for($i = 0; $i<count($mirrors) && !$unziped; $i++)
   {
-    $req =& new HTTP_Request($mirrors[$i]."/".$archivename, $param);
-    if (!PEAR::isError($req->sendRequest()))
-    {    
-      $archivecontent = $req->getResponseBody();
-      file_put_contents($dstpath."/".$archivename, $archivecontent);
-      
+    $copied = false;
+    if (preg_match("/^\//",$mirrors[$i]))
+    {
+      // local file
+      if (!file_exists($mirrors[$i]."/".$archivename))
+        $errors[$mirrors[$i]][] = "Local file not found";
+      else
+      {
+        @copy($mirrors[$i]."/".$archivename,$dstpath."/".$archivename);
+        $copied = true;
+      }
+    }
+    else
+    {
+      // remote file
+      $req =& new HTTP_Request($mirrors[$i]."/".$archivename, $param);
+      if (!PEAR::isError($req->sendRequest()))
+      {
+        $archivecontent = $req->getResponseBody();
+        file_put_contents($dstpath."/".$archivename, $archivecontent);
+      }
+    }
+    if (file_exists($dstpath."/".$archivename)) $copied = true;
+
+    // the archive has been copied (but maybe it just contains a html error page!)
+    if ($copied)
+    {
       require_once "File/Archive.php";
       $src = $dstpath."/".$archivename."/";
       $dest = $dstpath;
       $res = @File_Archive::extract( $src, $dest );
       if (PEAR::isError($res))
-        $errors[$mirrors[$i]] = array($res->getMessage());
+        $errors[$mirrors[$i]][] = $res->getMessage();
       else
         $unziped = true;
     }
@@ -53,7 +77,7 @@ if (!$isinstalled)
   else
   {
     echo "<p>Error!</p>";
-    print_r($errors);
+    echo "<pre>"; print_r($errors); echo "</pre>";
   }
 }
 ?>
