@@ -12,13 +12,12 @@ rm -rf ./$NAME/contrib
 echo "-> creating checkmd5.php file"
 ./checkmd5 ./$NAME ./$NAME/checkmd5.php
 
-echo "-> creating .tar.gz"
+echo "-> creating $NAME.tar.gz"
 tar czfp $NAME.tar.gz ./$NAME 
-
-echo "-> creating .zip"
+echo "-> creating $NAME.zip"
 zip -Tq9r $NAME.zip ./$NAME
 
-echo "-> creating $PFCSETUPNAME"
+echo "-> creating $PFCSETUPNAME.tar.gz"
 rm -rf ./$PFCSETUPNAME
 svn export ../contrib/pfcInstaller2 $PFCSETUPNAME
 rm -rf ./$PFCSETUPNAME/.registry
@@ -37,6 +36,8 @@ rm -rf ./$PFCSETUPNAME/OS
 echo "$NAME.tar.gz" > $PFCSETUPNAME/archive
 echo `pwd` >> $PFCSETUPNAME/mirrors
 tar czfp $PFCSETUPNAME.tar.gz ./$PFCSETUPNAME
+echo "-> creating $PFCSETUPNAME.zip"
+zip -Tq9r $PFCSETUPNAME.zip ./$PFCSETUPNAME
 
 echo "-> removing temporary files"
 rm -rf ./$NAME
