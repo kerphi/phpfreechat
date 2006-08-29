@@ -35,6 +35,7 @@ rm -rf ./$PFCSETUPNAME/pear.sh
 rm -rf ./$PFCSETUPNAME/pearrc
 rm -rf ./$PFCSETUPNAME/OS
 echo "$NAME.tar.gz" > $PFCSETUPNAME/archive
+echo `pwd` >> $PFCSETUPNAME/mirrors
 tar czfp $PFCSETUPNAME.tar.gz ./$PFCSETUPNAME
 
 echo "-> removing temporary files"
