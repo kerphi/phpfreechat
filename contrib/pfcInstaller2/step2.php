@@ -3,10 +3,10 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>pfcInstaller - Step 2/2</title>
+    <title>pfcSetup - Step 2/2</title>
   </head>
   <body>
-<h1>pfcInstaller - Step 2/2</h1>
+<h1>pfcSetup - Step 2/2</h1>
 
 <?php if (!$isinstalled) { ?>
 <p>Installation de <?php echo $archivename; ?> </p>

@@ -3,10 +3,10 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>pfcInstaller - Step 1 / 2</title>
+    <title>pfcSetup - Step 1 / 2</title>
   </head>
 <body>
-<h1>pfcInstaller - Step 1 / 2</h1>
+<h1>pfcSetup - Step 1 / 2</h1>
 <?php if (!$isinstalled) { ?>
                            <table width="80%">
                            <tr>
