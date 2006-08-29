@@ -5,8 +5,7 @@ require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params["serverid"]      = md5(__FILE__); // calculate a unique id for this chat
 $params["nick"]          = "guest".rand(1,10);  // setup the intitial nickname
 $params["title"]         = "A chat with a customized nickname color list";
-$params["themepath"]     = dirname(__FILE__)."/demo43_change_the_nicknames_colors";
-$params["theme"]         = "mytheme";
+$params["nickname_colorlist"] = array('#FF0000','#00FF00','#0000FF');
 $chat = new phpFreeChat( $params );
 
 ?>

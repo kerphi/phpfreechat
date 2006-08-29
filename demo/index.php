@@ -73,7 +73,7 @@
       <li><a href="demo32_show_last_messages-showlastmsg.php">demo32 - demo which show how to get the last posted messages (showlastmsg script)</a></li>
 
       <li><a href="demo35_shared_memory.php">demo35 - demo which show how to use the shared memory container</a> (not yet working)</li>
-      <li><a href="demo43_change_the_nicknames_colors.php">demo43 - demo which show how to change the nicknames automatic colors</a> (not yet working)</li>
+      <li><a href="demo43_change_the_nicknames_colors.php">demo43 - demo which show how to change the nicknames automatic colors</a></li>
 </ul>
 
 
