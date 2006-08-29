@@ -1,0 +1,103 @@
+a:17:{s:8:"provides";a:0:{}s:8:"filelist";a:54:{s:16:"File/Archive.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"f994c4cbcedc1cc493f991d2a0c05b24";s:12:"installed_as";s:18:"./File/Archive.php";}s:26:"File/Archive/Predicate.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"09a4dbb822271261f69724ae559f38ad";s:12:"installed_as";s:28:"./File/Archive/Predicate.php";}s:23:"File/Archive/Reader.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"74eac085ca58ea974c5da6358c15e9cf";s:12:"installed_as";s:25:"./File/Archive/Reader.php";}s:23:"File/Archive/Writer.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"40ef0ab82bf17d7a525c15122bd065bc";s:12:"installed_as";s:25:"./File/Archive/Writer.php";}s:30:"File/Archive/Predicate/And.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"143b5a469e43647ac747f51c60912107";s:12:"installed_as";s:32:"./File/Archive/Predicate/And.php";}s:34:"File/Archive/Predicate/Current.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"c9f5b7e4176e1c55e9f6dfa878bde4ec";s:12:"installed_as";s:36:"./File/Archive/Predicate/Current.php";}s:33:"File/Archive/Predicate/Custom.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"b99f37c754c6e6e3494741c0339e11eb";s:12:"installed_as";s:35:"./File/Archive/Predicate/Custom.php";}s:36:"File/Archive/Predicate/Duplicate.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"a1c96735a23cd80c6d5cdaf96c0f29b3";s:12:"installed_as";s:38:"./File/Archive/Predicate/Duplicate.php";}s:31:"File/Archive/Predicate/Ereg.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"83b91b31185c05650844ec1ba19c0fad";s:12:"installed_as";s:33:"./File/Archive/Predicate/Ereg.php";}s:32:"File/Archive/Predicate/Eregi.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"7029b72200fead9b33ea3cdbe365ef57";s:12:"installed_as";s:34:"./File/Archive/Predicate/Eregi.php";}s:36:"File/Archive/Predicate/Extension.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"a9e7e12215e82351293bebd8b0452455";s:12:"installed_as";s:38:"./File/Archive/Predicate/Extension.php";}s:32:"File/Archive/Predicate/False.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"e1896dd1bd8c36850f1855bde61348e1";s:12:"installed_as";s:34:"./File/Archive/Predicate/False.php";}s:32:"File/Archive/Predicate/Index.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"546aa8f0fa09390c860fefc79a4ee9ca";s:12:"installed_as";s:34:"./File/Archive/Predicate/Index.php";}s:35:"File/Archive/Predicate/MaxDepth.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"c4b7b452e7dddca0cc45951c93f14959";s:12:"installed_as";s:37:"./File/Archive/Predicate/MaxDepth.php";}s:31:"File/Archive/Predicate/MIME.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"0c870eaf6c901fe7f9784f309d964d4a";s:12:"installed_as";s:33:"./File/Archive/Predicate/MIME.php";}s:34:"File/Archive/Predicate/MinSize.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"d84d07123afe55f65d4afc80fc430537";s:12:"installed_as";s:36:"./File/Archive/Predicate/MinSize.php";}s:34:"File/Archive/Predicate/MinTime.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"8ec081662315fcd801ccde0a2875c51b";s:12:"installed_as";s:36:"./File/Archive/Predicate/MinTime.php";}s:30:"File/Archive/Predicate/Not.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"0e652e8b1619a99251f6bf82d709ae7b";s:12:"installed_as";s:32:"./File/Archive/Predicate/Not.php";}s:29:"File/Archive/Predicate/Or.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"0915edd899eaccb0138a540ef7e8c11e";s:12:"installed_as";s:31:"./File/Archive/Predicate/Or.php";}s:31:"File/Archive/Predicate/True.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"4bc5794c445849b81383144fb3978310";s:12:"installed_as";s:33:"./File/Archive/Predicate/True.php";}s:26:"File/Archive/Reader/Ar.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"8d8f85ff407b30def6113ea6e6a7f5d7";s:12:"installed_as";s:28:"./File/Archive/Reader/Ar.php";}s:31:"File/Archive/Reader/Archive.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"702cf1a3dbf834edfeac5eb798590a82";s:12:"installed_as";s:33:"./File/Archive/Reader/Archive.php";}s:29:"File/Archive/Reader/Bzip2.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"f967f6dad799b226d73be99db6e4fc6e";s:12:"installed_as";s:31:"./File/Archive/Reader/Bzip2.php";}s:29:"File/Archive/Reader/Cache.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"2f8aa226458b470a37494d7eba824298";s:12:"installed_as";s:31:"./File/Archive/Reader/Cache.php";}s:34:"File/Archive/Reader/ChangeName.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"7d3e20216b90964904ab664d122fe307";s:12:"installed_as";s:36:"./File/Archive/Reader/ChangeName.php";}s:30:"File/Archive/Reader/Concat.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"ca77d7a56210643353583797b43ae7fe";s:12:"installed_as";s:32:"./File/Archive/Reader/Concat.php";}s:33:"File/Archive/Reader/Directory.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"ae23cc6336e3afd7a272f1f5f4ee227b";s:12:"installed_as";s:35:"./File/Archive/Reader/Directory.php";}s:28:"File/Archive/Reader/File.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"2ec3dca6a0cc176cf4057ad0db360160";s:12:"installed_as";s:30:"./File/Archive/Reader/File.php";}s:30:"File/Archive/Reader/Filter.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"5d6af477070e7b35686fe89202c94d05";s:12:"installed_as";s:32:"./File/Archive/Reader/Filter.php";}s:28:"File/Archive/Reader/Gzip.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"278614a1d715b7fb6112693b1b823e80";s:12:"installed_as";s:30:"./File/Archive/Reader/Gzip.php";}s:30:"File/Archive/Reader/Memory.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"04fc9cdbc94fa1ee321cdb76dfbd8d0a";s:12:"installed_as";s:32:"./File/Archive/Reader/Memory.php";}s:32:"File/Archive/Reader/MimeList.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"5abe9540ffc5fb9c2145c2deaeee637d";s:12:"installed_as";s:34:"./File/Archive/Reader/MimeList.php";}s:29:"File/Archive/Reader/Multi.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"fbab386b05859b8d18ea01b74190f998";s:12:"installed_as";s:31:"./File/Archive/Reader/Multi.php";}s:29:"File/Archive/Reader/Relay.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"769466a6361e37dc00a2352cb6d44e47";s:12:"installed_as";s:31:"./File/Archive/Reader/Relay.php";}s:30:"File/Archive/Reader/Select.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"d6c8fc0199fb1fc485f39aee19918186";s:12:"installed_as";s:32:"./File/Archive/Reader/Select.php";}s:27:"File/Archive/Reader/Tar.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"cd46ee9c5859eb442742ad139c76eeb6";s:12:"installed_as";s:29:"./File/Archive/Reader/Tar.php";}s:34:"File/Archive/Reader/Uncompress.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"e35fee0467332106851a0221b75455a5";s:12:"installed_as";s:36:"./File/Archive/Reader/Uncompress.php";}s:27:"File/Archive/Reader/Zip.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"35ab5a638ff2a65bfd6aae36e4dd01c1";s:12:"installed_as";s:29:"./File/Archive/Reader/Zip.php";}s:35:"File/Archive/Writer/AddBaseName.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"a1fc04bf90b61d0080220ed9ab814026";s:12:"installed_as";s:37:"./File/Archive/Writer/AddBaseName.php";}s:26:"File/Archive/Writer/Ar.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"11c4f90a9a02a9d1415f226579305d10";s:12:"installed_as";s:28:"./File/Archive/Writer/Ar.php";}s:31:"File/Archive/Writer/Archive.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"bfd8dc467d330930bcd1c9bf2e776b43";s:12:"installed_as";s:33:"./File/Archive/Writer/Archive.php";}s:29:"File/Archive/Writer/Bzip2.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"9d05da8dfe3955f57bfce70a1ef74dd0";s:12:"installed_as";s:31:"./File/Archive/Writer/Bzip2.php";}s:29:"File/Archive/Writer/Files.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"8126e87bf75cb14ecf9999705dbbfbbb";s:12:"installed_as";s:31:"./File/Archive/Writer/Files.php";}s:28:"File/Archive/Writer/Gzip.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"2bea0f19e87c7b10cfaa17b52d097db6";s:12:"installed_as";s:30:"./File/Archive/Writer/Gzip.php";}s:28:"File/Archive/Writer/Mail.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"e3bb499c917cb1266989d9b3852eb094";s:12:"installed_as";s:30:"./File/Archive/Writer/Mail.php";}s:30:"File/Archive/Writer/Memory.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"b2eb0eddbf3755d6f98c5b6362cdb834";s:12:"installed_as";s:32:"./File/Archive/Writer/Memory.php";}s:37:"File/Archive/Writer/MemoryArchive.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"2671d287491d9f19ed3011aafc0ecbb2";s:12:"installed_as";s:39:"./File/Archive/Writer/MemoryArchive.php";}s:29:"File/Archive/Writer/Multi.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"6992385fd57279064fe73962b05fe96a";s:12:"installed_as";s:31:"./File/Archive/Writer/Multi.php";}s:30:"File/Archive/Writer/Output.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"e7ce13aa2a3cfea6ba2ab1db0ef16d73";s:12:"installed_as";s:32:"./File/Archive/Writer/Output.php";}s:27:"File/Archive/Writer/Tar.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"de7408519f294060c79b84ec9d87e040";s:12:"installed_as";s:29:"./File/Archive/Writer/Tar.php";}s:38:"File/Archive/Writer/UniqueAppender.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"7cea272f9b17705ecc3644b3a721358b";s:12:"installed_as";s:40:"./File/Archive/Writer/UniqueAppender.php";}s:27:"File/Archive/Writer/Zip.php";a:3:{s:4:"role";s:3:"php";s:6:"md5sum";s:32:"40ef463030d7c9287b2be0369de8e19c";s:12:"installed_as";s:29:"./File/Archive/Writer/Zip.php";}s:19:"File/tests/test.php";a:3:{s:4:"role";s:4:"test";s:6:"md5sum";s:32:"96d99340da88d7ba2d40fc30b96a507d";s:12:"installed_as";s:43:"./tmp/test/File_Archive/File/tests/test.php";}s:19:"File/doc/readme.txt";a:3:{s:4:"role";s:3:"doc";s:6:"md5sum";s:32:"38dfc74562a6c2aee690ce6ea7597e2a";s:12:"installed_as";s:42:"./tmp/doc/File_Archive/File/doc/readme.txt";}}s:10:"xsdversion";s:3:"1.0";s:7:"package";s:12:"File_Archive";s:7:"summary";s:94:"File_Archive will let you manipulate easily the tar, gz, tgz, bz2, tbz, zip, ar (or deb) files";s:11:"description";s:303:"This library is strongly object oriented. It makes it very easy to use, writing simple code, yet the library is very powerfull.
+It lets you easily read or generate tar, gz, tgz, bz2, tbz, zip, ar (or deb) archives to files, memory, mail or standard output.
+See http://poocl.la-grotte.org for a tutorial
+";s:11:"maintainers";a:2:{i:0;a:4:{s:6:"handle";s:14:"VincentLascaux";s:4:"name";s:15:"Vincent Lascaux";s:5:"email";s:31:"vincent.lascaux@centraliens.net";s:4:"role";s:4:"lead";}i:1;a:4:{s:6:"handle";s:8:"PFischer";s:4:"name";s:13:"Pablo Fischer";s:5:"email";s:16:"pfischer@php.net";s:4:"role";s:9:"developer";}}s:7:"version";s:5:"1.5.3";s:12:"release_date";s:10:"2005-08-16";s:15:"release_license";s:4:"LGPL";s:13:"release_state";s:6:"stable";s:13:"release_notes";s:157:"Bug #4953 (absolute windows path)
+Bug #5095 (date of files when creating a zip archive)
+Fix a bug when using File_Archive::appender on non existing archives
+";s:12:"release_deps";a:5:{i:1;a:3:{s:4:"type";s:3:"php";s:3:"rel";s:2:"ge";s:7:"version";s:5:"4.3.0";}i:2;a:3:{s:4:"type";s:3:"pkg";s:3:"rel";s:3:"has";s:4:"name";s:9:"MIME_Type";}i:3;a:4:{s:4:"type";s:3:"pkg";s:3:"rel";s:3:"has";s:8:"optional";s:3:"yes";s:4:"name";s:9:"Mail_Mime";}i:4;a:4:{s:4:"type";s:3:"pkg";s:3:"rel";s:3:"has";s:8:"optional";s:3:"yes";s:4:"name";s:4:"Mail";}i:5;a:5:{s:4:"type";s:3:"pkg";s:3:"rel";s:2:"ge";s:7:"version";s:5:"1.5.0";s:8:"optional";s:3:"yes";s:4:"name";s:10:"Cache_Lite";}}s:9:"changelog";a:12:{i:0;a:4:{s:7:"version";s:5:"1.5.2";s:12:"release_date";s:10:"2005-07-27";s:13:"release_state";s:6:"stable";s:13:"release_notes";s:18:"Bug #4921, #4925
+
+";}i:1;a:4:{s:7:"version";s:5:"1.5.1";s:12:"release_date";s:10:"2005-07-26";s:13:"release_state";s:6:"stable";s:13:"release_notes";s:11:"Bug #4916
+
+";}i:2;a:4:{s:7:"version";s:5:"1.5.0";s:12:"release_date";s:10:"2005-07-15";s:13:"release_state";s:6:"stable";s:13:"release_notes";s:1053:"+ Improved zip reader (File_Archive_Zip_Reader implements more options of the PKZip standard)
+
++ Some change in the Cache_File use:
+  - The fileNameProtection is forced to false when setting the cache option
+  - Add a File_Archive_cleanCache function
+    To remove the cached compressed version of the files that are no longer present on the system, call
+    $cache->clean(false, 'callback_File_Archive_cleanCache');
+    where $cache is the Cache_Lite object passed to File_Archive.
+    
++ Introduce 'blockSize' option that indicates the size of the blocs copied from a reader to a writer when
+  extracting a file. The default has been set to 64kB but is subject to change in future releases
+  
++ File_Archive::cache to cache a reader if you read it several times in the same script
+
++ 'cacheCondition' option. With this option, you can specify you want to cache all the http
+  transfer for example. Caching an http transfer ensure that the file won't be downloaded several times
+ 
++ File_Archive::readUploadedFile creates a reader on an uploaded file
+
+";}i:3;a:4:{s:7:"version";s:5:"1.4.1";s:12:"release_date";s:10:"2005-06-08";s:13:"release_state";s:6:"stable";s:13:"release_notes";s:11:"Bug #4548
+
+";}i:4;a:4:{s:7:"version";s:5:"1.4.0";s:12:"release_date";s:10:"2005-06-06";s:13:"release_state";s:6:"stable";s:13:"release_notes";s:1410:"+ Add the possibility to use Cache_Lite to cache intermediary output of Zip compression
++ Add get and setOption method to change the default behavior of readers and writers
+  Available options are
+  	- zipCompressionLevel: default compression level of zip archives (default is 9)
+  	- gzCompressionLevel: default compression level of gz archives (default is 9)
+  	- tmpDirectory: directory where temporary files will be stored (default is '.')
+  	- cache: instance of Cache_Lite that may be used by any writer to cache data
+  	         for future use. Currently used by Zip writer (default is null: no cache)
+  	- appendRemoveDuplicates: specify if the appenders should remove the old files
+  	         from an archive to avoid creating duplicates (default is false, which is faster)
++ Add the possibility to use wildcards in read function
+     File_Archive::read('dir/*.txt') will read all txt files from directory dir
+     File_Archive::read('archive.zip/*.txt') will read all txt files from the zip archive
+	Note: The wildcards can only be used after the last '/'
++ All the File_Archive functions that take a reader or a writer as an argument can now take
+	a string or an array. For readers, strings are interpreted using File_Archive::read function
+	and array using File_Archive::readMulti. For writers, strings are interpreted using File_Archive::appender
+	function and array by creating a multi writer.
+
+";}i:5;a:4:{s:7:"version";s:5:"1.3.0";s:12:"release_date";s:10:"2005-05-30";s:13:"release_state";s:6:"stable";s:13:"release_notes";s:373:"+ Add some functions to allow archive modification
+  - File_Archive::appender creates a writer to append files to an existing archive
+  - File_Archive::remove and File_Archive::removeDuplicates removes some files from
+    an existing archive
+  
+  These functions allow to modify archives or even nested archives
+  See http://poocl.la-grotte.org for more detailed examples
+
+";}i:6;a:4:{s:7:"version";s:5:"1.2.0";s:12:"release_date";s:10:"2005-05-26";s:13:"release_state";s:6:"stable";s:13:"release_notes";s:216:"+ Add an ar (or deb) reader / writer
++ Add a getFileList() on any reader to quickly retrieve file list
++ File_Archive::readArchive properly handles tgz and tbz extensions
++ Better error handling
++ Various bug fixes
+
+";}i:7;a:4:{s:7:"version";s:5:"1.0.1";s:12:"release_date";s:10:"2005-04-21";s:13:"release_state";s:6:"stable";s:13:"release_notes";s:261:"+ Bug 4192 (<? instead of <?php in some source files)
++ Functions File_Archive::isKnownExtension and File_Archive:;readArchive
+  added. They allow to specify the type of an archive. This is usefull is the extension
+  of the file doesn't reflect its real type.
+
+";}i:8;a:4:{s:7:"version";s:5:"1.0.0";s:12:"release_date";s:10:"2005-04-17";s:13:"release_state";s:6:"stable";s:13:"release_notes";s:891:"+ Bug 4159 (PHP4 compatibility)
++ Bug 4165 (Better USTAR handling in tar files)
++ The package now use temporary files to reduce the amount of memory used
+  when reading or writing large archives. The following indicates the current
+  memory usage of the different reader / writers
+  - Tar writer: constant memory usage
+  - GZip writer: constant memory usage, temporary file
+  - BZ2 writer: constant memory usage, temporary file
+  - ZIP writer: size of the largest file written to the archive
+  
+  - Tar reader: constant memory usage
+  - GZip reader: constant memory usage, temporary file
+  - BZ2 reader: constant memory usage, temporary file
+  - ZIP reader: size of the largest file read from the archive
+  
+  The temporary files are created in the current directory. Their name start with
+  far, their extension is tmp. They are automatically deleted when the reader / writer
+  is closed.
+
+";}i:9;a:4:{s:7:"version";s:5:"0.3.0";s:12:"release_date";s:10:"2005-04-08";s:13:"release_state";s:4:"beta";s:13:"release_notes";s:460:"+ Bug 3894
++ The File_Archive::read function does no longer take the optional source parameter
+  A File_Archive::readSource function has been created that takes the source parameter
++ The mail parameter in File_Archive::toMail is now mandatory, but giving a null variable will
+  result in using Mail::factory("mail")
++ The File_Archive::toMemory function does no longer take a variable argument
+  A File_Archive::toVariable function has been created for that
+
+";}i:10;a:4:{s:7:"version";s:5:"0.2.0";s:12:"release_date";s:10:"2005-02-24";s:13:"release_state";s:4:"beta";s:13:"release_notes";s:212:"+ Add a MIME predicate
++ Change the toArchive function to detect the compression format using the extension of the file
+  (Warning: this is not backward compatible since the order of the arguments have changed)
+
+";}i:11;a:4:{s:7:"version";s:5:"0.1.0";s:12:"release_date";s:10:"2005-02-20";s:13:"release_state";s:5:"alpha";s:13:"release_notes";s:15:"First release
+
+";}}s:12:"_lastversion";N;s:7:"dirtree";a:9:{s:6:"./File";b:1;s:14:"./File/Archive";b:1;s:24:"./File/Archive/Predicate";b:1;s:21:"./File/Archive/Reader";b:1;s:21:"./File/Archive/Writer";b:1;s:34:"./tmp/test/File_Archive/File/tests";b:1;s:28:"./tmp/test/File_Archive/File";b:1;s:31:"./tmp/doc/File_Archive/File/doc";b:1;s:27:"./tmp/doc/File_Archive/File";b:1;}s:13:"_lastmodified";i:1156883288;}

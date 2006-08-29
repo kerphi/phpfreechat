@@ -1,8 +1,7 @@
 <?php
 
-require_once 'PHP/Compat.php';
-PHP_Compat::loadFunction('file_get_contents');
-PHP_Compat::loadFunction('file_put_contents');
+require_once dirname(__FILE__).'/file_get_contents.php';
+require_once dirname(__FILE__).'/file_put_contents.php';
 
 $archivename = trim(file_get_contents(dirname(__FILE__)."/archive"));
 $archivename2 = str_replace(".tar.gz","",str_replace(".zip","",$archivename));
