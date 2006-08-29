@@ -78,6 +78,8 @@ if (!$isinstalled)
   {
     echo "<p>Error!</p>";
     echo "<pre>"; print_r($errors); echo "</pre>";
+    // delete the wrong archive
+    @unlink($dstpath."/".$archivename);
   }
 }
 ?>
