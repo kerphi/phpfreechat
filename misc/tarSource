@@ -33,7 +33,7 @@ rm -rf ./$PFCSETUPNAME/pearcmd.php
 rm -rf ./$PFCSETUPNAME/pear.sh
 rm -rf ./$PFCSETUPNAME/pearrc
 rm -rf ./$PFCSETUPNAME/OS
-echo "$NAME.tar.gz" > $PFCSETUPNAME/archive
+echo "$NAME.tar.gz" > $PFCSETUPNAME/archivename
 echo `pwd` >> $PFCSETUPNAME/mirrors
 tar czfp $PFCSETUPNAME.tar.gz ./$PFCSETUPNAME
 echo "-> creating $PFCSETUPNAME.zip"
