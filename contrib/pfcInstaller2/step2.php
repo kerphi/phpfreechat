@@ -21,8 +21,8 @@ if (!$isinstalled)
   @unlink($dstpath."/".$archivename);
   
   $param = array();
-  if (isset($_GET["host"])) $http["proxy_host"] = $_GET["host"];
-  if (isset($_GET["port"])) $http["proxy_port"] = $_GET["port"];
+  if (isset($_GET["host"])) $param["proxy_host"] = $_GET["host"];
+  if (isset($_GET["port"])) $param["proxy_port"] = $_GET["port"];
   require_once "HTTP/Request.php";
   
   $nextmirror = false;
