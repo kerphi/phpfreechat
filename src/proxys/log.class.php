@@ -43,23 +43,31 @@ class pfcProxyCommand_log extends pfcProxyCommand
       $c =& $this->c;
       $u =& $this->u;
     
-      $logpath = ($c->proxys_cfg[$this->proxyname]["path"] == "" ? $c->data_public_path :
-                                                                   $c->proxys_cfg[$this->proxyname]["path"]);
-      $logfile = $logpath."/".$c->getId()."/chat.log";
-      if (is_writable($logpath))
+      $logpath = ($c->proxys_cfg[$this->proxyname]["path"] == "" ? $c->data_private_path."/logs" :
+                  $c->proxys_cfg[$this->proxyname]["path"]);
+      $logpath .= "/".$c->getId();
+      
+      if (!file_exists($logpath)) @mkdir_r($logpath);
+      if (file_exists($logpath) && is_writable($logpath))
       {
+        $logfile = $logpath."/chat.log";
         $f_exists = file_exists($logfile);
         if (($f_exists && is_writable($logpath)) ||
             !$f_exists)
         {
           $fp = fopen($logfile, $f_exists ? 'a' : 'w');
           // @todo write logs in a cleaner structured language (xml, html ... ?)
-          fwrite($fp, $recipient."\t".$sender."\t".$param."\n");
+          $log = $recipient."\t";
+          $log .= date("d/m/Y")."\t";
+          $log .= date("H:i:s")."\t";
+          $log .= $sender."\t";
+          $log .= $param."\n";         
+          fwrite($fp, $log);
           fclose($fp);
         }
       }
     }
-        
+
     // forward the command to the next proxy or to the final command
     $this->next->run($xml_reponse, $p);
   }
