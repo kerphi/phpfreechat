@@ -21,7 +21,15 @@ class pfcCommand_notice extends pfcCommand
     {
       $container =& $c->getContainerInstance();
       $msg = phpFreeChat::FilterSpecialChar($msg);
-      $container->write($recipient, $u->nick, "notice", $msg);
+      $res = $container->write($recipient, $u->nick, "notice", $msg);
+      if (is_array($res))
+      {
+        $cmdp = $p;
+        $cmdp["param"] = implode(",",$res);
+        $cmd =& pfcCommand::Factory("error");
+        $cmd->run($xml_reponse, $cmdp);
+        return;
+      }
     }
     if ($c->debug) pxlog("/notice ".$msg." (flag=".$flag.")", "chat", $c->getId());
   }

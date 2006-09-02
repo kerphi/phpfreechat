@@ -79,6 +79,14 @@ class pfcCommand_send extends pfcCommand
     {
       $container =& $c->getContainerInstance();
       $msgid = $container->write($recipient, $nick, "send", $text);
+      if (is_array($msgid))
+      {
+        $cmdp = $p;
+        $cmdp["param"] = implode(",",$msgid);
+        $cmd =& pfcCommand::Factory("error");
+        $cmd->run($xml_reponse, $cmdp);
+        return;
+      }
       if ($c->debug) pxlog("/send ".$text." (a user just sent a message -> nick=".$u->nick.")", "chat", $c->getId());
       
       // a message has been posted so :

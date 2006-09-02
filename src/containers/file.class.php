@@ -459,9 +459,11 @@ class pfcContainer_File extends pfcContainer
       $c->container_cfg_server_dir."/messages";
     // check the messages directory exists
     $errors = @test_writable_dir($msg_dir, $chan."/messages");
+    if (count($errors) > 0) return $errors; // an error occurs ?
 
     // request a unique id for this new message
     $msg_id = $this->_requestMsgId($chan);
+    if (is_array($msg_id)) return $msg_id; // an error occurs ?
     $msg_filename = $msg_dir."/".$msg_id;
 
     // format message
@@ -706,6 +708,7 @@ class pfcContainer_File extends pfcContainer
       $c->container_cfg_server_dir;
     // check the directory exists
     $errors = @test_writable_dir($chan_dir, $chan_dir);
+    if (count($errors) > 0) return $errors;
     
     $index_filename = $chan_dir . "/messages.index";
     
