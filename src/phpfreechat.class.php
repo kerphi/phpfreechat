@@ -228,7 +228,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     $c =& pfcGlobalConfig::Instance();
     //$nickname = str_replace("\\", "", $nickname); // '\' is a forbidden charactere for nicknames
     $nickname = trim($nickname);
-    $nickname = utf8_substr($nickname, 0, $c->max_nick_len);
+    $nickname = @utf8_substr($nickname, 0, $c->max_nick_len);
     return $nickname;
   }
   
