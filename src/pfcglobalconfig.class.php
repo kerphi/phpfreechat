@@ -391,24 +391,25 @@ class pfcGlobalConfig
       $this->errors[] = _pfc("'%s' parameter is not valid. Available values are : '%s'", "language", implode(", ", $lg_list));
 
     // install the proxy file
-    $proxyfile = $this->_getProxyFile();
-    $allowedpath_string  = "";
-    $allowedpath_string .= "\$allowedpath[] = '".realpath(dirname(__FILE__)."/../lib")."';\n";
-    $allowedpath_string .= "\$allowedpath[] = '".realpath(dirname(__FILE__)."/../src/client")."';\n";
-    $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath_default)."/..';\n";
-    $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath_default)."';\n";
-    $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath)."/..';\n";
-    $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath)."';\n";
-    $proxycontent = file_get_contents(dirname(__FILE__)."/client/proxy.php.tpl");
-    $proxycontent = str_replace("//%allowedpath%", $allowedpath_string, $proxycontent);
-    if (!file_exists(dirname($proxyfile)))
-      mkdir(dirname($proxyfile));
-    if (file_exists($proxyfile) &&
-        !is_writable($proxyfile))
-      $this->errors[] = _pfc("'%s' must be writable", $proxyfile);
-    else
+    if (count($this->errors) == 0)
     {
-      file_put_contents($proxyfile, $proxycontent);
+      $proxyfile = $this->_getProxyFile();
+      $allowedpath_string  = "";
+      $allowedpath_string .= "\$allowedpath[] = '".realpath(dirname(__FILE__)."/../lib")."';\n";
+      $allowedpath_string .= "\$allowedpath[] = '".realpath(dirname(__FILE__)."/../src/client")."';\n";
+      $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath_default)."/..';\n";
+      $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath_default)."';\n";
+      $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath)."/..';\n";
+      $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath)."';\n";
+      $proxycontent = file_get_contents(dirname(__FILE__)."/client/proxy.php.tpl");
+      $proxycontent = str_replace("//%allowedpath%", $allowedpath_string, $proxycontent);
+      if (!file_exists(dirname($proxyfile)))
+        @mkdir(dirname($proxyfile));
+      if (file_exists($proxyfile) &&
+          !is_writable($proxyfile))
+        $this->errors[] = _pfc("'%s' must be writable", $proxyfile);
+      else
+        @file_put_contents($proxyfile, $proxycontent);
     }
     
     // load smileys from file
