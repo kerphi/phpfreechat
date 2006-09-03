@@ -1206,6 +1206,7 @@ pfcClient.prototype = {
       if (startPos == endPos && promptifselempty)
       {
         text = prompt(this.res.getLabel('Enter the text to format'),'');
+        if (text == null) text = "";
         extralength = text.length;
       }
       if (text.length > 0 || !promptifselempty)
@@ -1220,6 +1221,7 @@ pfcClient.prototype = {
     else
     {
       var text = prompt(this.res.getLabel('Enter the text to format'),'');
+      if (text == null) text = "";
       if (text.length > 0 || !promptifselempty)
       {
         msgfield.value += open + text + close;
