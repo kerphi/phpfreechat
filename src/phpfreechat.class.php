@@ -24,7 +24,7 @@ require_once dirname(__FILE__)."/pfccommand.class.php";
 require_once dirname(__FILE__)."/pfcglobalconfig.class.php";
 require_once dirname(__FILE__)."/pfcuserconfig.class.php";
 require_once dirname(__FILE__)."/pfctemplate.class.php";
-require_once dirname(__FILE__)."/../lib/utf8/utf8.php";
+require_once dirname(__FILE__)."/../lib/utf8/utf8_substr.php";
 
 /**
  * phpFreeChat is the entry point for developpers
@@ -228,7 +228,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     $c =& pfcGlobalConfig::Instance();
     //$nickname = str_replace("\\", "", $nickname); // '\' is a forbidden charactere for nicknames
     $nickname = trim($nickname);
-    $nickname = @utf8_substr($nickname, 0, $c->max_nick_len);
+    $nickname = utf8_substr($nickname, 0, $c->max_nick_len);
     return $nickname;
   }
   
