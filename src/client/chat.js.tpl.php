@@ -12,7 +12,6 @@ var pfc_focus_on_connect      = <?php echo $focus_on_connect ? "true" : "false";
 var pfc_max_text_len          = <?php echo $max_text_len; ?>;
 var pfc_quit_on_closedwindow  = <?php echo $quit_on_closedwindow ? "true" : "false"; ?>;
 var pfc_debug                 = <?php echo $debug ? "true" : "false"; ?>;
-var pfc_max_text_len          = <?php echo $max_text_len; ?>;
 var pfc_btn_sh_smileys        = <?php echo $btn_sh_smileys ? "true" : "false"; ?>;
 var pfc_btn_sh_whosonline     = <?php echo $btn_sh_whosonline ? "true" : "false"; ?>;
 var pfc_connect_at_startup    = <?php echo $connect_at_startup ? "true" : "false"; ?>;
