@@ -31,11 +31,14 @@ echo '$files_ok = array();' >> $TMP
 echo '$files_ko = array();' >> $TMP
 for f in `find . -type f`
 do
-  sum=`md5sum $f | sed "s/\s.*$//g"`
-  echo 'if (md5(file_get_contents("'$f'")) == "'$sum'")' >> $TMP
-  echo '  $files_ok[] = "<span style=\"color:#3A3\">ok - '$f'</span>\n";' >> $TMP
-  echo 'else' >> $TMP
-  echo '  $files_ko[] = "<span style=\"color:#F33\">corrupted - '$f' (please replace this file by a correct one)</span>\n";' >> $TMP
+  if ( test $f != "./index.php"  )
+  then
+    sum=`md5sum $f | sed "s/\s.*$//g"`
+    echo 'if (md5(file_get_contents("'$f'")) == "'$sum'")' >> $TMP
+    echo '  $files_ok[] = "<span style=\"color:#3A3\">ok - '$f'</span>\n";' >> $TMP
+    echo 'else' >> $TMP
+    echo '  $files_ko[] = "<span style=\"color:#F33\">corrupted - '$f' (please replace this file by a correct one)</span>\n";' >> $TMP
+  fi
 done
 
 echo 'echo "<h2>Checking phpfreechat files validity</h2>";' >> $TMP
