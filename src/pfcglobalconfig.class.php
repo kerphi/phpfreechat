@@ -101,10 +101,16 @@ class pfcGlobalConfig
   var $debugurl            = "";
   var $debug               = false;
   var $debugxajax          = false;
-  var $dyn_params          = array("nick","isadmin","islocked","admins");
+
+  // private parameters
+  var $_dyn_params          = array("nick","isadmin","islocked","admins");
+  var $_params_type         = array();
   
   function pfcGlobalConfig( $params = array() )
   {
+    // first of all, save our current state in order to be able to check for variable types later
+    $this->_saveParamsTypes();
+    
     // setup the local for translated messages
     pfcI18N::Init(isset($params["language"]) ? $params["language"] : "");
 
@@ -163,7 +169,7 @@ class pfcGlobalConfig
     }
 
     // load dynamic parameter even if the config exists in the cache
-    foreach ( $this->dyn_params as $dp )
+    foreach ( $this->_dyn_params as $dp )
       if (isset($params[$dp]))
 	$this->$dp = $params[$dp];
 
@@ -203,6 +209,22 @@ class pfcGlobalConfig
   }
 
   /**
+   * This function saves all the parameters types in order to check later if the types are ok
+   */
+  function _saveParamsTypes()
+  {
+    $vars = get_object_vars($this);
+    foreach($vars as $k => $v)
+    {
+      if (is_string($v))                $this->_params_type["string"][]  = $k;
+      else if (is_bool($v))             $this->_params_type["bool"][]    = $k;
+      else if (is_array($v))            $this->_params_type["array"][]   = $k;
+      else if (is_int($v) && $v>=0)     $this->_params_type["positivenumeric"][] = $k;
+      else $this->_params_type["misc"][] = $k;
+    }
+  }
+  
+  /**
    * Initialize the phpfreechat configuration
    * this initialisation is done once at startup then it is stored into a session cache
    */
@@ -211,6 +233,32 @@ class pfcGlobalConfig
     $ok = true;
 
     if ($this->debug) pxlog("pfcGlobalConfig::init()", "chatconfig", $this->getId());
+    
+    // check the parameters types
+    $array_params = $this->_params_type["array"];
+    foreach( $array_params as $ap )
+    {
+      if (!is_array($this->$ap))
+        $this->errors[] = _pfc("'%s' parameter must be an array", $ap);
+    }
+    $numerical_positive_params = $this->_params_type["positivenumeric"];
+    foreach( $numerical_positive_params as $npp )
+    {
+      if (!is_int($this->$npp) || $this->$npp < 0)
+        $this->errors[] = _pfc("'%s' parameter must be a positive number", $npp);
+    }
+    $boolean_params = $this->_params_type["bool"];
+    foreach( $boolean_params as $bp )
+    {
+      if (!is_bool($this->$bp))
+        $this->errors[] = _pfc("'%s' parameter must be a boolean", $bp);
+    }
+    $string_params = $this->_params_type["string"];
+    foreach( $string_params as $sp )
+    {
+      if (!is_string($this->$sp))
+        $this->errors[] = _pfc("'%s' parameter must be a charatere string", $sp);
+    }
 
     if ($this->title == "")        $this->title        = _pfc("My Chat");
     if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.3";
@@ -354,36 +402,6 @@ class pfcGlobalConfig
     // check the frozen_nick parameter is used with a none empty nickname
     if ($this->frozen_nick && $this->nick == "")
       $this->errors[] = _pfc("frozen_nick can't be used with a empty nick");
-
-    // check if channels parameter is a strings array
-    if (!is_array($this->channels))
-      $this->errors[] = _pfc("'%s' parameter must be an array", "channels");
-    else
-      foreach($this->channels as $chan)
-      {
-        if (!is_string($chan))
-          $this->errors[] = _pfc("'%s' value must be a string", serialize($chan));
-      }
-
-    // check the max_msg is >= 0
-    if (!is_numeric($this->max_msg) || $this->max_msg < 0)
-      $this->errors[] = _pfc("'%s' parameter must be a positive number", "max_msg");
-
-    // check the max_nick_len is >= 0
-    if (!is_numeric($this->max_nick_len) || $this->max_nick_len < 0)
-      $this->errors[] = _pfc("'%s' parameter must be a positive number", "max_nick_len");
-    
-    // check the max_text_len is >= 0
-    if (!is_numeric($this->max_text_len) || $this->max_text_len < 0)
-      $this->errors[] = _pfc("'%s' parameter must be a positive number", "max_text_len");
-    
-    // check the refresh_delay is >= 0
-    if (!is_numeric($this->refresh_delay) || $this->refresh_delay < 0)
-      $this->errors[] = _pfc("'%s' parameter must be a positive number", "refresh_delay");
-    
-    // check the timeout is >= 0
-    if (!is_numeric($this->timeout) || $this->timeout < 0)
-      $this->errors[] = _pfc("'%s' parameter must be a positive number", "timeout");
     
     // check the language is known
     $lg_list = pfcI18N::GetAcceptedLanguage();
@@ -507,7 +525,7 @@ class pfcGlobalConfig
       foreach($pfc_configvar as $key => $val)
       {
         // the dynamics parameters must not be cached
-        if (!in_array($key,$this->dyn_params))
+        if (!in_array($key,$this->_dyn_params))
           $this->$key = $val;
       }
       
@@ -533,7 +551,7 @@ class pfcGlobalConfig
       if (count($errors) > 0)
       {
         @unlink($cachefile_lock); // destroy the lock file for the next attempt
-        echo "<ul>"; foreach( $errors as $e ) echo "<li>".$e."</li>"; echo "</ul>";
+        echo "<p>"._pfc("Please correct these errors").":</p><ul>"; foreach( $errors as $e ) echo "<li>".$e."</li>"; echo "</ul>";
         exit;
       }
       // save the validated config in cache
