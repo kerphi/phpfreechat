@@ -247,9 +247,9 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
       foreach ($s_strs as $s_str)
       {
         $s_str = stripslashes($s_str); /* the :'( smileys needs this filter */
-	$query .= preg_quote($s_str,'/')."|";
-	$search[] = "/".preg_quote($s_str,'/')."/";
-	$replace[] = '<img src="'.$s_file.'" alt="'.$s_str.'" title="'.$s_str.'" />';
+      	$query .= preg_quote($s_str,'/')."|";
+      	$search[] = "/".preg_quote($s_str,'/')."/";
+      	$replace[] = '<img src="'.$s_file.'" alt="'.$s_str.'" title="'.$s_str.'" />';
       }
     }
     $query = substr($query, 0, strlen($query)-1);
@@ -425,9 +425,9 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     {
       // call the command
       if ($c->debug)
-	$cmd->run($xml_reponse, $cmdp);
+      	$cmd->run($xml_reponse, $cmdp);
       else
-	@$cmd->run($xml_reponse, $cmdp);
+      	@$cmd->run($xml_reponse, $cmdp);
     }
     else
     {
@@ -447,8 +447,8 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     // do not update twice
     // do not update when the user just quit
     if ($rawcmd != "update" &&
-	$rawcmd != "quit" &&
-	$u->nick != "")
+      	$rawcmd != "quit" &&
+      	$u->nick != "")
     {
       // force an update just after a command is sent
       // thus the message user just poster is really fastly displayed
@@ -460,9 +460,9 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
       $cmdp["recipient"]   = $recipient;
       $cmdp["recipientid"] = $recipientid;
       if ($c->debug)
-	$cmd->run($xml_reponse, $cmdp);
+      	$cmd->run($xml_reponse, $cmdp);
       else
-	@$cmd->run($xml_reponse, $cmdp);
+      	@$cmd->run($xml_reponse, $cmdp);
     }
   
     if ($c->debug)

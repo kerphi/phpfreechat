@@ -306,7 +306,7 @@ pfcClient.prototype = {
       }
       else if (resp == "isused")
       {
-        this.askNick(param);
+        this.displayMsg( cmd, this.res.getLabel('Choosen nickname is allready used') );
       }
       else
         alert(cmd + "-"+resp+"-"+param);
@@ -371,6 +371,10 @@ pfcClient.prototype = {
       container.innerHTML = "";
     }    
     else if (cmd == "identify")
+    {
+      this.displayMsg( cmd, param );
+    }
+    else if (cmd == "checknickchange")
     {
       this.displayMsg( cmd, param );
     }

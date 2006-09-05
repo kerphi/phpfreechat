@@ -30,7 +30,7 @@ class pfcUserConfig
 
     // user parameters are cached in sessions
     $this->_getParam("nick");
-    if (!isset($this->nick)) $this->_setParam("nick",$c->nick);
+    if (!isset($this->nick)) $this->_setParam("nick",""); // setup a blank nick if it is not yet in session
     $this->_getParam("active");
     if (!isset($this->active)) $this->_setParam("active",false);   
     $this->_getParam("channels");
@@ -57,8 +57,7 @@ class pfcUserConfig
   function _setParam($p, $v)
   {
     $c =& pfcGlobalConfig::Instance();
-    $nickid       = "pfcuserconfig_".$c->getId();
-    $nickid_param = $nickid."_".$p;
+    $nickid_param = "pfcuserconfig_".$c->getId()./*"_".$this->nickid.*/"_".$p;
     $_SESSION[$nickid_param] = $v;
     $this->$p = $v;
   }
@@ -66,8 +65,7 @@ class pfcUserConfig
   function _rmParam($p)
   {
     $c =& pfcGlobalConfig::Instance();
-    $nickid       = "pfcuserconfig_".$c->getId();
-    $nickid_param = $nickid."_".$p;
+    $nickid_param = "pfcuserconfig_".$c->getId()./*"_".$this->nickid.*/"_".$p;    
     unset($_SESSION[$nickid_param]);
     unset($this->$p);
   }

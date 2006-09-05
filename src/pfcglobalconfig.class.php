@@ -41,7 +41,7 @@ class pfcGlobalConfig
   var $lockurl             = "http://www.phpfreechat.net"; // this is the url where the users must be redirected when the chat is locked
   
   // these parameters are static (cached)
-  var $proxys              = array("lock", "auth", "noflood", "censor", "log");
+  var $proxys              = array("lock", "auth", "checknickchange", "noflood", "censor", "log");
   var $proxys_cfg          = array("auth"    => array(),
                                    "noflood" => array("limit"=>10,"delay"=>5),
                                    "censor"  => array("words"=>array("fuck","sex","bitch"),"replaceby"=>"*"),
@@ -398,11 +398,6 @@ class pfcGlobalConfig
     // load debug url
     $this->debugurl = relativePath($this->client_script_path, dirname(__FILE__)."/../debug");
 
-
-    // check the frozen_nick parameter is used with a none empty nickname
-    if ($this->frozen_nick && $this->nick == "")
-      $this->errors[] = _pfc("frozen_nick can't be used with a empty nick");
-    
     // check the language is known
     $lg_list = pfcI18N::GetAcceptedLanguage();
     if ( $this->language != "" && !in_array($this->language, $lg_list) )
@@ -432,10 +427,6 @@ class pfcGlobalConfig
     
     // load smileys from file
     $this->loadSmileyTheme();
-    
-    // do not froze nickname if it has not be specified
-    if ($this->nick == "" && $this->frozen_nick)
-      $this->frozen_nick = false;
     
     // load version number from file
     $this->version = trim(file_get_contents(dirname(__FILE__)."/../version"));

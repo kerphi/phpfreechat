@@ -1,5 +1,6 @@
+<?php $nick = $u->nick != "" ? addslashes($u->nick) : addslashes($c->nick); ?>
+var pfc_nickname              = '<?php echo ($GLOBALS["output_encoding"]=="UTF-8" ? $nick : iconv("UTF-8", $GLOBALS["output_encoding"],$nick)); ?>';
 var pfc_version               = '<?php echo $version; ?>';
-var pfc_nickname              = '<?php echo ($GLOBALS["output_encoding"]=="UTF-8" ? addslashes($u->nick) : iconv("UTF-8", $GLOBALS["output_encoding"],addslashes($u->nick))); ?>';
 var pfc_clientid              = '<?php echo md5(uniqid(rand(), true)); ?>';
 var pfc_title                 = '<?php echo addslashes($title); ?>';
 var pfc_refresh_delay         = <?php echo $refresh_delay; ?>;
@@ -78,6 +79,7 @@ array( "Do you really want to leave this room ?", // _pfc
        "Enter the text to format", // _pfc
        "Configuration has been rehashed", // _pfc
        "A problem occurs during rehash", // _pfc
+       "Choosen nickname is allready used", //_pfc
        );
 foreach($labels_to_load as $l)
 {
