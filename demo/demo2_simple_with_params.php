@@ -38,9 +38,7 @@ $chat = new phpFreeChat( $params );
 
   <body>
 
-  <div style="width: 800px;">
-    <?php $chat->printChat(); ?>
-  </div>
+  <?php $chat->printChat(); ?>
 
 <?php
   // print the current file
