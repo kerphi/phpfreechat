@@ -44,6 +44,7 @@ class pfcCommand_getnewmsg extends pfcCommand
     }
     // check if this is the first time you get messages
     $oldmsg_sid = $c->prefix."oldmsg_".$c->getId()."_".$clientid."_".$recipientid;
+    $oldmsg = false;
     if (isset($_SESSION[$oldmsg_sid]))
     {
       unset($_SESSION[$oldmsg_sid]);
