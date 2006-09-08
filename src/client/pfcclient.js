@@ -58,7 +58,7 @@ pfcClient.prototype = {
     this.el_words     = $('pfc_words');
     this.el_handle    = $('pfc_handle');
     this.el_container = $('pfc_container');
-    this.el_online    = $('pfc_online');
+//    this.el_online    = $('pfc_online');
     this.el_errors    = $('pfc_errors');
 
     /* the events callbacks */
@@ -392,11 +392,12 @@ pfcClient.prototype = {
     var nick_src = w.value.substring(w.value.lastIndexOf(' ')+1,w.value.length);
     if (nick_src != '')
     {
-      var ul_online = this.el_online.firstChild;
-      for (var i=0; i<ul_online.childNodes.length; i++)
+      var tabid = this.gui.getTabId();
+      var n_list = this.nicklist[tabid];
+      for (var i=0; i<n_list.length; i++)
       {
-	var nick = ul_online.childNodes[i].innerHTML;
-	if (indexOf(nick, nick_src) == 0)
+	var nick = n_list[i];
+	if (nick.indexOf(nick_src) == 0)
 	  w.value = w.value.replace(nick_src, nick);
       }
     }
@@ -497,7 +498,7 @@ pfcClient.prototype = {
   {
     if (!this.isconnected) return false;
     this.clearError(Array(this.el_words));
-    var code = (evt.which) ? evt.which : event.keyCode
+    var code = (evt.which) ? evt.which : evt.keyCode
     if (code == 9) /* tab key */
     {
       /* IE workaround : ignore TAB key here */
