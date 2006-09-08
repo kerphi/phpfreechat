@@ -37,11 +37,11 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
     $sender      = $p["sender"];
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
-
+    $owner       = isset($p["owner"]) ? $p["owner"] : '';
     $c =& $this->c;
     $u =& $this->u;
 
-    if ( $this->name == "nick")
+    if ( $this->name == 'nick' )
     {
       $newnick = phpFreeChat::FilterNickname($param);
       $oldnick = $u->nick;
@@ -60,7 +60,7 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
            $u->nick != "" &&
            $param != $u->nick &&
            $c->frozen_nick == true &&
-           $p["owner"] != "checknickchange" )
+           $owner != $this->proxyname )
       {
           $msg = _pfc("You are not allowed to change your nickname");
           $xml_reponse->addScript("pfc.handleResponse('".$this->proxyname."', 'nick', '".addslashes($msg)."');");
@@ -103,22 +103,20 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
     }
 
     // allow nick changes only from the parameters array (server side)
-    if ($c->frozen_nick == true &&
+    if ($this->name != 'connect' && // don't check anything on the connect process or it could block the periodic refresh
+        $c->frozen_nick == true &&
         $u->nick != $c->nick &&
         $c->nick != "" && // don't change the nickname to empty or the asknick popup will loop indefinatly
-        $p["owner"] != "checknickchange")
+        $owner != $this->proxyname)
     {
       // change the user nickname
       $cmdp = $p;
       $cmdp["param"] = $c->nick;
-      $cmdp["owner"] = "checknickchange";
+      $cmdp["owner"] = $this->proxyname;
       $cmd =& pfcCommand::Factory("nick");
       $cmd->run($xml_reponse, $cmdp);
       return;
     }
-    
-    
-
 
     // forward the command to the next proxy or to the final command
     $this->next->run($xml_reponse, $p);
