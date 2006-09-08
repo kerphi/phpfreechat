@@ -50,7 +50,7 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
       {
         $xml_reponse->addScript("pfc.handleResponse('nick', 'notchanged', '".addslashes($newnick)."');");
         if ($c->debug)
-          pxlog("/nick ".$newnick." (user just reloded the page so let him keep his nickname without any warnings -> nickid=".$newnickid.")", "chat", $c->getId());
+          pxlog("/nick ".$newnick." (user just reloded the page so let him keep his nickname without any warnings)", "chat", $c->getId());
         return;
       }
 
