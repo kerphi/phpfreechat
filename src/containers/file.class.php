@@ -671,7 +671,8 @@ class pfcContainer_File extends pfcContainer
       $ret = @unlink($filename);
       
       // remove the cached data
-      unset($this->_meta[$enc_type][$enc_subtype][$enc_key]);
+      if (isset($this->_meta[$enc_type][$enc_subtype][$enc_key]))
+        unset($this->_meta[$enc_type][$enc_subtype][$enc_key]);
     }
 
     return $ret;
