@@ -14,10 +14,7 @@ class pfcCommand_connect extends pfcCommand
     
     $c =& $this->c;
     $u =& $this->u;
-
-    // disconnect last connected users from the server if necessary 
     $container =& $c->getContainerInstance();
-    $disconnected_users = $container->removeObsoleteNick(NULL, $c->timeout);
 
     // reset the message id indicator (see getnewmsg.class.php)
     // i.e. be ready to re-get all last posted messages

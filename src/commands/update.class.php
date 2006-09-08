@@ -67,19 +67,7 @@ class pfcCommand_update extends pfcCommand
         $cmd->run($xml_reponse, $cmdp);
       }
 
-      // take care to disconnect timeouted users on the server
-      $container =& $c->getContainerInstance();
-      $disconnected_users = $container->removeObsoleteNick(NULL,$c->timeout); 
-      // if whould be possible to echo these disconnected users on a server tab
-      // server tab is not yet available so I just commente the code
-      //       foreach ($disconnected_users as $u)
-      //       {
-      //         $cmd =& pfcCommand::Factory("notice");
-      //         $cmd->run($xml_reponse, $clientid, _pfc("%s quit (timeout)",$u), $sender, $recipient, $recipientid, 2);
-      //       }
-
-      // do not send a response in order to save some bandwidth
-      //      $xml_reponse->addScript("pfc.handleResponse('update', 'ok', '');");
+      $xml_reponse->addScript("pfc.handleResponse('update', 'ok', '');");
     }
     else
       $xml_reponse->addScript("pfc.handleResponse('update', 'ko', '');");

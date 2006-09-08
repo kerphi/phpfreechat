@@ -41,7 +41,7 @@ class pfcGlobalConfig
   var $lockurl             = "http://www.phpfreechat.net"; // this is the url where the users must be redirected when the chat is locked
   
   // these parameters are static (cached)
-  var $proxys              = array("lock", "auth", "checknickchange", "noflood", "censor", "log");
+  var $proxys              = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
   var $proxys_cfg          = array("auth"    => array(),
                                    "noflood" => array("limit"=>10,"delay"=>5),
                                    "censor"  => array("words"=>array("fuck","sex","bitch"),"replaceby"=>"*"),
