@@ -25,7 +25,7 @@ class pfcCommand_rehash extends pfcCommand
     // the right way is to wait for the next page reload and the new parameters will be taken into account
     $destroyed = $c->destroyCache();
 
-    if ($destroyed && $synchro)
+    if ($destroyed)
       $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko', '');");
     else
       $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '');");
