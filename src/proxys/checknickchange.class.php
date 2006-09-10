@@ -46,14 +46,6 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
       $newnick = phpFreeChat::FilterNickname($param);
       $oldnick = $u->nick;
       
-      if ($newnick == $oldnick)
-      {
-        $xml_reponse->addScript("pfc.handleResponse('nick', 'notchanged', '".addslashes($newnick)."');");
-        if ($c->debug)
-          pxlog("/nick ".$newnick." (user just reloded the page so let him keep his nickname without any warnings)", "chat", $c->getId());
-        return;
-      }
-
       // if the user want to change his nickname but the frozen_nick is enable
       // then send him a warning
       if ( $this->name == "nick" && 
@@ -69,7 +61,16 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
 
       $container =& $c->getContainerInstance();
       $newnickid = $container->getNickId($newnick);
-      $oldnickid = $container->getNickId($oldnick);     
+      $oldnickid = $u->nickid;
+
+      if ($newnick == $oldnick &&
+          $newnickid == $oldnickid)
+      {
+        $xml_reponse->addScript("pfc.handleResponse('nick', 'notchanged', '".addslashes($newnick)."');");
+        if ($c->debug)
+          pxlog("/nick ".$newnick." (user just reloded the page so let him keep his nickname without any warnings)", "chat", $c->getId());
+        return;
+      }
 
       // now check the nickname is not yet used (unsensitive case)
       // 'BoB' and 'bob' must be considered same nicknames
@@ -86,20 +87,13 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
               $nick_in_use = true;
           }
         }
-      if ($nick_in_use)
+      if ($nick_in_use || $newnickid != "undefined")
       {
         $xml_reponse->addScript("pfc.handleResponse('nick', 'isused', '".addslashes($newnick)."');");
         if ($c->debug)
           pxlog("/nick ".$newnick." (wanted nick is allready in use -> wantednickid=".$newnickid.")", "chat", $c->getId());
         return;
       }
-
-      if ( $newnickid != "undefined" )
-      {
-        // @todo notify the user ?
-        return;
-      }
-
     }
 
     // allow nick changes only from the parameters array (server side)
