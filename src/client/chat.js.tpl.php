@@ -79,7 +79,8 @@ array( "Do you really want to leave this room ?", // _pfc
        "Enter the text to format", // _pfc
        "Configuration has been rehashed", // _pfc
        "A problem occurs during rehash", // _pfc
-       "Choosen nickname is allready used", //_pfc
+       "Choosen nickname is allready used", // _pfc
+       "phpfreechat current version is %s", // _pfc
        );
 foreach($labels_to_load as $l)
 {
