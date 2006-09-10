@@ -410,9 +410,7 @@ class pfcGlobalConfig
       $allowedpath_string  = "";
       $allowedpath_string .= "\$allowedpath[] = '".realpath(dirname(__FILE__)."/../lib")."';\n";
       $allowedpath_string .= "\$allowedpath[] = '".realpath(dirname(__FILE__)."/../src/client")."';\n";
-      $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath_default)."/..';\n";
       $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath_default)."';\n";
-      $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath)."/..';\n";
       $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath)."';\n";
       $proxycontent = file_get_contents(dirname(__FILE__)."/client/proxy.php.tpl");
       $proxycontent = str_replace("//%allowedpath%", $allowedpath_string, $proxycontent);

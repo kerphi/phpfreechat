@@ -101,17 +101,17 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     
     // include javascript libraries
     $js = array();
-    $js[] = "lib/xajax_0.2.3/xajax_js/xajax.js";
-    $js[] = "lib/javascript/md5.js";
-    $js[] = "lib/javascript/cookie.js";
-    $js[] = "lib/javascript/image_preloader.js";
-    $js[] = "lib/javascript/myprototype.js";
-    $js[] = "lib/javascript/regex.js";
-    $js[] = "lib/javascript/utf8.js";
-    $js[] = "lib/javascript/sprintf2.js";
-    $js[] = "src/client/pfcclient.js";
-    $js[] = "src/client/pfcgui.js";
-    $js[] = "src/client/pfcresource.js";
+    $js[] = "xajax_0.2.3/xajax_js/xajax.js";
+    $js[] = "javascript/md5.js";
+    $js[] = "javascript/cookie.js";
+    $js[] = "javascript/image_preloader.js";
+    $js[] = "javascript/myprototype.js";
+    $js[] = "javascript/regex.js";
+    $js[] = "javascript/utf8.js";
+    $js[] = "javascript/sprintf2.js";
+    $js[] = "pfcclient.js";
+    $js[] = "pfcgui.js";
+    $js[] = "pfcresource.js";
     foreach( $js as $j )
     {
       $output .= "<script type=\"text/javascript\" src=\"".$c->data_public_url."/".$c->getId()."/proxy.php?p=".$j."\"></script>\n";

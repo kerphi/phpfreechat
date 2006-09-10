@@ -10,17 +10,10 @@ $allowedpath = array();
 $page = isset($_GET["p"]) ? $_GET["p"] : "";
 if ($page == "") die();
 $files = array();
-if (strpos($page, "/") > 0 )
+foreach($allowedpath as $ap)
 {
-  foreach($allowedpath as $ap)
-  {
-    $f = realpath($ap."/".$page);
-    if ($f !== FALSE) $files[] = $f;
-  }
-}
-else
-{
-  $files = array(realpath($page));
+  $f = realpath($ap."/".$page);
+  if ($f !== FALSE) $files[] = $f;
 }
 $found = "";
 for( $i = 0; $i < count($allowedpath) && $found == ""; $i++)
