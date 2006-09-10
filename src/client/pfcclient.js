@@ -324,6 +324,13 @@ pfcClient.prototype = {
         this.displayMsg( cmd, this.res.getLabel('phpfreechat current version is %s',param) );
       }
     }
+    else if (cmd == "help")
+    {
+      if (resp == "ok")
+      {
+        this.displayMsg( cmd, param);
+      }
+    }
     else if (cmd == "rehash")
     {
       if (resp == "ok")
