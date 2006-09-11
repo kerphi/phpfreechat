@@ -263,6 +263,16 @@ pfcGui.prototype = {
   },
 
   /**
+   * This function change the window title in order to catch the attention
+   */
+  notifyWindow: function()
+  {
+    var el_title = document.getElementsByTagName('title');
+//    el_title[0].innerHTML = '[*]';
+  },
+
+
+  /**
    * This function change the tab icon in order to catch the attention
    */
   notifyTab: function(tabid)

@@ -690,14 +690,16 @@ pfcClient.prototype = {
 	line += '<span class="pfc_words">'+ this.parseMessage(param) +'</span> ';
       line += '</div>';
 
-      // notify the hidden tab a message has been received
-      // don't notify anything if this is old messages
       if (oldmsg == 0)
         if (cmd == 'send' || cmd == 'me')
         {
+          // notify the hidden tab a message has been received
+          // don't notify anything if this is old messages
           var tabid = recipientid;
           if (this.gui.getTabId() != tabid)
             this.gui.notifyTab(tabid);
+	  // notify the window (change the title)
+          this.gui.notifyWindow();
         }
         
       if (msg_html[recipientid] == null)
