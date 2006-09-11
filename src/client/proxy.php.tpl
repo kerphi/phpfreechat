@@ -13,7 +13,7 @@ $files = array();
 foreach($allowedpath as $ap)
 {
   $f = realpath($ap."/".$page);
-  if ($f !== FALSE) $files[] = $f;
+  if ($f !== FALSE && file_exists($f)) $files[] = $f;
 }
 $found = "";
 for( $i = 0; $i < count($allowedpath) && $found == ""; $i++)
