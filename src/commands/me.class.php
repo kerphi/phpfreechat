@@ -4,6 +4,8 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_me extends pfcCommand
 {
+  var $usage = "/me {message}";
+
   function run(&$xml_reponse, $p)
   {
     $clientid    = $p["clientid"];
@@ -14,6 +16,17 @@ class pfcCommand_me extends pfcCommand
     
     $c =& $this->c;
     $u =& $this->u;
+
+    if (trim($param) == "")
+    {
+      // error
+      $cmdp = $p;
+      $cmdp["param"] = _pfc("Missing parameter");
+      $cmdp["param"] .= " (".$this->usage.")";
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $cmdp);
+      return;
+    }
 
     $container =& $c->getContainerInstance();
     $msg = phpFreeChat::PreFilterMsg($param);
