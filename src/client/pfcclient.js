@@ -28,6 +28,7 @@ pfcClient.prototype = {
     this.cmdhistoryid = -1;
     this.cmdhistoryissearching = false;
     
+
     /*
     this.channels      = Array();
     this.channelids    = Array();
@@ -50,7 +51,6 @@ pfcClient.prototype = {
     this.blinktmp     = Array();
     this.blinkloop    = Array();
     this.blinktimeout = Array();
-
   },
 
   connectListener: function()
@@ -60,6 +60,9 @@ pfcClient.prototype = {
     this.el_container = $('pfc_container');
 //    this.el_online    = $('pfc_online');
     this.el_errors    = $('pfc_errors');
+
+    this.detectactivity = new DetectActivity(this.el_container);
+//    this.detectactivity.onunactivate = this.gui.unnotifyWindow;
 
     /* the events callbacks */
     this.el_words.onkeypress = this.callbackWords_OnKeypress.bindAsEventListener(this);
@@ -71,6 +74,7 @@ pfcClient.prototype = {
     this.el_container.onmousedown = this.callbackContainer_OnMousedown.bindAsEventListener(this);
     this.el_container.onmouseup   = this.callbackContainer_OnMouseup.bindAsEventListener(this);
     document.body.onunload = this.callback_OnUnload.bindAsEventListener(this);
+
   },
 
   refreshGUI: function()
@@ -699,7 +703,8 @@ pfcClient.prototype = {
           if (this.gui.getTabId() != tabid)
             this.gui.notifyTab(tabid);
 	  // notify the window (change the title)
-          this.gui.notifyWindow();
+          if (!this.detectactivity.isActive())
+            this.gui.notifyWindow();
         }
         
       if (msg_html[recipientid] == null)

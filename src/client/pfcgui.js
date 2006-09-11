@@ -17,6 +17,7 @@ pfcGui.prototype = {
     this.onlinecontent = $H();
     this.scrollpos     = $H();
     this.elttoscroll   = $H();
+    this.windownotifynb = 0;
   },
 
   /**
@@ -267,10 +268,18 @@ pfcGui.prototype = {
    */
   notifyWindow: function()
   {
-    var el_title = document.getElementsByTagName('title');
-//    el_title[0].innerHTML = '[*]';
+//alert(this.windownotifynb);
+    this.windownotifynb += 1;
+    var rx = new RegExp('^\\[[0-9]+\\](.*)','ig');
+    document.title = document.title.replace(rx,'$1');
+    document.title = '['+this.windownotifynb+']'+document.title;
   },
-
+  unnotifyWindow: function()
+  {
+    this.windownotifynb = 0;
+    var rx = new RegExp('^\\[[0-9]+\\](.*)','ig');
+    document.title = document.title.replace(rx,'$1');
+  },
 
   /**
    * This function change the tab icon in order to catch the attention
