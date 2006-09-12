@@ -74,12 +74,15 @@ class pfcCommand_nick extends pfcCommand
     // -> this is a first connection
     if ($oldnickid != $u->nickid)
     {
-      // this is a first connection (create the nickname)
+      // this is a first connection : create the nickname on the server
       $container->createNick(NULL, $newnick, $u->nickid);
+      /*
+      // useless code, it's done in updatemynick command
       foreach($u->channels as $chan)
         $container->createNick($chan["recipient"], $newnick, $u->nickid);
       foreach($u->privmsg as $pv)
         $container->createNick($pv["recipient"], $newnick, $u->nickid);
+      */
       $u->nick   = $newnick;
       $u->active = true;
       $u->saveInCache();

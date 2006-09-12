@@ -94,6 +94,13 @@ class pfcContainer_File extends pfcContainer
     $this->setMeta($nick, "nickname", "fromnickid", $nickid);
     $this->setMeta($nickid, "nickid", "fromnickname", $nick);
 
+    // increment the nick references (used to know when the nick is really disconnected)
+    $nick_ref = $this->getMeta("references", $nickid);
+    if ($nick_ref == NULL || !is_numeric($nick_ref)) $nick_ref = 0;
+    $nick_ref++;
+    $this->setMeta($nick_ref, "references", $nickid);
+
+
     $c =& $this->c;
     $nick_dir = ($chan != NULL) ?
       $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
@@ -169,11 +176,21 @@ class pfcContainer_File extends pfcContainer
     $ok = @unlink($nickid_filename);
 
     // remove the user metadata if he is disconnected from the server
-    if ($chan == NULL)
+
+    // decrement the nick references and kill the metadata if not more references is found
+    // (used to know when the nick is really disconnected)
+    $nick_ref = $this->getMeta("references", $nickid);
+    if ($nick_ref == NULL || !is_numeric($nick_ref)) $nick_ref = 0;
+    $nick_ref--;
+    if ($nick_ref <= 0)
     {
       $this->rmMeta("nickid", "fromnickname", $nick);
       $this->rmMeta("nickname", "fromnickid", $nickid);
+      $this->rmMeta("references", $nickid); // destroy also the reference counter (by default its value is 0)
     }
+    else
+      $this->setMeta($nick_ref, "references", $nickid);
+
     
     if ($c->debug)
     {
@@ -349,12 +366,27 @@ class pfcContainer_File extends pfcContainer
     }
 
     // remove the user metadata if he is disconnected from the server
-    if ($chan == NULL && isset($deleted_user["nickid"]))
+    if (isset($deleted_user["nickid"]) && count($deleted_user["nickid"])>0)
     {
       foreach($deleted_user["nickid"] as $du_nid)
       {
-        $this->rmMeta("nickid",   "fromnickname", $this->getNickname($du_nid));
-        $this->rmMeta("nickname", "fromnickid",   $du_nid);
+	$du_nickid = $du_nid;
+	$du_nickname = $this->getNickname($du_nid);
+
+	// decrement the nick references and kill the metadata if not more references is found
+	// (used to know when the nick is really disconnected)
+	$nick_ref = $this->getMeta("references", $du_nickid);
+	if ($nick_ref == NULL || !is_numeric($nick_ref)) $nick_ref = 0;
+	$nick_ref--;
+	if ($nick_ref <= 0)
+	{
+	  $this->rmMeta("nickid",   "fromnickname", $du_nickname);
+	  $this->rmMeta("nickname", "fromnickid",   $du_nickid);
+	  $this->rmMeta("references", $du_nickid); // destroy also the reference counter (by default its value is 0)
+	}
+	else
+	  $this->setMeta($nick_ref, "references", $du_nickid);
+
       }
     }
     
