@@ -386,7 +386,7 @@ pfcGui.prototype = {
     inputwords.setAttribute('id', 'pfc_words');
     inputwords.setAttribute('type', 'text');
     inputwords.setAttribute('title', pfc.res.getLabel("Enter your message here"));
-    inputwords.setAttribute('maxlength', pfc_max_text_len - 25);
+    inputwords.setAttribute('maxlength', pfc_max_text_len);
     inputcontainer.appendChild(inputwords);
 
     // command container : <div id="pfc_cmd_container">
