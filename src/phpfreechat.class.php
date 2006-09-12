@@ -270,7 +270,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
   function PreFilterMsg($msg)
   {
     $c =& pfcGlobalConfig::Instance();
-    $msg = substr($msg, 0, $c->max_text_len);
+    $msg = utf8_substr($msg, 0, $c->max_text_len);
     $msg = phpFreeChat::FilterSpecialChar($msg);
     
     //    $msg = phpFreeChat::FilterSmiley($msg);
