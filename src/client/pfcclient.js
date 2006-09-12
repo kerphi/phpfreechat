@@ -63,7 +63,7 @@ pfcClient.prototype = {
 
     this.detectactivity = new DetectActivity(this.el_container);
     // restore the window title when user come back to the active zone
-    if (pfc_notify_window) this.detectactivity.onunactivate = this.gui.unnotifyWindow;
+    if (pfc_notify_window) this.detectactivity.onunactivate = this.gui.unnotifyWindow.bindAsEventListener(this.gui);
 
     /* the events callbacks */
     Event.observe(this.el_words,     'keypress',  this.callbackWords_OnKeypress.bindAsEventListener(this), false);
