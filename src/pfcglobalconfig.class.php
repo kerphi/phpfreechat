@@ -65,6 +65,7 @@ class pfcGlobalConfig
   var $nickmarker          = true; // show/hide nicknames colors
   var $clock               = true; // show/hide dates and hours
   var $openlinknewwindow   = true; // used to open the links in a new window
+  var $notify_window       = true; // true : appends a prefix to the window title with the number of new posted messages
 
   var $showwhosonline      = true;
   var $showsmileys         = true;

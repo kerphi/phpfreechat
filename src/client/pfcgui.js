@@ -268,7 +268,6 @@ pfcGui.prototype = {
    */
   notifyWindow: function()
   {
-//alert(this.windownotifynb);
     this.windownotifynb += 1;
     var rx = new RegExp('^\\[[0-9]+\\](.*)','ig');
     document.title = document.title.replace(rx,'$1');

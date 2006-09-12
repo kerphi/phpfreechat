@@ -62,19 +62,19 @@ pfcClient.prototype = {
     this.el_errors    = $('pfc_errors');
 
     this.detectactivity = new DetectActivity(this.el_container);
-//    this.detectactivity.onunactivate = this.gui.unnotifyWindow;
+    // restore the window title when user come back to the active zone
+    if (pfc_notify_window) this.detectactivity.onunactivate = this.gui.unnotifyWindow;
 
     /* the events callbacks */
-    this.el_words.onkeypress = this.callbackWords_OnKeypress.bindAsEventListener(this);
-    this.el_words.onkeydown  = this.callbackWords_OnKeydown.bindAsEventListener(this);
-    this.el_words.onfocus    = this.callbackWords_OnFocus.bindAsEventListener(this);
-    this.el_handle.onkeydown = this.callbackHandle_OnKeydown.bindAsEventListener(this);
-    this.el_handle.onchange  = this.callbackHandle_OnChange.bindAsEventListener(this);
-    this.el_container.onmousemove = this.callbackContainer_OnMousemove.bindAsEventListener(this);
-    this.el_container.onmousedown = this.callbackContainer_OnMousedown.bindAsEventListener(this);
-    this.el_container.onmouseup   = this.callbackContainer_OnMouseup.bindAsEventListener(this);
-    document.body.onunload = this.callback_OnUnload.bindAsEventListener(this);
-
+    Event.observe(this.el_words,     'keypress',  this.callbackWords_OnKeypress.bindAsEventListener(this), false);
+    Event.observe(this.el_words,     'keydown',   this.callbackWords_OnKeydown.bindAsEventListener(this), false);
+    Event.observe(this.el_words,     'focus',     this.callbackWords_OnFocus.bindAsEventListener(this), false);
+    Event.observe(this.el_handle,    'keydown',   this.callbackHandle_OnKeydown.bindAsEventListener(this), false);
+    Event.observe(this.el_handle,    'change',    this.callbackHandle_OnChange.bindAsEventListener(this), false);
+    Event.observe(this.el_container, 'mousemove', this.callbackContainer_OnMousemove.bindAsEventListener(this), false);
+    Event.observe(this.el_container, 'mousedown', this.callbackContainer_OnMousedown.bindAsEventListener(this), false);
+    Event.observe(this.el_container, 'mouseup',   this.callbackContainer_OnMouseup.bindAsEventListener(this), false);
+    Event.observe(document.body,     'unload',    this.callback_OnUnload.bindAsEventListener(this), false);
   },
 
   refreshGUI: function()
@@ -703,7 +703,7 @@ pfcClient.prototype = {
           if (this.gui.getTabId() != tabid)
             this.gui.notifyTab(tabid);
 	  // notify the window (change the title)
-          if (!this.detectactivity.isActive())
+          if (!this.detectactivity.isActive() && pfc_notify_window)
             this.gui.notifyWindow();
         }
         

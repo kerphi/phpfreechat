@@ -16,6 +16,7 @@ var pfc_debug                 = <?php echo $debug ? "true" : "false"; ?>;
 var pfc_btn_sh_smileys        = <?php echo $btn_sh_smileys ? "true" : "false"; ?>;
 var pfc_btn_sh_whosonline     = <?php echo $btn_sh_whosonline ? "true" : "false"; ?>;
 var pfc_connect_at_startup    = <?php echo $connect_at_startup ? "true" : "false"; ?>;
+var pfc_notify_window         = <?php echo $notify_window ? "true" : "false"; ?>;
 var pfc_defaultchan = Array(<?php
                          function quoteandescape($v) { return "'".addslashes($v)."'"; }
                          $list = array(); foreach($c->channels as $ch) {$list[] = $ch; }
