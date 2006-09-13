@@ -256,9 +256,13 @@ pfcGui.prototype = {
     var div_online  = this.getOnlineContentFromTabId(tabid);
     div_content.appendChild(div_chat);
     div_content.appendChild(div_online);
-    
+   
     $('pfc_channels_list').appendChild(li_title);
     $('pfc_channels_content').appendChild(div_content);
+
+    // force the height of the chat/online zone in pixel in order fix blank screens on IE6
+    div_chat.style.height   = ($('pfc_channels_content').offsetHeight-1)+'px';
+    div_online.style.height = ($('pfc_channels_content').offsetHeight-1)+'px';
 
     return tabid;
   },

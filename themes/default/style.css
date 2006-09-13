@@ -33,7 +33,6 @@ div#pfc_channels_content {
   background-color: #FFF;
   margin-top: 5px;
   height: 300px;
-  font-family: serif; /* needed by IE6 in order to display correctly chinese characteres */
 }
 div.pfc_content {
 }
@@ -90,7 +89,8 @@ div.pfc_chat {
   top: 0;
   left: 0;
   width: 80%;
-  height: 100%;
+/* WARNING: do not fix height in % because it will display blank screens on IE6 */
+/*  height: 100%;*/
   overflow: auto;
 }
 
@@ -101,7 +101,8 @@ div.pfc_online {
   padding: 0;
   overflow: auto;
   width: 20%;
-  height: 100%;
+/* WARNING: do not fix height in % because it will display blank screens on IE6 */
+/*  height: 100%;*/
   color: #000; /* colors can be overriden by js nickname colorization */
   background-color: #FFF;
   background-image: url("proxy.php?p=default/images/online-separator.gif");
