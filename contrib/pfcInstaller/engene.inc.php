@@ -232,7 +232,7 @@ class phpInstaller{
 		
 	}
 	
-	protected function addInstallerPage(){
+	function addInstallerPage(){
 		$fc = file_get_contents($this->dataDir.'/step_installer.txt');
 		$this->installer_page = $this->addPage('Install',$fc);
 		echo '<div>Page: '.$this->installer_page.'</div>';

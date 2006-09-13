@@ -30,30 +30,32 @@ echo "-> creating $NAME.tar.gz"
 tar czfp $NAME.tar.gz ./$NAME 
 echo "-> creating $NAME.zip"
 zip -Tq9r $NAME.zip ./$NAME
+echo "-> creating $NAME-setup.php"
+php ./createwebinstaller.php `cat ../version` > /dev/null
 
-echo "-> creating $PFCSETUPNAME.tar.gz"
-rm -rf ./$PFCSETUPNAME
-svn export ../contrib/pfcInstaller2 $PFCSETUPNAME
-rm -rf ./$PFCSETUPNAME/.registry
-rm -rf ./$PFCSETUPNAME/.depdblock
-rm -rf ./$PFCSETUPNAME/.lock
-rm -rf ./$PFCSETUPNAME/.channels
-rm -rf ./$PFCSETUPNAME/tmp
-rm -rf ./$PFCSETUPNAME/bin
-rm -rf ./$PFCSETUPNAME/PEAR
-rm -rf ./$PFCSETUPNAME/System.php
-rm -rf ./$PFCSETUPNAME/peclcmd.php
-rm -rf ./$PFCSETUPNAME/pearcmd.php
-rm -rf ./$PFCSETUPNAME/pear.sh
-rm -rf ./$PFCSETUPNAME/pearrc
-rm -rf ./$PFCSETUPNAME/OS
-echo "$NAME.tar.gz" > $PFCSETUPNAME/archivename
-echo `pwd` >> $PFCSETUPNAME/mirrors
-tar czfp $PFCSETUPNAME.tar.gz ./$PFCSETUPNAME
-echo "-> creating $PFCSETUPNAME.zip"
-zip -Tq9r $PFCSETUPNAME.zip ./$PFCSETUPNAME
+#echo "-> creating $PFCSETUPNAME.tar.gz"
+#rm -rf ./$PFCSETUPNAME
+#svn export ../contrib/pfcInstaller2 $PFCSETUPNAME
+#rm -rf ./$PFCSETUPNAME/.registry
+#rm -rf ./$PFCSETUPNAME/.depdblock
+#rm -rf ./$PFCSETUPNAME/.lock
+#rm -rf ./$PFCSETUPNAME/.channels
+#rm -rf ./$PFCSETUPNAME/tmp
+#rm -rf ./$PFCSETUPNAME/bin
+#rm -rf ./$PFCSETUPNAME/PEAR
+#rm -rf ./$PFCSETUPNAME/System.php
+#rm -rf ./$PFCSETUPNAME/peclcmd.php
+#rm -rf ./$PFCSETUPNAME/pearcmd.php
+#rm -rf ./$PFCSETUPNAME/pear.sh
+#rm -rf ./$PFCSETUPNAME/pearrc
+#rm -rf ./$PFCSETUPNAME/OS
+#echo "$NAME.tar.gz" > $PFCSETUPNAME/archivename
+#echo `pwd` >> $PFCSETUPNAME/mirrors
+#tar czfp $PFCSETUPNAME.tar.gz ./$PFCSETUPNAME
+#echo "-> creating $PFCSETUPNAME.zip"
+#zip -Tq9r $PFCSETUPNAME.zip ./$PFCSETUPNAME
+#rm -rf ./$PFCSETUPNAME
 
 echo "-> removing temporary files"
 rm -rf ./$NAME
-rm -rf ./$PFCSETUPNAME
 echo "-- creating archive $NAME, done --"
