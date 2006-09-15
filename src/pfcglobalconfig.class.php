@@ -104,7 +104,7 @@ class pfcGlobalConfig
   var $debugxajax          = false;
 
   // private parameters
-  var $_dyn_params          = array("nick","isadmin","islocked","admins");
+  var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels");
   var $_params_type         = array();
   
   function pfcGlobalConfig( $params = array() )
