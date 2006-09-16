@@ -450,7 +450,7 @@ pfcClient.prototype = {
       this.cmdhistoryissearching = false;
 
       // send the string to the server
-      re = new RegExp("^(\/[a-z0-9]+)( (.*)|)");
+      re = new RegExp("^(\/[a-zA-Z0-9]+)( (.*)|)");
       if (wval.match(re))
       {
 	/* a user command */

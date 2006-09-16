@@ -318,10 +318,10 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     $sender    = "";
     //if (preg_match("/^\/([a-z]*) ([0-9a-f]*) ([0-9a-f]*)( (.*)|)/", $request, $res))
     //if (preg_match("/^\/([a-z]+) ([0-9a-f]+) ([0-9a-f]+) (.*)/", $request, $res))
-    if (preg_match("/^\/([a-z0-9]+) ([0-9a-f]+) ([0-9a-f]+)( (.*)|)/", $request, $res))
+    if (preg_match("/^\/([a-zA-Z0-9]+) ([0-9a-f]+) ([0-9a-f]+)( (.*)|)/", $request, $res))
     {
       
-      $rawcmd      = isset($res[1]) ? $res[1] : "";
+      $rawcmd      = strtolower(isset($res[1]) ? $res[1] : "");
       $clientid    = isset($res[2]) ? $res[2] : "";
       $recipientid = isset($res[3]) ? $res[3] : "";
       $param       = isset($res[5]) ? $res[5] : "";
