@@ -41,14 +41,18 @@ class pfcGlobalConfig
   var $lockurl             = "http://www.phpfreechat.net"; // this is the url where the users must be redirected when the chat is locked
   
   // these parameters are static (cached)
-  var $proxys              = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
+  var $skip_proxys         = array(); // these proxies will be skiped. ex: append "censor" to the list to disable words censoring
+  var $post_proxys         = array(); // these proxies will be handled just before to process commands and just after system proxies
+  var $pre_proxys          = array(); // these proxies will be handled before system proxies (at begining)
   var $proxys_cfg          = array("auth"    => array(),
                                    "noflood" => array("limit"=>10,"delay"=>5),
                                    "censor"  => array("words"=>array("fuck","sex","bitch"),"replaceby"=>"*"),
                                    "log"     => array("path"=>""));
+  var $proxys_path         = ""; // a custom proxies path
+  var $proxys_path_default = ""; // dirname(__FILE__).'/proxys'
   var $title               = ""; // default is _pfc("My Chat")
   var $channels            = array(); // the default joined channels when opening the chat
-  var $frozen_channels     = array(); // by default allow users to create there own channels
+  var $frozen_channels     = array(); // if empty, allows users to create there own channels
   var $frozen_nick         = false;
   var $max_nick_len        = 15;
   var $max_text_len        = 400;
@@ -96,7 +100,6 @@ class pfcGlobalConfig
 
   var $smileys             = array();
   var $errors              = array();
-  var $prefix              = "pfc_";
   var $is_init             = false; // used internaly to know if the chat config is initialized
   var $version             = ""; // the phpfreechat version: taken from the 'version' file content
   var $debugurl            = "";
@@ -104,6 +107,8 @@ class pfcGlobalConfig
   var $debugxajax          = false;
 
   // private parameters
+  var $_sys_proxys          = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
+  var $_proxys              = array(); // will contains proxies to execute on each command (filled in the init step)
   var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels");
   var $_params_type         = array();
   
@@ -158,6 +163,9 @@ class pfcGlobalConfig
       {
         if (!isset($this->$k))
           $this->errors[] = _pfc("Error: undefined or obsolete parameter '%s', please correct or remove this parameter", $k);
+        if (preg_match('/^_/',$k))
+          $this->errors[] = _pfc("Error: '%s' is a private parameter, you are not allowed to change it", $k);
+        
         if ($k == "proxys_cfg")
         {
           // don't replace all the proxy_cfg parameters, just replace the specified ones
@@ -386,6 +394,33 @@ class pfcGlobalConfig
       else
         @file_put_contents($proxyfile, $proxycontent);
     }
+
+
+    // calculate the proxies chaine
+    $this->_proxys = array();
+    foreach($this->pre_proxys as $px)
+    {
+      if (!in_array($px,$this->skip_proxys) && !in_array($px,$this->_proxys))
+        $this->_proxys[] = $px;
+        
+    }
+    foreach($this->_sys_proxys as $px)
+    {
+      if (!in_array($px,$this->skip_proxys) && !in_array($px,$this->_proxys))
+        $this->_proxys[] = $px;
+        
+    }
+    foreach($this->post_proxys as $px)
+    {
+      if (!in_array($px,$this->skip_proxys) && !in_array($px,$this->_proxys))
+        $this->_proxys[] = $px;
+        
+    }
+    // save the proxies path
+    $this->proxys_path_default = dirname(__FILE__).'/proxys';
+    // check the customized proxies path
+    if ($this->proxys_path != '' && !is_dir($this->proxys_path))
+      $this->errors[] = _pfc("'%s' directory doesn't exist", $this->proxys_path);
     
     // load smileys from file
     $this->loadSmileyTheme();

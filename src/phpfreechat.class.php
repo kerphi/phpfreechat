@@ -64,7 +64,7 @@ class phpFreeChat
       if (file_exists($c->xajaxpath."/xajax.inc.php"))
       {
         require_once $c->xajaxpath."/xajax.inc.php";        
-        $this->xajax = new xajax($c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""), $c->prefix);
+        $this->xajax = new xajax($c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""), 'pfc_');
         if ($c->debugxajax) $this->xajax->debugOn();
         $this->xajax->waitCursorOff(); // do not show a wait cursor during chat updates
         $this->xajax->cleanBufferOff();

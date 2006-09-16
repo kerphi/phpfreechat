@@ -81,15 +81,21 @@ class pfcCommand
       
       // instanciate the proxys chaine
       $firstproxy =& $cmd;
-      for($i = count($c->proxys)-1; $i >= 0; $i--)
+      for($i = count($c->_proxys)-1; $i >= 0; $i--)
       {
-        $proxy_name      = strtolower($c->proxys[$i]);
+        $proxy_name      = strtolower($c->_proxys[$i]);
         $proxy_classname = "pfcProxyCommand_" . $proxy_name;
         if (!class_exists($proxy_classname))
         {
-          // try to include the proxy class file
-          $proxy_filename  = dirname(__FILE__)."/proxys/".$proxy_name.".class.php";
-          if (file_exists($proxy_filename)) require_once($proxy_filename);
+          // try to include the proxy class file from the default path or from the customized path
+          $proxy_filename  = $c->proxys_path_default.'/'.$proxy_name.".class.php";
+          if (file_exists($proxy_filename))
+            require_once($proxy_filename);
+          else
+          {
+            $proxy_filename = $c->proxys_path.'/'.$proxy_name.".class.php";
+            if (file_exists($proxy_filename)) require_once($proxy_filename);
+          }
         }
         if (class_exists($proxy_classname))
         {
