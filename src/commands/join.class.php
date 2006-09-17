@@ -38,7 +38,7 @@ class pfcCommand_join extends pfcCommand
       $u->saveInCache();
 
       // clear the cached nicknames list for the given channel
-      $nicklist_sid = $c->prefix."nicklist_".$c->getId()."_".$clientid."_".$chanid;
+      $nicklist_sid = "pfc_nicklist_".$c->getId()."_".$clientid."_".$chanid;
       $_SESSION[$nicklist_sid] = NULL;
     }
 

@@ -19,21 +19,21 @@ class pfcCommand_getnewmsg extends pfcCommand
     //$xml_reponse->addScript("alert('getnewmsg: sender=".addslashes($sender)." param=".addslashes($param)." recipient=".addslashes($recipient)." recipientid=".addslashes($recipientid)."');");
     
     // check this methode is not being called
-    if( isset($_SESSION[$c->prefix."lock_readnewmsg_".$c->getId()."_".$clientid]) )
+    if( isset($_SESSION["pfc_lock_readnewmsg_".$c->getId()."_".$clientid]) )
     {
       // kill the lock if it has been created more than 10 seconds ago
       $last_10sec = time()-10;
-      $last_lock = $_SESSION[$c->prefix."lock_readnewmsg_".$c->getId()."_".$clientid];
-      if ($last_lock < $last_10sec) $_SESSION[$c->prefix."lock_".$c->getId()."_".$clientid] = 0;
-      if ( $_SESSION[$c->prefix."lock_readnewmsg_".$c->getId()."_".$clientid] != 0 ) exit;
+      $last_lock = $_SESSION["pfc_lock_readnewmsg_".$c->getId()."_".$clientid];
+      if ($last_lock < $last_10sec) $_SESSION["pfc_lock_".$c->getId()."_".$clientid] = 0;
+      if ( $_SESSION["pfc_lock_readnewmsg_".$c->getId()."_".$clientid] != 0 ) exit;
     }
     // create a new lock
-    $_SESSION[$c->prefix."lock_readnewmsg_".$c->getId()."_".$clientid] = time();
+    $_SESSION["pfc_lock_readnewmsg_".$c->getId()."_".$clientid] = time();
 
 
     // read the last from_id value
     $container =& $c->getContainerInstance();
-    $from_id_sid = $c->prefix."from_id_".$c->getId()."_".$clientid."_".$recipientid;
+    $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$recipientid;
     $from_id = 0;
     if (isset($_SESSION[$from_id_sid]))
       $from_id = $_SESSION[$from_id_sid];
@@ -43,7 +43,7 @@ class pfcCommand_getnewmsg extends pfcCommand
       if ($from_id < 0) $from_id = 0;
     }
     // check if this is the first time you get messages
-    $oldmsg_sid = $c->prefix."oldmsg_".$c->getId()."_".$clientid."_".$recipientid;
+    $oldmsg_sid = "pfc_oldmsg_".$c->getId()."_".$clientid."_".$recipientid;
     $oldmsg = false;
     if (isset($_SESSION[$oldmsg_sid]))
     {
@@ -91,7 +91,7 @@ class pfcCommand_getnewmsg extends pfcCommand
     }
     
     // remove the lock
-    $_SESSION[$c->prefix."lock_readnewmsg_".$c->getId()."_".$clientid] = 0;
+    $_SESSION["pfc_lock_readnewmsg_".$c->getId()."_".$clientid] = 0;
     
   }
 }

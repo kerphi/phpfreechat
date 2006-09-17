@@ -67,12 +67,12 @@ class pfcCommand_privmsg extends pfcCommand
       $u->saveInCache();
 
       // clear the cached nicknames list for the given channel
-      $nicklist_sid = $c->prefix."nicklist_".$c->getId()."_".$clientid."_".$pvrecipientid;
+      $nicklist_sid = "pfc_nicklist_".$c->getId()."_".$clientid."_".$pvrecipientid;
       $_SESSION[$nicklist_sid] = NULL;
       
       // reset the message id indicator
       // i.e. be ready to re-get all last posted messages
-      $from_id_sid = $c->prefix."from_id_".$c->getId()."_".$clientid."_".$pvrecipientid;
+      $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$pvrecipientid;
       $from_id     = $container->getLastId($pvrecipient)-$c->max_msg;
       $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
     }

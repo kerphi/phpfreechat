@@ -16,7 +16,7 @@ class pfcCommand_getonlinenick extends pfcCommand
     $container =& $c->getContainerInstance();
     
     // get the cached nickname list
-    $nicklist_sid = $c->prefix."nicklist_".$c->getId()."_".$clientid."_".$recipientid;
+    $nicklist_sid = "pfc_nicklist_".$c->getId()."_".$clientid."_".$recipientid;
     $oldnicklist = isset($_SESSION[$nicklist_sid]) ? $_SESSION[$nicklist_sid] : array();
 
     // get the real nickname list

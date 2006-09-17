@@ -57,8 +57,8 @@ class pfcCommand_send extends pfcCommand
     
     // check the sent text is not empty and the user has a none empty nickname
     $errors = array();
-    if ($text == "") $errors[$c->prefix."words"]  = _pfc("Text cannot be empty");
-    if ($nick == "") $errors[$c->prefix."handle"] = _pfc("Please enter your nickname");
+    if ($text == "") $errors["pfc_words"]  = _pfc("Text cannot be empty");
+    if ($nick == "") $errors["pfc_handle"] = _pfc("Please enter your nickname");
     if (count($errors) > 0)
     {
       // an error occured, just ignore the message and display errors
@@ -68,8 +68,8 @@ class pfcCommand_send extends pfcCommand
       $cmdp["param"] = $errors;
       $cmd =& pfcCommand::Factory("error");
       $cmd->run($xml_reponse, $cmdp);
-      if (isset($errors[$c->prefix."handle"])) // the nick is empty so give it focus
-        $xml_reponse->addScript("$('".$c->prefix."handle').focus();");
+      if (isset($errors["pfc_handle"])) // the nick is empty so give it focus
+        $xml_reponse->addScript("$('pfc_handle').focus();");
       $can_send = false;
     }
 
@@ -92,8 +92,8 @@ class pfcCommand_send extends pfcCommand
       // a message has been posted so :
       // - clear errors
       // - give focus to "words" field
-      $xml_reponse->addScript("pfc.clearError(Array('".$c->prefix."words"."','".$c->prefix."handle"."'));");
-      $xml_reponse->addScript("$('".$c->prefix."words').focus();");
+      $xml_reponse->addScript("pfc.clearError(Array('pfc_words"."','pfc_handle"."'));");
+      $xml_reponse->addScript("$('pfc_words').focus();");
     }
   }
 }

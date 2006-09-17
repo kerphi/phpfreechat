@@ -90,17 +90,25 @@ class pfcContainer_File extends pfcContainer
    */
   function createNick($chan, $nick, $nickid)
   {
+    $c =& $this->c;
+
     // store nickid -> nickname and nickname -> nickid correspondance
     $this->setMeta($nick, "nickname", "fromnickid", $nickid);
     $this->setMeta($nickid, "nickid", "fromnickname", $nick);
 
+    $this->_registerUserMeta($nickid, $chan);
+
+    if ($c->debug) pxlog("createNick - nickname metadata created: chan=".($chan==NULL?"SERVER":$chan)." nickid=".$nickid, "chat", $c->getId());
+
+    /*
     // increment the nick references (used to know when the nick is really disconnected)
     $nick_ref = $this->getMeta("references", $nickid);
     if ($nick_ref == NULL || !is_numeric($nick_ref)) $nick_ref = 0;
     $nick_ref++;
     $this->setMeta($nick_ref, "references", $nickid);
+    */
 
-
+    
     $c =& $this->c;
     $nick_dir = ($chan != NULL) ?
       $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
@@ -119,19 +127,16 @@ class pfcContainer_File extends pfcContainer
     // check the if the file exists only in debug mode!
     if ($c->debug)
     {
+      /*
       if (file_exists($nickid_filename))
-        pxlog("createNick(".$nick.", ".$nickid.") - Error: another nickname data file exists, we are overwriting it (nickname takeover)!", "chat", $c->getId());
+        pxlog("createNick(".$nick.", ".$nickid.") - Error: another nickname data file exists, we are overwriting it (nickname takeover)!: ".$nickid_filename, "chat", $c->getId());
+      else
+        pxlog("createNick - nickname file created: chan=".($chan==NULL?"SERVER":$chan)." nickid=".$nickid, "chat", $c->getId());
+      */
     }
     
     // trust the caller : this nick is not used
     touch($nickid_filename);
-    /*
-    $fp = fopen($nickid_filename, "w");
-    flock ($fp, LOCK_EX); // lock
-    fwrite($fp, $nickid);
-    flock ($fp, LOCK_UN); // unlock
-    fclose($fp);
-    */
     
     // append the nickname to the cached nickname list
     $id = $this->isNickOnline($chan, $nick);
@@ -141,7 +146,7 @@ class pfcContainer_File extends pfcContainer
       $this->_users[$_chan]["nickid"][]    = $nickid;
       $this->_users[$_chan]["timestamp"][] = filemtime($nickid_filename);
     }
-    
+
     return true;
   }
 
@@ -170,13 +175,18 @@ class pfcContainer_File extends pfcContainer
       
       // check the nickname file really exists
       if (!file_exists($nickid_filename))
-        pxlog("removeNick(".$nick.") - Error: the nickname data file to remove doesn't exists", "chat", $c->getId());
+        pxlog("removeNick(".$nick.") - Error: the nickname data file to remove doesn't exists: ".$nickid_filename, "chat", $c->getId());
+      else
+        pxlog("removeNick - nickname file removed: chan=".($chan==NULL?"SERVER":$chan)." nickid=".$nickid, "chat", $c->getId());
     }
 
     $ok = @unlink($nickid_filename);
 
     // remove the user metadata if he is disconnected from the server
 
+    $this->_unregisterUserMeta($nickid, $chan);
+
+    /*
     // decrement the nick references and kill the metadata if not more references is found
     // (used to know when the nick is really disconnected)
     $nick_ref = $this->getMeta("references", $nickid);
@@ -190,7 +200,7 @@ class pfcContainer_File extends pfcContainer
     }
     else
       $this->setMeta($nick_ref, "references", $nickid);
-
+    */
     
     if ($c->debug)
     {
@@ -222,6 +232,9 @@ class pfcContainer_File extends pfcContainer
     // retrive the nickid to update
     $nickid = $this->getNickId($nick);
     if ($nickid == "undefined") return false;
+
+    // update the user metadata
+    $this->_registerUserMeta($nickid, $chan);
     
     $c =& $this->c;
     $there = false;
@@ -237,6 +250,8 @@ class pfcContainer_File extends pfcContainer
     @touch($nickid_filename);
     @chmod($nickid_filename, 0700); 
 
+    if ($c->debug) pxlog("updateNick - nickname file updated: chan=".($chan==NULL?"SERVER":$chan)." nickid=".$nickid, "chat", $c->getId());        
+    
     // append the nickname to the cache list
     $_chan = ($chan == NULL) ? "SERVER" : $chan;
     $id = $this->isNickOnline($chan, $nick);
@@ -373,6 +388,9 @@ class pfcContainer_File extends pfcContainer
 	$du_nickid = $du_nid;
 	$du_nickname = $this->getNickname($du_nid);
 
+        $this->_unregisterUserMeta($du_nickid, $chan);
+
+        /*
 	// decrement the nick references and kill the metadata if not more references is found
 	// (used to know when the nick is really disconnected)
 	$nick_ref = $this->getMeta("references", $du_nickid);
@@ -386,7 +404,7 @@ class pfcContainer_File extends pfcContainer
 	}
 	else
 	  $this->setMeta($nick_ref, "references", $du_nickid);
-
+        */
       }
     }
     
@@ -725,6 +743,52 @@ class pfcContainer_File extends pfcContainer
     $this->_users = array("nickid"    => array(),
                           "timestamp" => array());
   }
+
+  function _registerUserMeta($nickid, $chan)
+  {
+    $c =& $this->c;
+    // create or update the nickname references (used to know when the nick is really disconnected)
+    if ($chan == NULL) $chan = "SERVER";
+    $ref = $this->getMeta("references", $nickid);
+    if ($ref == NULL)
+      $ref = array();
+    else
+      $ref = explode(';',$ref);
+    if ($c->debug) pxlog("registerUserMeta -> ref=".implode(';',$ref), "chat", $c->getId());
+    if (in_array($chan,$ref))
+      return;
+    else
+      $ref[] = $chan;
+    $ref = implode(';',$ref);
+    $this->setMeta($ref, "references", $nickid);
+  }
+
+  function _unregisterUserMeta($nickid, $chan)
+  {
+    $c =& $this->c;
+    // decrement the nick references and kill the metadata if not more references is found
+    // (used to know when the nick is really disconnected)
+    if ($chan == NULL) $chan = "SERVER";
+    $nickname = $this->getNickname($nickid);
+    $ref = $this->getMeta("references", $nickid);
+    if ($ref == NULL) $ref = '';
+    $ref = explode(';',$ref);
+    $ref = array_diff($ref, array($chan));
+    if (count($ref) == 0)
+    {
+      $this->rmMeta("nickid",   "fromnickname", $nickname);
+      $this->rmMeta("nickname", "fromnickid",   $nickid);
+      $this->rmMeta("references", $nickid); // destroy also the reference counter
+      if ($c->debug) pxlog("_unregisterUserMeta -> destroy!", "chat", $c->getId());
+    }
+    else
+    { 
+      $ref = implode(';',$ref);
+      $this->setMeta($ref, "references", $nickid);
+      if ($c->debug) pxlog("_unregisterUserMeta -> ref=".$ref, "chat", $c->getId());
+    }
+  }
+
   
   /**
    * Return a unique id. Each time this function is called, the last id is incremented.
