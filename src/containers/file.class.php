@@ -848,6 +848,161 @@ class pfcContainer_File extends pfcContainer
   {
     return urldecode(base64_decode($str));
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /**
+   * Write a meta data value identified by a group / subgroup / leaf [with a value]
+   * @return 1 if the leaf allready existed, 0 if the leaf has been created
+   */
+  function setMeta2($group, $subgroup, $leaf, $leafvalue = NULL)
+    //                    value, $key, $type, $subtype = NULL)
+  {
+    // create directories
+    $c =& $this->c;
+    $dir_base = $c->container_cfg_meta_dir;
+    $dir = $dir_base.'/'.$group.'/'.$subgroup;
+    if (!is_dir($dir)) mkdir_r($dir);
+
+    // create or replace metadata file
+    $leaffilename = $dir."/".$leaf;
+    $leafexists = file_exists($leaffilename);
+    if ($leafvalue == NULL)
+    {
+      @touch($leaffilename);
+    }
+    else
+    {
+      @file_put_contents($leaffilename, $leafvalue);
+    }
+
+    // store the value in the memory cache
+    //@todo
+    //    $this->_meta[$enc_type][$enc_subtype][$enc_key] = $value;
+
+    if ($leafexists)
+      return 1; // value overwritten
+    else
+      return 0; // value created
+  }
+
+  
+  /**
+   * Read meta data identified by a group [/ subgroup [/ leaf]]
+   * @return ...
+   */
+  function getMeta2($group, $subgroup = null, $leaf = null, $withleafvalue = false)
+  //($key, $type, $subtype = NULL)
+  {
+    // @todo read the value from the memory cache
+    //if (isset($this->_meta[$enc_type][$enc_subtype][$enc_key]))
+    //      return $this->_meta[$enc_type][$enc_subtype][$enc_key];
+    
+    // read data from metadata file
+    $ret = array();
+    $ret["timestamp"] = array();
+    $ret["value"]     = array();
+    $c =& $this->c;
+    $dir_base = $c->container_cfg_meta_dir;
+
+    $dir = $dir_base.'/'.$group;
+
+    if ($subgroup == NULL)
+    {
+      $dh = opendir($dir);
+      while (false !== ($file = readdir($dh)))
+      {
+        if ($file == "." || $file == "..") continue; // skip . and .. generic files
+        $ret["timestamp"][] = @filemtime($dir.'/'.$file);
+        $ret["value"][]     = $file;
+      }
+      return $ret;
+    }
+    
+    $dir .= '/'.$subgroup;
+
+    if ($leaf == NULL)
+    {
+      $dh = opendir($dir);
+      $ret = array();
+      while (false !== ($file = readdir($dh)))
+      {
+        if ($file == "." || $file == "..") continue; // skip . and .. generic files
+        $ret["timestamp"][] = @filemtime($dir.'/'.$file);
+        $ret["value"][]     = $file;
+      }
+      return $ret;
+    }
+    
+    $leaffilename = $dir."/".$leaf;
+
+    if (!file_exists($leaffilename)) return $ret;
+    if ($withleafvalue)
+    {
+      $ret["value"][] = @file_get_contents($leaffilename);
+    }
+    else
+    {
+      $ret["timestamp"][] = @filemtime($leaffilename);
+    }
+
+    // @todo
+    // store the result in the memory cache
+    //$this->_meta[$enc_type][$enc_subtype][$enc_key] = $ret;
+    
+    return $ret;
+  }
+
+  
+  /**
+   * Remove a meta data
+   * @return ...
+   */
+  function rmMeta2($group, $subgroup = null, $leaf = null)
+  //($key, $type, $subtype = NULL)
+  {
+    $c =& $this->c;
+
+
+
+    // read data from metadata file
+    $c =& $this->c;
+    $dir_base = $c->container_cfg_meta_dir;
+
+    $dir = $dir_base.'/'.$group;
+
+    if ($subgroup == NULL)
+    {
+      @rm_r($dir);
+      return true;
+    }
+    
+    $dir .= '/'.$subgroup;
+
+    if ($leaf == NULL)
+    {
+      @rm_r($dir);
+      return true;
+    }
+    
+    $leaffilename = $dir."/".$leaf;
+    
+    if (!file_exists($leaffilename)) return false;
+    @unlink($leaffilename);
+    return true;
+  }
+
+  
 }
 
 ?>
