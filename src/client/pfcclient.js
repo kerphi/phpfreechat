@@ -1025,7 +1025,7 @@ pfcClient.prototype = {
   applyNickColor: function(root, nick, color)
   {
     
-    var nicktochange = this.getElementsByClassName(root, 'pfc_nick_'+ hex_md5(_to_utf8(nick)), '')
+    var nicktochange = this.getElementsByClassName(root, 'pfc_nick_'+ hex_md5(_to_utf8(nick)), '');
     for(var i = 0; nicktochange.length > i; i++) 
       nicktochange[i].style.color = color;
     
