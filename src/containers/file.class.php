@@ -101,7 +101,7 @@ class pfcContainer_File extends pfcContainer
     $this->setMeta2("channelid-to-nickid", $this->_encode($chan), $nickid);
 
     // update the SERVER channel
-    $this->updateNick($nickid);
+    if ($chan != 'SERVER') $this->updateNick($nickid);
     
     return true;
   }
@@ -117,44 +117,30 @@ class pfcContainer_File extends pfcContainer
   {
     if ($chan == NULL) $chan = 'SERVER';
 
-    $ret = $this->getMeta2("channelid-to-nickid", $this->_encode('SERVER'), $nickid);
-    $timestamp = $ret["timestamp"][0];
+    $timestamp = $this->getMeta2("channelid-to-nickid", $this->_encode('SERVER'), $nickid);
+    $timestamp = $timestamp["timestamp"][0];
     
     $deleted_user = array();
     $deleted_user["nick"][]      = $this->getNickname($nickid);
     $deleted_user["nickid"][]    = $nickid;
     $deleted_user["timestamp"][] = $timestamp;
 
+    // remove the nickid from the channel list
+    $this->rmMeta2('channelid-to-nickid', $this->_encode($chan), $nickid);
+    $this->rmMeta2('nickid-to-channelid', $nickid, $this->_encode($chan));
 
-    // @todo ne supprimer l'utilisateur que du channel donne en parametres
-    //       car la commande /leave va simplement supprimer l'utilisateur du channel courant
-    //       il faut par contre faire un test sur les channels de l'utilisateur et dans le cas ou l'utilisateur
-    //       est deconnecte du dernier channel (il se peut que ce soit SERVER) alors on supprime ses metadata.
-
-    //       il faudrait egalement adapter removeObsoleteNick pour qu'elle appel N fois removeNick
-    //       N etant le nombre de channel de l'utilisateur. Ainsi l'utilisateur dera vraiment deconnecte
-
-
-    
-    // get the user's disconnected channels
-    $channels = array();
-    $ret2 = $this->getMeta2("nickid-to-channelid",$nickid);
-    foreach($ret2["value"] as $v)
-      $channels[] = $this->_decode($v);
-    $deleted_user["channels"][]  = $channels;
-
-    // get the user nickname
-    $nick = $this->getNickname($nickid);
-    // loop on user channels
-    foreach($channels as $ch)
+    // get the current user's channels list
+    $channels = $this->getMeta2("nickid-to-channelid",$nickid);
+    $channels = $channels["value"];
+    // no more joined channel, just remove the user's metadata
+    if (count($channels) == 0)
     {
       // remove the nickname to nickid correspondance
-      $this->rmMeta2("metadata-to-nickid", 'nick', $this->_encode($nick));
+      $this->rmMeta2('metadata-to-nickid', 'nick', $this->_encode($this->getNickname($nickid)));
       // remove disconnected nickname metadata
-      $this->rmMeta2("nickid-to-metadata", $nickid);
-      // remove the nickid from the channel list
-      $this->rmMeta2("channelid-to-nickid", $this->_encode($ch), $nickid);
+      $this->rmMeta2('nickid-to-metadata', $nickid);
     }
+
     return $deleted_user;
   }
 
@@ -221,7 +207,7 @@ class pfcContainer_File extends pfcContainer
   function getNickname($nickid)
   {
     $nick = $this->getMeta2("nickid-to-metadata", $nickid, 'nick', true);
-    $nick = isset($nick["value"][0]) ? $nick["value"][0] : "";
+    $nick = isset($nick["value"][0]) ? $this->_decode($nick["value"][0]) : "";
     return $nick;
   }
 
@@ -249,11 +235,19 @@ class pfcContainer_File extends pfcContainer
       $nickid    = $ret['value'][$i];
       if (time() > ($timestamp+$timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
       {
-        $du = $this->removeNick($nickid);
+        // get the current user's channels list
+        $channels = array();
+        $ret2 = $this->getMeta2("nickid-to-channelid",$nickid);
+        foreach($ret2["value"] as $userchan)
+        {
+          // disconnect the user from each joined channels
+          $du = $this->removeNick($this->_decode($userchan), $nickid);
+          $channels[] = $this->_decode($userchan);
+        }
         $deleted_user["nick"]      = array_merge($deleted_user["nick"],      $du["nick"]);
         $deleted_user["nickid"]    = array_merge($deleted_user["nickid"],    $du["nickid"]);
-        $deleted_user["timestamp"] = array_merge($deleted_user["timestamp"], $du["timestamp"]);
-        $deleted_user["channels"]  = array_merge($deleted_user["channels"],  $du["channels"]);
+        $deleted_user["timestamp"] = array_merge($deleted_user["timestamp"], $du["timestamp"]);       
+        $deleted_user["channels"]  = array_merge($deleted_user["channels"],  array($channels));
       }
     }
 
@@ -496,7 +490,7 @@ class pfcContainer_File extends pfcContainer
     if ($leafvalue == NULL)
     {
       if (file_exists($leaffilename) &&
-	  filesize($leaffilename)>0) unlink($leaffilename);
+          filesize($leaffilename)>0) unlink($leaffilename);
       touch($leaffilename);
     }
     else
@@ -520,12 +514,7 @@ class pfcContainer_File extends pfcContainer
    * @return ...
    */
   function getMeta2($group, $subgroup = null, $leaf = null, $withleafvalue = false)
-  //($key, $type, $subtype = NULL)
   {
-    // @todo read the value from the memory cache
-    //if (isset($this->_meta[$enc_type][$enc_subtype][$enc_key]))
-    //      return $this->_meta[$enc_type][$enc_subtype][$enc_key];
-    
     // read data from metadata file
     $ret = array();
     $ret["timestamp"] = array();
@@ -557,7 +546,6 @@ class pfcContainer_File extends pfcContainer
       if (is_dir($dir))
       {
         $dh = opendir($dir);
-        $ret = array();
         while (false !== ($file = readdir($dh)))
         {
           if ($file == "." || $file == "..") continue; // skip . and .. generic files
@@ -572,15 +560,11 @@ class pfcContainer_File extends pfcContainer
 
     if (!file_exists($leaffilename)) return $ret;
     if ($withleafvalue)
-    {
       $ret["value"][] = file_get_contents($leaffilename);
-    }
+    else
+      $ret["value"][] = NULL;
     $ret["timestamp"][] = filemtime($leaffilename);
 
-    // @todo
-    // store the result in the memory cache
-    //$this->_meta[$enc_type][$enc_subtype][$enc_key] = $ret;
-    
     return $ret;
   }
 
@@ -623,7 +607,31 @@ class pfcContainer_File extends pfcContainer
     return true;
   }
 
-  
+
+  function getUserMeta($nickid, $key)
+  {
+    $ret = $this->getMeta2("nickid-to-metadata", $nickid, $key, true);
+    return isset($ret['value'][0]) ? $ret['value'][0] : NULL;
+  }
+
+  function setUserMeta($nickid, $key, $value)
+  {
+    $ret = $this->setMeta2("nickid-to-metadata", $nickid, $key, $value);
+    return $ret;
+  }
+
+  function getChanMeta($chan, $key)
+  {
+    $ret = $this->getMeta2("channelid-to-metadata", $this->_encode($chan), $key, true);
+    return isset($ret['value'][0]) ? $ret['value'][0] : NULL;
+  }
+
+  function setChanMeta($chan, $key, $value)
+  {
+    $ret = $this->setMeta2("channelid-to-metadata", $this->_encode($chan), $key, $value);
+    return $ret;
+  }
+
 }
 
 ?>

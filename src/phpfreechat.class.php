@@ -355,7 +355,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
         // alert the other from the new pv
         // (warn other user that someone talk to him)
         $container =& $c->getContainerInstance();
-        $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
+        $cmdtoplay = $container->getUserMeta($u->privmsg[$recipientid]["pvnickid"], 'cmdtoplay');
         $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
         $cmdtmp = array("privmsg2",  /* cmdname */
                         $u->nick,    /* param */
@@ -366,7 +366,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
         if (!in_array($cmdtmp, $cmdtoplay))
         {
           $cmdtoplay[] = $cmdtmp;
-          $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $u->privmsg[$recipientid]["pvnickid"]);
+          $container->setUserMeta($u->privmsg[$recipientid]["pvnickid"], 'cmdtoplay', serialize($cmdtoplay));
           //$xml_reponse->addScript("alert('cmdtoplay[]=".serialize($cmdtoplay)."');");
         }
       }
@@ -382,13 +382,13 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     while($morecmd)
     {
       // take a command from the list
-      $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
+      $cmdtoplay = $container->getUserMeta($nickid, 'cmdtoplay');
       $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
       $cmdtmp = array_pop($cmdtoplay);
       if ($cmdtmp != NULL)
       {
         // store the new cmdtoplay list (-1 item)
-        $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $nickid);
+        $container->setUserMeta($nickid, "cmdtoplay", serialize($cmdtoplay));
 
         // play the command
         $cmd =& pfcCommand::Factory($cmdtmp[0]);
@@ -411,7 +411,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
         }
         
         // check if there is other command to play
-        $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
+        $cmdtoplay = $container->getUserMeta($nickid, 'cmdtoplay');
         $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);        
       }
 

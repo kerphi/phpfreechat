@@ -25,7 +25,7 @@ class pfcCommand_quit extends pfcCommand
     
     // from the channels
     foreach( $u->channels as $id => $chandetail )
-      if ($container->removeNick($chandetail["recipient"], $u->nick))
+      if ($container->removeNick($chandetail["recipient"], $u->nickid))
       {
         $cmdp = $p;
         $cmdp["param"] = $id;
@@ -36,7 +36,7 @@ class pfcCommand_quit extends pfcCommand
       }
     // from the private messages
     foreach( $u->privmsg as $id => $pvdetail )
-      if ($container->removeNick($pvdetail["recipient"], $u->nick))
+      if ($container->removeNick($pvdetail["recipient"], $u->nickid))
       {
         $cmdp = $p;
         $cmdp["param"] = $id;
@@ -46,8 +46,7 @@ class pfcCommand_quit extends pfcCommand
         $cmd->run($xml_reponse, $cmdp);
       }
     // from the server
-    $container->removeNick(NULL, $u->nick);
-
+    $container->removeNick(NULL, $u->nickid);
 
     $xml_reponse->addScript("pfc.handleResponse('quit', 'ok', '');");
 

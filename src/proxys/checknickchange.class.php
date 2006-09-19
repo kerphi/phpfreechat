@@ -87,7 +87,7 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
               $nick_in_use = true;
           }
         }
-      if ($nick_in_use || $newnickid != "undefined")
+      if ($nick_in_use || $newnickid != '')
       {
         $xml_reponse->addScript("pfc.handleResponse('nick', 'isused', '".addslashes($newnick)."');");
         if ($c->debug)

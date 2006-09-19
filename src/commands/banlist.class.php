@@ -17,7 +17,7 @@ class pfcCommand_banlist extends pfcCommand
     $u =& $this->u;
     
     $container =& $c->getContainerInstance();
-    $banlist = $container->getMeta("banlist_nickid", "channel", $p["recipientid"]);
+    $banlist = $container->getChanMeta($p["recipientid"], 'banlist_nickid');
     if ($banlist == NULL) $banlist = array(); else $banlist = unserialize($banlist);
     $msg  = "";
     $msg .= "<p>"._pfc("The banished user's id list is:")."</p>";

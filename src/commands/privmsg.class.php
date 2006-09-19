@@ -30,7 +30,7 @@ class pfcCommand_privmsg extends pfcCommand
     }
 
     // error: can't speak to unknown
-    if ($pvnickid == "undefined")
+    if ($pvnickid == '')
     {
       // remove this old pv from the privmsg list
       $pvid_to_remove = "";

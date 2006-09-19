@@ -47,7 +47,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
     {
       $container =& $c->getContainerInstance();
       $nickid = $u->nickid;
-      $isadmin = $container->getMeta("isadmin", "nickname", $nickid);
+      $isadmin = $container->getUserMeta($nickid, 'isadmin');
       if (!$isadmin)
       {
         $xml_reponse->addScript("alert('".addslashes(_pfc("You are not allowed to run '%s' command", $this->name))."');");
@@ -62,8 +62,9 @@ class pfcProxyCommand_auth extends pfcProxyCommand
       $channame    = $param;
       
       // check the user is not listed in the banished channel list
+      $chan        = pfcCommand_join::GetRecipient($channame);
       $chanid      = pfcCommand_join::GetRecipientId($channame);
-      $banlist     = $container->getMeta("banlist_nickid", "channel", $chanid);
+      $banlist     = $container->getChanMeta($chan, 'banlist_nickid');
       if ($banlist == NULL) $banlist = array(); else $banlist = unserialize($banlist);
       $nickid = $u->nickid;
       if (in_array($nickid,$banlist))

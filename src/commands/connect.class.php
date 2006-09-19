@@ -50,9 +50,9 @@ class pfcCommand_connect extends pfcCommand
     // setup some user meta
     $nickid = $u->nickid;
     // store the user ip
-    $container->setMeta($_SERVER["REMOTE_ADDR"], "ip", "nickname", $nickid);
+    $container->setUserMeta($nickid, 'ip', $_SERVER["REMOTE_ADDR"]);
     // store the admin flag
-    $container->setMeta($isadmin, "isadmin", "nickname", $nickid);
+    $container->setUserMeta($nickid, 'isadmin', $isadmin);
     // connect to the server
     $xml_reponse->addScript("pfc.handleResponse('connect', 'ok', '');");
   }

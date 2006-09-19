@@ -32,7 +32,7 @@ class pfcCommand_op extends pfcCommand
     $nicktoop   = trim($param);
     $container  =& $c->getContainerInstance();
     $nicktoopid = $container->getNickId($nicktoop);
-    $container->setMeta(true, "isadmin", "nickname", $nicktoopid);
+    $container->setUserMeta($nicktoopid, 'isadmin', true);
   }
 }
 

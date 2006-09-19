@@ -26,7 +26,7 @@ class pfcCommand_deop extends pfcCommand
     $nicktodeop   = trim($p["param"]);
     $container  =& $c->getContainerInstance();
     $nicktodeopid = $container->getNickId($nicktodeop);
-    $container->setMeta(false, "isadmin", "nickname", $nicktodeopid);
+    $container->setUserMeta($nicktodeopid, 'isadmin', false);
   }
 }
 

@@ -46,9 +46,9 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
     {
       $container =& $c->getContainerInstance();
       $nickid        = $u->nickid;
-      $isadmin       = $container->getMeta("isadmin", "nickname", $nickid);
-      $lastfloodtime = $container->getMeta("floodtime", "nickname", $nickid);
-      $nbflood       = $container->getMeta("nbflood", "nickname", $nickid);
+      $isadmin       = $container->getUserMeta($nickid, 'isadmin');
+      $lastfloodtime = $container->getUserMeta($nickid, 'floodtime');
+      $nbflood       = $container->getUserMeta($nickid, 'nbflood');
       $floodtime     = time();
       
       if ($floodtime - $lastfloodtime <= $c->proxys_cfg[$this->proxyname]["delay"])
@@ -72,8 +72,8 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
       }
 
       if ($nbflood == 0)
-        $container->setMeta($floodtime, "floodtime", "nickname", $nickid);
-      $container->setMeta($nbflood, "nbflood", "nickname", $nickid);
+        $container->setUserMeta($nickid, 'floodtime', $floodtime);
+      $container->setUserMeta($nickid, 'nbflood', $nbflood);
     }
     
     // forward the command to the next proxy or to the final command

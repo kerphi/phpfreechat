@@ -27,13 +27,14 @@ class pfcContainerTestcase extends PHPUnit_TestCase
   // here
   function setUp()
   {
+    //    echo "setUp<br>";
     require_once dirname(__FILE__)."/../src/pfcglobalconfig.class.php";   
     $params = array();
     $params["title"] = "testcase -> pfccontainer_".$this->type;
     $params["serverid"] = md5(__FILE__/* . time()*/);
     $params["container_type"] = $this->type;
-    $this->c  =& pfcGlobalConfig::Instance($params);
-    $this->ct =& $this->c->getContainerInstance();
+    $this->c  = new pfcGlobalConfig($params);
+    $this->ct = $this->c->getContainerInstance();
   }
   
   // called after the test functions are executed
@@ -41,10 +42,10 @@ class pfcContainerTestcase extends PHPUnit_TestCase
   // here
   function tearDown()
   {
+    //    echo "tearDown<br>";
     $this->ct->clear();
     $this->c->destroyCache();
   }
-
 
   function testCreateNick_Generic()
   {
@@ -66,7 +67,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $isonline = ($this->ct->isNickOnline($chan, $nickid) >= 0);
     $this->assertTrue($isonline, "nickname should be online on the server");
   }
-  
+
   function testRemoveNick_Generic()
   {
     $c  =& $this->c;
@@ -78,18 +79,17 @@ class pfcContainerTestcase extends PHPUnit_TestCase
 
     // on the channel
     $this->ct->createNick($chan, $nick, $nickid);
-    $this->ct->removeNick($nickid);
+    $this->ct->removeNick($chan, $nickid);
     $isonline = ($this->ct->isNickOnline($chan, $nickid) >= 0);
     $this->assertFalse($isonline, "nickname shouldn't be online on the channel");   
+    $isonline2 = ($this->ct->isNickOnline(NULL, $nickid) >= 0);
+    $this->assertTrue($isonline2, "nickname should be online on the server");   
 
-    // on the server
-    $chan = NULL;
-    $this->ct->createNick($chan, $nick, $nickid);
-    $this->ct->removeNick($nickid);
-    $isonline = ($this->ct->isNickOnline($chan, $nickid) >= 0);
-    $this->assertFalse($isonline, "nickname shouldn't be online on the server");    
+    $this->ct->removeNick(NULL, $nickid);
+    $isonline = ($this->ct->isNickOnline(NULL, $nickid) >= 0);
+    $this->assertFalse($isonline, "nickname shouldn't be online on the server");
   }
-  
+
   function testGetNickId_Generic()
   {
     $c  =& $this->c;
@@ -103,7 +103,6 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $ret = $this->ct->getNickId($nick);
     $this->assertEquals($nickid, $ret, "created nickname doesn't have a correct nickid");
   }
-
 
   function testGetNickname_Generic()
   {
@@ -156,7 +155,8 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->ct->createNick($chan, $nick, $nickid);
     sleep(2);
     $ret = $this->ct->removeObsoleteNick(1000);
-    $this->assertEquals(count($ret["nickid"]), 1, "1 nickname should be obsolete");
+    $this->assertEquals(1, count($ret["nickid"]), "1 nickname should be obsolete");
+    $this->assertEquals(2, count($ret["channels"][0]), "nickname should be disconnected from two channels");
     $isonline = ($this->ct->isNickOnline($chan, $nickid) >= 0);
     $this->assertFalse($isonline, "nickname shouldn't be online anymore");
   }
@@ -276,7 +276,6 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->assertEquals($msg."9", $res["data"][10]["param"] ,"messages data is not the same as the sent one");
     $this->assertEquals($res["new_from_id"], 10 ,"new_from_id is not correct");
   }
-
 }
 
 ?>

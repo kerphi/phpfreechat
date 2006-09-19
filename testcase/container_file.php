@@ -275,7 +275,6 @@ class pfcContainerTestcase_File extends pfcContainerTestcase
     $ret = $ct->getMeta2($group, $subgroup, $leaf, true);
     $this->assertEquals($ret['value'][0], $leafvalue, "the leaf value is wrong");
   }
-
 }
 
 // on desactive le timeout car se script peut mettre bcp de temps a s'executer

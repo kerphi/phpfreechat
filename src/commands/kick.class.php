@@ -31,9 +31,9 @@ class pfcCommand_kick extends pfcCommand
     // kicking a user just add a command to play to the aimed user metadata.
     $container =& $c->getContainerInstance();
     $nickid = $container->getNickId($param);
-    if ($nickid != "undefined")
+    if ($nickid != "")
     {
-      $cmdtoplay = $container->getMeta("cmdtoplay", "nickname", $nickid);
+      $cmdtoplay = $container->getUserMeta($nickid, 'cmdtoplay');
       $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
       $reason = _pfc("kicked from %s by %s", $u->channels[$recipientid]["name"], $sender);
       $cmdtmp = array("leave",  /* cmdname */
@@ -43,7 +43,7 @@ class pfcCommand_kick extends pfcCommand
                       $recipientid,/* recipientid */
                       );
       $cmdtoplay[] = $cmdtmp; // kick the user from the current channel
-      $container->setMeta(serialize($cmdtoplay), "cmdtoplay", "nickname", $nickid);      
+      $container->setUserMeta($nickid, 'cmdtoplay', serialize($cmdtoplay));
     }
   }
 }
