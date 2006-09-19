@@ -92,61 +92,17 @@ class pfcContainer_File extends pfcContainer
   {
     $c =& $this->c;
 
-    // store nickid -> nickname and nickname -> nickid correspondance
-    $this->setMeta($nick, "nickname", "fromnickid", $nickid);
-    $this->setMeta($nickid, "nickid", "fromnickname", $nick);
+    if ($chan == NULL) $chan = 'SERVER';
 
-    $this->_registerUserMeta($nickid, $chan);
+    $this->setMeta2("nickid-to-metadata",  $nickid, 'nick', $nick);
+    $this->setMeta2("metadata-to-nickid",  'nick', $this->_encode($nick), $nickid);
 
-    if ($c->debug) pxlog("createNick - nickname metadata created: chan=".($chan==NULL?"SERVER":$chan)." nickid=".$nickid, "chat", $c->getId());
+    $this->setMeta2("nickid-to-channelid", $nickid, $this->_encode($chan));
+    $this->setMeta2("channelid-to-nickid", $this->_encode($chan), $nickid);
 
-    /*
-    // increment the nick references (used to know when the nick is really disconnected)
-    $nick_ref = $this->getMeta("references", $nickid);
-    if ($nick_ref == NULL || !is_numeric($nick_ref)) $nick_ref = 0;
-    $nick_ref++;
-    $this->setMeta($nick_ref, "references", $nickid);
-    */
-
+    // update the SERVER channel
+    $this->updateNick($nickid);
     
-    $c =& $this->c;
-    $nick_dir = ($chan != NULL) ?
-      $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
-      $c->container_cfg_server_dir."/nicknames";
-
-    // check the nickname directory exists
-    $errors = @test_writable_dir($nick_dir, $chan."/nicknames/".$nick);
-    if ($c->debug)
-    {
-      if (count($errors)>0)
-        pxlog("createNick(".$nick.", ".$nickid.") - Error: ".var_export($errors,true), "chat", $c->getId());
-    }
-    
-    $nickid_filename = $nick_dir."/".$nickid; //$this->_encode($nick);
-
-    // check the if the file exists only in debug mode!
-    if ($c->debug)
-    {
-      /*
-      if (file_exists($nickid_filename))
-        pxlog("createNick(".$nick.", ".$nickid.") - Error: another nickname data file exists, we are overwriting it (nickname takeover)!: ".$nickid_filename, "chat", $c->getId());
-      else
-        pxlog("createNick - nickname file created: chan=".($chan==NULL?"SERVER":$chan)." nickid=".$nickid, "chat", $c->getId());
-      */
-    }
-    
-    // trust the caller : this nick is not used
-    touch($nickid_filename);
-    
-    // append the nickname to the cached nickname list
-    $id = $this->isNickOnline($chan, $nick);
-    $_chan = ($chan == NULL) ? "SERVER" : $chan;
-    if ($id<0)
-    {
-      $this->_users[$_chan]["nickid"][]    = $nickid;
-      $this->_users[$_chan]["timestamp"][] = filemtime($nickid_filename);
-    }
-
     return true;
   }
 
@@ -157,68 +113,49 @@ class pfcContainer_File extends pfcContainer
    * @param $nick the nickname to remove
    * @return true if the nickname was correctly removed
    */
-  function removeNick($chan, $nick)
+  function removeNick($chan, $nickid)
   {
-    // retrive the nickid to remove
-    $nickid = $this->getNickId($nick);
-    if ($nickid == "undefined") return false;
+    if ($chan == NULL) $chan = 'SERVER';
 
-    $c =& $this->c;
-    $nick_dir = ($chan != NULL) ?
-      $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
-      $c->container_cfg_server_dir."/nicknames";
-    $nickid_filename = $nick_dir."/".$nickid; //$this->_encode($nick);
-
-    if ($c->debug)
-    {
-      // @todo: check if the removed nick is mine in debug mode!
-      
-      // check the nickname file really exists
-      if (!file_exists($nickid_filename))
-        pxlog("removeNick(".$nick.") - Error: the nickname data file to remove doesn't exists: ".$nickid_filename, "chat", $c->getId());
-      else
-        pxlog("removeNick - nickname file removed: chan=".($chan==NULL?"SERVER":$chan)." nickid=".$nickid, "chat", $c->getId());
-    }
-
-    $ok = @unlink($nickid_filename);
-
-    // remove the user metadata if he is disconnected from the server
-
-    $this->_unregisterUserMeta($nickid, $chan);
-
-    /*
-    // decrement the nick references and kill the metadata if not more references is found
-    // (used to know when the nick is really disconnected)
-    $nick_ref = $this->getMeta("references", $nickid);
-    if ($nick_ref == NULL || !is_numeric($nick_ref)) $nick_ref = 0;
-    $nick_ref--;
-    if ($nick_ref <= 0)
-    {
-      $this->rmMeta("nickid", "fromnickname", $nick);
-      $this->rmMeta("nickname", "fromnickid", $nickid);
-      $this->rmMeta("references", $nickid); // destroy also the reference counter (by default its value is 0)
-    }
-    else
-      $this->setMeta($nick_ref, "references", $nickid);
-    */
+    $ret = $this->getMeta2("channelid-to-nickid", $this->_encode('SERVER'), $nickid);
+    $timestamp = $ret["timestamp"][0];
     
-    if ($c->debug)
-    {
-      // check the nickname file is correctly deleted
-      if (file_exists($nickid_filename))
-        pxlog("removeNick(".$nick.") - Error: the nickname data file yet exists", "chat", $c->getId());
-    }
+    $deleted_user = array();
+    $deleted_user["nick"][]      = $this->getNickname($nickid);
+    $deleted_user["nickid"][]    = $nickid;
+    $deleted_user["timestamp"][] = $timestamp;
 
-    // remove the nickname from the cache list
-    $id = $this->isNickOnline($chan, $nick);
-    $_chan = ($chan == NULL) ? "SERVER" : $chan;
-    if ($id >= 0)
-    {
-      unset($this->_users[$_chan]["nickid"][$id]);
-      unset($this->_users[$_chan]["timestamp"][$id]);
-    }
+
+    // @todo ne supprimer l'utilisateur que du channel donne en parametres
+    //       car la commande /leave va simplement supprimer l'utilisateur du channel courant
+    //       il faut par contre faire un test sur les channels de l'utilisateur et dans le cas ou l'utilisateur
+    //       est deconnecte du dernier channel (il se peut que ce soit SERVER) alors on supprime ses metadata.
+
+    //       il faudrait egalement adapter removeObsoleteNick pour qu'elle appel N fois removeNick
+    //       N etant le nombre de channel de l'utilisateur. Ainsi l'utilisateur dera vraiment deconnecte
+
+
     
-    return $ok;
+    // get the user's disconnected channels
+    $channels = array();
+    $ret2 = $this->getMeta2("nickid-to-channelid",$nickid);
+    foreach($ret2["value"] as $v)
+      $channels[] = $this->_decode($v);
+    $deleted_user["channels"][]  = $channels;
+
+    // get the user nickname
+    $nick = $this->getNickname($nickid);
+    // loop on user channels
+    foreach($channels as $ch)
+    {
+      // remove the nickname to nickid correspondance
+      $this->rmMeta2("metadata-to-nickid", 'nick', $this->_encode($nick));
+      // remove disconnected nickname metadata
+      $this->rmMeta2("nickid-to-metadata", $nickid);
+      // remove the nickid from the channel list
+      $this->rmMeta2("channelid-to-nickid", $this->_encode($ch), $nickid);
+    }
+    return $deleted_user;
   }
 
   /**
@@ -227,46 +164,15 @@ class pfcContainer_File extends pfcContainer
    * @param $chan where to update the nick, if null then update the server nick
    * @param $nick nickname to update (raw nickname)
    */
-  function updateNick($chan, $nick)
+  function updateNick($nickid)
   {
-    // retrive the nickid to update
-    $nickid = $this->getNickId($nick);
-    if ($nickid == "undefined") return false;
-
-    // update the user metadata
-    $this->_registerUserMeta($nickid, $chan);
-    
     $c =& $this->c;
-    $there = false;
-    
-    $nick_dir = ($chan != NULL) ?
-      $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
-      $c->container_cfg_server_dir."/nicknames";
-    if (!is_dir($nick_dir)) mkdir_r($nick_dir);
-    
-    // update my online status file
-    $nickid_filename = $nick_dir."/".$nickid; //$this->_encode($nick);
-    if (file_exists($nickid_filename)) $there = true;
-    @touch($nickid_filename);
-    @chmod($nickid_filename, 0700); 
 
-    if ($c->debug) pxlog("updateNick - nickname file updated: chan=".($chan==NULL?"SERVER":$chan)." nickid=".$nickid, "chat", $c->getId());        
-    
-    // append the nickname to the cache list
-    $_chan = ($chan == NULL) ? "SERVER" : $chan;
-    $id = $this->isNickOnline($chan, $nick);
-    if ($id < 0)
-    {
-      $this->_users[$_chan]["nickid"][]    = $nickid;
-      $this->_users[$_chan]["timestamp"][] = filemtime($nickid_filename);
-    }
-    else
-    {
-      // just update the timestamp if the nickname is allready present in the cached list
-      $this->_users[$_chan]["timestamp"][$id] = filemtime($nickid_filename);
-    }
-    
-    return $there;
+    $chan = 'SERVER';
+
+    $this->setMeta2("nickid-to-channelid", $nickid, $this->_encode($chan));
+    $this->setMeta2("channelid-to-nickid", $this->_encode($chan), $nickid);
+    return true;
   }
 
   /**
@@ -278,41 +184,19 @@ class pfcContainer_File extends pfcContainer
    */
   function changeNick($newnick, $oldnick)
   {
+    $c =& $this->c;
+
     $oldnickid = $this->getNickId($oldnick);
     $newnickid = $this->getNickId($newnick);
-    if ($oldnickid == "undefined") return false; // the oldnick must be connected
-    if ($newnickid != "undefined") return false; // the newnick must not be inuse
-
-    $this->rmMeta("nickid", "fromnickname", $oldnick); // remove the oldnickname -> oldnickid association
-    $this->setMeta($newnick, "nickname", "fromnickid", $oldnickid);
-    $this->setMeta($oldnickid, "nickid", "fromnickname", $newnick);
-
-    /*
-    $c =& $this->c;
-    $nick_dir = ($chan != NULL) ?
-      $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
-      $c->container_cfg_server_dir."/nicknames";
-    //    $newnickid_filename = $nick_dir."/".$this->_encode($newnick);
-    $oldnickid_filename = $nick_dir."/".$oldnickid; //$this->_encode($oldnick);
-        
-    $ok = @rename($oldnick_filename, $newnick_filename);
-    */
-
-    // update the nick cache list
+    if ($oldnickid == "") return false; // the oldnick must be connected
+    if ($newnickid != "") return false; // the newnick must not be inuse
     
-    //if($ok)
-    /*
-    {
-      $_chan = ($chan == NULL) ? "SERVER" : $chan;
-      $id = $this->isNickOnline($chan, $oldnick);
-      if ($id >= 0)
-      {
-        $this->_users[$_chan][$id]["nick"]      = $newnick;
-        $this->_users[$_chan][$id]["timestamp"] = filemtime($newnick_filename);
-      }
-    }
-    */
+    // remove the oldnick to oldnickid correspondance
+    $this->rmMeta2("metadata-to-nickid", 'nick', $this->_encode($oldnick));
 
+    // update the nickname
+    $this->setMeta2("nickid-to-metadata", $oldnickid, 'nick', $newnick);
+    $this->setMeta2("metadata-to-nickid", 'nick', $this->_encode($newnick), $oldnickid);
     return true;
   }
 
@@ -324,8 +208,8 @@ class pfcContainer_File extends pfcContainer
    */
   function getNickId($nick)
   {
-    $nickid = $this->getMeta("nickid", "fromnickname", $nick);
-    if ($nickid == NULL) $nickid = "undefined";
+    $nickid = $this->getMeta2("metadata-to-nickid", 'nick', $this->_encode($nick), true);
+    $nickid = isset($nickid["value"][0]) ? $nickid["value"][0] : "";
     return $nickid;
   }
 
@@ -336,8 +220,8 @@ class pfcContainer_File extends pfcContainer
    */
   function getNickname($nickid)
   {
-    $nick = $this->getMeta("nickname", "fromnickid", $nickid);
-    if ($nick == NULL) $nick = "";
+    $nick = $this->getMeta2("nickid-to-metadata", $nickid, 'nick', true);
+    $nick = isset($nick["value"][0]) ? $nick["value"][0] : "";
     return $nick;
   }
 
@@ -348,70 +232,31 @@ class pfcContainer_File extends pfcContainer
    * @param $timeout
    * @return array("nickid"=>array("nickid1", ...),"timestamp"=>array(timestamp1, ...)) contains all disconnected nickids and there timestamp
    */
-  function removeObsoleteNick($chan, $timeout)
+  function removeObsoleteNick($timeout)
   {
     $c =& $this->c;
 
-    $nick_dir = ($chan != NULL) ?
-      $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
-      $c->container_cfg_server_dir."/nicknames";
-    // check the nickname directory exists
-    $errors = @test_writable_dir($nick_dir, $chan."/nicknames");
-    
-    $deleted_user = array();
-    $online_user  = array();
-    $dir_handle = opendir($nick_dir);
-    while (false !== ($file = readdir($dir_handle)))
+    $chan = 'SERVER';
+
+    $deleted_user = array('nick'=>array(),
+                          'nickid'=>array(),
+                          'timestamp'=>array(),
+                          'channels'=>array());
+    $ret = $this->getMeta2("channelid-to-nickid", $this->_encode($chan));
+    for($i = 0; $i<count($ret['timestamp']); $i++)
     {
-      if ($file == "." || $file == "..") continue; // skip . and .. generic files
-      $f_time = filemtime($nick_dir."/".$file);
-      if (time() > ($f_time+$timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
+      $timestamp = $ret['timestamp'][$i];
+      $nickid    = $ret['value'][$i];
+      if (time() > ($timestamp+$timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
       {
-        $deleted_user["nick"][]      = $this->getNickname($file);
-        $deleted_user["nickid"][]    = $file;
-        $deleted_user["timestamp"][] = $f_time;
-        @unlink($nick_dir."/".$file); // disconnect expired user
-      }
-      else
-      {
-        // optimisation: cache user list for next getOnlineNick call
-        $online_user["nickid"][]    = $file;
-        $online_user["timestamp"][] = $f_time;
+        $du = $this->removeNick($nickid);
+        $deleted_user["nick"]      = array_merge($deleted_user["nick"],      $du["nick"]);
+        $deleted_user["nickid"]    = array_merge($deleted_user["nickid"],    $du["nickid"]);
+        $deleted_user["timestamp"] = array_merge($deleted_user["timestamp"], $du["timestamp"]);
+        $deleted_user["channels"]  = array_merge($deleted_user["channels"],  $du["channels"]);
       }
     }
 
-    // remove the user metadata if he is disconnected from the server
-    if (isset($deleted_user["nickid"]) && count($deleted_user["nickid"])>0)
-    {
-      foreach($deleted_user["nickid"] as $du_nid)
-      {
-	$du_nickid = $du_nid;
-	$du_nickname = $this->getNickname($du_nid);
-
-        $this->_unregisterUserMeta($du_nickid, $chan);
-
-        /*
-	// decrement the nick references and kill the metadata if not more references is found
-	// (used to know when the nick is really disconnected)
-	$nick_ref = $this->getMeta("references", $du_nickid);
-	if ($nick_ref == NULL || !is_numeric($nick_ref)) $nick_ref = 0;
-	$nick_ref--;
-	if ($nick_ref <= 0)
-	{
-	  $this->rmMeta("nickid",   "fromnickname", $du_nickname);
-	  $this->rmMeta("nickname", "fromnickid",   $du_nickid);
-	  $this->rmMeta("references", $du_nickid); // destroy also the reference counter (by default its value is 0)
-	}
-	else
-	  $this->setMeta($nick_ref, "references", $du_nickid);
-        */
-      }
-    }
-    
-    // cache the updated user list
-    $_chan = ($chan == NULL) ? "SERVER" : $chan;
-    $this->_users[$_chan] =& $online_user;
-    
     return $deleted_user;
   }
 
@@ -422,31 +267,25 @@ class pfcContainer_File extends pfcContainer
    */
   function getOnlineNick($chan)
   {
-    // return the cached user list if it exists
-    $_chan = ($chan == NULL) ? "SERVER" : $chan;
-    if (isset($this->_users[$_chan]) && is_array($this->_users[$_chan]))
-      return $this->_users[$_chan];
-   
     $c =& $this->c;
-
-    $nick_dir = ($chan != NULL) ?
-      $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
-      $c->container_cfg_server_dir."/nicknames";
-    if (!is_dir($nick_dir)) mkdir_r($nick_dir);
     
+    if ($chan == NULL) $chan = 'SERVER';
+
     $online_user = array();
-    $dir_handle = opendir($nick_dir);
-    while (false !== ($file = readdir($dir_handle)))
+    $ret = $this->getMeta2("channelid-to-nickid", $this->_encode($chan));
+    for($i = 0; $i<count($ret['timestamp']); $i++)
     {
-      if ($file == "." || $file == "..") continue; // skip . and .. generic files
-      $online_user["nickid"][]    = $file;
-      $online_user["timestamp"][] = filemtime($nick_dir."/".$file);
+      $nickid = $ret['value'][$i];
+
+      // get timestamp from the SERVER channel
+      $timestamp = $this->getMeta2("channelid-to-nickid", $this->_encode('SERVER'), $nickid);
+      $timestamp = $timestamp['timestamp'][0];
+
+      $online_user["nick"][]      = $this->getNickname($nickid);
+      $online_user["nickid"][]    = $nickid;
+      $online_user["timestamp"][] = $timestamp;
     }
-
-    // cache the user list
-    $this->_users[$_chan] =& $online_user;
-
-    return $this->_users[$_chan];
+    return $online_user;
   }
   
   /**
@@ -454,41 +293,16 @@ class pfcContainer_File extends pfcContainer
    * @param $chan if NULL then check if the user is online on the server, otherwise check if the user has joined the channel
    * @return -1 if the user is off line, a positive (>=0) if the user is online
    */
-  function isNickOnline($chan, $nick)
+  function isNickOnline($chan, $nickid)
   {
-    // @todo optimise with this piece of code
-    /*
-    $nickid = $this->getNickId($nick);
-    if ($nickid == "undefined") return false;
+    if ($chan == NULL) $chan = 'SERVER';
 
-    $nick_dir = ($chan != NULL) ?
-      $c->container_cfg_channel_dir."/".$this->_encode($chan)."/nicknames" :
-      $c->container_cfg_server_dir."/nicknames";
-    if (!is_dir($nick_dir)) mkdir_r($nick_dir);
-
-    return file_exists($nick_dir."/".$nickid);
-    */
-
-    $nickid = $this->getNickId($nick);
-    
-    // get the nickname list
-    $_chan = ($chan == NULL) ? "SERVER" : $chan;
-    $online_user = isset($this->_users[$_chan]) ? $this->_users[$_chan] : $this->getOnlineNick($chan);
-    
-    $uid = 0;
-    $isonline = false;
-    if (!isset($online_user["nickid"])) return -1;
-    while($uid < count($online_user["nickid"]) && !$isonline)
+    $ret = $this->getMeta2("channelid-to-nickid", $this->_encode($chan));
+    for($i = 0; $i<count($ret['timestamp']); $i++)
     {
-      if ($online_user["nickid"][$uid] == $nickid)
-        $isonline = true;
-      else
-        $uid++;
+      if ($ret['value'][$i] == $nickid) return $i;
     }
-    if ($isonline)
-      return $uid;
-    else
-      return -1;
+    return -1;
   }
 
   /**
@@ -501,24 +315,15 @@ class pfcContainer_File extends pfcContainer
    * @return $msg_id the created message identifier
    */
   function write($chan, $nick, $cmd, $param)
-  {            
+  {
     $c =& $this->c;
-
-    $msg_dir = ($chan != NULL) ?
-      $c->container_cfg_channel_dir."/".$this->_encode($chan)."/messages" :
-      $c->container_cfg_server_dir."/messages";
-    // check the messages directory exists
-    $errors = @test_writable_dir($msg_dir, $chan."/messages");
-    if (count($errors) > 0) return $errors; // an error occurs ?
-
-    // request a unique id for this new message
-    $msg_id = $this->_requestMsgId($chan);
-    if (is_array($msg_id)) return $msg_id; // an error occurs ?
-    $msg_filename = $msg_dir."/".$msg_id;
+    if ($chan == NULL) $chan = 'SERVER';
+    
+    $msgid = $this->_requestMsgId($chan);
 
     // format message
     $data = "\n";
-    $data .= $msg_id."\t";
+    $data .= $msgid."\t";
     $data .= date("d/m/Y")."\t";
     $data .= date("H:i:s")."\t";
     $data .= $nick."\t";
@@ -526,14 +331,14 @@ class pfcContainer_File extends pfcContainer
     $data .= $param;
 
     // write message
-    file_put_contents($msg_filename, $data);
+    $this->setMeta2("channelid-to-msg", $this->_encode($chan), $msgid, $data);
 
     // delete the obsolete message
-    $old_msg_id = $msg_id - $c->max_msg - 20;
-    if ($old_msg_id > 0 && file_exists($msg_dir."/".$old_msg_id))
-      @unlink($msg_dir."/".$old_msg_id);
-    
-    return $msg_id;
+    $old_msgid = $msgid - $c->max_msg - 20;
+    if ($old_msgid > 0)
+      $this->rmMeta2("channelid-to-msg", $this->_encode($chan), $old_msgid);
+
+    return $msgid;
   }
 
   /**
@@ -546,36 +351,29 @@ class pfcContainer_File extends pfcContainer
   function read($chan, $from_id)
   {
     $c =& $this->c;
-    
-    $msg_dir = ($chan != NULL) ?
-      $c->container_cfg_channel_dir."/".$this->_encode($chan)."/messages" :
-      $c->container_cfg_server_dir."/messages";
-    // check the messages directory exists
-    $errors = @test_writable_dir($msg_dir, $chan."/messages");
+    if ($chan == NULL) $chan = 'SERVER';
 
-    
-    // read the files into the directory
-    // sort it by filename order (id order)
-    // then take only the > $from_id messages
-    $newmsg      = array();
+    // read new messages id
+    $new_msgid_list = array();
     $new_from_id = $from_id;   
-    $dir_handle  = opendir($msg_dir);
-    while (false !== ($file = readdir($dir_handle)))
+    $msgid_list = $this->getMeta2("channelid-to-msg", $this->_encode($chan));
+    for($i = 0; $i<count($msgid_list["value"]); $i++)
     {
-      if ($file == "." || $file == "..") continue; // skip . and .. generic files
-      if ($file>$from_id)
+      $msgidtmp = $msgid_list["value"][$i];
+      
+      if ($msgidtmp > $from_id)
       {
-        if ($file > $new_from_id)
-          $new_from_id = $file;
-        $newmsg[]    = $file;
+        if ($msgidtmp > $new_from_id) $new_from_id = $msgidtmp;
+        $new_msgid_list[] = $msgidtmp;
       }
     }
-    
-    // format content
+
+    // read messages content and parse content
     $datalist = array();
-    foreach ( $newmsg as $m )
+    foreach ( $new_msgid_list as $mid )
     {
-      $line = file_get_contents($msg_dir."/".$m);
+      $line = $this->getMeta2("channelid-to-msg", $this->_encode($chan), $mid, true);
+      $line = $line["value"][0];
       if ($line != "" && $line != "\n")
       {
         $formated_line = explode( "\t", $line );
@@ -603,130 +401,16 @@ class pfcContainer_File extends pfcContainer
    */
   function getLastId($chan)
   {
-    $c =& $this->c;
+    if ($chan == NULL) $chan = 'SERVER';
     
-    // calculate the messages.index location
-    $chan_dir = ($chan != NULL) ?
-      $c->container_cfg_channel_dir."/".$this->_encode($chan) :
-      $c->container_cfg_server_dir;
-    $index_filename = $chan_dir . "/messages.index";
-
-    // read last message id
-    $lastid = trim(@file_get_contents($index_filename));
-    if (!is_numeric($lastid)) $lastid = 0;
-    
-    return $lastid;
-  }
-
-
-  /**
-   * Read meta data identified by a key
-   * As an example the default file container store metadata into metadata/type/subtype/hash(key)
-   * @param $key is the index which identify a metadata
-   * @param $type is used to "group" some metadata
-   * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
-   * @return mixed the value assigned to the key, NULL if not found
-   */
-  function getMeta($key, $type, $subtype = NULL)
-  {
-    // encode parameters
-    $enc_key     = $this->_encode($key);
-    $enc_type    = $this->_encode($type);
-    $enc_subtype = ($subtype == NULL) ? "NULL" : $this->_encode($subtype);
-    if (isset($this->_meta[$enc_type][$enc_subtype][$enc_key]))
-      return $this->_meta[$enc_type][$enc_subtype][$enc_key];
-    
-    // read data from metadata file
-    $c =& $this->c;
-    $dir_base = $c->container_cfg_meta_dir;
-    $dir = $dir_base."/".$enc_type.($enc_subtype == "NULL" ? "" : "/".$enc_subtype);
-    $filename = $dir."/".$enc_key;
-    $ret = @file_get_contents($filename);
-    if ($ret == false) $ret = NULL;
-
-    // store the result in the cache
-    $this->_meta[$enc_type][$enc_subtype][$enc_key] = $ret;
-    
-    return $ret;
-  }
-  
-  /**
-   * Write a meta data value identified by a key
-   * As an example the default file container store metadata into metadata/type/subtype/hash(key)
-   * @param $key is the index which identify a metadata
-   * @param $value is the value associated to the key
-   * @param $type is used to "group" some metadata
-   * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
-   * @return true on success, false on error
-   */
-  function setMeta($value, $key, $type, $subtype = NULL)
-  {
-    // encode parameters
-    $enc_key     = $this->_encode($key);
-    $enc_type    = $this->_encode($type);
-    $enc_subtype = ($subtype == NULL) ? "NULL" : $this->_encode($subtype);
-    
-    // create directories
-    $c =& $this->c;
-    $dir_base = $c->container_cfg_meta_dir;
-    $dir = $dir_base."/".$enc_type.($enc_subtype == "NULL" ? "" : "/".$enc_subtype);
-    if (!is_dir($dir)) mkdir_r($dir);
-
-    // create or replace metadata file
-    $filename = $dir."/".$enc_key;
-    $ret = @file_put_contents($filename, $value);
-
-    // store the value in the cache
-    if ($ret) $this->_meta[$enc_type][$enc_subtype][$enc_key] = $value;
-
-    if ($ret == false)
-      return false;
+    $lastmsgid = $this->getMeta2("channelid-to-msgid", $this->_encode($chan), 'lastmsgid', true);
+    if (count($lastmsgid["value"]) == 0)
+      $lastmsgid = 0;
     else
-      return true;
+      $lastmsgid = $lastmsgid["value"][0];
+    return $lastmsgid;
   }
 
-  /**
-   * Remove a meta data key/value couple
-   * Notice: if key is NULL then all the meta data must be removed
-   * @param $key is the key to delete, use NULL to delete all the metadata
-   * @param $type is used to "group" some metadata
-   * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
-   * @return true on success, false on error
-   */
-  function rmMeta($key, $type, $subtype = NULL)
-  {
-    $c =& $this->c;
-    
-    // encode parameters
-    $enc_key     = ($key == NULL) ? "NULL" : $this->_encode($key);
-    $enc_type    = $this->_encode($type);
-    $enc_subtype = ($subtype == NULL) ? "NULL" : $this->_encode($subtype);
-
-    // rm data from metadata file
-    $dir_base = $c->container_cfg_meta_dir;
-    $dir = $dir_base."/".$enc_type.($enc_subtype == "NULL" ? "" : "/".$enc_subtype);
-    $ret = true;
-    if ($enc_key == "NULL")
-    {
-      // remove all keys (the complete directory)
-      @rm_r($dir);
-
-      // remove the cached data
-      unset($this->_meta[$enc_type][$enc_subtype]);
-    }
-    else
-    {
-      // just remove one key
-      $filename = $dir."/".$enc_key;
-      $ret = @unlink($filename);
-      
-      // remove the cached data
-      if (isset($this->_meta[$enc_type][$enc_subtype][$enc_key]))
-        unset($this->_meta[$enc_type][$enc_subtype][$enc_key]);
-    }
-
-    return $ret;
-  }
 
   /**
    * Remove all created data for this server (identified by serverid)
@@ -739,54 +423,9 @@ class pfcContainer_File extends pfcContainer
     $dir = $c->container_cfg_server_dir;
     @rm_r($dir);
     // empty the cache
-    $this->_meta = array();
-    $this->_users = array("nickid"    => array(),
-                          "timestamp" => array());
-  }
-
-  function _registerUserMeta($nickid, $chan)
-  {
-    $c =& $this->c;
-    // create or update the nickname references (used to know when the nick is really disconnected)
-    if ($chan == NULL) $chan = "SERVER";
-    $ref = $this->getMeta("references", $nickid);
-    if ($ref == NULL)
-      $ref = array();
-    else
-      $ref = explode(';',$ref);
-    if ($c->debug) pxlog("registerUserMeta -> ref=".implode(';',$ref), "chat", $c->getId());
-    if (in_array($chan,$ref))
-      return;
-    else
-      $ref[] = $chan;
-    $ref = implode(';',$ref);
-    $this->setMeta($ref, "references", $nickid);
-  }
-
-  function _unregisterUserMeta($nickid, $chan)
-  {
-    $c =& $this->c;
-    // decrement the nick references and kill the metadata if not more references is found
-    // (used to know when the nick is really disconnected)
-    if ($chan == NULL) $chan = "SERVER";
-    $nickname = $this->getNickname($nickid);
-    $ref = $this->getMeta("references", $nickid);
-    if ($ref == NULL) $ref = '';
-    $ref = explode(';',$ref);
-    $ref = array_diff($ref, array($chan));
-    if (count($ref) == 0)
-    {
-      $this->rmMeta("nickid",   "fromnickname", $nickname);
-      $this->rmMeta("nickname", "fromnickid",   $nickid);
-      $this->rmMeta("references", $nickid); // destroy also the reference counter
-      if ($c->debug) pxlog("_unregisterUserMeta -> destroy!", "chat", $c->getId());
-    }
-    else
-    { 
-      $ref = implode(';',$ref);
-      $this->setMeta($ref, "references", $nickid);
-      if ($c->debug) pxlog("_unregisterUserMeta -> ref=".$ref, "chat", $c->getId());
-    }
+    //    $this->_meta = array();
+    //    $this->_users = array("nickid"    => array(),
+    //                          "timestamp" => array());
   }
 
   
@@ -797,38 +436,13 @@ class pfcContainer_File extends pfcContainer
    */ 
   function _requestMsgId($chan)
   {
-    $c =& $this->c;
-
-    // calculate the messages.index location
-    $chan_dir = ($chan != NULL) ?
-      $c->container_cfg_channel_dir."/".$this->_encode($chan) :
-      $c->container_cfg_server_dir;
-    // check the directory exists
-    $errors = @test_writable_dir($chan_dir, $chan_dir);
-    if (count($errors) > 0) return $errors;
+    if ($chan == NULL) $chan = 'SERVER';
     
-    $index_filename = $chan_dir . "/messages.index";
+    $lastmsgid = $this->getLastId($chan);
+    $lastmsgid++;
+    $this->setMeta2("channelid-to-msgid", $this->_encode($chan), 'lastmsgid', $lastmsgid);
     
-    // read last message id
-    $msg_id = 0;
-    if (!file_exists($index_filename))
-      file_put_contents($index_filename, "0");
-    $fp = fopen($index_filename, "rw+");
-    if (is_resource($fp))
-    {
-      flock ($fp, LOCK_EX);
-      $msg_id = fread($fp, filesize($index_filename));
-      if (!is_numeric($msg_id)) $msg_id = 0;
-      // increment message id and save it
-      $msg_id++;
-      ftruncate($fp, 0);
-      fseek($fp, 0);
-      fwrite($fp, $msg_id);
-      flock ($fp, LOCK_UN);
-      fclose($fp);
-    }
-
-    return $msg_id;
+    return $lastmsgid;
   }
 
   /**
@@ -837,6 +451,7 @@ class pfcContainer_File extends pfcContainer
    */  
   function _encode($str)
   {
+    return urlencode($str);
     return base64_encode(urlencode($str));
   }
   
@@ -846,6 +461,7 @@ class pfcContainer_File extends pfcContainer
    */  
   function _decode($str)
   {
+    return urldecode($str);
     return urldecode(base64_decode($str));
   }
 
@@ -873,17 +489,19 @@ class pfcContainer_File extends pfcContainer
     $dir_base = $c->container_cfg_meta_dir;
     $dir = $dir_base.'/'.$group.'/'.$subgroup;
     if (!is_dir($dir)) mkdir_r($dir);
-
+    
     // create or replace metadata file
     $leaffilename = $dir."/".$leaf;
     $leafexists = file_exists($leaffilename);
     if ($leafvalue == NULL)
     {
-      @touch($leaffilename);
+      if (file_exists($leaffilename) &&
+	  filesize($leaffilename)>0) unlink($leaffilename);
+      touch($leaffilename);
     }
     else
     {
-      @file_put_contents($leaffilename, $leafvalue);
+      file_put_contents($leaffilename, $leafvalue);
     }
 
     // store the value in the memory cache
@@ -919,12 +537,15 @@ class pfcContainer_File extends pfcContainer
 
     if ($subgroup == NULL)
     {
-      $dh = opendir($dir);
-      while (false !== ($file = readdir($dh)))
+      if (is_dir($dir))
       {
-        if ($file == "." || $file == "..") continue; // skip . and .. generic files
-        $ret["timestamp"][] = @filemtime($dir.'/'.$file);
-        $ret["value"][]     = $file;
+        $dh = opendir($dir);
+        while (false !== ($file = readdir($dh)))
+        {
+          if ($file == "." || $file == "..") continue; // skip . and .. generic files
+          $ret["timestamp"][] = filemtime($dir.'/'.$file);
+          $ret["value"][]     = $file;
+        }
       }
       return $ret;
     }
@@ -933,13 +554,16 @@ class pfcContainer_File extends pfcContainer
 
     if ($leaf == NULL)
     {
-      $dh = opendir($dir);
-      $ret = array();
-      while (false !== ($file = readdir($dh)))
+      if (is_dir($dir))
       {
-        if ($file == "." || $file == "..") continue; // skip . and .. generic files
-        $ret["timestamp"][] = @filemtime($dir.'/'.$file);
-        $ret["value"][]     = $file;
+        $dh = opendir($dir);
+        $ret = array();
+        while (false !== ($file = readdir($dh)))
+        {
+          if ($file == "." || $file == "..") continue; // skip . and .. generic files
+          $ret["timestamp"][] = filemtime($dir.'/'.$file);
+          $ret["value"][]     = $file;
+        }
       }
       return $ret;
     }
@@ -949,12 +573,9 @@ class pfcContainer_File extends pfcContainer
     if (!file_exists($leaffilename)) return $ret;
     if ($withleafvalue)
     {
-      $ret["value"][] = @file_get_contents($leaffilename);
+      $ret["value"][] = file_get_contents($leaffilename);
     }
-    else
-    {
-      $ret["timestamp"][] = @filemtime($leaffilename);
-    }
+    $ret["timestamp"][] = filemtime($leaffilename);
 
     // @todo
     // store the result in the memory cache
@@ -983,7 +604,7 @@ class pfcContainer_File extends pfcContainer
 
     if ($subgroup == NULL)
     {
-      @rm_r($dir);
+      rm_r($dir);
       return true;
     }
     
@@ -991,14 +612,14 @@ class pfcContainer_File extends pfcContainer
 
     if ($leaf == NULL)
     {
-      @rm_r($dir);
+      rm_r($dir);
       return true;
     }
     
     $leaffilename = $dir."/".$leaf;
     
     if (!file_exists($leaffilename)) return false;
-    @unlink($leaffilename);
+    unlink($leaffilename);
     return true;
   }
 
