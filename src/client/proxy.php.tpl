@@ -39,5 +39,5 @@ header("Content-Length: ".$contentlength);
 header("Content-Type: ".$contenttype);
 session_cache_limiter('public');
 echo file_get_contents($file);
-
+flush(); // needed to fix problems with gzhandler enabled
 ?>
