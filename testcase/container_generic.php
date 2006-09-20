@@ -47,7 +47,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->c->destroyCache();
   }
 
-  function testCreateNick_Generic()
+  function test_createNick_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
@@ -68,7 +68,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->assertTrue($isonline, "nickname should be online on the server");
   }
 
-  function testRemoveNick_Generic()
+  function test_removeNick_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
@@ -90,7 +90,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->assertFalse($isonline, "nickname shouldn't be online on the server");
   }
 
-  function testGetNickId_Generic()
+  function test_getNickId_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
@@ -104,7 +104,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->assertEquals($nickid, $ret, "created nickname doesn't have a correct nickid");
   }
 
-  function testGetNickname_Generic()
+  function test_getNickname_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
@@ -120,7 +120,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->assertEquals($nick, $ret, "nickname value is wrong");
   }
 
-  function testGetOnlineNick_Generic()
+  function test_getOnlineNick_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
@@ -143,7 +143,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
   }
 
   
-  function testRemoveObsoleteNick_Generic()
+  function test_removeObsoleteNick_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
@@ -161,7 +161,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->assertFalse($isonline, "nickname shouldn't be online anymore");
   }
   
-  function testupdateNick_Generic()
+  function test_updateNick_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
@@ -182,7 +182,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
   }
   
 
-  function testchangeNick_Generic()
+  function test_changeNick_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
@@ -202,7 +202,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->assertTrue($isonline2, "nickname shouldn't be online");
   }
 
-  function testgetLastId_Generic()
+  function test_getLastId_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
@@ -224,7 +224,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->assertEquals(10, $msgid, "last msgid is not correct");
   }
 
-  function testwrite_Generic()
+  function test_write_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
@@ -245,7 +245,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->assertEquals(1, $res["new_from_id"],"new_from_id is not correct");
   }
   
-  function testread_Generic()
+  function test_read_Generic()
   {
     $c  =& $this->c;
     $ct =& $this->ct;
@@ -276,6 +276,108 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->assertEquals($msg."9", $res["data"][10]["param"] ,"messages data is not the same as the sent one");
     $this->assertEquals($res["new_from_id"], 10 ,"new_from_id is not correct");
   }
+
+  function test_encodedecode_Generic()
+  {
+    $c  =& $this->c;
+    $ct =& $this->ct;
+
+    $string = "il était une fois C;h:!?§+ toto=}at是";
+
+    $prefix    = __FUNCTION__;
+    $group     = $prefix."_nickid-to-channelid";
+    $subgroup  = $prefix."_nickid1";
+    $leaf      = $prefix."_".$ct->encode($string);
+    $leafvalue = $string;
+    $ct->setMeta($group, $subgroup, $leaf, $leafvalue);
+
+    $ret = $ct->getMeta($group, $subgroup);
+    $this->assertEquals($ret['value'][0], $leaf, "the leaf name is wrong");
+    $ret = $ct->getMeta($group, $subgroup, $leaf, true);
+    $this->assertEquals($ret['value'][0], $leafvalue, "the leaf value is wrong");
+  }
+  
+  function test_getMeta_Generic_1()
+  {
+    $c  =& $this->c;
+    $ct =& $this->ct;
+
+    $prefix   = __FUNCTION__;
+    $group    = $prefix."_nickid-to-channelid";
+    $subgroup = $prefix."_nickid1";
+    $leaf     = $prefix."_channelid1";
+    $ct->setMeta($group, $subgroup, $leaf);
+    $time = time();
+
+    $ret = $ct->getMeta($group, $subgroup, $leaf);
+    $this->assertEquals(count($ret["timestamp"]), 1, "number of leaf is wrong");
+    $this->assertEquals($ret["timestamp"][0], $time, "the leaf timestamp is wrong");
+    $this->assertEquals($ret["value"][0], null, "the leaf value is wrong");
+
+    $ret = $ct->getMeta($group, $subgroup);
+    $this->assertEquals(count($ret["timestamp"]), 1, "number of leaf is wrong");
+    $this->assertEquals($ret["timestamp"][0], $time, "the leaf timestamp is wrong");
+    $this->assertEquals($ret["value"][0], $leaf, "the leaf name is wrong");
+
+    $leafvalue = $prefix."_leafvalue";
+    $ct->setMeta($group, $subgroup, $leaf, $leafvalue);
+    $time = time();
+
+    $ret = $ct->getMeta($group, $subgroup, $leaf, true);
+    $this->assertEquals(count($ret["timestamp"]), 1, "number of leaf is wrong");
+    $this->assertEquals($ret["timestamp"][0], $time, "the leaf timestamp is wrong");
+    $this->assertEquals($ret["value"][0], $leafvalue, "the leaf value is wrong");
+  }
+
+  function test_getMeta_Generic_2()
+  {
+    $c  =& $this->c;
+    $ct =& $this->ct;
+
+    $prefix   = __FUNCTION__;
+    $group    = $prefix."_nickid-to-channelid";
+    $subgroup = $prefix."_nickid1";
+    $leaf1    = $prefix."_channelid1";
+    $leaf2    = $prefix."_channelid2";
+    $ct->setMeta($group, $subgroup, $leaf1);
+    $ct->setMeta($group, $subgroup, $leaf2);
+    $time = time();
+
+    $ret = $ct->getMeta($group, $subgroup);
+    asort($ret["value"]);
+    $this->assertEquals(count($ret["timestamp"]), 2, "number of leaf is wrong");
+    $this->assertEquals($ret["timestamp"][0], $time, "the leaf timestamp is wrong");
+    $this->assertEquals($ret["timestamp"][1], $time, "the leaf timestamp is wrong");
+    $this->assertEquals($ret["value"][0], $leaf1, "the leaf name is wrong");
+    $this->assertEquals($ret["value"][1], $leaf2, "the leaf name is wrong");
+  }
+
+  function test_getMeta_Generic_3()
+  {
+    $c  =& $this->c;
+    $ct =& $this->ct;
+
+    $prefix   = __FUNCTION__;
+    $group    = $prefix."_nickid-to-channelid";
+    $subgroup1 = $prefix."_nickid1";
+    $subgroup2 = $prefix."_nickid2";
+    $leaf1    = $prefix."_channelid1";
+    $leaf2    = $prefix."_channelid2";
+    $ct->setMeta($group, $subgroup1, $leaf1);
+    $ct->setMeta($group, $subgroup1, $leaf2);
+    $ct->setMeta($group, $subgroup2, $leaf1);
+    $ct->setMeta($group, $subgroup2, $leaf2);
+    $time = time();
+
+    $ret = $ct->getMeta($group);
+    asort($ret["value"]);
+    $this->assertEquals(count($ret["timestamp"]), 2, "number of subgroup is wrong");
+    $this->assertEquals($ret["timestamp"][0], $time, "the subgroup timestamp is wrong");
+    $this->assertEquals($ret["timestamp"][1], $time, "the subgroup timestamp is wrong");
+    $this->assertEquals($ret["value"][0], $subgroup1, "the subgroup name is wrong");
+    $this->assertEquals($ret["value"][1], $subgroup2, "the subgroup name is wrong");
+  }
+  
 }
 
 ?>

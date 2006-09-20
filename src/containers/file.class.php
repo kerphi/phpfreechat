@@ -1,6 +1,6 @@
 <?php
 /**
- * pfccontainer_file.class.php
+ * file.class.php
  *
  * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
  *
@@ -36,17 +36,13 @@ class pfcContainer_File extends pfcContainer
   function pfcContainer_File(&$config)
   {
     pfcContainer::pfcContainer($config);
-    //    $this->loadPaths();
   }
 
   function loadPaths()
   {
     $c =& $this->c;
-    $c->container_cfg_chat_dir            = $c->data_private_path."/chat";
-    $c->container_cfg_server_dir          = $c->container_cfg_chat_dir."/s_".$c->serverid;
-    $c->container_cfg_server_nickname_dir = $c->container_cfg_server_dir."/nicknames";
-    $c->container_cfg_meta_dir            = $c->container_cfg_server_dir."/metadata";
-    $c->container_cfg_channel_dir         = $c->container_cfg_server_dir."/channels";   
+    $c->container_cfg_chat_dir   = $c->data_private_path."/chat";
+    $c->container_cfg_server_dir = $c->container_cfg_chat_dir."/s_".$c->serverid;
   }
   
   function getDefaultConfig()
@@ -54,11 +50,8 @@ class pfcContainer_File extends pfcContainer
     $c =& $this->c;
     
     $cfg = array();
-    $cfg["chat_dir"]            = ""; // will be generated from the other parameters into the init step
-    $cfg["server_dir"]          = ""; // will be generated from the other parameters into the init step
-    $cfg["server_nickname_dir"] = ""; // will be generated from the other parameters into the init step
-    $cfg["meta_dir"]            = ""; // will be generated from the other parameters into the init step
-    $cfg["channel_dir"]         = ""; // will be generated from the other parameters into the init step
+    $cfg["chat_dir"]   = ''; // will be generated from the other parameters into the init step
+    $cfg["server_dir"] = ''; // will be generated from the other parameters into the init step
     return $cfg;
   }
   
@@ -72,415 +65,18 @@ class pfcContainer_File extends pfcContainer
       $c->container_cfg_chat_dir = $c->data_private_path."/chat";
     $this->loadPaths();
    
-    $errors = array_merge($errors, @test_writable_dir($c->container_cfg_chat_dir,            "container_cfg_chat_dir"));
-    $errors = array_merge($errors, @test_writable_dir($c->container_cfg_server_dir,          "container_cfg_chat_dir/serverid"));
-    $errors = array_merge($errors, @test_writable_dir($c->container_cfg_server_nickname_dir, "container_cfg_chat_dir/nicknames"));
-    $errors = array_merge($errors, @test_writable_dir($c->container_cfg_meta_dir,            "container_cfg_chat_dir/metadata"));
-    $errors = array_merge($errors, @test_writable_dir($c->container_cfg_channel_dir,         "container_cfg_chat_dir/channels"));
+    $errors = array_merge($errors, @test_writable_dir($c->container_cfg_chat_dir,   "container_cfg_chat_dir"));
+    $errors = array_merge($errors, @test_writable_dir($c->container_cfg_server_dir, "container_cfg_chat_dir/serverid"));
     
     return $errors;
   }
 
-  /**
-   * Create (connect/join) the nickname into the server or the channel locations
-   * Notice: the caller must take care to update all channels the users joined (use stored channel list into metadata)
-   * @param $chan if NULL then create the user on the server (connect), otherwise create the user on the given channel (join)
-   * @param $nick the nickname to create
-   * @param $nickid is the corresponding nickname id (taken from session)
-   */
-  function createNick($chan, $nick, $nickid)
-  {
-    $c =& $this->c;
 
-    if ($chan == NULL) $chan = 'SERVER';
-
-    $this->setMeta2("nickid-to-metadata",  $nickid, 'nick', $nick);
-    $this->setMeta2("metadata-to-nickid",  'nick', $this->_encode($nick), $nickid);
-
-    $this->setMeta2("nickid-to-channelid", $nickid, $this->_encode($chan));
-    $this->setMeta2("channelid-to-nickid", $this->_encode($chan), $nickid);
-
-    // update the SERVER channel
-    if ($chan != 'SERVER') $this->updateNick($nickid);
-    
-    return true;
-  }
-
-  /**
-   * Remove (disconnect/quit) the nickname from the server or from a channel
-   * Notice: The caller must take care to update all joined channels.
-   * @param $chan if NULL then remove the user on the server (disconnect), otherwise just remove the user from the given channel (quit)
-   * @param $nick the nickname to remove
-   * @return true if the nickname was correctly removed
-   */
-  function removeNick($chan, $nickid)
-  {
-    if ($chan == NULL) $chan = 'SERVER';
-
-    $timestamp = $this->getMeta2("channelid-to-nickid", $this->_encode('SERVER'), $nickid);
-    $timestamp = $timestamp["timestamp"][0];
-    
-    $deleted_user = array();
-    $deleted_user["nick"][]      = $this->getNickname($nickid);
-    $deleted_user["nickid"][]    = $nickid;
-    $deleted_user["timestamp"][] = $timestamp;
-
-    // remove the nickid from the channel list
-    $this->rmMeta2('channelid-to-nickid', $this->_encode($chan), $nickid);
-    $this->rmMeta2('nickid-to-channelid', $nickid, $this->_encode($chan));
-
-    // get the current user's channels list
-    $channels = $this->getMeta2("nickid-to-channelid",$nickid);
-    $channels = $channels["value"];
-    // no more joined channel, just remove the user's metadata
-    if (count($channels) == 0)
-    {
-      // remove the nickname to nickid correspondance
-      $this->rmMeta2('metadata-to-nickid', 'nick', $this->_encode($this->getNickname($nickid)));
-      // remove disconnected nickname metadata
-      $this->rmMeta2('nickid-to-metadata', $nickid);
-    }
-
-    return $deleted_user;
-  }
-
-  /**
-   * Store/update the alive user status somewhere
-   * The default File container will just touch (update the date) the nickname file.
-   * @param $chan where to update the nick, if null then update the server nick
-   * @param $nick nickname to update (raw nickname)
-   */
-  function updateNick($nickid)
-  {
-    $c =& $this->c;
-
-    $chan = 'SERVER';
-
-    $this->setMeta2("nickid-to-channelid", $nickid, $this->_encode($chan));
-    $this->setMeta2("channelid-to-nickid", $this->_encode($chan), $nickid);
-    return true;
-  }
-
-  /**
-   * Change the user' nickname
-   * Notice: the caller will just call this function one time, this function must take care to update if necessary all channels the user joined
-   * @param $newnick
-   * @param $oldnick
-   * @return true on success, false on failure
-   */
-  function changeNick($newnick, $oldnick)
-  {
-    $c =& $this->c;
-
-    $oldnickid = $this->getNickId($oldnick);
-    $newnickid = $this->getNickId($newnick);
-    if ($oldnickid == "") return false; // the oldnick must be connected
-    if ($newnickid != "") return false; // the newnick must not be inuse
-    
-    // remove the oldnick to oldnickid correspondance
-    $this->rmMeta2("metadata-to-nickid", 'nick', $this->_encode($oldnick));
-
-    // update the nickname
-    $this->setMeta2("nickid-to-metadata", $oldnickid, 'nick', $newnick);
-    $this->setMeta2("metadata-to-nickid", 'nick', $this->_encode($newnick), $oldnickid);
-    return true;
-  }
-
-  /**
-   * Returns the nickid corresponding to the given nickname
-   * The nickid is a unique id used to identify a user (generated from the browser sessionid)
-   * @param $nick
-   * @return string the nick id
-   */
-  function getNickId($nick)
-  {
-    $nickid = $this->getMeta2("metadata-to-nickid", 'nick', $this->_encode($nick), true);
-    $nickid = isset($nickid["value"][0]) ? $nickid["value"][0] : "";
-    return $nickid;
-  }
-
-  /**
-   * Returns the nickname corresponding the the given nickid
-   * @param $nickid
-   * @return string the corresponding nickname
-   */
-  function getNickname($nickid)
-  {
-    $nick = $this->getMeta2("nickid-to-metadata", $nickid, 'nick', true);
-    $nick = isset($nick["value"][0]) ? $this->_decode($nick["value"][0]) : "";
-    return $nick;
-  }
-
-  /**
-   * Remove (disconnect/quit) the timeouted nickname from the server or from a channel
-   * Notice: this function must remove all nicknames which are not uptodate from the given channel or from the server
-   * @param $chan if NULL then check obsolete nick on the server, otherwise just check obsolete nick on the given channel
-   * @param $timeout
-   * @return array("nickid"=>array("nickid1", ...),"timestamp"=>array(timestamp1, ...)) contains all disconnected nickids and there timestamp
-   */
-  function removeObsoleteNick($timeout)
-  {
-    $c =& $this->c;
-
-    $chan = 'SERVER';
-
-    $deleted_user = array('nick'=>array(),
-                          'nickid'=>array(),
-                          'timestamp'=>array(),
-                          'channels'=>array());
-    $ret = $this->getMeta2("channelid-to-nickid", $this->_encode($chan));
-    for($i = 0; $i<count($ret['timestamp']); $i++)
-    {
-      $timestamp = $ret['timestamp'][$i];
-      $nickid    = $ret['value'][$i];
-      if (time() > ($timestamp+$timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
-      {
-        // get the current user's channels list
-        $channels = array();
-        $ret2 = $this->getMeta2("nickid-to-channelid",$nickid);
-        foreach($ret2["value"] as $userchan)
-        {
-          // disconnect the user from each joined channels
-          $du = $this->removeNick($this->_decode($userchan), $nickid);
-          $channels[] = $this->_decode($userchan);
-        }
-        $deleted_user["nick"]      = array_merge($deleted_user["nick"],      $du["nick"]);
-        $deleted_user["nickid"]    = array_merge($deleted_user["nickid"],    $du["nickid"]);
-        $deleted_user["timestamp"] = array_merge($deleted_user["timestamp"], $du["timestamp"]);       
-        $deleted_user["channels"]  = array_merge($deleted_user["channels"],  array($channels));
-      }
-    }
-
-    return $deleted_user;
-  }
-
-  /**
-   * Returns the nickname list on the given channel or on the whole server
-   * @param $chan if NULL then returns all connected user, otherwise just returns the channel nicknames
-   * @return array("nickid"=>array("nickid1", ...),"timestamp"=>array(timestamp1, ...)) contains the nickid list with the associated timestamp (laste update time)
-   */
-  function getOnlineNick($chan)
-  {
-    $c =& $this->c;
-    
-    if ($chan == NULL) $chan = 'SERVER';
-
-    $online_user = array();
-    $ret = $this->getMeta2("channelid-to-nickid", $this->_encode($chan));
-    for($i = 0; $i<count($ret['timestamp']); $i++)
-    {
-      $nickid = $ret['value'][$i];
-
-      // get timestamp from the SERVER channel
-      $timestamp = $this->getMeta2("channelid-to-nickid", $this->_encode('SERVER'), $nickid);
-      $timestamp = $timestamp['timestamp'][0];
-
-      $online_user["nick"][]      = $this->getNickname($nickid);
-      $online_user["nickid"][]    = $nickid;
-      $online_user["timestamp"][] = $timestamp;
-    }
-    return $online_user;
-  }
-  
-  /**
-   * Returns returns a positive number if the nick is online
-   * @param $chan if NULL then check if the user is online on the server, otherwise check if the user has joined the channel
-   * @return -1 if the user is off line, a positive (>=0) if the user is online
-   */
-  function isNickOnline($chan, $nickid)
-  {
-    if ($chan == NULL) $chan = 'SERVER';
-
-    $ret = $this->getMeta2("channelid-to-nickid", $this->_encode($chan));
-    for($i = 0; $i<count($ret['timestamp']); $i++)
-    {
-      if ($ret['value'][$i] == $nickid) return $i;
-    }
-    return -1;
-  }
-
-  /**
-   * Write a command to the given channel or to the server
-   * Notice: a message is very generic, it can be a misc command (notice, me, ...)
-   * @param $chan if NULL then write the message on the server, otherwise just write the message on the channel message pool
-   * @param $nick is the sender nickname
-   * @param $cmd is the command name (ex: "send", "nick", "kick" ...)
-   * @param $param is the command' parameters (ex: param of the "send" command is the message)
-   * @return $msg_id the created message identifier
-   */
-  function write($chan, $nick, $cmd, $param)
-  {
-    $c =& $this->c;
-    if ($chan == NULL) $chan = 'SERVER';
-    
-    $msgid = $this->_requestMsgId($chan);
-
-    // format message
-    $data = "\n";
-    $data .= $msgid."\t";
-    $data .= date("d/m/Y")."\t";
-    $data .= date("H:i:s")."\t";
-    $data .= $nick."\t";
-    $data .= $cmd."\t";
-    $data .= $param;
-
-    // write message
-    $this->setMeta2("channelid-to-msg", $this->_encode($chan), $msgid, $data);
-
-    // delete the obsolete message
-    $old_msgid = $msgid - $c->max_msg - 20;
-    if ($old_msgid > 0)
-      $this->rmMeta2("channelid-to-msg", $this->_encode($chan), $old_msgid);
-
-    return $msgid;
-  }
-
-  /**
-   * Read the last posted commands from a channel or from the server
-   * Notice: the returned array must be ordered by id
-   * @param $chan if NULL then read from the server, otherwise read from the given channel
-   * @param $from_id read all message with a greater id
-   * @return array() contains the command list
-   */
-  function read($chan, $from_id)
-  {
-    $c =& $this->c;
-    if ($chan == NULL) $chan = 'SERVER';
-
-    // read new messages id
-    $new_msgid_list = array();
-    $new_from_id = $from_id;   
-    $msgid_list = $this->getMeta2("channelid-to-msg", $this->_encode($chan));
-    for($i = 0; $i<count($msgid_list["value"]); $i++)
-    {
-      $msgidtmp = $msgid_list["value"][$i];
-      
-      if ($msgidtmp > $from_id)
-      {
-        if ($msgidtmp > $new_from_id) $new_from_id = $msgidtmp;
-        $new_msgid_list[] = $msgidtmp;
-      }
-    }
-
-    // read messages content and parse content
-    $datalist = array();
-    foreach ( $new_msgid_list as $mid )
-    {
-      $line = $this->getMeta2("channelid-to-msg", $this->_encode($chan), $mid, true);
-      $line = $line["value"][0];
-      if ($line != "" && $line != "\n")
-      {
-        $formated_line = explode( "\t", $line );
-        $data = array();
-        $data["id"]    = trim($formated_line[0]);
-        $data["date"]  = $formated_line[1];
-        $data["time"]  = $formated_line[2];
-        $data["sender"]= $formated_line[3];
-        $data["cmd"]   = $formated_line[4];
-        $data["param"] = $formated_line[5];
-        $datalist[$data["id"]] = $data;
-      }
-    }
-    ksort($datalist);
-    
-    return array("data" => $datalist,
-                 "new_from_id" => $new_from_id );
-  }
-
-  /**
-   * Returns the last message id
-   * Notice: the default file container just returns the messages.index file content
-   * @param $chan if NULL then read if from the server, otherwise read if from the given channel
-   * @return int is the last posted message id
-   */
-  function getLastId($chan)
-  {
-    if ($chan == NULL) $chan = 'SERVER';
-    
-    $lastmsgid = $this->getMeta2("channelid-to-msgid", $this->_encode($chan), 'lastmsgid', true);
-    if (count($lastmsgid["value"]) == 0)
-      $lastmsgid = 0;
-    else
-      $lastmsgid = $lastmsgid["value"][0];
-    return $lastmsgid;
-  }
-
-
-  /**
-   * Remove all created data for this server (identified by serverid)
-   * Notice: for the default File container, it's just a recursive directory remove
-   */
-  function clear()
-  {
-    $c =& $this->c;
-    // remove the created files and directories
-    $dir = $c->container_cfg_server_dir;
-    @rm_r($dir);
-    // empty the cache
-    //    $this->_meta = array();
-    //    $this->_users = array("nickid"    => array(),
-    //                          "timestamp" => array());
-  }
-
-  
-  /**
-   * Return a unique id. Each time this function is called, the last id is incremented.
-   * used internaly
-   * @private
-   */ 
-  function _requestMsgId($chan)
-  {
-    if ($chan == NULL) $chan = 'SERVER';
-    
-    $lastmsgid = $this->getLastId($chan);
-    $lastmsgid++;
-    $this->setMeta2("channelid-to-msgid", $this->_encode($chan), 'lastmsgid', $lastmsgid);
-    
-    return $lastmsgid;
-  }
-
-  /**
-   * Used to encode UTF8 strings to ASCII filenames
-   * @private
-   */  
-  function _encode($str)
-  {
-    return urlencode($str);
-    return base64_encode(urlencode($str));
-  }
-  
-  /**
-   * Used to decode ASCII filenames to UTF8 strings
-   * @private
-   */  
-  function _decode($str)
-  {
-    return urldecode($str);
-    return urldecode(base64_decode($str));
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /**
-   * Write a meta data value identified by a group / subgroup / leaf [with a value]
-   * @return 1 if the leaf allready existed, 0 if the leaf has been created
-   */
-  function setMeta2($group, $subgroup, $leaf, $leafvalue = NULL)
-    //                    value, $key, $type, $subtype = NULL)
+  function setMeta($group, $subgroup, $leaf, $leafvalue = NULL)
   {
     // create directories
     $c =& $this->c;
-    $dir_base = $c->container_cfg_meta_dir;
+    $dir_base = $c->container_cfg_server_dir;
     $dir = $dir_base.'/'.$group.'/'.$subgroup;
     if (!is_dir($dir)) mkdir_r($dir);
     
@@ -509,18 +105,14 @@ class pfcContainer_File extends pfcContainer
   }
 
   
-  /**
-   * Read meta data identified by a group [/ subgroup [/ leaf]]
-   * @return ...
-   */
-  function getMeta2($group, $subgroup = null, $leaf = null, $withleafvalue = false)
+  function getMeta($group, $subgroup = null, $leaf = null, $withleafvalue = false)
   {
     // read data from metadata file
     $ret = array();
     $ret["timestamp"] = array();
     $ret["value"]     = array();
     $c =& $this->c;
-    $dir_base = $c->container_cfg_meta_dir;
+    $dir_base = $c->container_cfg_server_dir;
 
     $dir = $dir_base.'/'.$group;
 
@@ -568,23 +160,18 @@ class pfcContainer_File extends pfcContainer
     return $ret;
   }
 
-  
-  /**
-   * Remove a meta data
-   * @return ...
-   */
-  function rmMeta2($group, $subgroup = null, $leaf = null)
-  //($key, $type, $subtype = NULL)
+  function rmMeta($group, $subgroup = null, $leaf = null)
   {
     $c =& $this->c;
+    $dir = $c->container_cfg_server_dir;
 
+    if ($group == NULL)
+    {
+      rm_r($dir);
+      return true;
+    }
 
-
-    // read data from metadata file
-    $c =& $this->c;
-    $dir_base = $c->container_cfg_meta_dir;
-
-    $dir = $dir_base.'/'.$group;
+    $dir .= '/'.$group;
 
     if ($subgroup == NULL)
     {
@@ -600,7 +187,7 @@ class pfcContainer_File extends pfcContainer
       return true;
     }
     
-    $leaffilename = $dir."/".$leaf;
+    $leaffilename = $dir.'/'.$leaf;
     
     if (!file_exists($leaffilename)) return false;
     unlink($leaffilename);
@@ -608,28 +195,20 @@ class pfcContainer_File extends pfcContainer
   }
 
 
-  function getUserMeta($nickid, $key)
+  /**
+   * Used to encode UTF8 strings to ASCII filenames
+   */  
+  function encode($str)
   {
-    $ret = $this->getMeta2("nickid-to-metadata", $nickid, $key, true);
-    return isset($ret['value'][0]) ? $ret['value'][0] : NULL;
+    return urlencode($str);
   }
-
-  function setUserMeta($nickid, $key, $value)
+  
+  /**
+   * Used to decode ASCII filenames to UTF8 strings
+   */  
+  function decode($str)
   {
-    $ret = $this->setMeta2("nickid-to-metadata", $nickid, $key, $value);
-    return $ret;
-  }
-
-  function getChanMeta($chan, $key)
-  {
-    $ret = $this->getMeta2("channelid-to-metadata", $this->_encode($chan), $key, true);
-    return isset($ret['value'][0]) ? $ret['value'][0] : NULL;
-  }
-
-  function setChanMeta($chan, $key, $value)
-  {
-    $ret = $this->setMeta2("channelid-to-metadata", $this->_encode($chan), $key, $value);
-    return $ret;
+    return urldecode($str);
   }
 
 }

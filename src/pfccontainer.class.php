@@ -41,73 +41,217 @@ class pfcContainer
    * @param $nick the nickname to create
    * @param $nickid is the corresponding nickname id (taken from session)
    */
-  function createNick($chan, $nickname, $nickid)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function createNick($chan, $nick, $nickid)
+  {
+    $c =& $this->c;
+
+    if ($chan == NULL) $chan = 'SERVER';
+
+    $this->setMeta("nickid-to-metadata",  $nickid, 'nick', $nick);
+    $this->setMeta("metadata-to-nickid",  'nick', $this->encode($nick), $nickid);
+
+    $this->setMeta("nickid-to-channelid", $nickid, $this->encode($chan));
+    $this->setMeta("channelid-to-nickid", $this->encode($chan), $nickid);
+
+    // update the SERVER channel
+    if ($chan != 'SERVER') $this->updateNick($nickid);
+    
+    return true;
+  }
 
   /**
    * Remove (disconnect/quit) the nickname from the server or from a channel
-   * Notice: The caller must take care to update all joined channels.
-   * @param $chan if NULL then remove the user on the server (disconnect), otherwise just remove the user from the given channel (quit)
-   * @param $nick the nickname to remove
-   * @return true if the nickname was correctly removed
+   * Notice: when a user quit, the caller must take care removeNick from each channels ('SERVER' included)
+   * This function takes care to remove all users metadata when he his disconnected from all channels
+   * @param $chan if NULL then remove the user from the 'SERVER' channel, otherwise just remove the user from the given channel (quit)
+   * @param $nickid the nickname id to remove
+   * @return array which contains removed user infos ('nickid', 'nick', 'timestamp')
    */
-  function removeNick($chan, $nickname)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function removeNick($chan, $nickid)
+  {
+    if ($chan == NULL) $chan = 'SERVER';
+
+    $timestamp = $this->getMeta("channelid-to-nickid", $this->encode('SERVER'), $nickid);
+    $timestamp = $timestamp["timestamp"][0];
+    
+    $deleted_user = array();
+    $deleted_user["nick"][]      = $this->getNickname($nickid);
+    $deleted_user["nickid"][]    = $nickid;
+    $deleted_user["timestamp"][] = $timestamp;
+
+    // remove the nickid from the channel list
+    $this->rmMeta('channelid-to-nickid', $this->encode($chan), $nickid);
+    $this->rmMeta('nickid-to-channelid', $nickid, $this->encode($chan));
+
+    // get the current user's channels list
+    $channels = $this->getMeta("nickid-to-channelid",$nickid);
+    $channels = $channels["value"];
+    // no more joined channel, just remove the user's metadata
+    if (count($channels) == 0)
+    {
+      // remove the nickname to nickid correspondance
+      $this->rmMeta('metadata-to-nickid', 'nick', $this->encode($this->getNickname($nickid)));
+      // remove disconnected nickname metadata
+      $this->rmMeta('nickid-to-metadata', $nickid);
+    }
+
+    return $deleted_user;
+  }
 
   /**
-   * Store/update the alive user status somewhere
-   * The default File container will just touch (update the date) the nickname file.
-   * @param $chan where to update the nick, if null then update the server nick
-   * @param $nick nickname to update (raw nickname)
+   * Store/update the alive user status on the 'SERVER' channel
+   * The default File container will just touch (update the date) of the nickname file in the 'SERVER' channel.
+   * @param $nickid the nickname id to keep alive
    */
-  function updateNick($chan, $nick)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function updateNick($nickid)
+  {
+    $c =& $this->c;
 
+    $chan = 'SERVER';
+
+    $this->setMeta("nickid-to-channelid", $nickid, $this->encode($chan));
+    $this->setMeta("channelid-to-nickid", $this->encode($chan), $nickid);
+    return true;
+  }
 
   /**
-   * Change the user' nickname
-   * Notice: this call must take care to update all channels the user joined
-   * @param $chan where to update the nick, if null then update the server nick
+   * Change the user's nickname
+   * As nickname value are stored in user's metadata, this function just update the 'nick' metadata
    * @param $newnick
    * @param $oldnick
+   * @return true on success, false on failure (if the oldnick doesn't exists)
    */
   function changeNick($newnick, $oldnick)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
-  
+  {
+    $c =& $this->c;
+
+    $oldnickid = $this->getNickId($oldnick);
+    $newnickid = $this->getNickId($newnick);
+    if ($oldnickid == "") return false; // the oldnick must be connected
+    if ($newnickid != "") return false; // the newnick must not be inuse
+    
+    // remove the oldnick to oldnickid correspondance
+    $this->rmMeta("metadata-to-nickid", 'nick', $this->encode($oldnick));
+
+    // update the nickname
+    $this->setMeta("nickid-to-metadata", $oldnickid, 'nick', $newnick);
+    $this->setMeta("metadata-to-nickid", 'nick', $this->encode($newnick), $oldnickid);
+    return true;
+  }
+
   /**
-   * Returns the nickid, this is a unique id used to identify a user (taken from session)
-   * By default this nickid is just stored into the user' metadata, same as :->getNickMeta("nickid")
+   * Returns the nickid corresponding to the given nickname
+   * The nickid is a unique id used to identify a user (generated from the browser sessionid)
+   * The nickid is stored in the container when createNick is called.
    * @param $nick
    * @return string the nick id
    */
-  function getNickId($nickname)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function getNickId($nick)
+  {
+    $nickid = $this->getMeta("metadata-to-nickid", 'nick', $this->encode($nick), true);
+    $nickid = isset($nickid["value"][0]) ? $nickid["value"][0] : "";
+    return $nickid;
+  }
+
+  /**
+   * Returns the nickname corresponding the the given nickid
+   * @param $nickid
+   * @return string the corresponding nickname
+   */
+  function getNickname($nickid)
+  {
+    $nick = $this->getMeta("nickid-to-metadata", $nickid, 'nick', true);
+    $nick = isset($nick["value"][0]) ? $this->decode($nick["value"][0]) : "";
+    return $nick;
+  }
 
   /**
    * Remove (disconnect/quit) the timeouted nickname from the server or from a channel
    * Notice: this function must remove all nicknames which are not uptodate from the given channel or from the server
    * @param $chan if NULL then check obsolete nick on the server, otherwise just check obsolete nick on the given channel
    * @param $timeout
-   * @return array("nick"=>???, "timestamp"=>???) contains all disconnected nicknames and there timestamp
+   * @return array("nickid"=>array("nickid1", ...),"timestamp"=>array(timestamp1, ...)) contains all disconnected nickids and there timestamp
    */
-  function removeObsoleteNick($chan, $timeout)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function removeObsoleteNick($timeout)
+  {
+    $c =& $this->c;
+
+    $chan = 'SERVER';
+
+    $deleted_user = array('nick'=>array(),
+                          'nickid'=>array(),
+                          'timestamp'=>array(),
+                          'channels'=>array());
+    $ret = $this->getMeta("channelid-to-nickid", $this->encode($chan));
+    for($i = 0; $i<count($ret['timestamp']); $i++)
+    {
+      $timestamp = $ret['timestamp'][$i];
+      $nickid    = $ret['value'][$i];
+      if (time() > ($timestamp+$timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
+      {
+        // get the current user's channels list
+        $channels = array();
+        $ret2 = $this->getMeta("nickid-to-channelid",$nickid);
+        foreach($ret2["value"] as $userchan)
+        {
+          // disconnect the user from each joined channels
+          $du = $this->removeNick($this->decode($userchan), $nickid);
+          $channels[] = $this->decode($userchan);
+        }
+        $deleted_user["nick"]      = array_merge($deleted_user["nick"],      $du["nick"]);
+        $deleted_user["nickid"]    = array_merge($deleted_user["nickid"],    $du["nickid"]);
+        $deleted_user["timestamp"] = array_merge($deleted_user["timestamp"], $du["timestamp"]);       
+        $deleted_user["channels"]  = array_merge($deleted_user["channels"],  array($channels));
+      }
+    }
+
+    return $deleted_user;
+  }
 
   /**
    * Returns the nickname list on the given channel or on the whole server
    * @param $chan if NULL then returns all connected user, otherwise just returns the channel nicknames
-   * @return array(array("nick"=>???,"timestamp"=>???) contains the nickname list with the associated timestamp (laste update time)
-   */  
+   * @return array("nickid"=>array("nickid1", ...),"timestamp"=>array(timestamp1, ...)) contains the nickid list with the associated timestamp (laste update time)
+   */
   function getOnlineNick($chan)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  {
+    $c =& $this->c;
+    
+    if ($chan == NULL) $chan = 'SERVER';
 
+    $online_user = array();
+    $ret = $this->getMeta("channelid-to-nickid", $this->encode($chan));
+    for($i = 0; $i<count($ret['timestamp']); $i++)
+    {
+      $nickid = $ret['value'][$i];
+
+      // get timestamp from the SERVER channel
+      $timestamp = $this->getMeta("channelid-to-nickid", $this->encode('SERVER'), $nickid);
+      $timestamp = $timestamp['timestamp'][0];
+
+      $online_user["nick"][]      = $this->getNickname($nickid);
+      $online_user["nickid"][]    = $nickid;
+      $online_user["timestamp"][] = $timestamp;
+    }
+    return $online_user;
+  }
+  
   /**
    * Returns returns a positive number if the nick is online
    * @param $chan if NULL then check if the user is online on the server, otherwise check if the user has joined the channel
    * @return -1 if the user is off line, a positive (>=0) if the user is online
    */
-  function isNickOnline($chan, $nick)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function isNickOnline($chan, $nickid)
+  {
+    if ($chan == NULL) $chan = 'SERVER';
+
+    $ret = $this->getMeta("channelid-to-nickid", $this->encode($chan));
+    for($i = 0; $i<count($ret['timestamp']); $i++)
+    {
+      if ($ret['value'][$i] == $nickid) return $i;
+    }
+    return -1;
+  }
 
   /**
    * Write a command to the given channel or to the server
@@ -118,18 +262,84 @@ class pfcContainer
    * @param $param is the command' parameters (ex: param of the "send" command is the message)
    * @return $msg_id the created message identifier
    */
-  function write($chan, $nick, $msg)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  function write($chan, $nick, $cmd, $param)
+  {
+    $c =& $this->c;
+    if ($chan == NULL) $chan = 'SERVER';
+    
+    $msgid = $this->_requestMsgId($chan);
+
+    // format message
+    $data = "\n";
+    $data .= $msgid."\t";
+    $data .= date("d/m/Y")."\t";
+    $data .= date("H:i:s")."\t";
+    $data .= $nick."\t";
+    $data .= $cmd."\t";
+    $data .= $param;
+
+    // write message
+    $this->setMeta("channelid-to-msg", $this->encode($chan), $msgid, $data);
+
+    // delete the obsolete message
+    $old_msgid = $msgid - $c->max_msg - 20;
+    if ($old_msgid > 0)
+      $this->rmMeta("channelid-to-msg", $this->encode($chan), $old_msgid);
+
+    return $msgid;
+  }
 
   /**
    * Read the last posted commands from a channel or from the server
-   * Notice: the returned array must be ordered by id
+   * Notice: the returned array is ordered by id
    * @param $chan if NULL then read from the server, otherwise read from the given channel
    * @param $from_id read all message with a greater id
-   * @return array() contains the command list
+   * @return array() contains the formated command list
    */
   function read($chan, $from_id)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  {
+    $c =& $this->c;
+    if ($chan == NULL) $chan = 'SERVER';
+
+    // read new messages id
+    $new_msgid_list = array();
+    $new_from_id = $from_id;   
+    $msgid_list = $this->getMeta("channelid-to-msg", $this->encode($chan));
+    for($i = 0; $i<count($msgid_list["value"]); $i++)
+    {
+      $msgidtmp = $msgid_list["value"][$i];
+      
+      if ($msgidtmp > $from_id)
+      {
+        if ($msgidtmp > $new_from_id) $new_from_id = $msgidtmp;
+        $new_msgid_list[] = $msgidtmp;
+      }
+    }
+
+    // read messages content and parse content
+    $datalist = array();
+    foreach ( $new_msgid_list as $mid )
+    {
+      $line = $this->getMeta("channelid-to-msg", $this->encode($chan), $mid, true);
+      $line = $line["value"][0];
+      if ($line != "" && $line != "\n")
+      {
+        $formated_line = explode( "\t", $line );
+        $data = array();
+        $data["id"]    = trim($formated_line[0]);
+        $data["date"]  = $formated_line[1];
+        $data["time"]  = $formated_line[2];
+        $data["sender"]= $formated_line[3];
+        $data["cmd"]   = $formated_line[4];
+        $data["param"] = $formated_line[5];
+        $datalist[$data["id"]] = $data;
+      }
+    }
+    ksort($datalist);
+    
+    return array("data" => $datalist,
+                 "new_from_id" => $new_from_id );
+  }
 
   /**
    * Returns the last message id
@@ -138,48 +348,127 @@ class pfcContainer
    * @return int is the last posted message id
    */
   function getLastId($chan)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  {
+    if ($chan == NULL) $chan = 'SERVER';
+    
+    $lastmsgid = $this->getMeta("channelid-to-msgid", $this->encode($chan), 'lastmsgid', true);
+    if (count($lastmsgid["value"]) == 0)
+      $lastmsgid = 0;
+    else
+      $lastmsgid = $lastmsgid["value"][0];
+    return $lastmsgid;
+  }
 
-  /**
-   * Read meta data identified by a key
-   * As an example the default file container store metadata into metadata/type/subtype/hash(key)
-   * @param $key is the index which identify a metadata
-   * @param $type is used to "group" some metadata
-   * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
-   * @return mixed the value assigned to the key, NULL if not found
-   */
-  function getMeta($key, $type, $subtype = NULL)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
   
   /**
-   * Write a meta data value identified by a key
-   * As an example the default file container store metadata into metadata/type/subtype/hash(key)
-   * @param $key is the index which identify a metadata
-   * @param $value is the value associated to the key
-   * @param $type is used to "group" some metadata
-   * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
-   * @return true on success, false on error
-   */
-  function setMeta($value, $key, $type, $subtype = NULL)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+   * Return a unique id. Each time this function is called, the last id is incremented.
+   * used internaly
+   * @private
+   */ 
+  function _requestMsgId($chan)
+  {
+    if ($chan == NULL) $chan = 'SERVER';
+    
+    $lastmsgid = $this->getLastId($chan);
+    $lastmsgid++;
+    $this->setMeta("channelid-to-msgid", $this->encode($chan), 'lastmsgid', $lastmsgid);
+    
+    return $lastmsgid;
+  }
 
-  /**
-   * Remove a meta data key/value couple
-   * Notice: if key is NULL then all the meta data must be removed
-   * @param $key is the key to delete, use NULL to delete all the metadata
-   * @param $type is used to "group" some metadata
-   * @param $subtype is used to "group" precisely some metadata, use NULL to ignore it
-   * @return true on success, false on error
-   */
-  function rmMeta($key, $type, $subtype = NULL)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
 
   /**
    * Remove all created data for this server (identified by serverid)
    * Notice: for the default File container, it's just a recursive directory remove
    */
   function clear()
+  {
+    $this->rmMeta(NULL);
+  }
+  
+  /**
+   * In the default File container: used to encode UTF8 strings to ASCII filenames
+   * This method can be overridden by the concrete container
+   */  
+  function encode($str)
+  {
+    return $str;
+  }
+  
+  /**
+   * In the default File container: used to decode ASCII filenames to UTF8 strings
+   * This method can be overridden by the concrete container
+   */  
+  function decode($str)
+  {
+    return $str;
+  }
+
+
+  function getUserMeta($nickid, $key)
+  {
+    $ret = $this->getMeta("nickid-to-metadata", $nickid, $key, true);
+    return isset($ret['value'][0]) ? $ret['value'][0] : NULL;
+  }
+
+  function setUserMeta($nickid, $key, $value)
+  {
+    $ret = $this->setMeta("nickid-to-metadata", $nickid, $key, $value);
+    return $ret;
+  }
+
+  function getChanMeta($chan, $key)
+  {
+    $ret = $this->getMeta("channelid-to-metadata", $this->encode($chan), $key, true);
+    return isset($ret['value'][0]) ? $ret['value'][0] : NULL;
+  }
+
+  function setChanMeta($chan, $key, $value)
+  {
+    $ret = $this->setMeta("channelid-to-metadata", $this->encode($chan), $key, $value);
+    return $ret;
+  }
+
+  /**
+   * Write a meta data value identified by a group / subgroup / leaf [with a value]
+   * As an example in the default file container this  arborescent structure is modelised by simple directories
+   * group1/subgroup1/leaf1
+   *                 /leaf2
+   *       /subgroup2/...
+   * Each leaf can contain or not a value.
+   * However each leaf and each group/subgroup must store the lastmodified time (timestamp).
+   * @param $group root arborescent element
+   * @param $subgroup is the root first child which contains leafs
+   * @param $leaf is the only element which can contain values
+   * @param $leafvalue NULL means the leaf will not contain any values
+   * @return 1 if the old leaf has been overwritten, 0 if a new leaf has been created
+   */
+  function setMeta($group, $subgroup, $leaf, $leafvalue = NULL)
   { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+
+  
+  /**
+   * Read meta data identified by a group [/ subgroup [/ leaf]]
+   * @param $group is mandatory, it's the arborescence's root
+   * @param $subgroup if null then the subgroup list names are returned
+   * @param $leaf if null then the leaf names are returned
+   * @param $withleafvalue if set to true the leaf value will be returned
+   * @return array which contains two subarray 'timestamp' and 'value'
+   */
+  function getMeta($group, $subgroup = null, $leaf = null, $withleafvalue = false)
+  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  
+
+  /**
+   * Remove a meta data or a group of metadata
+   * @param $group if null then it will remove all the possible groups (all the created metadata)
+   * @param $subgroup if null then it will remove the $group's childs (all the subgroup contained by $group)
+   * @param $leaf if null then it will remove all the $subgroup's childs (all the leafs contained by $subgroup)
+   * @return true on success, false on error
+   */
+  function rmMeta($group, $subgroup = null, $leaf = null)
+  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+
 }
 
 ?>
