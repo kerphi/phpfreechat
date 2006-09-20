@@ -58,7 +58,7 @@ class pfcCommand_identify extends pfcCommand
     {
       // ok the current user is an admin, just save the isadmin flag in the metadata
       $container =& $c->getContainerInstance();
-      $container->setUserMeta($u->nickid, 'isadmin' $isadmin);
+      $container->setUserMeta($u->nickid, 'isadmin', $isadmin);
 
       $msg .= _pfc("Succesfully identified");
       $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
