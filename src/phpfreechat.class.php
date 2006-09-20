@@ -38,7 +38,9 @@ class phpFreeChat
   
   function phpFreeChat( &$params )
   {
-    if (isset($params["debug"]) && $params["debug"])
+    if (!is_object($params) &&
+        isset($params["debug"]) &&
+        $params["debug"])
       require_once dirname(__FILE__)."/../debug/log.php";
 
     // check if the given parameters is a simple array
