@@ -53,16 +53,43 @@ $chat = new phpFreeChat( $params );
         <li>
           <ul>
             <li class="item">
-              <a href="README.en">readme [en]</a>
+              <a href="overview.en.html">Overview [en]</a>
             </li>
             <li class="item">
-              <a href="README.fr">readme [fr]</a>
+              <a href="overview.fr.html">Overview [fr]</a>
             </li>
             <li class="item">
-              <a href="INSTALL.en">install [en]</a>
+              <a href="overview.es.html">Overview [es]</a>
             </li>
             <li class="item">
-              <a href="INSTALL.fr">install [fr]</a>
+              <a href="overview.ar.html">Overview [zh]</a>
+            </li>
+            <li class="item">
+              <a href="overview.ar.html">Overview [ar]</a>
+            </li>
+            <li class="item">
+              <a href="install.en.html">Install [en]</a>
+            </li>
+            <li class="item">
+              <a href="install.fr.html">Install [fr]</a>
+            </li>
+            <li class="item">
+              <a href="faq.en.html">FAQ [en]</a>
+            </li>
+            <li class="item">
+              <a href="faq.fr.html">FAQ [fr]</a>
+            </li>
+            <li class="item">
+              <a href="customize.en.html">Customize [en]</a>
+            </li>
+            <li class="item">
+              <a href="customize.fr.html">Customize [fr]</a>
+            </li>
+            <li class="item">
+              <a href="changelog.en.html">ChangeLog [en]</a>
+            </li>
+            <li class="item">
+              <a href="changelog.fr.html">ChangeLog [fr]</a>
             </li>
           </ul>
         </li>

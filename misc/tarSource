@@ -9,19 +9,19 @@ rm -rf ./$NAME
 svn export .. ./$NAME
 rm -rf ./$NAME/contrib
 echo "-> downloading documentation"
-wget http://www.phpfreechat.net/pages/fr/install.html   -q -O ./$NAME/INSTALL.fr.html
-wget http://www.phpfreechat.net/pages/en/install.html   -q -O ./$NAME/INSTALL.en.html
-wget http://www.phpfreechat.net/pages/fr/faq.html       -q -O ./$NAME/FAQ.fr.html
-wget http://www.phpfreechat.net/pages/en/faq.html       -q -O ./$NAME/FAQ.en.html
-wget http://www.phpfreechat.net/pages/fr/overview.html  -q -O ./$NAME/OVERVIEW.fr.html
-wget http://www.phpfreechat.net/pages/en/overview.html  -q -O ./$NAME/OVERVIEW.en.html
-wget http://www.phpfreechat.net/pages/ar/overview.html  -q -O ./$NAME/OVERVIEW.ar.html
-wget http://www.phpfreechat.net/pages/es/overview.html  -q -O ./$NAME/OVERVIEW.es.html
-wget http://www.phpfreechat.net/pages/zh/overview.html  -q -O ./$NAME/OVERVIEW.zh.html
-wget http://www.phpfreechat.net/pages/fr/customize.html -q -O ./$NAME/CUSTOMIZE.fr.html
-wget http://www.phpfreechat.net/pages/en/customize.html -q -O ./$NAME/CUSTOMIZE.en.html
-wget http://www.phpfreechat.net/pages/fr/changelog.html -q -O ./$NAME/CHANGELOG.fr.html
-wget http://www.phpfreechat.net/pages/en/changelog.html -q -O ./$NAME/CHANGELOG.en.html
+wget http://www.phpfreechat.net/pages/fr/install.html   -q -O ./$NAME/install.fr.html
+wget http://www.phpfreechat.net/pages/en/install.html   -q -O ./$NAME/install.en.html
+wget http://www.phpfreechat.net/pages/fr/faq.html       -q -O ./$NAME/faq.fr.html
+wget http://www.phpfreechat.net/pages/en/faq.html       -q -O ./$NAME/faq.en.html
+wget http://www.phpfreechat.net/pages/fr/overview.html  -q -O ./$NAME/overview.fr.html
+wget http://www.phpfreechat.net/pages/en/overview.html  -q -O ./$NAME/overview.en.html
+wget http://www.phpfreechat.net/pages/ar/overview.html  -q -O ./$NAME/overview.ar.html
+wget http://www.phpfreechat.net/pages/es/overview.html  -q -O ./$NAME/overview.es.html
+wget http://www.phpfreechat.net/pages/zh/overview.html  -q -O ./$NAME/overview.zh.html
+wget http://www.phpfreechat.net/pages/fr/customize.html -q -O ./$NAME/customize.fr.html
+wget http://www.phpfreechat.net/pages/en/customize.html -q -O ./$NAME/customize.en.html
+wget http://www.phpfreechat.net/pages/fr/changelog.html -q -O ./$NAME/changelog.fr.html
+wget http://www.phpfreechat.net/pages/en/changelog.html -q -O ./$NAME/changelog.en.html
 
 echo "-> creating checkmd5.php file"
 ./checkmd5 ./$NAME ./$NAME/checkmd5.php
