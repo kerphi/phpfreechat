@@ -61,6 +61,13 @@ class pfcCommand_privmsg extends pfcCommand
     // in the sessions
     if (!isset($u->privmsg[$pvrecipientid]))
     {
+      if ($c->max_privmsg <= count($u->privmsg))
+      {
+        // the maximum number of private messages has been reached
+        $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'max_privmsg', Array());");
+        return;
+      }
+      
       $u->privmsg[$pvrecipientid]["recipient"] = $pvrecipient;
       $u->privmsg[$pvrecipientid]["name"]      = $pvname;
       $u->privmsg[$pvrecipientid]["pvnickid"]  = $pvnickid;

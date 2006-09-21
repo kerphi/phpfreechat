@@ -53,6 +53,8 @@ class pfcGlobalConfig
   var $title               = ""; // default is _pfc("My Chat")
   var $channels            = array(); // the default joined channels when opening the chat
   var $frozen_channels     = array(); // if empty, allows users to create there own channels
+  var $max_channels        = 10; // this the max number of allowed channels by users
+  var $max_privmsg         = 5;  // this the max number of allowed privmsg by users
   var $frozen_nick         = false;
   var $max_nick_len        = 15;
   var $max_text_len        = 400;

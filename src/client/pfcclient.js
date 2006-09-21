@@ -168,7 +168,7 @@ pfcClient.prototype = {
         this.refresh_loginlogout();
       }
     }
-    else if (cmd == "join")
+    else if (cmd == "join" || cmd == "join2")
     {
       if (resp =="ok")
       {
@@ -176,29 +176,13 @@ pfcClient.prototype = {
         var tabid = param[0];
         var name  = param[1];
         this.gui.createTab(name, tabid, "ch");
-        this.gui.setTabById(tabid);
-        /*
-        this.channels.push(name);
-        this.channelids.push(tabid);
-        */
+        if (cmd != "join2") this.gui.setTabById(tabid);
         this.refresh_Smileys();
         this.refresh_WhosOnline();
       }
-      else
-        alert(cmd + "-"+resp+"-"+param);
-    }
-    else if (cmd == "join2")
-    {
-      if (resp =="ok")
+      else if (resp == "max_channels")
       {
-        // create the new channel
-        var tabid = param[0];
-        var name  = param[1];
-        this.gui.createTab(name, tabid, "ch");
-        // do not switch to the new created tab
-        // keep it in the background
-        //        this.gui.setTabById(tabid);
-        this.refresh_WhosOnline();
+        this.displayMsg( cmd, this.res.getLabel('Maximum number of joined channels has been reached') );
       }
       else
         alert(cmd + "-"+resp+"-"+param);
@@ -228,7 +212,7 @@ pfcClient.prototype = {
         
       }
     }
-    else if (cmd == "privmsg")
+    else if (cmd == "privmsg" || cmd == "privmsg2")
     {
       if (resp == "ok")
       {
@@ -236,33 +220,15 @@ pfcClient.prototype = {
         var tabid = param[0];
         var name  = param[1];
         this.gui.createTab(name, tabid, "pv");
-        this.gui.setTabById(tabid);
+        if (cmd != "privmsg2") this.gui.setTabById(tabid);
         
         this.privmsgs.push(name);
         this.privmsgids.push(tabid);
         
       }
-      else if (resp == "unknown")
+      else if (resp == "max_privmsg")
       {
-        // speak to unknown user
-      }
-      else
-        alert(cmd + "-"+resp+"-"+param);
-    }
-    else if (cmd == "privmsg2")
-    {
-      if (resp == "ok")
-      {
-        // create the new channel
-        var tabid = param[0];
-        var name  = param[1];
-        this.gui.createTab(name, tabid, "pv");
-        // do not switch to the new created tab
-        // keep it in the background
-        //        this.gui.setTabById(tabid);
-        
-        this.privmsgs.push(name);
-        this.privmsgids.push(tabid);
+        this.displayMsg( cmd, this.res.getLabel('Maximum number of private chat has been reached') );
       }
       else if (resp == "unknown")
       {

@@ -33,28 +33,30 @@ class pfcCommand_join extends pfcCommand
     
     if(!isset($u->channels[$chanid]))
     {
+      if ($c->max_channels <= count($u->channels))
+      {
+        // the maximum number of joined channels has been reached
+        $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'max_channels', Array());");
+        return;
+      }
+
       $u->channels[$chanid]["recipient"] = $chanrecip;
       $u->channels[$chanid]["name"]      = $channame;
       $u->saveInCache();
-
+      
       // clear the cached nicknames list for the given channel
       $nicklist_sid = "pfc_nicklist_".$c->getId()."_".$clientid."_".$chanid;
       $_SESSION[$nicklist_sid] = NULL;
+      
+      // show a join message
+      $cmdp = $p;
+      $cmdp["param"] = _pfc("%s joins %s",$u->nick, $channame);
+      $cmdp["recipient"] = $chanrecip;
+      $cmdp["recipientid"] = $chanid;
+      $cmdp["flag"] = 2;
+      $cmd =& pfcCommand::Factory("notice");
+      $cmd->run($xml_reponse, $cmdp);
     }
-
-    // show a join message
-    $cmdp = $p;
-    $cmdp["param"] = _pfc("%s joins %s",$u->nick, $channame);
-    $cmdp["recipient"] = $chanrecip;
-    $cmdp["recipientid"] = $chanid;
-    $cmdp["flag"] = 2;
-    $cmd =& pfcCommand::Factory("notice");
-    $cmd->run($xml_reponse, $cmdp);
-
-
-    //$xml_reponse->addScript("alert('join: chan=".$channame.", from_id=".$from_id."');");
-    //    $xml_reponse->addScript("alert('join: u->nick=".$u->nick." chanid=".$chanid." channame=".addslashes($channame)."');");
-    //    $xml_reponse->addScript("alert('join: fromidsid=".$from_id_sid."');");
 
     // return ok to the client
     // then the client will create a new tab
