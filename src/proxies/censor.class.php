@@ -44,8 +44,8 @@ class pfcProxyCommand_censor extends pfcProxyCommand
     $cmdtocheck = array("send", "nick", "me");
     if ( in_array($this->name, $cmdtocheck) )
     {
-      $words     = $c->proxys_cfg[$this->proxyname]["words"];
-      $replaceby = $c->proxys_cfg[$this->proxyname]["replaceby"];
+      $words     = $c->proxies_cfg[$this->proxyname]["words"];
+      $replaceby = $c->proxies_cfg[$this->proxyname]["replaceby"];
 
       $patterns = array();
       $replacements = array();

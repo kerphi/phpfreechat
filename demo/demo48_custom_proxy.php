@@ -3,9 +3,9 @@
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 
 $params["serverid"] = md5(__FILE__); // calculate a unique id for this chat
-$params["skip_proxys"] = array("censor"); // shows how to disable a proxy (try to write fuck in the chat, it should be possible)
-$params["post_proxys"] = array("myproxy");
-$params["proxys_path"] = dirname(__FILE__).'/demo48_custom_proxy';
+$params["skip_proxies"] = array("censor"); // shows how to disable a proxy (try to write fuck in the chat, it should be possible)
+$params["post_proxies"] = array("myproxy");
+$params["proxies_path"] = dirname(__FILE__).'/demo48_custom_proxy';
 $chat = new phpFreeChat( $params );
 
 ?>

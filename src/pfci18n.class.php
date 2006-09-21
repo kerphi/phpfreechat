@@ -137,7 +137,7 @@ class pfcI18N
     $files = array_merge($files, glob(dirname(__FILE__)."/*.php"));
     $files = array_merge($files, glob(dirname(__FILE__)."/commands/*.php")); 
     $files = array_merge($files, glob(dirname(__FILE__)."/containers/*.php"));
-    $files = array_merge($files, glob(dirname(__FILE__)."/proxys/*.php"));    
+    $files = array_merge($files, glob(dirname(__FILE__)."/proxies/*.php"));    
     $files = array_merge($files, glob(dirname(__FILE__)."/../themes/default/templates/*.php"));
 
     $res = array();

@@ -43,8 +43,8 @@ class pfcProxyCommand_log extends pfcProxyCommand
       $c =& $this->c;
       $u =& $this->u;
     
-      $logpath = ($c->proxys_cfg[$this->proxyname]["path"] == "" ? $c->data_private_path."/logs" :
-                  $c->proxys_cfg[$this->proxyname]["path"]);
+      $logpath = ($c->proxies_cfg[$this->proxyname]["path"] == "" ? $c->data_private_path."/logs" :
+                  $c->proxies_cfg[$this->proxyname]["path"]);
       $logpath .= "/".$c->getId();
       
       if (!file_exists($logpath)) @mkdir_r($logpath);

@@ -51,12 +51,12 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
       $nbflood       = $container->getUserMeta($nickid, 'nbflood');
       $floodtime     = time();
       
-      if ($floodtime - $lastfloodtime <= $c->proxys_cfg[$this->proxyname]["delay"])
+      if ($floodtime - $lastfloodtime <= $c->proxies_cfg[$this->proxyname]["delay"])
         $nbflood++;
       else
         $nbflood = 0;
       
-      if ($nbflood>$c->proxys_cfg[$this->proxyname]["limit"])
+      if ($nbflood>$c->proxies_cfg[$this->proxyname]["limit"])
       {
         // warn the flooder
         $msg = _pfc("Please don't post so many message, flood is not tolerated");
