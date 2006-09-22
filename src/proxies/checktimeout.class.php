@@ -43,15 +43,17 @@ class pfcProxyCommand_checktimeout extends pfcProxyCommand
     $u =& $this->u;
 
     // disconnect users from specific channels
-    $container =& $c->getContainerInstance();
-    $disconnected_users = $container->removeObsoleteNick($c->timeout);
+    $ct =& $c->getContainerInstance();
+    $disconnected_users = $ct->removeObsoleteNick($c->timeout);
     for($i=0; $i<count($disconnected_users["nick"]); $i++)
     {
       $nick = $disconnected_users["nick"][$i];
       for($j=0; $j<count($disconnected_users["channels"][$i]); $j++)
       {
         $chan = $disconnected_users["channels"][$i][$j];
-        if ($chan != 'SERVER')
+        $online_users = $ct->getOnlineNick($chan);
+        if ($chan != 'SERVER' &&
+            count($online_users['nickid']))
         {
           $cmdp = $p;
           $cmdp["param"] = _pfc("%s quit (timeout)", $nick);

@@ -83,6 +83,15 @@ class pfcContainer
     $this->rmMeta('channelid-to-nickid', $this->encode($chan), $nickid);
     $this->rmMeta('nickid-to-channelid', $nickid, $this->encode($chan));
 
+    // if the user is the last one to quit this room,
+    // then clean the room history
+    $ret = $this->getOnlineNick($chan);
+    if (count($ret['nickid']) == 0)
+    {
+      $this->rmMeta('channelid-to-msg',   $this->encode($chan));
+      $this->rmMeta('channelid-to-msgid', $this->encode($chan));
+    }
+    
     // get the current user's channels list
     $channels = $this->getMeta("nickid-to-channelid",$nickid);
     $channels = $channels["value"];
@@ -219,7 +228,7 @@ class pfcContainer
     
     if ($chan == NULL) $chan = 'SERVER';
 
-    $online_user = array();
+    $online_user = array('nick'=>array(),'nickid'=>array(),'timestamp'=>array());
     $ret = $this->getMeta("channelid-to-nickid", $this->encode($chan));
     for($i = 0; $i<count($ret['timestamp']); $i++)
     {
