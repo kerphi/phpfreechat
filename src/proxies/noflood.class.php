@@ -22,6 +22,7 @@
 require_once dirname(__FILE__)."/../pfci18n.class.php";
 require_once dirname(__FILE__)."/../pfcuserconfig.class.php";
 require_once dirname(__FILE__)."/../pfcproxycommand.class.php";
+require_once dirname(__FILE__)."/../../lib/utf8/utf8_strlen.php";
 
 /**
  * pfcProxyCommand_noflood
@@ -48,15 +49,26 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
       $nickid        = $u->nickid;
       $isadmin       = $container->getUserMeta($nickid, 'isadmin');
       $lastfloodtime = $container->getUserMeta($nickid, 'floodtime');
-      $nbflood       = $container->getUserMeta($nickid, 'nbflood');
+      $flood_nbmsg   = $container->getUserMeta($nickid, 'flood_nbmsg');
+      $flood_nbchar  = $container->getUserMeta($nickid, 'flood_nbchar');
       $floodtime     = time();
-      
+
+      // update the number of posted message indicator
       if ($floodtime - $lastfloodtime <= $c->proxies_cfg[$this->proxyname]["delay"])
-        $nbflood++;
+        $flood_nbmsg++;
       else
-        $nbflood = 0;
+        $flood_nbmsg = 0;
+
+      // update the number of posted characteres indicator
+      if ($floodtime - $lastfloodtime <= $c->proxies_cfg[$this->proxyname]["delay"])
+        $flood_nbchar += utf8_strlen($param);
+      else
+        $flood_nbchar = 0;
       
-      if ($nbflood>$c->proxies_cfg[$this->proxyname]["limit"])
+      if (!$isadmin &&
+          ($flood_nbmsg>$c->proxies_cfg[$this->proxyname]["msglimit"] ||
+           $flood_nbchar>$c->proxies_cfg[$this->proxyname]["charlimit"])
+          )
       {
         // warn the flooder
         $msg = _pfc("Please don't post so many message, flood is not tolerated");
@@ -71,9 +83,10 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
         return;
       }
 
-      if ($nbflood == 0)
+      if ($flood_nbmsg == 0)
         $container->setUserMeta($nickid, 'floodtime', $floodtime);
-      $container->setUserMeta($nickid, 'nbflood', $nbflood);
+      $container->setUserMeta($nickid,   'flood_nbmsg',  $flood_nbmsg);
+      $container->setUserMeta($nickid,   'flood_nbchar', $flood_nbchar);
     }
     
     // forward the command to the next proxy or to the final command
