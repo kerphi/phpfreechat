@@ -370,6 +370,47 @@ pfcClient.prototype = {
       alert(cmd + "-"+resp+"-"+param);
   },
   
+
+  doSendMessage: function()
+  {
+    var w = this.el_words;
+    var wval = w.value;
+
+    // append the string to the history
+    this.cmdhistory.push(wval);
+    this.cmdhistoryid = this.cmdhistory.length;
+    this.cmdhistoryissearching = false;
+
+    // send the string to the server
+    re = new RegExp("^(\/[a-zA-Z0-9]+)( (.*)|)");
+    if (wval.match(re))
+    {
+      // a user command
+      cmd = wval.replace(re, '$1');
+      param = wval.replace(re, '$3');
+      this.sendRequest(cmd, param.substr(0, pfc_max_text_len + this.clientid.length));
+    }
+    else
+    {
+      // a classic 'send' command
+
+      // empty messages with only spaces
+      rx = new RegExp('^[ ]*$','g');
+      wval = wval.replace(rx,'');
+        
+      // truncate the text length 
+      wval = wval.substr(0,pfc_max_text_len);
+
+      // colorize the text with current_text_color
+      if (this.current_text_color != '' && wval.length != '')
+        wval = '[color=#' + this.current_text_color + '] ' + wval + ' [/color]';
+
+      this.sendRequest('/send', wval);
+    }
+    w.value = '';
+    return false;
+  },
+
   /**
    * Try to complete a nickname like on IRC when pressing the TAB key
    * @todo: improve the algorithme, it should take into account the cursor position
@@ -407,42 +448,7 @@ pfcClient.prototype = {
     }
     else if (code == Event.KEY_RETURN) /* enter key */
     {
-      var w = this.el_words;
-      var wval = w.value;
-
-      // append the string to the history
-      this.cmdhistory.push(wval);
-      this.cmdhistoryid = this.cmdhistory.length;
-      this.cmdhistoryissearching = false;
-
-      // send the string to the server
-      re = new RegExp("^(\/[a-zA-Z0-9]+)( (.*)|)");
-      if (wval.match(re))
-      {
-	/* a user command */
-	cmd   = wval.replace(re, '$1');
-	param = wval.replace(re, '$3');
-	this.sendRequest(cmd, param.substr(0, pfc_max_text_len + this.clientid.length));
-      }
-      else
-      {
-	/* a classic 'send' command*/
-
-        // empty messages with only spaces
-        rx = new RegExp('^[ ]*$','g');
-        wval = wval.replace(rx,'');
-        
-	/* truncate the text length */
-	wval = wval.substr(0,pfc_max_text_len);
-
-	/* colorize the text with current_text_color */
-	if (this.current_text_color != '' && wval.length != '')
-  	  wval = '[color=#' + this.current_text_color + '] ' + wval + ' [/color]';
-
-	this.sendRequest('/send', wval);
-      }
-      w.value = '';
-      return false;
+      return this.doSendMessage();
     }
     else if (code == 33 && false) // page up key
     {

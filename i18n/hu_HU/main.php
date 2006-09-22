@@ -175,4 +175,137 @@ $GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "'%s' csak pozit�
 // line 386 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "'%s' nem érvényes paraméter. Lehetséges értékei: '%s'";
 
+
+// line 169 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "";
+
+// line 253 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be an array"] = "";
+
+// line 265 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "";
+
+// line 271 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "";
+
+// line 277 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["My room"] = "";
+
+// line 395 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' must be writable"] = "";
+
+// line 425 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' directory doesn't exist"] = "";
+
+// line 544 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["Please correct these errors"] = "";
+
+// line 21 in pfcinfo.class.php
+$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "";
+
+// line 190 in phpfreechat.class.php
+$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "";
+
+// line 26 in unban.class.php
+$GLOBALS["i18n"]["Missing parameter"] = "";
+
+// line 45 in ban.class.php
+$GLOBALS["i18n"]["banished from %s by %s"] = "";
+
+// line 23 in banlist.class.php
+$GLOBALS["i18n"]["The banished user's id list is:"] = "";
+
+// line 32 in banlist.class.php
+$GLOBALS["i18n"]["Empty"] = "";
+
+// line 34 in banlist.class.php
+$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "";
+
+// line 35 in banlist.class.php
+$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "";
+
+// line 31 in help.class.php
+$GLOBALS["i18n"]["Here is the command list:"] = "";
+
+// line 63 in identify.class.php
+$GLOBALS["i18n"]["Succesfully identified"] = "";
+
+// line 68 in identify.class.php
+$GLOBALS["i18n"]["Identification failure"] = "";
+
+// line 53 in join.class.php
+$GLOBALS["i18n"]["%s joins %s"] = "";
+
+// line 81 in noflood.class.php
+$GLOBALS["i18n"]["kicked from %s by %s"] = "";
+
+// line 25 in send.class.php
+$GLOBALS["i18n"]["Your must be connected to send a message"] = "";
+
+// line 50 in send.class.php
+$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "";
+
+// line 34 in unban.class.php
+$GLOBALS["i18n"]["Nobody has been unbanished"] = "";
+
+// line 49 in unban.class.php
+$GLOBALS["i18n"]["%s has been unbanished"] = "";
+
+// line 56 in unban.class.php
+$GLOBALS["i18n"]["%s users have been unbanished"] = "";
+
+// line 53 in auth.class.php
+$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "";
+
+// line 73 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because you are banished"] = "";
+
+// line 83 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "";
+
+// line 57 in checknickchange.class.php
+$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "";
+
+// line 57 in checktimeout.class.php
+$GLOBALS["i18n"]["%s quit (timeout)"] = "";
+
+// line 75 in noflood.class.php
+$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "";
+
+// line 87 in chat.js.tpl.php
+$GLOBALS["i18n"]["Click here to send your message"] = "";
+
+// line 55 in chat.js.tpl.php
+$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "";
+
+// line 69 in chat.js.tpl.php
+$GLOBALS["i18n"]["Private message"] = "";
+
+// line 70 in chat.js.tpl.php
+$GLOBALS["i18n"]["Close this tab"] = "";
+
+// line 80 in chat.js.tpl.php
+$GLOBALS["i18n"]["Enter the text to format"] = "";
+
+// line 81 in chat.js.tpl.php
+$GLOBALS["i18n"]["Configuration has been rehashed"] = "";
+
+// line 82 in chat.js.tpl.php
+$GLOBALS["i18n"]["A problem occurs during rehash"] = "";
+
+// line 83 in chat.js.tpl.php
+$GLOBALS["i18n"]["Choosen nickname is allready used"] = "";
+
+// line 84 in chat.js.tpl.php
+$GLOBALS["i18n"]["phpfreechat current version is %s"] = "";
+
+// line 85 in chat.js.tpl.php
+$GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "";
+
+// line 86 in chat.js.tpl.php
+$GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "";
+
+// line 88 in chat.js.tpl.php
+$GLOBALS["i18n"]["Send"] = "";
+
 ?>

@@ -240,4 +240,70 @@ $GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "Can
 // line 56 in noflood.class.php
 $GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "Please don't post so many message, flood is not tolerated";
 
+// line 169 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "Error: '%s' is a private parameter, you are not allowed to change it";
+
+// line 253 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be an array"] = "'%s' parameter must be an array";
+
+// line 265 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "'%s' parameter must be a boolean";
+
+// line 271 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "'%s' parameter must be a charatere string";
+
+// line 395 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' must be writable"] = "'%s' must be writable";
+
+// line 425 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' directory doesn't exist"] = "'%s' directory doesn't exist";
+
+// line 544 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["Please correct these errors"] = "Please correct these errors";
+
+// line 21 in pfcinfo.class.php
+$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "Error: the cached config file doesn't exists";
+
+// line 190 in phpfreechat.class.php
+$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum";
+
+// line 31 in help.class.php
+$GLOBALS["i18n"]["Here is the command list:"] = "Here is the command list:";
+
+// line 63 in identify.class.php
+$GLOBALS["i18n"]["Succesfully identified"] = "Succesfully identified";
+
+// line 68 in identify.class.php
+$GLOBALS["i18n"]["Identification failure"] = "Identification failure";
+
+// line 25 in send.class.php
+$GLOBALS["i18n"]["Your must be connected to send a message"] = "Your must be connected to send a message";
+
+// line 87 in chat.js.tpl.php
+$GLOBALS["i18n"]["Click here to send your message"] = "Click here to send your message";
+
+// line 80 in chat.js.tpl.php
+$GLOBALS["i18n"]["Enter the text to format"] = "Enter the text to format";
+
+// line 81 in chat.js.tpl.php
+$GLOBALS["i18n"]["Configuration has been rehashed"] = "Configuration has been rehashed";
+
+// line 82 in chat.js.tpl.php
+$GLOBALS["i18n"]["A problem occurs during rehash"] = "A problem occurs during rehash";
+
+// line 83 in chat.js.tpl.php
+$GLOBALS["i18n"]["Choosen nickname is allready used"] = "Choosen nickname is allready used";
+
+// line 84 in chat.js.tpl.php
+$GLOBALS["i18n"]["phpfreechat current version is %s"] = "phpfreechat current version is %s";
+
+// line 85 in chat.js.tpl.php
+$GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "Maximum number of joined channels has been reached";
+
+// line 86 in chat.js.tpl.php
+$GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "Maximum number of private chat has been reached";
+
+// line 88 in chat.js.tpl.php
+$GLOBALS["i18n"]["Send"] = "Send";
+
 ?>

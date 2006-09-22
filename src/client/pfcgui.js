@@ -384,14 +384,38 @@ pfcGui.prototype = {
     var inputcontainer = document.createElement('div');
     inputcontainer.setAttribute('id', 'pfc_input_container');
     contentexp.appendChild(inputcontainer);
-    
+
+    // this is the table which will contains input word and send button
+    // (I didn't found a cleaner way to align these input elements horizontaly in the same line)
+    var table1 = document.createElement('table');
+    table1.setAttribute('style','border-collapse:collapse;margin:0;padding:0;');
+    var tbody1 = document.createElement('tbody');
+    table1.appendChild(tbody1);
+    var tr1 = document.createElement('tr');
+    var td1 = document.createElement('td');
+    var td2 = document.createElement('td');
+    td1.setAttribute('width', '100%');
+    tbody1.appendChild(tr1);
+    tr1.appendChild(td1);
+    tr1.appendChild(td2);
+    inputcontainer.appendChild(table1);
+
     // input words : <input id="pfc_words" type="text" ... />
     var inputwords = document.createElement('input');
     inputwords.setAttribute('id', 'pfc_words');
     inputwords.setAttribute('type', 'text');
     inputwords.setAttribute('title', pfc.res.getLabel("Enter your message here"));
     inputwords.setAttribute('maxlength', pfc_max_text_len);
-    inputcontainer.appendChild(inputwords);
+    td1.appendChild(inputwords);
+
+    // send button : <input id="pfc_send" type="button" ... />
+    var sendbtn = document.createElement('input');
+    sendbtn.setAttribute('id', 'pfc_send');
+    sendbtn.setAttribute('type', 'button');
+    sendbtn.setAttribute('value', pfc.res.getLabel("Send"));
+    sendbtn.setAttribute('title', pfc.res.getLabel("Click here to send your message"));
+    sendbtn.onclick = function(){ pfc.doSendMessage(); } 
+    td2.appendChild(sendbtn);
 
     // command container : <div id="pfc_cmd_container">
     var cmdcontainer = document.createElement('div');

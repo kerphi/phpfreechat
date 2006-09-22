@@ -138,6 +138,7 @@ class pfcI18N
     $files = array_merge($files, glob(dirname(__FILE__)."/commands/*.php")); 
     $files = array_merge($files, glob(dirname(__FILE__)."/containers/*.php"));
     $files = array_merge($files, glob(dirname(__FILE__)."/proxies/*.php"));    
+    $files = array_merge($files, glob(dirname(__FILE__)."/client/*.php"));    
     $files = array_merge($files, glob(dirname(__FILE__)."/../themes/default/templates/*.php"));
 
     $res = array();
@@ -147,7 +148,14 @@ class pfcI18N
       $line_nb = 1;
       foreach( $lines as $l)
       {
+        // the labels server side
         if( preg_match_all('/_pfc\("([^\"]*)"(\s*\,.*|)\)/', $l, $matches) )
+        {
+          echo "line: ".$line_nb."\t- ".$matches[1][0]."\n";
+          $res[$matches[1][0]] = "// line ".$line_nb." in ".basename($src_filename);
+        }
+        // the labels client side (JS)
+        if( preg_match_all('/"([^"]*)",\s\/\/\s_pfc/', $l, $matches) )
         {
           echo "line: ".$line_nb."\t- ".$matches[1][0]."\n";
           $res[$matches[1][0]] = "// line ".$line_nb." in ".basename($src_filename);

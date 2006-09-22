@@ -140,9 +140,6 @@ div.pfc_message {
   background-position: right;
   background-repeat: no-repeat; 
 }
-.pfc_words {
-  font-size: 90%;
-}
 
 div.pfc_oldmsg {
   background-image: url("proxy.php?p=default/images/oldmsg.gif");
@@ -168,8 +165,27 @@ input#pfc_words {
   border: #555 solid 1px;
   background-color: #FAFAFA;
   width: 100%;
-  height: 1.3em;
+  font-size: 12px;
+  height: 20px;
+  vertical-align: bottom;
+  font-size: 1em;
+  height: 1.2em;
 }
+
+input#pfc_send {
+  display: block;
+  padding: 2px;
+  margin-left: 5px;
+  border: 1px solid #555;
+  background-color: #CCC;
+  font-size: 10px;
+  height: 21px;
+  vertical-align: bottom;
+  font-size: 0.7em;
+  height: 1.8em;
+  cursor: pointer;
+}
+
 
 div#pfc_cmd_container {
   position: relative;
