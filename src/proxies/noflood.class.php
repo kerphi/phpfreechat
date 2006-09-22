@@ -53,17 +53,18 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
       $flood_nbchar  = $container->getUserMeta($nickid, 'flood_nbchar');
       $floodtime     = time();
 
-      // update the number of posted message indicator
       if ($floodtime - $lastfloodtime <= $c->proxies_cfg[$this->proxyname]["delay"])
+      {
+        // update the number of posted message indicator
         $flood_nbmsg++;
-      else
-        $flood_nbmsg = 0;
-
-      // update the number of posted characteres indicator
-      if ($floodtime - $lastfloodtime <= $c->proxies_cfg[$this->proxyname]["delay"])
+        // update the number of posted characteres indicator
         $flood_nbchar += utf8_strlen($param);
+      }
       else
+      {
+        $flood_nbmsg = 0;
         $flood_nbchar = 0;
+      }
       
       if (!$isadmin &&
           ($flood_nbmsg>$c->proxies_cfg[$this->proxyname]["msglimit"] ||
