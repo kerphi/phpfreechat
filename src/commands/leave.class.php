@@ -72,7 +72,7 @@ class pfcCommand_leave extends pfcCommand
 
       // remove the nickname from the channel/pv
       $container =& $c->getContainerInstance();
-      $container->removeNick($chan, $u->nickid);
+      $container->removeNick($leave_recip, $u->nickid);
       
       // return ok to the client
       // then the client will remove the channel' tab

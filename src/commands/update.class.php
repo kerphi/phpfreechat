@@ -19,20 +19,8 @@ class pfcCommand_update extends pfcCommand
     if ($u->active)
     {
       $cmdp = $p;
-      // update the user nickname timestamp
+      // update the user nickname timestamp on the server
       $cmd =& pfcCommand::Factory("updatemynick");
-      foreach( $u->channels as $id => $chan )
-      {
-        $cmdp["recipient"]   = $chan["recipient"];
-        $cmdp["recipientid"] = $id;
-        $cmd->run($xml_reponse, $cmdp);
-      }
-      foreach( $u->privmsg as $id => $pv )
-      {
-        $cmdp["recipient"]   = $pv["recipient"];
-        $cmdp["recipientid"] = $id;
-        $cmd->run($xml_reponse, $cmdp);
-      }
       $cmdp["recipient"]   = NULL;
       $cmdp["recipientid"] = NULL;
       $cmd->run($xml_reponse, $cmdp);

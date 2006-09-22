@@ -17,22 +17,6 @@ class pfcCommand_updatemynick extends pfcCommand
 
     $container =& $c->getContainerInstance();
     $container->updateNick($u->nickid);
-
-    $was_there = ($container->isNickOnline($recipient, $nickid) >=0);
-    if (!$was_there)
-    {
-      // if the user were not in the list, it must be created in order to refresh his metadata
-      // because when the user is timeouted, his metadata are destroyed.
-      $container->createNick($recipient, $u->nick, $u->nickid);
-      
-      /*
-      @todo: write the timeout adjustment when the user object will be available
-      if ($c->debug) pxlog("Cmd_updateMyNick[".$c->sessionid."]: nick ".$u->nick." updated but was not there, adjust timeout to ".$c->timeout, "chat", $c->getId());
-      // adjust the timeout value dynamicaly for this user
-      $c->timeout += $c->refresh_delay;
-      $c->saveInCache();
-      */
-    }
   }
 }
 

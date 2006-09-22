@@ -14,7 +14,7 @@ class pfcCommand_connect extends pfcCommand
     
     $c =& $this->c;
     $u =& $this->u;
-    $container =& $c->getContainerInstance();
+    $ct =& $c->getContainerInstance();
 
     // reset the message id indicator (see getnewmsg.class.php)
     // i.e. be ready to re-get all last posted messages
@@ -31,7 +31,7 @@ class pfcCommand_connect extends pfcCommand
       $chanid    = pfcCommand_join::GetRecipientId($channame);
       // reset the fromid flag
       $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$chanid;
-      $from_id     = $container->getLastId($chanrecip)-$c->max_msg;
+      $from_id     = $ct->getLastId($chanrecip)-$c->max_msg;
       $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
       // reset the oldmsg flag
       $oldmsg_sid = "pfc_oldmsg_".$c->getId()."_".$clientid."_".$chanid;
@@ -42,7 +42,7 @@ class pfcCommand_connect extends pfcCommand
     $isadmin = $c->isadmin;
     if (!$isadmin)
     {
-      $users = $container->getOnlineNick(NULL);
+      $users = $ct->getOnlineNick(NULL);
       if (isset($users["nickid"]) &&
           count($users["nickid"]) == 0) $isadmin = true;
     }
@@ -50,9 +50,16 @@ class pfcCommand_connect extends pfcCommand
     // setup some user meta
     $nickid = $u->nickid;
     // store the user ip
-    $container->setUserMeta($nickid, 'ip', $_SERVER["REMOTE_ADDR"]);
+    $ct->setUserMeta($nickid, 'ip', $_SERVER["REMOTE_ADDR"]);
     // store the admin flag
-    $container->setUserMeta($nickid, 'isadmin', $isadmin);
+    $ct->setUserMeta($nickid, 'isadmin', $isadmin);
+
+    // register the user (and his metadata) in the allready joined channel
+    foreach( $u->channels as $id => $chan )
+      $ct->createNick($chan["recipient"], $u->nick, $u->nickid);
+    foreach( $u->privmsg as $id => $pv )
+      $ct->createNick($pv["recipient"], $u->nick, $u->nickid);
+    
     // connect to the server
     $xml_reponse->addScript("pfc.handleResponse('connect', 'ok', '');");
   }

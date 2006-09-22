@@ -56,8 +56,12 @@ class pfcCommand_join extends pfcCommand
       $cmdp["flag"] = 2;
       $cmd =& pfcCommand::Factory("notice");
       $cmd->run($xml_reponse, $cmdp);
-    }
 
+      // register the user (and his metadata) in the channel
+      $ct =& $c->getContainerInstance();
+      $ct->createNick($chanrecip, $u->nick, $u->nickid);
+    }
+    
     // return ok to the client
     // then the client will create a new tab
     $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', Array('".$chanid."','".addslashes($channame)."'));");
