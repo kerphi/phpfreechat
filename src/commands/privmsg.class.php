@@ -82,6 +82,10 @@ class pfcCommand_privmsg extends pfcCommand
       $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$pvrecipientid;
       $from_id     = $container->getLastId($pvrecipient)-$c->max_msg;
       $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
+
+      // register the user (and his metadata) in this pv
+      $ct =& $c->getContainerInstance();
+      $ct->createNick($pvrecipient, $u->nick, $u->nickid);
     }
 
     // return ok to the client
