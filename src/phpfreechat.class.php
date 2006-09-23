@@ -455,7 +455,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     // do not update when the user just quit
     if ($rawcmd != "update" &&
       	$rawcmd != "quit" &&
-      	$u->nick != "")
+      	(!isset($u->nick) || $u->nick != ""))
     {
       // force an update just after a command is sent
       // thus the message user just poster is really fastly displayed

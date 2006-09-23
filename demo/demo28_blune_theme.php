@@ -2,7 +2,6 @@
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params =  array("title"          => "Blune PHPFreeChat",
                  "max_msg"        => 21,
-                 "prefix"         => "blune_",
                  "clock"          => false,
                  "serverid"       => md5(__FILE__),
                  "theme"          => "blune",
