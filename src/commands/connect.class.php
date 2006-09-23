@@ -11,6 +11,7 @@ class pfcCommand_connect extends pfcCommand
     $sender      = $p["sender"];
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
+    $getoldmsg   = isset($p["getoldmsg"]) ? $p["getoldmsg"] : true;
     
     $c =& $this->c;
     $u =& $this->u;
@@ -18,26 +19,29 @@ class pfcCommand_connect extends pfcCommand
 
     // reset the message id indicator (see getnewmsg.class.php)
     // i.e. be ready to re-get all last posted messages
-    require_once(dirname(__FILE__)."/join.class.php");
-    $channels = array();
-    if (count($u->channels) == 0)
-      $channels = $c->channels;
-    else
-      foreach($u->channels as $chan)
-        $channels[] = $chan["name"];
-    foreach($channels as $channame)
+    if ($getoldmsg)
     {
-      $chanrecip = pfcCommand_join::GetRecipient($channame);
-      $chanid    = pfcCommand_join::GetRecipientId($channame);
-      // reset the fromid flag
-      $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$chanid;
-      $from_id     = $ct->getLastId($chanrecip)-$c->max_msg;
-      $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
-      // reset the oldmsg flag
-      $oldmsg_sid = "pfc_oldmsg_".$c->getId()."_".$clientid."_".$chanid;
-      $_SESSION[$oldmsg_sid] = true;
+      require_once(dirname(__FILE__)."/join.class.php");
+      $channels = array();
+      if (count($u->channels) == 0)
+        $channels = $c->channels;
+      else
+        foreach($u->channels as $chan)
+          $channels[] = $chan["name"];
+      foreach($channels as $channame)
+      {
+        $chanrecip = pfcCommand_join::GetRecipient($channame);
+        $chanid    = pfcCommand_join::GetRecipientId($channame);
+        // reset the fromid flag
+        $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$chanid;
+        $from_id     = $ct->getLastId($chanrecip)-$c->max_msg;
+        $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
+        // reset the oldmsg flag
+        $oldmsg_sid = "pfc_oldmsg_".$c->getId()."_".$clientid."_".$chanid;
+        $_SESSION[$oldmsg_sid] = true;
+      }
     }
-    
+
     // check if the user is alone on the server, and give it the admin status if yes
     $isadmin = $c->isadmin;
     if (!$isadmin)

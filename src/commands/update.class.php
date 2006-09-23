@@ -18,7 +18,19 @@ class pfcCommand_update extends pfcCommand
     // do not update if user isn't active (didn't connect)
     if ($u->active)
     {
+      // check the user has not been disconnected from the server by timeout
+      // if I found he has been disconnected, then I reconnect him with /connect command
+      $ct =& $c->getContainerInstance();
+      if ($ct->isNickOnline(NULL, $u->nickid) < 0)
+      {
+        $cmd =& pfcCommand::Factory("connect");
+        $cmdp = $p;
+        $cmdp["getoldmsg"] = false;
+        $cmd->run($xml_reponse, $cmdp);
+      }
+
       $cmdp = $p;
+
       // update the user nickname timestamp on the server
       $cmd =& pfcCommand::Factory("updatemynick");
       $cmdp["recipient"]   = NULL;
