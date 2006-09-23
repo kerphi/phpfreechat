@@ -11,7 +11,7 @@
  */
 function utf8_strlen($str)    {
   $n=0;
-  for($i=0; strlen($str{$i}); $i++)    {
+  for($i=0; isset($str{$i}) && strlen($str{$i})>0; $i++)    {
     $c = ord($str{$i});
     if (!($c & 0x80))    // single-byte (0xxxxxx)
       $n++;
