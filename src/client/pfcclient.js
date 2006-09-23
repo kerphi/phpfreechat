@@ -1257,13 +1257,16 @@ pfcClient.prototype = {
     /* clear any existing borders on the color buttons */
     var colorbtn = this.getElementsByClassName($('pfc_colorlist'), 'pfc_color', '');
     for(var i = 0; colorbtn.length > i; i++)
+    {
       colorbtn[i].style.border = 'none';
+      colorbtn[i].style.padding = '0';
+    }
 
     /* assign the new border style to the selected button */
     this.current_text_color = color;
     setCookie('pfc_current_text_color', this.current_text_color);
     var idname = 'pfc_color_' + color;
-    $(idname).style.border = '1px solid #666';
+    $(idname).style.border = '1px solid #555';
     $(idname).style.padding = '1px';
 
     // assigne the new color to the input text box

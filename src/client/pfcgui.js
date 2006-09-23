@@ -596,15 +596,16 @@ pfcGui.prototype = {
     for (var i=0 ; i<clist_v.length ; i++)
     {
       var bbc = clist_v[i];
-      var img = document.createElement('img');
-      img.bbc = bbc;
-      img.setAttribute('class', 'pfc_color');
-      img.setAttribute('className', 'pfc_color'); // for IE6
-      img.setAttribute('id', 'pfc_color_'+bbc);
-      img.setAttribute('src', pfc.res.getFileUrl('images/color_'+bbc+'.gif'));
-      img.setAttribute('alt', bbc);
-      img.onclick = function(){ pfc.switch_text_color(this.bbc); }
-      clist.appendChild(img);
+      var elt = document.createElement('img');
+      elt.bbc = bbc;
+      elt.setAttribute('class', 'pfc_color');
+      elt.setAttribute('className', 'pfc_color'); // for IE6
+      elt.setAttribute('id', 'pfc_color_'+bbc);
+      elt.style.backgroundColor = '#'+bbc;
+      elt.setAttribute('src', pfc.res.getFileUrl('images/color_transparent.gif'));
+      elt.setAttribute('alt', bbc);
+      elt.onclick = function(){ pfc.switch_text_color(this.bbc); }
+      clist.appendChild(elt);
     }
 
     // error box : <p id="pfc_errors">

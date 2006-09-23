@@ -118,12 +118,9 @@ array( 'images/ch.gif',
        'images/bt_del.gif',
        'images/bt_mail.gif',
        'images/bt_color.gif',
+       'images/color_transparent.gif',
        );
 
-// convert bbcode color value list to a bbcode color url list
-function get_bbcode_color_url($v) { return 'images/color_'.substr($v,1).'.gif'; }
-$bbcode_clist = array_map("get_bbcode_color_url", $bbcode_colorlist);
-$fileurl_to_load = array_merge($fileurl_to_load, $bbcode_clist);
 foreach($fileurl_to_load as $f)
 {
   echo "pfc.res.setFileUrl('".$f."',pfc_proxy_url+'".$c->getFileUrlByProxy($f,false)."');\n";
