@@ -1,0 +1,18 @@
+ISO 8601 Formatted
+Newest at top
+
+Key
+ + Addition
+ - Removed
+ # Changed
+
++ 2006-09-22 Added support for generating .tar.gz files
+# 2006-04-18 Fixed the 'ignore' bug on generator interface
++ 2006-04-18 Per-page button settings
++ 2006-04-18 Auto-scrolling on message pane
++ 2006-03-10 function updatepb_unknown
++ 2006-03-08 Download Functionality
++ 2005-08-23 Function message
++ 2005-08-23 Function addMetaFile
+# 2005-08-23 Fixed bug (sf.net 1258143) "Fatal error: Call to undefined function: updatep"
++ 2005-08-16 Installer page: 'Finished'

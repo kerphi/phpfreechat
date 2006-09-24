@@ -4,14 +4,16 @@ $version = isset($_SERVER["argv"][1]) ? $_SERVER["argv"][1] : file_get_contents(
 $archivename = 'phpfreechat-'.$version.'-setup.php';
 $pfcpath = dirname(__FILE__).'/phpfreechat-'.$version;
 if (!file_exists($pfcpath)) die("Dont find the directory $pfcpath");
-
-include(dirname(__FILE__).'/../contrib/pfcInstaller/engene.inc.php');
+$phpinstaller_path = realpath(dirname(__FILE__).'/../contrib/phpinstaller');
+include($phpinstaller_path.'/engine.inc.php');
 $phpi = new phpInstaller();
-$phpi->dataDir(realpath(dirname(__FILE__).'/../contrib/pfcInstaller/engene_data'));
+$phpi->dataDir($phpinstaller_path.'/engene_data');
 $phpi->appName = 'phpFreeChat';
 $phpi->appVersion = $version;
+$phpi->addMetaFile('ss',$phpinstaller_path.'/createinstaller/data/installer.css','text/css')
+  or die('Can not find stylesheet');
 $phpi->ignore[] = '.svn';
-$phpi->addInstallerPage();
+$phpi->addInstallerPages();
 $phpi->addPath($pfcpath);
 $phpi->generate($archivename);
 
