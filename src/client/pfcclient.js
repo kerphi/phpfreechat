@@ -234,6 +234,10 @@ pfcClient.prototype = {
       {
         // speak to unknown user
       }
+      else if (resp == "speak_to_myself")
+      {
+        this.displayMsg( cmd, this.res.getLabel('You are not allowed to speak to yourself') );
+      }
       else
         alert(cmd + "-"+resp+"-"+param);
     }
@@ -241,20 +245,18 @@ pfcClient.prototype = {
     {
       if (resp == "connected" || resp == "notchanged")
       {
-        // now join channels comming from sessions
-        // or the default one
         cmd = '';
-        if (pfc_userchan.length == 0)
+
+        // join the default channels comming from the parameter list
+        for (var i=0; i<pfc_defaultchan.length; i++)
         {
-          for (var i=0; i<pfc_defaultchan.length; i++)
-          {
-            if (i<pfc_defaultchan.length-1)
-              cmd = "/join2";
-            else
-              cmd = "/join";
-            this.sendRequest(cmd, pfc_defaultchan[i]);
-          }
+          if (i<pfc_defaultchan.length-1)
+            cmd = "/join2";
+          else
+            cmd = "/join";
+          this.sendRequest(cmd, pfc_defaultchan[i]);
         }
+        // now join channels comming from sessions
         for (var i=0; i<pfc_userchan.length; i++)
         {
           if (i<pfc_userchan.length-1)
@@ -263,9 +265,20 @@ pfcClient.prototype = {
             cmd = "/join";
           this.sendRequest(cmd, pfc_userchan[i]);
         }
-        for (var i=0; i<pfc_privmsg.length; i++)
+
+        // join the default privmsg comming from the parameter list
+        for (var i=0; i<pfc_defaultprivmsg.length; i++)
         {
-          this.sendRequest("/privmsg", pfc_privmsg[i]);
+          if (i<pfc_defaultprivmsg.length-1)
+            cmd = "/privmsg2";
+          else
+            cmd = "/privmsg";
+          this.sendRequest(cmd, pfc_defaultprivmsg[i]);
+        }
+        // now join privmsg comming from the sessions
+        for (var i=0; i<pfc_userprivmsg.length; i++)
+        {
+          this.sendRequest("/privmsg", pfc_userprivmsg[i]);
         }
       }
       

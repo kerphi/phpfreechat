@@ -54,8 +54,9 @@ class pfcGlobalConfig
   var $channels            = array(); // the default joined channels when opening the chat
   var $frozen_channels     = array(); // if empty, allows users to create there own channels
   var $max_channels        = 10; // this the max number of allowed channels by users
+  var $privmsg             = array(); // the joined private chat when opening the chat (the nicknames must be online)
   var $max_privmsg         = 5;  // this the max number of allowed privmsg by users
-  var $frozen_nick         = false;
+  var $frozen_nick         = false; // set it to true if you don't want the user to be able to change his nickname
   var $max_nick_len        = 15;
   var $max_text_len        = 400;
   var $refresh_delay       = 5000; // in mili-seconds (5 seconds)
@@ -111,7 +112,7 @@ class pfcGlobalConfig
   // private parameters
   var $_sys_proxies          = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
   var $_proxies              = array(); // will contains proxies to execute on each command (filled in the init step)
-  var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels");
+  var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg");
   var $_params_type         = array();
   
   function pfcGlobalConfig( $params = array() )
@@ -184,6 +185,12 @@ class pfcGlobalConfig
       if (isset($params[$dp]))
 	$this->$dp = $params[$dp];
 
+    // 'channels' is now a dynamic parameter, just check if I need to initialize it or not
+    if (is_array($this->channels) &&
+        count($this->channels) == 0 &&
+        !isset($params['channels']))
+      $this->channels = array(_pfc("My room"));
+    
     // now load or save the configuration in the cache
     $this->synchronizeWithCache();
   }
@@ -274,7 +281,6 @@ class pfcGlobalConfig
     if ($this->title == "")        $this->title        = _pfc("My Chat");
     if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.3";
     if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
-    if (is_array($this->channels) && count($this->channels) == 0) $this->channels   = array(_pfc("My room"));
       
     // first of all, check the used functions
     $f_list["file_get_contents"] = _pfc("You need %s", "PHP 4 >= 4.3.0 or PHP 5");

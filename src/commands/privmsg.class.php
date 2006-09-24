@@ -25,7 +25,7 @@ class pfcCommand_privmsg extends pfcCommand
     // error: can't speak to myself
     if ($pvnickid == $nickid)
     {
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko', Array('".addslashes($pvname)."','speak to myself'));");
+      $xml_reponse->addScript("pfc.handleResponse('".$this->name."','speak_to_myself');");
       return;
     }
 

@@ -1,4 +1,6 @@
+<?php function quoteandescape($v) { return "'".addslashes($v)."'"; } ?>
 <?php $nick = $u->nick != "" ? addslashes($u->nick) : addslashes($c->nick); ?>
+
 var pfc_nickname              = '<?php echo ($GLOBALS["output_encoding"]=="UTF-8" ? $nick : iconv("UTF-8", $GLOBALS["output_encoding"],$nick)); ?>';
 var pfc_version               = '<?php echo $version; ?>';
 var pfc_clientid              = '<?php echo md5(uniqid(rand(), true)); ?>';
@@ -18,18 +20,22 @@ var pfc_btn_sh_whosonline     = <?php echo $btn_sh_whosonline ? "true" : "false"
 var pfc_connect_at_startup    = <?php echo $connect_at_startup ? "true" : "false"; ?>;
 var pfc_notify_window         = <?php echo $notify_window ? "true" : "false"; ?>;
 var pfc_defaultchan = Array(<?php
-                         function quoteandescape($v) { return "'".addslashes($v)."'"; }
-                         $list = array(); foreach($c->channels as $ch) {$list[] = $ch; }
+                         $list = array(); foreach($c->channels as $item) {$list[] = $item; }
                          $list = array_map("quoteandescape",$list);
                          echo implode(",", $list);
                          ?>);
 var pfc_userchan = Array(<?php
-                         $list = array(); foreach($u->channels as $ch) {$list[] = $ch["name"];}
+                         $list = array(); foreach($u->channels as $item) {$list[] = $item["name"];}
                          $list = array_map("quoteandescape",$list);
                          echo implode(",", $list);
                          ?>);
-var pfc_privmsg = Array(<?php
-                        $list = array(); foreach($u->privmsg as $pv) {$list[] = $pv["name"];}
+var pfc_defaultprivmsg = Array(<?php
+                         $list = array(); foreach($c->privmsg as $item) {$list[] = $item; }
+                         $list = array_map("quoteandescape",$list);
+                         echo implode(",", $list);
+                         ?>);
+var pfc_userprivmsg = Array(<?php
+                        $list = array(); foreach($u->privmsg as $item) {$list[] = $item["name"];}
                         $list = array_map("quoteandescape",$list);
                         echo implode(",", $list);
                         ?>);
@@ -86,6 +92,7 @@ array( "Do you really want to leave this room ?", // _pfc
        "Maximum number of private chat has been reached", // _pfc
        "Click here to send your message", // _pfc
        "Send", // _pfc
+       "You are not allowed to speak to yourself", // _pfc
        );
 foreach($labels_to_load as $l)
 {
