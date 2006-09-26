@@ -17,5 +17,5 @@ File list					Description
 /createinstaller			Automated installer creator interface
 	precheck.inc			First page in installer, default pre-install check
 	2.txt					Next user-page in compiled installer, License page
-/engene_data				Installer Creator Resources, templates
+/engine_data				Installer Creator Resources, templates
 /createinstaller			Directory: Installer engene data

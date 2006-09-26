@@ -5,7 +5,7 @@
 include('../engine.inc.php');
 $phpi = new phpInstaller();
 
-$dataDir = realpath(dirname(__FILE__).'/../engene_data');
+$dataDir = realpath(dirname(__FILE__).'/../engine_data');
 $phpi->dataDir($dataDir);
 
 $phpi->appName = 'PHP Installer Generator';
@@ -53,8 +53,8 @@ if(!$phpi->addMetaFile('hb','../createinstaller/data/installer.jpg','image/jpeg'
 }
 
 $phpi->addInstallerPages();
-$phpi->generate('../tests/installer.beta-5.php');
-$phpi->generateTarGz('../tests/installer.beta-5.tar.gz');
+$phpi->generate('../tests/installer.beta-5.1.php');
+$phpi->generateTarGz('../tests/installer.beta-5.1.tar.gz');
 
 echo '</pre>';
 ?>

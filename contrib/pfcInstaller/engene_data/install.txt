@@ -1,2 +1,0 @@
-// execute SQL here, do anything with PHP, really.
-// be sure to use the updatepb(null,'message') to print a message

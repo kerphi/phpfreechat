@@ -6,6 +6,8 @@ Key
  - Removed
  # Changed
 
+# 2006-09-24 Various bugs that threw an error of E_NOTICE
+# 2006-09-24 Fixed spelling error of "engene_data" to "engine_data" (the i)
 + 2006-09-22 Added support for generating .tar.gz files
 # 2006-04-18 Fixed the 'ignore' bug on generator interface
 + 2006-04-18 Per-page button settings

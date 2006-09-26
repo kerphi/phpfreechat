@@ -2,7 +2,7 @@
 include('../engine.inc.php');
 $phpi = new phpInstaller();
 
-$dataDir = realpath(dirname(__FILE__).'/../engene_data');
+$dataDir = realpath(dirname(__FILE__).'/../engine_data');
 $phpi->dataDir($dataDir);
 
 $phpi->appName = 'Installer Dev Kit';

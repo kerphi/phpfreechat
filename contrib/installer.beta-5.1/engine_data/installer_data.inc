@@ -44,7 +44,10 @@ function gpv($name,$default=''){//getPostValue
 	if(isset($_REQUEST[$name])){
 		return stripslashes($_REQUEST[$name]);
 	}else{
-		return $default;
+		global $defaults;
+		if($default) return $default;
+		else if($defaults[$name]) return $defaults[$name];
+		else return $default;
 	}
 }
 foreach($defaults as $dname=>$dvalue){
@@ -110,20 +113,20 @@ function defaultagree(el){
 <div id="stepbar">
 HTML;
 foreach($pages as $name=>$value){
-	if($value['hr']){echo '<hr />';}
+	if(isset($value['hr']) && $value['hr']){echo '<hr />';}
 	echo '<div class="step-'.($step==$name?'on':'off').'">'.$value['title'].'</div>';
 }
 echo '</div>';
 echo '<div id="right">';
-if($pages[$step]['button_back']){
+if(isset($pages[$step]['button_back']) && $pages[$step]['button_back']){
 	echo '<div class="far-left"><input name="stepBack" id="stepBack" type="submit" class="button" value="&lt;&lt; Back"';
 	if ($step==INSTALLERSTEP) echo ' disabled="disabled"';
 	echo ' />&nbsp;</div>';
 }
 echo '<div class="far-right">';
-if($pages[$step]['button_next']){
+if(isset($pages[$step]['button_next']) && $pages[$step]['button_next']){
 	echo '<input name="stepNext" id="stepNext" type="submit" class="button" value="Next &gt;&gt;" />';
-	if($pages[$step]['disabled_buttons']){
+	if(isset($pages[$step]['disabled_buttons']) && $pages[$step]['disabled_buttons']){
 		echo '<script type="text/javascript">document.getElementById("stepNext").disabled=true;</script>';
 	}
 }
@@ -170,7 +173,8 @@ if($step==INSTALLERSTEP){
 		flush();
 	}
 	function step_download($action,&$step,$steptotal,$path){
-		foreach (explode(' ; ',$action[4]) as $dlfile){
+		if(is_string($action[4])) $action[4]=explode(' ; ',$action[4]);
+		foreach ($action[4] as $dlfile){
 			if(is_file($dlfile)){
 				$fname = $dlfile;
 				break;

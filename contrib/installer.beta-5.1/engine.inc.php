@@ -383,7 +383,7 @@ class phpInstaller{
 		
 		$this->message('Adding headers...');
 		
-		$data .= '<'.'?php ';
+		$data .= '<'.'?php error_reporting(E_ALL);';
 		$data .= 'list(,$data)=explode("\n",file_get_contents(__FILE__),2);';
 		//$data .= '$data=str_replace(array("/?","//"),array("?","/"),$data);';
 		$data .= '$data=gzuncompress($data);';
@@ -592,7 +592,10 @@ class phpInstaller{
 	  * @return void
 	  */
 	function dataDir($path){
+		$path = realpath($path);
+		if(!is_dir($path)) return false;
 		$this->dataDir = realpath($path);
+		return true;
 	}
 	
 	/** strip extra slashes out of a file path
