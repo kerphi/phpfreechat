@@ -71,8 +71,19 @@ class pfcCommand_leave extends pfcCommand
       }
 
       // remove the nickname from the channel/pv
-      $container =& $c->getContainerInstance();
-      $container->removeNick($leave_recip, $u->nickid);
+      $ct =& $c->getContainerInstance();
+      $ct->removeNick($leave_recip, $u->nickid);
+
+      // reset the sessions indicators
+      $chanrecip = $leave_recip;
+      $chanid    = $leave_id;
+      // reset the fromid flag
+      $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$chanid;
+      $from_id     = $ct->getLastId($chanrecip)-$c->max_msg;
+      $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
+      // reset the oldmsg flag
+      $oldmsg_sid = "pfc_oldmsg_".$c->getId()."_".$clientid."_".$chanid;
+      $_SESSION[$oldmsg_sid] = true;
       
       // return ok to the client
       // then the client will remove the channel' tab
