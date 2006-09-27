@@ -49,7 +49,7 @@ class pfcContainer_File extends pfcContainer
   {
     $c =& $this->c;
     
-    $cfg = array();
+    $cfg = pfcContainer::getDefaultConfig();
     $cfg["chat_dir"]   = ''; // will be generated from the other parameters into the init step
     $cfg["server_dir"] = ''; // will be generated from the other parameters into the init step
     return $cfg;
@@ -57,7 +57,7 @@ class pfcContainer_File extends pfcContainer
   
   function init()
   {
-    $errors = array();
+    $errors = pfcContainer::init();
     $c =& $this->c;
 
     // generate the container parameters from other config parameters
