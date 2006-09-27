@@ -69,6 +69,8 @@ class pfcContainer
    */
   function removeNick($chan, $nickid)
   {
+    $c =& $this->c;
+
     if ($chan == NULL) $chan = 'SERVER';
 
     $timestamp = $this->getMeta("channelid-to-nickid", $this->encode('SERVER'), $nickid);
@@ -84,14 +86,21 @@ class pfcContainer
     $this->rmMeta('nickid-to-channelid', $nickid, $this->encode($chan));
 
     // if the user is the last one to quit this room,
+    // and this room is not a default room,
     // then clean the room history
-    $ret = $this->getOnlineNick($chan);
-    if (count($ret['nickid']) == 0)
+    $channels = array();
+    foreach($c->channels as $cc)
+      $channels[] = 'ch_'.$cc; // @todo clean this piece of code when the chan and chanid will be refactored
+    if (!in_array($chan, $channels))
     {
-      $this->rmMeta('channelid-to-msg',   $this->encode($chan));
-      $this->rmMeta('channelid-to-msgid', $this->encode($chan));
+      $ret = $this->getOnlineNick($chan);
+      if (count($ret['nickid']) == 0)
+      {
+        $this->rmMeta('channelid-to-msg',   $this->encode($chan));
+        $this->rmMeta('channelid-to-msgid', $this->encode($chan));
+      }
     }
-    
+
     // get the current user's channels list
     $channels = $this->getMeta("nickid-to-channelid",$nickid);
     $channels = $channels["value"];
