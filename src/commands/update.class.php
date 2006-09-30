@@ -37,8 +37,8 @@ class pfcCommand_update extends pfcCommand
       $cmdp["recipientid"] = NULL;
       $cmd->run($xml_reponse, $cmdp);
 
-      // get other online users on each channels
-      $cmd =& pfcCommand::Factory("getonlinenick");
+      // get other online users on each channels     
+      $cmd =& pfcCommand::Factory("who2");
       foreach( $u->channels as $id => $chan )
       {
         $cmdp["recipient"]   = $chan["recipient"];
@@ -50,7 +50,7 @@ class pfcCommand_update extends pfcCommand
         $cmdp["recipient"]   = $pv["recipient"];
         $cmdp["recipientid"] = $id;
         $cmd->run($xml_reponse, $cmdp);
-      }
+      }      
 
       // get new message posted on each channels
       $cmd =& pfcCommand::Factory("getnewmsg");

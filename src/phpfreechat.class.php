@@ -390,7 +390,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
       if ($cmdtmp != NULL)
       {
         // store the new cmdtoplay list (-1 item)
-        $container->setUserMeta($nickid, "cmdtoplay", serialize($cmdtoplay));
+        $container->setUserMeta($nickid, 'cmdtoplay', serialize($cmdtoplay));
 
         // play the command
         $cmd =& pfcCommand::Factory($cmdtmp[0]);

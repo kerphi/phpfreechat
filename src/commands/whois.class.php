@@ -1,6 +1,6 @@
 <?php
 /**
- * identify.class.php
+ * whois.class.php
  *
  * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
  *
@@ -20,16 +20,12 @@
  * Boston, MA  02110-1301  USA
  */
 
+require_once(dirname(__FILE__)."/../../lib/json/JSON.php");
 require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
-/**
- * pfcCommand_identify
- * this command will identify the user admin rights
- * @author Stephane Gully <stephane.gully@gmail.com>
- */
-class pfcCommand_identify extends pfcCommand
+class pfcCommand_whois extends pfcCommand
 {
-  var $usage = "/identify {password}";
+  var $usage = "/whois nickname";
   
   function run(&$xml_reponse, $p)
   {
@@ -38,37 +34,24 @@ class pfcCommand_identify extends pfcCommand
     $sender      = $p["sender"];
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
-
+    
     $c =& $this->c;
     $u =& $this->u;
+    $ct =& $c->getContainerInstance();
 
-    $password = trim($param);
-    $isadmin = false;
-
-//     $xml_reponse->addScript("alert('sender=".$sender."');");
-//     $xml_reponse->addScript("alert('password=".$password."');");  
-//     $xml_reponse->addScript("alert('admins=".var_export($c->admins, true)."');");  
-  
-    if( isset($c->admins[$sender]) &&
-	$c->admins[$sender] == $password )
-      $isadmin = true;
-
-    $msg   = "";
-    if ($isadmin)
+    $nickid = $ct->getNickId($param);
+    if ($nickid)
     {
-      // ok the current user is an admin, just save the isadmin flag in the metadata
-      $ct =& $c->getContainerInstance();
-      $ct->setUserMeta($u->nickid, 'isadmin', $isadmin);
-      $this->forceWhoisReload($u->nick);
+      $usermeta = $ct->getAllUserMeta($nickid);
+      $usermeta['nickid'] = $nickid;
+      unset($usermeta['cmdtoplay']); // used internaly
       
-      $msg .= _pfc("Succesfully identified");
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
+      $json = new Services_JSON();
+      $js = $json->encode($usermeta);
+      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', ".$js.");");
     }
     else
-    {
-      $msg .= _pfc("Identification failure");
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko', '".$msg."');");
-    }
+      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko','');");
   }
 }
 

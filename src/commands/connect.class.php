@@ -54,15 +54,22 @@ class pfcCommand_connect extends pfcCommand
     // setup some user meta
     $nickid = $u->nickid;
     // store the user ip
-    $ct->setUserMeta($nickid, 'ip', $_SERVER["REMOTE_ADDR"]);
+    $ip = $_SERVER["REMOTE_ADDR"];
+    if ($ip == "::1") $ip = "127.0.0.1"; // fix for konqueror & localhost
+    $ct->setUserMeta($nickid, 'ip', $ip);
     // store the admin flag
     $ct->setUserMeta($nickid, 'isadmin', $isadmin);
-
+    // store the customized nick metadata
+    foreach($c->nickmeta as $k => $v)
+      $ct->setUserMeta($nickid, $k, $v);
+    
     // register the user (and his metadata) in the allready joined channel
     foreach( $u->channels as $id => $chan )
       $ct->createNick($chan["recipient"], $u->nick, $u->nickid);
     foreach( $u->privmsg as $id => $pv )
       $ct->createNick($pv["recipient"], $u->nick, $u->nickid);
+
+    $this->forceWhoisReload($u->nick);
     
     // connect to the server
     $xml_reponse->addScript("pfc.handleResponse('connect', 'ok', '');");

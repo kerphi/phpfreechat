@@ -44,10 +44,6 @@ class pfcCommand_join extends pfcCommand
       $u->channels[$chanid]["name"]      = $channame;
       $u->saveInCache();
       
-      // clear the cached nicknames list for the given channel
-      $nicklist_sid = "pfc_nicklist_".$c->getId()."_".$clientid."_".$chanid;
-      $_SESSION[$nicklist_sid] = NULL;
-      
       // show a join message
       $cmdp = $p;
       $cmdp["param"] = _pfc("%s joins %s",$u->nick, $channame);

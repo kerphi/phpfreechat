@@ -2,6 +2,7 @@
 <?php $nick = $u->nick != "" ? addslashes($u->nick) : addslashes($c->nick); ?>
 
 var pfc_nickname              = '<?php echo ($GLOBALS["output_encoding"]=="UTF-8" ? $nick : iconv("UTF-8", $GLOBALS["output_encoding"],$nick)); ?>';
+var pfc_nickid                = '<?php echo $u->nickid; ?>';
 var pfc_version               = '<?php echo $version; ?>';
 var pfc_clientid              = '<?php echo md5(uniqid(rand(), true)); ?>';
 var pfc_title                 = '<?php echo addslashes($title); ?>';
@@ -93,6 +94,7 @@ array( "Do you really want to leave this room ?", // _pfc
        "Click here to send your message", // _pfc
        "Send", // _pfc
        "You are not allowed to speak to yourself", // _pfc
+       "Close", // _pfc
        );
 foreach($labels_to_load as $l)
 {
@@ -126,6 +128,9 @@ array( 'images/ch.gif',
        'images/bt_mail.gif',
        'images/bt_color.gif',
        'images/color_transparent.gif',
+       'images/close-whoisbox.gif',
+       'images/openpv.gif',
+       'images/user-admin.gif',
        );
 
 foreach($fileurl_to_load as $f)

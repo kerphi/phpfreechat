@@ -131,6 +131,49 @@ class pfcCommand
   {
     die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__));
   }
+
+  /**
+   * Force whois reloading
+   */
+  function forceWhoisReload($nicktorewhois)
+  {
+    $c  = $this->c;
+    $u  = $this->u;
+    $ct =& $c->getContainerInstance();
+
+    $nickid = $ct->getNickid($nicktorewhois);
+
+    // get the user who have $nicktorewhois in their list
+    $channels = $ct->getMeta("nickid-to-channelid", $nickid);
+    $channels = $channels['value'];
+    $channels = array_diff($channels, array('SERVER'));
+    $otherids = array();
+    foreach($channels as $chan)
+    {
+      $ret = $ct->getOnlineNick($chan);
+      $otherids = array_merge($otherids, $ret['nickid']);
+    }
+    
+    // alert them that $nicktorewhois user info just changed
+    foreach($otherids as $otherid)
+    {
+      $cmdtoplay = $ct->getUserMeta($otherid, 'cmdtoplay');
+      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
+      $cmdtmp = array("whois2",    /* cmdname */
+                      $nicktorewhois,   /* param */
+                      NULL,       /* sender */
+                      NULL,       /* recipient */
+                      NULL,       /* recipientid */
+                      );
+      if (!in_array($cmdtmp, $cmdtoplay))
+      {
+        $cmdtoplay[] = $cmdtmp;
+        $ct->setUserMeta($otherid, 'cmdtoplay', serialize($cmdtoplay));
+      }
+    }
+  }
+  
+  
 }
 
 ?>

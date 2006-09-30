@@ -48,6 +48,7 @@ class pfcCommand_nick extends pfcCommand
       $container->changeNick($newnick, $oldnick);
       $u->nick = $newnick;
       $u->saveInCache();
+      $this->forceWhoisReload($u->nick);
 
       // notify all the joined channels/privmsg
       $cmdp = $p;
@@ -86,6 +87,7 @@ class pfcCommand_nick extends pfcCommand
       $u->nick   = $newnick;
       $u->active = true;
       $u->saveInCache();
+      $this->forceWhoisReload($u->nick);
 
       $xml_reponse->addScript("pfc.handleResponse('nick', 'connected', '".addslashes($newnick)."');");
     

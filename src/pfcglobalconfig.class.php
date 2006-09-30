@@ -34,6 +34,7 @@ class pfcGlobalConfig
   
   // these parameters are dynamic (not cached)
   var $nick                = ""; // the initial nickname ("" means the user will be queried)
+  var $nickmeta            = array(); // this is the nickname user's metadata, you can add : sexe, age, real name ... (ex: array('sexe'=>'f') )
 
   var $isadmin             = false;
   var $admins              = array("admin" => ""); // the key is the nickname, the value is the password

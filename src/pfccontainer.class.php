@@ -423,7 +423,18 @@ class pfcContainer
   }
 
 
-  function getUserMeta($nickid, $key)
+  function getAllUserMeta($nickid)
+  {
+    $result = array();
+    $ret = $this->getMeta("nickid-to-metadata", $nickid);
+    foreach($ret["value"] as $k)
+      $result[$k] = $this->getUserMeta($nickid, $k);
+    //    $result['chanid'] = $this->getMeta("nickid-to-channelid", $nickid);
+    //    $result['chanid'] = $result['chanid']['value'];
+    return $result;
+  }
+  
+  function getUserMeta($nickid, $key = NULL)
   {
     $ret = $this->getMeta("nickid-to-metadata", $nickid, $key, true);
     return isset($ret['value'][0]) ? $ret['value'][0] : NULL;
@@ -435,7 +446,16 @@ class pfcContainer
     return $ret;
   }
 
-  function getChanMeta($chan, $key)
+  function getAllChanMeta($chan)
+  {
+    $result = array();
+    $ret = $this->getMeta("channelid-to-metadata", $this->encode($chan));
+    foreach($ret["value"] as $k)
+      $result[$k] = $this->getChanMeta($chan, $k);
+    return $result;
+  }
+
+  function getChanMeta($chan, $key = NULL)
   {
     $ret = $this->getMeta("channelid-to-metadata", $this->encode($chan), $key, true);
     return isset($ret['value'][0]) ? $ret['value'][0] : NULL;

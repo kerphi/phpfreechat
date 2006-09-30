@@ -27,6 +27,8 @@ class pfcCommand_deop extends pfcCommand
     $container  =& $c->getContainerInstance();
     $nicktodeopid = $container->getNickId($nicktodeop);
     $container->setUserMeta($nicktodeopid, 'isadmin', false);
+
+    $this->forceWhoisReload($nicktodeop);
   }
 }
 

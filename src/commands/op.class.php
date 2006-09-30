@@ -33,6 +33,8 @@ class pfcCommand_op extends pfcCommand
     $container  =& $c->getContainerInstance();
     $nicktoopid = $container->getNickId($nicktoop);
     $container->setUserMeta($nicktoopid, 'isadmin', true);
+
+    $this->forceWhoisReload($nicktoop);
   }
 }
 
