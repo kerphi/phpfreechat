@@ -4,8 +4,8 @@ require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 
 $params["serverid"]    = md5(__FILE__); // calculate a unique id for this chat
 $params["title"]       = "A chat with a customized smiley theme (famfamfam theme)";
-$params["nick"]        = "guest";  // setup the intitial nickname
-$params["theme"]       = "famfamfam";
+$params["nick"]        = "guest".rand(1,1000);  // setup the intitial nickname
+$params["theme"]       = "msn";
 $chat = new phpFreeChat( $params );
 
 ?>
