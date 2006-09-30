@@ -8,13 +8,9 @@
 
 emoticon_smile.png	 :-) ^_^ :)
 emoticon_evilgrin.png	 >(
-arrow_right.png		 => -> --> ==> >>>
-arrow_left.png		 <= <- <-- <== <<<
 emoticon_surprised.png   :S :s :-S :-s :/ :-/
 emoticon_grin.png        :-D :D
 emoticon_unhappy.png     :'( :-( :o( :-< :(
-exclamation.png		 :!:		
-lightbulb.png		 *) 0=
 emoticon_happy.png       :lol:
 emoticon_waii.png	 :{} :-{} :razz: :} :-}
 emoticon_wink.png	 ;-) ;o) ;)
@@ -25,3 +21,7 @@ weather_sun.png          >O<
 weather_clouds.png       :""": :cloud: :clouds: 
 weather_cloudy.png       :"O": :cloudly:
 weather_lightning.png    :$:
+arrow_right.png		 => -> --> ==> >>>
+arrow_left.png		 <= <- <-- <== <<<
+exclamation.png		 :!:		
+lightbulb.png		 *) 0=
