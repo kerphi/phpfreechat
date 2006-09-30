@@ -115,7 +115,7 @@ class pfcGlobalConfig
   // private parameters
   var $_sys_proxies          = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
   var $_proxies              = array(); // will contains proxies to execute on each command (filled in the init step)
-  var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg");
+  var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg", "nickmeta");
   var $_params_type         = array();
   
   function pfcGlobalConfig( $params = array() )
