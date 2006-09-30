@@ -74,6 +74,7 @@
 
       <li><a href="demo35_shared_memory.php">demo35 - demo which show how to use the shared memory container</a> (not yet working)</li>
       <li><a href="demo43_change_the_nicknames_colors.php">demo43 - demo which show how to change the nicknames automatic colors</a></li>
+      <li><a href="demo50_customized_usermetadata.php">demo50 - demo which shows how to use user metadata : add avatar (images) to each connected users</a></li>
 </ul>
 
 
