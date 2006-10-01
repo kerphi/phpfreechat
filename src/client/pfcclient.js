@@ -32,7 +32,6 @@ pfcClient.prototype = {
     this.cmdhistoryid = -1;
     this.cmdhistoryissearching = false;
     
-
     /*
     this.channels      = Array();
     this.channelids    = Array();
@@ -419,7 +418,6 @@ pfcClient.prototype = {
       var chan   = param['chan'];
       var chanid = param['chanid'];
       var meta   = $H(param['meta']);
-
       if (resp == "ok") 
       { 
         this.chanmeta[chanid] = meta;
@@ -436,7 +434,6 @@ pfcClient.prototype = {
         // update the nick list display on the current channel
         this.updateNickListBox(chanid);
       }
-
       if (cmd == "who")
       {
         // display the whois info
@@ -453,6 +450,13 @@ pfcClient.prototype = {
           }
         }
         this.displayMsg( cmd, msg );
+      }
+    }
+    else if (cmd == "getnewmsg")
+    {
+      if (resp == "ok") 
+      {
+        this.handleComingRequest(param);
       }
     }
     else
@@ -761,7 +765,7 @@ pfcClient.prototype = {
 	line += ' <span class="pfc_nick">';
 	line += '&#x2039;';
 	line += '<span ';
-        line += 'onclick="pfc.insert_text(\'' + sender + ', \',\'\',false)" ';
+        line += 'onclick="pfc.insert_text(\'' + sender.replace("'", '\\\'') + ', \',\'\',false)" ';
 	line += 'class="pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(sender)) +'">';
 	line += sender;
 	line += '</span>';
@@ -1010,8 +1014,8 @@ pfcClient.prototype = {
       d.style.display = 'block';
       d.style.zIndex = '400';
       d.style.position = 'absolute';
-      d.style.left = (evt.pageX-5)+'px';
-      d.style.top = (evt.pageY-5)+'px';
+      d.style.left = ((evt.clientX +(document.documentElement.scrollLeft || document.body.scrollLeft))-5)+'px';
+      d.style.top  = ((evt.clientY +(document.documentElement.scrollTop  || document.body.scrollTop))-5)+'px';
       return false;
     }
     li.appendChild(img);

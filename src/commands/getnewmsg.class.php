@@ -1,5 +1,26 @@
 <?php
+/**
+ * getnewmsg.class.php
+ *
+ * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details. 
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, 51 Franklin St, Fifth Floor,
+ * Boston, MA  02110-1301  USA
+ */
 
+require_once(dirname(__FILE__)."/../../lib/json/JSON.php");
 require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_getnewmsg extends pfcCommand
@@ -15,9 +36,7 @@ class pfcCommand_getnewmsg extends pfcCommand
     $c =& $this->c;
     // do nothing if the recipient is not defined
     if ($recipient == "") return;
-    
-    //$xml_reponse->addScript("alert('getnewmsg: sender=".addslashes($sender)." param=".addslashes($param)." recipient=".addslashes($recipient)." recipientid=".addslashes($recipientid)."');");
-    
+       
     // check this methode is not being called
     if( isset($_SESSION["pfc_lock_readnewmsg_".$c->getId()."_".$clientid]) )
     {
@@ -50,20 +69,13 @@ class pfcCommand_getnewmsg extends pfcCommand
       unset($_SESSION[$oldmsg_sid]);
       $oldmsg = true;
     }
-
-    //$xml_reponse->addScript("alert('getnewmsg: fromidsid=".$from_id_sid."');");
-    //$xml_reponse->addScript("alert('getnewmsg: recipient=".$recipient." fromid=".$from_id."');");
-
-    //    $xml_reponse->addScript("alert('getnewmsg: recipientid=".$recipientid."');");
     
     $new_msg     = $container->read($recipient, $from_id);
     $new_from_id = $new_msg["new_from_id"];
     $data        = $new_msg["data"];
     
-    //$xml_reponse->addScript("alert('getnewmsg: newmsg=".addslashes(var_export($data))."');");
-
     // transform new message in html format
-    $js = '';
+    $js = array();
     $data_sent = false;
     foreach ($data as $d)
     {
@@ -74,14 +86,22 @@ class pfcCommand_getnewmsg extends pfcCommand
       $m_recipientid = $recipientid;
       $m_cmd         = $d["cmd"];
       $m_param       = phpFreeChat::PostFilterMsg($d["param"]);
-      $js .= "Array(".$m_id.",'".addslashes($m_date)."','".addslashes($m_time)."','".addslashes($m_sender)."','".addslashes($m_recipientid)."','".addslashes($m_cmd)."','".addslashes($m_param)."',".(date("d/m/Y") == $m_date ? 1 : 0).",".($oldmsg ? 1 : 0)."),";
+      $js[] = array($m_id,
+                    $m_date,
+                    $m_time,
+                    "toto'titi",//$m_sender,
+                    $m_recipientid,
+                    $m_cmd,
+                    $m_param,
+                    date("d/m/Y") == $m_date ? 1 : 0,
+                    $oldmsg ? 1 : 0);
       $data_sent = true;
     }
-    if ($js != "")
+    if (count($js) != 0)
     {
-      $js = substr($js, 0, strlen($js)-1); // remove last ','
-      $js = 'Array('.$js.')';
-      $xml_reponse->addScript("pfc.handleComingRequest(".$js.");");
+      $json = new Services_JSON();
+      $js = $json->encode($js);
+      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', (".$js."));");
     }
 
     if ($data_sent)

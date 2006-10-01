@@ -54,7 +54,7 @@ var pfc_nickname_color_list = Array(<?php
 var pfc_proxy_url = '<?php echo $data_public_url."/".$serverid."/proxy.php"; ?>';
 
 
-/* create our client which will do all the work on the client side ! */
+// create our client which will do all the work on the client side !
 var pfc = new pfcClient();
 <?php
 
@@ -145,7 +145,6 @@ foreach($smileys as $s_file => $s_str) {
 }
 
 ?>    
-
 pfc.gui.buildChat();
 pfc.connectListener();
 pfc.refreshGUI();
@@ -160,4 +159,4 @@ xajax.DebugMessage = function(text)
   text = text.replace(rx, '\n&lt;');
   $('debugxajax').innerHTML += '\n---------------\n' + text;
 }
-<?php } ?>
+ <?php } ?>
