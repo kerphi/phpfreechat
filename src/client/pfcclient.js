@@ -1014,8 +1014,8 @@ pfcClient.prototype = {
       d.style.display = 'block';
       d.style.zIndex = '400';
       d.style.position = 'absolute';
-      d.style.left = ((evt.clientX +(document.documentElement.scrollLeft || document.body.scrollLeft))-5)+'px';
-      d.style.top  = ((evt.clientY +(document.documentElement.scrollTop  || document.body.scrollTop))-5)+'px';
+      d.style.left = (mousePosX(evt)-5)+'px';
+      d.style.top  = (mousePosY(evt)-5)+'px';
       return false;
     }
     li.appendChild(img);

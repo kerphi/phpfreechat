@@ -112,6 +112,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     $js[] = "javascript/utf8.js";
     $js[] = "javascript/sprintf2.js";
     $js[] = "javascript/activity.js";
+    $js[] = "javascript/mousepos.js";
     $js[] = "pfcclient.js";
     $js[] = "pfcgui.js";
     $js[] = "pfcresource.js";
