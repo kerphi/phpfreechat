@@ -83,7 +83,7 @@ class pfcCommand
       $firstproxy =& $cmd;
       for($i = count($c->_proxies)-1; $i >= 0; $i--)
       {
-        $proxy_name      = strtolower($c->_proxies[$i]);
+        $proxy_name      = $c->_proxies[$i];
         $proxy_classname = "pfcProxyCommand_" . $proxy_name;
         if (!class_exists($proxy_classname))
         {
