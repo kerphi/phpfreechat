@@ -89,7 +89,7 @@ class pfcCommand_getnewmsg extends pfcCommand
       $js[] = array($m_id,
                     $m_date,
                     $m_time,
-                    "toto'titi",//$m_sender,
+                    $m_sender,
                     $m_recipientid,
                     $m_cmd,
                     $m_param,
