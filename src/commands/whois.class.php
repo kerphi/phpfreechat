@@ -45,6 +45,18 @@ class pfcCommand_whois extends pfcCommand
       $usermeta = $ct->getAllUserMeta($nickid);
       $usermeta['nickid'] = $nickid;
       unset($usermeta['cmdtoplay']); // used internaly
+
+      // remove private usermeta from the list if the client is not admin
+      $isadmin = $ct->getUserMeta($u->nickid, 'isadmin');
+      if (!$isadmin)
+        foreach($c->nickmeta_private as $nmp)
+          unset($usermeta[$nmp]);
+
+      // sort the list
+      $nickmeta_sorted = array();
+      $order = array_merge(array_diff(array_keys($usermeta),array_keys($c->nickmeta)),array_keys($c->nickmeta));
+      foreach($order as $o) $nickmeta_sorted[$o] = $usermeta[$o];
+      $usermeta = $nickmeta_sorted;
       
       $json = new Services_JSON();
       $js = $json->encode($usermeta);

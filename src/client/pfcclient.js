@@ -403,11 +403,12 @@ pfcClient.prototype = {
         {
           var k = um_keys[i];
           var v = um[k];
-          if (v && k != 'nickid'
-                && k != 'floodtime'
-                && k != 'flood_nbmsg'
-                && k != 'flood_nbchar'
-             )
+          if (v &&
+              // these parameter are used internaly (don't display it)
+              k != 'nickid' &&
+              k != 'floodtime' &&
+              k != 'flood_nbmsg' &&
+              k != 'flood_nbchar')
             msg = msg + '<strong>' + k + '</strong>: ' + v + '<br/>';
         }
         this.displayMsg( cmd, msg );
