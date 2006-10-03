@@ -39,7 +39,7 @@ class pfcGlobalConfig
 
   var $isadmin             = false;
   var $admins              = array("admin" => ""); // the key is the nickname, the value is the password
-  var $firstisadmin        = true; // give admin rights to the first connected user on the server
+  var $firstisadmin        = false; // give admin rights to the first connected user on the server
 
   var $islocked            = false; // set this parameter to true to lock the chat for all users
   var $lockurl             = "http://www.phpfreechat.net"; // this is the url where the users must be redirected when the chat is locked
