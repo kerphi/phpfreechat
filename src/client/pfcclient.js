@@ -69,7 +69,9 @@ pfcClient.prototype = {
     if (pfc_notify_window) this.detectactivity.onunactivate = this.gui.unnotifyWindow.bindAsEventListener(this.gui);
 
     /* the events callbacks */
-    Event.observe(this.el_words,     'keypress',  this.callbackWords_OnKeypress.bindAsEventListener(this), false);
+    this.el_words.onkeypress = this.callbackWords_OnKeypress.bindAsEventListener(this);
+// don't use this line because when doing completeNick the "return false" doesn't work (focus is lost)
+//    Event.observe(this.el_words,     'keypress',  this.callbackWords_OnKeypress.bindAsEventListener(this), false);
     Event.observe(this.el_words,     'keydown',   this.callbackWords_OnKeydown.bindAsEventListener(this), false);
     Event.observe(this.el_words,     'focus',     this.callbackWords_OnFocus.bindAsEventListener(this), false);
     Event.observe(this.el_handle,    'keydown',   this.callbackHandle_OnKeydown.bindAsEventListener(this), false);
@@ -535,7 +537,7 @@ pfcClient.prototype = {
     if (nick_src != '')
     {
       var tabid = this.gui.getTabId();
-      var n_list = this.nicklist[tabid];
+      var n_list = this.chanmeta[tabid]['users']['nick'];
       for (var i=0; i<n_list.length; i++)
       {
 	var nick = n_list[i];
