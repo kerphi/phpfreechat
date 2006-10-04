@@ -150,7 +150,7 @@ class pfcCommand
     $otherids = array();
     foreach($channels as $chan)
     {
-      $ret = $ct->getOnlineNick($chan);
+      $ret = $ct->getOnlineNick($ct->decode($chan));
       $otherids = array_merge($otherids, $ret['nickid']);
     }
     
