@@ -56,6 +56,10 @@ class pfcInfo extends pfcGlobalConfig
     return $users;
   }
 
+  /**
+   * Return the last $nb message from the $channel room.
+   * The messages format is very basic, it's raw data (it will certainly change in future)
+   */
   function getLastMsg($channel, $nb)
   {
     // to be sure the $nb params is a positive number
@@ -69,6 +73,16 @@ class pfcInfo extends pfcGlobalConfig
     $lastmsg_id  = $container->getLastId($channel);
     $lastmsg_raw = $container->read($channel, $lastmsg_id-$nb);
     return $lastmsg_raw;
+  }
+
+  /**
+   * Rehash the server config (same as /rehash command)
+   * Usefull to take into account new server's parameters
+   */
+  function rehash()
+  {
+    $destroyed = $this->destroyCache();
+    return $destroyed;
   }
 }
 
