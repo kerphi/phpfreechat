@@ -20,7 +20,6 @@
  * Boston, MA  02110-1301  USA
  */
 
-require_once(dirname(__FILE__)."/../../lib/json/JSON.php");
 require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_who extends pfcCommand
@@ -44,7 +43,15 @@ class pfcCommand_who extends pfcCommand
       $recipient   = pfcCommand_join::GetRecipient($param);
       $recipientid = pfcCommand_join::GetRecipientId($param);
     }
+
+    $chanmeta = $this->_getChanMeta($recipient, $recipientid);
     
+    $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', ".$chanmeta.");");
+  }
+
+  function _getChanMeta($recipient, $recipientid)
+  {
+    $c  =& $this->c;
     $ct =& $c->getContainerInstance();
     $chanmeta = array();
     $chanmeta['chan']   = $recipient;
@@ -55,9 +62,10 @@ class pfcCommand_who extends pfcCommand
     $chanmeta['meta']['users']['nick']   = $users['nick'];
     $chanmeta['meta']['users']['nickid'] = $users['nickid'];
 
+    require_once(dirname(__FILE__)."/../../lib/json/JSON.php");
     $json = new Services_JSON();
     $js = $json->encode($chanmeta);
-    $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', ".$js.");");
+    return $js;
   }
 }
 

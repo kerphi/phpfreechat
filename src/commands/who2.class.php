@@ -24,6 +24,40 @@ require_once(dirname(__FILE__)."/who.class.php");
 
 class pfcCommand_who2 extends pfcCommand_who
 {
+
+  function run(&$xml_reponse, $p)
+  {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+    
+    $c =& $this->c;
+    $u =& $this->u;
+    
+    if ($param != "")
+    {
+      require_once dirname(__FILE__)."/join.class.php";
+      $recipient   = pfcCommand_join::GetRecipient($param);
+      $recipientid = pfcCommand_join::GetRecipientId($param);
+    }
+
+    $chanmeta = $this->_getChanMeta($recipient, $recipientid);
+
+    // check if info didn't change since last call
+    $sid = "pfc_who2_".$c->getId()."_".$clientid."_".$recipientid;
+    if (isset($_SESSION[$sid]) && $chanmeta == $_SESSION[$sid])
+    {
+      // do not send the response to save bandwidth
+      //$xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'unchanged', '');");
+    }
+    else
+    {
+      $_SESSION[$sid] = $chanmeta;
+      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', ".$chanmeta.");");
+    }
+  }
 }
 
 ?>
