@@ -1,5 +1,10 @@
 <?php
 
+// gzip compression should not be used because it can slowdown a lot the page loading (>60 seconds!)
+ini_set('zlib.output_compression','Off');
+
+ob_start(); // start capturing output
+
 $rootpath    = dirname(__FILE__)."/../../";
 
 $allowedpath = array();
@@ -29,15 +34,27 @@ if (trim($found) == "")
 else
   $file = $found;
 
+// setup the HTTP cache
+// @todo understand how it really works
+session_cache_limiter('public');
+
+// output the file content
+readfile($file);
+
+// output HTTP headers
 $contenttype   = "text/plain";
-$contentlength = filesize($file);
+//$contentlength = filesize($file);
 if (preg_match("/.js$/", $file))
   $contenttype = "text/javascript";
 else if (preg_match("/.css$/", $file))
   $contenttype = "text/css";
-header("Content-Length: ".$contentlength);
 header("Content-Type: ".$contenttype);
-session_cache_limiter('public');
-echo file_get_contents($file);
-flush(); // needed to fix problems with gzhandler enabled
+$contentlength = ob_get_length();
+header("Content-Length: ".$contentlength);
+
+// As far as I can tell the only way to mimic ob_flush()'s behaviour on PHP < 4.2.0 is calling ob_end_flush() followed by ob_start().
+// http://fr.php.net/manual/en/function.ob-flush.php#28477
+ob_end_flush();
+ob_start();
+
 ?>
