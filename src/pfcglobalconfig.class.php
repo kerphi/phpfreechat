@@ -87,9 +87,7 @@ class pfcGlobalConfig
   
   var $theme               = "default";
   var $themepath           = "";
-  var $themeurl            = "";
   var $themepath_default   = "";
-  var $themeurl_default    = "";
 
   var $language            = "";      // could be something in i18n/* directory ("" means the language is guess from the server config)
   var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
@@ -364,11 +362,6 @@ class pfcGlobalConfig
     // copy the themes into the public directory
     //    $this->errors = array_merge($this->errors, @install_dir($this->themepath_default, $this->data_public_path."/themes"));
     //    $this->errors = array_merge($this->errors, @install_dir($this->themepath,         $this->data_public_path."/themes"));
-    // calculate the corresponding theme url
-    if ($this->themeurl_default == "")
-      $this->themeurl_default = relativePath($this->client_script_path, $this->data_public_path."/themes");
-    if ($this->themeurl == "")
-      $this->themeurl         = relativePath($this->client_script_path, $this->data_public_path."/themes");
 
     
     // ---
@@ -463,7 +456,7 @@ class pfcGlobalConfig
         continue;
       else if (preg_match("/^([a-z_\-0-9]*(\.gif|\.png))(.*)$/i",$line,$res))
       {
-        $smiley_file = 'smileys/'.$res[1];//$this->getFileUrlFromTheme('smileys/'.$res[1]);
+        $smiley_file = 'smileys/'.$res[1];
         $smiley_str = trim($res[3])."\n";
         $smiley_str = str_replace("\n", "", $smiley_str);
         $smiley_str = str_replace("\t", " ", $smiley_str);
@@ -583,18 +576,7 @@ class pfcGlobalConfig
       else
 	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
   }
-  
-  function getFileUrlFromTheme($file)
-  {
-    if (file_exists($this->themepath."/".$this->theme."/".$file))
-      return $this->themeurl."/".$this->theme."/".$file;
-    else
-      if (file_exists($this->themepath_default."/default/".$file))
-	return $this->themeurl_default."/default/".$file;
-      else
-	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
-  }
-  
+    
   function getFilePathFromTheme($file)
   {
     if (file_exists($this->themepath."/".$this->theme."/".$file))
