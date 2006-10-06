@@ -1,56 +1,36 @@
-<?php function quoteandescape($v) { return "'".addslashes($v)."'"; } ?>
-<?php $nick = $u->nick != "" ? addslashes($u->nick) : addslashes($c->nick); ?>
+<?php
+require_once(dirname(__FILE__)."/../../lib/json/JSON.php");
+$json = new Services_JSON();
 
-var pfc_nickname              = '<?php echo ($GLOBALS["output_encoding"]=="UTF-8" ? $nick : iconv("UTF-8", $GLOBALS["output_encoding"],$nick)); ?>';
-var pfc_nickid                = '<?php echo $u->nickid; ?>';
-var pfc_version               = '<?php echo $version; ?>';
-var pfc_clientid              = '<?php echo md5(uniqid(rand(), true)); ?>';
-var pfc_title                 = '<?php echo addslashes($title); ?>';
-var pfc_refresh_delay         = <?php echo $refresh_delay; ?>;
-var pfc_start_minimized       = <?php echo $start_minimized ? "true" : "false"; ?>;
-var pfc_nickmarker            = <?php echo $nickmarker ? "true" : "false"; ?>;
-var pfc_clock                 = <?php echo $clock ? "true" : "false"; ?>;
-var pfc_showsmileys           = <?php echo $showsmileys ? "true" : "false"; ?>;
-var pfc_showwhosonline        = <?php echo $showwhosonline ? "true" : "false"; ?>;
-var pfc_focus_on_connect      = <?php echo $focus_on_connect ? "true" : "false"; ?>;
-var pfc_max_text_len          = <?php echo $max_text_len; ?>;
-var pfc_quit_on_closedwindow  = <?php echo $quit_on_closedwindow ? "true" : "false"; ?>;
-var pfc_debug                 = <?php echo $debug ? "true" : "false"; ?>;
-var pfc_btn_sh_smileys        = <?php echo $btn_sh_smileys ? "true" : "false"; ?>;
-var pfc_btn_sh_whosonline     = <?php echo $btn_sh_whosonline ? "true" : "false"; ?>;
-var pfc_connect_at_startup    = <?php echo $connect_at_startup ? "true" : "false"; ?>;
-var pfc_notify_window         = <?php echo $notify_window ? "true" : "false"; ?>;
-var pfc_defaultchan = Array(<?php
-                         $list = array(); foreach($c->channels as $item) {$list[] = $item; }
-                         $list = array_map("quoteandescape",$list);
-                         echo implode(",", $list);
-                         ?>);
-var pfc_userchan = Array(<?php
-                         $list = array(); foreach($u->channels as $item) {$list[] = $item["name"];}
-                         $list = array_map("quoteandescape",$list);
-                         echo implode(",", $list);
-                         ?>);
-var pfc_defaultprivmsg = Array(<?php
-                         $list = array(); foreach($c->privmsg as $item) {$list[] = $item; }
-                         $list = array_map("quoteandescape",$list);
-                         echo implode(",", $list);
-                         ?>);
-var pfc_userprivmsg = Array(<?php
-                        $list = array(); foreach($u->privmsg as $item) {$list[] = $item["name"];}
-                        $list = array_map("quoteandescape",$list);
-                        echo implode(",", $list);
-                        ?>);
-var pfc_openlinknewwindow = <?php echo $openlinknewwindow ? "true" : "false"; ?>;
-var pfc_bbcode_color_list = Array(<?php
-                                  $list = array(); foreach($bbcode_colorlist as $v) {$list[] = substr($v,1);}
-                                  $list = array_map("quoteandescape",$list);
-                                  echo implode(",", $list);
-                                  ?>);
-var pfc_nickname_color_list = Array(<?php
-                                    $list = array(); foreach($nickname_colorlist as $v) {$list[] = $v;}
-                                    $list = array_map("quoteandescape",$list);
-                                    echo implode(",", $list);
-                                    ?>);
+?>
+<?php $nick = $u->nick != "" ? $json->encode($u->nick) : $json->encode($c->nick); ?>
+
+var pfc_nickname              = <?php echo ($GLOBALS["output_encoding"]=="UTF-8" ? $nick : iconv("UTF-8", $GLOBALS["output_encoding"],$nick)); ?>;
+var pfc_nickid                = <?php echo $json->encode($u->nickid); ?>;
+var pfc_version               = <?php echo $json->encode($version); ?>;
+var pfc_clientid              = <?php echo $json->encode(md5(uniqid(rand(), true))); ?>;
+var pfc_title                 = <?php echo $json->encode($title); ?>;
+var pfc_refresh_delay         = <?php echo $json->encode($refresh_delay); ?>;
+var pfc_start_minimized       = <?php echo $json->encode($start_minimized); ?>;
+var pfc_nickmarker            = <?php echo $json->encode($nickmarker); ?>;
+var pfc_clock                 = <?php echo $json->encode($clock); ?>;
+var pfc_showsmileys           = <?php echo $json->encode($showsmileys); ?>;
+var pfc_showwhosonline        = <?php echo $json->encode($showwhosonline); ?>;
+var pfc_focus_on_connect      = <?php echo $json->encode($focus_on_connect); ?>;
+var pfc_max_text_len          = <?php echo $json->encode($max_text_len); ?>;
+var pfc_quit_on_closedwindow  = <?php echo $json->encode($quit_on_closedwindow); ?>;
+var pfc_debug                 = <?php echo $json->encode($debug); ?>;
+var pfc_btn_sh_smileys        = <?php echo $json->encode($btn_sh_smileys); ?>;
+var pfc_btn_sh_whosonline     = <?php echo $json->encode($btn_sh_whosonline); ?>;
+var pfc_connect_at_startup    = <?php echo $json->encode($connect_at_startup); ?>;
+var pfc_notify_window         = <?php echo $json->encode($notify_window); ?>;
+var pfc_defaultchan = <?php echo $json->encode($c->channels); ?>;
+var pfc_userchan = <?php $list = array(); foreach($u->channels as $item) {$list[] = $item["name"];} echo $json->encode($list); ?>;
+var pfc_defaultprivmsg = <?php echo $json->encode($c->privmsg); ?>;
+var pfc_userprivmsg = <?php $list = array(); foreach($u->privmsg as $item) {$list[] = $item["name"];} echo $json->encode($list); ?>;
+var pfc_openlinknewwindow = <?php echo $json->encode($openlinknewwindow); ?>;
+var pfc_bbcode_color_list = <?php $list = array(); foreach($bbcode_colorlist as $v) {$list[] = substr($v,1);} echo $json->encode($list); ?>;
+var pfc_nickname_color_list = <?php echo $json->encode($nickname_colorlist); ?>;
 var pfc_proxy_url = '<?php echo $data_public_url."/".$serverid."/proxy.php"; ?>';
 
 
@@ -98,7 +78,7 @@ array( "Do you really want to leave this room ?", // _pfc
        );
 foreach($labels_to_load as $l)
 {
-  echo "pfc.res.setLabel('".$l."','".addslashes(_pfc2($l))."');\n";
+  echo "pfc.res.setLabel(".$json->encode($l).",".$json->encode(_pfc2($l)).");\n";
 }
 
 $fileurl_to_load =
@@ -135,12 +115,12 @@ array( 'images/ch.gif',
 
 foreach($fileurl_to_load as $f)
 {
-  echo "pfc.res.setFileUrl('".$f."',pfc_proxy_url+'".$c->getFileUrlByProxy($f,false)."');\n";
+  echo "pfc.res.setFileUrl(".$json->encode($f).",pfc_proxy_url+'".$c->getFileUrlByProxy($f,false)."');\n";
 }
 
 foreach($smileys as $s_file => $s_str) { 
   for($j = 0; $j<count($s_str) ; $j++) {
-    echo "pfc.res.setSmiley('".$s_str[$j]."',pfc_proxy_url+'".$c->getFileUrlByProxy($s_file,false)."');\n";
+    echo "pfc.res.setSmiley(".$json->encode($s_str[$j]).",pfc_proxy_url+'".$c->getFileUrlByProxy($s_file,false)."');\n";
   }
 }
 
