@@ -192,6 +192,18 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     $output .= "<a href=\"http://www.phpfreechat.net\"><img src=\"http://www.phpfreechat.net/pub/logo_80x15.gif\" alt=\"PHP FREE CHAT [powered by phpFreeChat-".$c->version."]\" title=\"PHP FREE CHAT [powered by phpFreeChat-".$c->version."]\" /></a>";
     $output .= "</div>";
 
+    if ($c->debug)
+    {
+      $output .= '<div id="pfc_debug">';
+      $output .= '</div>';
+    }
+
+    if ($c->debugxajax)
+    {
+      $output .= '<div id="pfc_debugxajax">';
+      $output .= '</div>';
+    }
+
     $output .= "<script type=\"text/javascript\">\n";
     $output .= " // <![CDATA[\n";
 

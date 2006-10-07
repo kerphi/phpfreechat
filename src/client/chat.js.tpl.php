@@ -1,7 +1,6 @@
 <?php
 require_once(dirname(__FILE__)."/../../lib/json/JSON.php");
 $json = new Services_JSON();
-
 ?>
 <?php $nick = $u->nick != "" ? $json->encode($u->nick) : $json->encode($c->nick); ?>
 
@@ -137,6 +136,28 @@ xajax.DebugMessage = function(text)
   text = s.escapeHTML();
   rx  = new RegExp('&lt;','g');
   text = text.replace(rx, '\n&lt;');
-  $('debugxajax').innerHTML += '\n---------------\n' + text;
+  $('pfc_debugxajax').innerHTML += '\n---------------\n' + text;
 }
- <?php } ?>
+<?php } ?>
+
+<?php if ($debug) { ?>
+var pfc_debug_color = true;
+function trace(text) {
+  var s = new String(text);
+  text = s.escapeHTML();
+  rx  = new RegExp('&lt;','g');
+  text = text.replace(rx, '\n&lt;');
+  var color = '';
+  if (pfc_debug_color)
+  {
+    color = '#BBB';
+    pfc_debug_color = false;
+  }
+  else
+  {
+    color = '#DDD';
+    pfc_debug_color = true;
+  }
+  $('pfc_debug').innerHTML += '<p style="margin:0;border-bottom:1px solid #555;background-color:'+color+'">' + text + '</p>';
+}
+<?php } ?>

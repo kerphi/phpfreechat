@@ -138,6 +138,8 @@ pfcClient.prototype = {
    */
   handleResponse: function(cmd, resp, param)
   {
+    if (pfc_debug)
+      if (cmd != "update") trace('handleResponse: '+cmd + "-"+resp+"-"+param);
     if (cmd == "connect")
     {
       //alert(cmd + "-"+resp+"-"+param);
@@ -830,7 +832,7 @@ pfcClient.prototype = {
     var recipientid = this.gui.getTabId();
     var req = cmd+" "+this.clientid+" "+(recipientid==''?'0':recipientid)+(param?" "+param : "");
     if (pfc_debug)
-      if (cmd != "/update") alert(req);
+      if (cmd != "/update") trace('sendRequest: '+req);
     return eval('pfc_handleRequest(req);');
   },
 
