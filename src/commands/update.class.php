@@ -30,7 +30,7 @@ class pfcCommand_update extends pfcCommand
       }
 
       $cmdp = $p;
-
+      
       // update the user nickname timestamp on the server
       $cmd =& pfcCommand::Factory("updatemynick");
       $cmdp["recipient"]   = NULL;
@@ -43,12 +43,14 @@ class pfcCommand_update extends pfcCommand
       {
         $cmdp["recipient"]   = $chan["recipient"];
         $cmdp["recipientid"] = $id;        
+        $cmdp["param"] = ''; // don't forward the parameter because it will be interpreted as a channel name
         $cmd->run($xml_reponse, $cmdp);
       }
       foreach( $u->privmsg as $id => $pv )
       {
         $cmdp["recipient"]   = $pv["recipient"];
         $cmdp["recipientid"] = $id;
+        $cmdp["param"] = ''; // don't forward the parameter because it will be interpreted as a channel name
         $cmd->run($xml_reponse, $cmdp);
       }      
 

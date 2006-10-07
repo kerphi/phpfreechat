@@ -73,10 +73,15 @@ class pfcContainer
 
     if ($chan == NULL) $chan = 'SERVER';
 
+    $deleted_user = array();
+    $deleted_user["nick"]      = array();
+    $deleted_user["nickid"]    = array();
+    $deleted_user["timestamp"] = array();
+
     $timestamp = $this->getMeta("channelid-to-nickid", $this->encode('SERVER'), $nickid);
+    if (count($timestamp["timestamp"]) == 0) return $deleted_user;
     $timestamp = $timestamp["timestamp"][0];
     
-    $deleted_user = array();
     $deleted_user["nick"][]      = $this->getNickname($nickid);
     $deleted_user["nickid"][]    = $nickid;
     $deleted_user["timestamp"][] = $timestamp;
@@ -184,9 +189,8 @@ class pfcContainer
   }
 
   /**
-   * Remove (disconnect/quit) the timeouted nickname from the server or from a channel
-   * Notice: this function must remove all nicknames which are not uptodate from the given channel or from the server
-   * @param $chan if NULL then check obsolete nick on the server, otherwise just check obsolete nick on the given channel
+   * Remove (disconnect/quit) the timeouted nicknames
+   * Notice: this function will remove all nicknames which are not uptodate from all his joined channels 
    * @param $timeout
    * @return array("nickid"=>array("nickid1", ...),"timestamp"=>array(timestamp1, ...)) contains all disconnected nickids and there timestamp
    */
@@ -194,13 +198,11 @@ class pfcContainer
   {
     $c =& $this->c;
 
-    $chan = 'SERVER';
-
     $deleted_user = array('nick'=>array(),
                           'nickid'=>array(),
                           'timestamp'=>array(),
                           'channels'=>array());
-    $ret = $this->getMeta("channelid-to-nickid", $this->encode($chan));
+    $ret = $this->getMeta("channelid-to-nickid", $this->encode('SERVER'));
     for($i = 0; $i<count($ret['timestamp']); $i++)
     {
       $timestamp = $ret['timestamp'][$i];
@@ -212,10 +214,19 @@ class pfcContainer
         $ret2 = $this->getMeta("nickid-to-channelid",$nickid);
         foreach($ret2["value"] as $userchan)
         {
-          // disconnect the user from each joined channels
-          $du = $this->removeNick($this->decode($userchan), $nickid);
-          $channels[] = $this->decode($userchan);
+          $userchan = $this->decode($userchan);
+          if ($userchan != 'SERVER')
+          {
+            // disconnect the user from each joined channels
+            $this->removeNick($userchan, $nickid);
+            $channels[] = $userchan;
+          }
         }
+        // now disconnect the user from the server
+        // (order is important because the SERVER channel has timestamp informations)
+        $du = $this->removeNick('SERVER', $nickid);
+        $channels[] = 'SERVER';
+        
         $deleted_user["nick"]      = array_merge($deleted_user["nick"],      $du["nick"]);
         $deleted_user["nickid"]    = array_merge($deleted_user["nickid"],    $du["nickid"]);
         $deleted_user["timestamp"] = array_merge($deleted_user["timestamp"], $du["timestamp"]);       
@@ -245,6 +256,7 @@ class pfcContainer
 
       // get timestamp from the SERVER channel
       $timestamp = $this->getMeta("channelid-to-nickid", $this->encode('SERVER'), $nickid);
+      if (count($timestamp['timestamp']) == 0) continue;
       $timestamp = $timestamp['timestamp'][0];
 
       $online_user["nick"][]      = $this->getNickname($nickid);
