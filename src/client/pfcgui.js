@@ -8,6 +8,7 @@ pfcGui.prototype = {
   
   initialize: function()
   {
+//    this.builder = new pfcGuiBuilder();
     this.current_tab    = '';
     this.current_tab_id = '';
     this.tabs       = Array();
@@ -210,40 +211,48 @@ pfcGui.prototype = {
     li_title.setAttribute('id', 'pfc_channel_title'+tabid);
 
     var li_div = document.createElement('div');
+    li_div.setAttribute('id', 'pfc_tabdiv'+tabid);
     li_title.appendChild(li_div);
     
-    var img = document.createElement('img');
-    img.setAttribute('id', 'pfc_tabimg'+tabid);
-    if (type == 'ch')
-      img.setAttribute('src', pfc.res.getFileUrl('images/ch.gif'));
-    if (type == 'pv')
-      img.setAttribute('src', pfc.res.getFileUrl('images/pv.gif'));
     var a1 = document.createElement('a');
-    //    Element.addClassName(a1, 'pfc_tabtitle');
     a1.setAttribute('class', 'pfc_tabtitle');
     a1.setAttribute('className', 'pfc_tabtitle'); // for IE6    
-    a1.appendChild(img);
-    a1.appendChild(document.createTextNode(name));
     a1.setAttribute('href', '#');
     a1.pfc_tabid = tabid;
     a1.onclick = function(){pfc.gui.setTabById(this.pfc_tabid); return false;}
     li_div.appendChild(a1);
-    
-    var a2 = document.createElement('a');
-    a2.pfc_tabid = tabid;
-    a2.onclick = function(){
-      var res = confirm(pfc.res.getLabel('Do you really want to leave this room ?'));
-      if (res == true) pfc.sendRequest('/leave', this.pfc_tabid); return false;
+
+    if (pfc_displaytabimage)
+    {
+      var img = document.createElement('img');
+      img.setAttribute('id', 'pfc_tabimg'+tabid);
+      if (type == 'ch')
+        img.setAttribute('src', pfc.res.getFileUrl('images/ch.gif'));
+      if (type == 'pv')
+        img.setAttribute('src', pfc.res.getFileUrl('images/pv.gif'));
+      a1.appendChild(img);
     }
-    a2.alt   = pfc.res.getLabel('Close this tab');
-    a2.title = a2.alt;
-    //    Element.addClassName(a2, 'pfc_tabclose');
-    a2.setAttribute('class', 'pfc_tabclose');
-    a2.setAttribute('className', 'pfc_tabclose'); // for IE6
-    var img = document.createElement('img');
-    img.setAttribute('src', pfc.res.getFileUrl('images/tab_remove.gif'));
-    a2.appendChild(img);
-    li_div.appendChild(a2);
+    
+    // on ajoute le nom du channel
+    a1.appendChild(document.createTextNode(name));
+
+    if (pfc_displaytabclosebutton)
+    {
+      var a2 = document.createElement('a');
+      a2.pfc_tabid = tabid;
+      a2.onclick = function(){
+        var res = confirm(pfc.res.getLabel('Do you really want to leave this room ?'));
+        if (res == true) pfc.sendRequest('/leave', this.pfc_tabid); return false;
+      }
+      a2.alt   = pfc.res.getLabel('Close this tab');
+      a2.title = a2.alt;
+      a2.setAttribute('class', 'pfc_tabclose');
+      a2.setAttribute('className', 'pfc_tabclose'); // for IE6
+      var img = document.createElement('img');
+      img.setAttribute('src', pfc.res.getFileUrl('images/tab_remove.gif'));
+      a2.appendChild(img);
+      li_div.appendChild(a2);
+    }
     
     var div_content = document.createElement('div');
     div_content.setAttribute('id', 'pfc_channel_content'+tabid);   
@@ -291,6 +300,8 @@ pfcGui.prototype = {
   {
     var tabpos = indexOf(this.tabids, tabid);
     var tabtype = this.tabtypes[tabpos];
+   
+    // handle the tab's image modification
     var img = $('pfc_tabimg'+tabid);
     if (img)
     {
@@ -298,6 +309,24 @@ pfcGui.prototype = {
         img.src = pfc.res.getFileUrl('images/ch-active.gif');
       if (tabtype == 'pv')
         img.src = pfc.res.getFileUrl('images/pv-active.gif');
+    }
+  
+    // handle the blicking effect
+    var div = $('pfc_tabdiv'+tabid);
+    if (div)
+    {
+      if (div.blinkstat == true)
+      {
+        div.setAttribute('class',     'pfc_tabblink1');
+        div.setAttribute('className', 'pfc_tabblink1'); // for IE6
+      }
+      else
+      {
+        div.setAttribute('class',     'pfc_tabblink2');
+        div.setAttribute('className', 'pfc_tabblink2'); // for IE6
+      }
+      div.blinkstat = !div.blinkstat;
+      div.blinktimeout = setTimeout('pfc.gui.notifyTab(\''+tabid+'\');', 500);
     }
   },
 
@@ -308,6 +337,8 @@ pfcGui.prototype = {
   {
     var tabpos = indexOf(this.tabids, tabid);
     var tabtype = this.tabtypes[tabpos];
+
+    // restore the tab's image
     var img = $('pfc_tabimg'+tabid);
     if (img)
     {
@@ -315,6 +346,15 @@ pfcGui.prototype = {
         img.src = pfc.res.getFileUrl('images/ch.gif');
       if (tabtype == 'pv')
         img.src = pfc.res.getFileUrl('images/pv.gif');
+    }
+
+    // stop the blinking effect
+    var div = $('pfc_tabdiv'+tabid);
+    if (div) 
+    {
+      div.removeAttribute('class');
+      div.removeAttribute('className'); // for IE6
+      clearTimeout(div.blinktimeout);
     }
   },
 

@@ -78,6 +78,8 @@ class pfcGlobalConfig
   var $openlinknewwindow   = true; // used to open the links in a new window
   var $notify_window       = true; // true : appends a prefix to the window title with the number of new posted messages
 
+  var $displaytabimage       = true;
+  var $displaytabclosebutton = true;
   var $showwhosonline      = true;
   var $showsmileys         = true;
   var $btn_sh_whosonline   = true; // display show/hide button for who is online

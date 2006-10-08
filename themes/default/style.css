@@ -81,6 +81,10 @@ ul#pfc_channels_list li a.pfc_tabclose {
   margin-left: 4px;
   cursor: pointer;
 }
+/* blinking stuff (tab notifications) */
+ul#pfc_channels_list li div.pfc_tabblink2 {
+  background-color: #FFF;
+}
 
 
 div.pfc_chat {
@@ -105,10 +109,11 @@ div.pfc_online {
 /*  height: 100%;*/
   color: #000; /* colors can be overriden by js nickname colorization */
   background-color: #FFF;
+
+  /* borders are drawn by this image background */
   background-image: url("proxy.php?p=default/images/online-separator.gif");
   background-position: left;
   background-repeat: repeat-y;
-  /* borders are drawn by the javascript routines */
 }
 div.pfc_online ul {
   list-style-type: none;
