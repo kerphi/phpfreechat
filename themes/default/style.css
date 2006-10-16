@@ -339,3 +339,7 @@ ul.pfc_nicklist span.pfc_nickmarker {
 img.pfc_nickbutton {
   cursor: pointer;
 }
+
+div#pfc_debug {
+  font-size: 11px;
+}

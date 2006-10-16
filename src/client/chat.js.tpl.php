@@ -160,6 +160,6 @@ function trace(text) {
     color = '#DDD';
     pfc_debug_color = true;
   }
-  $('pfc_debug').innerHTML += '<p style="margin:0;border-bottom:1px solid #555;background-color:'+color+'">' + text + '</p>';
+  $('pfc_debug').innerHTML = '<p style="margin:0;border-bottom:1px solid #555;background-color:'+color+'">' + text + '</p>' + $('pfc_debug').innerHTML ;
 }
 <?php } ?>

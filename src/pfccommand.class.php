@@ -131,7 +131,7 @@ class pfcCommand
   {
     die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__));
   }
-
+  
   /**
    * Force whois reloading
    */
@@ -172,7 +172,20 @@ class pfcCommand
       }
     }
   }
-  
+
+  function trace(&$xml_reponse, $msg, $data = NULL)
+  {
+    if ($data != NULL)
+    {
+      require_once(dirname(__FILE__)."/../lib/json/JSON.php");
+      $json = new Services_JSON();
+      $js = $json->encode($data);
+      $xml_reponse->addScript("trace('".$msg." -> ".$js."');");
+    }
+    else
+      $xml_reponse->addScript("trace('".$msg."');");
+
+  }
   
 }
 
