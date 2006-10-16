@@ -88,6 +88,7 @@
       <li><a href="demo28_mini_blune_theme.php">demo28 - use a customized theme (blune theme) - mini</a></li>
       <li><a href="demo44_green_theme.php">demo44 - use a customized theme (green)</a></li>
       <li><a href="demo49_msn_smiley_theme.php">demo49 - A chat with a customized smiley theme (msn theme)</a></li>
+      <li><a href="demo51_zilveer_theme.php">demo51 - A chat with a customized theme (zilveer theme)</a></li>
 </ul>
 
 <h2 id="demo-translations">Translations</h2>

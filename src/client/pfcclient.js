@@ -759,6 +759,7 @@ pfcClient.prototype = {
       // format and post message
       var line = '';
       line += '<div id="pfc_msg'+ id +'" class="pfc_cmd_'+ cmd +' pfc_message';
+      line  += (id % 2 == 0) ? ' pfc_evenmsg' : ' pfc_oddmsg';
       if (oldmsg == 1) line += ' pfc_oldmsg';
       line += '">';
       line += '<span class="pfc_date';
