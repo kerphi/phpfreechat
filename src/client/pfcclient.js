@@ -311,6 +311,7 @@ pfcClient.prototype = {
     {
       if (resp == "ok")
       {
+        this.canupdatenexttime = true;
       }
     }
     else if (cmd == "version")
@@ -845,7 +846,12 @@ pfcClient.prototype = {
     clearTimeout(this.timeout);
     if (start)
     {
-      var res = this.sendRequest('/update');
+      var res = true;
+      if (this.canupdatenexttime)
+      {
+        res = this.sendRequest('/update');
+        this.canupdatenexttime = false; // don't update since the 'ok' response is received
+      }
       // adjust the refresh_delay if the connection was lost
       if (res == false) { this.refresh_delay = this.refresh_delay * 2; }
       // setup the next update
