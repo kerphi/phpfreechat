@@ -365,6 +365,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
       // @todo: move this code in a proxy
       if ($rawcmd != "update" &&
           $rawcmd != "leave" &&  // do not open the pv tab when other user close the tab
+          $rawcmd != "quit" &&
           $rawcmd != "privmsg2")
       {
         // alert the other from the new pv
