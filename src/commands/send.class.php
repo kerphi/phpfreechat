@@ -27,9 +27,9 @@ class pfcCommand_send extends pfcCommand
       $cmd->run($xml_reponse, $cmdp);
       return;
     }
-    
-    //        $offline = $container->getMeta("offline", "nickname", $u->privmsg[$recipientid]["name"]);
 
+
+    //        $offline = $container->getMeta("offline", "nickname", $u->privmsg[$recipientid]["name"]);        
     
     // if this channel is a pv (one to one channel),
     // first of all, check if the other user is connected

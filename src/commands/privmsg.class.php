@@ -29,6 +29,8 @@ class pfcCommand_privmsg extends pfcCommand
       return;
     }
 
+    //$this->trace($xml_reponse, $this->name, $sender);
+
     // error: can't speak to unknown
     if ($pvnickid == '')
     {

@@ -45,6 +45,9 @@ class pfcCommand_who2 extends pfcCommand_who
 
     $chanmeta = $this->_getChanMeta($recipient, $recipientid);
 
+    //if (preg_match("/^pv_/", $recipient))
+    //$this->trace($xml_reponse, 'who2', $recipient);
+
     // check if info didn't change since last call
     $sid = "pfc_who2_".$c->getId()."_".$clientid."_".$recipientid;
     if (isset($_SESSION[$sid]) && $chanmeta == $_SESSION[$sid])
