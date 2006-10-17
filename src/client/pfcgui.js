@@ -22,16 +22,26 @@ pfcGui.prototype = {
   },
 
   /**
-   * scroll down from the posted message height
+   * Scroll down the message list area by elttoscroll height
+   * - elttoscroll is a message DOM element which has been appended to the tabid's message list
+   * - this.elttoscroll is an array containing the list of messages that will be scrolled 
+   *   when the corresponding tab will be shown (see setTabById bellow).
+   *   It is necessary to keep in cache the list of hidden (because the tab is inactive) messages 
+   *   because the 'scrollTop' javascript attribute
+   *   will not work if the element (tab content) is hidden.
    */
   scrollDown: function(tabid, elttoscroll)
   {
+    // check the wanted tabid is the current active one
     if (this.getTabId() != tabid)
     {
+      // no it's not the current active one so just cache the elttoscroll in the famouse this.elttoscroll array
       if (!this.elttoscroll[tabid]) this.elttoscroll[tabid] = Array();
       this.elttoscroll[tabid].push(elttoscroll);
       return;
     }
+    // the wanted tab is active so just scroll down the tab content element
+    // by elttoscroll element height (use 'offsetHeight' attribute)
     var content = this.getChatContentFromTabId(tabid);
     content.scrollTop += elttoscroll.offsetHeight+2;
     this.scrollpos[tabid] = content.scrollTop;
@@ -98,6 +108,7 @@ pfcGui.prototype = {
       // on by one
       for (var i=0; i<this.elttoscroll[tabid].length; i++)
         this.scrollDown(tabid,this.elttoscroll[tabid][i]);
+      // empty the cached element list because it has been scrolled
       this.elttoscroll[tabid] = Array();
     }
     
