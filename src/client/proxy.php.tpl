@@ -44,10 +44,18 @@ readfile($file);
 // output HTTP headers
 $contenttype   = "text/plain";
 //$contentlength = filesize($file);
-if (preg_match("/.js$/", $file))
+if (preg_match("/\.js$/", $file))
   $contenttype = "text/javascript";
-else if (preg_match("/.css$/", $file))
+else if (preg_match("/\.css$/", $file))
   $contenttype = "text/css";
+else if (preg_match("/\.gif$/", $file))
+  $contenttype = "image/gif";
+else if (preg_match("/\.jpg$/", $file))
+  $contenttype = "image/jpeg";
+else if (preg_match("/\.jpeg$/", $file))
+  $contenttype = "image/jpeg";
+else if (preg_match("/\.png$/", $file))
+  $contenttype = "image/png";
 header("Content-Type: ".$contenttype);
 $contentlength = ob_get_length();
 header("Content-Length: ".$contentlength);
