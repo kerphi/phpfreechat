@@ -309,10 +309,7 @@ pfcClient.prototype = {
     }
     else if (cmd == "update")
     {
-      if (resp == "ok")
-      {
-        this.canupdatenexttime = true;
-      }
+      this.canupdatenexttime = true;
     }
     else if (cmd == "version")
     {
