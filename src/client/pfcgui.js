@@ -309,6 +309,9 @@ pfcGui.prototype = {
    */
   notifyTab: function(tabid)
   {
+    // first of all be sure the tab highlighting is cleared
+    this.unnotifyTab(tabid);
+
     var tabpos = indexOf(this.tabids, tabid);
     var tabtype = this.tabtypes[tabpos];
    
