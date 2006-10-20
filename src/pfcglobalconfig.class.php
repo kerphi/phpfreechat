@@ -64,6 +64,7 @@ class pfcGlobalConfig
   var $max_nick_len        = 15;
   var $max_text_len        = 400;
   var $refresh_delay       = 5000; // in mili-seconds (5 seconds)
+  var $max_refresh_delay       = 60000; // in mili-seconds (60 seconds)
   var $timeout             = 20000; // in mili-seconds (20 seconds)
   var $max_msg             = 20;
   var $quit_on_closedwindow = true; // could be annoying because the reload event is the same as a close event

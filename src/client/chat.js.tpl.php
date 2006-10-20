@@ -10,6 +10,7 @@ var pfc_version               = <?php echo $json->encode($version); ?>;
 var pfc_clientid              = <?php echo $json->encode(md5(uniqid(rand(), true))); ?>;
 var pfc_title                 = <?php echo $json->encode($title); ?>;
 var pfc_refresh_delay         = <?php echo $json->encode($refresh_delay); ?>;
+var pfc_max_refresh_delay         = <?php echo $json->encode($max_refresh_delay); ?>;
 var pfc_start_minimized       = <?php echo $json->encode($start_minimized); ?>;
 var pfc_nickmarker            = <?php echo $json->encode($nickmarker); ?>;
 var pfc_clock                 = <?php echo $json->encode($clock); ?>;

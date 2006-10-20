@@ -41,6 +41,8 @@ pfcClient.prototype = {
     
     this.timeout       = null;
     this.refresh_delay = pfc_refresh_delay;
+    this.max_refresh_delay = pfc_max_refresh_delay;
+    this.last_refresh_time = 0;
     /* unique client id for each windows used to identify a open window
      * this id is passed every time the JS communicate with server
      * (2 clients can use the same session: then only the nickname is shared) */
@@ -310,6 +312,11 @@ pfcClient.prototype = {
     else if (cmd == "update")
     {
       this.canupdatenexttime = true;
+      // if the first ever refresh request never makes it back then the chat will keep
+      // trying to refresh as usual
+      // this only helps if we temporarily lose connection in the middle of an established
+      // chat session
+      this.last_refresh_time = new Date().getTime();
     }
     else if (cmd == "version")
     {
@@ -844,13 +851,19 @@ pfcClient.prototype = {
     if (start)
     {
       var res = true;
-      if (this.canupdatenexttime)
+      if (this.canupdatenexttime || (new Date().getTime() - this.last_refresh_time) > this.max_refresh_delay)
       {
         res = this.sendRequest('/update');
         this.canupdatenexttime = false; // don't update since the 'ok' response is received
       }
       // adjust the refresh_delay if the connection was lost
-      if (res == false) { this.refresh_delay = this.refresh_delay * 2; }
+      if (res == false) {
+        this.refresh_delay = this.refresh_delay * 2;
+		if(this.refresh_delay > this.max_refresh_delay)
+		{
+			this.refresh_delay = this.max_refresh_delay;
+		}
+	  }
       // setup the next update
       this.timeout = setTimeout('pfc.updateChat(true)', this.refresh_delay);
     }
