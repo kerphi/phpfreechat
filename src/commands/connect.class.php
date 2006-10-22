@@ -21,6 +21,7 @@ class pfcCommand_connect extends pfcCommand
     // i.e. be ready to re-get all last posted messages
     if ($getoldmsg)
     {
+      // reset the channel identifiers
       require_once(dirname(__FILE__)."/join.class.php");
       $channels = array();
       if (count($u->channels) == 0)
@@ -39,6 +40,21 @@ class pfcCommand_connect extends pfcCommand
         // reset the oldmsg flag
         $oldmsg_sid = "pfc_oldmsg_".$c->getId()."_".$clientid."_".$chanid;
         $_SESSION[$oldmsg_sid] = true;
+      }
+      // reset the private messages identifiers
+      if (count($u->privmsg) > 0)
+      {
+        foreach($u->privmsg as $recipientid2 => $pv)
+        {
+          $recipient2   = $pv['recipient'];
+          // reset the fromid flag
+          $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$recipientid2;
+          $from_id     = $ct->getLastId($recipient2)-$c->max_msg;
+          $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
+          // reset the oldmsg flag
+          $oldmsg_sid = "pfc_oldmsg_".$c->getId()."_".$clientid."_".$recipientid2;
+          $_SESSION[$oldmsg_sid] = true;
+        }
       }
     }
 

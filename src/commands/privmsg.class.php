@@ -78,7 +78,7 @@ class pfcCommand_privmsg extends pfcCommand
       // reset the message id indicator
       // i.e. be ready to re-get all last posted messages
       $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$pvrecipientid;
-      $from_id     = $container->getLastId($pvrecipient)-$c->max_msg;
+      $from_id     = $container->getLastId($pvrecipient)-$c->max_msg-1;
       $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
 
       // register the user (and his metadata) in this pv
