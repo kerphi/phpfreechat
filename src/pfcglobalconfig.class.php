@@ -178,7 +178,13 @@ class pfcGlobalConfig
         {
           // don't replace all the proxy_cfg parameters, just replace the specified ones
           foreach ( $params["proxies_cfg"] as $k2 => $v2 )
-            $this->proxies_cfg[$k2] = $v2;
+          {
+            if (is_array($v2))
+              foreach( $v2 as $k3 => $v3)
+                $this->proxies_cfg[$k2][$k3] = $v3;
+            else
+              $this->proxies_cfg[$k2] = $v2;
+          }
         }
         else
           $this->$k = $v;
