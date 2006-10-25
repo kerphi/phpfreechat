@@ -475,22 +475,34 @@ pfcClient.prototype = {
   
   getAllUserMeta: function(nickid)
   {
-    return this.usermeta[nickid];
+    if (nickid && this.usermeta[nickid])
+      return this.usermeta[nickid];
+    else
+      return null;
   },
 
   getUserMeta: function(nickid, key)
   {
-    return this.usermeta[nickid][key];    
+    if (nickid && key && this.usermeta[nickid] && this.usermeta[nickid][key])
+      return this.usermeta[nickid][key];    
+    else
+      return '';
   },
 
   getAllChanMeta: function(chanid)
   {
-    return this.chanmeta[chanid];
+    if (chanid && this.chanmeta[chanid])
+      return this.chanmeta[chanid];
+    else
+      return null;
   },
 
   getChanMeta: function(chanid, key)
   {
-    return this.chanmeta[chanid][key];
+    if (chanid && key && this.chanmeta[chanid] && this.chanmeta[chanid][key])
+      return this.chanmeta[chanid][key];
+    else
+      return '';
   },
 
   doSendMessage: function()
@@ -901,7 +913,6 @@ pfcClient.prototype = {
     for (var i=0; i<nickidlst.length; i++)
     {
       var nickid = nickidlst[i];
-
       var li = this.buildNickItem(nickid);
       li.setAttribute('class',     'pfc_nickitem_'+nickid);
       li.setAttribute('className', 'pfc_nickitem_'+nickid); // IE6
@@ -1018,6 +1029,7 @@ pfcClient.prototype = {
   {
     var nick = this.getUserMeta(nickid, 'nick');
     var isadmin = this.getUserMeta(nickid, 'isadmin');
+    if (isadmin == '') isadmin = false;
     var li = document.createElement('li');
 
     var img = document.createElement('img');
