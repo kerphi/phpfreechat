@@ -63,7 +63,7 @@ class pfcCommand_whois extends pfcCommand
       $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', ".$js.");");
     }
     else
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko','');");
+      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko','".$param."');");
   }
 }
 
