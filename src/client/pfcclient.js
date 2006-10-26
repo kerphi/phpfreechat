@@ -1030,19 +1030,15 @@ pfcClient.prototype = {
     var nick = this.getUserMeta(nickid, 'nick');
     var isadmin = this.getUserMeta(nickid, 'isadmin');
     if (isadmin == '') isadmin = false;
-    var li = document.createElement('li');
 
-    var img = document.createElement('img');
-    if (isadmin)
-      img.setAttribute('src', this.res.getFileUrl('images/user-admin.gif'));
-    else
-      img.setAttribute('src', this.res.getFileUrl('images/user.gif'));
-    img.style.marginRight = '5px';
-    img.setAttribute('class',     'pfc_nickbutton');
-    img.setAttribute('className', 'pfc_nickbutton'); // for IE6
-    img.pfc_nick   = nick;
-    img.pfc_nickid = nickid;
-    img.onclick = function(evt){
+    var li = document.createElement('li');
+    li.style.borderBottom = '1px solid #AAA';
+
+    var a = document.createElement('a');
+    a.setAttribute('href','#');
+    a.pfc_nick   = nick;
+    a.pfc_nickid = nickid;
+    a.onclick = function(evt){
       var d = pfc.getNickWhoisBox(this.pfc_nickid);
       document.body.appendChild(d);
       d.style.display = 'block';
@@ -1052,22 +1048,29 @@ pfcClient.prototype = {
       d.style.top  = (mousePosY(evt)-5)+'px';
       return false;
     }
-    li.appendChild(img);
+    li.appendChild(a);
 
-  
+
+    var img = document.createElement('img');
+    if (isadmin)
+      img.setAttribute('src', this.res.getFileUrl('images/user-admin.gif'));
+    else
+      img.setAttribute('src', this.res.getFileUrl('images/user.gif'));
+    img.style.marginRight = '5px';
+    img.setAttribute('class',     'pfc_nickbutton');
+    img.setAttribute('className', 'pfc_nickbutton'); // for IE6
+    a.appendChild(img);
+
     // nobr is not xhtml valid but it's a workeround 
     // for IE which doesn't support 'white-space: pre' css rule
     var nobr = document.createElement('nobr');
     var span = document.createElement('span');
     span.setAttribute('class',     'pfc_nickmarker pfc_nick_'+nickid);
     span.setAttribute('className', 'pfc_nickmarker pfc_nick_'+nickid); // for IE6
-    span.pfc_nick   = nick;
-    span.pfc_nickid = nickid;
-    span.onclick = function(){pfc.insert_text(this.pfc_nick+", ","",false); return false;}
     span.appendChild(document.createTextNode(nick));
     nobr.appendChild(span);
-    li.appendChild(nobr);
-    li.style.borderBottom = '1px solid #AAA';
+    a.appendChild(nobr);
+
     return li;
   },
   
