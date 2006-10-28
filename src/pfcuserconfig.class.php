@@ -79,6 +79,7 @@ class pfcUserConfig
     $nickid_param = "pfcuserconfig_".$c->getId()./*"_".$this->nickid.*/"_".$p;    
     unset($_SESSION[$nickid_param]);
     unset($this->$p);
+    if ($p == 'active') $this->active = false;
   }
   
 
