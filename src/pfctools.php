@@ -316,7 +316,7 @@ if (!function_exists('file_put_contents')) {
 
       // If we don't have a string, throw an error
       if (!is_scalar($content)) {
-        user_error('file_put_contents() The 2nd parameter should be either a string or an array',
+        user_error('file_put_contents() The 2nd parameter should be either a string or an array ['.$filename.']',
                    E_USER_WARNING);
         return false;
       }
@@ -336,7 +336,7 @@ if (!function_exists('file_put_contents')) {
 
       // Open the file for writing
       if (($fh = @fopen($filename, $mode, $use_inc_path)) === false) {
-        user_error('file_put_contents() failed to open stream: Permission denied',
+        user_error('file_put_contents() failed to open stream: Permission denied ['.$filename.']',
                    E_USER_WARNING);
         return false;
       }
@@ -352,7 +352,7 @@ if (!function_exists('file_put_contents')) {
       // Write to the file
       $bytes = 0;
       if (($bytes = @fwrite($fh, $content)) === false) {
-        $errormsg = sprintf('file_put_contents() Failed to write %d bytes to %s',
+        $errormsg = sprintf('file_put_contents() Failed to write %d bytes to %s ['.$filename.']',
                             $length,
                             $filename);
         user_error($errormsg, E_USER_WARNING);
@@ -364,7 +364,7 @@ if (!function_exists('file_put_contents')) {
 
       // Check all the data was written
       if ($bytes != $length) {
-        $errormsg = sprintf('file_put_contents() Only %d of %d bytes written, possibly out of free disk space.',
+        $errormsg = sprintf('file_put_contents() Only %d of %d bytes written, possibly out of free disk space. ['.$filename.']',
                             $bytes,
                             $length);
         user_error($errormsg, E_USER_WARNING);

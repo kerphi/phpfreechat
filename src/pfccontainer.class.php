@@ -45,6 +45,11 @@ class pfcContainer
   {
     $c =& $this->c;
 
+    if ($nick == '')
+      user_error('pfcContainer::createNick nick is empty', E_USER_ERROR);      
+    if ($nickid == '')
+      user_error('pfcContainer::createNick nickid is empty', E_USER_ERROR);      
+    
     if ($chan == NULL) $chan = 'SERVER';
 
     $this->setMeta("nickid-to-metadata",  $nickid, 'nick', $nick);
