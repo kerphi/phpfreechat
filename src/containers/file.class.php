@@ -74,8 +74,12 @@ class pfcContainer_File extends pfcContainer
 
   function setMeta($group, $subgroup, $leaf, $leafvalue = NULL)
   {
-    // create directories
     $c =& $this->c;
+
+    if ($c->debug)
+      file_put_contents("/tmp/debug", "\nsetMeta(".$group.",".$subgroup.",".$leaf.",".$leafvalue.")", FILE_APPEND);
+    
+    // create directories
     $dir_base = $c->container_cfg_server_dir;
     $dir = $dir_base.'/'.$group.'/'.$subgroup;
     if (!is_dir($dir)) mkdir_r($dir);
@@ -107,11 +111,14 @@ class pfcContainer_File extends pfcContainer
   
   function getMeta($group, $subgroup = null, $leaf = null, $withleafvalue = false)
   {
+    $c =& $this->c;
+    if ($c->debug)
+      file_put_contents("/tmp/debug", "\ngetMeta(".$group.",".$subgroup.",".$leaf.",".$withleafvalue.")", FILE_APPEND);
+    
     // read data from metadata file
     $ret = array();
     $ret["timestamp"] = array();
     $ret["value"]     = array();
-    $c =& $this->c;
     $dir_base = $c->container_cfg_server_dir;
 
     $dir = $dir_base.'/'.$group;
@@ -163,6 +170,9 @@ class pfcContainer_File extends pfcContainer
   function rmMeta($group, $subgroup = null, $leaf = null)
   {
     $c =& $this->c;
+    if ($c->debug)
+      file_put_contents("/tmp/debug", "\nrmMeta(".$group.",".$subgroup.",".$leaf.")", FILE_APPEND);
+    
     $dir = $c->container_cfg_server_dir;
 
     if ($group == NULL)
