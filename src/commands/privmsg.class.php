@@ -80,12 +80,13 @@ class pfcCommand_privmsg extends pfcCommand
       $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$pvrecipientid;
       $from_id     = $container->getLastId($pvrecipient)-$c->max_msg-1;
       $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
-
-      // register the user (and his metadata) in this pv
-      $ct =& $c->getContainerInstance();
-      $ct->createNick($pvrecipient, $u->nick, $u->nickid);
     }
 
+    // register the user (and his metadata) in this pv
+    $ct =& $c->getContainerInstance();
+    $ct->createNick($pvrecipient, $u->nick, $u->nickid);
+    $this->forceWhoisReload($u->nick);
+    
     // return ok to the client
     // then the client will create a new tab
     $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', Array('".$pvrecipientid."','".addslashes($pvname)."'));");    

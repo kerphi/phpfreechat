@@ -81,15 +81,7 @@ class pfcCommand_connect extends pfcCommand
     // store the customized nick metadata
     foreach($c->nickmeta as $k => $v)
       $ct->setUserMeta($nickid, $k, $v);
-    
-    // register the user (and his metadata) in the allready joined channel
-    foreach( $u->channels as $id => $chan )
-      $ct->createNick($chan["recipient"], $u->nick, $u->nickid);
-    foreach( $u->privmsg as $id => $pv )
-      $ct->createNick($pv["recipient"], $u->nick, $u->nickid);
 
-    $this->forceWhoisReload($u->nick);
-    
     // connect to the server
     $xml_reponse->addScript("pfc.handleResponse('connect', 'ok', '');");
   }
