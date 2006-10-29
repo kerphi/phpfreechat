@@ -71,8 +71,12 @@ class pfcCommand
     $cmd_classname = "pfcCommand_".$name;
     if (!class_exists($cmd_classname))
     {
-      $cmd_filename  = dirname(__FILE__)."/commands/".$cmd_name.".class.php";
-      if (file_exists($cmd_filename)) require_once($cmd_filename);
+      $cmd_paths = array($c->cmd_path_default,$c->cmd_path);
+      foreach($cmd_paths as $cp)
+      {
+        $cmd_filename  = $cp."/".$cmd_name.".class.php";
+        if (file_exists($cmd_filename)) require_once($cmd_filename);
+      }
     }
     if (class_exists($cmd_classname))
     {

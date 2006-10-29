@@ -54,6 +54,8 @@ class pfcGlobalConfig
                                    "log"     => array("path"=>""));
   var $proxies_path         = ""; // a custom proxies path
   var $proxies_path_default = ""; // dirname(__FILE__).'/proxies'
+  var $cmd_path            = ""; // a custom commands path
+  var $cmd_path_default    = ""; // dirname(__FILE__).'/commands'
   var $title               = ""; // default is _pfc("My Chat")
   var $channels            = array(); // the default joined channels when opening the chat
   var $frozen_channels     = array(); // if empty, allows users to create there own channels
@@ -64,7 +66,7 @@ class pfcGlobalConfig
   var $max_nick_len        = 15;
   var $max_text_len        = 400;
   var $refresh_delay       = 5000; // in mili-seconds (5 seconds)
-  var $max_refresh_delay       = 60000; // in mili-seconds (60 seconds)
+  var $max_refresh_delay   = 60000; // in mili-seconds (60 seconds)
   var $timeout             = 20000; // in mili-seconds (20 seconds)
   var $max_msg             = 20;
   var $quit_on_closedwindow = true; // could be annoying because the reload event is the same as a close event
@@ -441,6 +443,9 @@ class pfcGlobalConfig
     if ($this->proxies_path != '' && !is_dir($this->proxies_path))
       $this->errors[] = _pfc("'%s' directory doesn't exist", $this->proxies_path);
     
+    // save the commands path
+    $this->cmd_path_default = dirname(__FILE__).'/commands';
+
     // load smileys from file
     $this->loadSmileyTheme();
     
