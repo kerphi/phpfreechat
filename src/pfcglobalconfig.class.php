@@ -204,6 +204,11 @@ class pfcGlobalConfig
     
     // now load or save the configuration in the cache
     $this->synchronizeWithCache();
+
+    // This is a dirty workaround which fix a infinite loop when:
+    // 'frozen_nick' is true
+    // 'nick' length is > 'max_nick_len'
+    $this->nick = $this->filterNickname($this->nick);
   }
 
   function &Instance( $params = array() )
@@ -595,6 +600,14 @@ class pfcGlobalConfig
 	return $this->themepath_default."/default/".$file;
       else
 	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
+  }
+
+  function filterNickname($nickname)
+  {
+    $nickname = trim($nickname);
+    require_once dirname(__FILE__)."/../lib/utf8/utf8_substr.php";
+    $nickname = utf8_substr($nickname, 0, $this->max_nick_len);
+    return $nickname;
   }
 }
 
