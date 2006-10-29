@@ -606,7 +606,7 @@ class pfcGlobalConfig
   {
     $nickname = trim($nickname);
     require_once dirname(__FILE__)."/../lib/utf8/utf8_substr.php";
-    $nickname = utf8_substr($nickname, 0, $this->max_nick_len);
+    $nickname = (string)utf8_substr($nickname, 0, $this->max_nick_len);
     return $nickname;
   }
 }
