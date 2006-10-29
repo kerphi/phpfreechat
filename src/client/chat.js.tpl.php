@@ -77,6 +77,7 @@ array( "Do you really want to leave this room ?", // _pfc
        "Send", // _pfc
        "You are not allowed to speak to yourself", // _pfc
        "Close", // _pfc
+       "Choosen nickname is not allowed", // _pfc
        );
 foreach($labels_to_load as $l)
 {

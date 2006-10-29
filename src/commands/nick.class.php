@@ -73,7 +73,8 @@ class pfcCommand_nick extends pfcCommand
     // new nickname is undefined (not used) and
     // current nickname (oldnick) is not mine or is undefined
     // -> this is a first connection
-    if ($oldnickid != $u->nickid)
+    if ($newnickid == '' &&
+        $oldnickid != $u->nickid)
     {
       // this is a first connection : create the nickname on the server
       $container->createNick(NULL, $newnick, $u->nickid);

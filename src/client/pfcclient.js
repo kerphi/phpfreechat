@@ -290,7 +290,7 @@ pfcClient.prototype = {
           this.sendRequest("/privmsg", pfc_userprivmsg[i]);
         }
       }
-      
+
       if (resp == "ok" || resp == "notchanged" || resp == "changed" || resp == "connected")
       {
         this.el_handle.innerHTML = param;
@@ -306,8 +306,21 @@ pfcClient.prototype = {
         this.setError(this.res.getLabel('Choosen nickname is allready used'), Array());
         this.askNick(param);        
       }
-      else
-        alert(cmd + "-"+resp+"-"+param);
+      else if (resp == "notallowed")
+      {
+        // when frozen_nick is true and the nickname is allready used, server will return
+        // the 'notallowed' status. It will display a message and stop chat update.
+        // if the chat update is not stopped, this will loop forever 
+        // as long as the forced nickname is not changed
+
+        // display a message
+        this.setError(this.res.getLabel('Choosen nickname is not allowed'), Array());
+        // then stop chat updates
+        this.updateChat(false);
+        this.isconnected = false;
+        this.refresh_loginlogout();
+      }
+
     }
     else if (cmd == "update")
     {
@@ -437,7 +450,7 @@ pfcClient.prototype = {
         {
           var nickid = meta['users']['nickid'][i];
           var nick   = meta['users']['nick'][i];
-          var um = this.getAllUserMeta(nickid);
+          var um = this.getAllUserMeta(nickid);  
           if (!um) this.sendRequest('/whois2', nick);
         }
 

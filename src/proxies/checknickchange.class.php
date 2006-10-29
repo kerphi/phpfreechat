@@ -66,7 +66,7 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
       if ($newnick == $oldnick &&
           $newnickid == $oldnickid)
       {
-        $xml_reponse->addScript("pfc.handleResponse('nick', 'notchanged', '".addslashes($newnick)."');");
+        $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'notchanged', '".addslashes($newnick)."');");
         if ($c->debug)
           pxlog("/nick ".$newnick." (user just reloded the page so let him keep his nickname without any warnings)", "chat", $c->getId());
         return;
@@ -74,28 +74,19 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
 
       // now check the nickname is not yet used (unsensitive case)
       // 'BoB' and 'bob' must be considered same nicknames
-      $nick_in_use = false;
-      $online_users = $container->getOnlineNick(NULL);
-      if (isset($online_users["nickid"]))
-        foreach($online_users["nickid"] as $nid)
-        {
-          if (preg_match("/^".preg_quote($container->getNickname($nid))."$/i",$newnick))
-          {
-            // the nick match
-            // just allow the owner to change his capitalised letters
-            if ($nid != $oldnickid)
-              $nick_in_use = true;
-          }
-        }
-      if ($nick_in_use || $newnickid != '')
+      $nick_in_use = $this->_checkNickIsUsed($newnick, $oldnickid);
+      if ($nick_in_use)
       {
-        $xml_reponse->addScript("pfc.handleResponse('nick', 'isused', '".addslashes($newnick)."');");
+        if ($c->frozen_nick)
+          $xml_reponse->addScript("pfc.handleResponse('nick', 'notallowed', '".addslashes($newnick)."');");
+        else
+          $xml_reponse->addScript("pfc.handleResponse('nick', 'isused', '".addslashes($newnick)."');");
         if ($c->debug)
           pxlog("/nick ".$newnick." (wanted nick is allready in use -> wantednickid=".$newnickid.")", "chat", $c->getId());
         return;
       }
     }
-
+    
     // allow nick changes only from the parameters array (server side)
     if ($this->name != 'connect' && // don't check anything on the connect process or it could block the periodic refresh
         $c->frozen_nick == true &&
@@ -114,6 +105,24 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
 
     // forward the command to the next proxy or to the final command
     $this->next->run($xml_reponse, $p);
+  }
+
+  function _checkNickIsUsed($newnick, $oldnickid)
+  {
+    $ct =& $this->c->getContainerInstance();
+    $nick_in_use = false;
+    $online_users = $ct->getOnlineNick(NULL);
+    if (isset($online_users["nickid"]))
+      foreach($online_users["nickid"] as $nid)
+      {
+        if (preg_match("/^".preg_quote($ct->getNickname($nid))."$/i",$newnick))
+        {
+          // the nick match
+          // just allow the owner to change his capitalised letters
+          if ($nid != $oldnickid)
+            return true;
+        }
+      }
   }
 }
 
