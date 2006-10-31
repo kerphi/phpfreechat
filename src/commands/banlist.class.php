@@ -16,8 +16,8 @@ class pfcCommand_banlist extends pfcCommand
     $c =& $this->c;
     $u =& $this->u;
     
-    $container =& $c->getContainerInstance();
-    $banlist = $container->getChanMeta($p["recipient"], 'banlist_nickid');
+    $ct =& $c->getContainerInstance();
+    $banlist = $ct->getChanMeta($p["recipient"], 'banlist_nickid');
         
     if ($banlist == NULL) $banlist = array(); else $banlist = unserialize($banlist);
     $msg  = "";
@@ -25,7 +25,11 @@ class pfcCommand_banlist extends pfcCommand
     if (count($banlist)>0)
     {
       $msg .= "<ul>";
-      foreach($banlist as $b) $msg .= "<li style=\"margin-left:50px\">".$b."</li>";
+      foreach($banlist as $b)
+      {
+        $n = $ct->getNickname($b);
+        $msg .= "<li style=\"margin-left:50px\">".$b." (".$n.")</li>";
+      }
       $msg .= "</ul>";
     }
     else
