@@ -25,6 +25,7 @@
  *
  * @author Stanislav Kondratyuk <antazy@gmail.com>
  * @author Kamashev Maim <m.kamashev@gmail.com>
+ * @author Fromme
  */
 
 // line 45 in phpfreechatconfig.class.php
@@ -243,71 +244,70 @@ $GLOBALS["i18n"]["Close this tab"] = "Закрыть вкладку";
 // line 199 in pfcgui.js.tpl.php
 $GLOBALS["i18n"]["Do you really want to leave this room ?"] = "Вы на самом деле хотите покинуть эту комнату?";
 
-
 // line 169 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "";
+$GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "Ошибка: '%s' это личный параметр, вам запрещено его менять";
 
 // line 253 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be an array"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be an array"] = "'%s' параметр должен быть массивом";
 
 // line 265 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "'%s' параметр должен быть булевым";
 
 // line 271 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "'%s' параметр должен быть символьной строкой";
 
 // line 395 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' must be writable"] = "";
+$GLOBALS["i18n"]["'%s' must be writable"] = "'%s' должен быть перезаписываемый";
 
 // line 425 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' directory doesn't exist"] = "";
+$GLOBALS["i18n"]["'%s' directory doesn't exist"] = "'%s' директория не существует";
 
 // line 544 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Please correct these errors"] = "";
+$GLOBALS["i18n"]["Please correct these errors"] = "Пожалуйста, исправьте эти ошибки";
 
 // line 21 in pfcinfo.class.php
-$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "";
+$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "Ошибка: кешированый файл конфигурации не существует";
 
 // line 190 in phpfreechat.class.php
-$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "";
+$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "Ошибка: невозможно загрузить чат! две причины: ваш браузер не поддерживает javascript или вы не настроили правильно права доступа к директориям сервера - не колебайтесь и спросите помощи на форуме";
 
 // line 31 in help.class.php
-$GLOBALS["i18n"]["Here is the command list:"] = "";
+$GLOBALS["i18n"]["Here is the command list:"] = "Здесь подан список команд";
 
 // line 63 in identify.class.php
-$GLOBALS["i18n"]["Succesfully identified"] = "";
+$GLOBALS["i18n"]["Succesfully identified"] = "Идентификация прошла успешно";
 
 // line 68 in identify.class.php
-$GLOBALS["i18n"]["Identification failure"] = "";
+$GLOBALS["i18n"]["Identification failure"] = "Вас не удалось идентифицировать";
 
 // line 25 in send.class.php
-$GLOBALS["i18n"]["Your must be connected to send a message"] = "";
+$GLOBALS["i18n"]["Your must be connected to send a message"] = "Вы должны быть подключены для отправки сообщения";
 
 // line 87 in chat.js.tpl.php
-$GLOBALS["i18n"]["Click here to send your message"] = "";
+$GLOBALS["i18n"]["Click here to send your message"] = "Нажмите здесь для отправки сообщения";
 
 // line 80 in chat.js.tpl.php
-$GLOBALS["i18n"]["Enter the text to format"] = "";
+$GLOBALS["i18n"]["Enter the text to format"] = "Введите текст для форматирования";
 
 // line 81 in chat.js.tpl.php
-$GLOBALS["i18n"]["Configuration has been rehashed"] = "";
+$GLOBALS["i18n"]["Configuration has been rehashed"] = "Конфигурация была перехеширована";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["A problem occurs during rehash"] = "";
+$GLOBALS["i18n"]["A problem occurs during rehash"] = "Произошла ошибка при перехешировании";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is allready used"] = "";
+$GLOBALS["i18n"]["Choosen nickname is allready used"] = "Выбраний ник уже используется";
 
 // line 84 in chat.js.tpl.php
-$GLOBALS["i18n"]["phpfreechat current version is %s"] = "";
+$GLOBALS["i18n"]["phpfreechat current version is %s"] = "Текущая версия phpfreechat - %s";
 
 // line 85 in chat.js.tpl.php
-$GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "";
+$GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "Было достигнуто максимальное количество возможных подключеных комнат";
 
 // line 86 in chat.js.tpl.php
-$GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "";
+$GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "Было достигнуто максимальное количество возможных личных сообщений чата";
 
 // line 88 in chat.js.tpl.php
-$GLOBALS["i18n"]["Send"] = "";
+$GLOBALS["i18n"]["Send"] = "Послать";
 
 ?>
