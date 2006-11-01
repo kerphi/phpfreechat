@@ -43,6 +43,11 @@ pfcGui.prototype = {
     // the wanted tab is active so just scroll down the tab content element
     // by elttoscroll element height (use 'offsetHeight' attribute)
     var content = this.getChatContentFromTabId(tabid);
+
+    // the next line seems to help with IE6 scroll on the first load
+    // http://sourceforge.net/tracker/index.php?func=detail&aid=1568264&group_id=158880&atid=809601
+    var dudVar = content.scrollTop;
+
     content.scrollTop += elttoscroll.offsetHeight+2;
     this.scrollpos[tabid] = content.scrollTop;
   },
