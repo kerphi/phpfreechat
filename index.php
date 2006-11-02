@@ -4,8 +4,11 @@ require_once dirname(__FILE__)."/src/phpfreechat.class.php";
 $params = array();
 $params["title"] = "Quick chat";
 $params["nick"] = "guest".rand(1,1000);  // setup the intitial nickname
-$params["isadmin"] = true; // just for debug ;)
+$params["isadmin"] = true;
+$params["admins"] = array('k'=>'k');
+$params["debug"] = true;
 $params["serverid"] = md5(__FILE__); // calculate a unique id for this chat
+$params["proxies_cfg"]["censor"]["words"] = array("damn", "dyke", "fuck", "shit", "@$$", "amcik", "andskota", "arschloch", "arse", "asshole", "assrammer", "ayir", "b!+ch", "b!tch", "b17ch", "b1tch", "bastard", "bi+ch", "bi7ch", "bitch", "boiolas", "bollock", "breasts", "buceta", "butt-pirate", "c0ck", "cabron", "cawk", "cazzo", "chink", "chraa", "chuj", "cipa", "clits", "Cock", "cum", "cunt", "d4mn", "daygo", "dego", "dick", "dike", "dildo", "dirsa", "dupa", "dziwka", "ejackulate", "Ekrem", "Ekto", "enculer", "faen", "fag", "fanculo", "fanny", "fatass", "fcuk", "feces", "feg", "Felcher", "ficken", "fitt", "Flikker", "foreskin", "Fotze", "Fu(", "fuk", "futkretzn", "fux0r", "gay", "gook", "guiena", "h0r", "h4x0r", "hell", "helvete", "hoer", "honkey", "hore", "Huevon", "hui", "injun", "jism", "jizz", "kanker", "kawk", "kike", "klootzak", "kraut", "knulle", "kuk", "kuksuger", "Kurac", "kurwa", "kusi", "kyrpa", "l3i+ch", "l3itch", "lesbian", "lesbo", "mamhoon", "masturbat", "merd", "mibun", "monkleigh", "motherfucker", "mofo", "mouliewop", "muie", "mulkku", "muschi", "nazis", "nepesaurio", "nigga", "nigger", "nutsack", "orospu", "paska", "perse", "phuck", "picka", "pierdol", "pillu", "pimmel", "pimpis", "piss", "pizda", "poontsee", "poop", "porn", "p0rn", "pr0n", "pula", "pule", "pusse", "pussy", "puta", "puto", "qahbeh", "queef", "rautenberg", "schaffer", "scheiss", "schlampe", "schmuck", "screw", "scrotum", "sh!t", "sharmuta", "sharmute", "shemale", "shipal", "shiz", "skribz", "skurwysyn", "slut", "smut", "sphencter", "spic", "spierdalaj", "splooge", "suka", "teets", "b00b", "teez", "testicle", "titt", "tits", "twat", "vittu", "w00se", "wank", "wetback", "whoar", "wichser", "wop", "yed", "zabourah");
 $chat = new phpFreeChat( $params );
 
 ?>
