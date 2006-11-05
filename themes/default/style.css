@@ -335,6 +335,9 @@ li.pfc_nickwhois_pv a {
 
 ul.pfc_nicklist span.pfc_nickmarker {
 }
+ul.pfc_nicklist a {
+  text-decoration: none;
+}
 
 img.pfc_nickbutton {
   cursor: pointer;
