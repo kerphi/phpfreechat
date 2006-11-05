@@ -49,9 +49,13 @@ class pfcGlobalConfig
   var $post_proxies         = array(); // these proxies will be handled just before to process commands and just after system proxies
   var $pre_proxies          = array(); // these proxies will be handled before system proxies (at begining)
   var $proxies_cfg          = array("auth"    => array(),
-                                   "noflood" => array("charlimit"=>450,"msglimit"=>10,"delay"=>5),
-                                   "censor"  => array("words"=>array("fuck","sex","bitch"),"replaceby"=>"*"),
-                                   "log"     => array("path"=>""));
+                                    "noflood" => array("charlimit" => 450,
+                                                       "msglimit"  => 10,
+                                                       "delay"     => 5),
+                                    "censor"  => array("words"     => array("fuck","sex","bitch"),
+                                                       "replaceby" => "*",
+                                                       "regex"     => false),
+                                    "log"     => array("path" => ""));
   var $proxies_path         = ""; // a custom proxies path
   var $proxies_path_default = ""; // dirname(__FILE__).'/proxies'
   var $cmd_path            = ""; // a custom commands path

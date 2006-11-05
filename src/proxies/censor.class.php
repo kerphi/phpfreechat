@@ -46,13 +46,24 @@ class pfcProxyCommand_censor extends pfcProxyCommand
     {
       $words     = $c->proxies_cfg[$this->proxyname]["words"];
       $replaceby = $c->proxies_cfg[$this->proxyname]["replaceby"];
-
+      $regex     = $c->proxies_cfg[$this->proxyname]["regex"];
+      
       $patterns = array();
       $replacements = array();
       foreach($words as $w)
       {
-        $patterns[] = "/".preg_quote($w)."/i";
-        $replacements[] = str_repeat($replaceby,strlen($w));
+        if ($regex)
+        {
+          // the words are regular expressions
+          $patterns[] = "/".$w."/ie";
+          $replacements[] = "'\\1'.str_repeat('$replaceby',strlen('\\2')).'\\3'";
+        }
+        else
+        {
+          // the words are simple words
+          $patterns[] = "/".preg_quote($w)."/i";
+          $replacements[] = str_repeat($replaceby,strlen($w));
+        }
       }     
       $param = preg_replace($patterns, $replacements, $param);
     }
