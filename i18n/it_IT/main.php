@@ -174,135 +174,135 @@ $GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "Il parametro '%s
 $GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "Il parametro '%s' non è valido. I valori disponibili sono : '%s'";
 
 // line 186 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["My room"] = "";
+$GLOBALS["i18n"]["My room"] = "La mia stanza";
 
 // line 19 in unban.class.php
-$GLOBALS["i18n"]["Missing parameter"] = "";
+$GLOBALS["i18n"]["Missing parameter"] = "Parametro mancante";
 
 // line 38 in ban.class.php
-$GLOBALS["i18n"]["banished from %s by %s"] = "";
+$GLOBALS["i18n"]["banished from %s by %s"] = "Esplulso dalla stanza %s da %s";
 
 // line 23 in banlist.class.php
-$GLOBALS["i18n"]["The banished user's id list is:"] = "";
+$GLOBALS["i18n"]["The banished user's id list is:"] = "L'id di lista dell'utente espulso è:";
 
 // line 32 in banlist.class.php
-$GLOBALS["i18n"]["Empty"] = "";
+$GLOBALS["i18n"]["Empty"] = "Vuoto";
 
 // line 34 in banlist.class.php
-$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "";
+$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "'/unban {id}' riammetterà l'utente identificato da {id}";
 
 // line 35 in banlist.class.php
-$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "";
+$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "'/unban all' riammetterà tutti gli utenti di questa stanza";
 
 // line 24 in update.class.php
-$GLOBALS["i18n"]["%s quit (timeout)"] = "";
+$GLOBALS["i18n"]["%s quit (timeout)"] = "%s abbandona (timeout)";
 
 // line 46 in join.class.php
-$GLOBALS["i18n"]["%s joins %s"] = "";
+$GLOBALS["i18n"]["%s joins %s"] = "%s entra in %s";
 
 // line 31 in kick.class.php
-$GLOBALS["i18n"]["kicked from %s by %s"] = "";
+$GLOBALS["i18n"]["kicked from %s by %s"] = "espulso dalla chat %s da %s";
 
 // line 38 in send.class.php
-$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "";
+$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "Impossibile spedire il messaggio, %s non è collagato";
 
 // line 27 in unban.class.php
-$GLOBALS["i18n"]["Nobody has been unbanished"] = "";
+$GLOBALS["i18n"]["Nobody has been unbanished"] = "Nessuno è stato riammesso";
 
 // line 42 in unban.class.php
-$GLOBALS["i18n"]["%s has been unbanished"] = "";
+$GLOBALS["i18n"]["%s has been unbanished"] = "L'utente %s è stato riammesso";
 
 // line 49 in unban.class.php
-$GLOBALS["i18n"]["%s users have been unbanished"] = "";
+$GLOBALS["i18n"]["%s users have been unbanished"] = "%s utenti sono stati riammessi";
 
 // line 47 in auth.class.php
-$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "";
+$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "Non hai i diritti per eseguire il comando '%s'";
 
 // line 66 in auth.class.php
-$GLOBALS["i18n"]["Can't join %s because you are banished"] = "";
+$GLOBALS["i18n"]["Can't join %s because you are banished"] = "Non puoi entrare in %s perché sei stato bandito";
 
 // line 76 in auth.class.php
-$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "";
+$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "Non puoi entrare in %s perché la chat è riservata";
 
 // line 89 in auth.class.php
-$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "";
+$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "Non hai i diritti per cambiare il tuo pseudonimo";
 
 // line 56 in noflood.class.php
-$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "";
+$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "Non spedire così tanti messaggi, questo comportamento non è tollerato";
 
 // line 109 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Private message"] = "";
+$GLOBALS["i18n"]["Private message"] = "Messaggio privato";
 
 // line 110 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Close this tab"] = "";
+$GLOBALS["i18n"]["Close this tab"] = "Chiudi questa scheda";
 
 // line 199 in pfcgui.js.tpl.php
-$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "";
+$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "Vuoi veramente lasciare questa stanza?";
 
 // line 169 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "";
+$GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "Errore: '%s' è un parametro privato, non possiedi i diritti per modificarlo";
 
 // line 253 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be an array"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be an array"] = "Il parametro '%s' deve essere un array";
 
 // line 265 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "Il parametro '%s' deve essere un booleano";
 
 // line 271 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be a character string"] = "Il parametro '%s' deve essere una stringa di testo";
 
 // line 395 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' must be writable"] = "";
+$GLOBALS["i18n"]["'%s' must be writable"] = "'%s' deve essere scrivibile";
 
 // line 425 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' directory doesn't exist"] = "";
+$GLOBALS["i18n"]["'%s' directory doesn't exist"] = "La directory '%s' non esiste";
 
 // line 544 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Please correct these errors"] = "";
+$GLOBALS["i18n"]["Please correct these errors"] = "Per favore correggi questi errori";
 
 // line 21 in pfcinfo.class.php
-$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "";
+$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "Errore: il file di configurazione non esiste";
 
 // line 190 in phpfreechat.class.php
-$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "";
+$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "Errore: la chat non può essere caricata! Due possibilità: il tuo browser non supporta javascript oppure non hai settato correttamente i diritti sulle cartelle del server - non esitare a chiedere aiuto nel forum";
 
 // line 31 in help.class.php
-$GLOBALS["i18n"]["Here is the command list:"] = "";
+$GLOBALS["i18n"]["Here is the command list:"] = "Ecco la lista dei comandi";
 
 // line 63 in identify.class.php
-$GLOBALS["i18n"]["Succesfully identified"] = "";
+$GLOBALS["i18n"]["Succesfully identified"] = "Identificato con successo";
 
 // line 68 in identify.class.php
-$GLOBALS["i18n"]["Identification failure"] = "";
+$GLOBALS["i18n"]["Identification failure"] = "Indentificazione fallita";
 
 // line 25 in send.class.php
-$GLOBALS["i18n"]["Your must be connected to send a message"] = "";
+$GLOBALS["i18n"]["Your must be connected to send a message"] = "Per inviare un messaggio devi essere connesso";
 
 // line 87 in chat.js.tpl.php
-$GLOBALS["i18n"]["Click here to send your message"] = "";
+$GLOBALS["i18n"]["Click here to send your message"] = "Clicca qui per inviare il tuo messaggio";
 
 // line 80 in chat.js.tpl.php
-$GLOBALS["i18n"]["Enter the text to format"] = "";
+$GLOBALS["i18n"]["Enter the text to format"] = "Inserisci il testo nel formato";
 
 // line 81 in chat.js.tpl.php
-$GLOBALS["i18n"]["Configuration has been rehashed"] = "";
+$GLOBALS["i18n"]["Configuration has been rehashed"] = "La configurazione è stata ricaricata";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["A problem occurs during rehash"] = "";
+$GLOBALS["i18n"]["A problem occurs during rehash"] = "Si è verificato un problema durante l'aggiornamento";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is allready used"] = "";
+$GLOBALS["i18n"]["Choosen nickname is allready used"] = "Lo pseudonimo scelto è già in uso";
 
 // line 84 in chat.js.tpl.php
-$GLOBALS["i18n"]["phpfreechat current version is %s"] = "";
+$GLOBALS["i18n"]["phpfreechat current version is %s"] = "phpfreechat versione &s";
 
 // line 85 in chat.js.tpl.php
-$GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "";
+$GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "È stato raggiunto il numero massimo di stanze";
 
 // line 86 in chat.js.tpl.php
-$GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "";
+$GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "Il numero massimo di chat private è stato raggiunto";
 
 // line 88 in chat.js.tpl.php
-$GLOBALS["i18n"]["Send"] = "";
+$GLOBALS["i18n"]["Send"] = "Invia";
 
 ?>
