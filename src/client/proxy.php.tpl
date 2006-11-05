@@ -1,7 +1,7 @@
 <?php
 
 // gzip compression should not be used because it can slowdown a lot the page loading (>60 seconds!)
-ini_set('zlib.output_compression','Off');
+@ini_set('zlib.output_compression','Off');
 
 ob_start(); // start capturing output
 
