@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * i18n/hy_AM/main.php
  *
