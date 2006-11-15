@@ -96,6 +96,7 @@ div.pfc_chat {
 /* WARNING: do not fix height in % because it will display blank screens on IE6 */
 /*  height: 100%;*/
   overflow: auto;
+  word-wrap: break-word;
 }
 
 div.pfc_online {

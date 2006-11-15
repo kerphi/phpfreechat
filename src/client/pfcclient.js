@@ -1192,6 +1192,9 @@ pfcClient.prototype = {
     rx = new RegExp('(^|[ :,;])'+RegExp.escape(this.nickname)+'([ :,;]|$)','gi');
     msg = msg.replace(rx, '$1<strong>'+ this.nickname +'</strong>$2');
 
+    
+    // this piece of code is replaced by the word-wrap CSS3 rule.
+    /*
     // don't allow to post words bigger than 65 caracteres
     // doesn't work with crappy IE and Konqueror !
     rx = new RegExp('([^ \\:\\<\\>\\/\\&\\;]{60})','ig');
@@ -1206,6 +1209,7 @@ pfcClient.prototype = {
         msg = msg + ttt[i] + ' ';
       }
     }
+    */
     return msg;
   },
 
