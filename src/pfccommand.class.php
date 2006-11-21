@@ -75,7 +75,7 @@ class pfcCommand
       foreach($cmd_paths as $cp)
       {
         $cmd_filename  = $cp."/".$cmd_name.".class.php";
-        if (file_exists($cmd_filename)) require_once($cmd_filename);
+        if (@file_exists($cmd_filename)) require_once($cmd_filename);
       }
     }
     if (class_exists($cmd_classname))
