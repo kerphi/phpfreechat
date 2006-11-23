@@ -112,7 +112,7 @@ function cleanPath($path)
 }
 
 
-function mkdir_r($path, $modedir = 0775)
+function mkdir_r($path, $modedir = 0755)
 {
   // This function creates the specified directory using mkdir().  Note
   // that the recursive feature on mkdir() is broken with PHP 5.0.4 for
@@ -146,7 +146,7 @@ function rm_r($dir)
  * @param       string   $dest      Destination path
  * @return      bool     Returns TRUE on success, FALSE on failure
  */
-function copy_r($source, $dest, $modedir = 0775, $modefile = 0664)
+function copy_r($source, $dest, $modedir = 0755, $modefile = 0664)
 { 
   // Simple copy for a file
   if (is_file($source)) {

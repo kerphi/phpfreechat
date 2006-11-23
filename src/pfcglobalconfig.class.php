@@ -412,12 +412,15 @@ class pfcGlobalConfig
       $proxycontent = file_get_contents(dirname(__FILE__)."/client/proxy.php.tpl");
       $proxycontent = str_replace("//%allowedpath%", $allowedpath_string, $proxycontent);
       if (!file_exists(dirname($proxyfile)))
-        @mkdir(dirname($proxyfile));
+        mkdir_r(dirname($proxyfile));
       if (file_exists($proxyfile) &&
           !is_writable($proxyfile))
         $this->errors[] = _pfc("'%s' must be writable", $proxyfile);
       else
-        @file_put_contents($proxyfile, $proxycontent);
+      {
+        file_put_contents($proxyfile, $proxycontent);
+	chmod( $proxyfile, 0755 ); // should fix problems on OVH mutualized servers
+      }
     }
 
 
