@@ -1014,6 +1014,7 @@ pfcClient.prototype = {
       var k = um_keys[i];
       var v = um[k];
       if (v && k != 'nickid'
+            && k != 'isadmin' // useless because of the gold shield icon
             && k != 'floodtime'
             && k != 'flood_nbmsg'
             && k != 'flood_nbchar'
