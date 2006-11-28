@@ -10,10 +10,11 @@ var pfc_version               = <?php echo $json->encode($version); ?>;
 var pfc_clientid              = <?php echo $json->encode(md5(uniqid(rand(), true))); ?>;
 var pfc_title                 = <?php echo $json->encode($title); ?>;
 var pfc_refresh_delay         = <?php echo $json->encode($refresh_delay); ?>;
-var pfc_max_refresh_delay         = <?php echo $json->encode($max_refresh_delay); ?>;
+var pfc_max_refresh_delay     = <?php echo $json->encode($max_refresh_delay); ?>;
 var pfc_start_minimized       = <?php echo $json->encode($start_minimized); ?>;
 var pfc_nickmarker            = <?php echo $json->encode($nickmarker); ?>;
 var pfc_clock                 = <?php echo $json->encode($clock); ?>;
+var pfc_startwithsound        = <?php echo $json->encode($startwithsound); ?>;
 var pfc_showsmileys           = <?php echo $json->encode($showsmileys); ?>;
 var pfc_showwhosonline        = <?php echo $json->encode($showwhosonline); ?>;
 var pfc_focus_on_connect      = <?php echo $json->encode($focus_on_connect); ?>;
@@ -78,6 +79,8 @@ array( "Do you really want to leave this room ?", // _pfc
        "You are not allowed to speak to yourself", // _pfc
        "Close", // _pfc
        "Choosen nickname is not allowed", // _pfc
+       "Play sound", // _pfc
+       "Mute sound", // _pfc       
        );
 foreach($labels_to_load as $l)
 {
@@ -114,6 +117,9 @@ array( 'images/ch.gif',
        'images/close-whoisbox.gif',
        'images/openpv.gif',
        'images/user-admin.gif',
+       'images/sound-on.gif',
+       'images/sound-off.gif',
+       'sound.swf',       
        );
 
 foreach($fileurl_to_load as $f)

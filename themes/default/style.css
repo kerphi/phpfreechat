@@ -347,3 +347,8 @@ img.pfc_nickbutton {
 div#pfc_debug {
   font-size: 11px;
 }
+div#pfc_sound_container {
+  visibility:hidden; /* this box is hidden because it contains a flash sound media (sound.swf)*/
+  width: 0;
+  height: 0;
+}

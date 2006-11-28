@@ -117,6 +117,11 @@ pfcClient.prototype = {
     if (cookie != null)
       this.switch_text_color(cookie);
 
+    cookie = getCookie('pfc_issoundenable');
+    this.issoundenable = (cookie == 'true');
+    if (cookie == '' || cookie == null)
+      this.issoundenable = pfc_startwithsound;
+
     this.refresh_loginlogout();
     this.refresh_minimize_maximize();
     this.refresh_Smileys();
@@ -1386,6 +1391,36 @@ pfcClient.prototype = {
     }
     // browser automaticaly scroll up misteriously when showing the dates
     //    $('pfc_chat').scrollTop += 30;
+  },
+  
+  /**
+   * Sound button
+   */
+  sound_swap: function()
+  {
+    if (this.issoundenable) {
+      this.issoundenable = false;
+    } else {
+      this.issoundenable = true;
+    }
+    this.refresh_sound();
+    setCookie('pfc_issoundenable', this.issoundenable);
+  },
+  refresh_sound: function( root )
+  {
+    var snd_icon = $('pfc_sound');
+    if (this.issoundenable)
+    {
+      snd_icon.src   = this.res.getFileUrl('images/sound-on.gif');
+      snd_icon.alt   = this.res.getLabel('Play sound');
+      snd_icon.title = snd_icon.alt;
+    }
+    else
+    {
+      snd_icon.src   = this.res.getFileUrl('images/sound-off.gif');
+      snd_icon.alt   = this.res.getLabel('Mute sound');
+      snd_icon.title = snd_icon.alt;
+    }
   },
   
   /**

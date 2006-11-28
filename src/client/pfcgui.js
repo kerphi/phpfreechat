@@ -301,12 +301,29 @@ pfcGui.prototype = {
     var rx = new RegExp('^\\[[0-9]+\\](.*)','ig');
     document.title = document.title.replace(rx,'$1');
     document.title = '['+this.windownotifynb+']'+document.title;
+    
+    // play the sound    
+    var soundcontainer = document.getElementById('pfc_sound_container');
+    if (pfc.issoundenable)
+    {
+      var flash = '<object style="visibility:hidden" classid="clsid:D27CDB6E-AE6D-11CF-96B8-444553540000" id="obj1" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" border="0">';
+      flash += '<param name="movie" value="' + pfc.res.getFileUrl('sound.swf') + '">';
+      flash += '<param name="quality" value="High">';
+      flash += '<embed src="' + pfc.res.getFileUrl('sound.swf') + '" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" name="obj1">';
+      flash += '</object>';
+      soundcontainer.innerHTML = flash;
+    }    
   },
   unnotifyWindow: function()
   {
     this.windownotifynb = 0;
     var rx = new RegExp('^\\[[0-9]+\\](.*)','ig');
     document.title = document.title.replace(rx,'$1');
+    
+    // stop the sound    
+    var soundcontainer = document.getElementById('pfc_sound_container');
+    if (pfc.issoundenable)
+      soundcontainer.innerHTML = '';
   },
 
   /**
@@ -537,6 +554,17 @@ pfcGui.prototype = {
     btn.appendChild(img);
     cmdcontainer.appendChild(btn);
 
+    // button sound on/off
+    var btn = document.createElement('div');
+    btn.setAttribute('class', 'pfc_btn');
+    btn.setAttribute('className', 'pfc_btn'); // for IE6
+    var img = document.createElement('img');
+    img.setAttribute('id', 'pfc_sound');
+    img.setAttribute('src', pfc.res.getFileUrl('images/sound-on.gif'));
+    img.onclick = function(){ pfc.sound_swap(); }
+    btn.appendChild(img);
+    cmdcontainer.appendChild(btn);
+    
     // button smileys on/off
     if (pfc_btn_sh_smileys)
     {
@@ -677,6 +705,11 @@ pfcGui.prototype = {
     smileybox.setAttribute('id', 'pfc_smileys');
     inputcontainer.appendChild(smileybox);
     this.loadSmileyBox();
+    
+    // sound container box : <div id="pfc_sound_container">
+    var soundcontainerbox = document.createElement('div');
+    soundcontainerbox.setAttribute('id', 'pfc_sound_container');
+    inputcontainer.appendChild(soundcontainerbox);
   }
   
 };

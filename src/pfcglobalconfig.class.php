@@ -82,6 +82,7 @@ class pfcGlobalConfig
   var $shownotice          = 3; // show: 0 = nothing, 1 = just nickname changes, 2 = join/quit, 3 = 1+2
   var $nickmarker          = true; // show/hide nicknames colors
   var $clock               = true; // show/hide dates and hours
+  var $startwithsound      = true; // start with sound enabled
   var $openlinknewwindow   = true; // used to open the links in a new window
   var $notify_window       = true; // true : appends a prefix to the window title with the number of new posted messages
 
