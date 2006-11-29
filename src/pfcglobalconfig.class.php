@@ -358,6 +358,7 @@ class pfcGlobalConfig
     // calculate datapublic url
     if ($this->data_public_url == "")
       $this->data_public_url = relativePath($this->client_script_path, $this->data_public_path);
+
     // ---
     // test server script
     if ($this->server_script_path == "")

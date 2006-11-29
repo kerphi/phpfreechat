@@ -62,11 +62,11 @@ function relativePath($p1, $p2)
   $p1 = realpath(cleanPath($p1));
   $p2 = realpath(cleanPath($p2));
   $res = "";
-  //echo $p1."<br>";
-  //echo $p2."<br>";
+  // echo $p1."<br>";
+  // echo $p2."<br>";
   while( $p1 != "" &&
          $p1 != "/" && // for unix root dir
-         !preg_match("/[a-z]\:\\\/i",$p1) && // for windows rootdir
+         !preg_match("/^[a-z]\:\\\$/i",$p1) && // for windows rootdir
          strpos($p2, $p1) !== 0)
   {
     $res .= "../";
@@ -86,6 +86,7 @@ function relativePath($p1, $p2)
   if (preg_match("/.*\/$/", $res)) $res = preg_replace("/(.*)\//","$1",$res);
   // if rootpath is empty replace it by "." to avoide url starting with "/"
   if ($res == "") $res = ".";
+  //  echo $res."<br>";
   return $res;
 }  
 
