@@ -125,6 +125,7 @@ pfcClient.prototype = {
     this.refresh_loginlogout();
     this.refresh_minimize_maximize();
     this.refresh_Smileys();
+    this.refresh_sound();
     this.refresh_nickmarker();
   },
 
@@ -1412,13 +1413,13 @@ pfcClient.prototype = {
     if (this.issoundenable)
     {
       snd_icon.src   = this.res.getFileUrl('images/sound-on.gif');
-      snd_icon.alt   = this.res.getLabel('Play sound');
+      snd_icon.alt   = this.res.getLabel('Mute sound');
       snd_icon.title = snd_icon.alt;
     }
     else
     {
       snd_icon.src   = this.res.getFileUrl('images/sound-off.gif');
-      snd_icon.alt   = this.res.getLabel('Mute sound');
+      snd_icon.alt   = this.res.getLabel('Play sound');
       snd_icon.title = snd_icon.alt;
     }
   },
