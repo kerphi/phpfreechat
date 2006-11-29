@@ -26,6 +26,7 @@ class pfcCommand_help extends pfcCommand
       if (!preg_match("/^([a-z]+).class.php$/i",$file,$res)) continue;
       if (!in_array($res[1],$ignore)) $cmdlist[] = $res[1];
     }
+    closedir($dh);
     sort($cmdlist);
 
     $str = _pfc("Here is the command list:")."<br/>";

@@ -135,6 +135,7 @@ function rm_r($dir)
     if($obj=='.' || $obj=='..') continue;
     if (!@unlink($dir.'/'.$obj)) rm_r($dir.'/'.$obj);
   }
+  closedir($dh);
   @rmdir($dir);
 }
 

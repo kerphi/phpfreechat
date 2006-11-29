@@ -110,6 +110,7 @@ class pfcI18N
         if (file_exists(dirname(__FILE__)."/../i18n/".$file."/admin.php"))
         $GLOBALS["accepted_admin_languages"][] = $file;
       }
+      closedir($dir_handle);
       return $GLOBALS["accepted_admin_languages"];
     }
     else{
@@ -124,6 +125,7 @@ class pfcI18N
         if ($file == "." || $file == ".." || strpos($file,".")===0) continue;
         $GLOBALS["accepted_languages"][] = $file;
       }
+      closedir($dir_handle);
       return $GLOBALS["accepted_languages"];
     }
   }

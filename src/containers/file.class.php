@@ -134,6 +134,7 @@ class pfcContainer_File extends pfcContainer
           $ret["timestamp"][] = filemtime($dir.'/'.$file);
           $ret["value"][]     = $file;
         }
+        closedir($dh);
       }
       return $ret;
     }
@@ -151,6 +152,7 @@ class pfcContainer_File extends pfcContainer
           $ret["timestamp"][] = filemtime($dir.'/'.$file);
           $ret["value"][]     = $file;
         }
+        closedir($dh);
       }
       return $ret;
     }
@@ -197,10 +199,18 @@ class pfcContainer_File extends pfcContainer
       return true;
     }
     
-    $leaffilename = $dir.'/'.$leaf;
-    
+    $leaffilename = $dir.'/'.$leaf;    
     if (!file_exists($leaffilename)) return false;
     unlink($leaffilename);
+    
+    // check that the directory is empty or not
+    // remove it if it doesn't contains anything
+    $dh = opendir($dir);
+    readdir($dh); readdir($dh); // skip . and .. directories
+    $isnotempty = readdir($dh);
+    closedir($dh);
+    if ($isnotempty === false) rmdir($dir);
+    
     return true;
   }
 
