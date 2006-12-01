@@ -22,7 +22,7 @@ class Dice {
   function check($text){
     $this->errors = array();
     $this->command= '';
-    if(preg_match('/^(\d)d(\d{1,3})([\+-]\d)?$/', $text, $matches)){
+    if(preg_match('/^([0-9]+)d([0-9]{1,3})([\+-][0-9]+)?$/', $text, $matches)){
       $this->command['launch'] = (int) $matches[1];
       $this->command['faces']  = (int) $matches[2];
       // Now go for corrections
