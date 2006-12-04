@@ -19,6 +19,7 @@ var pfc_showsmileys           = <?php echo $json->encode($showsmileys); ?>;
 var pfc_showwhosonline        = <?php echo $json->encode($showwhosonline); ?>;
 var pfc_focus_on_connect      = <?php echo $json->encode($focus_on_connect); ?>;
 var pfc_max_text_len          = <?php echo $json->encode($max_text_len); ?>;
+var pfc_max_displayed_lines   = <?php echo $json->encode($max_displayed_lines); ?>;
 var pfc_quit_on_closedwindow  = <?php echo $json->encode($quit_on_closedwindow); ?>;
 var pfc_debug                 = <?php echo $json->encode($debug); ?>;
 var pfc_btn_sh_smileys        = <?php echo $json->encode($btn_sh_smileys); ?>;

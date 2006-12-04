@@ -776,6 +776,7 @@ pfcClient.prototype = {
   handleComingRequest: function( cmds )
   {
     var msg_html = $H();
+    var max_msgid = 0;
     
     //alert(cmds.inspect());
     
@@ -804,20 +805,20 @@ pfcClient.prototype = {
       line += '<span class="pfc_heure">'+ time +'</span> ';
       if (cmd == 'send')
       {
-	line += ' <span class="pfc_nick">';
-	line += '&#x2039;';
-	line += '<span ';
+      	line += ' <span class="pfc_nick">';
+      	line += '&#x2039;';
+      	line += '<span ';
         line += 'onclick="pfc.insert_text(\'' + sender.replace("'", '\\\'') + ', \',\'\',false)" ';
-	line += 'class="pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(sender)) +'">';
-	line += sender;
-	line += '</span>';
-	line += '&#x203A;';
-	line += '</span> ';
+      	line += 'class="pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(sender)) +'">';
+      	line += sender;
+      	line += '</span>';
+      	line += '&#x203A;';
+      	line += '</span> ';
       }
       if (cmd == 'notice' || cmd == 'me')
-	line += '<span class="pfc_words">* '+ this.parseMessage(param) +'</span> ';
+        line += '<span class="pfc_words">* '+ this.parseMessage(param) +'</span> ';
       else
-	line += '<span class="pfc_words">'+ this.parseMessage(param) +'</span> ';
+        line += '<span class="pfc_words">'+ this.parseMessage(param) +'</span> ';
       line += '</div>';
 
       if (oldmsg == 0)
@@ -828,7 +829,7 @@ pfcClient.prototype = {
           var tabid = recipientid;
           if (this.gui.getTabId() != tabid)
             this.gui.notifyTab(tabid);
-	  // notify the window (change the title)
+          // notify the window (change the title)
           if (!this.detectactivity.isActive() && pfc_notify_window)
             this.gui.notifyWindow();
         }
@@ -837,6 +838,9 @@ pfcClient.prototype = {
         msg_html[recipientid] = line;
       else
         msg_html[recipientid] += line;
+      
+      // remember the max message id in order to clean old lines
+      if (max_msgid < id) max_msgid = id;
     }
 
     // loop on all recipients and post messages
@@ -857,6 +861,21 @@ pfcClient.prototype = {
       // finaly append this to the message list
       recipientdiv.appendChild(m);
       this.gui.scrollDown(tabid, m);
+    }
+    
+    // delete the old messages from the client (save some memory)
+    var limit_msgid = max_msgid - pfc_max_displayed_lines;
+    var elt = $('pfc_msg'+limit_msgid);
+    while (elt)
+    {
+      // delete this element to save browser memory
+      if (is_ff)
+        elt.innerHTML = '';
+      else
+        //  this code don't work in FF, why ? don't know ..
+        elt.parentElement.removeChild(elt);
+      limit_msgid--;
+      elt = $('pfc_msg'+limit_msgid);
     }
   },
   

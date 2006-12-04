@@ -72,7 +72,8 @@ class pfcGlobalConfig
   var $refresh_delay       = 5000; // in mili-seconds (5 seconds)
   var $max_refresh_delay   = 60000; // in mili-seconds (60 seconds)
   var $timeout             = 20000; // in mili-seconds (20 seconds)
-  var $max_msg             = 20;
+  var $max_msg             = 20; // number of messages keept in the history (this is what you see when you reload the chat)
+  var $max_displayed_lines = 150; // maximum number of displayed lines (old lines will be deleted to save browser's memory)
   var $quit_on_closedwindow = true; // could be annoying because the reload event is the same as a close event
   var $focus_on_connect    = true;
   var $connect_at_startup  = true;
