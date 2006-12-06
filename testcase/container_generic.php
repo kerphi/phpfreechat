@@ -31,7 +31,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     require_once dirname(__FILE__)."/../src/pfcglobalconfig.class.php";   
     $params = array();
     $params["title"] = "testcase -> pfccontainer_".$this->type;
-    $params["serverid"] = md5(__FILE__/* . time()*/);
+    $params["serverid"] = md5(__FILE__ . time());
     $params["container_type"] = $this->type;
     $this->c  = new pfcGlobalConfig($params);
     $this->ct = $this->c->getContainerInstance();
@@ -296,7 +296,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $ret = $ct->getMeta($group, $subgroup, $leaf, true);
     $this->assertEquals($ret['value'][0], $leafvalue, "the leaf value is wrong");
   }
-  
+
   function test_getMeta_Generic_1()
   {
     $c  =& $this->c;
@@ -344,7 +344,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $time = time();
 
     $ret = $ct->getMeta($group, $subgroup);
-    asort($ret["value"]);
+    sort($ret["value"]);
     $this->assertEquals(count($ret["timestamp"]), 2, "number of leaf is wrong");
     $this->assertEquals($ret["timestamp"][0], $time, "the leaf timestamp is wrong");
     $this->assertEquals($ret["timestamp"][1], $time, "the leaf timestamp is wrong");
@@ -368,16 +368,15 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $ct->setMeta($group, $subgroup2, $leaf1);
     $ct->setMeta($group, $subgroup2, $leaf2);
     $time = time();
-
+    
     $ret = $ct->getMeta($group);
-    asort($ret["value"]);
-    $this->assertEquals(count($ret["timestamp"]), 2, "number of subgroup is wrong");
-    $this->assertEquals($ret["timestamp"][0], $time, "the subgroup timestamp is wrong");
-    $this->assertEquals($ret["timestamp"][1], $time, "the subgroup timestamp is wrong");
-    $this->assertEquals($ret["value"][0], $subgroup1, "the subgroup name is wrong");
-    $this->assertEquals($ret["value"][1], $subgroup2, "the subgroup name is wrong");
+    sort($ret["value"]);
+    $this->assertEquals(2, count($ret["timestamp"]), "number of subgroup is wrong");
+    $this->assertEquals($time, $ret["timestamp"][0], "the subgroup timestamp is wrong");
+    $this->assertEquals($time, $ret["timestamp"][1], "the subgroup timestamp is wrong");
+    $this->assertEquals($subgroup1, $ret["value"][0], "the subgroup name is wrong");
+    $this->assertEquals($subgroup2, $ret["value"][1], "the subgroup name is wrong");
   }
-  
 }
 
 ?>

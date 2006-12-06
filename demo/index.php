@@ -71,10 +71,10 @@
       <li><a href="demo31_show_who_is_online-whoisonline.php">demo31 - demo which show how to get the connected users list (whoisonline script)</a></li>
       <li><a href="demo32_show_last_messages-chat.php">demo32 - demo which show how to get the last posted messages (chat script)</a></li>
       <li><a href="demo32_show_last_messages-showlastmsg.php">demo32 - demo which show how to get the last posted messages (showlastmsg script)</a></li>
-
       <li><a href="demo35_shared_memory.php">demo35 - demo which show how to use the shared memory container</a> (not yet working)</li>
       <li><a href="demo43_change_the_nicknames_colors.php">demo43 - demo which show how to change the nicknames automatic colors</a></li>
       <li><a href="demo50_customized_usermetadata.php">demo50 - demo which shows how to use user metadata : add avatar (images) to each connected users</a></li>
+      <li><a href="demo55_mysql_container.php">demo55 - demo which show how to use the mysql container</a></li>
 </ul>
 
 
