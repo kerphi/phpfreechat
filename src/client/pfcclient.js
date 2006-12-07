@@ -776,7 +776,7 @@ pfcClient.prototype = {
   handleComingRequest: function( cmds )
   {
     var msg_html = $H();
-    var max_msgid = 0;
+    var max_msgid = $H();
     
     //alert(cmds.inspect());
     
@@ -795,7 +795,7 @@ pfcClient.prototype = {
       
       // format and post message
       var line = '';
-      line += '<div id="pfc_msg'+ id +'" class="pfc_cmd_'+ cmd +' pfc_message';
+      line += '<div id="pfc_msg_'+recipientid+'_'+id+'" class="pfc_cmd_'+ cmd +' pfc_message';
       line  += (id % 2 == 0) ? ' pfc_evenmsg' : ' pfc_oddmsg';
       if (oldmsg == 1) line += ' pfc_oldmsg';
       line += '">';
@@ -840,7 +840,8 @@ pfcClient.prototype = {
         msg_html[recipientid] += line;
       
       // remember the max message id in order to clean old lines
-      if (max_msgid < id) max_msgid = id;
+      if (!max_msgid[recipientid]) max_msgid[recipientid] = 0;
+      if (max_msgid[recipientid] < id) max_msgid[recipientid] = id;
     }
 
     // loop on all recipients and post messages
@@ -861,22 +862,23 @@ pfcClient.prototype = {
       // finaly append this to the message list
       recipientdiv.appendChild(m);
       this.gui.scrollDown(tabid, m);
+
+      // delete the old messages from the client (save some memory)
+      var limit_msgid = max_msgid[recipientid] - pfc_max_displayed_lines;
+      var elt = $('pfc_msg_'+recipientid+'_'+limit_msgid);
+      while (elt)
+      {
+        // delete this element to save browser memory
+        if (is_ff)
+          elt.innerHTML = '';
+        else
+          //  this code don't work in FF, why ? don't know ..
+          elt.parentElement.removeChild(elt);
+        limit_msgid--;
+        elt = $('pfc_msg_'+recipientid+'_'+limit_msgid);
+      }
     }
     
-    // delete the old messages from the client (save some memory)
-    var limit_msgid = max_msgid - pfc_max_displayed_lines;
-    var elt = $('pfc_msg'+limit_msgid);
-    while (elt)
-    {
-      // delete this element to save browser memory
-      if (is_ff)
-        elt.innerHTML = '';
-      else
-        //  this code don't work in FF, why ? don't know ..
-        elt.parentElement.removeChild(elt);
-      limit_msgid--;
-      elt = $('pfc_msg'+limit_msgid);
-    }
   },
   
   /**
