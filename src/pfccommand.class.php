@@ -190,6 +190,49 @@ class pfcCommand
       $xml_reponse->addScript("trace('".$msg."');");
 
   }
+
+  function ParseCommand($cmd_str)
+  {
+    $pattern_quote   = '/([^\\\]|^)"([^"]+[^\\\])"/';
+    $pattern_quote   = '/"([^"]+)"/';
+    $pattern_noquote = '/([^"\s]+)/';
+    $pattern_command = '/^\/([a-z0-9]+)\s*(.*)/';
+    $result = array();
+  
+    // parse the command name (ex: '/invite')
+    if (preg_match($pattern_command, $cmd_str, $res))
+    {
+      $cmd = $res[1];
+      $params_str = $res[2];
+      // parse the quotted parameters (ex: '/invite "nickname with spaces"')
+      preg_match_all($pattern_quote,$params_str,$res1,PREG_OFFSET_CAPTURE);
+      $params_res = $res1[1];
+      // split the parameters string
+      $nospaces = preg_split($pattern_quote,$params_str,-1,PREG_SPLIT_OFFSET_CAPTURE|PREG_SPLIT_NO_EMPTY);
+      foreach($nospaces as $p)
+      {
+        // parse the splited blocks with unquotted parameter pattern (ex: '/invite nicknamewithoutspace')
+        preg_match_all($pattern_noquote,$p[0],$res2,PREG_OFFSET_CAPTURE);
+        foreach( $res2[1] as $p2 )
+        {
+          $p2[1] += $p[1];
+          $params_res[] = $p2;
+        }
+      }
+
+      // order the array by offset
+      $params = array();
+      foreach($params_res as $p) $params[$p[1]] = $p[0];
+      ksort($params);
+      $params = array_values($params);
+      $params = array_map("trim",$params);
+    
+      $result['cmdstr']  = $cmd_str;
+      $result['cmdname'] = $cmd;
+      $result['params']  = $params;
+    }
+    return $result;
+  }
   
 }
 

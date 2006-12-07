@@ -321,36 +321,27 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     $u =& pfcUserConfig::Instance();
 
     if ($c->debug) ob_start(); // capture output
- 
+    
     $xml_reponse = new xajaxResponse();
 
     // check the command
-    $rawcmd    = "";
-    $clientid  = "";
+    $cmdstr      = "";
+    $cmdname     = "";
+    $clientid    = "";
     $recipient   = "";
     $recipientid = "";
-    $param     = "";
-    $sender    = "";
-    //if (preg_match("/^\/([a-z]*) ([0-9a-f]*) ([0-9a-f]*)( (.*)|)/", $request, $res))
-    //if (preg_match("/^\/([a-z]+) ([0-9a-f]+) ([0-9a-f]+) (.*)/", $request, $res))
-    if (preg_match("/^\/([a-zA-Z0-9]+) ([0-9a-f]+) ([0-9a-f]+)( (.*)|)/", $request, $res))
-    {
-      
-      $rawcmd      = strtolower(isset($res[1]) ? $res[1] : "");
-      $clientid    = isset($res[2]) ? $res[2] : "";
-      $recipientid = isset($res[3]) ? $res[3] : "";
-      $param       = isset($res[5]) ? $res[5] : "";
-      $sender      = $u->nick;
-      //      $recipient   = "home";
+    $param       = "";
+    $sender      = "";
 
-      //if ($rawcmd == "join")
-      //  trigger_error(var_export($res));
-
-    }
-
-    //if ($rawcmd == "join")
-    //trigger_error("channels=".var_export($u->channels));
-    //trigger_error("pvs=".var_export($u->privmsg));
+    $res = pfcCommand::ParseCommand($request);
+    
+    $cmdstr      = isset($res['cmdstr']) ? $res['cmdstr'] : $request;
+    $cmdname     = strtolower(isset($res['cmdname']) ? $res['cmdname'] : '');
+    $clientid    = isset($res['params'][0]) ? $res['params'][0] : '';
+    $recipientid = isset($res['params'][1]) ? $res['params'][1] : "";
+    $params      = array_slice($res['params'],2);
+    $param       = implode(" ",$params); // to keep compatibility (will be removed)
+    $sender      = $u->nick;
     
     // translate the recipientid to the channel name
     if (isset($u->channels[$recipientid]))
@@ -363,10 +354,10 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
 
 
       // @todo: move this code in a proxy
-      if ($rawcmd != "update" &&
-          $rawcmd != "leave" &&  // do not open the pv tab when other user close the tab
-          $rawcmd != "quit" &&
-          $rawcmd != "privmsg2")
+      if ($cmdname != "update" &&
+          $cmdname != "leave" &&  // do not open the pv tab when other user close the tab
+          $cmdname != "quit" &&
+          $cmdname != "privmsg2")
       {
         // alert the other from the new pv
         // (warn other user that someone talk to him)
@@ -435,10 +426,11 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     }
 
     
-    $cmd =& pfcCommand::Factory($rawcmd);
+    $cmd =& pfcCommand::Factory($cmdname);
     $cmdp = array();
     $cmdp["clientid"]    = $clientid;
     $cmdp["param"]       = $param;
+    $cmdp["params"]      = $params;
     $cmdp["sender"]      = $sender;
     $cmdp["recipient"]   = $recipient;
     $cmdp["recipientid"] = $recipientid;
@@ -455,7 +447,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
       $cmd =& pfcCommand::Factory("error");
       $cmdp = array();
       $cmdp["clientid"]    = $clientid;
-      $cmdp["param"]       = _pfc("Unknown command [%s]",stripslashes("/".$rawcmd." ".$param));
+      $cmdp["param"]       = _pfc("Unknown command [%s]",stripslashes("/".$cmdname." ".$param));
       $cmdp["sender"]      = $sender;
       $cmdp["recipient"]   = $recipient;
       $cmdp["recipientid"] = $recipientid;
@@ -467,8 +459,8 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     
     // do not update twice
     // do not update when the user just quit
-    if ($rawcmd != "update" &&
-      	$rawcmd != "quit" &&
+    if ($cmdname != "update" &&
+      	$cmdname != "quit" &&
       	(!isset($u->nick) || $u->nick != ""))
     {
       // force an update just after a command is sent
