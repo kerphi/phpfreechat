@@ -306,10 +306,10 @@ pfcGui.prototype = {
     var soundcontainer = document.getElementById('pfc_sound_container');
     if (pfc.issoundenable)
     {
-      var flash = '<object style="visibility:hidden" classid="clsid:D27CDB6E-AE6D-11CF-96B8-444553540000" id="obj1" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" border="0">';
+      var flash = '<object style="visibility:hidden" classid="clsid:D27CDB6E-AE6D-11CF-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" width="0" height="0">';
       flash += '<param name="movie" value="' + pfc.res.getFileUrl('sound.swf') + '">';
       flash += '<param name="quality" value="High">';
-      flash += '<embed src="' + pfc.res.getFileUrl('sound.swf') + '" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" name="obj1">';
+      flash += '<embed style="visibility:hidden" src="' + pfc.res.getFileUrl('sound.swf') + '" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="0" height="0" />';
       flash += '</object>';
       soundcontainer.innerHTML = flash;
     }    
@@ -709,7 +709,7 @@ pfcGui.prototype = {
     // sound container box : <div id="pfc_sound_container">
     var soundcontainerbox = document.createElement('div');
     soundcontainerbox.setAttribute('id', 'pfc_sound_container');
-    inputcontainer.appendChild(soundcontainerbox);
+    container.appendChild(soundcontainerbox);
   }
   
 };
