@@ -1434,13 +1434,13 @@ pfcClient.prototype = {
     if (this.issoundenable)
     {
       snd_icon.src   = this.res.getFileUrl('images/sound-on.gif');
-      snd_icon.alt   = this.res.getLabel('Mute sound');
+      snd_icon.alt   = this.res.getLabel('Disable sound notifications');
       snd_icon.title = snd_icon.alt;
     }
     else
     {
       snd_icon.src   = this.res.getFileUrl('images/sound-off.gif');
-      snd_icon.alt   = this.res.getLabel('Play sound');
+      snd_icon.alt   = this.res.getLabel('Enable sound notifications');
       snd_icon.title = snd_icon.alt;
     }
   },

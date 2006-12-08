@@ -306,4 +306,29 @@ $GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "ব্য
 // line 88 in chat.js.tpl.php
 $GLOBALS["i18n"]["Send"] = "পাঠাও";
 
+
+// line 40 in banlist.class.php
+$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "";
+
+// line 86 in mysql.class.php
+$GLOBALS["i18n"]["Mysql container: connect error"] = "";
+
+// line 101 in mysql.class.php
+$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "";
+
+// line 112 in mysql.class.php
+$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "";
+
+// line 80 in chat.js.tpl.php
+$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "";
+
+// line 82 in chat.js.tpl.php
+$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "";
+
+// line 83 in chat.js.tpl.php
+$GLOBALS["i18n"]["Enable sound notifications"] = "";
+
+// line 84 in chat.js.tpl.php
+$GLOBALS["i18n"]["Disable sound notifications"] = "";
+
 ?>

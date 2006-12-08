@@ -80,8 +80,8 @@ array( "Do you really want to leave this room ?", // _pfc
        "You are not allowed to speak to yourself", // _pfc
        "Close", // _pfc
        "Choosen nickname is not allowed", // _pfc
-       "Play sound", // _pfc
-       "Mute sound", // _pfc       
+       "Enable sound notifications", // _pfc
+       "Disable sound notifications", // _pfc       
        );
 foreach($labels_to_load as $l)
 {

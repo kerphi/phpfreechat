@@ -174,3 +174,160 @@ $GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "'%s' parameter m
 $GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "'%s' parameter is not valid. Available values are: '%s'";
 
 ?>
+// line 183 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "";
+
+// line 211 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["My room"] = "";
+
+// line 284 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be an array"] = "";
+
+// line 296 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "";
+
+// line 302 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "";
+
+// line 421 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' must be writable"] = "";
+
+// line 454 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' directory doesn't exist"] = "";
+
+// line 576 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["Please correct these errors"] = "";
+
+// line 21 in pfcinfo.class.php
+$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "";
+
+// line 191 in phpfreechat.class.php
+$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "";
+
+// line 26 in unban.class.php
+$GLOBALS["i18n"]["Missing parameter"] = "";
+
+// line 45 in ban.class.php
+$GLOBALS["i18n"]["banished from %s by %s"] = "";
+
+// line 24 in banlist.class.php
+$GLOBALS["i18n"]["The banished user's id list is:"] = "";
+
+// line 37 in banlist.class.php
+$GLOBALS["i18n"]["Empty"] = "";
+
+// line 39 in banlist.class.php
+$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "";
+
+// line 40 in banlist.class.php
+$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "";
+
+// line 32 in help.class.php
+$GLOBALS["i18n"]["Here is the command list:"] = "";
+
+// line 64 in identify.class.php
+$GLOBALS["i18n"]["Succesfully identified"] = "";
+
+// line 69 in identify.class.php
+$GLOBALS["i18n"]["Identification failure"] = "";
+
+// line 49 in join.class.php
+$GLOBALS["i18n"]["%s joins %s"] = "";
+
+// line 81 in noflood.class.php
+$GLOBALS["i18n"]["kicked from %s by %s"] = "";
+
+// line 25 in send.class.php
+$GLOBALS["i18n"]["Your must be connected to send a message"] = "";
+
+// line 50 in send.class.php
+$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "";
+
+// line 34 in unban.class.php
+$GLOBALS["i18n"]["Nobody has been unbanished"] = "";
+
+// line 49 in unban.class.php
+$GLOBALS["i18n"]["%s has been unbanished"] = "";
+
+// line 56 in unban.class.php
+$GLOBALS["i18n"]["%s users have been unbanished"] = "";
+
+// line 86 in mysql.class.php
+$GLOBALS["i18n"]["Mysql container: connect error"] = "";
+
+// line 101 in mysql.class.php
+$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "";
+
+// line 112 in mysql.class.php
+$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "";
+
+// line 53 in auth.class.php
+$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "";
+
+// line 73 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because you are banished"] = "";
+
+// line 83 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "";
+
+// line 57 in checknickchange.class.php
+$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "";
+
+// line 59 in checktimeout.class.php
+$GLOBALS["i18n"]["%s quit (timeout)"] = "";
+
+// line 75 in noflood.class.php
+$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "";
+
+// line 46 in chat.js.tpl.php
+$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "";
+
+// line 60 in chat.js.tpl.php
+$GLOBALS["i18n"]["Private message"] = "";
+
+// line 61 in chat.js.tpl.php
+$GLOBALS["i18n"]["Close this tab"] = "";
+
+// line 71 in chat.js.tpl.php
+$GLOBALS["i18n"]["Enter the text to format"] = "";
+
+// line 72 in chat.js.tpl.php
+$GLOBALS["i18n"]["Configuration has been rehashed"] = "";
+
+// line 73 in chat.js.tpl.php
+$GLOBALS["i18n"]["A problem occurs during rehash"] = "";
+
+// line 74 in chat.js.tpl.php
+$GLOBALS["i18n"]["Choosen nickname is allready used"] = "";
+
+// line 75 in chat.js.tpl.php
+$GLOBALS["i18n"]["phpfreechat current version is %s"] = "";
+
+// line 76 in chat.js.tpl.php
+$GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "";
+
+// line 77 in chat.js.tpl.php
+$GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "";
+
+// line 78 in chat.js.tpl.php
+$GLOBALS["i18n"]["Click here to send your message"] = "";
+
+// line 79 in chat.js.tpl.php
+$GLOBALS["i18n"]["Send"] = "";
+
+// line 80 in chat.js.tpl.php
+$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "";
+
+// line 81 in chat.js.tpl.php
+$GLOBALS["i18n"]["Close"] = "";
+
+// line 82 in chat.js.tpl.php
+$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "";
+
+// line 83 in chat.js.tpl.php
+$GLOBALS["i18n"]["Enable sound notifications"] = "";
+
+// line 84 in chat.js.tpl.php
+$GLOBALS["i18n"]["Disable sound notifications"] = "";
+
+?>
