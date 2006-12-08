@@ -4,12 +4,13 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_kick extends pfcCommand
 {
-  var $usage = "/kick {nickname}";
+  var $usage = "/kick {nickname} [ {reason} ]";
   
   function run(&$xml_reponse, $p)
   {
     $clientid    = $p["clientid"];
     $param       = $p["param"];
+    $params      = $p["params"];
     $sender      = $p["sender"];
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
@@ -17,7 +18,7 @@ class pfcCommand_kick extends pfcCommand
     $c =& $this->c;
     $u =& $this->u;
 
-    if (trim($param) == "")
+    if (trim($params[0]) == '')
     {
       // error
       $cmdp = $p;
@@ -27,24 +28,16 @@ class pfcCommand_kick extends pfcCommand
       $cmd->run($xml_reponse, $cmdp);
       return;
     }
-
+    
     // kicking a user just add a command to play to the aimed user metadata.
-    $container =& $c->getContainerInstance();
-    $nickid = $container->getNickId($param);
-    if ($nickid != "")
-    {
-      $cmdtoplay = $container->getUserMeta($nickid, 'cmdtoplay');
-      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
-      $reason = _pfc("kicked from %s by %s", $u->channels[$recipientid]["name"], $sender);
-      $cmdtmp = array("leave",  /* cmdname */
-                      $recipientid." ".$reason, /* param */
-                      $sender,     /* sender */
-                      $recipient,  /* recipient */
-                      $recipientid,/* recipientid */
-                      );
-      $cmdtoplay[] = $cmdtmp; // kick the user from the current channel
-      $container->setUserMeta($nickid, 'cmdtoplay', serialize($cmdtoplay));
-    }
+    $ct =& $c->getContainerInstance();
+    $otherid  = $ct->getNickId($params[0]);
+    $channame = $u->channels[$recipientid]["name"];
+    $cmdstr = 'leave';
+    $cmdp = array();
+    $cmdp['params'][] = $channame; // channel name
+    $cmdp['params'][] = _pfc("kicked from %s by %s - reason: %s", $channame, $sender, $params[1]); // reason
+    pfcCommand::AppendCmdToPlay($otherid, $cmdstr, $cmdp);
   }
 }
 

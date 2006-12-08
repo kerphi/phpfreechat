@@ -1,5 +1,4 @@
 <?php
-
 /**
  * invite.class.php
  *
@@ -20,7 +19,10 @@
  * Free Software Foundation, 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
- 
+
+require_once(dirname(__FILE__)."/../pfccommand.class.php");
+require_once(dirname(__FILE__)."/../commands/join.class.php");
+
 /**
  * /invite command
  *
@@ -29,54 +31,56 @@
  * The parameter "target channel" is optional, if not set it defaults to the current channel
  *
  * @author Benedikt Hallinger <beni@php.net>
+ * @author Stephane Gully <stephane.gully@gmail.com>
  */
 class pfcCommand_invite extends pfcCommand
 {
-	var $usage = "/invite {nickname to invite} [{target channel}]";
+  var $usage = "/invite {nickname to invite} [ {target channel} ]";
 	
-	function run(&$xml_reponse, $p)
-	{
-		$clientid    = $p["clientid"];
-		$param       = $p["param"];
-		$sender      = $p["sender"];
-		$recipient   = $p["recipient"];
-		$recipientid = $p["recipientid"];
-		
-		$c =& $this->c;   // pfcGlobalConfig
-		$u =& $this->u;   // pfcUserConfig
-		$container =& $c->getContainerInstance(); // Connection to the chatbackend
-		
-		$p_array = split(' ', $param); // Split the parameters: [0]= targetnick, [1]=targetchannel
-		if (!isset($p_array[1])) $p_array[1] = $u->channels[$recipientid]["name"]; // Default: current channel
-		if (!isset($p_array[0]) || !isset($p_array[1]))
-		{
-			// Parameters not ok!
-			$cmdp = $p;
-			$cmdp["param"] = _pfc("Missing parameter");
-			$cmdp["param"] .= " (".$this->usage.")";
-			$cmd =& pfcCommand::Factory("error");
-			$cmd->run($xml_reponse, $cmdp);
-			return;
-		}
-		
-		// inviting a user: just add a join command to play to the aimed user metadata.
-		$nickid = $container->getNickId($p_array[0]); // get the internal ID of that chatter
-		if ($nickid != "")
-		{
-			$cmdtoplay = $container->getUserMeta($nickid, 'cmdtoplay'); // get the users command queue
-			$cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
-			$cmdtmp = array("join",  /* cmdname */
-					$p_array[1], /* param */
-					$sender,     /* sender */
-					$recipient,  /* recipient */
-					$recipientid,/* recipientid */
-					);
-			$cmdtoplay[] = $cmdtmp; // store the command in the queue
-			$container->setUserMeta($nickid, 'cmdtoplay', serialize($cmdtoplay)); // close and store the queue
+  function run(&$xml_reponse, $p)
+  {
+    $clientid    = $p["clientid"];
+    $param       = $p["param"];
+    $params      = $p["params"];
+    $sender      = $p["sender"];
+    $recipient   = $p["recipient"];
+    $recipientid = $p["recipientid"];
+    
+    $c =& $this->c;   // pfcGlobalConfig
+    $u =& $this->u;   // pfcUserConfig
+    $ct =& $c->getContainerInstance(); // Connection to the chatbackend
 
-			// Ok, the user is invited, now write something into the chat, so his tab opens
-			$container->write($recipient, 'SYSTEM', "notice", $p_array[0].' was invited by '.$sender);
-		}
-	}
+    $nicktoinvite  = isset($params[0]) ? $params[0] : '';
+    $channeltarget = isset($params[1]) ? $params[1] : $u->channels[$recipientid]["name"]; // Default: current channel
+
+    if ($nicktoinvite == '' || $channeltarget == '')
+    {
+      // Parameters are not ok
+      $cmdp = $p;
+      $cmdp["params"] = array();
+      $cmdp["param"] = _pfc("Missing parameter");
+      $cmdp["param"] .= " (".$this->usage.")";
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $cmdp);
+      return;
+    }
+		
+    // inviting a user: just add a join command to play to the aimed user metadata.
+    $nickidtoinvite = $ct->getNickId($nicktoinvite);
+    $cmdstr = 'join2';
+    $cmdp = array();
+    $cmdp['param'] = $channeltarget; // channel target name
+    $cmdp['params'][] = $channeltarget; // channel target name
+    pfcCommand::AppendCmdToPlay($nickidtoinvite, $cmdstr, $cmdp);
+
+    // notify the aimed channel that a user has been invited
+    $cmdp = array();
+    $cmdp["param"] = $nicktoinvite.' was invited by '.$sender;
+    $cmdp["flag"]  = 1;
+    $cmdp["recipient"]   = pfcCommand_join::GetRecipient($channeltarget);
+    $cmdp["recipientid"] = pfcCommand_join::GetRecipientId($channeltarget);
+    $cmd =& pfcCommand::Factory("notice");
+    $cmd->run($xml_reponse, $cmdp);    
+  }
 }
 ?>

@@ -1,15 +1,16 @@
 <?php
 
 require_once(dirname(__FILE__)."/../pfccommand.class.php");
+require_once(dirname(__FILE__)."/../commands/join.class.php");
 
 class pfcCommand_leave extends pfcCommand
 {
-  var $usage = "/leave [{recipientid} {reason}]";
+  var $usage = "/leave [{channel} {reason}]";
   
   function run(&$xml_reponse, $p)
   {
     $clientid    = $p["clientid"];
-    $param       = $p["param"];
+    $params      = $p["params"];
     $sender      = $p["sender"];
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
@@ -19,13 +20,13 @@ class pfcCommand_leave extends pfcCommand
 
     // tab to leave can be passed in the parameters
     // a reason can also be present (used for kick and ban commands)
-    $id = ""; $reason = "";
-    if (preg_match("/([a-z0-9]*)( (.*)|)/i", $param, $res))
+    $id = ''; $reason = '';
+    if (count($params)>0)
     {
-      $id     = $res[1];
-      $reason = trim($res[2]);
+      $id     = pfcCommand_join::GetRecipientId($params[0]);
+      $reason = implode(" ",array_slice($params,1));
     }
-    if ($id == "") $id = $recipientid; // be default this is the current tab to leave
+    if ($id == '') $id = $recipientid; // be default this is the current tab to leave
     
     //    $xml_reponse->addScript("alert('sender=".addslashes($sender)."');");
     //    $xml_reponse->addScript("alert('recipientid=".addslashes($id)."');");
@@ -84,6 +85,15 @@ class pfcCommand_leave extends pfcCommand
       // reset the oldmsg flag
       $oldmsg_sid = "pfc_oldmsg_".$c->getId()."_".$clientid."_".$chanid;
       $_SESSION[$oldmsg_sid] = true;
+
+      // if the /leave command comes from a cmdtoplay then show the reason to the user (ex: kick or ban reason)
+      if ($p['cmdtoplay'])
+      {
+        $cmdp = $p;
+        $cmdp["param"] = $reason;
+        $cmd =& pfcCommand::Factory("error");
+        $cmd->run($xml_reponse, $cmdp);
+      }
       
       // return ok to the client
       // then the client will remove the channel' tab

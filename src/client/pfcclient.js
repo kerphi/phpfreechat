@@ -888,7 +888,22 @@ pfcClient.prototype = {
   sendRequest: function(cmd, param)
   {
     var recipientid = this.gui.getTabId();
+
+
     var req = cmd+" "+this.clientid+" "+(recipientid==''?'0':recipientid)+(param?" "+param : "");
+    if (pfc_debug)
+      if (cmd != "/update") trace('sendRequest: '+req);
+    return eval('pfc_handleRequest(req);');
+  },
+
+  // @todo remplacer sendRequest par cette fonction (cf /leave dans pfcgui.js)
+  sendRequest2: function(cmd)
+  {
+    var rx = new RegExp('(^\/[^ ]+) *(.*)','ig');
+    var ttt = cmd.split(rx);
+
+    var recipientid = this.gui.getTabId();
+    var req = ttt[1]+" "+this.clientid+" "+(recipientid==''?'0':recipientid)+' '+ttt[2];
     if (pfc_debug)
       if (cmd != "/update") trace('sendRequest: '+req);
     return eval('pfc_handleRequest(req);');

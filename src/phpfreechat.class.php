@@ -361,70 +361,21 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
       {
         // alert the other from the new pv
         // (warn other user that someone talk to him)
-        $container =& $c->getContainerInstance();
-        $cmdtoplay = $container->getUserMeta($u->privmsg[$recipientid]["pvnickid"], 'cmdtoplay');
-        $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
-        $cmdtmp = array("privmsg2",  /* cmdname */
-                        $u->nick,    /* param */
-                        $sender,     /* sender */
-                        $recipient,  /* recipient */
-                        $recipientid,/* recipientid */
-                        );
-        if (!in_array($cmdtmp, $cmdtoplay))
-        {
-          $cmdtoplay[] = $cmdtmp;
-          $container->setUserMeta($u->privmsg[$recipientid]["pvnickid"], 'cmdtoplay', serialize($cmdtoplay));
-          //$xml_reponse->addScript("alert('cmdtoplay[]=".serialize($cmdtoplay)."');");
-        }
+
+        $ct =& $c->getContainerInstance();
+        $nickidtopv = $u->privmsg[$recipientid]["pvnickid"];
+        $cmdstr = 'privmsg2';
+        $cmdp = array();
+        $cmdp['param']    = $u->nick;
+        $cmdp['params'][] = $u->nick;
+        pfcCommand::AppendCmdToPlay($nickidtopv, $cmdstr, $cmdp);
       }
 
     }
-
     
     // before playing the wanted command
     // play the found commands into the meta 'cmdtoplay'
-    $container =& $c->getContainerInstance();
-    $nickid = $u->nickid;
-    $morecmd = true;
-    while($morecmd)
-    {
-      // take a command from the list
-      $cmdtoplay = $container->getUserMeta($nickid, 'cmdtoplay');
-      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
-      $cmdtmp = array_pop($cmdtoplay);
-      if ($cmdtmp != NULL)
-      {
-        // store the new cmdtoplay list (-1 item)
-        $container->setUserMeta($nickid, 'cmdtoplay', serialize($cmdtoplay));
-
-        // play the command
-        $cmd =& pfcCommand::Factory($cmdtmp[0]);
-        $cmdp = array();
-        $cmdp["clientid"]    = $clientid;
-        $cmdp["param"]       = $cmdtmp[1];
-        $cmdp["sender"]      = $cmdtmp[2];
-        $cmdp["recipient"]   = $cmdtmp[3];
-        $cmdp["recipientid"] = $cmdtmp[4];
-        if ($c->debug)
-          $cmd->run($xml_reponse, $cmdp);
-        else
-          @$cmd->run($xml_reponse, $cmdp);
-
-        // if the cmdtoplay is a 'leave' command, then show an alert to the kicked or banished user
-        if ($cmdtmp[0] == "leave")
-        {
-          if (preg_match("/([a-z0-9]*) (.*)/i", $cmdtmp[1], $res))
-            $xml_reponse->addScript("alert('".$res[2]."');");
-        }
-        
-        // check if there is other command to play
-        $cmdtoplay = $container->getUserMeta($nickid, 'cmdtoplay');
-        $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);        
-      }
-
-      $morecmd = (count($cmdtoplay) > 0);
-    }
-
+    pfcCommand::RunPendingCmdToPlay($u->nickid, $clientid, $xml_reponse);
     
     $cmd =& pfcCommand::Factory($cmdname);
     $cmdp = array();

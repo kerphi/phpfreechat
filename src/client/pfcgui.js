@@ -256,9 +256,10 @@ pfcGui.prototype = {
     {
       var a2 = document.createElement('a');
       a2.pfc_tabid = tabid;
+      a2.pfc_tabname = name;
       a2.onclick = function(){
         var res = confirm(pfc.res.getLabel('Do you really want to leave this room ?'));
-        if (res == true) pfc.sendRequest('/leave', this.pfc_tabid); return false;
+        if (res == true) pfc.sendRequest2('/leave "'+this.pfc_tabname+'"'); return false;
       }
       a2.alt   = pfc.res.getLabel('Close this tab');
       a2.title = a2.alt;

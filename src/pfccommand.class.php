@@ -161,22 +161,88 @@ class pfcCommand
     // alert them that $nicktorewhois user info just changed
     foreach($otherids as $otherid)
     {
+      $cmdstr = 'whois2';
+      $cmdp = array();
+      $cmdp['param'] = $nicktorewhois;
+      pfcCommand::AppendCmdToPlay($otherid, $cmdstr, $cmdp);
+      
+      /*
       $cmdtoplay = $ct->getUserMeta($otherid, 'cmdtoplay');
       $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
-      $cmdtmp = array("whois2",    /* cmdname */
-                      $nicktorewhois,   /* param */
-                      NULL,       /* sender */
-                      NULL,       /* recipient */
-                      NULL,       /* recipientid */
+      $cmdtmp = array("whois2",    // cmdname 
+                      $nicktorewhois,   // param 
+                      NULL,       // sender 
+                      NULL,       // recipient 
+                      NULL,       // recipientid 
                       );
       if (!in_array($cmdtmp, $cmdtoplay))
       {
         $cmdtoplay[] = $cmdtmp;
         $ct->setUserMeta($otherid, 'cmdtoplay', serialize($cmdtoplay));
       }
+      */
     }
   }
 
+  function AppendCmdToPlay($nickid, $cmdstr, $cmdp)
+  {
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
+    
+    $ct =& $c->getContainerInstance();
+    if ($nickid != "")
+    {
+      $cmdtoplay = $ct->getUserMeta($nickid, 'cmdtoplay');
+      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
+      $cmdtmp = array();
+      $cmdtmp['cmdstr'] = $cmdstr;
+      $cmdtmp['params'] = $cmdp;
+      $cmdtoplay[] = $cmdtmp;
+      $ct->setUserMeta($nickid, 'cmdtoplay', serialize($cmdtoplay));
+      return true;
+    }
+    else
+      return false;
+  }
+
+  function RunPendingCmdToPlay($nickid,$clientid,$xml_reponse)
+  {
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
+    $ct =& $c->getContainerInstance();
+
+    $morecmd = true;
+    while($morecmd)
+    {
+      // take a command from the list
+      $cmdtoplay = $ct->getUserMeta($nickid, 'cmdtoplay');
+      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
+      if (count($cmdtoplay) == 0) { $morecmd = false; continue; }
+      // take the last posted command
+      $cmdtmp = array_pop($cmdtoplay);
+      // store the new cmdtoplay list (-1 item)
+      $ct->setUserMeta($nickid, 'cmdtoplay', serialize($cmdtoplay));
+      
+      // play the command
+      //      print_r($cmdtmp);
+      $cmd =& pfcCommand::Factory($cmdtmp['cmdstr']);
+      $cmdp = $cmdtmp['params'];
+      $cmdp['clientid']  = $clientid; // the clientid must be the current user one
+      $cmdp['cmdtoplay'] = true; // used to run some specials actions in the command (ex:  if the cmdtoplay is a 'leave' command, then show an alert to the kicked or banished user)
+      if ($c->debug)
+        $cmd->run($xml_reponse, $cmdp);
+      else
+        @$cmd->run($xml_reponse, $cmdp);
+      
+      // check if there is other command to play
+      $cmdtoplay = $ct->getUserMeta($nickid, 'cmdtoplay');
+      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);        
+
+      $morecmd = (count($cmdtoplay) > 0);
+    }
+  }
+
+  
   function trace(&$xml_reponse, $msg, $data = NULL)
   {
     if ($data != NULL)
