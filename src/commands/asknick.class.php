@@ -34,7 +34,7 @@ class pfcCommand_asknick extends pfcCommand
       }
       else
         $msg = "'".$nicktochange."' is used, please choose another nickname.";
-      $xml_reponse->addScript("var newnick = prompt('".addslashes($msg)."', '".addslashes($nicktochange)."'); if (newnick) pfc.sendRequest('/nick', newnick);");
+      $xml_reponse->addScript("var newnick = prompt('".addslashes($msg)."', '".addslashes($nicktochange)."'); if (newnick) pfc.sendRequest('/nick \"'+newnick+'\"');");
     }
   }
 }

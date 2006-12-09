@@ -4,12 +4,13 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_unban extends pfcCommand
 {
-  var $usage = "/unban {id}";
+  var $usage = "/unban {nickname}";
   
   function run(&$xml_reponse, $p)
   {
     $clientid    = $p["clientid"];
     $param       = $p["param"];
+    $params      = $p["params"];
     $sender      = $p["sender"];
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
@@ -17,9 +18,12 @@ class pfcCommand_unban extends pfcCommand
     $c =& $this->c;
     $u =& $this->u;
 
-    $container =& $c->getContainerInstance();
+    $ct =& $c->getContainerInstance();
 
-    if (trim($param) == "")
+    $nick = isset($params[0]) ? $params[0] : '';
+    $nickid = $ct->getNickId($nick);
+      
+    if ($nick == "")
     {
       // error
       $cmdp = $p;
@@ -29,29 +33,30 @@ class pfcCommand_unban extends pfcCommand
       $cmd->run($xml_reponse, $cmdp);
       return;
     }
+
     
     $updated = false;
     $msg = "<p>"._pfc("Nobody has been unbanished")."</p>";
     
     // update the recipient banlist
-    $banlist = $container->getChanMeta($recipient, 'banlist_nickid');
+    $banlist = $ct->getChanMeta($recipient, 'banlist_nickid');
     if ($banlist == NULL)
       $banlist = array();
     else
       $banlist = unserialize($banlist);
     $nb = count($banlist);
 
-    if (in_array($param, $banlist))
+    if (in_array($nickid, $banlist))
     {
-      $banlist = array_diff($banlist, array($param));
-      $container->setChanMeta($recipient, 'banlist_nickid', serialize($banlist));
+      $banlist = array_diff($banlist, array($nickid));
+      $ct->setChanMeta($recipient, 'banlist_nickid', serialize($banlist));
       $updated = true;
-      $msg = "<p>"._pfc("%s has been unbanished", $param)."</p>";
+      $msg = "<p>"._pfc("%s has been unbanished", $nick)."</p>";
     }
-    else if ($param == "all")
+    else if ($nick == "all") // @todo move the "/unban all" command in another command /unbanall
     {
       $banlist = array();
-      $container->setChanMeta($recipient, 'banlist_nickid', serialize($banlist));
+      $ct->setChanMeta($recipient, 'banlist_nickid', serialize($banlist));
       $updated = true;
       $msg = "<p>"._pfc("%s users have been unbanished", $nb)."</p>";
     }

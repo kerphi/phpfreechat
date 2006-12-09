@@ -18,7 +18,11 @@ class pfcCommand_kick extends pfcCommand
     $c =& $this->c;
     $u =& $this->u;
 
-    if (trim($params[0]) == '')
+    $nick   = isset($params[0]) ? trim($params[0]) : '';
+    $reason = isset($params[1]) ? $params[1] : '';
+    if ($reason == '') $reason = _pfc("no reason");
+
+    if ($nick == '')
     {
       // error
       $cmdp = $p;
@@ -31,12 +35,12 @@ class pfcCommand_kick extends pfcCommand
     
     // kicking a user just add a command to play to the aimed user metadata.
     $ct =& $c->getContainerInstance();
-    $otherid  = $ct->getNickId($params[0]);
+    $otherid  = $ct->getNickId($nick);
     $channame = $u->channels[$recipientid]["name"];
     $cmdstr = 'leave';
     $cmdp = array();
     $cmdp['params'][] = $channame; // channel name
-    $cmdp['params'][] = _pfc("kicked from %s by %s - reason: %s", $channame, $sender, $params[1]); // reason
+    $cmdp['params'][] = _pfc("kicked from %s by %s - reason: %s", $channame, $sender, $reason); // reason
     pfcCommand::AppendCmdToPlay($otherid, $cmdstr, $cmdp);
   }
 }

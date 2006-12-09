@@ -18,7 +18,7 @@ pfcClient.prototype.updateNickList = function(tabid,lst)
       var a = document.createElement('a');
       a.setAttribute('href', '');
       a.pfc_nick = nicks[i];
-      a.onclick = function(){pfc.sendRequest('/privmsg', this.pfc_nick); return false;}
+      a.onclick = function(){pfc.sendRequest('/privmsg "'+this.pfc_nick+'"'); return false;}
       a.appendChild(img);
       li.appendChild(a);
     }

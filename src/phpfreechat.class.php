@@ -339,7 +339,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     $cmdname     = strtolower(isset($res['cmdname']) ? $res['cmdname'] : '');
     $clientid    = isset($res['params'][0]) ? $res['params'][0] : '';
     $recipientid = isset($res['params'][1]) ? $res['params'][1] : "";
-    $params      = array_slice($res['params'],2);
+    $params      = array_slice(is_array($res['params']) ? $res['params'] : array() ,2);
     $param       = implode(" ",$params); // to keep compatibility (will be removed)
     $sender      = $u->nick;
     

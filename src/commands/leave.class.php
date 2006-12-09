@@ -5,7 +5,7 @@ require_once(dirname(__FILE__)."/../commands/join.class.php");
 
 class pfcCommand_leave extends pfcCommand
 {
-  var $usage = "/leave [{channel} {reason}]";
+  var $usage = "/leave [ch|pv [[{channel|nickname}] {reason}]]";
   
   function run(&$xml_reponse, $p)
   {
@@ -17,24 +17,55 @@ class pfcCommand_leave extends pfcCommand
 
     $c =& $this->c;
     $u =& $this->u;
+    $ct =& $c->getContainerInstance();
 
-    // tab to leave can be passed in the parameters
-    // a reason can also be present (used for kick and ban commands)
-    $id = ''; $reason = '';
-    if (count($params)>0)
+    $type   = isset($params[0]) ? $params[0] : '';
+    $name   = isset($params[1]) ? $params[1] : '';
+    $reason = isset($params[2]) ? $params[2] : '';
+
+    if ($type != 'ch' && $type != 'pv' &&  $type != '')
     {
-      $id     = pfcCommand_join::GetRecipientId($params[0]);
-      $reason = implode(" ",array_slice($params,1));
+      // error
+      $cmdp = $p;
+      $cmdp["param"] = _pfc("Missing parameter");
+      $cmdp["param"] .= " (".$this->usage.")";
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $cmdp);
+      return;
     }
-    if ($id == '') $id = $recipientid; // be default this is the current tab to leave
-    
-    //    $xml_reponse->addScript("alert('sender=".addslashes($sender)."');");
-    //    $xml_reponse->addScript("alert('recipientid=".addslashes($id)."');");
 
+    
+    // get the recipientid to close (a pv or a channel)
+    $id = '';
+    if ($type == 'ch')
+    {
+      if ($name == '')
+        $id = $recipientid;
+      else
+        $id = pfcCommand_join::GetRecipientId($name);
+    }
+    else if ($type == 'pv')
+    {
+      // pv
+      $pvnickid = $ct->getNickId($name);
+      $nickid   = $u->nickid;
+      if ($pvnickid != '')
+      {
+        // generate a pvid from the two nicknames ids
+        $a = array($pvnickid, $nickid); sort($a);
+        $pvrecipient = "pv_".$a[0]."_".$a[1];
+        $id = md5($pvrecipient);
+      }
+    }
+    else
+      $id = $recipientid;
+    
+
+    
     $leavech = false;
     $leavepv = false;
-    $leave_recip = "";
-    $leave_id    = "";
+    $leave_recip = '';
+    $leave_id    = '';
 
     // check into channels
     if ( isset($u->channels[$id]) )
@@ -72,7 +103,6 @@ class pfcCommand_leave extends pfcCommand
       }
 
       // remove the nickname from the channel/pv
-      $ct =& $c->getContainerInstance();
       $ct->removeNick($leave_recip, $u->nickid);
 
       // reset the sessions indicators

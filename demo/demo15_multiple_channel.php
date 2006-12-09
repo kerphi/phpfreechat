@@ -24,8 +24,8 @@ $chat = new phpFreeChat( $params );
   <body>
   <p>Rooms list:</p>
   <ul>
-    <li><a href="#" onclick="pfc.sendRequest('/join', 'room1');">room1</a></li>
-    <li><a href="#" onclick="pfc.sendRequest('/join', 'room2');">room2</a></li>
+    <li><a href="#" onclick="pfc.sendRequest('/join room1');">room1</a></li>
+    <li><a href="#" onclick="pfc.sendRequest('/join room2');">room2</a></li>
   </ul> 
 
 <?php $chat->printChat(); ?>

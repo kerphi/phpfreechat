@@ -138,7 +138,7 @@ pfcClient.prototype = {
     if (nickname == '') nickname = this.nickname;
     var newnick = prompt(this.res.getLabel('Please enter your nickname'), nickname);
     if (newnick)
-      this.sendRequest('/nick', newnick);
+      this.sendRequest('/nick "'+newnick+'"');
   },
   
   /**
@@ -158,7 +158,7 @@ pfcClient.prototype = {
           this.askNick(this.nickname);
         else
         {
-          this.sendRequest('/nick', this.nickname);
+          this.sendRequest('/nick "'+this.nickname+'"');
         }
         
         // give focus the the input text box if wanted
@@ -266,34 +266,37 @@ pfcClient.prototype = {
         for (var i=0; i<pfc_defaultchan.length; i++)
         {
           if (i<pfc_defaultchan.length-1)
-            cmd = "/join2";
+            cmd = '/join2';
           else
-            cmd = "/join";
-          this.sendRequest(cmd, pfc_defaultchan[i]);
+            cmd = '/join';
+          cmd += ' "'+pfc_defaultchan[i]+'"';
+          this.sendRequest(cmd);
         }
         // now join channels comming from sessions
         for (var i=0; i<pfc_userchan.length; i++)
         {
           if (i<pfc_userchan.length-1)
-            cmd = "/join2";
+            cmd = '/join2';
           else
-            cmd = "/join";
-          this.sendRequest(cmd, pfc_userchan[i]);
+            cmd = '/join';
+          cmd += ' "'+pfc_userchan[i]+'"'; 
+          this.sendRequest(cmd);
         }
 
         // join the default privmsg comming from the parameter list
         for (var i=0; i<pfc_defaultprivmsg.length; i++)
         {
           if (i<pfc_defaultprivmsg.length-1)
-            cmd = "/privmsg2";
+            cmd = '/privmsg2';
           else
-            cmd = "/privmsg";
-          this.sendRequest(cmd, pfc_defaultprivmsg[i]);
+            cmd = '/privmsg';
+          cmd += ' "'+pfc_defaultprivmsg[i]+'"'; 
+          this.sendRequest(cmd);
         }
         // now join privmsg comming from the sessions
         for (var i=0; i<pfc_userprivmsg.length; i++)
         {
-          this.sendRequest("/privmsg", pfc_userprivmsg[i]);
+          this.sendRequest('/privmsg "'+pfc_userprivmsg[i]+'"');
         }
       }
 
@@ -457,7 +460,7 @@ pfcClient.prototype = {
           var nickid = meta['users']['nickid'][i];
           var nick   = meta['users']['nick'][i];
           var um = this.getAllUserMeta(nickid);  
-          if (!um) this.sendRequest('/whois2', nick);
+          if (!um) this.sendRequest('/whois2 "'+nick+'"');
         }
 
         // update the nick list display on the current channel
@@ -541,7 +544,7 @@ pfcClient.prototype = {
       // a user command
       cmd = wval.replace(re, '$1');
       param = wval.replace(re, '$3');
-      this.sendRequest(cmd, param.substr(0, pfc_max_text_len + this.clientid.length));
+      this.sendRequest(cmd +' '+ param.substr(0, pfc_max_text_len + 2*this.clientid.length));
     }
     else
     {
@@ -558,7 +561,7 @@ pfcClient.prototype = {
       if (this.current_text_color != '' && wval.length != '')
         wval = '[color=#' + this.current_text_color + '] ' + wval + ' [/color]';
 
-      this.sendRequest('/send', wval);
+      this.sendRequest('/send '+ wval);
     }
     w.value = '';
     return false;
@@ -885,28 +888,14 @@ pfcClient.prototype = {
    * Call the ajax request function
    * Will query the server
    */
-  sendRequest: function(cmd, param)
+  sendRequest: function(cmd)
   {
-    var recipientid = this.gui.getTabId();
-
-
-    var req = cmd+" "+this.clientid+" "+(recipientid==''?'0':recipientid)+(param?" "+param : "");
     if (pfc_debug)
-      if (cmd != "/update") trace('sendRequest: '+req);
-    return eval('pfc_handleRequest(req);');
-  },
-
-  // @todo remplacer sendRequest par cette fonction (cf /leave dans pfcgui.js)
-  sendRequest2: function(cmd)
-  {
+      if (cmd != "/update") trace('sendRequest: '+cmd);
     var rx = new RegExp('(^\/[^ ]+) *(.*)','ig');
-    var ttt = cmd.split(rx);
-
     var recipientid = this.gui.getTabId();
-    var req = ttt[1]+" "+this.clientid+" "+(recipientid==''?'0':recipientid)+' '+ttt[2];
-    if (pfc_debug)
-      if (cmd != "/update") trace('sendRequest: '+req);
-    return eval('pfc_handleRequest(req);');
+    cmd = cmd.replace(rx, '$1 '+this.clientid+' '+(recipientid==''?'0':recipientid)+' $2');
+    return eval('pfc_handleRequest(cmd);');
   },
 
   /**
@@ -1028,7 +1017,7 @@ pfcClient.prototype = {
       a.pfc_parent = div;
       a.onclick = function(evt){
         var nick = pfc.getUserMeta(this.pfc_nickid,'nick');
-        pfc.sendRequest('/privmsg', nick);
+        pfc.sendRequest('/privmsg "'+nick+'"');
         this.pfc_parent.style.display = 'none';
         return false;
       }

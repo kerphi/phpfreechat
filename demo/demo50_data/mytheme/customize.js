@@ -38,7 +38,7 @@ pfcClient.prototype.updateNickWhoisBox = function(nickid)
       a.pfc_parent = div;
       a.onclick = function(evt){
         var nick = pfc.getUserMeta(this.pfc_nickid,'nick');
-        pfc.sendRequest('/privmsg', nick);
+        pfc.sendRequest('/privmsg "'+nick+'"');
         this.pfc_parent.style.display = 'none';
         return false;
       }

@@ -18,7 +18,12 @@ class pfcCommand_ban extends pfcCommand
     $c =& $this->c;
     $u =& $this->u;
 
-    if (trim($params[0]) == '')
+    $nick   = isset($params[0]) ? trim($params[0]) : '';
+    $reason = isset($params[1]) ? $params[1] : '';
+    if ($reason == '') $reason = _pfc("no reason");
+    $channame = $u->channels[$recipientid]["name"];
+    
+    if ($nick == '')
     {
       // error
       $cmdp = $p;
@@ -30,11 +35,11 @@ class pfcCommand_ban extends pfcCommand
     }
 
     $ct =& $c->getContainerInstance();
-    $nickidtoban = $ct->getNickId($params[0]);
+    $nickidtoban = $ct->getNickId($nick);
     
     // notify all the channel
     $cmdp = $p;
-    $cmdp["param"] = _pfc("banished from %s by %s", $recipient, $sender);
+    $cmdp["param"] = _pfc("banished from %s by %s", $channame, $sender);
     $cmdp["flag"]  = 1;
     $cmd =& pfcCommand::Factory("notice");
     $cmd->run($xml_reponse, $cmdp);
@@ -42,8 +47,8 @@ class pfcCommand_ban extends pfcCommand
     // kick the user (maybe in the future, it will be dissociate in a /kickban command)
     $cmdp = $p;
     $cmdp["params"]   = array();
-    $cmdp["params"][] = $params[0]; // nickname to kick
-    $cmdp["params"][] = $params[1]; // reason
+    $cmdp["params"][] = $nick; // nickname to kick
+    $cmdp["params"][] = $reason; // reason
     $cmd =& pfcCommand::Factory("kick");
     $cmd->run($xml_reponse, $cmdp);
 
