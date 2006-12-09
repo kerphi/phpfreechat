@@ -328,4 +328,16 @@ $GLOBALS["i18n"]["Enable sound notifications"] = "";
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["Disable sound notifications"] = "";
 
+// line 23 in kick.class.php
+$GLOBALS["i18n"]["no reason"] = "";
+
+// line 24 in banlist.class.php
+$GLOBALS["i18n"]["The banished user list is:"] = "";
+
+// line 39 in banlist.class.php
+$GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "";
+
+// line 43 in kick.class.php
+$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "";
+
 ?>
