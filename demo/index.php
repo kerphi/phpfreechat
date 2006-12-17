@@ -121,6 +121,7 @@
       <li><a href="demo52_in_bangla.php">demo52 - the Bangla translation of the chat</a></li>
       <li><a href="demo53_in_armenian.php">demo53 - the Armenian translation of the chat</a></li>
       <li><a href="demo54_in_esperanto.php">demo54 - the Esperanto translation of the chat</a></li>
+      <li><a href="demo56_in_romanian.php">demo56 - the Romanian translation of the chat</a></li>
     </ul>
 
 </div>
