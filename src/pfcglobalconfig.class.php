@@ -235,6 +235,7 @@ class pfcGlobalConfig
    */
   function &getContainerInstance()
   {
+  
     // bug in php4: cant make a static pfcContainer instance because
     // it make problems with pfcGlobalConfig references (not updated)
     // it works well in php5, maybe there is a workeround but I don't have time to debug this
@@ -243,11 +244,10 @@ class pfcGlobalConfig
     //    static $container;
     //    if (!isset($container))
     //    {
-    $container_classname = "pfcContainer_".$this->container_type;
-    require_once dirname(__FILE__)."/containers/".strtolower($this->container_type).".class.php";
-    $container =& new $container_classname($this);
-    //    }
+    require_once dirname(__FILE__).'/pfccontainer.class.php';
+    $container =& new pfcContainer($this,$this->container_type);
     return $container;
+    //    }
   }
 
   /**

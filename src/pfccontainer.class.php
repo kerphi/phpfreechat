@@ -20,6 +20,8 @@
  * Boston, MA  02110-1301  USA
  */
 
+ require_once dirname(__FILE__)."/pfccontainerinterface.class.php";
+ 
 /**
  * pfcContainer is an abstract class which define interface
  * to be implemented by concrete container (example: File)
@@ -27,12 +29,19 @@
  * @author Stephane Gully <stephane.gully@gmail.com>
  * @abstract
  */
-class pfcContainer
+class pfcContainer extends pfcContainerInterface
 {
-  var $c;
-  function pfcContainer(&$config) { $this->c =& $config; }  
-  function getDefaultConfig()     { return array(); }
-  function init()                 { return array(); }  
+  var $_container = null; // contains the concrete container instance
+  
+  function pfcContainer(&$c, $type = 'File')
+  {
+    pfcContainerInterface::pfcContainerInterface($c);
+
+    // create the concrete container instance
+    require_once dirname(__FILE__)."/containers/".strtolower($type).".class.php";
+    $container_classname = "pfcContainer_".$type;
+    $this->_container =& new $container_classname($this->c);
+  }
 
   /**
    * Create (connect/join) the nickname into the server or the channel locations
@@ -280,7 +289,7 @@ class pfcContainer
   {
     if ($chan == NULL) $chan = 'SERVER';
 
-    $ret = $this->getMeta("channelid-to-nickid", $this->encode($chan));
+    $ret = $this->getMeta("channelid-to-nickid", $this->encode($chan));    
     for($i = 0; $i<count($ret['timestamp']); $i++)
     {
       if ($ret['value'][$i] == $nickid) return $i;
@@ -411,7 +420,6 @@ class pfcContainer
     return $lastmsgid;
   }
 
-
   /**
    * Remove all created data for this server (identified by serverid)
    * Notice: for the default File container, it's just a recursive directory remove
@@ -421,25 +429,6 @@ class pfcContainer
     $this->rmMeta(NULL);
   }
   
-  /**
-   * In the default File container: used to encode UTF8 strings to ASCII filenames
-   * This method can be overridden by the concrete container
-   */  
-  function encode($str)
-  {
-    return $str;
-  }
-  
-  /**
-   * In the default File container: used to decode ASCII filenames to UTF8 strings
-   * This method can be overridden by the concrete container
-   */  
-  function decode($str)
-  {
-    return $str;
-  }
-
-
   function getAllUserMeta($nickid)
   {
     $result = array();
@@ -483,7 +472,9 @@ class pfcContainer
     $ret = $this->setMeta("channelid-to-metadata", $this->encode($chan), $key, $value);
     return $ret;
   }
-
+  
+  var $_cache = array();
+  
   /**
    * Write a meta data value identified by a group / subgroup / leaf [with a value]
    * As an example in the default file container this  arborescent structure is modelised by simple directories
@@ -499,7 +490,23 @@ class pfcContainer
    * @return 1 if the old leaf has been overwritten, 0 if a new leaf has been created
    */
   function setMeta($group, $subgroup, $leaf, $leafvalue = NULL)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  {
+    $ret = $this->_container->setMeta($group, $subgroup, $leaf, $leafvalue);
+
+    echo "setMeta($group, $subgroup, $leaf, $leafvalue)\n";
+    //print_r($ret);
+
+    
+    // @todo creer la bonne hierarchie du cache
+    
+    //$this->_cache['group'][$group] = array_merge($this->_cache['group'][$group],array($subgroup));
+    //$this->_cache[$group][$subgroup][$leaf] = $leafvalue;
+    
+    //$this->_cache['subgroup'][$group][$subgroup] = $ret;
+    //$this->_cache['leaf'][$group][$subgroup][$leaf] = ($withleafvalue ? ;    
+
+    return $ret;    
+  }
 
   
   /**
@@ -511,7 +518,73 @@ class pfcContainer
    * @return array which contains two subarray 'timestamp' and 'value'
    */
   function getMeta($group, $subgroup = null, $leaf = null, $withleafvalue = false)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  {
+    echo "getMeta($group, $subgroup, $leaf, $withleafvalue)\n";
+    
+    // check in the cache
+    $ret = array('timestamp' => array(),
+                 'value'     => array());
+    if ($subgroup == null &&
+        isset($this->_cache[$group]['value']))
+    {
+      $ret['timestamp'] = $this->_cache[$group]['timestamp'];
+      $ret['value']     = $this->_cache[$group]['value'];
+      echo "getMeta->incache\n";
+      return $ret;    
+    }
+    else if ($leaf == null &&
+             isset($this->_cache[$group][$subgroup]['value']))
+    {
+      $ret['timestamp'] = $this->_cache[$group][$subgroup]['timestamp'];
+      $ret['value']     = $this->_cache[$group][$subgroup]['value'];
+      echo "getMeta->incache\n";
+      return $ret;
+    }
+    else
+    {
+      if ($withleafvalue)
+      {
+        if (isset($this->_cache[$group][$subgroup][$leaf]['value']))
+        {
+          echo "getMeta->incache\n";
+          return $this->_cache[$group][$subgroup][$leaf];
+        }
+      }
+      else
+      {
+        if (isset($this->_cache[$group][$subgroup][$leaf]['timestamp']))
+        {
+          echo "getMeta->incache\n";        
+          return $this->_cache[$group][$subgroup][$leaf];
+        }
+      }
+    }
+
+    echo "getMeta->notincache\n";
+    
+    // get the fresh data
+    $ret = $this->_container->getMeta($group, $subgroup, $leaf, $withleafvalue);
+
+    // store in the cache
+    if ($subgroup == null)
+    {
+      $this->_cache[$group]['value']     = $ret['value'];
+      $this->_cache[$group]['timestamp'] = $ret['timestamp'];
+    }
+    else if ($leaf == null)
+    {
+      $this->_cache[$group][$subgroup]['value']     = $ret['value'];
+      $this->_cache[$group][$subgroup]['timestamp'] = $ret['timestamp'];
+    }
+    else
+    {
+      if ($withleafvalue)
+        $this->_cache[$group][$subgroup][$leaf]['value'] = $ret['value'];
+      $this->_cache[$group][$subgroup][$leaf]['timestamp'] = $ret['timestamp'];    
+    }
+    
+    return $ret;
+  }
   
 
   /**
@@ -522,8 +595,43 @@ class pfcContainer
    * @return true on success, false on error
    */
   function rmMeta($group, $subgroup = null, $leaf = null)
-  { die(_pfc("%s must be implemented", get_class($this)."::".__FUNCTION__)); }
+  {
+    echo "rmMeta($group, $subgroup, $leaf)\n";
+ 
+    print_r($this->_cache);
 
+    // remove from the cache
+    if ($group == null)
+      $this->_cache = array();
+    else if ($subgroup == null)
+      unset($this->_cache[$group]);
+    else if ($leaf == null)
+      unset($this->_cache[$group][$subgroup]);
+    else
+      unset($this->_cache[$group][$subgroup][$leaf]);  
+
+    print_r($this->_cache);
+  
+    return $this->_container->rmMeta($group, $subgroup, $leaf);
+  }
+  
+  /**
+   * In the default File container: used to encode UTF8 strings to ASCII filenames
+   * This method can be overridden by the concrete container
+   */  
+  function encode($str)
+  {
+    return $this->_container->encode($str);
+  }
+  
+  /**
+   * In the default File container: used to decode ASCII filenames to UTF8 strings
+   * This method can be overridden by the concrete container
+   */  
+  function decode($str)
+  {
+    return $this->_container->decode($str);
+  }    
 }
 
 ?>

@@ -20,24 +20,19 @@
  * Boston, MA  02110-1301  USA
  */
 
-require_once dirname(__FILE__)."/../pfccontainer.class.php";
+require_once dirname(__FILE__)."/../pfccontainerinterface.class.php";
 
 /**
  * pfcContainer_File is a concret container which stock data into files
  *
  * @author Stephane Gully <stephane.gully@gmail.com>
  */
-class pfcContainer_File extends pfcContainer
+class pfcContainer_File extends pfcContainerInterface
 {
   var $_users = array("nickid"    => array(),
                       "timestamp" => array());
   var $_meta = array();
   
-  function pfcContainer_File(&$config)
-  {
-    pfcContainer::pfcContainer($config);
-  }
-
   function loadPaths()
   {
     $c =& $this->c;
@@ -91,7 +86,7 @@ class pfcContainer_File extends pfcContainer
     {
       if (file_exists($leaffilename) &&
           filesize($leaffilename)>0) unlink($leaffilename);
-      touch($leaffilename);
+      touch($leaffilename);     
     }
     else
     {
@@ -122,7 +117,6 @@ class pfcContainer_File extends pfcContainer
     $dir_base = $c->container_cfg_server_dir;
 
     $dir = $dir_base.'/'.$group;
-
     if ($subgroup == NULL)
     {
       if (is_dir($dir))
@@ -154,6 +148,7 @@ class pfcContainer_File extends pfcContainer
         }
         closedir($dh);
       }
+
       return $ret;
     }
     
