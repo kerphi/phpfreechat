@@ -79,9 +79,10 @@ class pfcContainerTestcase extends PHPUnit_TestCase
 
     // on the channel
     $this->ct->createNick($chan, $nick, $nickid);
-    $this->ct->removeNick($chan, $nickid);
+
+    $this->ct->removeNick($chan, $nickid);   
     $isonline = ($this->ct->isNickOnline($chan, $nickid) >= 0);
-    $this->assertFalse($isonline, "nickname shouldn't be online on the channel");   
+    $this->assertFalse($isonline, "nickname shouldn't be online on the channel");
     $isonline2 = ($this->ct->isNickOnline(NULL, $nickid) >= 0);
     $this->assertTrue($isonline2, "nickname should be online on the server");   
 
@@ -89,7 +90,7 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $isonline = ($this->ct->isNickOnline(NULL, $nickid) >= 0);
     $this->assertFalse($isonline, "nickname shouldn't be online on the server");
   }
-
+  
   function test_getNickId_Generic()
   {
     $c  =& $this->c;
@@ -377,6 +378,33 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $this->assertEquals($subgroup1, $ret["value"][0], "the subgroup name is wrong");
     $this->assertEquals($subgroup2, $ret["value"][1], "the subgroup name is wrong");
   }
+
+  function test_rmMeta_Generic()
+  {
+    $c  =& $this->c;
+    $ct =& $this->ct;
+
+    $prefix   = __FUNCTION__;
+    $group    = $prefix."_nickid-to-channelid";
+    $subgroup1 = $prefix."_nickid1";
+    $subgroup2 = $prefix."_nickid2";
+    $leaf1    = $prefix."_channelid1";
+    $leaf2    = $prefix."_channelid2";
+    $ct->setMeta($group, $subgroup1, $leaf1);
+    $ct->setMeta($group, $subgroup1, $leaf2);
+
+    $ret = $ct->getMeta($group,$subgroup1);
+    $ret = $ct->getMeta($group,$subgroup1,$leaf1);
+    
+    $ct->rmMeta($group, $subgroup1, $leaf1);
+    
+    $ret = $ct->getMeta($group,$subgroup1);
+    $this->assertEquals(1, count($ret["value"]), "number of leaf is wrong");
+    $ret = $ct->getMeta($group,$subgroup1,$leaf1);
+    $this->assertEquals(0, count($ret["value"]), "leaf should not exists");    
+  }
+
+  
 }
 
 ?>
