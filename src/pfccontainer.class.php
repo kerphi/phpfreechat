@@ -289,7 +289,7 @@ class pfcContainer extends pfcContainerInterface
   {
     if ($chan == NULL) $chan = 'SERVER';
 
-    $ret = $this->getMeta("channelid-to-nickid", $this->encode($chan));    
+    $ret = $this->getMeta("channelid-to-nickid", $this->encode($chan));
     for($i = 0; $i<count($ret['timestamp']); $i++)
     {
       if ($ret['value'][$i] == $nickid) return $i;
@@ -493,17 +493,22 @@ class pfcContainer extends pfcContainerInterface
   {
     $ret = $this->_container->setMeta($group, $subgroup, $leaf, $leafvalue);
 
-    echo "setMeta($group, $subgroup, $leaf, $leafvalue)\n";
-    //print_r($ret);
+    //    echo "setMeta($group, $subgroup, $leaf, $leafvalue)\n";
 
-    
-    // @todo creer la bonne hierarchie du cache
-    
-    //$this->_cache['group'][$group] = array_merge($this->_cache['group'][$group],array($subgroup));
-    //$this->_cache[$group][$subgroup][$leaf] = $leafvalue;
-    
-    //$this->_cache['subgroup'][$group][$subgroup] = $ret;
-    //$this->_cache['leaf'][$group][$subgroup][$leaf] = ($withleafvalue ? ;    
+    if (isset($this->_cache[$group]['value']) &&
+        !in_array($subgroup, $this->_cache[$group]['value']))
+    {
+      $this->_cache[$group]['value'][]     = $subgroup;
+      $this->_cache[$group]['timestamp'][] = time();
+    }
+    if (isset($this->_cache[$group]['childs'][$subgroup]['value']) &&
+        !in_array($leaf, $this->_cache[$group]['childs'][$subgroup]['value']))
+    {
+      $this->_cache[$group]['childs'][$subgroup]['value'][]     = $leaf;
+      $this->_cache[$group]['childs'][$subgroup]['timestamp'][] = time();
+    }
+    $this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]['value'] = array($leafvalue);
+    $this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]['timestamp'] = array(time());
 
     return $ret;    
   }
@@ -519,52 +524,58 @@ class pfcContainer extends pfcContainerInterface
    */
   function getMeta($group, $subgroup = null, $leaf = null, $withleafvalue = false)
   {
-    echo "getMeta($group, $subgroup, $leaf, $withleafvalue)\n";
-    
-    // check in the cache
     $ret = array('timestamp' => array(),
                  'value'     => array());
+
+    
+    // check in the cache
+    $incache = false;
     if ($subgroup == null &&
         isset($this->_cache[$group]['value']))
     {
-      $ret['timestamp'] = $this->_cache[$group]['timestamp'];
-      $ret['value']     = $this->_cache[$group]['value'];
-      echo "getMeta->incache\n";
-      return $ret;    
+      $incache = true;
+      $ret = $this->_cache[$group];
     }
     else if ($leaf == null &&
-             isset($this->_cache[$group][$subgroup]['value']))
+             isset($this->_cache[$group]['childs'][$subgroup]['value']))
     {
-      $ret['timestamp'] = $this->_cache[$group][$subgroup]['timestamp'];
-      $ret['value']     = $this->_cache[$group][$subgroup]['value'];
-      echo "getMeta->incache\n";
-      return $ret;
+      $incache = true;
+      $ret = $this->_cache[$group]['childs'][$subgroup];
     }
     else
     {
       if ($withleafvalue)
       {
-        if (isset($this->_cache[$group][$subgroup][$leaf]['value']))
+        if (isset($this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]['value']))
         {
-          echo "getMeta->incache\n";
-          return $this->_cache[$group][$subgroup][$leaf];
+          $incache = true;
+          $ret = $this->_cache[$group]['childs'][$subgroup]['childs'][$leaf];
         }
       }
       else
       {
-        if (isset($this->_cache[$group][$subgroup][$leaf]['timestamp']))
+        if (isset($this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]['timestamp']))
         {
-          echo "getMeta->incache\n";        
-          return $this->_cache[$group][$subgroup][$leaf];
+          $incache = true;
+          $ret = $this->_cache[$group]['childs'][$subgroup]['childs'][$leaf];
         }
       }
     }
 
-    echo "getMeta->notincache\n";
+    //    echo "getMeta($group, $subgroup, $leaf, $withleafvalue)".($incache?"incache":"notincache")."\n";
+
+    
+    if ($incache)
+    {
+      $ret = array('timestamp' => $ret['timestamp'],
+                   'value'     => $ret['value']);
+      return $ret;
+    }
     
     // get the fresh data
     $ret = $this->_container->getMeta($group, $subgroup, $leaf, $withleafvalue);
 
+    
     // store in the cache
     if ($subgroup == null)
     {
@@ -573,14 +584,16 @@ class pfcContainer extends pfcContainerInterface
     }
     else if ($leaf == null)
     {
-      $this->_cache[$group][$subgroup]['value']     = $ret['value'];
-      $this->_cache[$group][$subgroup]['timestamp'] = $ret['timestamp'];
+      $this->_cache[$group]['childs'][$subgroup]['value']     = $ret['value'];
+      $this->_cache[$group]['childs'][$subgroup]['timestamp'] = $ret['timestamp'];
     }
     else
     {
       if ($withleafvalue)
-        $this->_cache[$group][$subgroup][$leaf]['value'] = $ret['value'];
-      $this->_cache[$group][$subgroup][$leaf]['timestamp'] = $ret['timestamp'];    
+        $this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]['value'] = $ret['value'];
+      else
+        unset($this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]['value']);
+      $this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]['timestamp'] = $ret['timestamp'];    
     }
     
     return $ret;
@@ -596,9 +609,10 @@ class pfcContainer extends pfcContainerInterface
    */
   function rmMeta($group, $subgroup = null, $leaf = null)
   {
-    echo "rmMeta($group, $subgroup, $leaf)\n";
- 
-    print_r($this->_cache);
+    //echo "rmMeta($group, $subgroup, $leaf)\n";
+
+    //    if ($group == "channelid-to-nickid")
+    //    { echo "avant\n";   print_r($this->_cache[$group]); }
 
     // remove from the cache
     if ($group == null)
@@ -606,11 +620,34 @@ class pfcContainer extends pfcContainerInterface
     else if ($subgroup == null)
       unset($this->_cache[$group]);
     else if ($leaf == null)
-      unset($this->_cache[$group][$subgroup]);
+    {
+      if (isset($this->_cache[$group]['value']))
+      {
+        $i = array_search($subgroup,$this->_cache[$group]['value']);
+        if ($i !== FALSE)
+        {
+          unset($this->_cache[$group]['value'][$i]);
+          unset($this->_cache[$group]['timestamp'][$i]);
+        }
+      }
+      unset($this->_cache[$group]['childs'][$subgroup]);
+    }
     else
-      unset($this->_cache[$group][$subgroup][$leaf]);  
+    {
+      if (isset($this->_cache[$group]['childs'][$subgroup]['value']))
+      {
+        $i = array_search($leaf,$this->_cache[$group]['childs'][$subgroup]['value']);
+        if ($i !== FALSE)
+        {
+          unset($this->_cache[$group]['childs'][$subgroup]['value'][$i]);
+          unset($this->_cache[$group]['childs'][$subgroup]['timestamp'][$i]);
+        }
+      }
+      unset($this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]);
+    }
 
-    print_r($this->_cache);
+    //    if ($group == "channelid-to-nickid")
+    //    { echo "apres\n";   print_r($this->_cache[$group]); }
   
     return $this->_container->rmMeta($group, $subgroup, $leaf);
   }
