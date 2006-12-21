@@ -62,9 +62,9 @@ class pfcCommand_unban extends pfcCommand
     }
     
     if ($updated)
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
     else
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko', '".$msg."');");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ko', '".$msg."');");
   }
 }
 

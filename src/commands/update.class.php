@@ -69,10 +69,10 @@ class pfcCommand_update extends pfcCommand
         $cmd->run($xml_reponse, $cmdp);
       }
 
-      $xml_reponse->addScript("pfc.handleResponse('update', 'ok', '');");
+      $xml_reponse->script("pfc.handleResponse('update', 'ok', '');");
     }
     else
-      $xml_reponse->addScript("pfc.handleResponse('update', 'ko', '');");
+      $xml_reponse->script("pfc.handleResponse('update', 'ko', '');");
 
   }
 }

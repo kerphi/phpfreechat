@@ -19,7 +19,7 @@ function getnewlog($chatid, $section = "")
     unlink($filename);
     $xml_reponse->addAppend("debug".$section, "innerHTML", $html);
   }
-  $xml_reponse->addScript("window.setTimeout('phpfreechat_getnewlog(\'".$chatid."\',\'".$section."\')', 1000);");
+  $xml_reponse->script("window.setTimeout('phpfreechat_getnewlog(\'".$chatid."\',\'".$section."\')', 1000);");
   return $xml_reponse->getXML();
 }
 $xajax = new xajax("", "phpfreechat_");

@@ -39,7 +39,7 @@ class pfcCommand_banlist extends pfcCommand
     $msg .= "<p>"._pfc("'/unban {nickname}' will unban the user identified by {nickname}")."</p>";
     $msg .= "<p>"._pfc("'/unban all'  will unban all the users on this channel")."</p>";
       
-    $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".addslashes($msg)."');");
+    $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '".addslashes($msg)."');");
   }
 }
 

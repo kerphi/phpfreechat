@@ -67,7 +67,7 @@ class pfcCommand_nick extends pfcCommand
         $cmdp["recipientid"] = $id;
         $cmd->run($xml_reponse, $cmdp);
       }
-      $xml_reponse->addScript("pfc.handleResponse('nick', 'changed', '".addslashes($newnick)."');");
+      $xml_reponse->script("pfc.handleResponse('nick', 'changed', '".addslashes($newnick)."');");
     }
     
     // new nickname is undefined (not used) and
@@ -90,7 +90,7 @@ class pfcCommand_nick extends pfcCommand
       $u->saveInCache();
       $this->forceWhoisReload($u->nick);
 
-      $xml_reponse->addScript("pfc.handleResponse('nick', 'connected', '".addslashes($newnick)."');");
+      $xml_reponse->script("pfc.handleResponse('nick', 'connected', '".addslashes($newnick)."');");
     
       if ($c->debug)
         pxlog("/nick ".$newnick." (first connection, oldnick=".$oldnick.")", "chat", $c->getId());

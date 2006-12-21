@@ -60,10 +60,10 @@ class pfcCommand_whois extends pfcCommand
       
       $json = new Services_JSON();
       $js = $json->encode($usermeta);
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', ".$js.");");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', ".$js.");");
     }
     else
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko','".$param."');");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ko','".$param."');");
   }
 }
 

@@ -46,7 +46,7 @@ class pfcCommand_who extends pfcCommand
 
     $chanmeta = $this->_getChanMeta($recipient, $recipientid);
     
-    $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', ".$chanmeta.");");
+    $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', ".$chanmeta.");");
   }
 
   function _getChanMeta($recipient, $recipientid)

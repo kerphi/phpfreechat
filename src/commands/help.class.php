@@ -32,7 +32,7 @@ class pfcCommand_help extends pfcCommand
     $str = _pfc("Here is the command list:")."<br/>";
     $str .= implode("<br/>", $cmdlist);
     
-    $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$str."');");
+    $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '".$str."');");
   }
 }
 

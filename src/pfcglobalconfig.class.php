@@ -99,7 +99,11 @@ class pfcGlobalConfig
   var $theme               = "default";
   var $themepath           = "";
   var $themepath_default   = "";
+  var $theme_url           = "";
+  var $theme_default_url   = "";
 
+  var $baseurl             = "";
+  
   var $language            = "";      // could be something in i18n/* directory ("" means the language is guess from the server config)
   var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
   var $container_type      = "File";
@@ -125,7 +129,7 @@ class pfcGlobalConfig
   // private parameters
   var $_sys_proxies          = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
   var $_proxies              = array(); // will contains proxies to execute on each command (filled in the init step)
-  var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg", "nickmeta");
+  var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg", "nickmeta","baseurl");
   var $_params_type         = array();
   
   function pfcGlobalConfig( $params = array() )
@@ -151,10 +155,12 @@ class pfcGlobalConfig
     else
       $this->data_public_path = $params["data_public_path"];
 
+    /*
     // delete the cache if no proxy.php file is found
     if (!file_exists($this->_getProxyFile()))
       @unlink($this->_getCacheFile());
-    
+    */
+
     // check if a cached configuration allready exists
     // don't load parameters if the cache exists
     $cachefile = $this->_getCacheFile();    
@@ -306,7 +312,7 @@ class pfcGlobalConfig
     }
 
     if ($this->title == "")        $this->title        = _pfc("My Chat");
-    if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.2.3";
+    if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.5_beta1";
     if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
       
     // first of all, check the used functions
@@ -337,7 +343,7 @@ class pfcGlobalConfig
     $dir = $this->xajaxpath;
     if (!is_dir($dir))
       $this->errors[] = _pfc("%s doesn't exist, %s library can't be found", $dir, "XAJAX");
-    if (!file_exists($dir."/xajax.inc.php"))
+    if (!file_exists($dir."/xajax_core/xajax.inc.php"))
       $this->errors[] = _pfc("%s not found, %s library can't be found", "xajax.inc.php", "XAJAX");
     // install public xajax js to phpfreechat public directory
     //    $this->errors = array_merge($this->errors, @install_file($this->xajaxpath."/xajax_js/xajax.js",
@@ -363,6 +369,8 @@ class pfcGlobalConfig
     if ($this->data_public_url == "")
       $this->data_public_url = relativePath($this->client_script_path, $this->data_public_path);
 
+
+    
     // ---
     // test server script
     if ($this->server_script_path == "")
@@ -385,9 +393,11 @@ class pfcGlobalConfig
       $this->themepath_default = realpath(dirname(__FILE__)."/../themes");
     if ($this->themepath == "" || !is_dir($this->themepath))
       $this->themepath = $this->themepath_default;
-    // copy the themes into the public directory
-    //    $this->errors = array_merge($this->errors, @install_dir($this->themepath_default, $this->data_public_path."/themes"));
-    //    $this->errors = array_merge($this->errors, @install_dir($this->themepath,         $this->data_public_path."/themes"));
+    // calculate theme url
+    if ($this->theme_default_url == '')
+      $this->theme_default_url = relativePath($this->client_script_path, $this->themepath_default);
+    if ($this->theme_url == '')
+      $this->theme_url = relativePath($this->client_script_path, $this->themepath);
 
     
     // ---
@@ -406,6 +416,7 @@ class pfcGlobalConfig
     if ( $this->language != "" && !in_array($this->language, $lg_list) )
       $this->errors[] = _pfc("'%s' parameter is not valid. Available values are : '%s'", "language", implode(", ", $lg_list));
 
+    /*
     // install the proxy file
     if (count($this->errors) == 0)
     {
@@ -428,6 +439,7 @@ class pfcGlobalConfig
 	chmod( $proxyfile, 0755 ); // should fix problems on OVH mutualized servers
       }
     }
+    */
 
 
     // calculate the proxies chaine
@@ -505,12 +517,14 @@ class pfcGlobalConfig
     return $this->serverid;
   }  
 
+  /*
   function _getProxyFile($serverid = "", $data_public_path = "")
   {
     if ($serverid == "")          $serverid = $this->getId();
     if ($data_public_path == "") $data_public_path = $this->data_public_path;
     return $data_public_path."/".$serverid."/proxy.php";
   }
+  */
   
   function _getCacheFile($serverid = "", $data_private_path = "")
   {
@@ -597,7 +611,8 @@ class pfcGlobalConfig
     $fexists2 = file_exists($this->themepath."/".$this->theme."/".$file);
     return ($this->theme == "default" ? $fexists1 : !$fexists2);
   }
-  
+
+  /*
   function getFileUrlByProxy($file, $addprefix = true)
   {
     if (file_exists($this->themepath."/".$this->theme."/".$file))
@@ -608,6 +623,7 @@ class pfcGlobalConfig
       else
 	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
   }
+  */
     
   function getFilePathFromTheme($file)
   {
@@ -619,6 +635,18 @@ class pfcGlobalConfig
       else
 	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
   }
+
+  function getFileUrlFromTheme($file)
+  {
+    if (file_exists($this->themepath.'/'.$this->theme.'/'.$file))
+      return $this->theme_url.'/'.$this->theme.'/'.$file;
+    else
+      if (file_exists($this->themepath_default.'/default/'.$file))
+        return $this->theme_default_url.'/default/'.$file;
+      else
+	return 'notfound';
+  }
+
 
   function filterNickname($nickname)
   {

@@ -53,12 +53,12 @@ class pfcCommand_who2 extends pfcCommand_who
     if (isset($_SESSION[$sid]) && $chanmeta == $_SESSION[$sid])
     {
       // do not send the response to save bandwidth
-      //$xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'unchanged', '');");
+      //$xml_reponse->script("pfc.handleResponse('".$this->name."', 'unchanged', '');");
     }
     else
     {
       $_SESSION[$sid] = $chanmeta;
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', ".$chanmeta.");");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', ".$chanmeta.");");
     }
   }
 }

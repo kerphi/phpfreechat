@@ -9,7 +9,7 @@ class pfcCommand_clear extends pfcCommand
     $c =& $this->c;
     $u =& $this->u;
 
-    $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '');");
+    $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '');");
   }
 }
 

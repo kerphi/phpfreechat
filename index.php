@@ -6,6 +6,7 @@ $params["title"] = "Quick chat";
 $params["nick"] = "guest".rand(1,1000);  // setup the intitial nickname
 $params["isadmin"] = true; // just for debug ;)
 $params["serverid"] = md5(__FILE__); // calculate a unique id for this chat
+$params["debug"] = true;
 $chat = new phpFreeChat( $params );
 
 ?>
@@ -19,8 +20,6 @@ $chat = new phpFreeChat( $params );
   <link rel="stylesheet" title="classic" type="text/css" href="style/footer.css" />
   <link rel="stylesheet" title="classic" type="text/css" href="style/menu.css" />
   <link rel="stylesheet" title="classic" type="text/css" href="style/content.css" />  
-  <?php $chat->printJavascript(); ?>
-  <?php $chat->printStyle(); ?>  
  </head>
  <body>
 

@@ -55,7 +55,7 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
            $owner != $this->proxyname )
       {
           $msg = _pfc("You are not allowed to change your nickname");
-          $xml_reponse->addScript("pfc.handleResponse('".$this->proxyname."', 'nick', '".addslashes($msg)."');");
+          $xml_reponse->script("pfc.handleResponse('".$this->proxyname."', 'nick', '".addslashes($msg)."');");
           return;      
       }
 
@@ -66,7 +66,7 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
       if ($newnick == $oldnick &&
           $newnickid == $oldnickid)
       {
-        $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'notchanged', '".addslashes($newnick)."');");
+        $xml_reponse->script("pfc.handleResponse('".$this->name."', 'notchanged', '".addslashes($newnick)."');");
         if ($c->debug)
           pxlog("/nick ".$newnick." (user just reloded the page so let him keep his nickname without any warnings)", "chat", $c->getId());
         return;
@@ -78,9 +78,9 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
       if ($nick_in_use)
       {
         if ($c->frozen_nick)
-          $xml_reponse->addScript("pfc.handleResponse('nick', 'notallowed', '".addslashes($newnick)."');");
+          $xml_reponse->script("pfc.handleResponse('nick', 'notallowed', '".addslashes($newnick)."');");
         else
-          $xml_reponse->addScript("pfc.handleResponse('nick', 'isused', '".addslashes($newnick)."');");
+          $xml_reponse->script("pfc.handleResponse('nick', 'isused', '".addslashes($newnick)."');");
         if ($c->debug)
           pxlog("/nick ".$newnick." (wanted nick is allready in use -> wantednickid=".$newnickid.")", "chat", $c->getId());
         return;

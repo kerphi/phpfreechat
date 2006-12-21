@@ -55,24 +55,23 @@ class phpFreeChat
     // need to initiate the user config object here because it uses sessions
     $u =& pfcUserConfig::Instance();
     
-    // Xajax doesn't support yet static class methode call
-    // I use basic functions to wrap to my statics methodes
-    function handleRequest($request)
-    {
-      return phpFreeChat::HandleRequest($request);
-    }
     // then init xajax engine
     if (!class_exists("xajax"))
-      if (file_exists($c->xajaxpath."/xajax.inc.php"))
+      if (file_exists($c->xajaxpath."/xajax_core/xajax.inc.php"))
       {
-        require_once $c->xajaxpath."/xajax.inc.php";        
+        require_once $c->xajaxpath."/xajax_core/xajax.inc.php";        
         $this->xajax = new xajax($c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""), 'pfc_');
         if ($c->debugxajax) $this->xajax->debugOn();
-        $this->xajax->waitCursorOff(); // do not show a wait cursor during chat updates
-        $this->xajax->cleanBufferOff();
-        $this->xajax->errorHandlerOn(); // used to have verbose error logs
-        $this->xajax->registerFunction("handleRequest");
-        $this->xajax->processRequests();
+        $this->xajax->setWrapperPrefix('pfc_');
+        //        $this->xajax->waitCursorOff(); // do not show a wait cursor during chat updates
+        //$this->xajax->cleanBufferOff();
+        //$this->xajax->errorHandlerOn(); // used to have verbose error logs
+        $this->xajax->registerFunction(array('handleRequest',&$this,'handleRequest'));
+        $this->xajax->registerFunction(array('loadStyles',&$this,'loadStyles'));
+        $this->xajax->registerFunction(array('loadScripts',&$this,'loadScripts'));
+        $this->xajax->registerFunction(array('loadInterface',&$this,'loadInterface'));
+        $this->xajax->registerFunction(array('loadChat',&$this,'loadChat'));
+        $this->xajax->processRequest();
       }
   }
 
@@ -89,39 +88,6 @@ class phpFreeChat
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
 
-$output .= '<script type="text/javascript">
-var xajaxRequestUri="'.$c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : "").'";
-var xajaxDebug=false;
-var xajaxStatusMessages=false;
-var xajaxWaitCursor=false;
-var xajaxDefinedGet=0;
-var xajaxDefinedPost=1;
-var xajaxLoaded=false;
-function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
-</script>
-';
-    
-    // include javascript libraries
-    $js = array();
-    $js[] = "xajax_0.2.3/xajax_js/xajax.js";
-    $js[] = "javascript/md5.js";
-    $js[] = "javascript/cookie.js";
-    $js[] = "javascript/image_preloader.js";
-    $js[] = "javascript/myprototype.js";
-    $js[] = "javascript/regex.js";
-    $js[] = "javascript/utf8.js";
-    $js[] = "javascript/sprintf2.js";
-    $js[] = "javascript/activity.js";
-    $js[] = "javascript/mousepos.js";
-    $js[] = "pfcclient.js";
-    $js[] = "pfcgui.js";
-    $js[] = "pfcresource.js";
-    foreach( $js as $j )
-    {
-      $output .= "<script type=\"text/javascript\" src=\"".$c->data_public_url."/".$c->getId()."/proxy.php?p=".$j."\"></script>\n";
-    }
-    $output .= "<script type=\"text/javascript\" src=\"".$c->getFileUrlByProxy("customize.js")."\"></script>\n";
-	
     // display output
     if ($return)
       return $output;
@@ -142,6 +108,9 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     $c =& pfcGlobalConfig::Instance();
 
     $output = '';
+
+
+    /*
     if ($c->isDefaultFile("style.css"))
       $output .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$c->getFileUrlByProxy("style.css")."\" />\n";
     else
@@ -161,6 +130,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
       $output .= "div#pfc_channels_content { height: ".$c->height."; }";
       $output .= "</style>\n";
     }
+    */
     
     if($return)
       return $output;
@@ -181,44 +151,21 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
 
-
-    $output = "<div id=\"pfc_container\"".($c->width != "" ? " style=\"width:".$c->width."\"": "").">";
-
-    // Please do not remove these lines,
-    // or keep a backling to http://www.phpfreechat on your partner page
-    // it helps phpfreechat promotion over the Web.
-    // (remember it's a free program)
-    $output .= "<p>"._pfc("Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum")." <a href=\"http://www.phpfreechat.net/forum/\">www.phpfreechat.net/forum</a></p>";
-    $output .= "<a href=\"http://www.phpfreechat.net\"><img src=\"http://www.phpfreechat.net/pub/logo_80x15.gif\" alt=\"PHP FREE CHAT [powered by phpFreeChat-".$c->version."]\" title=\"PHP FREE CHAT [powered by phpFreeChat-".$c->version."]\" /></a>";
-    $output .= "</div>";
-
-    if ($c->debug)
-    {
-      $output .= '<div id="pfc_debug">';
-      $output .= '</div>';
-    }
-
-    if ($c->debugxajax)
-    {
-      $output .= '<div id="pfc_debugxajax">';
-      $output .= '</div>';
-    }
-
-    $output .= "<script type=\"text/javascript\">\n";
-    $output .= " // <![CDATA[\n";
+    $output = '';
 
     pfcI18N::SwitchOutputEncoding($c->output_encoding);
 
-    $t = new pfcTemplate(dirname(__FILE__)."/client/chat.js.tpl.php");
+    $path = $c->getFilePathFromTheme('chat.js.tpl.php');
+    $t = new pfcTemplate($path);
     $t->assignObject($u,"u");
     $t->assignObject($c,"c");
     $output .= $t->getOutput();
     
     pfcI18N::SwitchOutputEncoding();
-    
+    /*
     $output .= " // ]]>\n";
     $output .= "</script>\n";
-    
+    */
     if($return) 
       return $output;
     else 
@@ -315,7 +262,7 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     return $msg;
   }
 
-  function HandleRequest($request)
+  function &handleRequest($request)
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
@@ -442,8 +389,209 @@ function pfc_handleRequest(){return xajax.call("handleRequest", arguments, 1);}
     // do nothing else if the xml response is empty
     //if ($xml_reponse->xml == "") die();
     
-    return $xml_reponse->getXML();
+    return $xml_reponse;
   }
+  
+
+  function loadStyles($theme = 'default', &$xml_reponse = null)
+  {
+    if ($xml_reponse == null) $xml_reponse = new xajaxResponse();
+
+    $c =& pfcGlobalConfig::Instance();
+    $c->theme = $theme;
+    $u =& pfcUserConfig::Instance();
+
+    $js = '';//file_get_contents(dirname(__FILE__).'/client/createstylerule.js');
+    $js .= 'var c = $H();';
+    $path = $c->getFilePathFromTheme('style.css');
+    require_once dirname(__FILE__).'/../lib/csstidy-1.2/class.csstidy.php';
+    $css = new csstidy();
+    $css->set_cfg('preserve_css',false);
+
+
+    $css_code = '';
+    $t = new pfcTemplate();
+    $t->assignObject($u,"u");
+    $t->assignObject($c,"c");
+    if (!$c->isDefaultFile('style.css'))
+    {
+      $t->setTemplate($c->themepath_default.'/default/style.css');      
+      $css_code .= $t->getOutput();
+    }
+    $t->setTemplate($c->getFilePathFromTheme('style.css'));
+    $css_code .= $t->getOutput();
+       
+    $css->parse($css_code);
+    foreach($css->css as $k => $v)
+    {
+      foreach($v as $k2 => $v2)
+      {
+        $rules = '';
+        foreach($v2 as $k3 => $v3)
+        {
+          $rules .= $k3.':'.$v3.';';
+        }
+        $js .= "c['".$k2."']='".$rules."';\n";
+      }
+    }    
+    $js .= "var k = c.keys(); c.each(function (a,b) { createStyleRule(a[0],a[1]); });";
+    $xml_reponse->script($js);
+    
+    return $xml_reponse;
+  }
+
+  function loadScripts($theme = 'default', &$xml_reponse = null)
+  {
+    if ($xml_reponse == null) $xml_reponse = new xajaxResponse();
+
+    $c =& pfcGlobalConfig::Instance();
+
+    $js = '';
+    
+    require_once(dirname(__FILE__)."/../lib/json/JSON.php");
+    $json = new Services_JSON();
+
+    $labels_to_load =
+      array( "Do you really want to leave this room ?", // _pfc
+             "Hide nickname marker", // _pfc
+             "Show nickname marker", // _pfc
+             "Hide dates and hours", // _pfc
+             "Show dates and hours", // _pfc
+             "Disconnect", // _pfc
+             "Connect", // _pfc
+             "Magnify", // _pfc
+             "Cut down", // _pfc
+             "Hide smiley box", // _pfc
+             "Show smiley box", // _pfc
+             "Hide online users box", // _pfc
+             "Show online users box", // _pfc
+             "Please enter your nickname", // _pfc
+             "Private message", // _pfc
+             "Close this tab", // _pfc
+             "Enter your message here", // _pfc
+             "Enter your nickname here", // _pfc
+             "Bold", // _pfc
+             "Italics", // _pfc
+             "Underline", // _pfc
+             "Delete", // _pfc
+             "Mail", // _pfc
+             "Color", // _pfc
+             "PHP FREE CHAT [powered by phpFreeChat-%s]", // _pfc
+             "Enter the text to format", // _pfc
+             "Configuration has been rehashed", // _pfc
+             "A problem occurs during rehash", // _pfc
+             "Choosen nickname is allready used", // _pfc
+             "phpfreechat current version is %s", // _pfc
+             "Maximum number of joined channels has been reached", // _pfc
+             "Maximum number of private chat has been reached", // _pfc
+             "Click here to send your message", // _pfc
+             "Send", // _pfc
+             "You are not allowed to speak to yourself", // _pfc
+             "Close", // _pfc
+             "Choosen nickname is not allowed", // _pfc
+             "Enable sound notifications", // _pfc
+             "Disable sound notifications", // _pfc       
+             );
+    foreach($labels_to_load as $l)
+    {
+      $js .= "pfc.res.setLabel(".$json->encode($l).",".$json->encode(_pfc2($l)).");\n";
+    }
+    
+    $fileurl_to_load =
+      array( 'images/ch.gif',
+             'images/pv.gif',
+             'images/tab_remove.gif',
+             'images/ch-active.gif',
+             'images/pv-active.gif',
+             'images/user.gif',
+             'images/user-me.gif',
+             'images/color-on.gif',
+             'images/color-off.gif',
+             'images/clock-on.gif',
+             'images/clock-off.gif',
+             'images/logout.gif',
+             'images/login.gif',
+             'images/maximize.gif',
+             'images/minimize.gif',
+             'images/smiley-on.gif',
+             'images/smiley-off.gif',
+             'images/online-on.gif',
+             'images/online-off.gif',
+             'images/bt_strong.gif',
+             'images/bt_em.gif',
+             'images/bt_ins.gif',
+             'images/bt_del.gif',
+             'images/bt_mail.gif',
+             'images/bt_color.gif',
+             'images/color_transparent.gif',
+             'images/close-whoisbox.gif',
+             'images/openpv.gif',
+             'images/user-admin.gif',
+             'images/sound-on.gif',
+             'images/sound-off.gif',
+             'sound.swf',       
+             );
+    
+    foreach($fileurl_to_load as $f)
+    {
+      $js .= "pfc.res.setFileUrl(".$json->encode($f).",\"".$c->getFileUrlFromTheme($f)."\");\n";
+    }
+
+    foreach($c->smileys as $s_file => $s_str) { 
+      for($j = 0; $j<count($s_str) ; $j++) {
+        $js .= "pfc.res.setSmiley(".$json->encode($s_str[$j]).",\"".$c->getFileUrlFromTheme($s_file)."\");\n";
+      }
+    }
+    
+    $js .= '
+pfc.gui.loadSmileyBox();
+pfc.gui.loadBBCodeColorList();
+pfc.connectListener();
+pfc.refreshGUI();
+if (pfc_connect_at_startup) pfc.connect_disconnect();
+';
+    
+    $xml_reponse->script($js);
+    return $xml_reponse;
+  }
+
+  
+  function loadInterface($theme = 'default', &$xml_reponse = null)
+  {
+    if ($xml_reponse == null) $xml_reponse = new xajaxResponse();
+
+    $c =& pfcGlobalConfig::Instance();
+    $c->theme = $theme;
+    $u =& pfcUserConfig::Instance();
+
+    $html = '';
+
+    pfcI18N::SwitchOutputEncoding($c->output_encoding);
+
+    $path = $c->getFilePathFromTheme('chat.html.tpl.php');
+    $t = new pfcTemplate($path);
+    $t->assignObject($u,"u");
+    $t->assignObject($c,"c");
+    $html .= $t->getOutput();
+
+    pfcI18N::SwitchOutputEncoding();
+    
+    $xml_reponse->assign("pfc_container", "innerHTML", $html);
+
+    return $xml_reponse;    
+  }
+
+  function loadChat($theme = 'default', &$xml_reponse = null)
+  {
+    if ($xml_reponse == null) $xml_reponse = new xajaxResponse();
+
+    $this->loadInterface($theme,$xml_reponse);
+    $this->loadStyles($theme,$xml_reponse);
+    $this->loadScripts($theme,$xml_reponse);
+    
+    return $xml_reponse;    
+  }
+  
 }
 
 ?>

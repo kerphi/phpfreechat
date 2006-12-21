@@ -45,9 +45,9 @@ class pfcCommand_identify extends pfcCommand
     $password = trim($param);
     $isadmin = false;
 
-//     $xml_reponse->addScript("alert('sender=".$sender."');");
-//     $xml_reponse->addScript("alert('password=".$password."');");  
-//     $xml_reponse->addScript("alert('admins=".var_export($c->admins, true)."');");  
+//     $xml_reponse->script("alert('sender=".$sender."');");
+//     $xml_reponse->script("alert('password=".$password."');");  
+//     $xml_reponse->script("alert('admins=".var_export($c->admins, true)."');");  
   
     if( isset($c->admins[$sender]) &&
 	$c->admins[$sender] == $password )
@@ -62,12 +62,12 @@ class pfcCommand_identify extends pfcCommand
       $this->forceWhoisReload($u->nick);
       
       $msg .= _pfc("Succesfully identified");
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
     }
     else
     {
       $msg .= _pfc("Identification failure");
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko', '".$msg."');");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ko', '".$msg."');");
     }
   }
 }

@@ -83,7 +83,7 @@ class pfcCommand_connect extends pfcCommand
       $ct->setUserMeta($nickid, $k, $v);
 
     // connect to the server
-    $xml_reponse->addScript("pfc.handleResponse('connect', 'ok', '');");
+    $xml_reponse->script("pfc.handleResponse('connect', 'ok', '');");
   }
 }
 

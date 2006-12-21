@@ -50,7 +50,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
       $isadmin = $container->getUserMeta($nickid, 'isadmin');
       if (!$isadmin)
       {
-        $xml_reponse->addScript("alert('".addslashes(_pfc("You are not allowed to run '%s' command", $this->name))."');");
+        $xml_reponse->script("alert('".addslashes(_pfc("You are not allowed to run '%s' command", $this->name))."');");
         return;
       }
     }    
@@ -71,7 +71,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
       {
         // the user is banished, show a message and don't forward the /join command
         $msg = _pfc("Can't join %s because you are banished", $param);
-        $xml_reponse->addScript("pfc.handleResponse('".$this->proxyname."', 'ban', '".addslashes($msg)."');");
+        $xml_reponse->script("pfc.handleResponse('".$this->proxyname."', 'ban', '".addslashes($msg)."');");
         return;
       }
 
@@ -81,7 +81,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
         {
           // the user is banished, show a message and don't forward the /join command
           $msg = _pfc("Can't join %s because the channels list is restricted", $param);
-          $xml_reponse->addScript("pfc.handleResponse('".$this->proxyname."', 'frozen', '".addslashes($msg)."');");
+          $xml_reponse->script("pfc.handleResponse('".$this->proxyname."', 'frozen', '".addslashes($msg)."');");
           return;
         }
       }

@@ -17,7 +17,7 @@ class pfcCommand_version extends pfcCommand
     $c =& $this->c;
     $u =& $this->u;
 
-    $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$c->version."');");
+    $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '".$c->version."');");
   }
 }
 

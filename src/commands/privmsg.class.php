@@ -25,7 +25,7 @@ class pfcCommand_privmsg extends pfcCommand
     // error: can't speak to myself
     if ($pvnickid == $nickid)
     {
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."','speak_to_myself');");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."','speak_to_myself');");
       return;
     }
 
@@ -47,7 +47,7 @@ class pfcCommand_privmsg extends pfcCommand
         $u->saveInCache();
       }
       
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'unknown', Array('".addslashes($pvname)."','speak to unknown'));");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'unknown', Array('".addslashes($pvname)."','speak to unknown'));");
       return;
     }
 
@@ -56,8 +56,8 @@ class pfcCommand_privmsg extends pfcCommand
     $pvrecipient = "pv_".$a[0]."_".$a[1];
     $pvrecipientid = md5($pvrecipient);
     
-    //    $xml_reponse->addScript("alert('privmsg: pvnickid=".$pvnickid."');");
-    //    $xml_reponse->addScript("alert('privmsg: pvname=".$pvname." pvrecipient=".$pvrecipient."');");
+    //    $xml_reponse->script("alert('privmsg: pvnickid=".$pvnickid."');");
+    //    $xml_reponse->script("alert('privmsg: pvname=".$pvname." pvrecipient=".$pvrecipient."');");
     
     // update the private message list
     // in the sessions
@@ -66,7 +66,7 @@ class pfcCommand_privmsg extends pfcCommand
       if ($c->max_privmsg <= count($u->privmsg))
       {
         // the maximum number of private messages has been reached
-        $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'max_privmsg', Array());");
+        $xml_reponse->script("pfc.handleResponse('".$this->name."', 'max_privmsg', Array());");
         return;
       }
       
@@ -89,7 +89,7 @@ class pfcCommand_privmsg extends pfcCommand
     
     // return ok to the client
     // then the client will create a new tab
-    $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', Array('".$pvrecipientid."','".addslashes($pvname)."'));");    
+    $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', Array('".$pvrecipientid."','".addslashes($pvname)."'));");    
   }
 }
 

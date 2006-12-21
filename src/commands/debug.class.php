@@ -14,7 +14,7 @@ class pfcCommand_debug extends pfcCommand
       $msg   = "";
       $msg  .= var_export($u, true);
       $msg = str_replace("\n","",addslashes(nl2br($msg)));
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
     }
 
     if ($p["param"] == "globalconfig")
@@ -22,14 +22,14 @@ class pfcCommand_debug extends pfcCommand
       $msg   = "";
       $msg  .= var_export($c, true);
       $msg = str_replace("\n","",addslashes(nl2br($msg)));
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
     }
     if ($p["param"] == "phpserver")
     {
       $msg   = "";
       $msg  .= var_export($_SERVER, true);
       $msg = str_replace("\n","",addslashes(nl2br($msg)));
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '".$msg."');");
     }
     
   }

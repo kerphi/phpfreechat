@@ -127,7 +127,7 @@ class pfcCommand_leave extends pfcCommand
       
       // return ok to the client
       // then the client will remove the channel' tab
-      $xml_reponse->addScript("pfc.handleResponse('leave', 'ok', '".$id."');");
+      $xml_reponse->script("pfc.handleResponse('leave', 'ok', '".$id."');");
     }
     else
     {

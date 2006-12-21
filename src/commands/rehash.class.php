@@ -26,9 +26,9 @@ class pfcCommand_rehash extends pfcCommand
     $destroyed = $c->destroyCache();
 
     if ($destroyed)
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', '');");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '');");
     else
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ko', '');");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ko', '');");
   }
 }
 

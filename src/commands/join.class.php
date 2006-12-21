@@ -36,7 +36,7 @@ class pfcCommand_join extends pfcCommand
       if ($c->max_channels <= count($u->channels))
       {
         // the maximum number of joined channels has been reached
-        $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'max_channels', Array());");
+        $xml_reponse->script("pfc.handleResponse('".$this->name."', 'max_channels', Array());");
         return;
       }
 
@@ -61,7 +61,7 @@ class pfcCommand_join extends pfcCommand
     
     // return ok to the client
     // then the client will create a new tab
-    $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', Array('".$chanid."','".addslashes($channame)."'));");
+    $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', Array('".$chanid."','".addslashes($channame)."'));");
   }
 
   function GetRecipient($channame)

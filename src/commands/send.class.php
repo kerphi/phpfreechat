@@ -69,7 +69,7 @@ class pfcCommand_send extends pfcCommand
       $cmd =& pfcCommand::Factory("error");
       $cmd->run($xml_reponse, $cmdp);
       if (isset($errors["pfc_handle"])) // the nick is empty so give it focus
-        $xml_reponse->addScript("$('pfc_handle').focus();");
+        $xml_reponse->script("$('pfc_handle').focus();");
       $can_send = false;
     }
 
@@ -92,8 +92,8 @@ class pfcCommand_send extends pfcCommand
       // a message has been posted so :
       // - clear errors
       // - give focus to "words" field
-      $xml_reponse->addScript("pfc.clearError(Array('pfc_words"."','pfc_handle"."'));");
-      $xml_reponse->addScript("$('pfc_words').focus();");
+      $xml_reponse->script("pfc.clearError(Array('pfc_words"."','pfc_handle"."'));");
+      $xml_reponse->script("$('pfc_words').focus();");
     }
   }
 }

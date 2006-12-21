@@ -101,7 +101,7 @@ class pfcCommand_getnewmsg extends pfcCommand
     {
       $json = new Services_JSON();
       $js = $json->encode($js);
-      $xml_reponse->addScript("pfc.handleResponse('".$this->name."', 'ok', (".$js."));");
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', (".$js."));");
     }
 
     if ($data_sent)

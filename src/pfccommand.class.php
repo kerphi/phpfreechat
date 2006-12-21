@@ -250,10 +250,10 @@ class pfcCommand
       require_once(dirname(__FILE__)."/../lib/json/JSON.php");
       $json = new Services_JSON();
       $js = $json->encode($data);
-      $xml_reponse->addScript("trace('".$msg." -> ".$js."');");
+      $xml_reponse->script("trace('".$msg." -> ".$js."');");
     }
     else
-      $xml_reponse->addScript("trace('".$msg."');");
+      $xml_reponse->script("trace('".$msg."');");
 
   }
 

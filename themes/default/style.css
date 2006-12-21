@@ -1,29 +1,37 @@
+/*
 div#pfc_container * {
-  border: 0;
+  border: none;
   margin: 0;
   padding: 0;
 }
+*/
 
 div#pfc_container {
+  margin: 0; padding: 0;
   border: 1px solid #555;
   color: #000;
   padding: 10px;
   min-height: 20px;
   background-color: #FFF;
-  background-image: url("proxy.php?p=default/images/background.gif");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/background.gif'); ?>");
   background-position: right;
 /*  background-repeat: repeat-xy;*/
   font-family: Verdana, Sans-Serif; /* without this rule, the tabs are not correctly display on FF */
 }
 
+div#pfc_container a img { border: none; }
+
 #pfc_minmax {
+  margin: 0; padding: 0;
   cursor: pointer;
 }
 div#pfc_content_expandable {
+  margin: 0; padding: 0;
   margin-top: 0.2em;
 }
 
 div#pfc_channels_content {
+  margin: 0; padding: 0;
   z-index: 20;
   position: relative;
   width: 100%;
@@ -31,25 +39,32 @@ div#pfc_channels_content {
   border-left: 1px solid #555;
   border-bottom: 1px solid #555;
   background-color: #FFF;
-  margin-top: 5px;
-  height: 300px;
+  height: <?php echo ($c->height!=''?$c->height:'300px'); ?>;
 }
 div.pfc_content {
+  margin: 0; padding: 0;
 }
 
 /* channels tabpanes */
 ul#pfc_channels_list {
+  margin: 0; padding: 0;
   list-style-type: none;
   display: block;
   z-index: 50;
   border-bottom: 1px solid #555;
-  margin-bottom: -5px;
+/*  margin-bottom: -5px;*/
 }
 ul#pfc_channels_list li {
+  margin: 0; padding: 0;
   display: inline;
   margin-left: 5px;
 }
+ul#pfc_channels_list li img {
+  margin: 0; padding: 0;
+  vertical-align: middle;
+}
 ul#pfc_channels_list li div {
+  margin: 0; padding: 0;
   display: inline;
   padding: 0 4px 0 4px;
   border-top: 1px solid #555;
@@ -68,6 +83,7 @@ ul#pfc_channels_list li > div:hover {
   background-color: #FFF;
 }
 ul#pfc_channels_list li a {
+  margin: 0; padding: 0;
   color: #000;
   text-decoration: none;  
 }
@@ -88,6 +104,7 @@ ul#pfc_channels_list li div.pfc_tabblink2 {
 
 
 div.pfc_chat {
+  margin: 0; padding: 0;
   z-index: 100;
   position: absolute;
   top: 0;
@@ -100,10 +117,10 @@ div.pfc_chat {
 }
 
 div.pfc_online {
+  margin: 0; padding: 0;
   position: absolute;
   right: 0;
   top: 0;
-  padding: 0;
   overflow: auto;
   width: 20%;
 /* WARNING: do not fix height in % because it will display blank screens on IE6 */
@@ -112,24 +129,29 @@ div.pfc_online {
   background-color: #FFF;
 
   /* borders are drawn by this image background */
-  background-image: url("proxy.php?p=default/images/online-separator.gif");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/online-separator.gif'); ?>");
   background-position: left;
   background-repeat: repeat-y;
 }
 div.pfc_online ul {
+  margin: 0; padding: 0;
   list-style-type: none;
-  margin: 0;
-  padding: 0;
   margin-left: 8px;
   margin-right: 8px;
 }
 div.pfc_online li {
+  margin: 0; padding: 0;
   font-weight: bold;
   font-size: 90%;
   /* bottom borders are drawn by the javascript routines */
 }
+ul.pfc_nicklist li img {
+  margin: 0; padding: 0;
+}
+
 
 h2#pfc_title {
+  margin:0; padding:0; border: none;
   font-size: 110%;
 }
 
@@ -142,18 +164,27 @@ img#pfc_minmax {
 }
 
 div.pfc_message {
-  background-image: url("proxy.php?p=default/images/newmsg.gif");
+  margin: 0; padding: 0;
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/newmsg.gif'); ?>");
   background-position: right;
   background-repeat: no-repeat; 
 }
-
+div.pfc_message img {
+  margin: 0; padding: 0;
+  vertical-align: middle;
+}
 div.pfc_oldmsg {
-  background-image: url("proxy.php?p=default/images/oldmsg.gif");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/oldmsg.gif'); ?>");
   background-position: right;
   background-repeat: no-repeat; 
 }
 
-span.pfc_heure, span.pfc_date {
+span.pfc_heure {
+  color: #bebebe;
+  font-size: 70%;
+}
+
+span.pfc_date {
   color: #bebebe;
   font-size: 70%;
 }
@@ -164,7 +195,14 @@ span.pfc_nick {
 }
 
 div#pfc_input_container {
-  margin-top: 5px;
+  margin: 5px 0 0 0; padding: 0;
+}
+div#pfc_input_container input {
+  margin: 0; padding: 0;
+}
+div#pfc_input_container td.pfc_td1 {
+  padding-right: 5px;
+  width: 100%;
 }
 
 input#pfc_words {
@@ -192,18 +230,13 @@ input#pfc_send {
   cursor: pointer;
 }
 
-
 div#pfc_cmd_container {
   position: relative;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  width: 100%;
-}
-div#pfc_cmd_container * {
-  margin-right: 2px;
+  margin: 4px 0 0 0; padding: 0;
 }
 
 p#pfc_handle {
+  margin: 0; padding: 0;
   display: inline;
   cursor: pointer;
   border: 1px solid #555;
@@ -217,16 +250,24 @@ p#pfc_handle {
 }
 
 a#pfc_logo {
+  margin: 0; padding: 0;
+  display: block;
   position: absolute;
   right: 0;
   top: 0;
 }
-
+a#pfc_logo img {
+  margin: 0; padding: 0;
+}
 div.pfc_btn {
+  margin: 0; padding: 0;
   display: inline;  
   cursor: pointer;
+  margin-right: 5px;
 }
 div.pfc_btn img {
+  margin: 0; padding: 0;
+  vertical-align: middle;  
   /* doesn't work */
   /*  border: 1px solid #393;*/ /* same as container color */
 }
@@ -235,13 +276,13 @@ div.pfc_btn img:hover {
   /*  border: 1px solid #000;*/
 }
 
-div#pfc_bbcode_container * {
-  margin-right: 2px;
+div#pfc_bbcode_container {
+  margin: 4px 0 4px 0; padding: 0;
 }
 
 div#pfc_errors {
+  margin: 0 0 4px 0; padding: 5px;
   display: none;
-  padding: 5px;
   border: 1px solid #555;
   color: #EC4B0F;
   background-color: #FFBB77;
@@ -276,13 +317,14 @@ div#pfc_errors {
   font-size: 80%;
 }
 
-
 div#pfc_colorlist {
+  margin:0; padding:0;
   display: none;
 }
 img.pfc_color {
-  padding: 1px;
+  margin: 1px;padding: 1px;
   cursor: pointer;
+  vertical-align: middle;
 }
 
 .pfc_nickmarker {
@@ -290,21 +332,18 @@ img.pfc_color {
 }
 
 div#pfc_smileys {
+  margin: 0; padding: 0;
   display: none; /* will be shown by javascript routines */
   background-color: #FFF;
   border: 1px solid #555;
   padding: 4px;
-  margin-top: 4px;
 }
-div#pfc_smileys * {
-  margin-right: 2px;
-}
-
 div#pfc_smileys img {
- cursor: pointer;
+  margin: 0; padding: 0;
+  margin-right: 2px;
+  cursor: pointer;
+  vertical-align: middle;
 }
-
-
 
 div.pfc_nickwhois * { padding: 0; margin: 0; }
 div.pfc_nickwhois a img { border: none; }
@@ -355,3 +394,4 @@ div#pfc_sound_container {
   width: 0;
   height: 0;
 }
+
