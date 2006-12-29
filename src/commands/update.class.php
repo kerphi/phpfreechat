@@ -69,7 +69,8 @@ class pfcCommand_update extends pfcCommand
         $cmd->run($xml_reponse, $cmdp);
       }
 
-      $xml_reponse->script("pfc.handleResponse('update', 'ok', '');");
+      // do not send ok response to save bandwidth
+      //      $xml_reponse->script("pfc.handleResponse('update', 'ok', '');");
     }
     else
       $xml_reponse->script("pfc.handleResponse('update', 'ko', '');");

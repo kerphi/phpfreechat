@@ -61,11 +61,11 @@ class phpFreeChat
       {
         require_once $c->xajaxpath."/xajax_core/xajax.inc.php";        
         $this->xajax = new xajax($c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""), 'pfc_');
-        if ($c->debugxajax) $this->xajax->debugOn();
+        if ($c->debugxajax) $this->xajax->setFlag('debug', true);
         $this->xajax->setWrapperPrefix('pfc_');
-        //        $this->xajax->waitCursorOff(); // do not show a wait cursor during chat updates
-        //$this->xajax->cleanBufferOff();
-        //$this->xajax->errorHandlerOn(); // used to have verbose error logs
+        $this->xajax->setFlag('waitCursor', false);
+        $this->xajax->setFlag('cleanBuffer', false);
+        $this->xajax->setFlag('errorHandler', true);
         $this->xajax->registerFunction(array('handleRequest',&$this,'handleRequest'));
         $this->xajax->registerFunction(array('loadStyles',&$this,'loadStyles'));
         $this->xajax->registerFunction(array('loadScripts',&$this,'loadScripts'));
@@ -386,8 +386,8 @@ class phpFreeChat
       ob_end_clean();
     }
 
-    // do nothing else if the xml response is empty
-    //if ($xml_reponse->xml == "") die();
+    // do nothing else if the xml response is empty in order to save bandwidth
+    if ($xml_reponse->getCommandCount() == 0) die();
     
     return $xml_reponse;
   }
