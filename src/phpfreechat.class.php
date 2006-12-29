@@ -393,7 +393,7 @@ class phpFreeChat
   }
   
 
-  function loadStyles($theme = 'default', &$xml_reponse = null)
+  function loadStyles($theme = 'default', &$xml_reponse)
   {
     if ($xml_reponse == null) $xml_reponse = new xajaxResponse();
 
@@ -440,7 +440,7 @@ class phpFreeChat
     return $xml_reponse;
   }
 
-  function loadScripts($theme = 'default', &$xml_reponse = null)
+  function loadScripts($theme, &$xml_reponse)
   {
     if ($xml_reponse == null) $xml_reponse = new xajaxResponse();
 
@@ -556,7 +556,7 @@ if (pfc_connect_at_startup) pfc.connect_disconnect();
   }
 
   
-  function loadInterface($theme = 'default', &$xml_reponse = null)
+  function loadInterface($theme = 'default', &$xml_reponse)
   {
     if ($xml_reponse == null) $xml_reponse = new xajaxResponse();
 
@@ -581,9 +581,9 @@ if (pfc_connect_at_startup) pfc.connect_disconnect();
     return $xml_reponse;    
   }
 
-  function loadChat($theme = 'default', &$xml_reponse = null)
+  function loadChat($theme = 'default')
   {
-    if ($xml_reponse == null) $xml_reponse = new xajaxResponse();
+    $xml_reponse = new xajaxResponse();
 
     $this->loadInterface($theme,$xml_reponse);
     $this->loadStyles($theme,$xml_reponse);

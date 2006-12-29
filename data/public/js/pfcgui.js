@@ -418,6 +418,27 @@ pfcGui.prototype = {
     }
   },
 
+  loadBBCodeColorList: function()
+  {
+    // color list
+    var clist = $('pfc_colorlist');
+    var clist_v = pfc_bbcode_color_list;
+    for (var i=0 ; i<clist_v.length ; i++)
+    {
+      var bbc = clist_v[i];
+      var elt = document.createElement('img');
+      elt.bbc = bbc;
+      elt.setAttribute('class', 'pfc_color');
+      elt.setAttribute('className', 'pfc_color'); // for IE6
+      elt.setAttribute('id', 'pfc_color_'+bbc);
+      elt.style.backgroundColor = '#'+bbc;
+      elt.setAttribute('src', pfc.res.getFileUrl('images/color_transparent.gif'));
+      elt.setAttribute('alt', bbc);
+      elt.onclick = function(){ pfc.switch_text_color(this.bbc); }
+      clist.appendChild(elt);
+    }
+  },
+
   buildChat: function()
   {
     var container = $('pfc_container');
@@ -714,6 +735,5 @@ pfcGui.prototype = {
     var soundcontainerbox = document.createElement('div');
     soundcontainerbox.setAttribute('id', 'pfc_sound_container');
     container.appendChild(soundcontainerbox);
-  }
-  
+  }  
 };
