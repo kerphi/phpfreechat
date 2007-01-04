@@ -40,7 +40,7 @@ var pfc_bbcode_color_list = <?php $list = array(); foreach($bbcode_colorlist as 
 var pfc_nickname_color_list = <?php echo $json->encode($nickname_colorlist); ?>;
 var pfc_proxy_url = '<?php echo $data_public_url."/".$serverid."/proxy.php"; ?>';
 var pfc_theme = <?php echo $json->encode($theme); ?>;
-
+var pfc_isready = false;
 
 var xajaxConfig = {
   requestURI: "<?php echo $c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""); ?>",
@@ -58,7 +58,7 @@ function pfc_loadChat(){return xajax.call("loadChat", {parameters: arguments});}
 
 window.onload = function () {
   pfc = new pfcClient();
-  pfc_loadChat(pfc_theme);
+  if (pfc_isready) pfc_loadChat(pfc_theme);
 }
 
 <?php if ($debugxajax) { ?>
@@ -99,6 +99,7 @@ function trace(text) {
 
 
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/xajax.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/compat.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/md5.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/cookie.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/image_preloader.js"></script>
@@ -115,34 +116,42 @@ function trace(text) {
 
 <div id="pfc_container">
 
+        
 <div style="width:250px;background-color:#FFF;border:1px solid #000;padding:10px;position:relative;margin:auto">
-  <p style="padding:0;margin:0;text-align:center;">
+  <p style="padding:0 0 10px 0;margin:0;text-align:center;">
     <img src="http://img327.imageshack.us/img327/8071/indicatormediumgb6.gif"
          alt=""
          style="float:left;margin:0;"/>
     Chat loading ...<br style="margin:0"/>Please wait
-</p>
-  <img src="http://img332.imageshack.us/img332/1756/helpiv1.gif"
-alt="help"
-style="position:absolute;bottom:2px;right:2px;margin:0;padding:0;cursor:help"
-onmouseover="document.getElementById('pfc_notloading').style.display='block';"
-/>
+  </p>
 </div>
 
-<div id="pfc_notloading" style="width:270px;background-color:#FFF;border:1px solid #000;text-align:center;display:none;margin:5px auto 0 auto">
+<div id="pfc_notloading" style="width:270px;background-color:#FFF;color:#000;border:1px solid #000;text-align:center;margin:5px auto 0 auto;font-size:10px;background-image:url('http://img402.imageshack.us/img402/3766/stopcc3.gif');background-repeat:no-repeat;background-position:center center;">
+
+<noscript>
+<p><?php echo _pfc("JavaScript appears to be either disabled or unsupported by your browser. This web application requires JavaScript to work properly. Please enable JavaScript in your browser settings, or upgrade to a browser with JavaScript support and try again."); ?></p>
+</noscript>
 <p>
-<?php echo _pfc("Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"); ?> <a href="http://www.phpfreechat.net/forum/">www.phpfreechat.net/forum</a>
-<a href="http://www.phpfreechat.net"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-<?php echo $version ?>]" /></a>
+<script type="text/javascript">
+if (!browserSupportsCookies())
+  document.write('<?php echo _pfc("Cookies appear to be either disabled or unsupported by your browser. This web application requires Cookies to function properly. Please enable Cookies in your browser settings or upgrade to a browser with Cookie support and try again."); ?>');
+else if (!browserSupportsAjax())
+  document.write('<?php echo _pfc("Your browser does not appear to support Ajax technology. This web application requires Ajax to function properly. Please upgrade to a browser with Ajax support and try again."); ?>');
+else if (!ActiveXEnabledOrUnnecessary())
+  document.write('<?php echo _pfc("ActiveX appears to be disabled in your browser. This web application requires Ajax technology to function properly. In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."); ?>');
+else
+{
+  $('pfc_notloading').style.display = 'none';
+  pfc_isready = true;
+}
+</script>
 </p>
-</div>
+
+<a href="http://www.phpfreechat.net" style="text-align:center"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-<?php echo $version ?>]" /></a>
 
 </div>
 
-
-<?php /* ?>
-<p><?php echo _pfc("Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"); ?> <a href="http://www.phpfreechat.net/forum/">www.phpfreechat.net/forum</a></p>
-<a href="http://www.phpfreechat.net"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-<?php echo $version ?>]" /></a>
-<?php */ ?>
+</div>
 
 </div>
 
