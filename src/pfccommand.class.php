@@ -205,7 +205,7 @@ class pfcCommand
       return false;
   }
 
-  function RunPendingCmdToPlay($nickid,$clientid,$xml_reponse)
+  function RunPendingCmdToPlay($nickid,$clientid,&$xml_reponse)
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
