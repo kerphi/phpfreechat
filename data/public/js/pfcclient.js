@@ -858,7 +858,7 @@ pfcClient.prototype = {
       var recipientdiv = this.gui.getChatContentFromTabId(tabid);
       
       // create a dummy div to avoid konqueror bug when setting nickmarkers
-      var m = document.createElement('div');
+      var m = document.createElement('span');
       m.innerHTML = msg_html[recipientid];
       this.colorizeNicks(m);
       this.refresh_clock(m);
