@@ -39,6 +39,7 @@ class pfcCommand_kick extends pfcCommand
     $channame = $u->channels[$recipientid]["name"];
     $cmdstr = 'leave';
     $cmdp = array();
+    $cmdp['params'][] = 'ch';
     $cmdp['params'][] = $channame; // channel name
     $cmdp['params'][] = _pfc("kicked from %s by %s - reason: %s", $channame, $sender, $reason); // reason
     pfcCommand::AppendCmdToPlay($otherid, $cmdstr, $cmdp);
