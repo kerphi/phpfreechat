@@ -858,7 +858,7 @@ pfcClient.prototype = {
       var recipientdiv = this.gui.getChatContentFromTabId(tabid);
       
       // create a dummy div to avoid konqueror bug when setting nickmarkers
-      var m = document.createElement('span');
+      var m = document.createElement('div');  // do not setup a inline element (ex: span) because the element height will be wrong on FF2 -> scrollDown(..) will be broken
       m.innerHTML = msg_html[recipientid];
       this.colorizeNicks(m);
       this.refresh_clock(m);
@@ -950,7 +950,7 @@ pfcClient.prototype = {
   updateNickListBox: function(chanid)
   {
     var nickidlst = this.chanmeta[chanid]['users']['nickid'];
-    var nickdiv = this.gui.getOnlineContentFromTabId(chanid).firstChild;
+    var nickdiv = this.gui.getOnlineContentFromTabId(chanid);
     var ul = document.createElement('ul');
     ul.setAttribute('class',     'pfc_nicklist');
     ul.setAttribute('className', 'pfc_nicklist'); // IE6
@@ -1077,7 +1077,6 @@ pfcClient.prototype = {
     if (isadmin == '') isadmin = false;
 
     var li = document.createElement('li');
-    li.style.borderBottom = '1px solid #AAA';
 
     var a = document.createElement('a');
     a.setAttribute('href','#');

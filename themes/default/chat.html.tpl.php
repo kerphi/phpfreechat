@@ -10,16 +10,21 @@
 
   <div id="pfc_input_container">
 
-    <table style="margin:0; padding:0; border-collapse:collapse;">
+    <table style="margin:0;padding:0;border-collapse:collapse;">
       <tbody>
       <tr>
       <td class="pfc_td1">
+        <p id="pfc_handle"
+           title="<?php echo _pfc("Enter your nickname here"); ?>"
+           onclick="pfc.askNick('')"><?php echo $u->nick; ?></p>      
+      </td>
+      <td class="pfc_td2">
         <input type="text"
                id="pfc_words"
                title="<?php echo _pfc("Enter your message here"); ?>"
                maxlength="<?php echo $max_text_len; ?>"/>
       </td>
-      <td class="pfc_td2">
+      <td class="pfc_td3">
         <input type="button"
                id="pfc_send"
                value="<?php echo _pfc("Send"); ?>"
@@ -38,12 +43,6 @@
              alt="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>"
              title="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" />
       </a>
-
-      <p id="pfc_handle"
-         title="<?php echo _pfc("Enter your nickname here"); ?>"
-         onclick="pfc.askNick('')">
-        <?php echo $u->nick; ?>
-      </p>
 
       <div class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>"

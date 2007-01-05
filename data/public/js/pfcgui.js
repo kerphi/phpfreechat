@@ -47,7 +47,6 @@ pfcGui.prototype = {
     // the next line seems to help with IE6 scroll on the first load
     // http://sourceforge.net/tracker/index.php?func=detail&aid=1568264&group_id=158880&atid=809601
     var dudVar = content.scrollTop;
-
     content.scrollTop += elttoscroll.offsetHeight+2;
     this.scrollpos[tabid] = content.scrollTop;
   },
@@ -158,11 +157,6 @@ pfcGui.prototype = {
     // I set the border style here because seting it in the CSS is not taken in account
     //    oc.style.borderLeft = "1px solid #555";
     oc.style.display = "block"; // needed by IE6 to show the online div at startup (first loaded page)
-    
-    // Create a dummy div to add padding
-    var div = document.createElement('div');
-    div.style.padding = "5px";
-    oc.appendChild(div);
 
     this.onlinecontent[tabid] = oc;
     return oc;

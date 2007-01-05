@@ -116,44 +116,38 @@ function trace(text) {
 
 <div id="pfc_container">
 
-        
 <div style="width:250px;background-color:#FFF;border:1px solid #000;padding:10px;position:relative;margin:auto">
-  <p style="padding:0 0 10px 0;margin:0;text-align:center;">
+  <p style="padding:0;margin:0;text-align:center;">
     <img src="http://img327.imageshack.us/img327/8071/indicatormediumgb6.gif"
          alt=""
          style="float:left;margin:0;"/>
-    Chat loading ...<br style="margin:0"/>Please wait
+    <?php echo _pfc("Chat loading ..."); ?><br style="margin:0"/><?php echo _pfc("Please wait"); ?>
   </p>
 </div>
 
 <div id="pfc_notloading" style="width:270px;background-color:#FFF;color:#000;border:1px solid #000;text-align:center;margin:5px auto 0 auto;font-size:10px;background-image:url('http://img402.imageshack.us/img402/3766/stopcc3.gif');background-repeat:no-repeat;background-position:center center;">
-
 <noscript>
-<p><?php echo _pfc("JavaScript appears to be either disabled or unsupported by your browser. This web application requires JavaScript to work properly. Please enable JavaScript in your browser settings, or upgrade to a browser with JavaScript support and try again."); ?></p>
+<p><?php echo _pfc("%s appears to be either disabled or unsupported by your browser.","JavaScript"); ?> <?php echo _pfc("This web application requires %s to work properly.","JavaScript"); ?> <?php echo _pfc("Please enable %s in your browser settings, or upgrade to a browser with %s support and try again.","JavaScript","JavaScript"); ?></p>
 </noscript>
-<p>
-<script type="text/javascript">
+<p><script type="text/javascript">
+  // <![CDATA[
 if (!browserSupportsCookies())
-  document.write('<?php echo _pfc("Cookies appear to be either disabled or unsupported by your browser. This web application requires Cookies to function properly. Please enable Cookies in your browser settings or upgrade to a browser with Cookie support and try again."); ?>');
+  document.write('<?php echo _pfc("%s appears to be either disabled or unsupported by your browser.","Cookies"); ?> <?php echo _pfc("This web application requires %s to work properly.","Cookies"); ?> <?php echo _pfc("Please enable %s in your browser settings, or upgrade to a browser with %s support and try again.","Cookies","Cookies"); ?>');
 else if (!browserSupportsAjax())
-  document.write('<?php echo _pfc("Your browser does not appear to support Ajax technology. This web application requires Ajax to function properly. Please upgrade to a browser with Ajax support and try again."); ?>');
+  document.write('<?php echo _pfc("%s appears to be either disabled or unsupported by your browser.","Ajax"); ?> <?php echo _pfc("This web application requires %s to work properly.","Ajax"); ?> <?php echo _pfc("Please upgrade to a browser with %s support and try again.","Ajax"); ?>');
 else if (!ActiveXEnabledOrUnnecessary())
-  document.write('<?php echo _pfc("ActiveX appears to be disabled in your browser. This web application requires Ajax technology to function properly. In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."); ?>');
+  document.write('<?php echo _pfc("%s appears to be either disabled or unsupported by your browser.","ActiveX"); ?> <?php echo _pfc("This web application requires %s to work properly.","Ajax"); ?> <?php echo _pfc("In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."); ?>');
 else
 {
   $('pfc_notloading').style.display = 'none';
   pfc_isready = true;
 }
-</script>
-</p>
-
+  // ]]>
+</script></p>
 <a href="http://www.phpfreechat.net" style="text-align:center"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-<?php echo $version ?>]" /></a>
+</div> <!-- pfc_notloading -->
 
-</div>
-
-</div>
-
-</div>
+</div> <!-- pfc_container -->
 
 <?php if ($debug) { ?>
   <div id="pfc_debug"></div>

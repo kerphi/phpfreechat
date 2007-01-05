@@ -61,7 +61,7 @@ ul#pfc_channels_list li {
 }
 ul#pfc_channels_list li img {
   margin: 0; padding: 0;
-  vertical-align: middle;
+  vertical-align: bottom;
 }
 ul#pfc_channels_list li div {
   margin: 0; padding: 0;
@@ -72,12 +72,13 @@ ul#pfc_channels_list li div {
   border-left: 1px solid #555;
   border-bottom: 1px solid #555;
   background-color: #DDD;
+  vertical-align: bottom;  
 }
 ul#pfc_channels_list li.selected div {
   background-color: #FFF;
   border-bottom: 1px solid #FFF;
   color: #000;
-  font-weight: bold;
+  font-weight: bold;  
 }
 ul#pfc_channels_list li > div:hover {
   background-color: #FFF;
@@ -115,6 +116,9 @@ div.pfc_chat {
   overflow: auto;
   word-wrap: break-word;
 }
+div.pfc_chat div {
+  margin: 0; padding: 0; border: none;
+}
 
 div.pfc_online {
   margin: 0; padding: 0;
@@ -134,20 +138,28 @@ div.pfc_online {
   background-repeat: repeat-y;
 }
 div.pfc_online ul {
-  margin: 0; padding: 0;
+  margin: 4px; padding: 0;
   list-style-type: none;
-  margin-left: 8px;
-  margin-right: 8px;
-}
-div.pfc_online li {
-  margin: 0; padding: 0;
-  font-weight: bold;
   font-size: 90%;
-  /* bottom borders are drawn by the javascript routines */
+  font-weight: bold;  
 }
-ul.pfc_nicklist li img {
+ul.pfc_nicklist li {
+  margin: 0 0 5px 0; padding: 0;
+  border-bottom: 1px solid #AAA;
+}
+ul.pfc_nicklist img {
+  vertical-align: middle; /* fix icon position problem in IE6 */
+}
+ul.pfc_nicklist a {
+  text-decoration: none;
+}
+ul.pfc_nicklist nobr span {
   margin: 0; padding: 0;
+  display: inline;
+  text-decoration: none;
 }
+
+
 
 
 h2#pfc_title {
@@ -200,12 +212,13 @@ div#pfc_input_container {
 div#pfc_input_container input {
   margin: 0; padding: 0;
 }
-div#pfc_input_container td.pfc_td1 {
+div#pfc_input_container td.pfc_td2 {
   padding-right: 5px;
   width: 100%;
 }
 
 input#pfc_words {
+  margin: 0; padding: 0;
   border: #555 solid 1px;
   background-color: #FAFAFA;
   width: 100%;
@@ -217,16 +230,15 @@ input#pfc_words {
 }
 
 input#pfc_send {
+  margin: 0; padding: 0;
   display: block;
   padding: 2px;
-  margin-left: 5px;
   border: 1px solid #555;
   background-color: #CCC;
   font-size: 10px;
-  height: 21px;
   vertical-align: bottom;
   font-size: 0.7em;
-  height: 1.8em;
+  height: 1.9em;
   cursor: pointer;
 }
 
@@ -239,14 +251,13 @@ p#pfc_handle {
   margin: 0; padding: 0;
   display: inline;
   cursor: pointer;
-  border: 1px solid #555;
-  padding: 2px 10px 2px 10px;
+  margin-right: 5px;
   color: black;
-  margin-bottom: 5px;
   font-weight: bold;
-  background-color: #EEE;
+  /*background-color: #EEE;*/
   font-size: 70%;          /* these two line fix a display problem in IE6 : */
-  vertical-align: middle;  /* the nickname box bottom border is hidden without these lines */
+  vertical-align: top;
+  white-space: pre;
 }
 
 a#pfc_logo {
@@ -263,17 +274,10 @@ div.pfc_btn {
   margin: 0; padding: 0;
   display: inline;  
   cursor: pointer;
-  margin-right: 5px;
 }
 div.pfc_btn img {
-  margin: 0; padding: 0;
-  vertical-align: middle;  
-  /* doesn't work */
-  /*  border: 1px solid #393;*/ /* same as container color */
-}
-div.pfc_btn img:hover {
-  /* doesn't work */
-  /*  border: 1px solid #000;*/
+  margin: 0; padding: 0; border: none;
+  vertical-align: middle;
 }
 
 div#pfc_bbcode_container {
@@ -373,11 +377,6 @@ li.pfc_nickwhois_pv a {
   text-decoration: none;
 }
 
-ul.pfc_nicklist span.pfc_nickmarker {
-}
-ul.pfc_nicklist a {
-  text-decoration: none;
-}
 
 img.pfc_nickbutton {
   cursor: pointer;
