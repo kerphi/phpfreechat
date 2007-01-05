@@ -4,7 +4,7 @@
   <div id="pfc_content_expandable">                
 
   <div id="pfc_channels">
-    <ul id="pfc_channels_list"><li></li></ul>
+    <ul id="pfc_channels_list"></ul>
     <div id="pfc_channels_content"></div>
   </div>
 
