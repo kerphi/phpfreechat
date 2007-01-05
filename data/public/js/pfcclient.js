@@ -888,12 +888,12 @@ pfcClient.prototype = {
    * Call the ajax request function
    * Will query the server
    */
-  sendRequest: function(cmd)
+  sendRequest: function(cmd, recipientid)
   {
     if (pfc_debug)
       if (cmd != "/update") trace('sendRequest: '+cmd);
     var rx = new RegExp('(^\/[^ ]+) *(.*)','ig');
-    var recipientid = this.gui.getTabId();
+    if (!recipientid) recipientid = this.gui.getTabId();
     cmd = cmd.replace(rx, '$1 '+this.clientid+' '+(recipientid==''?'0':recipientid)+' $2');
     return eval('pfc_handleRequest(cmd);');
   },

@@ -255,7 +255,7 @@ pfcGui.prototype = {
       a2.onclick = function(){
         var res = confirm(pfc.res.getLabel('Do you really want to leave this room ?'));
         if (res == true)
-          pfc.sendRequest('/leave '+this.pfc_tabtype+' "'+this.pfc_tabname+'"');
+          pfc.sendRequest('/leave',this.pfc_tabid);
         return false;
       }
       a2.alt   = pfc.res.getLabel('Close this tab');
