@@ -2,7 +2,7 @@ div#pfc_container {
   border: 1px solid #555;
   color: #338822;
   background-color: #d9edd8;
-  background-image: url("proxy.php?p=green/images/shade.gif");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/shade.gif'); ?>");
   background-position: right;
   background-repeat: repeat-y;
 }
@@ -30,7 +30,7 @@ ul#pfc_channels_list li.selected div {
   border-bottom: 1px solid #e0edde;
   color: #000;
 }
-ul#pfc_channels_list li > div:hover {
+ul#pfc_channels_list li div:hover {
   background-color: #e0edde;
 }
 ul#pfc_channels_list li a {
@@ -41,14 +41,6 @@ div.pfc_smileys {
   border: 1px solid #000;
   background-color: #EEE;
 }
-div.pfc_online {
-  border: black solid 1px;
-  color: #000;
-  background-color: #DDD;
-}
-div.pfc_online li {
-  border-bottom: 1px solid #DDD;
-}
 
 h2#pfc_title {
   font-size: 110%;
@@ -57,34 +49,15 @@ h2#pfc_title {
 div.pfc_oldmsg {
 }
 
-span.pfc_heure, span.pfc_date {
+span.pfc_heure {
+  color: #bebebe;
+}
+span.pfc_date {
   color: #bebebe;
 }
 
 span.pfc_nick {
   color: #fbac17;
-}
-
-input#pfc_words {
-  border: black solid 1px;
-}
-
-p#pfc_handle {
-  border: black solid 1px;
-  color: black;
-}
-
-div.pfc_btn img {
-  border: 1px solid #393; /* same as container color */
-}
-div.pfc_btn img:hover {
-  border: 1px solid #000;
-}
-
-p#pfc_errors {
-  border: black solid 1px;
-  color: #EC4A1F;
-  background-color: #FFBA76;
 }
 
 /* commands */
@@ -99,7 +72,12 @@ p#pfc_errors {
   font-style: italic;
   color: #888;
 }
-pre.pfc_cmd_rehash,
+pre.pfc_cmd_rehash
+{
+  color: #888;
+  font-style: italic;
+}
+
 pre.pfc_cmd_help
 {
   color: #888;

@@ -1,11 +1,11 @@
 /*
+will break display (margins, paddings) on IE6
 div#pfc_container * {
   border: none;
   margin: 0;
   padding: 0;
 }
 */
-
 div#pfc_container {
   margin: 0; padding: 0;
   border: 1px solid #555;
@@ -19,7 +19,7 @@ div#pfc_container {
   font-family: Verdana, Sans-Serif; /* without this rule, the tabs are not correctly display on FF */
 }
 
-div#pfc_container a img { border: none; }
+div#pfc_container a img { border: 0px; }
 
 #pfc_minmax {
   margin: 0; padding: 0;
@@ -80,7 +80,7 @@ ul#pfc_channels_list li.selected div {
   color: #000;
   font-weight: bold;  
 }
-ul#pfc_channels_list li > div:hover {
+ul#pfc_channels_list li div:hover {
   background-color: #FFF;
 }
 ul#pfc_channels_list li a {
@@ -262,10 +262,7 @@ p#pfc_handle {
 
 a#pfc_logo {
   margin: 0; padding: 0;
-  display: block;
-  position: absolute;
-  right: 0;
-  top: 0;
+  float: right;
 }
 a#pfc_logo img {
   margin: 0; padding: 0;

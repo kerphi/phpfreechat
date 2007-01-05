@@ -1,17 +1,10 @@
-div#pfc_container * {
-  border: 0px;
-  margin: 0px;
-  padding: 0px;
-
-}
-
 div#pfc_container {
   border: 1px solid #555;
   color: #000;
   padding: 10px;
   min-height: 20px;
   background-color: #FFF;
-  background-image: url("proxy.php?p=default/images/background.gif");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/background.gif'); ?>");
   background-position: right;
 /*  background-repeat: repeat-xy;*/
   font: 12px Trebuchet MS, Sans-Serif; /* without this rule, the tabs are not correctly display on FF */
@@ -38,7 +31,7 @@ div#pfc_channels_content {
   background-color: #FFF;
   margin-top: 5px;
 
-  background-image: url("proxy.php?p=zilveer/images/channels_content_bg.png"); 
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/channels_content_bg.png'); ?>"); 
   width: 640px;  
 }
 div.pfc_content {
@@ -63,7 +56,7 @@ ul#pfc_channels_list li div {
   padding: 0 4px 0 4px;
   border: 1px solid #555;
   background-color: #DDD;
-  background-image: url("proxy.php?p=zilveer/images/tab_off.png");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/tab_off.png'); ?>");
   font-size: 11px;
   font-weight: bold;
   
@@ -77,7 +70,7 @@ ul#pfc_channels_list li.selected div {
   color: #000;
   font-weight: bold;
   font-size: 11px;
-  background-image: url("proxy.php?p=zilveer/images/tab_on.png");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/tab_on.png'); ?>");
 
 /*these 2 lines below is to make the tabs looks the same in IE and FF */
   PADDING-BOTTOM: 6px;
@@ -129,7 +122,7 @@ div.pfc_online {
 /*  height: 100%;*/
   color: #000; /* colors can be overriden by js nickname colorization */
   background-color: #FFF;
-  background-image: url("proxy.php?p=zilveer/images/pfc_online.png");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/pfc_online.png'); ?>");
   background-position: left;
   background-repeat: repeat-y;
   /* borders are drawn by the javascript routines */
@@ -163,22 +156,22 @@ img#pfc_minmax {
 .pfc_oddmsg {
   background-color: #fff;
   color: #000;
-  background-image: url("proxy.php?p=zilveer/images/pfc_message1.png");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/pfc_message1.png'); ?>");
 }
 .pfc_evenmsg {
   background-color: #ccc;
   color: #000;
-  background-image: url("proxy.php?p=zilveer/images/pfc_message2.png");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/pfc_message2.png'); ?>");
 }
 
 div.pfc_message {
-  background-image: url("proxy.php?p=zilveer/images/newmsg.png");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/newmsg.png'); ?>");
   background-position: right;
   background-repeat: no-repeat; 
 }
 
 div.pfc_oldmsg {
-  background-image: url("proxy.php?p=zilveer/images/oldmsg.png");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/oldmsg.png'); ?>");
   background-position: right;
   background-repeat: no-repeat; 
 }
@@ -198,18 +191,22 @@ div#pfc_input_container {
   margin-top: 5px;
   font-size: 12px;
 }
+p#pfc_handle { display: none; }
+
+div#pfc_input_container td.pfc_td2 {
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/pfc_words.png'); ?>");
+  background-repeat: no-repeat;
+  padding-left: 5px;
+}
 
 input#pfc_words {
   border: 0px;
   background-color: #FAFAFA;
   width: 520px;
-  padding: 4px 5px 0px 5px; /*top right bottom left*/
   font-size: 12px;
-  height: 20Px;
+  height: 20px;
   vertical-align: bottom;
-  background-image: url("proxy.php?p=zilveer/images/pfc_words.png");
   font: 12px Trebuchet MS;
-  
 }
 
 input#pfc_send {
@@ -223,7 +220,7 @@ input#pfc_send {
   color: #333;
   height: 24px;
   cursor: pointer;
-  background-image: url("proxy.php?p=zilveer/images/pfc_send.png");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/pfc_send.png'); ?>");
   cursor: pointer;
 }
 
@@ -239,19 +236,7 @@ div#pfc_cmd_container * {
   margin-right: 2px;
 }
 
-p#pfc_handle {
-  display: inline;
-  cursor: pointer;
-  border: 1px solid #555;
-  padding: 2px 10px 2px 10px;
-  color: black;
-  margin-bottom: 5px;
-  font-weight: bold;
-  background-color: #EEE;
-  font-size: 70%;          /* these two line fix a display problem in IE6 : */
-  vertical-align: middle;  /* the nickname box bottom border is hidden without these lines */
-  
-}
+
 
 a#pfc_logo {
   position: absolute;
@@ -262,14 +247,6 @@ a#pfc_logo {
 div.pfc_btn {
   display: inline;  
   cursor: pointer;
-}
-div.pfc_btn img {
-  /* doesn't work */
-  /*  border: 1px solid #393;*/ /* same as container color */
-}
-div.pfc_btn img:hover {
-  /* doesn't work */
-  /*  border: 1px solid #000;*/
 }
 
 div#pfc_bbcode_container * {
