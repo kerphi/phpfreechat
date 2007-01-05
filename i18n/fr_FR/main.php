@@ -339,4 +339,28 @@ $GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nicknam
 // line 43 in kick.class.php
 $GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "kické de %s par %s";
 
+// line 20 in quit.class.php
+$GLOBALS["i18n"]["%s quit (%s)"] = "%s a quitté (%s)";
+
+// line 124 in chat.js.tpl.php
+$GLOBALS["i18n"]["Chat loading ..."] = "Chargement du chat ...";
+
+// line 124 in chat.js.tpl.php
+$GLOBALS["i18n"]["Please wait"] = "Patientez";
+
+// line 139 in chat.js.tpl.php
+$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "%s semble être désactivé ou pas/mal supporté par votre navigateur.";
+
+// line 139 in chat.js.tpl.php
+$GLOBALS["i18n"]["This web application requires %s to work properly."] = "Cette application web nécessite %s pour fonctionner correctement.";
+
+// line 135 in chat.js.tpl.php
+$GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "Veuillez activer %s dans les paramètres de votre navigateur, ou utilisez un navigateur qui supporte %s et essayez denouveau.";
+
+// line 137 in chat.js.tpl.php
+$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "Veuillez utiliser un navigateur qui supporte %s et essayez denouveau.";
+
+// line 139 in chat.js.tpl.php
+$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "Dans les version d\'Internet Explorer inférieures à 7.0, Ajax est implémenté par ActiveX. Veuillez activer ActiveX dans les paramètres de sécurité ou utiliser un navigateur qui supporte Ajax et essayez denouveau";
+
 ?>

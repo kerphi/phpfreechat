@@ -338,4 +338,28 @@ $GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nicknam
 // line 43 in kick.class.php
 $GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "";
 
+// line 20 in quit.class.php
+$GLOBALS["i18n"]["%s quit (%s)"] = "";
+
+// line 124 in chat.js.tpl.php
+$GLOBALS["i18n"]["Chat loading ..."] = "";
+
+// line 124 in chat.js.tpl.php
+$GLOBALS["i18n"]["Please wait"] = "";
+
+// line 139 in chat.js.tpl.php
+$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "";
+
+// line 139 in chat.js.tpl.php
+$GLOBALS["i18n"]["This web application requires %s to work properly."] = "";
+
+// line 135 in chat.js.tpl.php
+$GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "";
+
+// line 137 in chat.js.tpl.php
+$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "";
+
+// line 139 in chat.js.tpl.php
+$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "";
+
 ?>
