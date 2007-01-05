@@ -86,6 +86,10 @@ class pfcGlobalConfig
   var $startwithsound      = true; // start with sound enabled
   var $openlinknewwindow   = true; // used to open the links in a new window
   var $notify_window       = true; // true : appends a prefix to the window title with the number of new posted messages
+  
+  // Be sure that you are conform to the license page before setting this to false !
+  // http://www.phpfreechat.net/license.en.html
+  var $display_pfc_logo    = true; 
 
   var $displaytabimage       = true;
   var $displaytabclosebutton = true;

@@ -37,12 +37,14 @@
 
     <div id="pfc_cmd_container">
 
+<?php if ($display_pfc_logo) { ?>
       <a href="http://www.phpfreechat.net"
          id="pfc_logo"<?php if($openlinknewwindow) echo ' onclick="window.open(this.href,\'_blank\');return false;"'; ?>>
         <img src="http://www.phpfreechat.net/pub/logo_80x15.gif"
              alt="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>"
              title="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" />
       </a>
+<?php } ?>
 
       <div class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>"
