@@ -337,7 +337,7 @@ class pfcGlobalConfig
     $f_list["get_object_vars"] = _pfc("You need %s", "PHP 4 or PHP 5");
     $this->errors = array_merge($this->errors, check_functions_exist($f_list));
     
-    $this->errors = array_merge($this->errors, @test_writable_dir($this->data_public_path, "data_public_path"));
+    //    $this->errors = array_merge($this->errors, @test_writable_dir($this->data_public_path, "data_public_path"));
     $this->errors = array_merge($this->errors, @test_writable_dir($this->data_private_path, "data_private_path"));
     //    $this->errors = array_merge($this->errors, @install_dir($this->jspath, $this->data_public_path."/javascript"));
     $this->errors = array_merge($this->errors, @test_writable_dir($this->data_private_path."/cache", "data_private_path/cache"));
