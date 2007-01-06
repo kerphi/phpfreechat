@@ -25,6 +25,7 @@
  *
  * @author BSEMF <bsemfger <at> aim.com>
  * @author Karsten Hens www.karsten-hens.de
+ * @author Thomas Stueven (ak Troubadix) <thomas.stueven <at> online.de>
  */
 
 // line 45 in phpfreechatconfig.class.php
@@ -121,7 +122,7 @@ $GLOBALS["i18n"]["Enter your message here"] = "Gib hier deine Nachricht ein";
 $GLOBALS["i18n"]["Enter your nickname here"] = "Gib hier deinen Nicknamen ein";
 
 // line 93 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "Fehler: Undefinierter oder obsoleter Parameter '%s', bitte korrigiere oder lösche diesen Parameter";
+$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "Fehler: Undefinierter oder falscher Parameter '%s', bitte korrigiere oder lösche diesen Parameter";
 
 // line 48 in phpfreechattemplate.class.php
 $GLOBALS["i18n"]["%s template could not be found"] = "%s Template wurde nicht gefunden";
@@ -142,7 +143,7 @@ $GLOBALS["i18n"]["Italics"] = "kursiv";
 $GLOBALS["i18n"]["Underline"] = "unterstrichen";
 
 // line 36 in chat.html.tpl.php
-$GLOBALS["i18n"]["Delete"] = "Löschen";
+$GLOBALS["i18n"]["Delete"] = "durchgestrichen";
 
 // line 37 in chat.html.tpl.php
 $GLOBALS["i18n"]["Pre"] = "Pre";
@@ -173,7 +174,7 @@ $GLOBALS["i18n"]["%s must be implemented"] = "%s muss implementiert werden";
 $GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "'%s' ist ein obligatorischer Parameter. Voreinstellungswert: '%s' ";
 
 // line 378 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "Der Parameter '%s' muß eine natürliche Zahl sein";
+$GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "Der Parameter '%s' muss eine natürliche Zahl sein";
 
 // line 386 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "Der Parameter '%s' ist ungültig. Mögliche Werte sind '%s'";
@@ -203,7 +204,7 @@ $GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "'/
 $GLOBALS["i18n"]["%s quit (timeout)"] = "%s verließ den Raum (timeout?)";
 
 // line 46 in join.class.php
-$GLOBALS["i18n"]["%s joins %s"] = "%s kommt in den Channel %s";
+$GLOBALS["i18n"]["%s joins %s"] = "%s kommt in den Raum %s";
 
 // line 31 in kick.class.php
 $GLOBALS["i18n"]["kicked from %s by %s"] = "wurde herausgeworfen aus %s von %s";
@@ -257,7 +258,7 @@ $GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "Der Parameter '%s' muss 
 $GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "Der Parameter  '%s' muss eine Zeichenkette sein";
 
 // line 395 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' must be writable"] = "'%s' muß beschreibbar sein";
+$GLOBALS["i18n"]["'%s' must be writable"] = "'%s' muss beschreibbar sein";
 
 // line 425 in pfcglobalconfig.class.php
 $GLOBALS["i18n"]["'%s' directory doesn't exist"] = "'%s' Verzeichnis existiert nicht";
@@ -311,37 +312,38 @@ $GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "Die maxim
 $GLOBALS["i18n"]["Send"] = "Senden";
 
 // line 86 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: connect error"] = "";
+$GLOBALS["i18n"]["Mysql container: connect error"] = "Mysql container: Verbindungsfehler";
 
 // line 101 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "";
+$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "Mysql container: Fehler beim erstellen der Datenbank %s";
 
 // line 112 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "";
+$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Mysql container: Fehler beim erstellen einer Tabelle %s";
 
 // line 80 in chat.js.tpl.php
-$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "";
+$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "Du kannst nicht mit dir selber sprechen";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "";
+$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "Der gewählte Nickname ist nicht zulässig";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Enable sound notifications"] = "";
+$GLOBALS["i18n"]["Enable sound notifications"] = "Akustische Signale einschalten";
 
 // line 84 in chat.js.tpl.php
-$GLOBALS["i18n"]["Disable sound notifications"] = "";
+$GLOBALS["i18n"]["Disable sound notifications"] = "Akustische Signale ausschalten";
 
 // line 23 in kick.class.php
-$GLOBALS["i18n"]["no reason"] = "";
+$GLOBALS["i18n"]["no reason"] = "kein grund";
 
 // line 24 in banlist.class.php
-$GLOBALS["i18n"]["The banished user list is:"] = "";
+$GLOBALS["i18n"]["The banished user list is:"] = "Die verbannten Benutzer sind:";
 
 // line 39 in banlist.class.php
-$GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "";
+$GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "'/unban {nickname}' hebt die Verbannung für den Benutzer {nickname} auf";
 
 // line 43 in kick.class.php
-$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "";
+$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "rausgeworfen aus %s durch %s - Grund: %s";
+
 
 // line 20 in quit.class.php
 $GLOBALS["i18n"]["%s quit (%s)"] = "";
