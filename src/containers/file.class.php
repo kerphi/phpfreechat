@@ -36,8 +36,10 @@ class pfcContainer_File extends pfcContainerInterface
   function loadPaths()
   {
     $c =& $this->c;
-    $c->container_cfg_chat_dir   = $c->data_private_path."/chat";
-    $c->container_cfg_server_dir = $c->container_cfg_chat_dir."/s_".$c->serverid;
+    if (!isset($c->container_cfg_chat_dir))
+      $c->container_cfg_chat_dir   = $c->data_private_path."/chat";
+    if (!isset($c->container_cfg_server_dir))
+      $c->container_cfg_server_dir = $c->container_cfg_chat_dir."/s_".$c->serverid;
   }
   
   function getDefaultConfig()
@@ -56,8 +58,6 @@ class pfcContainer_File extends pfcContainerInterface
     $c =& $this->c;
 
     // generate the container parameters from other config parameters
-    if ($c->container_cfg_chat_dir == "")
-      $c->container_cfg_chat_dir = $c->data_private_path."/chat";
     $this->loadPaths();
    
     $errors = array_merge($errors, @test_writable_dir($c->container_cfg_chat_dir,   "container_cfg_chat_dir"));
