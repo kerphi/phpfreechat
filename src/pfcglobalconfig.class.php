@@ -339,8 +339,26 @@ class pfcGlobalConfig
     
     //    $this->errors = array_merge($this->errors, @test_writable_dir($this->data_public_path, "data_public_path"));
     $this->errors = array_merge($this->errors, @test_writable_dir($this->data_private_path, "data_private_path"));
-    //    $this->errors = array_merge($this->errors, @install_dir($this->jspath, $this->data_public_path."/javascript"));
     $this->errors = array_merge($this->errors, @test_writable_dir($this->data_private_path."/cache", "data_private_path/cache"));
+
+    
+    // install the public directory content
+    $dir = dirname(__FILE__)."/../data/public/js";
+    $dh = opendir($dir);
+    while (false !== ($file = readdir($dh)))
+    {
+      $f_src = $dir.'/'.$file;
+      $f_dst = $this->data_public_path.'/js/'.$file;
+      if ($file == "." || $file == ".." || !is_file($f_src)) continue; // skip . and .. generic files
+      // install js files only if the destination doesn't exists or if the destination timestamp is older than the source timestamp
+      if (!file_exists($f_dst) || filemtime($f_dst) < filemtime($f_src) )
+      {
+        mkdir_r($this->data_public_path.'/js/');
+        copy( $f_src, $f_dst );
+      }
+      if (!file_exists($f_dst)) $this->errors[] = _pfc("%s doesn't exist, data_public_path cannot be installed", $f_dst);
+    }
+    closedir($dh);
     
     // ---
     // test xajax lib existance
