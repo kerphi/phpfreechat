@@ -43,6 +43,9 @@ class pfcInfo extends pfcGlobalConfig
   function getOnlineNick($channel = NULL, $timeout = 20)
   {
     $container =& $this->getContainerInstance();
+    
+    if ($channel != NULL) $channel = pfcCommand_join::GetRecipient($channel);
+    
     $res = $container->getOnlineNick($channel);
     $users = array();
     if (isset($res["nickid"]))
