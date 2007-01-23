@@ -322,10 +322,10 @@ $GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "No esta permitid
 $GLOBALS["i18n"]["Choosen nickname is not allowed"] = "No esta permitido elegir nickname";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Enable sound notifications"] = "Notificaciones de sonido habilitadas";
+$GLOBALS["i18n"]["Enable sound notifications"] = "Habilitar notificaciones de sonido";
 
 // line 84 in chat.js.tpl.php
-$GLOBALS["i18n"]["Disable sound notifications"] = "notificaciones de sonido deshabilitadas";
+$GLOBALS["i18n"]["Disable sound notifications"] = "Deshabilitar notificaciones de sonido";
 
 // line 23 in kick.class.php
 $GLOBALS["i18n"]["no reason"] = "Sin motivos";
