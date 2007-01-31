@@ -284,7 +284,7 @@ class pfcContainer extends pfcContainerInterface
   }
   
   /**
-   * Returns returns a positive number if the nick is online
+   * Returns returns a positive number if the nick is online in the given channel
    * @param $chan if NULL then check if the user is online on the server, otherwise check if the user has joined the channel
    * @return -1 if the user is off line, a positive (>=0) if the user is online
    */
