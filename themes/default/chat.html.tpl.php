@@ -36,7 +36,8 @@
     </table>
 
     <div id="pfc_cmd_container">
-
+      <span id="pfc_ping"></span>
+           
 <?php if ($display_pfc_logo) { ?>
       <a href="http://www.phpfreechat.net"
          id="pfc_logo"<?php if($openlinknewwindow) echo ' onclick="window.open(this.href,\'_blank\');return false;"'; ?>>

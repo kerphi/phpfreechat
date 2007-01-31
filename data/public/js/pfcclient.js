@@ -895,7 +895,7 @@ pfcClient.prototype = {
     var rx = new RegExp('(^\/[^ ]+) *(.*)','ig');
     if (!recipientid) recipientid = this.gui.getTabId();
     cmd = cmd.replace(rx, '$1 '+this.clientid+' '+(recipientid==''?'0':recipientid)+' $2');
-    return eval('pfc_handleRequest(cmd);');
+    return pfc_handleRequest(cmd); //eval('pfc_handleRequest(cmd);');
   },
 
   /**
@@ -906,20 +906,24 @@ pfcClient.prototype = {
     clearTimeout(this.timeout);
     if (start)
     {
+      // calculate the ping and display it
+      this.ping = Math.abs(this.refresh_delay-(new Date().getTime() - this.last_refresh_time));
+      $('pfc_ping').innerHTML = this.ping+'ms';
+
       var res = true;
-      if (this.canupdatenexttime || (new Date().getTime() - this.last_refresh_time) > this.max_refresh_delay)
+      if (this.canupdatenexttime)
       {
+        // the connection is ok
         res = this.sendRequest('/update');
-        this.canupdatenexttime = false; // don't update since the 'ok' response is received
+        this.canupdatenexttime = false; // don't update if the last 'ok' response is not yet received
       }
-      // adjust the refresh_delay if the connection was lost
-      if (res == false) {
-        this.refresh_delay = this.refresh_delay * 2;
-		if(this.refresh_delay > this.max_refresh_delay)
-		{
-			this.refresh_delay = this.max_refresh_delay;
-		}
-	  }
+      else if ((new Date().getTime() - this.last_refresh_time) > this.max_refresh_delay)
+      {
+        // the connection is probably closed or very slow
+        res = this.sendRequest('/update');
+        this.canupdatenexttime = false; // don't update if the last 'ok' response is not yet received
+        this.last_refresh_time = new Date().getTime();
+      }
       // setup the next update
       this.timeout = setTimeout('pfc.updateChat(true)', this.refresh_delay);
     }
