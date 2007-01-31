@@ -366,4 +366,5 @@ $GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implem
 // line 359 in pfcglobalconfig.class.php
 $GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "No existe %s, data_public_path no puede ser instalado";
 
+
 ?>
