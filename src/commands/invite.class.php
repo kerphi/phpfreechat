@@ -64,14 +64,25 @@ class pfcCommand_invite extends pfcCommand
       $cmd->run($xml_reponse, $cmdp);
       return;
     }
+
+    // check that the inviter is already in the channeltarget
+    if ($ct->isNickOnline(pfcCommand_join::GetRecipient($channeltarget),$u->nickid) == -1)
+    {
+      $cmdp = $p;
+      $cmdp["params"] = array();
+      $cmdp["param"] = _pfc("You must join %s to invite users in this channel",$channeltarget);
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $cmdp);
+      return;
+    }
 		
     // inviting a user: just add a join command to play to the aimed user metadata.
-    $nickidtoinvite = $ct->getNickId($nicktoinvite);
+    $nicktoinvite_id = $ct->getNickId($nicktoinvite);
     $cmdstr = 'join2';
     $cmdp = array();
     $cmdp['param'] = $channeltarget; // channel target name
     $cmdp['params'][] = $channeltarget; // channel target name
-    pfcCommand::AppendCmdToPlay($nickidtoinvite, $cmdstr, $cmdp);
+    pfcCommand::AppendCmdToPlay($nicktoinvite_id, $cmdstr, $cmdp);
 
     // notify the aimed channel that a user has been invited
     $cmdp = array();
