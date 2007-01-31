@@ -56,7 +56,8 @@ class pfcProxyCommand_auth extends pfcProxyCommand
     }    
     
     // channels protection
-    if ($this->name == "join")
+    if ($this->name == "join" ||
+        $this->name == "join2")
     {
       $container   =& $c->getContainerInstance();
       $channame    = $param;
