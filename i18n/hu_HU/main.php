@@ -25,6 +25,7 @@
  *
  * @author Stephane Gully <stephane.gully@gmail.com> 
  * @translated by Keratomi <keratomi@freemail.hu> 
+ * @translated by GaLa <gala@primposta.com> 
  */
 
 // line 45 in phpfreechatconfig.class.php
@@ -34,7 +35,7 @@ $GLOBALS["i18n"]["My Chat"] = "Az én csetem";
 $GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s nem található, %s könyvtár nem található.";
 
 // line 355 in phpfreechat.class.php
-$GLOBALS["i18n"]["Please enter your nickname"] = "Kérlek írd be a beceved";
+$GLOBALS["i18n"]["Please enter your nickname"] = "Kérlek írd be a beceneved";
 
 // line 565 in phpfreechat.class.php
 $GLOBALS["i18n"]["Text cannot be empty"] = "Üzenetet is írj!";
@@ -175,197 +176,168 @@ $GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "'%s' csak pozit�
 // line 386 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "'%s' nem érvényes paraméter. Lehetséges értékei: '%s'";
 
+// line 185 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["My room"] = "Én szobám";
 
-// line 169 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "";
+// line 109 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Private message"] = "Privát üzenet";
 
-// line 253 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be an array"] = "";
+// line 110 in pfcclient.js.tpl.php
+$GLOBALS["i18n"]["Close this tab"] = "Lap bezárása";
 
-// line 265 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "";
+// line 225 in pfcgui.js.tpl.php
+$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "Valóban el szeretnéd hagyni ezt a szobát ?";
 
-// line 271 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "";
+// line 19 in unban.class.php
+$GLOBALS["i18n"]["Missing parameter"] = "Hiányzó paraméter";
 
-// line 277 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["My room"] = "";
-
-// line 395 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' must be writable"] = "";
-
-// line 425 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' directory doesn't exist"] = "";
-
-// line 544 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Please correct these errors"] = "";
-
-// line 21 in pfcinfo.class.php
-$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "";
-
-// line 190 in phpfreechat.class.php
-$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "";
-
-// line 26 in unban.class.php
-$GLOBALS["i18n"]["Missing parameter"] = "";
-
-// line 45 in ban.class.php
-$GLOBALS["i18n"]["banished from %s by %s"] = "";
+// line 38 in ban.class.php
+$GLOBALS["i18n"]["banished from %s by %s"] = "%s kitiltott innen: %s";
 
 // line 23 in banlist.class.php
-$GLOBALS["i18n"]["The banished user's id list is:"] = "";
+$GLOBALS["i18n"]["The banished user's id list is:"] = "A kitiltott felhasználók azonosító listája:";
 
 // line 32 in banlist.class.php
-$GLOBALS["i18n"]["Empty"] = "";
+$GLOBALS["i18n"]["Empty"] = "Üres";
 
 // line 34 in banlist.class.php
-$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "";
+$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "'/unban {id}' visszaengedi az {id} azonosítójú felhasználót";
 
 // line 35 in banlist.class.php
-$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "";
+$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "'/unban all'  visszaengedi az összes felhasználót ezen a csatornán";
 
-// line 31 in help.class.php
-$GLOBALS["i18n"]["Here is the command list:"] = "";
+// line 24 in update.class.php
+$GLOBALS["i18n"]["%s quit (timeout)"] = "%s kilépett (időtúllépés)";
 
-// line 63 in identify.class.php
-$GLOBALS["i18n"]["Succesfully identified"] = "";
+// line 46 in join.class.php
+$GLOBALS["i18n"]["%s joins %s"] = "%s csatlakozott ide: %s";
 
-// line 68 in identify.class.php
-$GLOBALS["i18n"]["Identification failure"] = "";
+// line 31 in kick.class.php
+$GLOBALS["i18n"]["kicked from %s by %s"] = "%s kirúgott innen: %s";
 
-// line 53 in join.class.php
-$GLOBALS["i18n"]["%s joins %s"] = "";
+// line 38 in send.class.php
+$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "Nem küldhetsz üzenetet, %s nincs itt";
 
-// line 81 in noflood.class.php
-$GLOBALS["i18n"]["kicked from %s by %s"] = "";
+// line 27 in unban.class.php
+$GLOBALS["i18n"]["Nobody has been unbanished"] = "Senki nincs visszaengedve";
 
-// line 25 in send.class.php
-$GLOBALS["i18n"]["Your must be connected to send a message"] = "";
-
-// line 50 in send.class.php
-$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "";
-
-// line 34 in unban.class.php
-$GLOBALS["i18n"]["Nobody has been unbanished"] = "";
+// line 42 in unban.class.php
+$GLOBALS["i18n"]["%s has been unbanished"] = "%s visszaengedve";
 
 // line 49 in unban.class.php
-$GLOBALS["i18n"]["%s has been unbanished"] = "";
+$GLOBALS["i18n"]["%s users have been unbanished"] = "%s felhasználó visszaengedve";
 
-// line 56 in unban.class.php
-$GLOBALS["i18n"]["%s users have been unbanished"] = "";
+// line 47 in auth.class.php
+$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "Nincs engedélyezve a(z) '%s' parancs futtatása";
 
-// line 53 in auth.class.php
-$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "";
+// line 67 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because you are banished"] = "nem csatlakozhatsz a(z) %s szobához, mert ki vagy tiltva";
 
-// line 73 in auth.class.php
-$GLOBALS["i18n"]["Can't join %s because you are banished"] = "";
+// line 79 in auth.class.php
+$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "Nincs engedélyed a becenév cseréjére";
 
-// line 83 in auth.class.php
-$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "";
+// line 76 in auth.class.php
+$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "Nem lehet csatlakozni %s, mert a csatornák listája korlátozott";
 
-// line 57 in checknickchange.class.php
-$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "";
+// line 56 in noflood.class.php
+$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "Kérlek, ne küldj ilyen gyakran üzenetet, a flood-olást nem toleráljuk";
 
-// line 57 in checktimeout.class.php
-$GLOBALS["i18n"]["%s quit (timeout)"] = "";
+// line 169 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "Hiba: '%s' egy privát paraméter, nem vagy jogosult a módosítására";
 
-// line 75 in noflood.class.php
-$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "";
+// line 253 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be an array"] = "'%s' paraméternek egy tömbnek kell lenni";
+
+// line 265 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "'%s' paraméternek boolean -nek kell lenni";
+
+// line 271 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "'%s' paraméternek szövegnek kell lenni";
+
+// line 395 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' must be writable"] = "'%s' írható kell, hogy legyen";
+
+// line 425 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["'%s' directory doesn't exist"] = "'%s' könyvtár nem, létezik";
+
+// line 544 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["Please correct these errors"] = "Kérlek, javítsd ki ezeket a hibákat";
+
+// line 21 in pfcinfo.class.php
+$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "Hiba: a tárolt config fájl nem létezik";
+
+// line 190 in phpfreechat.class.php
+$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "Hiba: a csetet nem lehet betölteni!  Két eset lehetséges: a böngésződ nem támogatja a javascript-et vagy nem állítottad be megfelelően a szerver könyvtárainak jogait - ne gondolkozz, kérj segítséget a fórumon";
+
+// line 31 in help.class.php
+$GLOBALS["i18n"]["Here is the command list:"] = "A parancs lista:";
+
+// line 63 in identify.class.php
+$GLOBALS["i18n"]["Succesfully identified"] = "Sikeres azonosítás";
+
+// line 68 in identify.class.php
+$GLOBALS["i18n"]["Identification failure"] = "Azonosítás sikertelen";
+
+// line 25 in send.class.php
+$GLOBALS["i18n"]["Your must be connected to send a message"] = "Kapcsolódnod kell az üzenet küldéshez";
 
 // line 87 in chat.js.tpl.php
-$GLOBALS["i18n"]["Click here to send your message"] = "";
-
-// line 55 in chat.js.tpl.php
-$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "";
-
-// line 69 in chat.js.tpl.php
-$GLOBALS["i18n"]["Private message"] = "";
-
-// line 70 in chat.js.tpl.php
-$GLOBALS["i18n"]["Close this tab"] = "";
+$GLOBALS["i18n"]["Click here to send your message"] = "Kattints ide az üzeneted elküldéséhez";
 
 // line 80 in chat.js.tpl.php
-$GLOBALS["i18n"]["Enter the text to format"] = "";
+$GLOBALS["i18n"]["Enter the text to format"] = "A formázáshoz írd be a szöveget";
 
 // line 81 in chat.js.tpl.php
-$GLOBALS["i18n"]["Configuration has been rehashed"] = "";
+$GLOBALS["i18n"]["Configuration has been rehashed"] = "A beállításokat újra kell hash-elni";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["A problem occurs during rehash"] = "";
+$GLOBALS["i18n"]["A problem occurs during rehash"] = "Probléma akadt az újra hash-elés közben";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is allready used"] = "";
+$GLOBALS["i18n"]["Choosen nickname is allready used"] = "A választott becenevet már valaki használja";
 
 // line 84 in chat.js.tpl.php
-$GLOBALS["i18n"]["phpfreechat current version is %s"] = "";
+$GLOBALS["i18n"]["phpfreechat current version is %s"] = "phpfreechat aktuális verziója: %s";
 
 // line 85 in chat.js.tpl.php
-$GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "";
+$GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "Kapcsolati csatornák száma elérte a maximumot";
 
 // line 86 in chat.js.tpl.php
-$GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "";
+$GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "A privát csetek száma elérte a maximumot";
 
 // line 88 in chat.js.tpl.php
-$GLOBALS["i18n"]["Send"] = "";
+$GLOBALS["i18n"]["Send"] = "Küldés";
 
 // line 86 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: connect error"] = "";
+$GLOBALS["i18n"]["Mysql container: connect error"] = "Mysql tároló: kapcsolódási hiba";
 
 // line 101 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "";
+$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "Mysql tároló: adtbázis létrehozási hiba '%s'";
 
 // line 112 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "";
+$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Mysql tároló: tábla létrehozási hiba '%s'";
 
 // line 80 in chat.js.tpl.php
-$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "";
+$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "Nem beszélgethetsz saját magaddal :-)";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "";
+$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "A választott becenév nem engedélyezett";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Enable sound notifications"] = "";
+$GLOBALS["i18n"]["Enable sound notifications"] = "Hang értesítés engedélyezése";
 
 // line 84 in chat.js.tpl.php
-$GLOBALS["i18n"]["Disable sound notifications"] = "";
+$GLOBALS["i18n"]["Disable sound notifications"] = "Hang értesítés tiltása";
 
 // line 23 in kick.class.php
-$GLOBALS["i18n"]["no reason"] = "";
+$GLOBALS["i18n"]["no reason"] = "nincs ok";
 
 // line 24 in banlist.class.php
-$GLOBALS["i18n"]["The banished user list is:"] = "";
+$GLOBALS["i18n"]["The banished user list is:"] = "A kitiltott felhasználók listája:";
 
 // line 39 in banlist.class.php
-$GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "";
+$GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "'/unban {becenév}' vissza engedésre kerül a {becenév}-vel azonosított felhasználó";
 
 // line 43 in kick.class.php
-$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "";
-
-// line 20 in quit.class.php
-$GLOBALS["i18n"]["%s quit (%s)"] = "";
-
-// line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Chat loading ..."] = "";
-
-// line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please wait"] = "";
-
-// line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "";
-
-// line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["This web application requires %s to work properly."] = "";
-
-// line 135 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "";
-
-// line 137 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "";
-
-// line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "";
-
-// line 359 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "";
-
+$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "kirúgva %s szobából %s által - oka: %s";
 ?>
