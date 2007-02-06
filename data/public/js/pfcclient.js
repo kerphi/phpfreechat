@@ -42,7 +42,7 @@ pfcClient.prototype = {
     this.timeout       = null;
     this.refresh_delay = pfc_refresh_delay;
     this.max_refresh_delay = pfc_max_refresh_delay;
-    this.last_refresh_time = 0;
+    this.last_refresh_time = new Date().getTime();
     /* unique client id for each windows used to identify a open window
      * this id is passed every time the JS communicate with server
      * (2 clients can use the same session: then only the nickname is shared) */

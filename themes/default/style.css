@@ -264,6 +264,11 @@ a#pfc_logo {
   margin: 0; padding: 0;
   float: right;
 }
+#pfc_ping { 
+  margin: 0 5px 0 0; padding: 0;
+  float:right;
+  font-size: 80%;
+}
 a#pfc_logo img {
   margin: 0; padding: 0;
 }
