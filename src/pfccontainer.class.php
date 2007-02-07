@@ -45,7 +45,19 @@ class pfcContainer extends pfcContainerInterface
     $container_classname = "pfcContainer_".$type;
     $this->_container =& new $container_classname($this->c);
   }
-
+  function getDefaultConfig()
+  {
+    if ($this->_container)
+      return $this->_container->getDefaultConfig();
+    else
+      return array();
+  }
+  function init()
+  {
+    if ($this->_container)
+      return $this->_container->init();
+  }
+  
   /**
    * Create (connect/join) the nickname into the server or the channel locations
    * Notice: the caller must take care to update all channels the users joined (use stored channel list into metadata)

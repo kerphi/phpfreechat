@@ -33,20 +33,24 @@ class pfcContainer_File extends pfcContainerInterface
                       "timestamp" => array());
   var $_meta = array();
   
+  function pfcContainer_File(&$config)
+  {
+    pfcContainerInterface::pfcContainerInterface($config);
+  }
+  
   function loadPaths()
   {
     $c =& $this->c;
-    if (!isset($c->container_cfg_chat_dir))
+    if (!isset($c->container_cfg_chat_dir) || $c->container_cfg_chat_dir == '')
       $c->container_cfg_chat_dir   = $c->data_private_path."/chat";
-    if (!isset($c->container_cfg_server_dir))
+    if (!isset($c->container_cfg_server_dir) || $c->container_cfg_server_dir == '')
       $c->container_cfg_server_dir = $c->container_cfg_chat_dir."/s_".$c->serverid;
   }
   
   function getDefaultConfig()
   {
     $c =& $this->c;
-    
-    $cfg = pfcContainer::getDefaultConfig();
+    $cfg = pfcContainerInterface::getDefaultConfig();
     $cfg["chat_dir"]   = ''; // will be generated from the other parameters into the init step
     $cfg["server_dir"] = ''; // will be generated from the other parameters into the init step
     return $cfg;
@@ -54,15 +58,16 @@ class pfcContainer_File extends pfcContainerInterface
   
   function init()
   {
-    $errors = pfcContainer::init();
+    $errors = pfcContainerInterface::init();
     $c =& $this->c;
+                
 
     // generate the container parameters from other config parameters
     $this->loadPaths();
    
     $errors = array_merge($errors, @test_writable_dir($c->container_cfg_chat_dir,   "container_cfg_chat_dir"));
     $errors = array_merge($errors, @test_writable_dir($c->container_cfg_server_dir, "container_cfg_chat_dir/serverid"));
-    
+
     return $errors;
   }
 

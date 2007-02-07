@@ -42,7 +42,7 @@ require_once dirname(__FILE__)."/../pfccontainer.class.php";
  * @author Stephane Gully <stephane.gully@gmail.com>
  * @author HenkBB
  */
-class pfcContainer_Mysql extends pfcContainer
+class pfcContainer_Mysql extends pfcContainerInterface
 {
   var $_db = null;
   var $_sql_create_table = "
@@ -58,13 +58,13 @@ class pfcContainer_Mysql extends pfcContainer
     
   function pfcContainer_Mysql(&$config)
   {
-    pfcContainer::pfcContainer($config);
+    pfcContainerInterface::pfcContainerInterface($config);
   }
 
   function getDefaultConfig()
   {
     $c =& $this->c;    
-    $cfg = pfcContainer::getDefaultConfig();
+    $cfg = pfcContainerInterface::getDefaultConfig();
     $cfg["mysql_host"] = 'localhost';
     $cfg["mysql_port"] = 3306;
     $cfg["mysql_database"] = 'phpfreechat';
@@ -76,7 +76,7 @@ class pfcContainer_Mysql extends pfcContainer
 
   function init()
   {
-    $errors = pfcContainer::init();
+    $errors = pfcContainerInterface::init();
     $c =& $this->c;
 
     // connect to the db
