@@ -109,29 +109,6 @@ class phpFreeChat
 
     $output = '';
 
-
-    /*
-    if ($c->isDefaultFile("style.css"))
-      $output .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$c->getFileUrlByProxy("style.css")."\" />\n";
-    else
-    {
-      // user has a customized stylesheet
-      // first of all include the default stylesheet
-      // then the user stylesheet
-      $defaultstyle = $c->themepath_default."/default/style.css";
-      $output .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$c->data_public_url."/".$c->getId()."/proxy.php?p=default/style.css\" />\n";
-      $output .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$c->getFileUrlByProxy("style.css")."\" />\n";
-    }
-    
-    // since php can't be embeded into the css themes files, special styles parameter must be setup here
-    if ($c->height != "")
-    {
-      $output .= "<style type=\"text/css\">";
-      $output .= "div#pfc_channels_content { height: ".$c->height."; }";
-      $output .= "</style>\n";
-    }
-    */
-    
     if($return)
       return $output;
     else 
@@ -403,7 +380,7 @@ class phpFreeChat
 
     $js = '';//file_get_contents(dirname(__FILE__).'/client/createstylerule.js');
     $js .= 'var c = $H();';
-    $path = $c->getFilePathFromTheme('style.css');
+    $path = $c->getFilePathFromTheme('style.css.php');
     require_once dirname(__FILE__).'/../lib/csstidy-1.2/class.csstidy.php';
     $css = new csstidy();
     $css->set_cfg('preserve_css',false);
@@ -413,12 +390,12 @@ class phpFreeChat
     $t = new pfcTemplate();
     $t->assignObject($u,"u");
     $t->assignObject($c,"c");
-    if (!$c->isDefaultFile('style.css'))
+    if (!$c->isDefaultFile('style.css.php'))
     {
-      $t->setTemplate($c->themepath_default.'/default/style.css');      
+      $t->setTemplate($c->themepath_default.'/default/style.css.php');      
       $css_code .= $t->getOutput();
     }
-    $t->setTemplate($c->getFilePathFromTheme('style.css'));
+    $t->setTemplate($c->getFilePathFromTheme('style.css.php'));
     $css_code .= $t->getOutput();
 
 
