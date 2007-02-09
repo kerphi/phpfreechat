@@ -18,7 +18,7 @@ class pfcCommand_kick extends pfcCommand
     $c =& $this->c;
     $u =& $this->u;
 
-    $nick   = isset($params[0]) ? trim($params[0]) : '';
+    $nick   = isset($params[0]) ? $params[0] : '';
     $reason = isset($params[1]) ? $params[1] : '';
     if ($reason == '') $reason = _pfc("no reason");
 

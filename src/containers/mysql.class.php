@@ -38,6 +38,16 @@ require_once dirname(__FILE__)."/../pfccontainer.class.php";
  * $params["container_cfg_mysql_table"] = "phpfreechat"; 
  * $params["container_cfg_mysql_username"] = "root"; 
  * $params["container_cfg_mysql_password"] = ""; 
+ * 
+ * Advanced parameters are :
+ * $params["container_cfg_mysql_fieldtype_server"] = 'varchar(32)';
+ * $params["container_cfg_mysql_fieldtype_group"] = 'varchar(64)';
+ * $params["container_cfg_mysql_fieldtype_subgroup"] = 'varchar(64)';
+ * $params["container_cfg_mysql_fieldtype_leaf"] = 'varchar(64)';
+ * $params["container_cfg_mysql_fieldtype_leafvalue"] = 'text';
+ * $params["container_cfg_mysql_fieldtype_timestamp"] = 'int(11)';
+ * $params["container_cfg_mysql_engine"] = 'InnoDB';
+ * 
  *
  * @author Stephane Gully <stephane.gully@gmail.com>
  * @author HenkBB
@@ -47,14 +57,15 @@ class pfcContainer_Mysql extends pfcContainerInterface
   var $_db = null;
   var $_sql_create_table = "
  CREATE TABLE IF NOT EXISTS `%table%` (
-  `server` varchar(256) NOT NULL default '',
-  `group` varchar(256) NOT NULL default '',
-  `subgroup` varchar(256) NOT NULL default '',
-  `leaf` varchar(256) NOT NULL default '',
-  `leafvalue` varchar(1024) NOT NULL,
-  `timestamp` int(11) NOT NULL default 0,
-  PRIMARY KEY  (`server`,`group`,`subgroup`,`leaf`)
-) ENGINE=MEMORY;";
+  `server` %fieldtype_server% NOT NULL default '',
+  `group` %fieldtype_group% NOT NULL default '',
+  `subgroup` %fieldtype_subgroup% NOT NULL default '',
+  `leaf` %fieldtype_leaf% NOT NULL default '',
+  `leafvalue` %fieldtype_leafvalue% NOT NULL,
+  `timestamp` %fieldtype_timestamp% NOT NULL default 0,
+  PRIMARY KEY  (`server`,`group`,`subgroup`,`leaf`),
+  INDEX (`server`,`group`,`subgroup`,`timestamp`)
+) ENGINE=%engine%;";
     
   function pfcContainer_Mysql(&$config)
   {
@@ -71,6 +82,14 @@ class pfcContainer_Mysql extends pfcContainerInterface
     $cfg["mysql_table"]    = 'phpfreechat';
     $cfg["mysql_username"] = 'root';
     $cfg["mysql_password"] = '';
+    // advanced parameters (don't touch if you don't know what your are doing)
+    $cfg["mysql_fieldtype_server"] = 'varchar(32)';
+    $cfg["mysql_fieldtype_group"] = 'varchar(64)';
+    $cfg["mysql_fieldtype_subgroup"] = 'varchar(64)';
+    $cfg["mysql_fieldtype_leaf"] = 'varchar(128)';
+    $cfg["mysql_fieldtype_leafvalue"] = 'text';
+    $cfg["mysql_fieldtype_timestamp"] = 'int(11)';
+    $cfg["mysql_engine"] = 'InnoDB';    
     return $cfg;
   }
 
@@ -105,7 +124,15 @@ class pfcContainer_Mysql extends pfcContainerInterface
     }
     
     // create the table if it doesn't exists
-    $query = str_replace('%table%',$c->container_cfg_mysql_table,$this->_sql_create_table);
+    $query = $this->_sql_create_table;
+    $query = str_replace('%engine%',              $c->container_cfg_mysql_engine,$query);
+    $query = str_replace('%table%',               $c->container_cfg_mysql_table,$query);
+    $query = str_replace('%fieldtype_server%',    $c->container_cfg_mysql_fieldtype_server,$query);
+    $query = str_replace('%fieldtype_group%',     $c->container_cfg_mysql_fieldtype_group,$query);
+    $query = str_replace('%fieldtype_subgroup%',  $c->container_cfg_mysql_fieldtype_subgroup,$query);
+    $query = str_replace('%fieldtype_leaf%',      $c->container_cfg_mysql_fieldtype_leaf,$query);
+    $query = str_replace('%fieldtype_leafvalue%', $c->container_cfg_mysql_fieldtype_leafvalue,$query);
+    $query = str_replace('%fieldtype_timestamp%', $c->container_cfg_mysql_fieldtype_timestamp,$query);    
     $result = mysql_query($query, $db);
     if ($result === FALSE)
     {
@@ -180,29 +207,33 @@ class pfcContainer_Mysql extends pfcContainerInterface
     $server = $c->serverid;    
     $db = $this->_connect();
     
-    $sql_where="";
-    $value="leafvalue";
+    $sql_where = "";
+    $sql_group_by = "";
+    $value = "leafvalue";
     
     if ($group != NULL)
     {
-      $sql_where.=" AND `group`='$group'";
-      $value="subgroup";        
+      $sql_where   .= " AND `group`='$group'";
+      $value        = "subgroup";        
+      $sql_group_by = "GROUP BY `$value`";
     }    
     
     if ($subgroup != NULL)
     {
-      $sql_where.=" AND `subgroup`='$subgroup'";
-      $value="leaf";        
+      $sql_where   .= " AND `subgroup`='$subgroup'";
+      $value        = "leaf";        
+      $sql_group_by = "";
     }
     
     if ($leaf != NULL)
     {
-      $sql_where.=" AND `leaf`='$leaf'";
-      $value="leafvalue";    
+      $sql_where   .= " AND `leaf`='$leaf'";
+      $value        = "leafvalue";
+      $sql_group_by = "";
     }
     
-    $sql_select="SELECT `$value`, `timestamp` FROM ".$c->container_cfg_mysql_table." WHERE `server`='$server' $sql_where GROUP BY `$value` ORDER BY timestamp";    
-    
+    $sql_select="SELECT `$value`, `timestamp` FROM ".$c->container_cfg_mysql_table." WHERE `server`='$server' $sql_where $sql_group_by ORDER BY timestamp";    
+
     if ($c->debug)
       file_put_contents("/tmp/debug.txt", "\ngetSQL(".$sql_select.")", FILE_APPEND);
     

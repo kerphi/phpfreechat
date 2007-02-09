@@ -409,6 +409,7 @@ pfcGui.prototype = {
       img.s_symbol = s_symbol.unescapeHTML();
       img.onclick = function(){ pfc.insertSmiley(this.s_symbol); }
       container.appendChild(img);
+      container.appendChild(document.createTextNode(' ')); // so smileys will wrap fine if lot of smiles in theme.
     }
   },
 
