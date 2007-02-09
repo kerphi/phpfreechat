@@ -579,11 +579,13 @@ class pfcContainer extends pfcContainerInterface
           }
         }
       }
+
       if ($incache)
       {
-        $ret = array('timestamp' => $ret['timestamp'],
-                     'value'     => $ret['value']);
-        return $ret;
+        $ret2 = array();
+        if (isset($ret['timestamp'])) $ret2['timestamp'] = $ret['timestamp'];
+        if (isset($ret['value']))     $ret2['value'] = $ret['value'];
+        return $ret2;
       }      
     }
     

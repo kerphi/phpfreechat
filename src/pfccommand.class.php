@@ -227,6 +227,10 @@ class pfcCommand
       //      print_r($cmdtmp);
       $cmd =& pfcCommand::Factory($cmdtmp['cmdstr']);
       $cmdp = $cmdtmp['params'];
+      if (!isset($cmdp['param']))       $cmdp['param'] = '';
+      if (!isset($cmdp['sender']))      $cmdp['sender'] = null;
+      if (!isset($cmdp['recipient']))   $cmdp['recipient']   = null;      
+      if (!isset($cmdp['recipientid'])) $cmdp['recipientid'] = null;      
       $cmdp['clientid']  = $clientid; // the clientid must be the current user one
       $cmdp['cmdtoplay'] = true; // used to run some specials actions in the command (ex:  if the cmdtoplay is a 'leave' command, then show an alert to the kicked or banished user)
       if ($c->debug)
