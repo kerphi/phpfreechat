@@ -6,7 +6,7 @@ $params["title"] = "Quick chat";
 $params["nick"] = "guest".rand(1,1000);  // setup the intitial nickname
 $params["isadmin"] = true; // just for debug ;)
 $params["serverid"] = md5(__FILE__); // calculate a unique id for this chat
-$params["debug"] = true;
+//$params["debug"] = true;
 $chat = new phpFreeChat( $params );
 
 ?>
