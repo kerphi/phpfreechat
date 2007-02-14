@@ -542,7 +542,7 @@ if (pfc_connect_at_startup) pfc.connect_disconnect();
 
     $html = '';
 
-    pfcI18N::SwitchOutputEncoding($c->output_encoding);
+    //    pfcI18N::SwitchOutputEncoding($c->output_encoding);
 
     $path = $c->getFilePathFromTheme('chat.html.tpl.php');
     $t = new pfcTemplate($path);
@@ -550,7 +550,7 @@ if (pfc_connect_at_startup) pfc.connect_disconnect();
     $t->assignObject($c,"c");
     $html .= $t->getOutput();
 
-    pfcI18N::SwitchOutputEncoding();
+    //    pfcI18N::SwitchOutputEncoding();
     
     $xml_reponse->remove("pfc_loader"); // to hide the loading box
     $xml_reponse->assign("pfc_container", "innerHTML", $html);
