@@ -34,7 +34,7 @@ function _pfc()
 }
 /**
  * Just like _pfc but just return the raw translated string, keeping the %s into it
- * (used byt the javascript resources (i18n) class)
+ * (used by the javascript resources (i18n) class)
  */
 function _pfc2()
 {
