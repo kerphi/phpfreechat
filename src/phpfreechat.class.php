@@ -552,6 +552,7 @@ if (pfc_connect_at_startup) pfc.connect_disconnect();
 
     pfcI18N::SwitchOutputEncoding();
     
+    $xml_reponse->remove("pfc_loader"); // to hide the loading box
     $xml_reponse->assign("pfc_container", "innerHTML", $html);
 
     return $xml_reponse;    

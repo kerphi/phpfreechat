@@ -1,3 +1,14 @@
+<div id="pfc_loader">
+
+<div style="width:250px;background-color:#FFF;border:1px solid #000;padding:10px;position:relative;margin:auto">
+  <p style="padding:0;margin:0;text-align:center;">
+    <img src="http://img327.imageshack.us/img327/8071/indicatormediumgb6.gif"
+         alt=""
+         style="float:left;margin:0;"/>
+    <?php echo _pfc("Chat loading ..."); ?><br style="margin:0"/><?php echo _pfc("Please wait"); ?>
+  </p>
+</div>
+  
 <script type="text/javascript">
   // <![CDATA[
 <?php
@@ -97,7 +108,6 @@ function trace(text) {
   // ]]>
 </script>
 
-
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/xajax.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/compat.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/md5.js"></script>
@@ -114,16 +124,6 @@ function trace(text) {
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcgui.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcresource.js"></script>
 
-<div id="pfc_container">
-
-<div style="width:250px;background-color:#FFF;border:1px solid #000;padding:10px;position:relative;margin:auto">
-  <p style="padding:0;margin:0;text-align:center;">
-    <img src="http://img327.imageshack.us/img327/8071/indicatormediumgb6.gif"
-         alt=""
-         style="float:left;margin:0;"/>
-    <?php echo _pfc("Chat loading ..."); ?><br style="margin:0"/><?php echo _pfc("Please wait"); ?>
-  </p>
-</div>
 
 <div id="pfc_notloading" style="width:270px;background-color:#FFF;color:#000;border:1px solid #000;text-align:center;margin:5px auto 0 auto;font-size:10px;background-image:url('http://img402.imageshack.us/img402/3766/stopcc3.gif');background-repeat:no-repeat;background-position:center center;">
 <noscript>
@@ -147,7 +147,9 @@ else
 <a href="http://www.phpfreechat.net" style="text-align:center"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-<?php echo $version ?>]" /></a>
 </div> <!-- pfc_notloading -->
 
-</div> <!-- pfc_container -->
+</div> <!-- pfc_loader -->
+
+<div id="pfc_container"><!-- Will contains chat.html.tpl.php --></div>
 
 <?php if ($debug) { ?>
   <div id="pfc_debug"></div>
