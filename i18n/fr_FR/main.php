@@ -364,6 +364,12 @@ $GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] =
 $GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "Dans les version d\'Internet Explorer inférieures à 7.0, Ajax est implémenté par ActiveX. Veuillez activer ActiveX dans les paramètres de sécurité ou utiliser un navigateur qui supporte Ajax et essayez denouveau";
 
 // line 359 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "";
+$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "%s n'existe pas, data_public_path ne peut pas être installé";
+
+// line 73 in invite.class.php
+$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "Vous devez rejoindre %s pour pouvoir y inviter des utilisateurs";
+
+// line 47 in chat.html.tpl.php
+$GLOBALS["i18n"]["Ping"] = "Temps de réponse";
 
 ?>

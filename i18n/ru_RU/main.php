@@ -371,4 +371,10 @@ $GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implem
 // line 359 in pfcglobalconfig.class.php
 $GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "";
 
+// line 73 in invite.class.php
+$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "";
+
+// line 47 in chat.html.tpl.php
+$GLOBALS["i18n"]["Ping"] = "";
+
 ?>
