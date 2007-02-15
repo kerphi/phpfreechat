@@ -33,7 +33,7 @@ class pfcProxyCommand_log extends pfcProxyCommand
   function run(&$xml_reponse, $p)
   {
     $cmdtocheck = array("send", "me", "notice");
-    if ( in_array($this->name, $cmdtocheck) )
+    if ( isset($cmdtocheck[$this->name]) )
     {
       $clientid    = $p["clientid"];
       $param       = $p["param"];
