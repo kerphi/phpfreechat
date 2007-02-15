@@ -1282,12 +1282,12 @@ pfcClient.prototype = {
     /* check the nickname is colorized or not */
     var allready_colorized = false;
     var nc = '';
-    for(var j = 0; j < this.nickcolor.length; j++)
+    for(var j = 0; j < this.nickcolor.length && !allready_colorized; j++)
     {
       if (this.nickcolor[j][0] == nick)
       {
-	allready_colorized = true;
-	nc = this.nickcolor[j][1];
+        allready_colorized = true;
+        nc = this.nickcolor[j][1];
       }
     }
     if (!allready_colorized)
