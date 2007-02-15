@@ -537,7 +537,7 @@ class pfcGlobalConfig
       foreach($pfc_configvar as $key => $val)
       {
         // the dynamics parameters must not be cached
-        if (!isset($this->_dyn_params[$key]))
+        if (!in_array($key,$this->_dyn_params))
           $this->$key = $val;
       }
       
