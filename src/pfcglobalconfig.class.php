@@ -129,47 +129,43 @@ class pfcGlobalConfig
   var $debugurl            = "";
   var $debug               = false;
   var $debugxajax          = false;
-
+  
   // private parameters
-  var $_sys_proxies          = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
-  var $_proxies              = array(); // will contains proxies to execute on each command (filled in the init step)
+  var $_sys_proxies         = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
+  var $_proxies             = array(); // will contains proxies to execute on each command (filled in the init step)
   var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg", "nickmeta","baseurl");
   var $_params_type         = array();
   
   function pfcGlobalConfig( $params = array() )
-  {
-    // first of all, save our current state in order to be able to check for variable types later
-    $this->_saveParamsTypes();
-    
+  {    
     // setup the local for translated messages
     pfcI18N::Init(isset($params["language"]) ? $params["language"] : "");
-
+    
     // check the serverid is really defined
     if (!isset($params["serverid"]))
       $this->errors[] = _pfc("'%s' parameter is mandatory by default use '%s' value", "serverid", "md5(__FILE__)");
     $this->serverid = $params["serverid"];
 
-    // _getCacheFile needs data_private_path 
+    // setup data_private_path because _getCacheFile needs it
     if (!isset($params["data_private_path"]))
       $this->data_private_path = dirname(__FILE__)."/../data/private";
     else
       $this->data_private_path = $params["data_private_path"];
-    if (!isset($params["data_public_path"]))
-      $this->data_public_path  = dirname(__FILE__)."/../data/public";
-    else
-      $this->data_public_path = $params["data_public_path"];
 
-    /*
-    // delete the cache if no proxy.php file is found
-    if (!file_exists($this->_getProxyFile()))
-      @unlink($this->_getCacheFile());
-    */
-
+    
     // check if a cached configuration allready exists
     // don't load parameters if the cache exists
     $cachefile = $this->_getCacheFile();    
     if (!file_exists($cachefile))
     {
+      // first of all, save our current state in order to be able to check for variable types later
+      $this->_saveParamsTypes();
+
+      if (!isset($params["data_public_path"]))
+        $this->data_public_path  = dirname(__FILE__)."/../data/public";
+      else
+        $this->data_public_path = $params["data_public_path"];
+      
       // load users container or keep default one
       if (isset($params["container_type"]))
         $this->container_type = $params["container_type"];
@@ -212,7 +208,7 @@ class pfcGlobalConfig
     // load dynamic parameter even if the config exists in the cache
     foreach ( $this->_dyn_params as $dp )
       if (isset($params[$dp]))
-	$this->$dp = $params[$dp];
+        $this->$dp = $params[$dp];
 
     // 'channels' is now a dynamic parameter, just check if I need to initialize it or not
     if (is_array($this->channels) &&
@@ -498,7 +494,7 @@ class pfcGlobalConfig
     
     // load version number from file
     $this->version = trim(file_get_contents(dirname(__FILE__)."/../version"));
-
+    
     $this->is_init = (count($this->errors) == 0);
   }
   
@@ -586,7 +582,7 @@ class pfcGlobalConfig
       foreach($pfc_configvar as $key => $val)
       {
         // the dynamics parameters must not be cached
-        if (!in_array($key,$this->_dyn_params))
+        if (!isset($this->_dyn_params[$key]))
           $this->$key = $val;
       }
       

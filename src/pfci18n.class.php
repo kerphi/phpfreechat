@@ -97,37 +97,7 @@ class pfcI18N
    */
   function GetAcceptedLanguage($type="main")
   {
-    if ($type=="admin"){
-      if (isset($GLOBALS["accepted_admin_languages"]))
-        return $GLOBALS["accepted_admin_languages"]; // restore the cached languages list
-      $GLOBALS["accepted_admin_languages"] = array();
-      $dir_handle = opendir(dirname(__FILE__)."/../i18n");
-      while (false !== ($file = readdir($dir_handle)))
-      {
-        // skip . and .. generic files
-        // skip also .svn directory
-        if ($file == "." || $file == ".." || strpos($file,".")===0) continue;
-        if (file_exists(dirname(__FILE__)."/../i18n/".$file."/admin.php"))
-        $GLOBALS["accepted_admin_languages"][] = $file;
-      }
-      closedir($dir_handle);
-      return $GLOBALS["accepted_admin_languages"];
-    }
-    else{
-      if (isset($GLOBALS["accepted_languages"]))
-        return $GLOBALS["accepted_languages"]; // restore the cached languages list
-      $GLOBALS["accepted_languages"] = array();
-      $dir_handle = opendir(dirname(__FILE__)."/../i18n");
-      while (false !== ($file = readdir($dir_handle)))
-      {
-        // skip . and .. generic files
-        // skip also .svn directory
-        if ($file == "." || $file == ".." || strpos($file,".")===0) continue;
-        $GLOBALS["accepted_languages"][] = $file;
-      }
-      closedir($dir_handle);
-      return $GLOBALS["accepted_languages"];
-    }
+    return /*<GetAcceptedLanguage>*/array('ar_LB','bg_BG','de_DE-formal','el_GR','eo','fr_FR','hy_AM','it_IT','ko_KR','nl_NL', 'pt_BR','ru_RU','sv_SE','uk_RO','zh_CN','ba_BA','bn_BD','de_DE-informal','en_US','es_ES','hu_HU','id_ID','ja_JP','nb_NO','pl_PL','pt_PT','sr_CS','tr_TR','uk_UA','zh_TW');/*</GetAcceptedLanguage>*/
   }
   
   /**
@@ -135,6 +105,24 @@ class pfcI18N
    */
   function UpdateMessageRessources()
   {
+    // first of all, update the GetAcceptedLanguage list
+    $i18n_basepath = dirname(__FILE__).'/../i18n';
+    $i18n_accepted_lang = array();
+    $dh = opendir($i18n_basepath);
+    while (false !== ($file = readdir($dh)))
+    {
+      // skip . and .. generic files, skip also .svn directory
+      if ($file == "." || $file == ".." || strpos($file,".")===0) continue;
+      if (file_exists($i18n_basepath.'/'.$file.'/main.php')) $i18n_accepted_lang[] = $file;
+    }
+    closedir($dh);
+    $i18n_accepted_lang_str = "array('" . implode("','", $i18n_accepted_lang) . "');";
+    $data = file_get_contents(__FILE__);
+    $data = preg_replace("/\/\*<GetAcceptedLanguage>\*\/(.*)\/\*<\/GetAcceptedLanguage>\*\//",
+                         "/*<GetAcceptedLanguage>*/$i18n_accepted_lang_str/*</GetAcceptedLanguage>*/",
+                         $data);
+
+    // Now scan the source code in order to find "_pfc" patterns
     $files = array();
     $files = array_merge($files, glob(dirname(__FILE__)."/*.php"));
     $files = array_merge($files, glob(dirname(__FILE__)."/commands/*.php")); 
@@ -142,7 +130,6 @@ class pfcI18N
     $files = array_merge($files, glob(dirname(__FILE__)."/proxies/*.php"));    
     $files = array_merge($files, glob(dirname(__FILE__)."/client/*.php"));
     $files = array_merge($files, glob(dirname(__FILE__)."/../themes/default/*.php"));
-
     $res = array();
     foreach ( $files as $src_filename )
     {
@@ -170,7 +157,7 @@ class pfcI18N
     }
 
     $dst_filenames = array();
-    foreach(pfcI18N::GetAcceptedLanguage() as $lg)
+    foreach($i18n_accepted_lang as $lg)
       $dst_filenames[] = dirname(__FILE__)."/../i18n/".$lg."/main.php";
 
     foreach( $dst_filenames as $dst_filename )
