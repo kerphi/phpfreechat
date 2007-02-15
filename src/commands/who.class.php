@@ -34,8 +34,8 @@ class pfcCommand_who extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
     
     if ($param != "")
     {
@@ -51,8 +51,8 @@ class pfcCommand_who extends pfcCommand
 
   function _getChanMeta($recipient, $recipientid)
   {
-    $c  =& $this->c;
-    $ct =& $c->getContainerInstance();
+    $c =& pfcGlobalConfig::Instance();
+    $ct =& pfcContainer::Instance();
     $chanmeta = array();
     $chanmeta['chan']   = $recipient;
     $chanmeta['chanid'] = $recipientid;

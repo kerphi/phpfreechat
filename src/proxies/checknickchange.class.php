@@ -38,8 +38,8 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     $owner       = isset($p["owner"]) ? $p["owner"] : '';
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     if ( $this->name == 'nick' )
     {
@@ -59,7 +59,7 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
           return;      
       }
 
-      $container =& $c->getContainerInstance();
+      $container =& pfcContainer::Instance();
       $newnickid = $container->getNickId($newnick);
       $oldnickid = $u->nickid;
 
@@ -109,7 +109,8 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
 
   function _checkNickIsUsed($newnick, $oldnickid)
   {
-    $ct =& $this->c->getContainerInstance();
+    $c =& pfcGlobalConfig::Instance();
+    $ct =& pfcContainer::Instance();
     $nick_in_use = false;
     $online_users = $ct->getOnlineNick(NULL);
     if (isset($online_users["nickid"]))

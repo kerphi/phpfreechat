@@ -12,10 +12,10 @@ class pfcCommand_updatemynick extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
 
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
-    $container =& $c->getContainerInstance();
+    $container =& pfcContainer::Instance();
     $container->updateNick($u->nickid);
   }
 }

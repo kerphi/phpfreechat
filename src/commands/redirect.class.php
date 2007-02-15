@@ -14,8 +14,8 @@ class pfcCommand_redirect extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
     if (trim($param) == '')
     {
       // error

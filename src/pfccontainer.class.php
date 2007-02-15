@@ -33,17 +33,27 @@ class pfcContainer extends pfcContainerInterface
 {
   var $_container = null; // contains the concrete container instance
   var $_usememorycache  = true;
-  
-  function pfcContainer(&$c, $type = 'File', $usememorycache = true)
+
+
+  function &Instance($type = 'File', $usememorycache = true)
   {
-    pfcContainerInterface::pfcContainerInterface($c);
+    static $i;
+    if (!isset($i))
+      $i = new pfcContainer($type, $usememorycache);
+    return $i;    
+  }
+  
+  function pfcContainer($type = 'File', $usememorycache = true)
+  {
+    pfcContainerInterface::pfcContainerInterface();
 
     $this->_usememorycache = $usememorycache;
+    $type = strtolower($type);
     
     // create the concrete container instance
-    require_once dirname(__FILE__)."/containers/".strtolower($type).".class.php";
+    require_once dirname(__FILE__)."/containers/".$type.".class.php";
     $container_classname = "pfcContainer_".$type;
-    $this->_container =& new $container_classname($this->c);
+    $this->_container =& new $container_classname();
   }
   function getDefaultConfig()
   {
@@ -52,10 +62,10 @@ class pfcContainer extends pfcContainerInterface
     else
       return array();
   }
-  function init()
+  function init(&$c)
   {
     if ($this->_container)
-      return $this->_container->init();
+      return $this->_container->init($c);
   }
   
   /**
@@ -67,7 +77,7 @@ class pfcContainer extends pfcContainerInterface
    */
   function createNick($chan, $nick, $nickid)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
 
     if ($nick == '')
       user_error('pfcContainer::createNick nick is empty', E_USER_ERROR);      
@@ -98,7 +108,7 @@ class pfcContainer extends pfcContainerInterface
    */
   function removeNick($chan, $nickid)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
 
     if ($chan == NULL) $chan = 'SERVER';
 
@@ -157,7 +167,7 @@ class pfcContainer extends pfcContainerInterface
    */
   function updateNick($nickid)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
 
     $chan = 'SERVER';
 
@@ -175,7 +185,7 @@ class pfcContainer extends pfcContainerInterface
    */
   function changeNick($newnick, $oldnick)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
 
     $oldnickid = $this->getNickId($oldnick);
     $newnickid = $this->getNickId($newnick);
@@ -225,7 +235,7 @@ class pfcContainer extends pfcContainerInterface
    */
   function removeObsoleteNick($timeout)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
 
     $deleted_user = array('nick'=>array(),
                           'nickid'=>array(),
@@ -273,7 +283,7 @@ class pfcContainer extends pfcContainerInterface
    */
   function getOnlineNick($chan)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
     
     if ($chan == NULL) $chan = 'SERVER';
 
@@ -323,7 +333,7 @@ class pfcContainer extends pfcContainerInterface
    */
   function write($chan, $nick, $cmd, $param)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
     if ($chan == NULL) $chan = 'SERVER';
     
     $msgid = $this->_requestMsgId($chan);
@@ -357,7 +367,7 @@ class pfcContainer extends pfcContainerInterface
    */
   function read($chan, $from_id)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
     if ($chan == NULL) $chan = 'SERVER';
 
     // read new messages id

@@ -40,8 +40,8 @@ class pfcProxyCommand_log extends pfcProxyCommand
       $sender      = $p["sender"];
       $recipient   = $p["recipient"];
       $recipientid = $p["recipientid"];   
-      $c =& $this->c;
-      $u =& $this->u;
+      $c =& pfcGlobalConfig::Instance();
+      $u =& pfcUserConfig::Instance();
     
       $logpath = ($c->proxies_cfg[$this->proxyname]["path"] == "" ? $c->data_private_path."/logs" :
                   $c->proxies_cfg[$this->proxyname]["path"]);

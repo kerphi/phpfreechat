@@ -15,10 +15,10 @@ class pfcCommand_unban extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
-    $ct =& $c->getContainerInstance();
+    $ct =& pfcContainer::Instance();
 
     $nick = isset($params[0]) ? $params[0] : '';
     $nickid = $ct->getNickId($nick);

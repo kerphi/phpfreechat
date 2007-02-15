@@ -22,6 +22,7 @@
 
 require_once dirname(__FILE__)."/pfctools.php";
 require_once dirname(__FILE__)."/pfci18n.class.php";
+require_once dirname(__FILE__).'/pfccontainer.class.php';
 
 /**
  * pfcGlobalConfig stock configuration data into sessions and initialize some stuff
@@ -146,16 +147,15 @@ class pfcGlobalConfig
       $this->errors[] = _pfc("'%s' parameter is mandatory by default use '%s' value", "serverid", "md5(__FILE__)");
     $this->serverid = $params["serverid"];
 
-    // setup data_private_path because _getCacheFile needs it
+    // setup data_private_path because _GetCacheFile needs it
     if (!isset($params["data_private_path"]))
       $this->data_private_path = dirname(__FILE__)."/../data/private";
     else
       $this->data_private_path = $params["data_private_path"];
-
     
     // check if a cached configuration allready exists
     // don't load parameters if the cache exists
-    $cachefile = $this->_getCacheFile();    
+    $cachefile = $this->_GetCacheFile();    
     if (!file_exists($cachefile))
     {
       // first of all, save our current state in order to be able to check for variable types later
@@ -169,11 +169,13 @@ class pfcGlobalConfig
       // load users container or keep default one
       if (isset($params["container_type"]))
         $this->container_type = $params["container_type"];
+
+     
       
       // load default container's config
-      $container =& $this->getContainerInstance();
-      $container_cfg = $container->getDefaultConfig();
-      foreach( $container_cfg as $k => $v )
+      $ct =& pfcContainer::Instance($this->container_type, true);
+      $ct_cfg = $ct->getDefaultConfig();
+      foreach( $ct_cfg as $k => $v )
       {
         $attr = "container_cfg_".$k;
         if (!isset($this->$attr))
@@ -219,6 +221,9 @@ class pfcGlobalConfig
     // now load or save the configuration in the cache
     $this->synchronizeWithCache();
 
+    // to be sure the container instance is initialized
+    $ct =& pfcContainer::Instance($this->container_type, true);
+
     // This is a dirty workaround which fix a infinite loop when:
     // 'frozen_nick' is true
     // 'nick' length is > 'max_nick_len'
@@ -228,37 +233,12 @@ class pfcGlobalConfig
   function &Instance( $params = array() )
   {
     static $i;
-    
     if (!isset($i))
       $i = new pfcGlobalConfig( $params );
     return $i;
   }
 
   
-  /**
-   * Return the selected container instance
-   * by default it is the File container
-   */
-  function &getContainerInstance()
-  {
-    // bug in php4: cant make a static pfcContainer instance because
-    // it make problems with pfcGlobalConfig references (not updated)
-    // it works well in php5, maybe there is a workeround but I don't have time to debug this
-    // to reproduce the bug: uncomment the next lines and try to change your nickname
-    //                       the old nickname will not be removed
-    // @todo : check if this bug is already present in php4
-    static $container;
-    if (!isset($container))
-    {
-      require_once dirname(__FILE__).'/pfccontainer.class.php';
-      $container =& new pfcContainer($this,                 // the config instance
-                                     $this->container_type, // the container type 
-                                     true                   // usememorycache
-                                     );
-    }
-    return $container;
-  }
-
   /**
    * This function saves all the parameters types in order to check later if the types are ok
    */
@@ -284,7 +264,7 @@ class pfcGlobalConfig
     $ok = true;
 
     if ($this->debug) pxlog("pfcGlobalConfig::init()", "chatconfig", $this->getId());
-    
+
     // check the parameters types
     $array_params = $this->_params_type["array"];
     foreach( $array_params as $ap )
@@ -420,11 +400,12 @@ class pfcGlobalConfig
     
     // ---
     // run specific container initialisation
-    $container_classname = "pfcContainer_".$this->container_type;
+    $ct =& pfcContainer::Instance();
+    /*    $container_classname = "pfcContainer_".$this->container_type;
     require_once dirname(__FILE__)."/containers/".strtolower($this->container_type).".class.php";
-    $container = new $container_classname($this);
-    $container_errors = $container->init();
-    $this->errors = array_merge($this->errors, $container_errors);
+    $container = new $container_classname($this);*/
+    $ct_errors = $ct->init($this);
+    $this->errors = array_merge($this->errors, $ct_errors);
     
     // load debug url
     $this->debugurl = relativePath($this->client_script_path, dirname(__FILE__)."/../debug");
@@ -433,32 +414,6 @@ class pfcGlobalConfig
     $lg_list = pfcI18N::GetAcceptedLanguage();
     if ( $this->language != "" && !in_array($this->language, $lg_list) )
       $this->errors[] = _pfc("'%s' parameter is not valid. Available values are : '%s'", "language", implode(", ", $lg_list));
-
-    /*
-    // install the proxy file
-    if (count($this->errors) == 0)
-    {
-      $proxyfile = $this->_getProxyFile();
-      $allowedpath_string  = "";
-      $allowedpath_string .= "\$allowedpath[] = '".realpath(dirname(__FILE__)."/../lib")."';\n";
-      $allowedpath_string .= "\$allowedpath[] = '".realpath(dirname(__FILE__)."/../src/client")."';\n";
-      $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath_default)."';\n";
-      $allowedpath_string .= "\$allowedpath[] = '".realpath($this->themepath)."';\n";
-      $proxycontent = file_get_contents(dirname(__FILE__)."/client/proxy.php.tpl");
-      $proxycontent = str_replace("//%allowedpath%", $allowedpath_string, $proxycontent);
-      if (!file_exists(dirname($proxyfile)))
-        mkdir_r(dirname($proxyfile));
-      if (file_exists($proxyfile) &&
-          !is_writable($proxyfile))
-        $this->errors[] = _pfc("'%s' must be writable", $proxyfile);
-      else
-      {
-        file_put_contents($proxyfile, $proxycontent);
-	chmod( $proxyfile, 0755 ); // should fix problems on OVH mutualized servers
-      }
-    }
-    */
-
 
     // calculate the proxies chaine
     $this->_proxies = array();
@@ -544,7 +499,7 @@ class pfcGlobalConfig
   }
   */
   
-  function _getCacheFile($serverid = "", $data_private_path = "")
+  function _GetCacheFile($serverid = "", $data_private_path = "")
   {
     if ($serverid == "")          $serverid = $this->getId();
     if ($data_private_path == "") $data_private_path = $this->data_private_path;
@@ -553,7 +508,7 @@ class pfcGlobalConfig
   
   function destroyCache()
   {
-    $cachefile = $this->_getCacheFile();
+    $cachefile = $this->_GetCacheFile();
     if (!file_exists($cachefile))
       return false;
     $this->is_init = false;
@@ -570,7 +525,7 @@ class pfcGlobalConfig
    */
   function synchronizeWithCache()
   {
-    $cachefile = $this->_getCacheFile();
+    $cachefile = $this->_GetCacheFile();
     $cachefile_lock = $cachefile."_lock";
 
     if (file_exists($cachefile))
@@ -618,7 +573,7 @@ class pfcGlobalConfig
   }
   function saveInCache()
   {
-    $cachefile = $this->_getCacheFile();
+    $cachefile = $this->_GetCacheFile();
     file_put_contents($cachefile, serialize(get_object_vars($this)));
     if ($this->debug) pxlog("pfcGlobalConfig::saveInCache()", "chatconfig", $this->getId());
   }

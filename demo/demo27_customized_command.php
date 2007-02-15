@@ -13,11 +13,11 @@ class pfcCommand_roll extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
     
-    $nick      = $c->nick;
-    $container =& $c->getContainerInstance();
-    $text      = trim($param);
+    $nick = $c->nick;
+    $ct   =& pfcContainer::Instance();
+    $text = trim($param);
     
     // Call parse roll
     require_once dirname(__FILE__).'/demo27_dice.class.php';
@@ -33,7 +33,7 @@ class pfcCommand_roll extends pfcCommand
     else
     {
       $result = $dice->roll();
-      $container->write($recipient, $nick, "send", $result);
+      $ct->write($recipient, $nick, "send", $result);
     }
     if ($c->debug) pxlog("Cmd_roll[".$c->sessionid."]: msg=".$result, "chat", $c->getId());
   }

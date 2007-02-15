@@ -38,14 +38,14 @@ class pfcProxyCommand_auth extends pfcProxyCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
 
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     // protect admin commands
     $admincmd = array("kick", "ban", "unban", "op", "deop", "debug", "rehash");
     if ( in_array($this->name, $admincmd) )
     {
-      $container =& $c->getContainerInstance();
+      $container =& pfcContainer::Instance();
       $nickid = $u->nickid;
       $isadmin = $container->getUserMeta($nickid, 'isadmin');
       if (!$isadmin)
@@ -59,7 +59,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
     if ($this->name == "join" ||
         $this->name == "join2")
     {
-      $container   =& $c->getContainerInstance();
+      $container   =& pfcContainer::Instance();
       $channame    = $param;
       
       // check the user is not listed in the banished channel list

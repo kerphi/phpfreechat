@@ -14,8 +14,8 @@ class pfcCommand_version extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '".$c->version."');");
   }

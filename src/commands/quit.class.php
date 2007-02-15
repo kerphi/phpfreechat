@@ -12,11 +12,11 @@ class pfcCommand_quit extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     // then remove the nickname file
-    $ct =& $c->getContainerInstance();
+    $ct =& pfcContainer::Instance();
     $quitmsg = $param == "" ? _pfc("%s quit", $u->nick) : _pfc("%s quit (%s)", $u->nick, $param);
     
     // from the channels

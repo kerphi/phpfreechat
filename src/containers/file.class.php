@@ -33,14 +33,13 @@ class pfcContainer_File extends pfcContainerInterface
                       "timestamp" => array());
   var $_meta = array();
   
-  function pfcContainer_File(&$config)
+  function pfcContainer_File()
   {
-    pfcContainerInterface::pfcContainerInterface($config);
+    pfcContainerInterface::pfcContainerInterface();
   }
   
-  function loadPaths()
+  function loadPaths(&$c)
   {
-    $c =& $this->c;
     if (!isset($c->container_cfg_chat_dir) || $c->container_cfg_chat_dir == '')
       $c->container_cfg_chat_dir   = $c->data_private_path."/chat";
     if (!isset($c->container_cfg_server_dir) || $c->container_cfg_server_dir == '')
@@ -49,21 +48,18 @@ class pfcContainer_File extends pfcContainerInterface
   
   function getDefaultConfig()
   {
-    $c =& $this->c;
     $cfg = pfcContainerInterface::getDefaultConfig();
     $cfg["chat_dir"]   = ''; // will be generated from the other parameters into the init step
     $cfg["server_dir"] = ''; // will be generated from the other parameters into the init step
     return $cfg;
   }
   
-  function init()
+  function init(&$c)
   {
-    $errors = pfcContainerInterface::init();
-    $c =& $this->c;
-                
+    $errors = pfcContainerInterface::init($c);
 
     // generate the container parameters from other config parameters
-    $this->loadPaths();
+    $this->loadPaths(&$c);
    
     $errors = array_merge($errors, @test_writable_dir($c->container_cfg_chat_dir,   "container_cfg_chat_dir"));
     $errors = array_merge($errors, @test_writable_dir($c->container_cfg_server_dir, "container_cfg_chat_dir/serverid"));
@@ -74,7 +70,7 @@ class pfcContainer_File extends pfcContainerInterface
 
   function setMeta($group, $subgroup, $leaf, $leafvalue = NULL)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
 
     if ($c->debug)
       file_put_contents("/tmp/debug", "\nsetMeta(".$group.",".$subgroup.",".$leaf.",".$leafvalue.")", FILE_APPEND);
@@ -111,7 +107,7 @@ class pfcContainer_File extends pfcContainerInterface
   
   function getMeta($group, $subgroup = null, $leaf = null, $withleafvalue = false)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
     if ($c->debug)
       file_put_contents("/tmp/debug", "\ngetMeta(".$group.",".$subgroup.",".$leaf.",".$withleafvalue.")", FILE_APPEND);
     
@@ -171,7 +167,7 @@ class pfcContainer_File extends pfcContainerInterface
 
   function rmMeta($group, $subgroup = null, $leaf = null)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
     if ($c->debug)
       file_put_contents("/tmp/debug", "\nrmMeta(".$group.",".$subgroup.",".$leaf.")", FILE_APPEND);
     

@@ -34,28 +34,18 @@ class pfcCommand
   /**
    * Command name (lowercase)
    */
-  var $name;
+  var $name = '';
 
   /**
    * Contains the command syntaxe (how to use the command)
    */
-  var $usage;
+  var $usage = '';
   
   /**
    * Not used for now
    */
-  var $desc;
-  var $help;
-
-  /**
-   * This is the pfcGlobalConfig instance
-   */
-  var $c;
-  
-  /**
-   * This is the pfcUserConfig instance
-   */
-  var $u;
+  var $desc = '';
+  var $help = '';
 
   /**
    * Used to instanciate a command
@@ -67,54 +57,58 @@ class pfcCommand
 
     // instanciate the real command
     $cmd           = NULL;
-    $cmd_name      = strtolower($name);
+    $cmd_name      = $name;
     $cmd_classname = "pfcCommand_".$name;
+
+    $cmd_filename  = $c->cmd_path_default.'/'.$cmd_name.'.class.php';
+    if (file_exists($cmd_filename)) require_once($cmd_filename);
+    $cmd_filename  = $c->cmd_path.'/'.$cmd_name.'.class.php';
+    if (file_exists($cmd_filename)) require_once($cmd_filename);
+    
     if (!class_exists($cmd_classname))
-    {
-      $cmd_paths = array($c->cmd_path_default,$c->cmd_path);
-      foreach($cmd_paths as $cp)
-      {
-        $cmd_filename  = $cp."/".$cmd_name.".class.php";
-        if (@file_exists($cmd_filename)) require_once($cmd_filename);
-      }
-    }
-    if (class_exists($cmd_classname))
-    {
-      $cmd =& new $cmd_classname();
-      $cmd->name = $cmd_name;
+      return NULL;
+    
+    $cmd =& new $cmd_classname;
+    $cmd->name = $cmd_name;
       
-      // instanciate the proxies chaine
-      $firstproxy =& $cmd;
-      for($i = count($c->_proxies)-1; $i >= 0; $i--)
-      {
-        $proxy_name      = $c->_proxies[$i];
-        $proxy_classname = "pfcProxyCommand_" . $proxy_name;
-        if (!class_exists($proxy_classname))
-        {
-          // try to include the proxy class file from the default path or from the customized path
-          $proxy_filename  = $c->proxies_path_default.'/'.$proxy_name.".class.php";
-          if (file_exists($proxy_filename))
-            require_once($proxy_filename);
-          else
-          {
-            $proxy_filename = $c->proxies_path.'/'.$proxy_name.".class.php";
-            if (file_exists($proxy_filename)) require_once($proxy_filename);
-          }
-        }
-        if (class_exists($proxy_classname))
-        {
-          // instanciate the proxy
-          $proxy =& new $proxy_classname();
-          $proxy->name      = $cmd_name;
-          $proxy->proxyname = $proxy_name;
-          $proxy->linkTo($firstproxy);
-          $firstproxy =& $proxy;
-        }
-      }
-      // return the proxy, not the command (the proxy will forward the request to the real command)
-      return $firstproxy;
+    // instanciate the proxies chaine
+    $firstproxy =& $cmd;
+    for($i = count($c->_proxies)-1; $i >= 0; $i--)
+    {
+      $proxy_name      = $c->_proxies[$i];
+      $proxy_classname = "pfcProxyCommand_" . $proxy_name;
+
+      // try to include the proxy class file from the default path or from the customized path
+      $proxy_filename  = $c->proxies_path_default.'/'.$proxy_name.".class.php";
+      if (file_exists($proxy_filename)) require_once($proxy_filename);
+      $proxy_filename  = $c->proxies_path.'/'.$proxy_name.".class.php";
+      if (file_exists($proxy_filename)) require_once($proxy_filename);
+            
+      if (!class_exists($proxy_classname))
+        return $firstproxy;
+      
+      // instanciate the proxy
+      $proxy =& new $proxy_classname;
+      $proxy->name      = $cmd_name;
+      $proxy->proxyname = $proxy_name;
+      $proxy->linkTo($firstproxy);
+      $firstproxy =& $proxy;
     }
-    return $cmd;
+
+    /*
+    $tmp = '';
+    $cur = $firstproxy;
+    while($cur)
+    {
+      $tmp .= (isset($cur->proxyname)?$cur->proxyname:$cur->name).'|';
+      $cur = $cur->next;
+    }
+    $tmp .= var_export($firstproxy,true);
+    file_put_contents('/tmp/debug1',$tmp);
+*/
+    
+    // return the proxy, not the command (the proxy will forward the request to the real command)
+    return $firstproxy;
   }
 
   /**
@@ -123,8 +117,6 @@ class pfcCommand
    */
   function pfcCommand()
   {
-    $this->c =& pfcGlobalConfig::Instance();
-    $this->u =& pfcUserConfig::Instance();
   }
 
   /**
@@ -141,9 +133,9 @@ class pfcCommand
    */
   function forceWhoisReload($nicktorewhois)
   {
-    $c  = $this->c;
-    $u  = $this->u;
-    $ct =& $c->getContainerInstance();
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
+    $ct =& pfcContainer::Instance();
 
     $nickid = $ct->getNickid($nicktorewhois);
 
@@ -189,7 +181,7 @@ class pfcCommand
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
     
-    $ct =& $c->getContainerInstance();
+    $ct =& pfcContainer::Instance();
     if ($nickid != "")
     {
       $cmdtoplay = $ct->getUserMeta($nickid, 'cmdtoplay');
@@ -209,7 +201,7 @@ class pfcCommand
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
-    $ct =& $c->getContainerInstance();
+    $ct =& pfcContainer::Instance();
 
     $morecmd = true;
     while($morecmd)

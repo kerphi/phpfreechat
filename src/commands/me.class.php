@@ -14,8 +14,8 @@ class pfcCommand_me extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     if (trim($param) == "")
     {
@@ -28,7 +28,7 @@ class pfcCommand_me extends pfcCommand
       return;
     }
 
-    $container =& $c->getContainerInstance();
+    $container =& pfcContainer::Instance();
     $msg = phpFreeChat::PreFilterMsg($param);
     $container->write($recipient, "*me*", $this->name, $u->nick." ".$msg);
     

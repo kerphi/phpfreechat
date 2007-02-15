@@ -4,9 +4,9 @@ require_once dirname(__FILE__)."/pfcglobalconfig.class.php";
 require_once dirname(__FILE__)."/pfci18n.class.php";
 require_once dirname(__FILE__)."/commands/join.class.php";
 
-class pfcInfo extends pfcGlobalConfig
+class pfcInfo
 {
-  var $container;
+  var $c = null;
   var $errors = array();
   
   function pfcInfo( $serverid, $data_private_path = "" )
@@ -15,7 +15,7 @@ class pfcInfo extends pfcGlobalConfig
     // if it doesn't exists, just stop the process
     // because we can't initialize the chat from the external API
     if ($data_private_path == "") $data_private_path = dirname(__FILE__)."/../data/private";
-    $cachefile = $this->_getCacheFile( $serverid, $data_private_path );
+    $cachefile = pfcGlobalConfig::_GetCacheFile( $serverid, $data_private_path );
     if (!file_exists($cachefile))
     {
       $this->errors[] = _pfc("Error: the cached config file doesn't exists");
@@ -24,7 +24,7 @@ class pfcInfo extends pfcGlobalConfig
     // then intitialize the pfcglobalconfig
     $params["serverid"]          = $serverid;
     $params["data_private_path"] = $data_private_path;
-    pfcGlobalConfig::pfcGlobalConfig($params);    
+    $this->c =& pfcGlobalConfig::Instance($params);    
   }
   
   /**
@@ -32,7 +32,7 @@ class pfcInfo extends pfcGlobalConfig
    */
   function getErrors()
   {
-    return $this->errors;
+    return array_merge($this->errors, $this->c->getErrors());
   }
   
   /**
@@ -42,18 +42,18 @@ class pfcInfo extends pfcGlobalConfig
    */
   function getOnlineNick($channel = NULL, $timeout = 20)
   {
-    $container =& $this->getContainerInstance();
+    $ct =& pfcContainer::Instance();
     
     if ($channel != NULL) $channel = pfcCommand_join::GetRecipient($channel);
     
-    $res = $container->getOnlineNick($channel);
+    $res = $ct->getOnlineNick($channel);
     $users = array();
     if (isset($res["nickid"]))
     {
       for($i = 0; $i < count($res["nickid"]); $i++)
       {
         if (time()-$timeout < $res["timestamp"][$i])
-          $users[] = $container->getNickname($res["nickid"][$i]);
+          $users[] = $ct->getNickname($res["nickid"][$i]);
       }
     }
     return $users;
@@ -72,9 +72,9 @@ class pfcInfo extends pfcGlobalConfig
     // @todo must use another function to get a private message last messages
     $channel = pfcCommand_join::GetRecipient($channel);
     
-    $container   =& $this->getContainerInstance();    
-    $lastmsg_id  = $container->getLastId($channel);
-    $lastmsg_raw = $container->read($channel, $lastmsg_id-$nb);
+    $ct          =& pfcContainer::Instance();
+    $lastmsg_id  = $ct->getLastId($channel);
+    $lastmsg_raw = $ct->read($channel, $lastmsg_id-$nb);
     return $lastmsg_raw;
   }
 
@@ -84,7 +84,7 @@ class pfcInfo extends pfcGlobalConfig
    */
   function rehash()
   {
-    $destroyed = $this->destroyCache();
+    $destroyed = $this->c->destroyCache();
     return $destroyed;
   }
 }

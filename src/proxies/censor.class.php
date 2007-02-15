@@ -38,8 +38,8 @@ class pfcProxyCommand_censor extends pfcProxyCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     $cmdtocheck = array("send", "nick", "me");
     if ( in_array($this->name, $cmdtocheck) )

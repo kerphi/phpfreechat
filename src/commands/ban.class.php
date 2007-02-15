@@ -15,8 +15,8 @@ class pfcCommand_ban extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     $nick   = isset($params[0]) ? $params[0] : '';
     $reason = isset($params[1]) ? $params[1] : '';
@@ -34,7 +34,7 @@ class pfcCommand_ban extends pfcCommand
       return;
     }
 
-    $ct =& $c->getContainerInstance();
+    $ct =& pfcContainer::Instance();
     $nickidtoban = $ct->getNickId($nick);
     
     // notify all the channel

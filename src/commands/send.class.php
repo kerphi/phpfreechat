@@ -12,8 +12,8 @@ class pfcCommand_send extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c    =& $this->c;
-    $u    =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
     $nick = phpFreeChat::FilterSpecialChar($sender);
     $text = phpFreeChat::PreFilterMsg($param);
 
@@ -37,7 +37,7 @@ class pfcCommand_send extends pfcCommand
     $can_send = true;
     if (isset($u->privmsg[$recipientid]))
     {
-      $container =& $c->getContainerInstance();
+      $container =& pfcContainer::Instance();
       $pvnick   = $u->privmsg[$recipientid]["name"];
       $pvnickid = $container->getNickId($pvnick);
       
@@ -77,7 +77,7 @@ class pfcCommand_send extends pfcCommand
     // Now send the message if there is no errors
     if ($can_send)
     {
-      $container =& $c->getContainerInstance();
+      $container =& pfcContainer::Instance();
       $msgid = $container->write($recipient, $nick, "send", $text);
       if (is_array($msgid))
       {

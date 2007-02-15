@@ -6,8 +6,8 @@ class pfcCommand_clear extends pfcCommand
 {
   function run(&$xml_reponse, $p)
   {
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '');");
   }

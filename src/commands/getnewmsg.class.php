@@ -32,7 +32,7 @@ class pfcCommand_getnewmsg extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
     // do nothing if the recipient is not defined
     if ($recipient == "") return;
        
@@ -50,7 +50,7 @@ class pfcCommand_getnewmsg extends pfcCommand
 
 
     // read the last from_id value
-    $container =& $c->getContainerInstance();
+    $container =& pfcContainer::Instance();
     $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$recipientid;
     $from_id = 0;
     if (isset($_SESSION[$from_id_sid]))

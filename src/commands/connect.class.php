@@ -13,9 +13,9 @@ class pfcCommand_connect extends pfcCommand
     $recipientid = $p["recipientid"];
     $getoldmsg   = isset($p["getoldmsg"]) ? $p["getoldmsg"] : true;
     
-    $c =& $this->c;
-    $u =& $this->u;
-    $ct =& $c->getContainerInstance();
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
+    $ct =& pfcContainer::Instance();
 
     // reset the message id indicator (see getnewmsg.class.php)
     // i.e. be ready to re-get all last posted messages

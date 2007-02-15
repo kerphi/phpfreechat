@@ -14,8 +14,8 @@ class pfcCommand_join extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
 
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     $channame  = trim($param);
     $chanrecip = pfcCommand_join::GetRecipient($channame);
@@ -55,7 +55,7 @@ class pfcCommand_join extends pfcCommand
     }
 
     // register the user (and his metadata) in the channel
-    $ct =& $c->getContainerInstance();
+    $ct =& pfcContainer::Instance();
     $ct->createNick($chanrecip, $u->nick, $u->nickid);
     $this->forceWhoisReload($u->nick);
     

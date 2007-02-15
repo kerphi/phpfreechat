@@ -28,10 +28,9 @@
  */
 class pfcContainerInterface
 {
-  var $c;
-  function pfcContainerInterface(&$config) { $this->c =& $config; }  
-  function getDefaultConfig()     { return array(); }
-  function init()                 { return array(); }  
+  function pfcContainerInterface() { }
+  function getDefaultConfig()      { return array(); }
+  function init(&$c)               { return array(); }
 
   /**
    * Write a meta data value identified by a group / subgroup / leaf [with a value]

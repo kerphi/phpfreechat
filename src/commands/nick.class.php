@@ -14,8 +14,8 @@ class pfcCommand_nick extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
 
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     if (trim($param) == "")
     {
@@ -31,7 +31,7 @@ class pfcCommand_nick extends pfcCommand
     $newnick = phpFreeChat::FilterNickname($param);
     $oldnick = $u->nick;
 
-    $container =& $c->getContainerInstance();
+    $container =& pfcContainer::Instance();
     $newnickid = $container->getNickId($newnick);
     $oldnickid = $container->getNickId($oldnick);
 

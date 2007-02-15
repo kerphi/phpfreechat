@@ -12,13 +12,13 @@ class pfcCommand_privmsg extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
     
     $pvname = $param;
     
     // check the pvname exists on the server
-    $container =& $c->getContainerInstance();
+    $container =& pfcContainer::Instance();
     $pvnickid = $container->getNickId($pvname);
     $nickid   = $u->nickid;
 
@@ -83,7 +83,7 @@ class pfcCommand_privmsg extends pfcCommand
     }
 
     // register the user (and his metadata) in this pv
-    $ct =& $c->getContainerInstance();
+    $ct =& pfcContainer::Instance();
     $ct->createNick($pvrecipient, $u->nick, $u->nickid);
     $this->forceWhoisReload($u->nick);
     

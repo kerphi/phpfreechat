@@ -8,8 +8,8 @@ class pfcCommand_deop extends pfcCommand
   
   function run(&$xml_reponse, $p)
   {
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     if (trim($p["param"]) == "")
     {
@@ -24,7 +24,7 @@ class pfcCommand_deop extends pfcCommand
 
     // just change the "isadmin" meta flag
     $nicktodeop   = trim($p["param"]);
-    $container  =& $c->getContainerInstance();
+    $container  =& pfcContainer::Instance();
     $nicktodeopid = $container->getNickId($nicktodeop);
     $container->setUserMeta($nicktodeopid, 'isadmin', false);
 

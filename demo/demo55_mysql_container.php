@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
+$params = array();
 $params["serverid"] = md5(__FILE__); // calculate a unique id for this chat
 $params["nick"] = "guest".rand(1,1000);
 $params["container_type"] = "mysql";

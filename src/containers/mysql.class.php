@@ -67,14 +67,13 @@ class pfcContainer_Mysql extends pfcContainerInterface
   INDEX (`server`,`group`,`subgroup`,`timestamp`)
 ) ENGINE=%engine%;";
     
-  function pfcContainer_Mysql(&$config)
+  function pfcContainer_Mysql()
   {
-    pfcContainerInterface::pfcContainerInterface($config);
+    pfcContainerInterface::pfcContainerInterface();
   }
 
   function getDefaultConfig()
-  {
-    $c =& $this->c;    
+  {   
     $cfg = pfcContainerInterface::getDefaultConfig();
     $cfg["mysql_host"] = 'localhost';
     $cfg["mysql_port"] = 3306;
@@ -93,13 +92,12 @@ class pfcContainer_Mysql extends pfcContainerInterface
     return $cfg;
   }
 
-  function init()
+  function init(&$c)
   {
-    $errors = pfcContainerInterface::init();
-    $c =& $this->c;
+    $errors = pfcContainerInterface::init($c);
 
     // connect to the db
-    $db = $this->_connect();
+    $db = $this->_connect($c);
     if ($db === FALSE)
     {
       $errors[] = _pfc("Mysql container: connect error");
@@ -122,7 +120,7 @@ class pfcContainer_Mysql extends pfcContainerInterface
       }
       mysql_select_db($c->container_cfg_mysql_database, $db);
     }
-    
+ 
     // create the table if it doesn't exists
     $query = $this->_sql_create_table;
     $query = str_replace('%engine%',              $c->container_cfg_mysql_engine,$query);
@@ -142,11 +140,11 @@ class pfcContainer_Mysql extends pfcContainerInterface
     return $errors;
   }
 
-  function _connect()
+  function _connect($c = null)
   {
     if (!$this->_db)
     {
-      $c =& $this->c;
+      if ($c == null) $c =& pfcGlobalConfig::Instance();
       $this->_db = mysql_pconnect($c->container_cfg_mysql_host.':'.$c->container_cfg_mysql_port,
                                   $c->container_cfg_mysql_username,
                                   $c->container_cfg_mysql_password);
@@ -157,8 +155,8 @@ class pfcContainer_Mysql extends pfcContainerInterface
 
   function setMeta($group, $subgroup, $leaf, $leafvalue = NULL)
   {
-    $c =& $this->c;
-
+    $c =& pfcGlobalConfig::Instance();      
+      
     if ($c->debug)
       file_put_contents("/tmp/debug.txt", "\nsetMeta(".$group.",".$subgroup.",".$leaf.",".$leafvalue.")", FILE_APPEND);
     
@@ -196,7 +194,8 @@ class pfcContainer_Mysql extends pfcContainerInterface
   
   function getMeta($group, $subgroup = null, $leaf = null, $withleafvalue = false)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();      
+
     if ($c->debug)
       file_put_contents("/tmp/debug.txt", "\ngetMeta(".$group.",".$subgroup.",".$leaf.",".$withleafvalue.")", FILE_APPEND);
     
@@ -265,7 +264,7 @@ class pfcContainer_Mysql extends pfcContainerInterface
 
   function rmMeta($group, $subgroup = null, $leaf = null)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();      
     if ($c->debug)
       file_put_contents("/tmp/debug.txt", "\nrmMeta(".$group.",".$subgroup.",".$leaf.")", FILE_APPEND);
     

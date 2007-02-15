@@ -1,7 +1,7 @@
 
 div#pfc_container {
   border: black double 5px;
-  background-image: url("proxy.php?p=mytheme/images/brick.jpg");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/brick.jpg'); ?>");
   background-repeat: repeat;
   padding: 20px;
   color: black;
@@ -17,13 +17,13 @@ div#pfc_content {
 
 div.pfc_message {
   background-color: transparent;
-  background-image: url("proxy.php?p=mytheme/images/newmsg.gif");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/newmsg.gif'); ?>");
   background-repeat: no-repeat;
   background-position: right center;
 }
 
 div.pfc_oldmsg {
-  background-image: url("proxy.php?p=mytheme/images/oldmsg.gif");
+  background-image: url("<?php echo $c->getFileUrlFromTheme('images/oldmsg.gif'); ?>");
 }
 
 span.pfc_heure {

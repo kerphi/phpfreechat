@@ -33,8 +33,8 @@ class pfcCommand_who2 extends pfcCommand_who
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
     
     if ($param != "")
     {

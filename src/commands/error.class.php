@@ -6,7 +6,7 @@ class pfcCommand_error extends pfcCommand
 {
   function run(&$xml_reponse, $p)
   {
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
     $errors = $p["param"];
     if (is_array($errors))
     {

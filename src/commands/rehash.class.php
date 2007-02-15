@@ -19,7 +19,7 @@ class pfcCommand_rehash extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
+    $c =& pfcGlobalConfig::Instance();
     // just destroy the cache
     // do not synchronizeWithCache() because it will reload the same parameters as the current one
     // the right way is to wait for the next page reload and the new parameters will be taken into account

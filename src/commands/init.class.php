@@ -12,8 +12,8 @@ class pfcCommand_init extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
 
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
     
     $cmd =& pfcCommand::Factory("quit");
     $cmd->run($xml_reponse, $p);

@@ -243,7 +243,7 @@ class phpFreeChat
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
-
+    
     if ($c->debug) ob_start(); // capture output
     
     $xml_reponse = new xajaxResponse();
@@ -286,7 +286,7 @@ class phpFreeChat
         // alert the other from the new pv
         // (warn other user that someone talk to him)
 
-        $ct =& $c->getContainerInstance();
+        $ct =& pfcContainer::Instance();
         $nickidtopv = $u->privmsg[$recipientid]["pvnickid"];
         $cmdstr = 'privmsg2';
         $cmdp = array();

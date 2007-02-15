@@ -39,13 +39,13 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
 
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     $cmdtocheck = array("send", "nick", "me");
     if ( in_array($this->name, $cmdtocheck) )
     {
-      $container =& $c->getContainerInstance();
+      $container =& pfcContainer::Instance();
       $nickid        = $u->nickid;
       $isadmin       = $container->getUserMeta($nickid, 'isadmin');
       $lastfloodtime = $container->getUserMeta($nickid, 'floodtime');

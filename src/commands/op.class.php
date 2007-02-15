@@ -14,8 +14,8 @@ class pfcCommand_op extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
 
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     if (trim($param) == "")
     {
@@ -30,7 +30,7 @@ class pfcCommand_op extends pfcCommand
 
     // just change the "isadmin" meta flag
     $nicktoop   = trim($param);
-    $container  =& $c->getContainerInstance();
+    $container  =& pfcContainer::Instance();
     $nicktoopid = $container->getNickId($nicktoop);
     $container->setUserMeta($nicktoopid, 'isadmin', true);
 

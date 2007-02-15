@@ -34,9 +34,9 @@ class pfcCommand_whois extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
-    $ct =& $c->getContainerInstance();
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
+    $ct =& pfcContainer::Instance();
 
     $nickid = $ct->getNickId($param);
     if ($nickid)

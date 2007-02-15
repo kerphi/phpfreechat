@@ -14,8 +14,8 @@ class pfcCommand_help extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     $ignore = array("updatemynick", "getnewmsg", "notice", "getonlinenick", "error", "update", "asknick");
     

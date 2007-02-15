@@ -6,8 +6,8 @@ class pfcCommand_debug extends pfcCommand
 {
   function run(&$xml_reponse, $p)
   {
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     if ($p["param"] == "userconfig")
     {

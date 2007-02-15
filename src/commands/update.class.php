@@ -12,15 +12,15 @@ class pfcCommand_update extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
     
     // do not update if user isn't active (didn't connect)
     if ($u->active)
     {
       // check the user has not been disconnected from the server by timeout
       // if I found he has been disconnected, then I reconnect him with /connect command
-      $ct =& $c->getContainerInstance();
+      $ct =& pfcContainer::Instance();
       if ($ct->isNickOnline(NULL, $u->nickid) < 0)
       {
         $cmd =& pfcCommand::Factory("connect");

@@ -13,10 +13,10 @@ class pfcCommand_banlist extends pfcCommand
   
   function run(&$xml_reponse, $p)
   {
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
     
-    $ct =& $c->getContainerInstance();
+    $ct =& pfcContainer::Instance();
     $banlist = $ct->getChanMeta($p["recipient"], 'banlist_nickid');
         
     if ($banlist == NULL) $banlist = array(); else $banlist = unserialize($banlist);

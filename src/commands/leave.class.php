@@ -15,9 +15,9 @@ class pfcCommand_leave extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
 
-    $c =& $this->c;
-    $u =& $this->u;
-    $ct =& $c->getContainerInstance();
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
+    $ct =& pfcContainer::Instance();
 
     $type   = isset($params[0]) ? $params[0] : '';
     $name   = isset($params[1]) ? $params[1] : '';

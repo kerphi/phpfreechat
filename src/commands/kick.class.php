@@ -15,8 +15,8 @@ class pfcCommand_kick extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;
-    $u =& $this->u;
+    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
 
     $nick   = isset($params[0]) ? $params[0] : '';
     $reason = isset($params[1]) ? $params[1] : '';
@@ -34,7 +34,7 @@ class pfcCommand_kick extends pfcCommand
     }
     
     // kicking a user just add a command to play to the aimed user metadata.
-    $ct =& $c->getContainerInstance();
+    $ct =& pfcContainer::Instance();
     $otherid  = $ct->getNickId($nick);
     $channame = $u->channels[$recipientid]["name"];
     $cmdstr = 'leave';

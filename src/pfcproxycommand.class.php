@@ -33,12 +33,12 @@ class pfcProxyCommand extends pfcCommand
   /**
    * Next proxy command
    */
-  var $next;
+  var $next = null;
 
   /**
    * The proxy name (similare to the command name)
    */
-  var $proxyname;
+  var $proxyname = '';
   
   /**
    * Constructor
@@ -50,7 +50,7 @@ class pfcProxyCommand extends pfcCommand
 
   function linkTo(&$cmd)
   {
-    $this->next = $cmd;
+    $this->next =& $cmd;
   }
 }
 

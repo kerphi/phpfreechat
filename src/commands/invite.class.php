@@ -46,9 +46,9 @@ class pfcCommand_invite extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& $this->c;   // pfcGlobalConfig
-    $u =& $this->u;   // pfcUserConfig
-    $ct =& $c->getContainerInstance(); // Connection to the chatbackend
+    $c =& pfcGlobalConfig::Instance();   // pfcGlobalConfig
+    $u =& pfcUserConfig::Instance();   // pfcUserConfig
+    $ct =& pfcContainer::Instance(); // Connection to the chatbackend
 
     $nicktoinvite  = isset($params[0]) ? $params[0] : '';
     $channeltarget = isset($params[1]) ? $params[1] : $u->channels[$recipientid]["name"]; // Default: current channel

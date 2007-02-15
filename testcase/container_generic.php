@@ -33,8 +33,8 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $params["title"] = "testcase -> pfccontainer_".$this->type;
     $params["serverid"] = md5(__FILE__ . time());
     $params["container_type"] = $this->type;
-    $this->c  = new pfcGlobalConfig($params);
-    $this->ct = $this->c->getContainerInstance();
+    $this->c  = pfcGlobalConfig::Instance($params);
+    $this->ct = pfcContainer::Instance();
   }
   
   // called after the test functions are executed
