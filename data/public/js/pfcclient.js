@@ -42,7 +42,9 @@ pfcClient.prototype = {
     this.timeout       = null;
     this.refresh_delay = pfc_refresh_delay;
     this.max_refresh_delay = pfc_max_refresh_delay;
-    this.last_refresh_time = new Date().getTime();
+    this.last_response_time = new Date().getTime();
+    this.last_request_time  = new Date().getTime();
+
     /* unique client id for each windows used to identify a open window
      * this id is passed every time the JS communicate with server
      * (2 clients can use the same session: then only the nickname is shared) */
@@ -148,6 +150,14 @@ pfcClient.prototype = {
   {
     if (pfc_debug)
       if (cmd != "update") trace('handleResponse: '+cmd + "-"+resp+"-"+param);
+
+    // store the new refresh time
+    this.last_response_time = new Date().getTime();
+
+    // calculate the ping and display it
+    this.ping = this.last_response_time - this.last_request_time;
+    $('pfc_ping').innerHTML = this.ping+'ms';
+
     if (cmd == "connect")
     {
       //alert(cmd + "-"+resp+"-"+param);
@@ -333,12 +343,11 @@ pfcClient.prototype = {
     }
     else if (cmd == "update")
     {
-      this.canupdatenexttime = true;
       // if the first ever refresh request never makes it back then the chat will keep
       // trying to refresh as usual
       // this only helps if we temporarily lose connection in the middle of an established
       // chat session
-      this.last_refresh_time = new Date().getTime();
+      this.canupdatenexttime = true;
     }
     else if (cmd == "version")
     {
@@ -890,8 +899,17 @@ pfcClient.prototype = {
    */
   sendRequest: function(cmd, recipientid)
   {
-    if (pfc_debug)
-      if (cmd != "/update") trace('sendRequest: '+cmd);
+    if (cmd != "/update")
+    {
+      // setup a new timeout to update the chat in 5 seconds (in refresh_delay more exactly)
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout('pfc.updateChat(true)', this.refresh_delay);
+
+      if (pfc_debug)
+        trace('sendRequest: '+cmd);
+    }
+
+    this.last_request_time = new Date().getTime();
     var rx = new RegExp('(^\/[^ ]+) *(.*)','ig');
     if (!recipientid) recipientid = this.gui.getTabId();
     cmd = cmd.replace(rx, '$1 '+this.clientid+' '+(recipientid==''?'0':recipientid)+' $2');
@@ -906,10 +924,6 @@ pfcClient.prototype = {
     clearTimeout(this.timeout);
     if (start)
     {
-      // calculate the ping and display it
-      this.ping = Math.abs(this.refresh_delay-(new Date().getTime() - this.last_refresh_time));
-      $('pfc_ping').innerHTML = this.ping+'ms';
-
       var res = true;
       if (this.canupdatenexttime)
       {
@@ -917,12 +931,12 @@ pfcClient.prototype = {
         res = this.sendRequest('/update');
         this.canupdatenexttime = false; // don't update if the last 'ok' response is not yet received
       }
-      else if ((new Date().getTime() - this.last_refresh_time) > this.max_refresh_delay)
+      else if ((new Date().getTime() - this.last_response_time) > this.max_refresh_delay)
       {
         // the connection is probably closed or very slow
         res = this.sendRequest('/update');
         this.canupdatenexttime = false; // don't update if the last 'ok' response is not yet received
-        this.last_refresh_time = new Date().getTime();
+        this.last_response_time = new Date().getTime();
       }
       // setup the next update
       this.timeout = setTimeout('pfc.updateChat(true)', this.refresh_delay);
