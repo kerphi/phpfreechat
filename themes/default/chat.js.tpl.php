@@ -12,8 +12,8 @@
 <script type="text/javascript">
   // <![CDATA[
 <?php
-require_once(dirname(__FILE__)."/../../lib/json/JSON.php");
-$json = new Services_JSON();
+require_once dirname(__FILE__).'/../../src/pfcjson.class.php';
+$json = new pfcJSON();
 ?>
 <?php $nick = $u->nick != "" ? $json->encode($u->nick) : $json->encode($c->nick); ?>
 

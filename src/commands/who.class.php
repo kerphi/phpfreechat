@@ -62,9 +62,9 @@ class pfcCommand_who extends pfcCommand
     $chanmeta['meta']['users']['nick']   = $users['nick'];
     $chanmeta['meta']['users']['nickid'] = $users['nickid'];
 
-    require_once(dirname(__FILE__)."/../../lib/json/JSON.php");
-    $json = new Services_JSON();
-    $js = $json->encode($chanmeta);
+    require_once dirname(__FILE__).'/../pfcjson.class.php';
+    $json = new pfcJSON();
+     $js = $json->encode($chanmeta);
     return $js;
   }
 }

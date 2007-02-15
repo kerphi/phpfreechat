@@ -251,8 +251,8 @@ class pfcCommand
   {
     if ($data != NULL)
     {
-      require_once(dirname(__FILE__)."/../lib/json/JSON.php");
-      $json = new Services_JSON();
+      require_once dirname(__FILE__).'/pfcjson.class.php';
+      $json = new pfcJSON();      
       $js = $json->encode($data);
       $xml_reponse->script("trace('".$msg." -> ".$js."');");
     }

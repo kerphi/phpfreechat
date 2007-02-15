@@ -20,7 +20,6 @@
  * Boston, MA  02110-1301  USA
  */
 
-require_once(dirname(__FILE__)."/../../lib/json/JSON.php");
 require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_getnewmsg extends pfcCommand
@@ -99,7 +98,8 @@ class pfcCommand_getnewmsg extends pfcCommand
     }
     if (count($js) != 0)
     {
-      $json = new Services_JSON();
+      require_once dirname(__FILE__).'/../pfcjson.class.php';
+      $json = new pfcJSON();      
       $js = $json->encode($js);
       $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', (".$js."));");
     }

@@ -20,7 +20,6 @@
  * Boston, MA  02110-1301  USA
  */
 
-require_once(dirname(__FILE__)."/../../lib/json/JSON.php");
 require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_whois extends pfcCommand
@@ -58,7 +57,8 @@ class pfcCommand_whois extends pfcCommand
       foreach($order as $o) $nickmeta_sorted[$o] = $usermeta[$o];
       $usermeta = $nickmeta_sorted;
       
-      $json = new Services_JSON();
+      require_once dirname(__FILE__).'/../pfcjson.class.php';
+      $json = new pfcJSON();
       $js = $json->encode($usermeta);
       $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', ".$js.");");
     }

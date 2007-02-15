@@ -423,9 +423,9 @@ class phpFreeChat
     $c =& pfcGlobalConfig::Instance();
 
     $js = '';
-    
-    require_once(dirname(__FILE__)."/../lib/json/JSON.php");
-    $json = new Services_JSON();
+
+    require_once dirname(__FILE__).'/pfcjson.class.php';
+    $json = new pfcJSON();
 
     $labels_to_load =
       array( "Do you really want to leave this room ?", // _pfc
