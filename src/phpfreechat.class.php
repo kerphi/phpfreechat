@@ -424,6 +424,13 @@ class phpFreeChat
 
     $js = '';
 
+    // load customize.js.php
+    $path = $c->getFilePathFromTheme('customize.js.php');
+    $t = new pfcTemplate($path);
+    $t->assignObject($c,"c");
+    $js .= $t->getOutput();
+
+    // load translations
     require_once dirname(__FILE__).'/pfcjson.class.php';
     $json = new pfcJSON();
 
@@ -472,7 +479,8 @@ class phpFreeChat
     {
       $js .= "pfc.res.setLabel(".$json->encode($l).",".$json->encode(_pfc2($l)).");\n";
     }
-    
+
+    // load ressources
     $fileurl_to_load =
       array( 'images/ch.gif',
              'images/pv.gif',
