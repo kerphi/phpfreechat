@@ -396,3 +396,39 @@ div#pfc_sound_container {
   height: 0;
 }
 
+
+/* The DHTML prompt */
+div#pfc_promptbox {
+  /* color:red;*/
+ border: 2px solid #000;
+ background-color: #DDD;
+}
+div#pfc_promptbox h2 {
+  margin: 0;
+  width: 100%;
+  background-color: #888;
+  color: white;
+  font-family: verdana;
+  font-size: 10pt;
+  font-weight: bold;
+  height: 20px;
+}
+div#pfc_promptbox p {
+  margin: 10px 0 0 10px;
+}
+div#pfc_promptbox form {
+  margin: 0 10px 10px 10px;
+  text-align: right;
+}
+div#pfc_promptbox input {
+  border: 1px solid #000;
+}
+input#pfc_promptbox_field {
+  width: 100%;
+}
+input#pfc_promptbox_submit {
+  margin: 5px 10px 0 0;
+}
+input#pfc_promptbox_cancel {
+  margin: 0;
+}

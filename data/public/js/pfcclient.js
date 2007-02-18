@@ -1,7 +1,7 @@
-var is_ie = navigator.appName.match("Explorer");
+var is_ie    = navigator.appName.match("Explorer");
 var is_khtml = navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML");
-var is_ff = navigator.appName.match("Netscape");
-
+var is_ff    = navigator.appName.match("Netscape");
+var is_ie7   = navigator.userAgent.indexOf('MSIE 7') > 0;
 /**
  * This class is the client part of phpFreeChat
  * (depends on prototype library)
@@ -57,7 +57,7 @@ pfcClient.prototype = {
 
     this.blinktmp     = Array();
     this.blinkloop    = Array();
-    this.blinktimeout = Array();
+    this.blinktimeout = Array(); 
   },
 
   connectListener: function()
@@ -137,12 +137,20 @@ pfcClient.prototype = {
   askNick: function(nickname)
   {
     // ask to choose a nickname
-    if (nickname == '') nickname = this.nickname;
-    var newnick = prompt(this.res.getLabel('Please enter your nickname'), nickname);
+    if (nickname == '' || nickname == undefined) nickname = this.nickname;
+
+    // build a dhtml prompt box
+    var pfcp = this.getPrompt();//new pfcPrompt($('pfc_container'));
+    pfcp.callback = function(v) { pfc.askNickResponse(v); }
+    pfcp.prompt(this.res.getLabel('Please enter your nickname'), nickname);
+    pfcp.focus();
+  },
+  askNickResponse: function(newnick)
+  {
     if (newnick)
       this.sendRequest('/nick "'+newnick+'"');
   },
-  
+
   /**
    * Reacte to the server response
    */
@@ -171,9 +179,6 @@ pfcClient.prototype = {
           this.sendRequest('/nick "'+this.nickname+'"');
         }
         
-        // give focus the the input text box if wanted
-        if (pfc_focus_on_connect) this.el_words.focus();
-
         this.isconnected = true;
 
         // start the polling system
@@ -268,6 +273,9 @@ pfcClient.prototype = {
     }
     else if (cmd == "nick")
     {
+      // give focus the the input text box if wanted
+      if (pfc_focus_on_connect) this.el_words.focus();
+
       if (resp == "connected" || resp == "notchanged")
       {
         cmd = '';
@@ -339,7 +347,6 @@ pfcClient.prototype = {
         this.isconnected = false;
         this.refresh_loginlogout();
       }
-
     }
     else if (cmd == "update")
     {
@@ -1536,7 +1543,14 @@ pfcClient.prototype = {
   insert_text: function(open, close, promptifselempty) 
   {
     var msgfield = $('pfc_words');
-    
+
+    var pfcp = this.getPrompt();
+    pfcp.msgfield = msgfield;
+    pfcp.open     = open;
+    pfcp.close    = close;
+    pfcp.promptifselempty = promptifselempty;
+    pfcp.callback = this.insert_text_callback;
+
     // IE support
     if (document.selection && document.selection.createRange)
     {
@@ -1544,7 +1558,51 @@ pfcClient.prototype = {
       sel = document.selection.createRange();
       var text = sel.text;
       if (text == "" && promptifselempty)
-        text = prompt(this.res.getLabel('Enter the text to format'),'');
+      {
+        pfcp.sel = document.selection.createRange();
+        pfcp.prompt(this.res.getLabel('Enter the text to format'), '');
+        pfcp.focus();
+      }
+      else
+        this.insert_text_callback(text,pfcp);
+    }
+
+    // Mozilla support
+    else if (msgfield.selectionStart || msgfield.selectionStart == '0')
+    {
+      var startPos = msgfield.selectionStart;
+      var endPos   = msgfield.selectionEnd;
+      
+      var text = msgfield.value.substring(startPos, endPos);
+      var extralength = 0;
+      if (startPos == endPos && promptifselempty)
+      {
+        pfcp.prompt(this.res.getLabel('Enter the text to format'), '');
+        pfcp.focus();
+      }
+      else
+        this.insert_text_callback(text,pfcp);
+    }
+    
+    // Fallback support for other browsers
+    else
+    {
+      pfcp.prompt(this.res.getLabel('Enter the text to format'), '');
+      pfcp.focus();
+    }
+    return;
+  },
+  insert_text_callback: function(text,pfcp)
+  {
+    var open             = pfcp.open;
+    var close            = pfcp.close;
+    var promptifselempty = pfcp.promptifselempty;
+    var msgfield         = pfcp.msgfield;
+    var sel              = pfcp.sel;
+
+    // IE support
+    if (document.selection && document.selection.createRange)
+    {
       if (text == null) text = "";
       if (text.length > 0 || !promptifselempty)
       {
@@ -1553,18 +1611,15 @@ pfcClient.prototype = {
         msgfield.focus();
       }
     }
-    
-    // Moz support
+    // Mozilla support
     else if (msgfield.selectionStart || msgfield.selectionStart == '0')
     {
       var startPos = msgfield.selectionStart;
-      var endPos = msgfield.selectionEnd;
+      var endPos   = msgfield.selectionEnd;
       
-      var text = msgfield.value.substring(startPos, endPos);
       var extralength = 0;
       if (startPos == endPos && promptifselempty)
       {
-        text = prompt(this.res.getLabel('Enter the text to format'),'');
         if (text == null) text = "";
         extralength = text.length;
       }
@@ -1575,11 +1630,9 @@ pfcClient.prototype = {
         msgfield.focus();
       }
     }
-    
     // Fallback support for other browsers
     else
     {
-      var text = prompt(this.res.getLabel('Enter the text to format'),'');
       if (text == null) text = "";
       if (text.length > 0 || !promptifselempty)
       {
@@ -1587,7 +1640,6 @@ pfcClient.prototype = {
         msgfield.focus();
       }
     }
-    return;
   },
   
   /**
@@ -1749,5 +1801,12 @@ pfcClient.prototype = {
         chatdiv.style.width = '';
       }
     }
+  },
+
+  getPrompt: function()
+  {
+    if (!this.pfc)
+    this.pfc = new pfcPrompt($('pfc_container'));
+    return this.pfc;
   }
 };
