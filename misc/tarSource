@@ -9,6 +9,7 @@ rm -rf ./$NAME
 svn export .. ./$NAME
 rm -rf ./$NAME/contrib
 rm -rf ./$NAME/admin
+rm -rf ./$NAME/lib/pear/.registry
 
 #echo "-> downloading documentation"
 #wget http://www.phpfreechat.net/pages/fr/install.html   -q -O ./$NAME/install.fr.html
