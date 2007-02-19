@@ -399,7 +399,6 @@ div#pfc_sound_container {
 
 /* The DHTML prompt */
 div#pfc_promptbox {
-  /* color:red;*/
  border: 2px solid #000;
  background-color: #DDD;
 }
@@ -427,8 +426,8 @@ input#pfc_promptbox_field {
   width: 100%;
 }
 input#pfc_promptbox_submit {
-  margin: 5px 10px 0 0;
+  margin: 0;
 }
 input#pfc_promptbox_cancel {
-  margin: 0;
+  margin: 5px 10px 0 0;
 }

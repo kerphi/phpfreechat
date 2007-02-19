@@ -29,7 +29,7 @@ pfcPrompt.prototype = {
       this.box.style.display  = 'none';
 
       var div = document.createElement('h2');
-      div.appendChild(document.createTextNode('Input Required'));
+      div.appendChild(document.createTextNode(pfc.res.getLabel('Input Required')));
       this.box.appendChild(div);
 
       this.prompt_title = document.createElement('p');
@@ -50,19 +50,19 @@ pfcPrompt.prototype = {
       var br = document.createElement('br');
       form.appendChild(br);
 
-      var submit = document.createElement('input');
-      submit.id = 'pfc_promptbox_submit';
-      submit.type = 'submit';
-      submit.value = 'OK';
-      form.appendChild(submit);
-
       var cancel = document.createElement('input');
       cancel.id = 'pfc_promptbox_cancel';
       cancel.type = 'button';
-      cancel.value = 'Cancel';
+      cancel.value = pfc.res.getLabel('Cancel');
       cancel.pfc_prompt = this;
       cancel.onclick = function(evt) { return this.pfc_prompt._doSubmit(true); };
       form.appendChild(cancel);
+
+      var submit = document.createElement('input');
+      submit.id = 'pfc_promptbox_submit';
+      submit.type = 'submit';
+      submit.value = pfc.res.getLabel('OK');
+      form.appendChild(submit);
 
       this.container.appendChild(this.box);
     }

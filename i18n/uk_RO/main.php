@@ -372,4 +372,13 @@ $GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "";
 // line 47 in chat.html.tpl.php
 $GLOBALS["i18n"]["Ping"] = "";
 
+// line 477 in phpfreechat.class.php
+$GLOBALS["i18n"]["Input Required"] = "";
+
+// line 478 in phpfreechat.class.php
+$GLOBALS["i18n"]["OK"] = "";
+
+// line 479 in phpfreechat.class.php
+$GLOBALS["i18n"]["Cancel"] = "";
+
 ?>

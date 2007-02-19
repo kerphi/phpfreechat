@@ -473,7 +473,10 @@ class phpFreeChat
              "Close", // _pfc
              "Choosen nickname is not allowed", // _pfc
              "Enable sound notifications", // _pfc
-             "Disable sound notifications", // _pfc       
+             "Disable sound notifications", // _pfc
+             "Input Required", // _pfc
+             "OK", // _pfc
+             "Cancel", // _pfc
              );
     foreach($labels_to_load as $l)
     {

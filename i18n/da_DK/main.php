@@ -372,4 +372,13 @@ $GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] =
 // line 140 in chat.js.tpl.php
 $GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "";
 
+// line 477 in phpfreechat.class.php
+$GLOBALS["i18n"]["Input Required"] = "";
+
+// line 478 in phpfreechat.class.php
+$GLOBALS["i18n"]["OK"] = "";
+
+// line 479 in phpfreechat.class.php
+$GLOBALS["i18n"]["Cancel"] = "";
+
 ?>
