@@ -97,7 +97,7 @@ class pfcI18N
    */
   function GetAcceptedLanguage($type="main")
   {
-    return /*<GetAcceptedLanguage>*/array('ar_LB','bg_BG','de_DE-formal','el_GR','eo','fr_FR','hy_AM','it_IT','ko_KR','nl_NL', 'pt_BR','ru_RU','sv_SE','uk_RO','zh_CN','ba_BA','bn_BD','de_DE-informal','en_US','es_ES','hu_HU','id_ID','ja_JP','nb_NO','pl_PL','pt_PT','sr_CS','tr_TR','uk_UA','zh_TW');/*</GetAcceptedLanguage>*/
+    return /*<GetAcceptedLanguage>*/array('ar_LB','sv_SE','ja_JP','ba_BA','pt_PT','el_GR','tr_TR','hy_AM','nb_NO','zh_TW','ru_RU','fr_FR','es_ES','bg_BG','zh_CN','nl_NL','de_DE-informal','pl_PL','pt_BR','it_IT','id_ID','hu_HU','en_US','sr_CS','de_DE-formal','eo','bn_BD','uk_UA','uk_RO','ko_KR','da_DK');/*</GetAcceptedLanguage>*/
   }
   
   /**
@@ -118,9 +118,10 @@ class pfcI18N
     closedir($dh);
     $i18n_accepted_lang_str = "array('" . implode("','", $i18n_accepted_lang) . "');";
     $data = file_get_contents(__FILE__);
-    $data = preg_replace("/\/\*<GetAcceptedLanguage>\*\/(.*)\/\*<\/GetAcceptedLanguage>\*\//",
-                         "/*<GetAcceptedLanguage>*/$i18n_accepted_lang_str/*</GetAcceptedLanguage>*/",
+    $data = preg_replace("/(\/\*<GetAcceptedLanguage>\*\/)(.*)(\/\*<\/GetAcceptedLanguage>\*\/)/",
+                         "$1".$i18n_accepted_lang_str."$3",
                          $data);
+    file_put_contents(__FILE__,$data);
 
     // Now scan the source code in order to find "_pfc" patterns
     $files = array();
