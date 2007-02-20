@@ -253,19 +253,33 @@ class pfcCommand
 
   }
 
-  function ParseCommand($cmd_str)
+  function ParseCommand($cmd_str, $one_parameter = false)
   {
     $pattern_quote   = '/([^\\\]|^)"([^"]+[^\\\])"/';
     $pattern_quote   = '/"([^"]+)"/';
     $pattern_noquote = '/([^"\s]+)/';
-    $pattern_command = '/^\/([a-z0-9]+)\s*(.*)/';
+    $pattern_command = '/^\/([a-z0-9]+)\s*([a-z0-9]+)\s*([a-z0-9]+)\s*(.*)/';
     $result = array();
-  
+    
     // parse the command name (ex: '/invite')
     if (preg_match($pattern_command, $cmd_str, $res))
     {
-      $cmd = $res[1];
-      $params_str = $res[2];
+      $cmd         = $res[1];
+      $clientid    = $res[2];
+      $recipientid = $res[3];
+      $params_str  = $res[4];
+
+      // don't parse multiple parameters for special commands with only one parameter
+      // this make possible to send double quotes (") in these commands
+      if ($one_parameter || $cmd == 'send' || $cmd == 'notice' || $cmd == 'me')
+      {
+        $result['cmdstr']  = $cmd_str;
+        $result['cmdname'] = $cmd;
+        $result['params']  = array($clientid, $recipientid, $params_str);
+        return $result;
+      }
+
+
       // parse the quotted parameters (ex: '/invite "nickname with spaces"')
       preg_match_all($pattern_quote,$params_str,$res1,PREG_OFFSET_CAPTURE);
       $params_res = $res1[1];
@@ -288,7 +302,54 @@ class pfcCommand
       ksort($params);
       $params = array_values($params);
       $params = array_map("trim",$params);
+      $params = array_merge(array($clientid,$recipientid), $params);
+
+
+      // THIS IS ANOTHER WAY TO PARSE THE PARAMETERS
+      // IT'S NOT SIMPLIER BUT MAYBE FASTER
+      // @todo : take the faster methode
+      /*
     
+      $params = array($clientid, $recipientid);
+      $sep    = preg_match('/[^\\\\]"/',$params_str) ? '"' : ' ';
+      if ($sep == ' ') $params_str = ' ' . $params_str;
+      $offset = 0;
+      while (1)
+      {
+        $i1 = strpos($params_str,$sep,$offset);
+        // capture the parameter value
+        if ($i1 !== FALSE)
+        {
+          // remove multi-separators
+          while (1)
+          {
+            if (strpos($params_str,$sep,$i1+1) - $i1 == 1)
+              $i1++;
+            else
+              break;
+          }
+          // search the parameter terminason
+          $offset = $i1+1;
+          $i2 = strpos($params_str,$sep,$offset);
+          if ($i2 !== FALSE)
+          {
+            $offset = $i2 + ($sep == '"' ? 1 : 0);
+            $p = substr($params_str, $i1+1, $i2-$i1-1);
+            if (!preg_match('/^\s*$/',$p))
+              $params[] = $p;
+          }
+          else
+            break;
+        }
+        else
+          break;
+      }
+      // append the tail
+      if ($offset < strlen($params_str))
+        $params[] = substr($params_str,$offset);
+      */
+
+      
       $result['cmdstr']  = $cmd_str;
       $result['cmdname'] = $cmd;
       $result['params']  = $params;
