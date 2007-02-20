@@ -59,7 +59,7 @@ class pfcContainer_File extends pfcContainerInterface
     $errors = pfcContainerInterface::init($c);
 
     // generate the container parameters from other config parameters
-    $this->loadPaths(&$c);
+    $this->loadPaths($c);
    
     $errors = array_merge($errors, @test_writable_dir($c->container_cfg_chat_dir,   "container_cfg_chat_dir"));
     $errors = array_merge($errors, @test_writable_dir($c->container_cfg_server_dir, "container_cfg_chat_dir/serverid"));
