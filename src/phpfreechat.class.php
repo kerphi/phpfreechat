@@ -381,6 +381,7 @@ class phpFreeChat
     $js = '';//file_get_contents(dirname(__FILE__).'/client/createstylerule.js');
     $js .= 'var c = $H();';
     $path = $c->getFilePathFromTheme('style.css.php');
+    require_once dirname(__FILE__).'/../lib/ctype/ctype.php'; // to keep compatibility for php without ctype support
     require_once dirname(__FILE__).'/../lib/csstidy-1.2/class.csstidy.php';
     $css = new csstidy();
     $css->set_cfg('preserve_css',false);
