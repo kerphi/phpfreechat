@@ -399,8 +399,9 @@ div#pfc_sound_container {
 
 /* The DHTML prompt */
 div#pfc_promptbox {
- border: 2px solid #000;
- background-color: #DDD;
+  border: 2px solid #000;
+  background-color: #DDD;
+  width: 350px;
 }
 div#pfc_promptbox h2 {
   margin: 0;

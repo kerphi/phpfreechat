@@ -24,7 +24,6 @@ pfcPrompt.prototype = {
       this.box = document.createElement('div');
       this.box.id = 'pfc_promptbox';
       this.box.style.position = 'absolute';
-      this.box.style.width    = '330px';
       this.box.style.zIndex   = 100;
       this.box.style.display  = 'none';
 
@@ -64,7 +63,8 @@ pfcPrompt.prototype = {
       submit.value = pfc.res.getLabel('OK');
       form.appendChild(submit);
 
-      this.container.appendChild(this.box);
+      var ct = document.getElementsByTagName('body')[0];
+      ct.appendChild(this.box);
     }
   },
 
@@ -77,14 +77,13 @@ pfcPrompt.prototype = {
       // assign the styles to the blackout division.
       this.bgbox.style.opacity = '.7';
       this.bgbox.style.position = 'absolute';
-//      this.bgbox.style.top  = '0px';
-//      this.bgbox.style.left = '0px';
       this.bgbox.style.backgroundColor = '#555';
       this.bgbox.style.filter = 'alpha(opacity=70)';
-//      this.bgbox.style.height = (document.body.offsetHeight<screen.height) ? screen.height+'px' : document.body.offsetHeight+20+'px'; 
       this.bgbox.style.display = 'none';
       this.bgbox.style.zIndex = 50;
-      this.container.appendChild(this.bgbox);
+
+      var ct = document.getElementsByTagName('body')[0];
+      ct.appendChild(this.bgbox);
     }
   },
 
@@ -96,16 +95,17 @@ pfcPrompt.prototype = {
     // Stretch the blackout division to fill the entire document
     // and make it visible.  Because it has a high z-index it should
     // make all other elements on the page unclickable.
-    this.bgbox.style.top     = (this.container.offsetTop-8)+'px'; // -8 because strange margin when the container is not 'body'
-    this.bgbox.style.left    = this.container.offsetLeft+'px';
+    var pos = this._findPos(this.container);
+    this.bgbox.style.top     = pos[1]+'px';
+    this.bgbox.style.left    = pos[0]+'px';
     this.bgbox.style.height  = this.container.offsetHeight+'px';
     this.bgbox.style.width   = this.container.offsetWidth+'px';
     this.bgbox.style.display = 'block';
 
     // Position the dialog box on the screen and make it visible.
-    this.box.style.top      = parseInt(this.container.offsetTop+(this.container.offsetHeight-200)/2)+'px';
-    this.box.style.left     = parseInt(this.container.offsetLeft+(this.container.offsetWidth-315)/2)+'px';
     this.box.style.display  = 'block';
+    this.box.style.top      = parseInt(pos[1]+(this.bgbox.offsetHeight-this.box.offsetHeight)/2)+'px';
+    this.box.style.left     = parseInt(pos[0]+(this.bgbox.offsetWidth-this.box.offsetWidth)/2)+'px';
     this.prompt_field.value = def;
     this.prompt_field.focus(); // Give the dialog box's input field the focus.
     this.prompt_title.innerHTML = text;
@@ -125,6 +125,20 @@ pfcPrompt.prototype = {
     return false;
   },
 
+  _findPos: function(obj)
+  {
+	  var curleft = curtop = 0;
+    if (obj.offsetParent) {
+  	  curleft = obj.offsetLeft;
+	  	curtop = obj.offsetTop;
+		  while (obj = obj.offsetParent) {
+        curleft += obj.offsetLeft;
+			  curtop += obj.offsetTop;
+      }
+    }
+    return [curleft,curtop];
+  },
+
   focus: function()
   {
     this.prompt_field.focus();
@@ -133,4 +147,7 @@ pfcPrompt.prototype = {
   callback: function(v,pfcp)
   {
   }
+
+
 }
+
