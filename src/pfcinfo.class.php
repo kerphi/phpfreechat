@@ -20,8 +20,9 @@ class pfcInfo
     {
       $this->errors[] = _pfc("Error: the cached config file doesn't exists");
       return;
-    }    
+    }
     // then intitialize the pfcglobalconfig
+    $params = array();
     $params["serverid"]          = $serverid;
     $params["data_private_path"] = $data_private_path;
     $this->c =& pfcGlobalConfig::Instance($params);    
@@ -32,7 +33,14 @@ class pfcInfo
    */
   function getErrors()
   {
-    return array_merge($this->errors, $this->c->getErrors());
+    if ($this->c != null)
+      return array_merge($this->errors, $this->c->getErrors());
+    else
+      return $this->errors;
+  }
+  function hasErrors()
+  {
+    return count($this->getErrors()) > 0;
   }
   
   /**
@@ -42,6 +50,8 @@ class pfcInfo
    */
   function getOnlineNick($channel = NULL, $timeout = 20)
   {
+    if ($this->hasErrors()) return array();
+    
     $ct =& pfcContainer::Instance();
     
     if ($channel != NULL) $channel = pfcCommand_join::GetRecipient($channel);
@@ -65,6 +75,8 @@ class pfcInfo
    */
   function getLastMsg($channel, $nb)
   {
+    if ($this->hasErrors()) return array();
+
     // to be sure the $nb params is a positive number
     if ( !( $nb >= 0 ) ) $nb = 10;
     
@@ -84,6 +96,8 @@ class pfcInfo
    */
   function rehash()
   {
+    if ($this->hasErrors()) return false;
+
     $destroyed = $this->c->destroyCache();
     return $destroyed;
   }
