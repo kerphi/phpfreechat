@@ -80,9 +80,6 @@ pfcClient.prototype = {
     Event.observe(this.el_words,     'focus',     this.callbackWords_OnFocus.bindAsEventListener(this), false);
     Event.observe(this.el_handle,    'keydown',   this.callbackHandle_OnKeydown.bindAsEventListener(this), false);
     Event.observe(this.el_handle,    'change',    this.callbackHandle_OnChange.bindAsEventListener(this), false);
-    Event.observe(this.el_container, 'mousemove', this.callbackContainer_OnMousemove.bindAsEventListener(this), false);
-    Event.observe(this.el_container, 'mousedown', this.callbackContainer_OnMousedown.bindAsEventListener(this), false);
-    Event.observe(this.el_container, 'mouseup',   this.callbackContainer_OnMouseup.bindAsEventListener(this), false);
     Event.observe(document.body,     'unload',    this.callback_OnUnload.bindAsEventListener(this), false);
   },
 
@@ -699,22 +696,6 @@ pfcClient.prototype = {
     }
   },
 
-  callbackContainer_OnMousemove: function(evt)
-  {
-    this.isdraging = true;
-  },
-  callbackContainer_OnMousedown: function(evt)
-  {
-    if ( ((is_ie || is_khtml) && evt.button == 1) || (is_ff && evt.button == 0) )
-      this.isdraging = false;
-  },
-  callbackContainer_OnMouseup: function(evt)
-  {
-    if ( ((is_ie || is_khtml) && evt.button == 1) || (is_ff && evt.button == 0) )
-      if (!this.isdraging)
-        if (this.el_words && !this.minmax_status)
-          this.el_words.focus();
-  },
 
   /**
    * hide error area and stop blinking fields

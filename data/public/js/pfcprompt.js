@@ -25,7 +25,7 @@ pfcPrompt.prototype = {
       this.box.id = 'pfc_promptbox';
       this.box.style.position = 'absolute';
       this.box.style.width    = '330px';
-      this.box.style.zIndex   = '100';
+      this.box.style.zIndex   = 100;
       this.box.style.display  = 'none';
 
       var div = document.createElement('h2');
@@ -83,7 +83,7 @@ pfcPrompt.prototype = {
       this.bgbox.style.filter = 'alpha(opacity=70)';
 //      this.bgbox.style.height = (document.body.offsetHeight<screen.height) ? screen.height+'px' : document.body.offsetHeight+20+'px'; 
       this.bgbox.style.display = 'none';
-      this.bgbox.style.zIndex = '50';
+      this.bgbox.style.zIndex = 50;
       this.container.appendChild(this.bgbox);
     }
   },
