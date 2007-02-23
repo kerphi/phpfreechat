@@ -1,61 +1,50 @@
-pfcClient.prototype.updateNickList = function(tabid,lst)
+pfcClient.prototype.buildNickItem = function(nickid)
 {
-  this.nicklist[tabid] = lst;
-  var nicks   = lst;
-  var nickdiv = this.gui.getOnlineContentFromTabId(tabid).firstChild;
-  var ul = document.createElement('ul');
-  for (var i=0; i<nicks.length; i++)
-  {
+    var nick = this.getUserMeta(nickid, 'nick');
+    var isadmin = this.getUserMeta(nickid, 'isadmin');
+    if (isadmin == '') isadmin = false;
+
     var li = document.createElement('li');
-    if (nicks[i] != this.nickname)
-    {
-      // this is someone -> create a privmsg link
-      var img = document.createElement('img');
-      img.setAttribute('src', this.res.getFileUrl('images/user.gif'));
-      img.alt = this.res.getLabel('Private message');
-      img.title = img.alt;
-      img.style.marginRight = '5px';
-      var a = document.createElement('a');
-      a.setAttribute('href', '');
-      a.pfc_nick = nicks[i];
-      a.onclick = function(){pfc.sendRequest('/privmsg "'+this.pfc_nick+'"'); return false;}
-      a.appendChild(img);
-      li.appendChild(a);
+
+    var a = document.createElement('a');
+    a.pfc_nick   = nick;
+    a.pfc_nickid = nickid;
+    a.setAttribute('target','_blank');
+    a.setAttribute('href','http://www.google.com/search?q='+nick);
+    /*
+    a.onclick = function(evt){
+      var d = pfc.getNickWhoisBox(this.pfc_nickid);
+      document.body.appendChild(d);
+      d.style.display = 'block';
+      d.style.zIndex = '400';
+      d.style.position = 'absolute';
+      d.style.left = (mousePosX(evt)-5)+'px';
+      d.style.top  = (mousePosY(evt)-5)+'px';
+      return false;
     }
+    */
+    li.appendChild(a);
+
+
+    var img = document.createElement('img');
+    if (isadmin)
+      img.setAttribute('src', this.res.getFileUrl('images/user-admin.gif'));
     else
-    {
-      // this is myself -> do not create a privmsg link
-      var img = document.createElement('img');
-      img.setAttribute('src', this.res.getFileUrl('images/user-me.gif'));
-      img.alt = '';
-      img.title = img.alt;
-      img.style.marginRight = '5px';
-      li.appendChild(img);
-    }
-    
+      img.setAttribute('src', this.res.getFileUrl('images/user.gif'));
+    img.style.marginRight = '5px';
+    img.setAttribute('class',     'pfc_nickbutton');
+    img.setAttribute('className', 'pfc_nickbutton'); // for IE6
+    a.appendChild(img);
 
     // nobr is not xhtml valid but it's a workeround 
     // for IE which doesn't support 'white-space: pre' css rule
     var nobr = document.createElement('nobr');
-    var a = document.createElement('a');
-    a.pfc_nick = nicks[i];
-    a.setAttribute('href','http://www.google.com/search?q='+nicks[i]);
-    a.setAttribute('target','_blank');
-    //a.onclick = function(){pfc.insert_text(this.pfc_nick+", ","",false); return false;}
-    a.appendChild(document.createTextNode(nicks[i]));
-    a.setAttribute('class', 'pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(nicks[i])));
-    a.setAttribute('className', 'pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(nicks[i]))); // for IE6
+    var span = document.createElement('span');
+    span.setAttribute('class',     'pfc_nickmarker pfc_nick_'+nickid);
+    span.setAttribute('className', 'pfc_nickmarker pfc_nick_'+nickid); // for IE6
+    span.appendChild(document.createTextNode(nick));
+    nobr.appendChild(span);
+    a.appendChild(nobr);
 
-    nobr.appendChild(a);
-    li.appendChild(nobr);
-    li.style.borderBottom = '1px solid #AAA';
-    
-    ul.appendChild(li);
-  }
-  var fc = nickdiv.firstChild;
-  if (fc)
-    nickdiv.replaceChild(ul,fc);
-  else
-    nickdiv.appendChild(ul,fc);
-  this.colorizeNicks(nickdiv);
+    return li;
 }
