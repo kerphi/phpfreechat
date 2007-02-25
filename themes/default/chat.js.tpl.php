@@ -42,16 +42,15 @@ var pfc_displaytabimage       = <?php echo $json->encode($displaytabimage); ?>;
 var pfc_displaytabclosebutton = <?php echo $json->encode($displaytabclosebutton); ?>;
 var pfc_connect_at_startup    = <?php echo $json->encode($connect_at_startup); ?>;
 var pfc_notify_window         = <?php echo $json->encode($notify_window); ?>;
-var pfc_defaultchan = <?php echo $json->encode($c->channels); ?>;
-var pfc_userchan = <?php $list = array(); foreach($u->channels as $item) {$list[] = $item["name"];} echo $json->encode($list); ?>;
-var pfc_defaultprivmsg = <?php echo $json->encode($c->privmsg); ?>;
-var pfc_userprivmsg = <?php $list = array(); foreach($u->privmsg as $item) {$list[] = $item["name"];} echo $json->encode($list); ?>;
-var pfc_openlinknewwindow = <?php echo $json->encode($openlinknewwindow); ?>;
-var pfc_bbcode_color_list = <?php $list = array(); foreach($bbcode_colorlist as $v) {$list[] = substr($v,1);} echo $json->encode($list); ?>;
-var pfc_nickname_color_list = <?php echo $json->encode($nickname_colorlist); ?>;
-var pfc_proxy_url = '<?php echo $data_public_url."/".$serverid."/proxy.php"; ?>';
-var pfc_theme = <?php echo $json->encode($theme); ?>;
-var pfc_isready = false;
+var pfc_defaultchan           = <?php echo $json->encode($c->channels); ?>;
+var pfc_userchan              = <?php $list = array(); foreach($u->channels as $item) {$list[] = $item["name"];} echo $json->encode($list); ?>;
+var pfc_defaultprivmsg        = <?php echo $json->encode($c->privmsg); ?>;
+var pfc_userprivmsg           = <?php $list = array(); foreach($u->privmsg as $item) {$list[] = $item["name"];} echo $json->encode($list); ?>;
+var pfc_openlinknewwindow     = <?php echo $json->encode($openlinknewwindow); ?>;
+var pfc_bbcode_color_list     = <?php $list = array(); foreach($bbcode_colorlist as $v) {$list[] = substr($v,1);} echo $json->encode($list); ?>;
+var pfc_nickname_color_list   = <?php echo $json->encode($nickname_colorlist); ?>;
+var pfc_theme                 = <?php echo $json->encode($theme); ?>;
+var pfc_isready               = false;
 
 var xajaxConfig = {
   requestURI: "<?php echo $c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""); ?>",
