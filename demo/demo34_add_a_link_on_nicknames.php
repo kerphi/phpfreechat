@@ -4,7 +4,7 @@ require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 
 $params["serverid"]      = md5(__FILE__); // calculate a unique id for this chat
 $params["title"]         = "A chat with a customized nickname list";
-$params["themepath"]     = dirname(__FILE__)."/demo34_add_a_link_on_nicknames";
+$params["theme_path"]    = dirname(__FILE__)."/demo34_add_a_link_on_nicknames";
 $params["theme"]         = "mytheme";
 $chat = new phpFreeChat( $params );
 

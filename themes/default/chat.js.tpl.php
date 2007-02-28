@@ -53,7 +53,7 @@ var pfc_theme                 = <?php echo $json->encode($theme); ?>;
 var pfc_isready               = false;
 
 var xajaxConfig = {
-  requestURI: "<?php echo $c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""); ?>",
+  requestURI: "<?php echo $c->server_script_url; ?>",
   debug: false,
   statusMessages: false,
   waitCursor: false,

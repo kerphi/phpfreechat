@@ -8,7 +8,6 @@ $params["nick"]           = "guest";  // setup the intitial nickname
 
 // setup urls
 $params["data_public_url"]   = "../data/public";
-$params["client_script_url"] = "./demo21_with_hardcoded_urls.php";
 $params["server_script_url"] = "./demo21_with_hardcoded_urls.php";
 $params["theme_default_url"] = "../themes";
 

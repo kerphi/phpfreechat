@@ -8,7 +8,7 @@ $params["height"]        = "500px";
 // do not uses width parameter because of a display bug in IE6
 //$params["width"]         = "650px";
 $params["max_msg"]       = 21;
-$params["themepath"]     = dirname(__FILE__)."/demo5_customized_style_data";
+$params["theme_path"]    = dirname(__FILE__)."/demo5_customized_style_data";
 $params["theme"]         = "mytheme";
 $chat = new phpFreeChat( $params );
 

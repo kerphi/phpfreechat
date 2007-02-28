@@ -102,10 +102,10 @@ class pfcGlobalConfig
   var $nickname_colorlist  = array('#CCCCCC','#000000','#3636B2','#2A8C2A','#C33B3B','#C73232','#80267F','#66361F','#D9A641','#3DCC3D','#1A5555','#2F8C74','#4545E6','#B037B0','#4C4C4C','#959595');
   
   var $theme               = "default";
-  var $themepath           = "";
-  var $themepath_default   = "";
-  var $theme_url           = "";
-  var $theme_default_url   = "";
+  var $theme_path          = '';
+  var $theme_default_path  = '';
+  var $theme_url           = '';
+  var $theme_default_url   = '';
 
   var $baseurl             = "";
   
@@ -114,7 +114,7 @@ class pfcGlobalConfig
   var $container_type      = "File";
 
   var $client_script_path  = "";
-  var $client_script_url   = ""; // default is calculated from 'client_script_path'
+  //  var $client_script_url   = ""; // default is calculated from 'client_script_path'
   var $server_script_path  = "";
   var $server_script_url   = ""; // default is calculated from 'server_script_path'
   var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2.3";
@@ -136,6 +136,7 @@ class pfcGlobalConfig
   var $_proxies             = array(); // will contains proxies to execute on each command (filled in the init step)
   var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg", "nickmeta","baseurl");
   var $_params_type         = array();
+  var $_query_string        = '';
   
   function pfcGlobalConfig( $params = array() )
   {    
@@ -165,12 +166,17 @@ class pfcGlobalConfig
         $this->data_public_path  = dirname(__FILE__)."/../data/public";
       else
         $this->data_public_path = $params["data_public_path"];
+
+      // if the user didn't specify the server_script_url, then remember it and
+      // append QUERY_STRING to it
+      if (!isset($params['server_script_url']))
+        $this->_query_string = isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '' ?
+          '?'.$_SERVER['QUERY_STRING'] :
+          '';
       
       // load users container or keep default one
       if (isset($params["container_type"]))
-        $this->container_type = $params["container_type"];
-
-     
+        $this->container_type = $params["container_type"];     
       
       // load default container's config
       $ct =& pfcContainer::Instance($this->container_type, true);
@@ -348,54 +354,60 @@ class pfcGlobalConfig
     //                                                             $this->data_public_path."/xajax_js/xajax.js"));
     //    $this->errors = array_merge($this->errors, @install_file($this->xajaxpath."/xajax_js/xajax_uncompressed.js",
     //                                                             $this->data_public_path."/xajax_js/xajax_uncompressed.js" ));
+
+
+
     // ---
     // test client script
     // try to find the path into server configuration
-    if ($this->client_script_path == "")
+    if ($this->client_script_path == '')
       $this->client_script_path = getScriptFilename();
-    $filetotest = $this->client_script_path;
-    // do not take into account the url parameters
-    if (preg_match("/(.*)\?(.*)/", $filetotest, $res))
-      $filetotest = $res[1];
-    if ( !file_exists($filetotest) )
-      $this->errors[] = _pfc("%s doesn't exist", $filetotest);   
-    if ($this->client_script_url == "")
-      $this->client_script_url = "./".basename($filetotest);
 
+
+    if ($this->server_script_url == '' && $this->server_script_path == '')
+    {    
+      $filetotest = $this->client_script_path;
+      // do not take into account the url parameters
+      if (preg_match("/(.*)\?(.*)/", $filetotest, $res))
+        $filetotest = $res[1];
+      if ( !file_exists($filetotest) )
+        $this->errors[] = _pfc("%s doesn't exist", $filetotest);   
+      $this->server_script_url  = './'.basename($filetotest).$this->_query_string;
+    }
+  
+    //if ($this->client_script_url == "")
+    //      $this->client_script_url = "./".basename($filetotest);
     
     // calculate datapublic url
     if ($this->data_public_url == "")
       $this->data_public_url = relativePath($this->client_script_path, $this->data_public_path);
 
-
+    if ($this->server_script_path == '')
+      $this->server_script_path = $this->client_script_path;
     
     // ---
-    // test server script
-    if ($this->server_script_path == "")
+    // test server script    
+    if ($this->server_script_url == '')
     {
-      $this->server_script_path = $this->client_script_path;
-      if ($this->server_script_url == "")
-        $this->server_script_url  = $this->client_script_url;
+      $filetotest = $this->server_script_path;
+      // do not take into account the url parameters
+      if (preg_match("/(.*)\?(.*)/",$this->server_script_path, $res))
+        $filetotest = $res[1];
+      if ( !file_exists($filetotest) )
+        $this->errors[] = _pfc("%s doesn't exist", $filetotest);
+      $this->server_script_url = relativePath($this->client_script_path, $this->server_script_path).'/'.basename($filetotest).$this->_query_string;
     }
-    $filetotest = $this->server_script_path;
-    // do not take into account the url parameters
-    if (preg_match("/(.*)\?(.*)/",$this->server_script_path, $res))
-      $filetotest = $res[1];
-    if ( !file_exists($filetotest) )
-      $this->errors[] = _pfc("%s doesn't exist", $filetotest);
-    if ($this->server_script_url == "")
-      $this->server_script_url = relativePath($this->client_script_path, $this->server_script_path)."/".basename($filetotest);
-
-    // check if the themepath parameter are correctly setup
-    if ($this->themepath_default == "" || !is_dir($this->themepath_default))
-      $this->themepath_default = realpath(dirname(__FILE__)."/../themes");
-    if ($this->themepath == "" || !is_dir($this->themepath))
-      $this->themepath = $this->themepath_default;
+    
+    // check if the theme_path parameter are correctly setup
+    if ($this->theme_default_path == "" || !is_dir($this->theme_default_path))
+      $this->theme_default_path = realpath(dirname(__FILE__)."/../themes");
+    if ($this->theme_path == "" || !is_dir($this->theme_path))
+      $this->theme_path = $this->theme_default_path;
     // calculate theme url
     if ($this->theme_default_url == '')
-      $this->theme_default_url = relativePath($this->client_script_path, $this->themepath_default);
+      $this->theme_default_url = relativePath($this->client_script_path, $this->theme_default_path);
     if ($this->theme_url == '')
-      $this->theme_url = relativePath($this->client_script_path, $this->themepath);
+      $this->theme_url = relativePath($this->client_script_path, $this->theme_path);
 
     
     // ---
@@ -580,44 +592,47 @@ class pfcGlobalConfig
 
   function isDefaultFile($file)
   {
-    $fexists1 = file_exists($this->themepath."/default/".$file);
-    $fexists2 = file_exists($this->themepath."/".$this->theme."/".$file);
+    $fexists1 = file_exists($this->theme_path."/default/".$file);
+    $fexists2 = file_exists($this->theme_path."/".$this->theme."/".$file);
     return ($this->theme == "default" ? $fexists1 : !$fexists2);
   }
 
   /*
   function getFileUrlByProxy($file, $addprefix = true)
   {
-    if (file_exists($this->themepath."/".$this->theme."/".$file))
+    if (file_exists($this->theme_path."/".$this->theme."/".$file))
       return ($addprefix ? $this->data_public_url."/".$this->getId()."/proxy.php" : "")."?p=".$this->theme."/".$file;
     else
-      if (file_exists($this->themepath_default."/default/".$file))
+      if (file_exists($this->theme_default_path."/default/".$file))
         return ($addprefix ? $this->data_public_url."/".$this->getId()."/proxy.php" : "")."?p=default/".$file;
       else
-	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
+	die(_pfc("Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct", $file, $this->theme_path, $this->theme));
   }
   */
     
   function getFilePathFromTheme($file)
   {
-    if (file_exists($this->themepath."/".$this->theme."/".$file))
-      return $this->themepath."/".$this->theme."/".$file;
+    if (file_exists($this->theme_path."/".$this->theme."/".$file))
+      return $this->theme_path."/".$this->theme."/".$file;
     else
-      if (file_exists($this->themepath_default."/default/".$file))
-	return $this->themepath_default."/default/".$file;
+      if (file_exists($this->theme_default_path."/default/".$file))
+        return $this->theme_default_path."/default/".$file;
       else
-	die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->themepath, $this->theme));
+      {
+        $this->destroyCache();
+        die(_pfc("Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct", $file, $this->theme_path, $this->theme));
+      }
   }
 
   function getFileUrlFromTheme($file)
   {
-    if (file_exists($this->themepath.'/'.$this->theme.'/'.$file))
+    if (file_exists($this->theme_path.'/'.$this->theme.'/'.$file))
       return $this->theme_url.'/'.$this->theme.'/'.$file;
     else
-      if (file_exists($this->themepath_default.'/default/'.$file))
+      if (file_exists($this->theme_default_path.'/default/'.$file))
         return $this->theme_default_url.'/default/'.$file;
       else
-	return 'notfound';
+        return 'notfound';
   }
 
 

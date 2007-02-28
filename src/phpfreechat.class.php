@@ -393,7 +393,7 @@ class phpFreeChat
     $t->assignObject($c,"c");
     if (!$c->isDefaultFile('style.css.php'))
     {
-      $t->setTemplate($c->themepath_default.'/default/style.css.php');      
+      $t->setTemplate($c->theme_default_path.'/default/style.css.php');      
       $css_code .= $t->getOutput();
     }
     $t->setTemplate($c->getFilePathFromTheme('style.css.php'));
