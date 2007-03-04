@@ -17,7 +17,7 @@ else
   $info = "<strong>%d</strong> users are connected to the server !";
 echo "<p>".sprintf($info, $nb_users)."</p>";
 
-echo "<p>Here is the nicknames' list:</p>";
+echo "<p>Here is the online nicknames list of <a href='./demo31_show_who_is_online-chat.php'>this chat</a>:</p>";
 echo "<ul>";
 foreach($users as $u)
 {

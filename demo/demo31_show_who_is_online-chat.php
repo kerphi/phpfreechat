@@ -22,7 +22,8 @@ $chat = new phpFreeChat( $params );
     
   <body>
     <?php $chat->printChat(); ?>
-
+  <p>Then have a look to the <a href="./demo31_show_who_is_online-whoisonline.php">whoisonline script</a></p>
+  
 <?php
   // print the current file
   echo "<h2>The source code</h2>";
