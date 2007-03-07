@@ -16,7 +16,7 @@ class pfcCommand_update extends pfcCommand
     $u =& pfcUserConfig::Instance();
     
     // do not update if user isn't active (didn't connect)
-    if ($u->active)
+    if ($u->isOnline())
     {
       // check the user has not been disconnected from the server by timeout
       // if I found he has been disconnected, then I reconnect him with /connect command
@@ -52,7 +52,7 @@ class pfcCommand_update extends pfcCommand
         $cmdp["recipientid"] = $id;
         $cmdp["param"] = ''; // don't forward the parameter because it will be interpreted as a channel name
         $cmd->run($xml_reponse, $cmdp);
-      }      
+      }
 
       // get new message posted on each channels
       $cmd =& pfcCommand::Factory("getnewmsg");

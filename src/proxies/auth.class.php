@@ -41,6 +41,20 @@ class pfcProxyCommand_auth extends pfcProxyCommand
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
 
+
+    // do not allow someone to run a command if he is not online
+    if ($this->name != 'error' &&
+        $this->name != 'connect' &&
+        !$u->isOnline())
+    {
+      $cmdp = $p;
+      $cmdp["param"] = _pfc("Your must be connected to send a message");
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $cmdp);
+      return;
+    }
+
+    
     // protect admin commands
     $admincmd = array("kick", "ban", "unban", "op", "deop", "debug", "rehash");
     if ( in_array($this->name, $admincmd) )

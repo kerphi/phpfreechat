@@ -39,11 +39,12 @@ pfcClient.prototype = {
     this.privmsgs      = Array();
     this.privmsgids    = Array();
     
-    this.timeout       = null;
-    this.refresh_delay = pfc_refresh_delay;
-    this.max_refresh_delay = pfc_max_refresh_delay;
+    this.timeout            = null;
+    this.refresh_delay      = pfc_refresh_delay;
+    this.max_refresh_delay  = pfc_max_refresh_delay;
     this.last_response_time = new Date().getTime();
     this.last_request_time  = new Date().getTime();
+    this.canupdatenexttime  = true;
 
     /* unique client id for each windows used to identify a open window
      * this id is passed every time the JS communicate with server
@@ -145,7 +146,12 @@ pfcClient.prototype = {
   askNickResponse: function(newnick)
   {
     if (newnick)
-      this.sendRequest('/nick "'+newnick+'"');
+    {
+      if (this.isconnected)
+        this.sendRequest('/nick "'+newnick+'"');
+      else
+        this.sendRequest('/connect '+newnick);
+    }
   },
 
   /**
@@ -167,7 +173,10 @@ pfcClient.prototype = {
     {
       //alert(cmd + "-"+resp+"-"+param);
       if (resp == "ok")
-      {                
+      {
+        this.nickname = param[0]; 
+        this.sendRequest('/nick "'+this.nickname+'"');
+/*
         if (this.nickname == '')
           // ask to choose a nickname
           this.askNick(this.nickname);
@@ -175,8 +184,58 @@ pfcClient.prototype = {
         {
           this.sendRequest('/nick "'+this.nickname+'"');
         }
-        
+*/        
         this.isconnected = true;
+
+/*
+        // join the default channels comming from the parameter list
+	// and the user's channels comming from the
+	var ch = pfc_defaultchan;
+        for (var i=0; i<pfc_userchan.length; i++)
+        {
+          if (indexOf(ch,pfc_userchan[i]) == -1)
+            ch.push(pfc_userchan[i]);
+        }
+*/
+        // join the default channels comming from the parameter list
+        if (pfc_userchan.length == 0)
+          for (var i=0; i<pfc_defaultchan.length; i++)
+          {
+            if (i<pfc_defaultchan.length-1)
+              cmd = '/join2';
+            else
+              cmd = '/join';
+            cmd += ' "'+pfc_defaultchan[i]+'"';
+            this.sendRequest(cmd);
+          }
+        else
+          // join channels comming from user sessions
+          for (var i=0; i<pfc_userchan.length; i++)
+          {
+            if (i<pfc_userchan.length-1)
+              cmd = '/join2';
+            else
+              cmd = '/join';
+            cmd += ' "'+pfc_userchan[i]+'"'; 
+            this.sendRequest(cmd);
+          }
+
+        // join the default privmsg comming from the parameter list
+        for (var i=0; i<pfc_defaultprivmsg.length; i++)
+        {
+          if (i<pfc_defaultprivmsg.length-1)
+            cmd = '/privmsg2';
+          else
+            cmd = '/privmsg';
+          cmd += ' "'+pfc_defaultprivmsg[i]+'"'; 
+          this.sendRequest(cmd);
+        }
+        // now join privmsg comming from the sessions
+        for (var i=0; i<pfc_userprivmsg.length; i++)
+        {
+          this.sendRequest('/privmsg "'+pfc_userprivmsg[i]+'"');
+        }
+
 
         // start the polling system
         this.updateChat(true);
@@ -277,6 +336,7 @@ pfcClient.prototype = {
       {
         cmd = '';
 
+/*
         // join the default channels comming from the parameter list
         for (var i=0; i<pfc_defaultchan.length; i++)
         {
@@ -313,6 +373,7 @@ pfcClient.prototype = {
         {
           this.sendRequest('/privmsg "'+pfc_userprivmsg[i]+'"');
         }
+*/
       }
 
       if (resp == "ok" || resp == "notchanged" || resp == "changed" || resp == "connected")
@@ -473,7 +534,7 @@ pfcClient.prototype = {
           var nickid = meta['users']['nickid'][i];
           var nick   = meta['users']['nick'][i];
           var um = this.getAllUserMeta(nickid);  
-          if (!um) this.sendRequest('/whois2 "'+nick+'"');
+          if (!um) this.sendRequest('/whois2 "'+nickid+'"');
         }
 
         // update the nick list display on the current channel
@@ -503,6 +564,9 @@ pfcClient.prototype = {
       {
         this.handleComingRequest(param);
       }
+    }
+    else if (cmd == "send")
+    {
     }
     else
       alert(cmd + "-"+resp+"-"+param);
@@ -1462,7 +1526,12 @@ pfcClient.prototype = {
     if (this.isconnected)
       this.sendRequest('/quit');
     else
-      this.sendRequest('/connect');
+    {
+      if (this.nickname == '')
+        this.askNick();
+      else
+        this.sendRequest('/connect '+this.nickname);
+    }
   },
   refresh_loginlogout: function()
   {

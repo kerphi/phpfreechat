@@ -14,13 +14,23 @@ class pfcCommand_privmsg extends pfcCommand
     
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
-    
-    $pvname = $param;
+    $ct =& pfcContainer::Instance();
     
     // check the pvname exists on the server
-    $container =& pfcContainer::Instance();
-    $pvnickid = $container->getNickId($pvname);
+    $pvname = '';
+    $pvnickid = '';
+    if ($this->name == 'privmsg2')
+    {
+      $pvnickid = $ct->getNickId($param);
+      $pvname   = $ct->getNickname($pvnickid);
+    }
+    else
+    {
+      $pvname   = $param;
+      $pvnickid = $ct->getNickId($pvname);
+    }
     $nickid   = $u->nickid;
+    $nick     = $ct->getNickname($u->nickid);
 
     // error: can't speak to myself
     if ($pvnickid == $nickid)
@@ -78,14 +88,14 @@ class pfcCommand_privmsg extends pfcCommand
       // reset the message id indicator
       // i.e. be ready to re-get all last posted messages
       $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$pvrecipientid;
-      $from_id     = $container->getLastId($pvrecipient)-$c->max_msg-1;
+      $from_id     = $ct->getLastId($pvrecipient)-$c->max_msg-1;
       $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
     }
 
     // register the user (and his metadata) in this pv
-    $ct =& pfcContainer::Instance();
-    $ct->createNick($pvrecipient, $u->nick, $u->nickid);
-    $this->forceWhoisReload($u->nick);
+    //    $ct->createNick($pvrecipient, $u->nick, $u->nickid);
+    $ct->joinChan($nickid, $pvrecipient);
+    $this->forceWhoisReload($nickid);
     
     // return ok to the client
     // then the client will create a new tab

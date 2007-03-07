@@ -67,7 +67,7 @@ class pfcCommand_leave extends pfcCommand
     $leave_recip = '';
     $leave_id    = '';
 
-    // check into channels
+    // save the new channel list in the session
     if ( isset($u->channels[$id]) )
     {
       $leave_recip = $u->channels[$id]["recipient"];
@@ -77,7 +77,7 @@ class pfcCommand_leave extends pfcCommand
       $leavech = true;
     }
 
-    // check into private messages
+    // save the new private messages list in the session
     if ( isset($u->privmsg[$id]) )
     {
       $leave_recip = $u->privmsg[$id]["recipient"];
@@ -89,14 +89,14 @@ class pfcCommand_leave extends pfcCommand
 
     if($leavepv || $leavech)
     {
-      if ($leavech)
+      //      if ($leavech)
       {
         // show a leave message with the showing the reason if present
         $cmdp = $p;
         $cmdp["recipient"]   = $leave_recip;
         $cmdp["recipientid"] = $leave_id;
         $cmdp["flag"]        = 2;
-        $cmdp["param"] = _pfc("%s quit",$u->nick);
+        $cmdp["param"] = _pfc("%s quit",$u->getNickname());
         if ($reason != "") $cmdp["param"] .= " (".$reason.")";
         $cmd =& pfcCommand::Factory("notice");
         $cmd->run($xml_reponse, $cmdp);

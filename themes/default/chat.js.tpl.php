@@ -15,7 +15,7 @@
 require_once dirname(__FILE__).'/../../src/pfcjson.class.php';
 $json = new pfcJSON();
 ?>
-<?php $nick = $u->nick != "" ? $json->encode($u->nick) : $json->encode($c->nick); ?>
+<?php $nick = $u->getNickname() != '' ? $json->encode($u->getNickname()) : $json->encode($c->nick); ?>
 
 var pfc                       = null; // will contains a pfcClient instance
 var pfc_nickname              = <?php echo ($GLOBALS["output_encoding"]=="UTF-8" ? $nick : iconv("UTF-8", $GLOBALS["output_encoding"],$nick)); ?>;

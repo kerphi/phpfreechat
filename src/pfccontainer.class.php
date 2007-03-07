@@ -75,6 +75,7 @@ class pfcContainer extends pfcContainerInterface
    * @param $nick the nickname to create
    * @param $nickid is the corresponding nickname id (taken from session)
    */
+  /*
   function createNick($chan, $nick, $nickid)
   {
     $c =& pfcGlobalConfig::Instance();
@@ -97,7 +98,44 @@ class pfcContainer extends pfcContainerInterface
     
     return true;
   }
+  */
+  
+  function createNick($nickid, $nick)
+  {
+    $c =& pfcGlobalConfig::Instance();
 
+    if ($nick == '')
+      user_error('pfcContainer::createNick nick is empty', E_USER_ERROR);      
+    if ($nickid == '')
+      user_error('pfcContainer::createNick nickid is empty', E_USER_ERROR);      
+    
+    $this->setMeta("nickid-to-metadata",  $nickid, 'nick', $nick);
+    $this->setMeta("metadata-to-nickid",  'nick', $this->encode($nick), $nickid);
+    
+    return true;
+  }
+  
+  
+  function joinChan($nickid, $chan)
+  {
+    $c =& pfcGlobalConfig::Instance();
+
+    if ($nickid == '')
+      user_error('pfcContainer::joinChan nickid is empty', E_USER_ERROR);      
+
+    if ($chan == NULL) $chan = 'SERVER';
+
+    $this->setMeta("nickid-to-channelid", $nickid, $this->encode($chan));
+    $this->setMeta("channelid-to-nickid", $this->encode($chan), $nickid);
+
+    // update the SERVER channel
+    if ($chan != 'SERVER') $this->updateNick($nickid);
+    
+    return true;
+  }
+
+
+  
   /**
    * Remove (disconnect/quit) the nickname from the server or from a channel
    * Notice: when a user quit, the caller must take care removeNick from each channels ('SERVER' included)

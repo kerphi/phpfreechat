@@ -13,15 +13,16 @@ class pfcCommand_notice extends pfcCommand
     $recipientid = $p["recipientid"];
     $flag        = isset($p["flag"]) ? $p["flag"] : 3;
     
-    $c =& pfcGlobalConfig::Instance();
-    $u =& pfcUserConfig::Instance();
+    $c  =& pfcGlobalConfig::Instance();
+    $u  =& pfcUserConfig::Instance();
+    $ct =& pfcContainer::Instance();
 
     if ($c->shownotice > 0 &&
         ($c->shownotice & $flag) == $flag)
     {
-      $container =& pfcContainer::Instance();
       $msg = phpFreeChat::FilterSpecialChar($msg);
-      $res = $container->write($recipient, $u->nick, "notice", $msg);
+      $nick = $ct->getNickname($u->nickid);
+      $res = $ct->write($recipient, $nick, "notice", $msg);
       if (is_array($res))
       {
         $cmdp = $p;

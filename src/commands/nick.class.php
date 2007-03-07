@@ -14,8 +14,9 @@ class pfcCommand_nick extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
 
-    $c =& pfcGlobalConfig::Instance();
-    $u =& pfcUserConfig::Instance();
+    $c  =& pfcGlobalConfig::Instance();
+    $u  =& pfcUserConfig::Instance();
+    $ct =& pfcContainer::Instance();
 
     if (trim($param) == "")
     {
@@ -29,11 +30,10 @@ class pfcCommand_nick extends pfcCommand
     }
     
     $newnick = phpFreeChat::FilterNickname($param);
-    $oldnick = $u->nick;
+    $oldnick = $ct->getNickname($u->nickid);
 
-    $container =& pfcContainer::Instance();
-    $newnickid = $container->getNickId($newnick);
-    $oldnickid = $container->getNickId($oldnick);
+    $newnickid = $ct->getNickId($newnick);
+    $oldnickid = $u->nickid;
 
     if ($c->debug) pxlog("/nick ".$newnick, "chat", $c->getId());
 
@@ -42,13 +42,14 @@ class pfcCommand_nick extends pfcCommand
     // oldnick is different from new nick
     // -> this is a nickname change
     if ($oldnickid == $u->nickid &&
-        $oldnick != $newnick && $oldnick != "")
+        $oldnick != $newnick &&
+        $oldnick != '')
     {
       // really change the nick (rename it)
-      $container->changeNick($newnick, $oldnick);
+      $ct->changeNick($newnick, $oldnick);
       $u->nick = $newnick;
       $u->saveInCache();
-      $this->forceWhoisReload($u->nick);
+      $this->forceWhoisReload($u->nickid);
 
       // notify all the joined channels/privmsg
       $cmdp = $p;
@@ -68,8 +69,10 @@ class pfcCommand_nick extends pfcCommand
         $cmd->run($xml_reponse, $cmdp);
       }
       $xml_reponse->script("pfc.handleResponse('nick', 'changed', '".addslashes($newnick)."');");
+      return;
     }
-    
+
+    /*
     // new nickname is undefined (not used) and
     // current nickname (oldnick) is not mine or is undefined
     // -> this is a first connection
@@ -77,24 +80,24 @@ class pfcCommand_nick extends pfcCommand
         $oldnickid != $u->nickid)
     {
       // this is a first connection : create the nickname on the server
-      $container->createNick(NULL, $newnick, $u->nickid);
-      /*
-      // useless code, it's done in updatemynick command
-      foreach($u->channels as $chan)
-        $container->createNick($chan["recipient"], $newnick, $u->nickid);
-      foreach($u->privmsg as $pv)
-        $container->createNick($pv["recipient"], $newnick, $u->nickid);
-      */
-      $u->nick   = $newnick;
-      $u->active = true;
-      $u->saveInCache();
-      $this->forceWhoisReload($u->nick);
+      //      $container->createNick(NULL, $newnick, $u->nickid);
+      $container->createNick($u->nickid, $newnick);
+
+      //$u->nick   = $newnick;
+      //      $u->active = true;
+      //$u->saveInCache();
+      $this->forceWhoisReload($u->nickid);
 
       $xml_reponse->script("pfc.handleResponse('nick', 'connected', '".addslashes($newnick)."');");
     
       if ($c->debug)
         pxlog("/nick ".$newnick." (first connection, oldnick=".$oldnick.")", "chat", $c->getId());
+      return;
     }
+    */
+
+    //    $ct->createNick($u->nickid, $newnick);
+    
   }
 }
 

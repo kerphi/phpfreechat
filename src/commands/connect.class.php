@@ -8,13 +8,17 @@ class pfcCommand_connect extends pfcCommand
   {
     $clientid    = $p["clientid"];
     $param       = $p["param"];
+    $params      = $p["params"];
     $sender      = $p["sender"];
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     $getoldmsg   = isset($p["getoldmsg"]) ? $p["getoldmsg"] : true;
-    
-    $c =& pfcGlobalConfig::Instance();
-    $u =& pfcUserConfig::Instance();
+
+    // nickname must be given to be able to connect to the chat
+    $nick = $params[0];
+
+    $c  =& pfcGlobalConfig::Instance();
+    $u  =& pfcUserConfig::Instance();
     $ct =& pfcContainer::Instance();
 
     // reset the message id indicator (see getnewmsg.class.php)
@@ -69,9 +73,21 @@ class pfcCommand_connect extends pfcCommand
           (count($users["nickid"]) == 0 || (count($users["nickid"]) == 1 && $users["nickid"][0] == $u->nickid)))
         $isadmin = true;
     }
-    
+
     // setup some user meta
     $nickid = $u->nickid;
+
+    // create the nickid
+    $ct->joinChan($nickid, NULL); // join the server
+    $ct->createNick($nickid, $nick);
+
+    $u->nick = $nick;
+    $u->saveInCache();
+    
+    // setup the active flag in user session
+    //    $u->active = true;
+    //    $u->saveInCache();
+                                        
     // store the user ip
     $ip = $_SERVER["REMOTE_ADDR"];
     if ($ip == "::1") $ip = "127.0.0.1"; // fix for konqueror & localhost
@@ -83,7 +99,7 @@ class pfcCommand_connect extends pfcCommand
       $ct->setUserMeta($nickid, $k, $v);
 
     // connect to the server
-    $xml_reponse->script("pfc.handleResponse('connect', 'ok', '');");
+    $xml_reponse->script("pfc.handleResponse('connect', 'ok', Array('".addslashes($nick)."'));");
   }
 }
 

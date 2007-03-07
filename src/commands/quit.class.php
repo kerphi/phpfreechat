@@ -12,14 +12,13 @@ class pfcCommand_quit extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& pfcGlobalConfig::Instance();
-    $u =& pfcUserConfig::Instance();
-
-    // then remove the nickname file
+    $c  =& pfcGlobalConfig::Instance();
+    $u  =& pfcUserConfig::Instance();
     $ct =& pfcContainer::Instance();
-    $quitmsg = $param == "" ? _pfc("%s quit", $u->nick) : _pfc("%s quit (%s)", $u->nick, $param);
+
+    $nick = $ct->getNickname($u->nickid);
     
-    // from the channels
+    // leave the channels
     foreach( $u->channels as $id => $chandetail )
       if ($ct->removeNick($chandetail["recipient"], $u->nickid))
       {
@@ -30,7 +29,7 @@ class pfcCommand_quit extends pfcCommand
         $cmd =& pfcCommand::Factory("leave");
         $cmd->run($xml_reponse, $cmdp);
       }
-    // from the private messages
+    // leave the private messages
     foreach( $u->privmsg as $id => $pvdetail )
       if ($ct->removeNick($pvdetail["recipient"], $u->nickid))
       {
@@ -41,16 +40,18 @@ class pfcCommand_quit extends pfcCommand
         $cmd =& pfcCommand::Factory("leave");
         $cmd->run($xml_reponse, $cmdp);
       }
-    // from the server
+    // leave the server
     $ct->removeNick(NULL, $u->nickid);
 
+    /*
     // then set the chat inactive
     $u->active = false;
     $u->saveInCache();
+    */
     
     $xml_reponse->script("pfc.handleResponse('quit', 'ok', '');");
 
-    if ($c->debug) pxlog("/quit (a user just quit -> nick=".$u->nick.")", "chat", $c->getId());
+    if ($c->debug) pxlog("/quit (a user just quit -> nick=".$nick.")", "chat", $c->getId());
   }
 }
 

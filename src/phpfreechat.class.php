@@ -265,7 +265,7 @@ class phpFreeChat
     $recipientid = isset($res['params'][1]) ? $res['params'][1] : "";
     $params      = array_slice(is_array($res['params']) ? $res['params'] : array() ,2);
     $param       = implode(" ",$params); // to keep compatibility (will be removed)
-    $sender      = $u->nick;
+    $sender      = $u->getNickname();
     
     // translate the recipientid to the channel name
     if (isset($u->channels[$recipientid]))
@@ -290,8 +290,8 @@ class phpFreeChat
         $nickidtopv = $u->privmsg[$recipientid]["pvnickid"];
         $cmdstr = 'privmsg2';
         $cmdp = array();
-        $cmdp['param']    = $u->nick;
-        $cmdp['params'][] = $u->nick;
+        $cmdp['param']    = $u->nickid;//$sender;
+        $cmdp['params'][] = $u->nickid;//$sender;
         pfcCommand::AppendCmdToPlay($nickidtopv, $cmdstr, $cmdp);
       }
 
@@ -336,7 +336,7 @@ class phpFreeChat
     // do not update when the user just quit
     if ($cmdname != "update" &&
       	$cmdname != "quit" &&
-      	(!isset($u->nick) || $u->nick != ""))
+      	$u->nickid != '')
     {
       // force an update just after a command is sent
       // thus the message user just poster is really fastly displayed

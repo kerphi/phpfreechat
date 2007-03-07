@@ -30,6 +30,7 @@ class pfcCommand_whois extends pfcCommand
   {
     $clientid    = $p["clientid"];
     $param       = $p["param"];
+    $params      = $p["params"];
     $sender      = $p["sender"];
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
@@ -38,7 +39,17 @@ class pfcCommand_whois extends pfcCommand
     $u =& pfcUserConfig::Instance();
     $ct =& pfcContainer::Instance();
 
-    $nickid = $ct->getNickId($param);
+    //    $xml_reponse->script("trace('".implode(',',$params)."');");
+    //    return;
+    
+    // get the nickid from the parameters
+    // if the run command is whois2 then the parameter is a nickid
+    $nickid = '';
+    if ($this->name == 'whois2')
+      $nickid = $params[0];
+    else
+      $nickid = $ct->getNickId($params[0]);
+    
     if ($nickid)
     {
       $usermeta = $ct->getAllUserMeta($nickid);

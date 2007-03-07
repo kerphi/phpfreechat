@@ -73,9 +73,9 @@ class pfcCommand
       
     // instanciate the proxies chaine
     $firstproxy =& $cmd;
-    for($i = count($c->_proxies)-1; $i >= 0; $i--)
+    for($i = count($c->proxies)-1; $i >= 0; $i--)
     {
-      $proxy_name      = $c->_proxies[$i];
+      $proxy_name      = $c->proxies[$i];
       $proxy_classname = "pfcProxyCommand_" . $proxy_name;
 
       // try to include the proxy class file from the default path or from the customized path
@@ -131,15 +131,13 @@ class pfcCommand
   /**
    * Force whois reloading
    */
-  function forceWhoisReload($nicktorewhois)
+  function forceWhoisReload($nickid)
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
     $ct =& pfcContainer::Instance();
 
-    $nickid = $ct->getNickid($nicktorewhois);
-
-    // get the user who have $nicktorewhois in their list
+    // list the users in the same channel as $nickid
     $channels = $ct->getMeta("nickid-to-channelid", $nickid);
     $channels = $channels['value'];
     $channels = array_diff($channels, array('SERVER'));
@@ -150,12 +148,12 @@ class pfcCommand
       $otherids = array_merge($otherids, $ret['nickid']);
     }
     
-    // alert them that $nicktorewhois user info just changed
+    // alert them that $nickid user info just changed
     foreach($otherids as $otherid)
     {
       $cmdstr = 'whois2';
       $cmdp = array();
-      $cmdp['param'] = $nicktorewhois;
+      $cmdp['params'] = array($nickid);
       pfcCommand::AppendCmdToPlay($otherid, $cmdstr, $cmdp);
       
       /*

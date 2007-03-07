@@ -46,7 +46,7 @@ class pfcCommand_join extends pfcCommand
       
       // show a join message
       $cmdp = $p;
-      $cmdp["param"] = _pfc("%s joins %s",$u->nick, $channame);
+      $cmdp["param"] = _pfc("%s joins %s",$u->getNickname(), $channame);
       $cmdp["recipient"] = $chanrecip;
       $cmdp["recipientid"] = $chanid;
       $cmdp["flag"] = 2;
@@ -56,8 +56,9 @@ class pfcCommand_join extends pfcCommand
 
     // register the user (and his metadata) in the channel
     $ct =& pfcContainer::Instance();
-    $ct->createNick($chanrecip, $u->nick, $u->nickid);
-    $this->forceWhoisReload($u->nick);
+    //    $ct->createNick($chanrecip, $u->nick, $u->nickid);
+    $ct->joinChan($u->nickid, $chanrecip);
+    $this->forceWhoisReload($u->nickid);
     
     // return ok to the client
     // then the client will create a new tab

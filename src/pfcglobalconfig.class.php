@@ -49,6 +49,7 @@ class pfcGlobalConfig
   var $skip_proxies         = array(); // these proxies will be skiped. ex: append "censor" to the list to disable words censoring
   var $post_proxies         = array(); // these proxies will be handled just before to process commands and just after system proxies
   var $pre_proxies          = array(); // these proxies will be handled before system proxies (at begining)
+  var $proxies              = array(); // will contains proxies to execute on each command (filled in the init step) this parameter could not be overridden
   var $proxies_cfg          = array("auth"    => array(),
                                     "noflood" => array("charlimit" => 450,
                                                        "msglimit"  => 10,
@@ -133,7 +134,6 @@ class pfcGlobalConfig
   
   // private parameters
   var $_sys_proxies         = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
-  var $_proxies             = array(); // will contains proxies to execute on each command (filled in the init step)
   var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg", "nickmeta","baseurl");
   var $_params_type         = array();
   var $_query_string        = '';
@@ -428,23 +428,23 @@ class pfcGlobalConfig
       $this->errors[] = _pfc("'%s' parameter is not valid. Available values are : '%s'", "language", implode(", ", $lg_list));
 
     // calculate the proxies chaine
-    $this->_proxies = array();
+    $this->proxies = array();
     foreach($this->pre_proxies as $px)
     {
-      if (!in_array($px,$this->skip_proxies) && !in_array($px,$this->_proxies))
-        $this->_proxies[] = $px;
+      if (!in_array($px,$this->skip_proxies) && !in_array($px,$this->proxies))
+        $this->proxies[] = $px;
         
     }
     foreach($this->_sys_proxies as $px)
     {
-      if (!in_array($px,$this->skip_proxies) && !in_array($px,$this->_proxies))
-        $this->_proxies[] = $px;
+      if (!in_array($px,$this->skip_proxies) && !in_array($px,$this->proxies))
+        $this->proxies[] = $px;
         
     }
     foreach($this->post_proxies as $px)
     {
-      if (!in_array($px,$this->skip_proxies) && !in_array($px,$this->_proxies))
-        $this->_proxies[] = $px;
+      if (!in_array($px,$this->skip_proxies) && !in_array($px,$this->proxies))
+        $this->proxies[] = $px;
         
     }
     // save the proxies path
@@ -452,10 +452,12 @@ class pfcGlobalConfig
     // check the customized proxies path
     if ($this->proxies_path != '' && !is_dir($this->proxies_path))
       $this->errors[] = _pfc("'%s' directory doesn't exist", $this->proxies_path);
+    if ($this->proxies_path == '') $this->proxies_path = $this->proxies_path_default;
     
     // save the commands path
     $this->cmd_path_default = dirname(__FILE__).'/commands';
-
+    if ($this->cmd_path == '') $this->cmd_path = $this->cmd_path_default;
+        
     // load smileys from file
     $this->loadSmileyTheme();
     
@@ -513,9 +515,9 @@ class pfcGlobalConfig
   
   function _GetCacheFile($serverid = "", $data_private_path = "")
   {
-    if ($serverid == "")          $serverid = $this->getId();
-    if ($data_private_path == "") $data_private_path = $this->data_private_path;
-    return $data_private_path."/cache/pfcglobalconfig_".$serverid;
+    if ($serverid == '')          $serverid = $this->getId();
+    if ($data_private_path == '') $data_private_path = $this->data_private_path;
+    return $data_private_path.'/cache/'.$serverid.'.php';
   }
   
   function destroyCache()
@@ -545,6 +547,11 @@ class pfcGlobalConfig
       // if a cache file exists, remove the lock file because config has been succesfully stored
       if (file_exists($cachefile_lock)) @unlink($cachefile_lock);
 
+      include $cachefile;
+      foreach($pfc_conf as $key => $val)
+        $this->$key = $val;
+
+      /*
       $pfc_configvar = unserialize(file_get_contents($cachefile));
       foreach($pfc_configvar as $key => $val)
       {
@@ -552,6 +559,7 @@ class pfcGlobalConfig
         if (!in_array($key,$this->_dyn_params))
           $this->$key = $val;
       }
+      */
       
       return true; // synchronized
     }
@@ -586,7 +594,22 @@ class pfcGlobalConfig
   function saveInCache()
   {
     $cachefile = $this->_GetCacheFile();
-    file_put_contents($cachefile, serialize(get_object_vars($this)));
+    $data = '<?php ';
+
+    $conf = get_object_vars($this);
+    $keys = array_keys($conf);
+    foreach($keys as $k)
+      if (preg_match('/^_.*/',$k))
+        unset($conf[$k]);
+
+    // remove dynamic parameters
+    foreach($this->_dyn_params as $k)
+      unset($conf[$k]);
+
+    $data .= '$pfc_conf = '.var_export($conf,true).";\n";
+    $data .= '?>';
+    
+    file_put_contents($cachefile, $data/*serialize(get_object_vars($this))*/);
     if ($this->debug) pxlog("pfcGlobalConfig::saveInCache()", "chatconfig", $this->getId());
   }
 

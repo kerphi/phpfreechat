@@ -12,22 +12,12 @@ class pfcCommand_send extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& pfcGlobalConfig::Instance();
-    $u =& pfcUserConfig::Instance();
-    $nick = phpFreeChat::FilterSpecialChar($sender);
+    $c  =& pfcGlobalConfig::Instance();
+    $u  =& pfcUserConfig::Instance();
+    $ct =& pfcContainer::Instance();
+    
+    $nick = $ct->getNickname($u->nickid); //phpFreeChat::FilterSpecialChar($sender);
     $text = phpFreeChat::PreFilterMsg($param);
-
-
-    // send an error because the current user is not connected
-    if (!$u->active)
-    {
-      $cmdp = $p;
-      $cmdp["param"] = _pfc("Your must be connected to send a message");
-      $cmd =& pfcCommand::Factory("error");
-      $cmd->run($xml_reponse, $cmdp);
-      return;
-    }
-
 
     //        $offline = $container->getMeta("offline", "nickname", $u->privmsg[$recipientid]["name"]);        
     
@@ -37,12 +27,12 @@ class pfcCommand_send extends pfcCommand
     $can_send = true;
     if (isset($u->privmsg[$recipientid]))
     {
-      $container =& pfcContainer::Instance();
-      $pvnick   = $u->privmsg[$recipientid]["name"];
-      $pvnickid = $container->getNickId($pvnick);
+      $pvnickid = $u->privmsg[$recipientid]["pvnickid"];
+      $pvnick   = $ct->getNickname($pvnickid);//$u->privmsg[$recipientid]["name"];
+      //      $pvnickid = $ct->getNickId($pvnick);
       
       // now check if this user is currently online
-      $onlineusers = $container->getOnlineNick(NULL);
+      $onlineusers = $ct->getOnlineNick(NULL);
       if (!in_array($pvnickid, $onlineusers["nickid"]))
       {
         // send an error because the user is not online
@@ -63,7 +53,7 @@ class pfcCommand_send extends pfcCommand
     {
       // an error occured, just ignore the message and display errors
       foreach($errors as $e)
-        if ($c->debug) pxlog("error /send, user can't send a message -> nick=".$u->nick." err=".$e, "chat", $c->getId());
+        if ($c->debug) pxlog("error /send, user can't send a message -> nick=".$nick." err=".$e, "chat", $c->getId());
       $cmdp = $p;
       $cmdp["param"] = $errors;
       $cmd =& pfcCommand::Factory("error");
@@ -77,8 +67,7 @@ class pfcCommand_send extends pfcCommand
     // Now send the message if there is no errors
     if ($can_send)
     {
-      $container =& pfcContainer::Instance();
-      $msgid = $container->write($recipient, $nick, "send", $text);
+      $msgid = $ct->write($recipient, $nick, "send", $text);
       if (is_array($msgid))
       {
         $cmdp = $p;
@@ -87,14 +76,17 @@ class pfcCommand_send extends pfcCommand
         $cmd->run($xml_reponse, $cmdp);
         return;
       }
-      if ($c->debug) pxlog("/send ".$text." (a user just sent a message -> nick=".$u->nick.")", "chat", $c->getId());
+      if ($c->debug) pxlog("/send ".$text." (a user just sent a message -> nick=".$nick.")", "chat", $c->getId());
       
       // a message has been posted so :
       // - clear errors
       // - give focus to "words" field
+      // @todo move this code in the handleResponse function
       $xml_reponse->script("pfc.clearError(Array('pfc_words"."','pfc_handle"."'));");
       $xml_reponse->script("$('pfc_words').focus();");
     }
+    
+    $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', '');");
   }
 }
 

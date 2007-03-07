@@ -39,7 +39,7 @@ class pfcCommand_ban extends pfcCommand
     
     // notify all the channel
     $cmdp = $p;
-    $cmdp["param"] = _pfc("banished from %s by %s", $channame, $sender);
+    $cmdp["param"] = _pfc("%s banished from %s by %s", $nick, $channame, $sender);
     $cmdp["flag"]  = 1;
     $cmd =& pfcCommand::Factory("notice");
     $cmd->run($xml_reponse, $cmdp);

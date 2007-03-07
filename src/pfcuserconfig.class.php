@@ -68,7 +68,7 @@ class pfcUserConfig
   function _setParam($p, $v)
   {
     $c =& pfcGlobalConfig::Instance();
-    $nickid_param = "pfcuserconfig_".$c->getId()./*"_".$this->nickid.*/"_".$p;
+    $nickid_param = "pfcuserconfig_".$c->getId()."_".$p;
     $_SESSION[$nickid_param] = $v;
     $this->$p = $v;
   }
@@ -76,7 +76,7 @@ class pfcUserConfig
   function _rmParam($p)
   {
     $c =& pfcGlobalConfig::Instance();
-    $nickid_param = "pfcuserconfig_".$c->getId()./*"_".$this->nickid.*/"_".$p;    
+    $nickid_param = "pfcuserconfig_".$c->getId()."_".$p;    
     unset($_SESSION[$nickid_param]);
     unset($this->$p);
     if ($p == 'active') $this->active = false;
@@ -98,14 +98,28 @@ class pfcUserConfig
     $c =& pfcGlobalConfig::Instance();
 
     // do not save anything as long as nickname is not assigned
-    if ($this->active && $this->nick != "")
+    //if ($this->active && $this->nick != "")
     {
-      $this->_setParam("nick",$this->nick);
-      $this->_setParam("active",$this->active);
-      $this->_setParam("channels",$this->channels);
-      $this->_setParam("privmsg",$this->privmsg);
-      $this->_setParam("serverid",$this->serverid);
+      $this->_setParam("nick",     $this->nick);
+      $this->_setParam("active",   $this->active);
+      $this->_setParam("channels", $this->channels);
+      $this->_setParam("privmsg",  $this->privmsg);
+      $this->_setParam("serverid", $this->serverid);
     }
+  }
+
+  function isOnline()
+  {
+    $ct =& pfcContainer::Instance();
+    $online = ($ct->isNickOnline(NULL, $this->nickid) >= 0);
+    return $online;
+  }
+
+  function getNickname()
+  {
+    if ($this->nick != '') return $this->nick;
+    $ct =& pfcContainer::Instance();
+    return $ct->getNickname($this->nickid);
   }
 }
 

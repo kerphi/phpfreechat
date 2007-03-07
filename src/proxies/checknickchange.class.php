@@ -38,19 +38,21 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     $owner       = isset($p["owner"]) ? $p["owner"] : '';
-    $c =& pfcGlobalConfig::Instance();
-    $u =& pfcUserConfig::Instance();
+    $c  =& pfcGlobalConfig::Instance();
+    $u  =& pfcUserConfig::Instance();
+    $ct =& pfcContainer::Instance();
+
+    $newnick = phpFreeChat::FilterNickname($param);
+    $oldnick = $ct->getNickname($u->nickid);
 
     if ( $this->name == 'nick' )
     {
-      $newnick = phpFreeChat::FilterNickname($param);
-      $oldnick = $u->nick;
       
       // if the user want to change his nickname but the frozen_nick is enable
       // then send him a warning
-      if ( $this->name == "nick" && 
-           $u->nick != "" &&
-           $param != $u->nick &&
+      if ( $this->name == 'nick' && 
+           $oldnick != '' &&
+           $newnick != $oldnick &&
            $c->frozen_nick == true &&
            $owner != $this->proxyname )
       {
@@ -59,8 +61,7 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
           return;      
       }
 
-      $container =& pfcContainer::Instance();
-      $newnickid = $container->getNickId($newnick);
+      $newnickid = $ct->getNickId($newnick);
       $oldnickid = $u->nickid;
 
       if ($newnick == $oldnick &&
@@ -90,8 +91,8 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
     // allow nick changes only from the parameters array (server side)
     if ($this->name != 'connect' && // don't check anything on the connect process or it could block the periodic refresh
         $c->frozen_nick == true &&
-        $u->nick != $c->nick &&
-        $c->nick != "" && // don't change the nickname to empty or the asknick popup will loop indefinatly
+        $oldnick != $c->nick &&
+        $c->nick != '' && // don't change the nickname to empty or the asknick popup will loop indefinatly
         $owner != $this->proxyname)
     {
       // change the user nickname
