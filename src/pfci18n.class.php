@@ -97,7 +97,7 @@ class pfcI18N
    */
   function GetAcceptedLanguage($type="main")
   {
-    return /*<GetAcceptedLanguage>*/array('ar_LB','sv_SE','ja_JP','ba_BA','pt_PT','el_GR','tr_TR','hy_AM','nb_NO','zh_TW','ru_RU','fr_FR','es_ES','bg_BG','zh_CN','nl_NL','de_DE-informal','pl_PL','pt_BR','it_IT','id_ID','hu_HU','en_US','sr_CS','de_DE-formal','eo','bn_BD','uk_UA','uk_RO','ko_KR','da_DK');/*</GetAcceptedLanguage>*/
+    return /*<GetAcceptedLanguage>*/array('ar_LB','sv_SE','ja_JP','ba_BA','pt_PT','el_GR','tr_TR','hy_AM','nb_NO','zh_TW','ru_RU','fr_FR','es_ES','bg_BG','zh_CN','nl_NL','de_DE-informal','pl_PL','pt_BR','it_IT','id_ID','hu_HU','en_US','sr_CS','de_DE-formal','eo','bn_BD','uk_UA','uk_RO','ko_KR','da_DK','nn_NO');/*</GetAcceptedLanguage>*/
   }
   
   /**
