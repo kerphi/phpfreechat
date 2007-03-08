@@ -277,7 +277,7 @@ $GLOBALS["i18n"]["Succesfully identified"] = "Succesfully identified";
 $GLOBALS["i18n"]["Identification failure"] = "Identification failure";
 
 // line 25 in send.class.php
-$GLOBALS["i18n"]["Your must be connected to send a message"] = "Your must be connected to send a message";
+$GLOBALS["i18n"]["Your must be connected to send a message"] = "You must be connected to send a message";
 
 // line 87 in chat.js.tpl.php
 $GLOBALS["i18n"]["Click here to send your message"] = "Click here to send your message";
