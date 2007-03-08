@@ -26,7 +26,7 @@ require_once dirname(__FILE__)."/../pfcproxycommand.class.php";
 /**
  * pfcProxyCommand_checktimeout
  * this command disconnect obsolete users (timouted)
- * an obsolete user is an user which didn't update his stats since more than 20 seconds (timeout value)
+ * an obsolete user is an user which didn't update his stats since more than 20 seconds (default timeout value)
  * @author Stephane Gully <stephane.gully@gmail.com>
  */
 class pfcProxyCommand_checktimeout extends pfcProxyCommand
@@ -41,35 +41,34 @@ class pfcProxyCommand_checktimeout extends pfcProxyCommand
 
     if ($this->name == 'update')
     {
-    $c  =& pfcGlobalConfig::Instance();
-    $u  =& pfcUserConfig::Instance();
-    $ct =& pfcContainer::Instance();
-
-    // disconnect users from specific channels
-    $disconnected_users = $ct->removeObsoleteNick($c->timeout);
-    for($i=0; $i<count($disconnected_users["nick"]); $i++)
-    {
-      $nick = $disconnected_users["nick"][$i];
-      for($j=0; $j<count($disconnected_users["channels"][$i]); $j++)
+      $c  =& pfcGlobalConfig::Instance();
+      $u  =& pfcUserConfig::Instance();
+      $ct =& pfcContainer::Instance();
+      
+      // disconnect users from channels when they timeout
+      $disconnected_users = $ct->removeObsoleteNick($c->timeout);
+      for($i=0; $i<count($disconnected_users["nick"]); $i++)
       {
-        file_put_contents('/tmp/disco',var_export($disconnected_users,true), FILE_APPEND);
-        $chan = $disconnected_users["channels"][$i][$j];
-        $online_users = $ct->getOnlineNick($chan);
-        if ($chan != 'SERVER' &&
-            count($online_users['nickid']))
+        $nick = $disconnected_users["nick"][$i];
+        for($j=0; $j<count($disconnected_users["channels"][$i]); $j++)
         {
-          $cmdp = $p;
-          $cmdp["param"] = _pfc("%s quit (timeout)", $nick);
-          $cmdp["flag"] = 2;
-          $cmdp["recipient"] = $chan;
-          $cmdp["recipientid"] = md5($chan); // @todo: clean the recipient/recipientid notion
-          $cmd =& pfcCommand::Factory("notice");
-          $cmd->run($xml_reponse, $cmdp);
-        }
-      }      
+          $chan = $disconnected_users["channels"][$i][$j];
+          $online_users = $ct->getOnlineNick($chan);
+          if ($chan != 'SERVER' &&
+              count($online_users['nickid']))
+          {
+            $cmdp = $p;
+            $cmdp["param"] = _pfc("%s quit (timeout)", $nick);
+            $cmdp["flag"] = 2;
+            $cmdp["recipient"] = $chan;
+            $cmdp["recipientid"] = md5($chan); // @todo: clean the recipient/recipientid notion
+            $cmd =& pfcCommand::Factory("notice");
+            $cmd->run($xml_reponse, $cmdp);
+          }
+        }      
+      }
     }
-    }
-
+    
     // forward the command to the next proxy or to the final command
     $this->next->run($xml_reponse, $p);
   }
