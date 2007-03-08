@@ -462,7 +462,7 @@ class pfcGlobalConfig
     $this->loadSmileyTheme();
     
     // load version number from file
-    $this->version = trim(file_get_contents(dirname(__FILE__)."/../version"));
+    $this->version = trim(file_get_contents(dirname(__FILE__)."/../version.txt"));
     
     $this->is_init = (count($this->errors) == 0);
   }
@@ -479,7 +479,7 @@ class pfcGlobalConfig
 
   function loadSmileyTheme()
   {
-    $theme = file($this->getFilePathFromTheme("smileys/theme"));
+    $theme = file($this->getFilePathFromTheme("smileys/theme.txt"));
     $result = array();
     foreach($theme as $line)
     {
