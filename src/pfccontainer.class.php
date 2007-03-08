@@ -147,13 +147,15 @@ class pfcContainer extends pfcContainerInterface
   function removeNick($chan, $nickid)
   {
     $c =& pfcGlobalConfig::Instance();
-
+    
     if ($chan == NULL) $chan = 'SERVER';
 
     $deleted_user = array();
     $deleted_user["nick"]      = array();
     $deleted_user["nickid"]    = array();
     $deleted_user["timestamp"] = array();
+    
+    if (!$nickid) return $deleted_user;
 
     $timestamp = $this->getMeta("channelid-to-nickid", $this->encode('SERVER'), $nickid);
     if (count($timestamp["timestamp"]) == 0) return $deleted_user;
@@ -162,7 +164,7 @@ class pfcContainer extends pfcContainerInterface
     $deleted_user["nick"][]      = $this->getNickname($nickid);
     $deleted_user["nickid"][]    = $nickid;
     $deleted_user["timestamp"][] = $timestamp;
-
+        
     // remove the nickid from the channel list
     $this->rmMeta('channelid-to-nickid', $this->encode($chan), $nickid);
     $this->rmMeta('nickid-to-channelid', $nickid, $this->encode($chan));
@@ -284,7 +286,7 @@ class pfcContainer extends pfcContainerInterface
     {
       $timestamp = $ret['timestamp'][$i];
       $nickid    = $ret['value'][$i];
-      if (time() > ($timestamp+$timeout/1000) ) // user will be disconnected after 'timeout' secondes of inactivity
+      if (time() > ($timestamp+$timeout/1000) && $nickid) // user will be disconnected after 'timeout' secondes of inactivity
       {
         // get the current user's channels list
         $channels = array();

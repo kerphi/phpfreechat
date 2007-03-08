@@ -39,6 +39,8 @@ class pfcProxyCommand_checktimeout extends pfcProxyCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
 
+    if ($this->name == 'update')
+    {
     $c  =& pfcGlobalConfig::Instance();
     $u  =& pfcUserConfig::Instance();
     $ct =& pfcContainer::Instance();
@@ -50,6 +52,7 @@ class pfcProxyCommand_checktimeout extends pfcProxyCommand
       $nick = $disconnected_users["nick"][$i];
       for($j=0; $j<count($disconnected_users["channels"][$i]); $j++)
       {
+        file_put_contents('/tmp/disco',var_export($disconnected_users,true), FILE_APPEND);
         $chan = $disconnected_users["channels"][$i][$j];
         $online_users = $ct->getOnlineNick($chan);
         if ($chan != 'SERVER' &&
@@ -64,6 +67,7 @@ class pfcProxyCommand_checktimeout extends pfcProxyCommand
           $cmd->run($xml_reponse, $cmdp);
         }
       }      
+    }
     }
 
     // forward the command to the next proxy or to the final command
