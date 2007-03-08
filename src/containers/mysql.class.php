@@ -84,7 +84,7 @@ class pfcContainer_Mysql extends pfcContainerInterface
     // advanced parameters (don't touch if you don't know what your are doing)
     $cfg["mysql_fieldtype_server"] = 'varchar(32)';
     $cfg["mysql_fieldtype_group"] = 'varchar(64)';
-    $cfg["mysql_fieldtype_subgroup"] = 'varchar(64)';
+    $cfg["mysql_fieldtype_subgroup"] = 'varchar(128)';
     $cfg["mysql_fieldtype_leaf"] = 'varchar(128)';
     $cfg["mysql_fieldtype_leafvalue"] = 'text';
     $cfg["mysql_fieldtype_timestamp"] = 'int(11)';
