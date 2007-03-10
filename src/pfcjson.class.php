@@ -28,7 +28,8 @@ class pfcJSON
   {
     // if the php5-json module is not available, use a software json implementation
     if (!function_exists('json_encode')) {
-      require_once(dirname(__FILE__)."/../lib/json/JSON.php");
+      if (!class_exists('Services_JSON'))
+        require_once(dirname(__FILE__)."/../lib/json/JSON.php");
       $this->json = new Services_JSON();
     }
   }
