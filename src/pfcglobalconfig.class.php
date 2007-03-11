@@ -549,18 +549,10 @@ class pfcGlobalConfig
 
       include $cachefile;
       foreach($pfc_conf as $key => $val)
-        $this->$key = $val;
-
-      /*
-      $pfc_configvar = unserialize(file_get_contents($cachefile));
-      foreach($pfc_configvar as $key => $val)
-      {
         // the dynamics parameters must not be cached
         if (!in_array($key,$this->_dyn_params))
           $this->$key = $val;
-      }
-      */
-      
+
       return true; // synchronized
     }
     else
