@@ -74,7 +74,7 @@ class pfcProxyCommand_censor extends pfcProxyCommand
     $p["sender"]      = $sender;
     $p["recipient"]   = $recipient;
     $p["recipientid"] = $recipientid;
-    $this->next->run($xml_reponse, $p);
+    return $this->next->run($xml_reponse, $p);
   }
 }
 

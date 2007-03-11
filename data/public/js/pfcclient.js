@@ -132,7 +132,7 @@ pfcClient.prototype = {
   /**
    * Show a popup dialog to ask user to choose a nickname
    */
-  askNick: function(nickname)
+  askNick: function(nickname,error_text)
   {
     // ask to choose a nickname
     if (nickname == '' || nickname == undefined) nickname = this.nickname;
@@ -140,7 +140,7 @@ pfcClient.prototype = {
     // build a dhtml prompt box
     var pfcp = this.getPrompt();//new pfcPrompt($('pfc_container'));
     pfcp.callback = function(v) { pfc.askNickResponse(v); }
-    pfcp.prompt(this.res.getLabel('Please enter your nickname'), nickname);
+    pfcp.prompt((error_text != undefined ? '<span style="color:red">'+error_text+'</span><br/>' : '')+this.res.getLabel('Please enter your nickname'), nickname);
     pfcp.focus();
   },
   askNickResponse: function(newnick)
@@ -389,7 +389,7 @@ pfcClient.prototype = {
       else if (resp == "isused")
       {
         this.setError(this.res.getLabel('Choosen nickname is allready used'), Array());
-        this.askNick(param);        
+        this.askNick(param,this.res.getLabel('Choosen nickname is allready used'));
       }
       else if (resp == "notallowed")
       {

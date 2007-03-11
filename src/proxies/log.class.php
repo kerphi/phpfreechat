@@ -69,7 +69,7 @@ class pfcProxyCommand_log extends pfcProxyCommand
     }
 
     // forward the command to the next proxy or to the final command
-    $this->next->run($xml_reponse, $p);
+    return $this->next->run($xml_reponse, $p);
   }
 }
 

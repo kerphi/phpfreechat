@@ -45,6 +45,7 @@ class pfcProxyCommand_lock extends pfcProxyCommand
     if ($c->islocked)
     {
       $xml_reponse->addRedirect($c->lockurl);
+      return false;
     }
     else
     {
@@ -54,7 +55,7 @@ class pfcProxyCommand_lock extends pfcProxyCommand
       $p["sender"]      = $sender;
       $p["recipient"]   = $recipient;
       $p["recipientid"] = $recipientid;
-      $this->next->run($xml_reponse, $p);      
+      return $this->next->run($xml_reponse, $p);      
     }
   }
 }

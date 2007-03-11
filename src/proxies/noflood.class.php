@@ -81,7 +81,7 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
         $cmdp["param"] .=_pfc("kicked from %s by %s", $u->channels[$recipientid]["name"], "noflood");
         $cmd =& pfcCommand::Factory("leave");
         $cmd->run($xml_reponse, $cmdp);
-        return;
+        return false;
       }
 
       if ($flood_nbmsg == 0)
@@ -96,7 +96,7 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
     $p["sender"]      = $sender;
     $p["recipient"]   = $recipient;
     $p["recipientid"] = $recipientid;
-    $this->next->run($xml_reponse, $p);
+    return $this->next->run($xml_reponse, $p);
   }
 }
 

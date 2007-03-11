@@ -18,7 +18,7 @@ class pfcCommand_nick extends pfcCommand
     $u  =& pfcUserConfig::Instance();
     $ct =& pfcContainer::Instance();
 
-    if (trim($param) == "")
+    if (trim($param) == '')
     {
       // error
       $cmdp = $p;
@@ -26,7 +26,7 @@ class pfcCommand_nick extends pfcCommand
       $cmdp["param"] .= " (".$this->usage.")";
       $cmd =& pfcCommand::Factory("error");
       $cmd->run($xml_reponse, $cmdp);
-      return;
+      return false;
     }
     
     $newnick = phpFreeChat::FilterNickname($param);
@@ -41,8 +41,7 @@ class pfcCommand_nick extends pfcCommand
     // current nickname (oldnick) is mine and
     // oldnick is different from new nick
     // -> this is a nickname change
-    if ($oldnickid == $u->nickid &&
-        $oldnick != $newnick &&
+    if ($oldnick != $newnick &&
         $oldnick != '')
     {
       // really change the nick (rename it)
@@ -69,35 +68,28 @@ class pfcCommand_nick extends pfcCommand
         $cmd->run($xml_reponse, $cmdp);
       }
       $xml_reponse->script("pfc.handleResponse('nick', 'changed', '".addslashes($newnick)."');");
-      return;
+      return true;
     }
 
-    /*
-    // new nickname is undefined (not used) and
-    // current nickname (oldnick) is not mine or is undefined
-    // -> this is a first connection
-    if ($newnickid == '' &&
-        $oldnickid != $u->nickid)
+    // new nickname is undefined (not used)
+    // -> this is a first connection (this piece of code is called by /connect command)
+    if ($newnickid == '')
     {
       // this is a first connection : create the nickname on the server
-      //      $container->createNick(NULL, $newnick, $u->nickid);
-      $container->createNick($u->nickid, $newnick);
-
-      //$u->nick   = $newnick;
-      //      $u->active = true;
-      //$u->saveInCache();
+      $ct->createNick($u->nickid, $newnick);
+      $u->nick = $nick;
+      $u->saveInCache();
+      
       $this->forceWhoisReload($u->nickid);
 
       $xml_reponse->script("pfc.handleResponse('nick', 'connected', '".addslashes($newnick)."');");
     
       if ($c->debug)
         pxlog("/nick ".$newnick." (first connection, oldnick=".$oldnick.")", "chat", $c->getId());
-      return;
+      return true;
     }
-    */
 
-    //    $ct->createNick($u->nickid, $newnick);
-    
+    return false;
   }
 }
 

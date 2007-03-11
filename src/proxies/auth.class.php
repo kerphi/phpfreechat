@@ -51,7 +51,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
       $cmdp["param"] = _pfc("Your must be connected to send a message");
       $cmd =& pfcCommand::Factory("error");
       $cmd->run($xml_reponse, $cmdp);
-      return;
+      return false;
     }
 
     
@@ -65,7 +65,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
       if (!$isadmin)
       {
         $xml_reponse->script("alert('".addslashes(_pfc("You are not allowed to run '%s' command", $this->name))."');");
-        return;
+        return false;
       }
     }    
     
@@ -87,7 +87,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
         // the user is banished, show a message and don't forward the /join command
         $msg = _pfc("Can't join %s because you are banished", $param);
         $xml_reponse->script("pfc.handleResponse('".$this->proxyname."', 'ban', '".addslashes($msg)."');");
-        return;
+        return false;
       }
 
       if (count($c->frozen_channels)>0)
@@ -97,7 +97,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
           // the user is banished, show a message and don't forward the /join command
           $msg = _pfc("Can't join %s because the channels list is restricted", $param);
           $xml_reponse->script("pfc.handleResponse('".$this->proxyname."', 'frozen', '".addslashes($msg)."');");
-          return;
+          return false;
         }
       }
     }
@@ -108,7 +108,7 @@ class pfcProxyCommand_auth extends pfcProxyCommand
     $p["sender"]      = $sender;
     $p["recipient"]   = $recipient;
     $p["recipientid"] = $recipientid;
-    $this->next->run($xml_reponse, $p);
+    return $this->next->run($xml_reponse, $p);
   }
 }
 

@@ -79,10 +79,6 @@ class pfcCommand_connect extends pfcCommand
 
     // create the nickid
     $ct->joinChan($nickid, NULL); // join the server
-    $ct->createNick($nickid, $nick);
-
-    $u->nick = $nick;
-    $u->saveInCache();
     
     // setup the active flag in user session
     //    $u->active = true;
@@ -98,8 +94,20 @@ class pfcCommand_connect extends pfcCommand
     foreach($c->nickmeta as $k => $v)
       $ct->setUserMeta($nickid, $k, $v);
 
-    // connect to the server
-    $xml_reponse->script("pfc.handleResponse('connect', 'ok', Array('".addslashes($nick)."'));");
+    // run the /nick command to assign the user nick
+    $cmdp = array();
+    $cmdp["param"] = $nick;
+    $cmd =& pfcCommand::Factory('nick');
+    $ret = $cmd->run($xml_reponse, $cmdp);
+
+    if ($ret)
+    {
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', Array('".addslashes($nick)."'));");
+    }
+    else
+    {
+      $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ko', Array('".addslashes($nick)."'));");      
+    }
   }
 }
 
