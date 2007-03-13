@@ -17,9 +17,9 @@ then
   exit;
 fi
 
-if ( test ! -f $PFC_PATH/version  )
+if ( test ! -f $PFC_PATH/version.txt  )
 then
-  echo "$PFC_PATH/version doesn't exist."
+  echo "$PFC_PATH/version.txt doesn't exist."
   exit;
 fi
     
