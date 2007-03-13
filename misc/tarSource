@@ -1,7 +1,7 @@
 #!/bin/sh
 
-NAME=phpfreechat-`cat ../version`
-PFCSETUPNAME=pfcsetup-`cat ../version`
+NAME=phpfreechat-`cat ../version.txt`
+PFCSETUPNAME=pfcsetup-`cat ../version.txt`
 
 echo "-- creating archive $NAME --"
 echo "-> copying files"
@@ -34,7 +34,7 @@ tar czfp $NAME.tar.gz ./$NAME
 echo "-> creating $NAME.zip"
 zip -Tq9r $NAME.zip ./$NAME
 echo "-> creating $NAME-setup.php"
-php ./createwebinstaller.php `cat ../version` > /dev/null
+php ./createwebinstaller.php `cat ../version.txt` > /dev/null
 
 #echo "-> creating $PFCSETUPNAME.tar.gz"
 #rm -rf ./$PFCSETUPNAME
