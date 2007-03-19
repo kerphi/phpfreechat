@@ -351,31 +351,35 @@ div#pfc_smileys img {
   vertical-align: middle;
 }
 
-div.pfc_nickwhois * { padding: 0; margin: 0; }
+div.pfc_nickwhois { padding: 0; margin: 0; }
 div.pfc_nickwhois a img { border: none; }
 div.pfc_nickwhois {
   border: 1px solid #444;
   background-color: #FFF;
   font-size: 75%;
 }
-div.pfc_nickwhois ul {
-  list-style-type: none;
+.pfc_nickwhois_header {
   background-color: #EEE;
   border-bottom: 1px solid #444;
+  text-align: center;
+  font-weight: bold;
+  vertical-align: middle;
 }
-div.pfc_nickwhois li {
-  display: inline;
-  margin-right: 4px;
-  padding: 2px;
+.pfc_nickwhois_header img {
+  float: left;
+  cursor: pointer;
+  vertical-align: middle;
+  margin: 3px 0 3px 2px;
+}
+div.pfc_nickwhois table {
+  width: 120px;
 }
 td.pfc_nickwhois_c1 {
   font-weight: bold;
 }
-li.pfc_nickwhois_pv {
-  padding-left: 2px;
-  border-left: 1px solid #444;
+td.pfc_nickwhois_c2 {
 }
-li.pfc_nickwhois_pv a {
+.pfc_nickwhois_pv a {
   text-decoration: none;
 }
 

@@ -1049,72 +1049,43 @@ pfcClient.prototype = {
 
   updateNickWhoisBox: function(nickid)
   {
+    var usermeta = this.getAllUserMeta(nickid);
+
     var div  = document.createElement('div');
     div.setAttribute('class',     'pfc_nickwhois');
     div.setAttribute('className', 'pfc_nickwhois'); // for IE6
 
-    var ul = document.createElement('ul');
-    div.appendChild(ul);
+    var p = document.createElement('p');
+    p.setAttribute('class',     'pfc_nickwhois_header');
+    p.setAttribute('className', 'pfc_nickwhois_header'); // for IE6
+    div.appendChild(p);
 
     // add the close button
-    var li = document.createElement('li');
-    li.setAttribute('class',     'pfc_nickwhois_close');
-    li.setAttribute('className', 'pfc_nickwhois_close'); // for IE6
-    ul.appendChild(li);
-    var a = document.createElement('a');
-    a.setAttribute('href', '');
-    a.pfc_parent = div;
-    a.onclick = function(evt){
+    var img = document.createElement('img');
+    img.setAttribute('class',     'pfc_nickwhois_close');
+    img.setAttribute('className', 'pfc_nickwhois_close'); // for IE6
+    img.pfc_parent = div;
+    img.onclick = function(evt){
       this.pfc_parent.style.display = 'none';
       return false;
     }
-    var img = document.createElement('img');
     img.setAttribute('src', this.res.getFileUrl('images/close-whoisbox.gif'));
-    img.alt = document.createTextNode(this.res.getLabel('Close'));
-    a.appendChild(img);
-    li.appendChild(a);
-
-    // add the privmsg link (do not add it if this button is yourself)
-    if (pfc.getUserMeta(nickid,'nick') != this.nickname)
-    {
-      var li = document.createElement('li');
-      li.setAttribute('class',     'pfc_nickwhois_pv');
-      li.setAttribute('className', 'pfc_nickwhois_pv'); // for IE6
-      ul.appendChild(li);
-      var a = document.createElement('a');
-      a.setAttribute('href', '');
-      a.pfc_nickid = nickid;
-      a.pfc_parent = div;
-      a.onclick = function(evt){
-        var nick = pfc.getUserMeta(this.pfc_nickid,'nick');
-        pfc.sendRequest('/privmsg "'+nick+'"');
-        this.pfc_parent.style.display = 'none';
-        return false;
-      }
-      var img = document.createElement('img');
-      img.setAttribute('src', this.res.getFileUrl('images/openpv.gif'));
-      img.alt = document.createTextNode(this.res.getLabel('Private message'));
-      a.appendChild(img);
-      a.appendChild(document.createTextNode(this.res.getLabel('Private message')));
-      li.appendChild(a);
-    }
-
+    img.alt = this.res.getLabel('Close');
+    p.appendChild(img);
+    p.appendChild(document.createTextNode(usermeta['nick'])); // append the nickname text in the title
 
     // add the whois information table
     var table = document.createElement('table');
-//    table.setAttribute('cellspacing',0);
-//    table.setAttribute('cellpadding',0);
-//    table.setAttribute('border',0);
     var tbody = document.createElement('tbody');
     table.appendChild(tbody);
-    var um = this.getAllUserMeta(nickid);
-    var um_keys = um.keys();
+    var um_keys = usermeta.keys();
     var msg = '';
     for (var i=0; i<um_keys.length; i++)
     {
       var k = um_keys[i];
-      var v = um[k];
+      var v = usermeta[k];
       if (v && k != 'nickid'
+            && k != 'nick' // useless because it is displayed in the box title
             && k != 'isadmin' // useless because of the gold shield icon
             && k != 'floodtime'
             && k != 'flood_nbmsg'
@@ -1137,6 +1108,31 @@ pfcClient.prototype = {
     }
     div.appendChild(table);
 
+    // add the privmsg link (do not add it if this button is yourself)
+    if (pfc.getUserMeta(nickid,'nick') != this.nickname)
+    {
+      var p = document.createElement('p');
+      p.setAttribute('class',     'pfc_nickwhois_pv');
+      p.setAttribute('className', 'pfc_nickwhois_pv'); // for IE6
+      var a = document.createElement('a');
+      a.setAttribute('href', '');
+      a.pfc_nickid = nickid;
+      a.pfc_parent = div;
+      a.onclick = function(evt){
+        var nick = pfc.getUserMeta(this.pfc_nickid,'nick');
+        pfc.sendRequest('/privmsg "'+nick+'"');
+        this.pfc_parent.style.display = 'none';
+        return false;
+      }
+      var img = document.createElement('img');
+      img.setAttribute('src', this.res.getFileUrl('images/openpv.gif'));
+      img.alt = document.createTextNode(this.res.getLabel('Private message'));
+      a.appendChild(img);
+      a.appendChild(document.createTextNode(this.res.getLabel('Private message')));
+      p.appendChild(a);
+      div.appendChild(p);
+    }
+
     this.nickwhoisbox[nickid] = div;
   },
 
@@ -1158,8 +1154,8 @@ pfcClient.prototype = {
       d.style.display = 'block';
       d.style.zIndex = '400';
       d.style.position = 'absolute';
-      d.style.left = (mousePosX(evt)-5)+'px';
-      d.style.top  = (mousePosY(evt)-5)+'px';
+      d.style.left = (mousePosX(evt)-7)+'px';
+      d.style.top  = (mousePosY(evt)-7)+'px';
       return false;
     }
     li.appendChild(a);
