@@ -77,7 +77,7 @@ class pfcCommand_nick extends pfcCommand
     {
       // this is a first connection : create the nickname on the server
       $ct->createNick($u->nickid, $newnick);
-      $u->nick = $nick;
+      $u->nick = $newnick;
       $u->saveInCache();
       
       $this->forceWhoisReload($u->nickid);

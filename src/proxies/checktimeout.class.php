@@ -39,7 +39,7 @@ class pfcProxyCommand_checktimeout extends pfcProxyCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
 
-    if ($this->name == 'update')
+    if ($this->name == 'update' || $this->name == 'connect')
     {
       $c  =& pfcGlobalConfig::Instance();
       $u  =& pfcUserConfig::Instance();
@@ -53,17 +53,19 @@ class pfcProxyCommand_checktimeout extends pfcProxyCommand
         for($j=0; $j<count($disconnected_users["channels"][$i]); $j++)
         {
           $chan = $disconnected_users["channels"][$i][$j];
-          $online_users = $ct->getOnlineNick($chan);
-          if ($chan != 'SERVER' &&
-              count($online_users['nickid']))
+          if ($chan != 'SERVER')
           {
-            $cmdp = $p;
-            $cmdp["param"] = _pfc("%s quit (timeout)", $nick);
-            $cmdp["flag"] = 2;
-            $cmdp["recipient"] = $chan;
-            $cmdp["recipientid"] = md5($chan); // @todo: clean the recipient/recipientid notion
-            $cmd =& pfcCommand::Factory("notice");
-            $cmd->run($xml_reponse, $cmdp);
+            $online_users = $ct->getOnlineNick($chan);
+            if (count($online_users['nickid']) > 0)
+            {
+              $cmdp = $p;
+              $cmdp["param"] = _pfc("%s quit (timeout)", $nick);
+              $cmdp["flag"] = 2;
+              $cmdp["recipient"] = $chan;
+              $cmdp["recipientid"] = md5($chan); // @todo: clean the recipient/recipientid notion
+              $cmd =& pfcCommand::Factory("notice");
+              $cmd->run($xml_reponse, $cmdp);
+            }
           }
         }      
       }

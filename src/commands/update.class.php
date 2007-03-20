@@ -14,21 +14,22 @@ class pfcCommand_update extends pfcCommand
     
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
+
+    // check the user has not been disconnected from the server by timeout
+    // if he has been disconnected, then I reconnect him with /connect command
+    if ($u->nick != '' && !$u->isOnline())
+    {
+      $cmd =& pfcCommand::Factory("connect");
+      $cmdp = $p;
+      $cmdp['params'] = array($u->nick);
+      $cmdp['getoldmsg']   = false;
+      $cmdp['joinoldchan'] = false;
+      $cmd->run($xml_reponse, $cmdp);
+    }
     
     // do not update if user isn't active (didn't connect)
     if ($u->isOnline())
     {
-      // check the user has not been disconnected from the server by timeout
-      // if I found he has been disconnected, then I reconnect him with /connect command
-      $ct =& pfcContainer::Instance();
-      if ($ct->isNickOnline(NULL, $u->nickid) < 0)
-      {
-        $cmd =& pfcCommand::Factory("connect");
-        $cmdp = $p;
-        $cmdp["getoldmsg"] = false;
-        $cmd->run($xml_reponse, $cmdp);
-      }
-
       $cmdp = $p;
       
       // update the user nickname timestamp on the server
@@ -72,7 +73,9 @@ class pfcCommand_update extends pfcCommand
       $xml_reponse->script("pfc.handleResponse('update', 'ok', '');");
     }
     else
+    {
       $xml_reponse->script("pfc.handleResponse('update', 'ko', '');");
+    }
 
   }
 }
