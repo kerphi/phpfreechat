@@ -21,7 +21,7 @@ class pfcCommand_privmsg extends pfcCommand
     $pvnickid = '';
     if ($this->name == 'privmsg2')
     {
-      $pvnickid = $ct->getNickId($param);
+      $pvnickid = $param;
       $pvname   = $ct->getNickname($pvnickid);
     }
     else
