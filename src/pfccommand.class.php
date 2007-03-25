@@ -301,13 +301,41 @@ class pfcCommand
       $params = array_values($params);
       $params = array_map("trim",$params);
       $params = array_merge(array($clientid,$recipientid), $params);
-
-
-      // THIS IS ANOTHER WAY TO PARSE THE PARAMETERS
-      // IT'S NOT SIMPLIER BUT MAYBE FASTER
-      // @todo : take the faster methode
-      /*
+      
+      $result['cmdstr']  = $cmd_str;
+      $result['cmdname'] = $cmd;
+      $result['params']  = $params;
+    }
+    return $result;
+  }
+  
+  /*
+  // THIS IS ANOTHER WAY TO PARSE THE PARAMETERS
+  // IT'S NOT SIMPLIER BUT MAYBE FASTER
+  // @todo : take the faster methode
+  function ParseCommand($cmd_str, $one_parameter = false)
+  {
+    $pattern_command = '/^\/([a-z0-9]+)\s*([a-z0-9]+)\s*([a-z0-9]+)\s*(.*)/';
+    $result = array();
     
+    // parse the command name (ex: '/invite')
+    if (preg_match($pattern_command, $cmd_str, $res))
+    {
+      $cmd         = $res[1];
+      $clientid    = $res[2];
+      $recipientid = $res[3];
+      $params_str  = $res[4];
+
+      // don't parse multiple parameters for special commands with only one parameter
+      // this make possible to send double quotes (") in these commands
+      if ($one_parameter || $cmd == 'send' || $cmd == 'notice' || $cmd == 'me')
+      {
+        $result['cmdstr']  = $cmd_str;
+        $result['cmdname'] = $cmd;
+        $result['params']  = array($clientid, $recipientid, $params_str);
+        return $result;
+      }
+
       $params = array($clientid, $recipientid);
       $sep    = preg_match('/[^\\\\]"/',$params_str) ? '"' : ' ';
       if ($sep == ' ') $params_str = ' ' . $params_str;
@@ -345,8 +373,6 @@ class pfcCommand
       // append the tail
       if ($offset < strlen($params_str))
         $params[] = substr($params_str,$offset);
-      */
-
       
       $result['cmdstr']  = $cmd_str;
       $result['cmdname'] = $cmd;
@@ -354,6 +380,8 @@ class pfcCommand
     }
     return $result;
   }
+*/
+
   
 }
 
