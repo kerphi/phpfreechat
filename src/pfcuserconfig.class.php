@@ -111,7 +111,7 @@ class pfcUserConfig
   function isOnline()
   {
     $ct =& pfcContainer::Instance();
-    $online = ($ct->isNickOnline(NULL, $this->nickid) >= 0);
+    $online = $ct->isNickOnline(NULL, $this->nickid);
     return $online;
   }
 

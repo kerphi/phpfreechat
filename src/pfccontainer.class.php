@@ -129,7 +129,7 @@ class pfcContainer extends pfcContainerInterface
     $this->setMeta("channelid-to-nickid", $this->encode($chan), $nickid);
 
     // update the SERVER channel
-    if ($chan != 'SERVER') $this->updateNick($nickid);
+    if ($chan == 'SERVER') $this->updateNick($nickid);
     
     return true;
   }
@@ -348,18 +348,17 @@ class pfcContainer extends pfcContainerInterface
   /**
    * Returns returns a positive number if the nick is online in the given channel
    * @param $chan if NULL then check if the user is online on the server, otherwise check if the user has joined the channel
-   * @return -1 if the user is off line, a positive (>=0) if the user is online
+   * @return false if the user is off line, true if the user is online
    */
   function isNickOnline($chan, $nickid)
   {
     if ($chan == NULL) $chan = 'SERVER';
 
-    $ret = $this->getMeta("channelid-to-nickid", $this->encode($chan));
-    for($i = 0; $i<count($ret['timestamp']); $i++)
-    {
-      if ($ret['value'][$i] == $nickid) return $i;
-    }
-    return -1;
+    $ret = $this->getMeta("channelid-to-nickid",
+                          $this->encode($chan),
+                          $nickid);
+    
+    return (count($ret['timestamp']) > 0);
   }
 
   /**

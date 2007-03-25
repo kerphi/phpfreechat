@@ -66,7 +66,7 @@ class pfcCommand_invite extends pfcCommand
     }
 
     // check that the inviter is already in the channeltarget
-    if ($ct->isNickOnline(pfcCommand_join::GetRecipient($channeltarget),$u->nickid) == -1)
+    if (!$ct->isNickOnline(pfcCommand_join::GetRecipient($channeltarget),$u->nickid))
     {
       $cmdp = $p;
       $cmdp["params"] = array();

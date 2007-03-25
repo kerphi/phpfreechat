@@ -39,16 +39,9 @@ class pfcCommand_connect extends pfcCommand
         $isadmin = true;
     }
 
-    // setup some user meta
+    // create the nickid and setup some user meta
     $nickid = $u->nickid;
-
-    // create the nickid
     $ct->joinChan($nickid, NULL); // join the server
-    
-    // setup the active flag in user session
-    //    $u->active = true;
-    //    $u->saveInCache();
-                                        
     // store the user ip
     $ip = isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"];
     if ($ip == "::1") $ip = "127.0.0.1"; // fix for konqueror & localhost

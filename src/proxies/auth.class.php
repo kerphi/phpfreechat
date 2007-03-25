@@ -43,10 +43,10 @@ class pfcProxyCommand_auth extends pfcProxyCommand
 
 
     // do not allow someone to run a command if he is not online
-    if ($this->name != 'error' &&
-        $this->name != 'connect' &&
-        $this->name != 'update' &&
-        !$u->isOnline())
+    if ( !$u->isOnline() &&
+         $this->name != 'error' &&
+         $this->name != 'connect' &&
+         $this->name != 'update' )
     {
       $cmdp = $p;
       $cmdp["param"] = _pfc("Your must be connected to send a message");

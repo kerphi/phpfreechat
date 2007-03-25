@@ -14,9 +14,9 @@ class pfcCommand_updatemynick extends pfcCommand
 
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
-
-    $container =& pfcContainer::Instance();
-    $container->updateNick($u->nickid);
+    $ct =& pfcContainer::Instance();
+    
+    $ct->updateNick($u->nickid);
   }
 }
 
