@@ -121,6 +121,21 @@ class pfcUserConfig
     $ct =& pfcContainer::Instance();
     return $ct->getNickname($this->nickid);
   }
+
+  function getChannelNames()
+  {
+    $list = array();
+    foreach( $this->channels as $v )
+      $list[] = $v["name"];
+    return $list;
+  }
+  function getPrivMsgNames()
+  {
+    $list = array();
+    foreach( $this->privmsg as $v )
+      $list[] = $v["name"];
+    return $list;
+  }  
 }
 
 ?>

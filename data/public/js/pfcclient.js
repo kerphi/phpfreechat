@@ -171,71 +171,12 @@ pfcClient.prototype = {
 
     if (cmd == "connect")
     {
-      //alert(cmd + "-"+resp+"-"+param);
       if (resp == "ok")
       {
         this.nickname = param[0]; 
         this.sendRequest('/nick "'+this.nickname+'"');
-/*
-        if (this.nickname == '')
-          // ask to choose a nickname
-          this.askNick(this.nickname);
-        else
-        {
-          this.sendRequest('/nick "'+this.nickname+'"');
-        }
-*/        
+
         this.isconnected = true;
-
-/*
-        // join the default channels comming from the parameter list
-	// and the user's channels comming from the
-	var ch = pfc_defaultchan;
-        for (var i=0; i<pfc_userchan.length; i++)
-        {
-          if (indexOf(ch,pfc_userchan[i]) == -1)
-            ch.push(pfc_userchan[i]);
-        }
-*/
-        // join the default channels comming from the parameter list
-        if (pfc_userchan.length == 0)
-          for (var i=0; i<pfc_defaultchan.length; i++)
-          {
-            if (i<pfc_defaultchan.length-1)
-              cmd = '/join2';
-            else
-              cmd = '/join';
-            cmd += ' "'+pfc_defaultchan[i]+'"';
-            this.sendRequest(cmd);
-          }
-        else
-          // join channels comming from user sessions
-          for (var i=0; i<pfc_userchan.length; i++)
-          {
-            if (i<pfc_userchan.length-1)
-              cmd = '/join2';
-            else
-              cmd = '/join';
-            cmd += ' "'+pfc_userchan[i]+'"'; 
-            this.sendRequest(cmd);
-          }
-
-        // join the default privmsg comming from the parameter list
-        for (var i=0; i<pfc_defaultprivmsg.length; i++)
-        {
-          if (i<pfc_defaultprivmsg.length-1)
-            cmd = '/privmsg2';
-          else
-            cmd = '/privmsg';
-          cmd += ' "'+pfc_defaultprivmsg[i]+'"'; 
-          this.sendRequest(cmd);
-        }
-        // now join privmsg comming from the sessions
-        for (var i=0; i<pfc_userprivmsg.length; i++)
-        {
-          this.sendRequest('/privmsg "'+pfc_userprivmsg[i]+'"');
-        }
-
 
         // start the polling system
         this.updateChat(true);
@@ -335,45 +276,6 @@ pfcClient.prototype = {
       if (resp == "connected" || resp == "notchanged")
       {
         cmd = '';
-
-/*
-        // join the default channels comming from the parameter list
-        for (var i=0; i<pfc_defaultchan.length; i++)
-        {
-          if (i<pfc_defaultchan.length-1)
-            cmd = '/join2';
-          else
-            cmd = '/join';
-          cmd += ' "'+pfc_defaultchan[i]+'"';
-          this.sendRequest(cmd);
-        }
-        // now join channels comming from sessions
-        for (var i=0; i<pfc_userchan.length; i++)
-        {
-          if (i<pfc_userchan.length-1)
-            cmd = '/join2';
-          else
-            cmd = '/join';
-          cmd += ' "'+pfc_userchan[i]+'"'; 
-          this.sendRequest(cmd);
-        }
-
-        // join the default privmsg comming from the parameter list
-        for (var i=0; i<pfc_defaultprivmsg.length; i++)
-        {
-          if (i<pfc_defaultprivmsg.length-1)
-            cmd = '/privmsg2';
-          else
-            cmd = '/privmsg';
-          cmd += ' "'+pfc_defaultprivmsg[i]+'"'; 
-          this.sendRequest(cmd);
-        }
-        // now join privmsg comming from the sessions
-        for (var i=0; i<pfc_userprivmsg.length; i++)
-        {
-          this.sendRequest('/privmsg "'+pfc_userprivmsg[i]+'"');
-        }
-*/
       }
 
       if (resp == "ok" || resp == "notchanged" || resp == "changed" || resp == "connected")

@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__)."/../pfccommand.class.php");
+require_once dirname(__FILE__).'/../pfccommand.class.php';
 
 class pfcCommand_connect extends pfcCommand
 {
@@ -64,12 +64,25 @@ class pfcCommand_connect extends pfcCommand
     $cmdp["param"] = $nick;
     $cmd =& pfcCommand::Factory('nick');
     $ret = $cmd->run($xml_reponse, $cmdp);
-
     if ($ret)
     {
-      // @todo join the channels if $joinoldchan is true (see /update command code)
-      // @todo remove the /join client side in pfcclient.js.php
-
+      $chanlist = (count($u->channels) == 0) ? $c->channels : $u->getChannelNames();
+      for($i = 0 ; $i < count($chanlist) ; $i++)
+      {
+        $cmdp = array();
+        $cmdp["param"] = $chanlist[$i];
+        $cmd =& pfcCommand::Factory( $i < count($chanlist)-1 || !$joinoldchan ? 'join2' : 'join' );
+        $cmd->run($xml_reponse, $cmdp);
+      }
+      
+      $pvlist = (count($u->privmsg) == 0) ? $c->privmsg : $u->getPrivMsgNames();
+      for($i = 0 ; $i < count($pvlist) ; $i++)
+      {
+        $cmdp = array();
+        $cmdp["param"] = $pvlist[$i];
+        $cmd =& pfcCommand::Factory( $i < count($pvlist)-1 || !$joinoldchan ? 'join2' : 'join' );
+        $cmd->run($xml_reponse, $cmdp);
+      }
       
       $xml_reponse->script("pfc.handleResponse('".$this->name."', 'ok', Array('".addslashes($nick)."'));");
     }
