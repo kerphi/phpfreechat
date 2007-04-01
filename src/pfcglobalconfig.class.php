@@ -131,6 +131,14 @@ class pfcGlobalConfig
   var $debugurl            = "";
   var $debug               = false;
   var $debugxajax          = false;
+
+  /**
+   * This parameter is useful when your chat server is behind a reverse proxy that
+   * forward client ip address in HTTP_X_FORWARDED_FOR http header.
+   * see : http://www.phpfreechat.net/forum/viewtopic.php?id=1344
+   */
+  var $get_ip_from_xforwardedfor = false;
+
   
   // private parameters
   var $_sys_proxies         = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
