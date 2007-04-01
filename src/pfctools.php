@@ -418,7 +418,7 @@ function flock_get_contents($filename, $mode = "rb")
   if( $fp && flock( $fp, LOCK_SH ) )
   {
     $data = fread( $fp, $size );
-    flock($fp, LOCK_UN);
+    // flock($fp, LOCK_UN); // will be done by fclose
   }
   fclose( $fp );
   return $data;
@@ -433,7 +433,7 @@ function flock_put_contents($filename, $data, $mode = "wb")
   if( $fp && flock( $fp, LOCK_EX ) )
   {
     fwrite( $fp, $data );
-    flock($fp, LOCK_UN);
+    // flock($fp, LOCK_UN); // will be done by fclose
   }
   fclose( $fp );
 }
