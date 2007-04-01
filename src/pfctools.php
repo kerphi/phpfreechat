@@ -403,4 +403,40 @@ if (!function_exists('iconv'))
   }
 }    
 
+/**
+ * Almost the Same as file_get_contents except that it uses flock() to lock the file
+ */
+function flock_get_contents($filename, $mode = "rb")
+{ 
+  $data = '';
+  if (!file_exists($filename)) return $data;
+
+  $size = filesize($filename);
+  if ($size == 0) return $data;
+  
+  $fp   = fopen( $filename, $mode );
+  if( $fp && flock( $fp, LOCK_SH ) )
+  {
+    $data = fread( $fp, $size );
+    flock($fp, LOCK_UN);
+  }
+  fclose( $fp );
+  return $data;
+}
+
+/**
+ * Almost the Same as file_put_contents except that it uses flock() to lock the file
+ */
+function flock_put_contents($filename, $data, $mode = "wb")
+{
+  $fp   = fopen( $filename, $mode );
+  if( $fp && flock( $fp, LOCK_EX ) )
+  {
+    fwrite( $fp, $data );
+    flock($fp, LOCK_UN);
+  }
+  fclose( $fp );
+}
+
+
 ?>
