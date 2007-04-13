@@ -5,7 +5,7 @@ require_once dirname(__FILE__)."/../src/phpfreechat.class.php";
 $params["serverid"]    = md5(__FILE__); // calculate a unique id for this chat
 $params["title"]       = "A chat which shows how to use user metadata : add avatar (images) to each connected users";
 $params["nick"]        = "guest".rand(1,1000);
-$params["nickmeta"]    = array("avatar" => "demo50_data/avatar".rand(1,10).".jpg");
+$params["nickmeta"]    = array("avatar" => "demo50_data/avatar".rand(1,9).".jpg");
 $params["theme_path"]  = dirname(__FILE__)."/demo50_data";
 $params["theme"]       = "mytheme";
 $chat = new phpFreeChat( $params );

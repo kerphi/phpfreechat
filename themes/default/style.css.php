@@ -359,6 +359,7 @@ div.pfc_nickwhois {
   font-size: 75%;
 }
 .pfc_nickwhois_header {
+  margin: 0; padding: 0;
   background-color: #EEE;
   border-bottom: 1px solid #444;
   text-align: center;
@@ -378,6 +379,10 @@ td.pfc_nickwhois_c1 {
   font-weight: bold;
 }
 td.pfc_nickwhois_c2 {
+}
+.pfc_nickwhois_pv {
+  margin:0; padding: 0;
+  text-align: center;
 }
 .pfc_nickwhois_pv a {
   text-decoration: none;
