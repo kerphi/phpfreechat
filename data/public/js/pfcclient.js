@@ -150,7 +150,7 @@ pfcClient.prototype = {
       if (this.isconnected)
         this.sendRequest('/nick "'+newnick+'"');
       else
-        this.sendRequest('/connect '+newnick);
+        this.sendRequest('/connect "'+newnick+'"');
     }
   },
 
