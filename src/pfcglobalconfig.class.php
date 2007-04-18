@@ -405,18 +405,35 @@ class pfcGlobalConfig
         $this->errors[] = _pfc("%s doesn't exist", $filetotest);
       $this->server_script_url = relativePath($this->client_script_path, $this->server_script_path).'/'.basename($filetotest).$this->_query_string;
     }
-    
+
+    // If the user didn't give any theme_default_url value,
+    // copy the default theme resources in a public directory
+    if ($this->theme_default_url == '')
+    {
+      mkdir_r($this->data_public_path.'/themes/default');
+      if (!is_dir($this->data_public_path.'/themes/default'))
+        $this->errors[] = _pfc("cannot create %s", $this->data_public_path.'/themes/default');
+      else
+      {
+        $ret = copy_r( dirname(__FILE__).'/../themes/default',
+                       $this->data_public_path.'/themes/default' );
+        if (!$ret)
+          $this->errors[] = _pfc("cannot copy %s in %s",
+                                 dirname(__FILE__).'/../themes/default',
+                                 $this->data_public_path.'/themes/default');
+      }
+    }
+
     // check if the theme_path parameter are correctly setup
-    if ($this->theme_default_path == "" || !is_dir($this->theme_default_path))
-      $this->theme_default_path = realpath(dirname(__FILE__)."/../themes");
-    if ($this->theme_path == "" || !is_dir($this->theme_path))
+    if ($this->theme_default_path == '' || !is_dir($this->theme_default_path))
+      $this->theme_default_path = dirname(__FILE__).'/../themes';
+    if ($this->theme_path == '' || !is_dir($this->theme_path))
       $this->theme_path = $this->theme_default_path;
     // calculate theme url
     if ($this->theme_default_url == '')
-      $this->theme_default_url = relativePath($this->client_script_path, $this->theme_default_path);
+      $this->theme_default_url = $this->data_public_url.'/themes';
     if ($this->theme_url == '')
-      $this->theme_url = relativePath($this->client_script_path, $this->theme_path);
-
+      $this->theme_url = $this->theme_default_url;
     
     // ---
     // run specific container initialisation
