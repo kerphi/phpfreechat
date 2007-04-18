@@ -147,10 +147,12 @@ class pfcGlobalConfig
   var $_query_string        = '';
   
   function pfcGlobalConfig( $params = array() )
-  {    
-    // setup the local for translated messages
-    pfcI18N::Init(isset($params["language"]) ? $params["language"] : "");
-    
+  {
+    // @todo find a cleaner way to forward serverid to i18n functions
+    $GLOBALS['serverid'] = isset($params['serverid']) ? $params['serverid'] : '_serverid_';
+    // setup the locales for the translated messages
+    pfcI18N::Init(isset($params['language']) ? $params['language'] : '');
+
     // check the serverid is really defined
     if (!isset($params["serverid"]))
       $this->errors[] = _pfc("'%s' parameter is mandatory by default use '%s' value", "serverid", "md5(__FILE__)");

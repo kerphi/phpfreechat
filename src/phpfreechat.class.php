@@ -38,19 +38,14 @@ class phpFreeChat
   
   function phpFreeChat( &$params )
   {
-    if (!is_object($params) &&
-        isset($params["debug"]) &&
-        $params["debug"])
+    if (!is_array($params))
+      die('phpFreeChat parameters must be an array');
+    
+    if ( isset($params["debug"]) && $params["debug"] )
       require_once dirname(__FILE__)."/../debug/log.php";
 
-    // check if the given parameters is a simple array
-    // or a allready created phpfreechat object
-    $c = NULL;
-    if (is_object($params) &&
-        get_class($params) == "pfcglobalconfig")
-      $c =& $params;
-    else
-      $c =& pfcGlobalConfig::Instance( $params );
+    // initialize the global config object
+    $c =& pfcGlobalConfig::Instance( $params );
 
     // need to initiate the user config object here because it uses sessions
     $u =& pfcUserConfig::Instance();
@@ -76,19 +71,11 @@ class phpFreeChat
   }
 
   /**
-   * printJavaScript must be called into html header
-   * usage:
-   * <code>
-   *   <?php $chat->printJavascript(); ?>
-   * </code>
+   * depreciated
    */
   function printJavaScript( $return = false )
   {
     $output = '';
-    $c =& pfcGlobalConfig::Instance();
-    $u =& pfcUserConfig::Instance();
-
-    // display output
     if ($return)
       return $output;
     else
@@ -96,19 +83,11 @@ class phpFreeChat
   }
 
   /**
-   * printStyle must be called in the header
-   * it inserts CSS in order to style the chat
-   * usage:
-   * <code>
-   *   <?php $chat->printStyle(); ?>
-   * </code>
+   * depreciated
    */
   function printStyle( $return = false )
   {
-    $c =& pfcGlobalConfig::Instance();
-
     $output = '';
-
     if($return)
       return $output;
     else 
