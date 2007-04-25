@@ -430,13 +430,15 @@ function flock_get_contents($filename, $mode = "rb")
 function flock_put_contents($filename, $data, $mode = "wb")
 {
   $fp   = fopen( $filename, $mode );
-  if( $fp && flock( $fp, LOCK_EX ) )
+  if( $fp )
   {
-    fwrite( $fp, $data );
-    // flock($fp, LOCK_UN); // will be done by fclose
+    if ( flock( $fp, LOCK_EX ) )
+    {
+      fwrite( $fp, $data );
+      // flock($fp, LOCK_UN); // will be done by fclose
+    }
+    fclose( $fp );
   }
-  fclose( $fp );
 }
-
 
 ?>
