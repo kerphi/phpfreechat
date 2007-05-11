@@ -133,6 +133,20 @@ class pfcGlobalConfig
   var $debugxajax          = false;
 
   /**
+   * This is the user time zone
+   * it is the difference in seconds between user clock and server clock
+   */
+  var $time_offset         = 0;
+  /**
+   * How to display the dates in the chat
+   */
+  var $date_format         = "d/m/Y";
+  /**
+   * How to display the time in the chat
+   */
+  var $time_format         = "H:i:s";
+  
+  /**
    * This parameter is useful when your chat server is behind a reverse proxy that
    * forward client ip address in HTTP_X_FORWARDED_FOR http header.
    * see : http://www.phpfreechat.net/forum/viewtopic.php?id=1344
@@ -142,7 +156,7 @@ class pfcGlobalConfig
   
   // private parameters
   var $_sys_proxies         = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
-  var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg", "nickmeta","baseurl");
+  var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg", "nickmeta","baseurl","time_offset","date_format","time_format");
   var $_params_type         = array();
   var $_query_string        = '';
   
@@ -266,7 +280,7 @@ class pfcGlobalConfig
       if (is_string($v))                $this->_params_type["string"][]  = $k;
       else if (is_bool($v))             $this->_params_type["bool"][]    = $k;
       else if (is_array($v))            $this->_params_type["array"][]   = $k;
-      else if (is_int($v) && $v>=0)     $this->_params_type["positivenumeric"][] = $k;
+      else if (is_int($v) && $v>0)      $this->_params_type["positivenumeric"][] = $k;
       else $this->_params_type["misc"][] = $k;
     }
   }

@@ -352,6 +352,7 @@ class pfcContainer extends pfcContainerInterface
    */
   function isNickOnline($chan, $nickid)
   {
+    if (!$nickid) return false;
     if ($chan == NULL) $chan = 'SERVER';
 
     $ret = $this->getMeta("channelid-to-nickid",
@@ -380,8 +381,7 @@ class pfcContainer extends pfcContainerInterface
     // format message
     $data = "\n";
     $data .= $msgid."\t";
-    $data .= date("d/m/Y")."\t";
-    $data .= date("H:i:s")."\t";
+    $data .= time()."\t";
     $data .= $nick."\t";
     $data .= $cmd."\t";
     $data .= $param;
@@ -434,12 +434,11 @@ class pfcContainer extends pfcContainerInterface
       {
         $formated_line = explode( "\t", $line );
         $data = array();
-        $data["id"]    = trim($formated_line[0]);
-        $data["date"]  = $formated_line[1];
-        $data["time"]  = $formated_line[2];
-        $data["sender"]= $formated_line[3];
-        $data["cmd"]   = $formated_line[4];
-        $data["param"] = $formated_line[5];
+        $data["id"]        = trim($formated_line[0]);
+        $data["timestamp"] = $formated_line[1];
+        $data["sender"]    = $formated_line[2];
+        $data["cmd"]       = $formated_line[3];
+        $data["param"]     = $formated_line[4];
         $datalist[$data["id"]] = $data;
       }
     }
