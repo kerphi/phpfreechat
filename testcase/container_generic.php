@@ -56,16 +56,11 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $nickid = $prefix . '_' . $this->nickid;
     $chan   = $prefix . '_' . $this->chan;
 
-    // create on the channel
-    $this->ct->createNick($chan, $nick, $nickid);
-    $isonline = ($this->ct->isNickOnline($chan, $nickid) >= 0);
-    $this->assertTrue($isonline, "nickname should be online on the channel");
-
-    // create on the server
-    $chan = NULL;
-    $this->ct->createNick($chan, $nick, $nickid);
-    $isonline = ($this->ct->isNickOnline($chan, $nickid) >= 0);
-    $this->assertTrue($isonline, "nickname should be online on the server");
+    $this->ct->createNick($nickid, $nick);
+    $nick2   = $this->ct->getNickname($nickid);
+    $nickid2 = $this->ct->getNickId($nick);
+    $this->assertEquals($nick, $nick2, "nicknames should be the same");
+    $this->assertEquals($nickid, $nickid2, "nickids should be the same");
   }
 
   function test_removeNick_Generic()
@@ -78,47 +73,20 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $chan   = $prefix . '_' . $this->chan;
 
     // on the channel
-    $this->ct->createNick($chan, $nick, $nickid);
+    $this->ct->createNick($nickid, $nick);
+    $this->ct->joinChan($nickid, $chan);
+    $this->ct->joinChan($nickid, NULL);
 
-    $this->ct->removeNick($chan, $nickid);   
-    $isonline = ($this->ct->isNickOnline($chan, $nickid) >= 0);
-    $this->assertFalse($isonline, "nickname shouldn't be online on the channel");
-    $isonline2 = ($this->ct->isNickOnline(NULL, $nickid) >= 0);
-    $this->assertTrue($isonline2, "nickname should be online on the server");   
+    $this->assertTrue($this->ct->isNickOnline($chan,$nickid),"should be online");
+    $this->assertTrue($this->ct->isNickOnline(NULL,$nickid),"should be online");
+    
+    $this->ct->removeNick($chan, $nickid);
+    $this->assertFalse($this->ct->isNickOnline($chan,$nickid),"should not be online");
+    $this->assertTrue($this->ct->isNickOnline(NULL,$nickid),"should be online");
 
     $this->ct->removeNick(NULL, $nickid);
-    $isonline = ($this->ct->isNickOnline(NULL, $nickid) >= 0);
-    $this->assertFalse($isonline, "nickname shouldn't be online on the server");
-  }
-  
-  function test_getNickId_Generic()
-  {
-    $c  =& $this->c;
-    $ct =& $this->ct;
-    $prefix = __FUNCTION__;
-    $nick   = $prefix . '_' . $this->nick;
-    $nickid = $prefix . '_' . $this->nickid;
-    $chan   = $prefix . '_' . $this->chan;
- 
-    $this->ct->createNick(NULL, $nick, $nickid);
-    $ret = $this->ct->getNickId($nick);
-    $this->assertEquals($nickid, $ret, "created nickname doesn't have a correct nickid");
-  }
-
-  function test_getNickname_Generic()
-  {
-    $c  =& $this->c;
-    $ct =& $this->ct;
-    $prefix = __FUNCTION__;
-    $nick   = $prefix . '_' . $this->nick;
-    $nickid = $prefix . '_' . $this->nickid;
-    $chan   = $prefix . '_' . $this->chan;
-
-    // on the channel
-    $this->ct->createNick($chan, $nick, $nickid);
-
-    $ret = $this->ct->getNickname($nickid);
-    $this->assertEquals($nick, $ret, "nickname value is wrong");
+    $this->assertFalse($this->ct->isNickOnline($chan,$nickid),"should not be online");
+    $this->assertFalse($this->ct->isNickOnline(NULL,$nickid),"should not be online");
   }
 
   function test_getOnlineNick_Generic()
@@ -130,8 +98,10 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $nickid = $prefix . '_' . $this->nickid;
     $chan   = $prefix . '_' . $this->chan;
 
-    // on the channel
-    $this->ct->createNick($chan, $nick, $nickid);
+    $this->ct->createNick($nickid, $nick);
+    $this->ct->joinChan($nickid, NULL);
+    $this->ct->joinChan($nickid, $chan);
+    
     $time = time();
     $ret = $this->ct->getOnlineNick($chan);
     $this->assertEquals(1, count($ret["nickid"]), "1 nickname should be online");
@@ -153,12 +123,16 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $nickid = $prefix . '_' . $this->nickid;
     $chan   = $prefix . '_' . $this->chan;
 
-    $this->ct->createNick($chan, $nick, $nickid);
+    $this->ct->createNick($nickid, $nick);
+    $this->ct->joinChan($nickid, NULL);
+    $this->ct->joinChan($nickid, $chan);
+
     sleep(2);
+    
     $ret = $this->ct->removeObsoleteNick(1000);
     $this->assertEquals(1, count($ret["nickid"]), "1 nickname should be obsolete");
     $this->assertEquals(2, count($ret["channels"][0]), "nickname should be disconnected from two channels");
-    $isonline = ($this->ct->isNickOnline($chan, $nickid) >= 0);
+    $isonline = $this->ct->isNickOnline($chan, $nickid);
     $this->assertFalse($isonline, "nickname shouldn't be online anymore");
   }
   
@@ -171,14 +145,18 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $nickid = $prefix . '_' . $this->nickid;
     $chan   = $prefix . '_' . $this->chan;
 
-    $this->ct->createNick($chan, $nick, $nickid);
+    $this->ct->createNick($nickid, $nick);
+    $this->ct->joinChan($nickid, NULL);
+    $this->ct->joinChan($nickid, $chan);
+
     sleep(2);
+
     $ret = $this->ct->updateNick($nickid);
     $this->assertTrue($ret, "nickname should be correctly updated");
 
     $ret = $this->ct->removeObsoleteNick(1000);
     $this->assertFalse(in_array($nick, $ret['nick']), "nickname shouldn't be removed because it has been updated");
-    $isonline = ($this->ct->isNickOnline($chan, $nickid) >= 0);
+    $isonline = $this->ct->isNickOnline($chan, $nickid);
     $this->assertTrue($isonline, "nickname should be online");
   }
   
@@ -194,11 +172,14 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $chan    = $prefix . '_' . $this->chan;
 
     // create a nick on a channel and change it
-    $this->ct->createNick($chan, $nick1, $nickid);
+    $this->ct->createNick($nickid, $nick1);
+    $this->ct->joinChan($nickid, NULL);
+    $this->ct->joinChan($nickid, $chan);
+    
     $ret = $this->ct->changeNick($nick2, $nick1);
     $this->assertTrue($ret, "nickname change function should returns true (success)");
-    $isonline1 = ($this->ct->isNickOnline($chan, $this->ct->getNickId($nick1)) >= 0);
-    $isonline2 = ($this->ct->isNickOnline($chan, $this->ct->getNickId($nick2)) >= 0);
+    $isonline1 = $this->ct->isNickOnline($chan, $this->ct->getNickId($nick1));
+    $isonline2 = $this->ct->isNickOnline($chan, $this->ct->getNickId($nick2));
     $this->assertFalse($isonline1, "nickname shouldn't be online");
     $this->assertTrue($isonline2, "nickname shouldn't be online");
   }
@@ -215,7 +196,9 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $msg    = "my test message";
     
     // on the channel
-    $this->ct->createNick($chan, $nick, $nickid);
+    $this->ct->createNick($nickid, $nick);
+    $this->ct->joinChan($nickid, NULL);
+    $this->ct->joinChan($nickid, $chan);
     for($i = 0; $i < 10; $i++)
     {
       $msgid = $this->ct->write($chan, $nick, $cmd ,$msg . $i);
@@ -237,7 +220,9 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $msg    = "my test message";
     
     // create message on the channel
-    $this->ct->createNick($chan, $nick, $nickid);
+    $this->ct->createNick($nickid, $nick);
+    $this->ct->joinChan($nickid, NULL);
+    $this->ct->joinChan($nickid, $chan);
     $msgid = $this->ct->write($chan, $nick, $cmd, $msg);
     $this->assertEquals(1, $msgid,"generated msg_id is not correct");
     $res = $this->ct->read($chan, 0);
@@ -258,7 +243,9 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $msg    = "my test message";
     
     // create on the channel
-    $this->ct->createNick($chan, $nick, $nickid);
+    $this->ct->createNick($nickid, $nick);
+    $this->ct->joinChan($nickid, NULL);
+    $this->ct->joinChan($nickid, $chan);
     for($i = 0; $i < 10; $i++)
     {
       $msgid = $this->ct->write($chan, $nick, $cmd ,$msg . $i);
@@ -403,8 +390,6 @@ class pfcContainerTestcase extends PHPUnit_TestCase
     $ret = $ct->getMeta($group,$subgroup1,$leaf1);
     $this->assertEquals(0, count($ret["value"]), "leaf should not exists");    
   }
-
-  
 }
 
 ?>
