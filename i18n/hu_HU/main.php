@@ -312,7 +312,7 @@ $GLOBALS["i18n"]["Send"] = "Küldés";
 $GLOBALS["i18n"]["Mysql container: connect error"] = "Mysql tároló: kapcsolódási hiba";
 
 // line 101 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "Mysql tároló: adtbázis létrehozási hiba '%s'";
+$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "Mysql tároló: adatbázis létrehozási hiba '%s'";
 
 // line 112 in mysql.class.php
 $GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Mysql tároló: tábla létrehozási hiba '%s'";
@@ -340,46 +340,47 @@ $GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nicknam
 
 // line 43 in kick.class.php
 $GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "kirúgva %s szobából %s által - oka: %s";
-// line 359 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "";
 
 // line 20 in quit.class.php
-$GLOBALS["i18n"]["%s quit (%s)"] = "";
+$GLOBALS["i18n"]["%s quit (%s)"] = "%s kilép (%s)";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Chat loading ..."] = "";
+$GLOBALS["i18n"]["Chat loading ..."] = "A Chat töltődik ...";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please wait"] = "";
+$GLOBALS["i18n"]["Please wait"] = "Kérlek várj!";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "";
+$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "%s nem működik, mert vagy le van tiltva vagy a böngésző nem támogatja.";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["This web application requires %s to work properly."] = "";
+$GLOBALS["i18n"]["This web application requires %s to work properly."] = "A(z) %s szükséges ahhoz, hogy ez a web alkalmazás megfelelően dolgozzon.";
 
 // line 135 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "";
+$GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "Engedélyezd a(z) %s -t a böngésző beállításainál, vagy használj olyan böngészőt, mely támogatja a(z) %s -t, majd próbáld újra.";
 
 // line 137 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "";
+$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = " %s támogatásához frissítsd a böngésződ, majd próbáld újra.";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "";
+$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "Az Internet Explorer 7.0 előtti verzióiban az Ajax végrehajtáshoz az ActivX -t használja. Engedélyezd az ActivX-t a böngésződ biztonsági beállításainál, vagy használj olyan böngészőt, mely támogatja az Ajax technológiát, majd próbáld újra.";
+
+// line 359 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "%s nem létezik, a data_public_path nem telepíthető";
 
 // line 73 in invite.class.php
-$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "";
+$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "Csatlakozni kell ide: %s, hogy felhasználót lehessen hívni ebbe a csatornába";
 
 // line 47 in chat.html.tpl.php
-$GLOBALS["i18n"]["Ping"] = "";
+$GLOBALS["i18n"]["Ping"] = "Ping";
 
 // line 477 in phpfreechat.class.php
-$GLOBALS["i18n"]["Input Required"] = "";
+$GLOBALS["i18n"]["Input Required"] = "Adat szükséges";
 
 // line 478 in phpfreechat.class.php
-$GLOBALS["i18n"]["OK"] = "";
+$GLOBALS["i18n"]["OK"] = "OK";
 
 // line 479 in phpfreechat.class.php
-$GLOBALS["i18n"]["Cancel"] = "";
+$GLOBALS["i18n"]["Cancel"] = "Mégse";
 
 ?>
