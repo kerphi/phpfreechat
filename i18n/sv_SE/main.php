@@ -31,7 +31,7 @@
 $GLOBALS["i18n"]["My Chat"] = "Min chat";
 
 // line 201 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s finns inte, %s biblioteksfilen kan inte hittas.";
+$GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s hittades inte, %s biblioteket kunde inte hittas.";
 
 // line 355 in phpfreechat.class.php
 $GLOBALS["i18n"]["Please enter your nickname"] = "Ange alias: ";
@@ -61,7 +61,7 @@ $GLOBALS["i18n"]["%s doesn't exist: %s"] = "%s finns inte: %s";
 $GLOBALS["i18n"]["You need %s"] = "Du måste %s";
 
 // line 241 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist, %s library can't be found"] = "%s finns inte, %s biblioteksfilen kan inte hittas";
+$GLOBALS["i18n"]["%s doesn't exist, %s library can't be found"] = "%s finns inte, %s biblioteket kunde inte hittas";
 
 // line 280 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["%s doesn't exist"] = "%s finns inte";
@@ -125,10 +125,10 @@ $GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or
 
 
 // line 48 in phpfreechattemplate.class.php
-$GLOBALS["i18n"]["%s template could not be found"] = "";
+$GLOBALS["i18n"]["%s template could not be found"] = "%s temat kunde inte hittas";
 
 // line 324 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'serverid' parameter is mandatory by default use 'md5(__FILE__)' value"] = "";
+$GLOBALS["i18n"]["'serverid' parameter is mandatory by default use 'md5(__FILE__)' value"] = "'serverid' parametern är obligatorisk, använd 'md5(__FILE__)' värdet i vanliga fall";
 
 // line 512 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["Error: '%s' could not be found, please check your themepath '%s' and your theme '%s' are correct"] = "Var vänlig och kontrollera sökvägen till temat.";
@@ -146,7 +146,7 @@ $GLOBALS["i18n"]["Underline"] = "Understruken";
 $GLOBALS["i18n"]["Delete"] = "Radera";
 
 // line 37 in chat.html.tpl.php
-$GLOBALS["i18n"]["Pre"] = "";
+$GLOBALS["i18n"]["Pre"] = "Pre";
 
 // line 38 in chat.html.tpl.php
 $GLOBALS["i18n"]["Mail"] = "Maila";
@@ -170,7 +170,7 @@ $GLOBALS["i18n"]["Show online users box"] = "Visa onlineanvändar-listan";
 $GLOBALS["i18n"]["%s must be implemented"] = "Du måste implementera %s.";
 
 // line 343 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "";
+$GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "'%s' parametern är obligatorisk, använd '%s' värdet i vanliga fall";
 
 // line 378 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "%s måste ha ett positivt värde";
@@ -179,7 +179,7 @@ $GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "%s måste ha ett
 $GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "Parametern '%s' finns inte. Följande värden finns: '%s'";
 
 // line 186 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["My room"] = "";
+$GLOBALS["i18n"]["My room"] = "Mitt rum";
 
 // line 19 in unban.class.php
 $GLOBALS["i18n"]["Missing parameter"] = "Parameter fattas.";
@@ -188,7 +188,7 @@ $GLOBALS["i18n"]["Missing parameter"] = "Parameter fattas.";
 $GLOBALS["i18n"]["banished from %s by %s"] = "Bannad från %s av %s";
 
 // line 23 in banlist.class.php
-$GLOBALS["i18n"]["The banished user's id list is:"] = "Bannade användarid-listan är:";
+$GLOBALS["i18n"]["The banished user's id list is:"] = "Bannade användalistan är:";
 
 // line 32 in banlist.class.php
 $GLOBALS["i18n"]["Empty"] = "Här var det tomt!";
@@ -224,7 +224,7 @@ $GLOBALS["i18n"]["%s users have been unbanished"] = "%s användare har blivit un
 $GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "Du får inte köra kommandot '%s'";
 
 // line 66 in auth.class.php
-$GLOBALS["i18n"]["Can't join %s because you are banished"] = "Ajaj..kan inte logga in.!";
+$GLOBALS["i18n"]["Can't join %s because you are banished"] = "Ajaj..du är bannad, du kan inte logga in.!";
 
 // line 76 in auth.class.php
 $GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "Kan inte logga in i %s, rummet är privat.";
@@ -272,7 +272,7 @@ $GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "Error: den c
 $GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "Error: chatten kan inte laddas, detta antingen p.g.a att din webbläsare inte stödjer javascript eller för att inställningarna inte är korrekta. Var vänlig och kontakta admin.";
 
 // line 31 in help.class.php
-$GLOBALS["i18n"]["Here is the command list:"] = "Här följer kommando-listan:";
+$GLOBALS["i18n"]["Here is the command list:"] = "Här följer kommandolistan:";
 
 // line 63 in identify.class.php
 $GLOBALS["i18n"]["Succesfully identified"] = "Identifieringen lyckades";
@@ -312,81 +312,81 @@ $GLOBALS["i18n"]["Send"] = "Skicka";
 
 
 // line 302 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "'%s' parametern måste vara en karakteristisk sträng";
 
 // line 86 in mysql.class.php
 $GLOBALS["i18n"]["Mysql container: connect error"] = "";
 
 // line 101 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "";
+$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "Mysql container: databasen kunde ej skapas '%s'";
 
 // line 112 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "";
+$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Mysql container: tabellen kunde ej skapas '%s'";
 
 // line 80 in chat.js.tpl.php
-$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "";
+$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "Ehmm.. Du kan inte prata med dig själv";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "";
+$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "Vald alias är inte tillåten";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Enable sound notifications"] = "";
+$GLOBALS["i18n"]["Enable sound notifications"] = "Tillåt ljud";
 
 // line 84 in chat.js.tpl.php
-$GLOBALS["i18n"]["Disable sound notifications"] = "";
+$GLOBALS["i18n"]["Disable sound notifications"] = "Inaktivera ljud";
 
 // line 23 in kick.class.php
-$GLOBALS["i18n"]["no reason"] = "";
+$GLOBALS["i18n"]["no reason"] = "Ingen anledning";
 
 // line 24 in banlist.class.php
-$GLOBALS["i18n"]["The banished user list is:"] = "";
+$GLOBALS["i18n"]["The banished user list is:"] = "Bannade användarlistan är:";
 
 // line 39 in banlist.class.php
-$GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "";
+$GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "'/unban {nickname}' kommer att unbanna användaren med alias {nickname}";
 
 // line 43 in kick.class.php
-$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "";
+$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "Kickas från %s av %s - anledning: %s";
 
 // line 20 in quit.class.php
-$GLOBALS["i18n"]["%s quit (%s)"] = "";
+$GLOBALS["i18n"]["%s quit (%s)"] = "%s quit (%s)";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Chat loading ..."] = "";
+$GLOBALS["i18n"]["Chat loading ..."] = "Chatt v0.5 laddas";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please wait"] = "";
+$GLOBALS["i18n"]["Please wait"] = "Var god och vänta..";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "";
+$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "%s verkar vara inaktiverad eller så stödjer inte din webbläsaren detta.";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["This web application requires %s to work properly."] = "";
+$GLOBALS["i18n"]["This web application requires %s to work properly."] = "Denna webapplikation kräver %s för att fungera utan problem.";
 
 // line 135 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "";
+$GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "Var god och aktivera %s i webbläsarens inställlningar, eller uppgradera till en webbläsare som stödjer %s.";
 
 // line 137 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "";
+$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "Var god och uppgradera till en webbläsare som stödjer %s.";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "";
+$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "I versioner av Internet Explorer tidigare än 7.0 är Ajax implementerad av ActiveX. Var god och aktivera ActiveX in din webbläsare säkerhetsinställningar eller uppgradera till en webbläsare som stödjer Ajax.";
 
 // line 359 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "";
+$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "%s existerar inte, data_public_path kunde inte installeras";
 
 // line 73 in invite.class.php
-$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "";
+$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "Du måste joina %s för att kunna bjuda in användare till den kanalen";
 
 // line 47 in chat.html.tpl.php
-$GLOBALS["i18n"]["Ping"] = "";
+$GLOBALS["i18n"]["Ping"] = "Ping";
 
 // line 477 in phpfreechat.class.php
-$GLOBALS["i18n"]["Input Required"] = "";
+$GLOBALS["i18n"]["Input Required"] = "Inmatning krävs";
 
 // line 478 in phpfreechat.class.php
-$GLOBALS["i18n"]["OK"] = "";
+$GLOBALS["i18n"]["OK"] = "OK";
 
 // line 479 in phpfreechat.class.php
-$GLOBALS["i18n"]["Cancel"] = "";
+$GLOBALS["i18n"]["Cancel"] = "Avbryt";
 
 ?>
