@@ -27,7 +27,7 @@ class pfcCommand_redirect extends pfcCommand
       return;
     }
 
-    $xml_reponse->addRedirect($param);
+    $xml_reponse->redirect($param);
   }
 }
 

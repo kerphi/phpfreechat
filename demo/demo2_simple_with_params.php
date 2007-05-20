@@ -16,7 +16,6 @@ $params["max_msg"]        = 15;       // max message in the history is 15 (messa
 $params["height"]         = "230px";  // height of chat area is 230px
 $params["width"]          = "800px";  // width of chat area is 800px
 $params["debug"]          = true;     // activate debug console
-$params["debugxajax"]     = true;     // activate xajax debug (js popup)
 $params["connect_at_startup"] = false;
 $params["start_minimized"]    = true;
 $params["nickmarker"]     = false;

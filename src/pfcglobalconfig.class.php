@@ -46,10 +46,22 @@ class pfcGlobalConfig
   var $lockurl             = "http://www.phpfreechat.net"; // this is the url where the users must be redirected when the chat is locked
   
   // these parameters are static (cached)
-  var $skip_proxies         = array(); // these proxies will be skiped. ex: append "censor" to the list to disable words censoring
-  var $post_proxies         = array(); // these proxies will be handled just before to process commands and just after system proxies
-  var $pre_proxies          = array(); // these proxies will be handled before system proxies (at begining)
-  var $proxies              = array(); // will contains proxies to execute on each command (filled in the init step) this parameter could not be overridden
+  /**
+   * These proxies will be skiped. ex: append "censor" to the list to disable words censoring
+   */
+  var $skip_proxies         = array();
+  /**
+   * These proxies will be handled just before to process commands and just after system proxies
+   */
+  var $post_proxies         = array();
+  /**
+   * These proxies will be handled before system proxies (at begining)
+   */
+  var $pre_proxies          = array();
+  /**
+   * Will contains proxies to execute on each command (filled in the init step) this parameter could not be overridden
+   */
+  var $proxies              = array();
   var $proxies_cfg          = array("auth"    => array(),
                                     "noflood" => array("charlimit" => 450,
                                                        "msglimit"  => 10,
@@ -89,8 +101,10 @@ class pfcGlobalConfig
   var $openlinknewwindow   = true; // used to open the links in a new window
   var $notify_window       = true; // true : appends a prefix to the window title with the number of new posted messages
   
-  // Be sure that you are conform to the license page before setting this to false !
-  // http://www.phpfreechat.net/license.en.html
+  /**
+   * Be sure that you are conform to the license page before setting this to false !
+   * http://www.phpfreechat.net/license.en.html
+   */
   var $display_pfc_logo    = true; 
 
   var $displaytabimage       = true;
@@ -115,22 +129,25 @@ class pfcGlobalConfig
   var $container_type      = "File";
 
   var $client_script_path  = "";
-  //  var $client_script_url   = ""; // default is calculated from 'client_script_path'
   var $server_script_path  = "";
   var $server_script_url   = ""; // default is calculated from 'server_script_path'
-  var $xajaxpath           = ""; // default is dirname(__FILE__)."/../lib/xajax_0.2.3";
-  var $jspath              = ""; // default is dirname(__FILE__)."/../lib/javascript";
   var $data_private_path   = ""; // default is dirname(__FILE__)."/../data/private";
   var $data_public_path    = ""; // default is dirname(__FILE__)."/../data/public";
   var $data_public_url     = ""; // default is calculated from 'data_public_path' path
 
+  /**
+   * This is the prototype javascript library url.
+   * Use this parameter to use your external library.
+   * default is data/js/prototype.js
+   */
+  var $prototypejs_url     = '';
+  
   var $smileys             = array();
   var $errors              = array();
   var $is_init             = false; // used internaly to know if the chat config is initialized
   var $version             = ""; // the phpfreechat version: taken from the 'version' file content
   var $debugurl            = "";
   var $debug               = false;
-  var $debugxajax          = false;
 
   /**
    * This is the user time zone
@@ -321,9 +338,7 @@ class pfcGlobalConfig
         $this->errors[] = _pfc("'%s' parameter must be a charatere string", $sp);
     }
 
-    if ($this->title == "")        $this->title        = _pfc("My Chat");
-    if ($this->xajaxpath == "")    $this->xajaxpath    = dirname(__FILE__)."/../lib/xajax_0.5_beta1";
-    if ($this->jspath == "")       $this->jspath       = dirname(__FILE__)."/../lib/javascript";
+    if ($this->title == "")           $this->title        = _pfc("My Chat");
       
     // first of all, check the used functions
     $f_list["file_get_contents"] = _pfc("You need %s", "PHP 4 >= 4.3.0 or PHP 5");
@@ -365,20 +380,6 @@ class pfcGlobalConfig
       if (!file_exists($f_dst)) $this->errors[] = _pfc("%s doesn't exist, data_public_path cannot be installed", $f_dst);
     }
     closedir($dh);
-    
-    // ---
-    // test xajax lib existance
-    $dir = $this->xajaxpath;
-    if (!is_dir($dir))
-      $this->errors[] = _pfc("%s doesn't exist, %s library can't be found", $dir, "XAJAX");
-    if (!file_exists($dir."/xajax_core/xajax.inc.php"))
-      $this->errors[] = _pfc("%s not found, %s library can't be found", "xajax.inc.php", "XAJAX");
-    // install public xajax js to phpfreechat public directory
-    //    $this->errors = array_merge($this->errors, @install_file($this->xajaxpath."/xajax_js/xajax.js",
-    //                                                             $this->data_public_path."/xajax_js/xajax.js"));
-    //    $this->errors = array_merge($this->errors, @install_file($this->xajaxpath."/xajax_js/xajax_uncompressed.js",
-    //                                                             $this->data_public_path."/xajax_js/xajax_uncompressed.js" ));
-
 
 
     // ---
@@ -451,6 +452,9 @@ class pfcGlobalConfig
     if ($this->theme_url == '')
       $this->theme_url = $this->theme_default_url;
     
+    // if the user do not have an existing prototype.js library, we use the embeded one
+    if ($this->prototypejs_url == '') $this->prototypejs_url = $this->data_public_url.'/js/prototype.js';
+
     // ---
     // run specific container initialisation
     $ct =& pfcContainer::Instance();

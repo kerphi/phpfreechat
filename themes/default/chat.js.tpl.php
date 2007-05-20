@@ -52,35 +52,40 @@ var pfc_nickname_color_list   = <?php echo $json->encode($nickname_colorlist); ?
 var pfc_theme                 = <?php echo $json->encode($theme); ?>;
 var pfc_isready               = false;
 
-var xajaxConfig = {
-  requestURI: "<?php echo $c->server_script_url; ?>",
-  debug: false,
-  statusMessages: false,
-  waitCursor: false,
-  legacy: false
-};
-var xajaxLoaded=false;
-function pfc_handleRequest(){return xajax.call("handleRequest", {parameters: arguments});}
-function pfc_loadStyles(){return xajax.call("loadStyles", {parameters: arguments});}
-function pfc_loadScripts(){return xajax.call("loadScripts", {parameters: arguments});}
-function pfc_loadInterface(){return xajax.call("loadInterface", {parameters: arguments});}
-function pfc_loadChat(){return xajax.call("loadChat", {parameters: arguments});}
+/* prototype ajax config */
+function pfc_loadChat() {
+  var url = '<?php echo $c->server_script_url; ?>';
+  var params = $H();
+  params['pfc_ajax'] = 1;
+  params['f'] = 'loadChat';
+  new Ajax.Request(url, {
+    method: 'get',
+    parameters: params,
+    onSuccess: function(transport) {
+      eval( transport.responseText );
+    }
+  });
+}
+function pfc_handleRequest(cmd) {
+  var url = '<?php echo $c->server_script_url; ?>';
+  var params = $H();
+  params['pfc_ajax'] = 1;
+  params['f']   = 'handleRequest';
+  params['cmd'] = cmd;
+  new Ajax.Request(url, {
+    method: 'post',
+    parameters: params,
+    onSuccess: function(transport) {
+      eval( transport.responseText );
+    }
+  });
+}
+
 
 window.onload = function () {
   pfc = new pfcClient();
   if (pfc_isready) pfc_loadChat(pfc_theme);
 }
-
-<?php if ($debugxajax) { ?>
-xajax.DebugMessage = function(text)
-{
-  var s = new String(text);
-  text = s.escapeHTML();
-  rx  = new RegExp('&lt;','g');
-  text = text.replace(rx, '\n&lt;');
-  $('pfc_debugxajax').innerHTML += '\n---------------\n' + text;
-}
-<?php } ?>
 
 <?php if ($debug) { ?>
 var pfc_debug_color = true;
@@ -107,12 +112,12 @@ function trace(text) {
   // ]]>
 </script>
 
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/xajax.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/compat.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/md5.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/cookie.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/image_preloader.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/myprototype.js"></script>
+<script type="text/javascript" src="<?php echo $c->prototypejs_url; ?>"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/regex.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/utf8.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/sprintf2.js"></script>
@@ -153,7 +158,4 @@ else
 
 <?php if ($debug) { ?>
   <div id="pfc_debug"></div>
-<?php } ?>
-<?php if ($debugxajax) { ?>
-  <div id="pfc_debugxajax"></div>
 <?php } ?>

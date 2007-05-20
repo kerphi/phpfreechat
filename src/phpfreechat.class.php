@@ -20,11 +20,12 @@
  * Boston, MA  02110-1301  USA
  */
 
-require_once dirname(__FILE__)."/pfccommand.class.php";
-require_once dirname(__FILE__)."/pfcglobalconfig.class.php";
-require_once dirname(__FILE__)."/pfcuserconfig.class.php";
-require_once dirname(__FILE__)."/pfctemplate.class.php";
-require_once dirname(__FILE__)."/../lib/utf8/utf8_substr.php";
+require_once dirname(__FILE__).'/pfccommand.class.php';
+require_once dirname(__FILE__).'/pfcglobalconfig.class.php';
+require_once dirname(__FILE__).'/pfcuserconfig.class.php';
+require_once dirname(__FILE__).'/pfctemplate.class.php';
+require_once dirname(__FILE__).'/../lib/utf8/utf8_substr.php';
+require_once dirname(__FILE__).'/pfcresponse.class.php';
 
 /**
  * phpFreeChat is the entry point for developpers
@@ -34,8 +35,6 @@ require_once dirname(__FILE__)."/../lib/utf8/utf8_substr.php";
  */
 class phpFreeChat
 {
-  var $xajax;
-  
   function phpFreeChat( &$params )
   {
     if (!is_array($params))
@@ -49,25 +48,21 @@ class phpFreeChat
 
     // need to initiate the user config object here because it uses sessions
     $u =& pfcUserConfig::Instance();
-    
-    // then init xajax engine
-    if (!class_exists("xajax"))
-      if (file_exists($c->xajaxpath."/xajax_core/xajax.inc.php"))
+
+    // this code is used to handle the AJAX call and build the response
+    if (isset($_REQUEST['pfc_ajax']))
+    {
+      $function = isset($_REQUEST['f']) ? $_REQUEST['f'] : '';
+      $cmd      = isset($_REQUEST['cmd']) ? stripslashes($_REQUEST['cmd']) : '';
+      $r = null;
+      if ($function && method_exists($this,$function))
       {
-        require_once $c->xajaxpath."/xajax_core/xajax.inc.php";        
-        $this->xajax = new xajax($c->server_script_url.(isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "" ? "?".$_SERVER["QUERY_STRING"] : ""), 'pfc_');
-        if ($c->debugxajax) $this->xajax->setFlag('debug', true);
-        $this->xajax->setWrapperPrefix('pfc_');
-        $this->xajax->setFlag('waitCursor', false);
-        $this->xajax->setFlag('cleanBuffer', false);
-        $this->xajax->setFlag('errorHandler', true);
-        $this->xajax->registerFunction(array('handleRequest',&$this,'handleRequest'));
-        $this->xajax->registerFunction(array('loadStyles',&$this,'loadStyles'));
-        $this->xajax->registerFunction(array('loadScripts',&$this,'loadScripts'));
-        $this->xajax->registerFunction(array('loadInterface',&$this,'loadInterface'));
-        $this->xajax->registerFunction(array('loadChat',&$this,'loadChat'));
-        $this->xajax->processRequest();
+        require_once dirname(__FILE__).'/pfcresponse.class.php';
+        $r =& $this->$function($cmd);
       }
+      echo $r->getOutput();
+      die();
+    }
   }
 
   /**
@@ -222,10 +217,10 @@ class phpFreeChat
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
-    
+
     if ($c->debug) ob_start(); // capture output
     
-    $xml_reponse = new xajaxResponse();
+    $xml_reponse =& new pfcResponse();
 
     // check the command
     $cmdstr      = "";
@@ -237,7 +232,7 @@ class phpFreeChat
     $sender      = "";
 
     $res = pfcCommand::ParseCommand($request);
-    
+
     $cmdstr      = isset($res['cmdstr']) ? $res['cmdstr'] : $request;
     $cmdname     = strtolower(isset($res['cmdname']) ? $res['cmdname'] : '');
     $clientid    = isset($res['params'][0]) ? $res['params'][0] : '';
@@ -349,9 +344,9 @@ class phpFreeChat
   }
   
 
-  function loadStyles($theme = 'default', &$xml_reponse)
+  function &loadStyles($theme = 'default', &$xml_reponse)
   {
-    if ($xml_reponse == null) $xml_reponse = new xajaxResponse();
+    if ($xml_reponse == null) $xml_reponse =& new pfcResponse();
 
     $c =& pfcGlobalConfig::Instance();
     $c->theme = $theme;
@@ -396,9 +391,9 @@ class phpFreeChat
     return $xml_reponse;
   }
 
-  function loadScripts($theme, &$xml_reponse)
+  function &loadScripts($theme, &$xml_reponse)
   {
-    if ($xml_reponse == null) $xml_reponse = new xajaxResponse();
+    if ($xml_reponse == null) $xml_reponse =& new pfcResponse();
 
     $c =& pfcGlobalConfig::Instance();
 
@@ -525,7 +520,7 @@ if (pfc_connect_at_startup) pfc.connect_disconnect();
   
   function loadInterface($theme = 'default', &$xml_reponse)
   {
-    if ($xml_reponse == null) $xml_reponse = new xajaxResponse();
+    if ($xml_reponse == null) $xml_reponse =& new pfcResponse();
 
     $c =& pfcGlobalConfig::Instance();
     $c->theme = $theme;
@@ -543,15 +538,15 @@ if (pfc_connect_at_startup) pfc.connect_disconnect();
 
     //    pfcI18N::SwitchOutputEncoding();
     
-    $xml_reponse->remove("pfc_loader"); // to hide the loading box
-    $xml_reponse->assign("pfc_container", "innerHTML", $html);
+    $xml_reponse->remove('pfc_loader'); // to hide the loading box
+    $xml_reponse->update('pfc_container', $html);
 
     return $xml_reponse;    
   }
 
-  function loadChat($theme = 'default')
+  function &loadChat($theme = 'default')
   {
-    $xml_reponse = new xajaxResponse();
+    $xml_reponse =& new pfcResponse();
 
     $this->loadInterface($theme,$xml_reponse);
     $this->loadStyles($theme,$xml_reponse);

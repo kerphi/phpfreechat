@@ -174,7 +174,7 @@ pfcGui.prototype = {
 
     // empty the chat div content
     var div_chat = this.getChatContentFromTabId(tabid);
-    div_chat.innerHTML = '';
+    div_chat.update('');
 
     // remove the tab from the list
     var tabpos = indexOf(this.tabids, tabid);
@@ -184,7 +184,8 @@ pfcGui.prototype = {
     this.tabtypes   = without(this.tabtypes, this.tabtypes[tabpos]);
     tabpos = indexOf(this.tabids, this.getTabId());
     if (tabpos<0) tabpos = 0;
-    this.setTabById(this.tabids[tabpos]);
+    if (this.tabids[tabpos])
+      this.setTabById(this.tabids[tabpos]);
     return name;    
   },
 

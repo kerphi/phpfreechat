@@ -24,12 +24,16 @@ pfcCSS.prototype = {
 
   applyRule: function(selector, declaration)
   {
-    if (!this.is_iewin) {
-      var styleRule = document.createTextNode(selector + " {" + declaration + "}");
-      this.style.appendChild(styleRule); // bugs in IE/Win
-    }
-    if (this.is_iewin &&  document.styleSheets &&  document.styleSheets.length > 0) {
-      this.lastStyle.addRule(selector, declaration);
+    selector = selector.split(',');
+    for ( var i = 0; i < selector.length; i++)
+    {
+      if (!this.is_iewin) {
+        var styleRule = document.createTextNode(selector[i] + " {" + declaration + "}");
+        this.style.appendChild(styleRule); // bugs in IE/Win
+      }
+      if (this.is_iewin &&  document.styleSheets &&  document.styleSheets.length > 0) {
+        this.lastStyle.addRule(selector[i], declaration);
+      }
     }
   }
 }

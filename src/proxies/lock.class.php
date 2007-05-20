@@ -44,7 +44,7 @@ class pfcProxyCommand_lock extends pfcProxyCommand
     // check if the chat is locked
     if ($c->islocked)
     {
-      $xml_reponse->addRedirect($c->lockurl);
+      $xml_reponse->redirect($c->lockurl);
       return false;
     }
     else

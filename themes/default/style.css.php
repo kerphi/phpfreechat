@@ -80,6 +80,7 @@ ul#pfc_channels_list li.selected div {
   color: #000;
   font-weight: bold;  
 }
+/* this rule does not work on ie6 ( :hover ) */
 ul#pfc_channels_list li div:hover {
   background-color: #FFF;
 }
@@ -191,16 +192,10 @@ div.pfc_oldmsg {
   background-repeat: no-repeat; 
 }
 
-span.pfc_heure {
+span.pfc_date, span.pfc_heure {
   color: #bebebe;
   font-size: 70%;
 }
-
-span.pfc_date {
-  color: #bebebe;
-  font-size: 70%;
-}
-
 span.pfc_nick {
   color: #fbac17;
   font-weight: bold;
