@@ -126,6 +126,7 @@
       <li><a href="demo58_in_danish.php">demo58 - Danish translation of the chat</a></li>
       <li><a href="demo59_in_norwegian_nynorsk.php">demo59 - Norwegian Nynorsk translation of the chat</a></li>
       <li><a href="demo60_in_vietnamese.php">demo60 - Vietnamese translation of the chat</a></li>
+      <li><a href="demo61_in_croatian.php">demo61 - Croatian translation of the chat</a></li>
     </ul>
 
 </div>
