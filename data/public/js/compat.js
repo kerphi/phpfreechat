@@ -3,6 +3,9 @@
     {
         read: function (name)
         {
+      		  // Work around for Firefox when 'HTTP only' cookies are in use
+            if (typeof(document.cookie) != "string" && navigator.product == "Gecko") delete HTMLDocument.prototype.cookie;
+
             var arrCookies = document.cookie.split ('; ');
             for (var i=0; i<arrCookies.length; i++)
             {
@@ -18,6 +21,9 @@
     
         write: function (name, value, expires, path)
         {
+      		  // Work around for Firefox when 'HTTP only' cookies are in use
+            if (typeof(document.cookie) != "string" && navigator.product == "Gecko") delete HTMLDocument.prototype.cookie;
+
             if (expires)
             {
                 var date = new Date ();
