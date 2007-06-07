@@ -36,7 +36,7 @@ $GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s nije pronadje
 $GLOBALS["i18n"]["Please enter your nickname"] = "Molim Vas unesite Vas nadimak";
 
 // line 565 in phpfreechat.class.php
-$GLOBALS["i18n"]["Text cannot be empty"] = "Tekst ne smije biti prazan";
+$GLOBALS["i18n"]["Text cannot be empty"] = "Tekst polje ne smije biti prazno";
 
 // line 392 in phpfreechat.class.php
 $GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s je promijenio/la nadimak u %s";
