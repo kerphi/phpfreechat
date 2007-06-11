@@ -247,7 +247,7 @@ pfcGui.prototype = {
     // on ajoute le nom du channel
     a1.appendChild(document.createTextNode(name));
 
-    if (pfc_displaytabclosebutton)
+    if (pfc_displaytabclosebutton || type == 'pv')
     {
       var a2 = document.createElement('a');
       a2.pfc_tabid = tabid;
