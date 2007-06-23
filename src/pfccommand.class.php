@@ -65,8 +65,7 @@ class pfcCommand
     $cmd_filename  = $c->cmd_path.'/'.$cmd_name.'.class.php';
     if (file_exists($cmd_filename)) require_once($cmd_filename);
     
-    if (!class_exists($cmd_classname))
-      return NULL;
+    if (!class_exists($cmd_classname)) { $tmp = NULL; return $tmp; }
     
     $cmd =& new $cmd_classname;
     $cmd->name = $cmd_name;
