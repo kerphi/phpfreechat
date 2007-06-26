@@ -27,6 +27,10 @@ pfcPrompt.prototype = {
       this.box.style.zIndex   = 100;
       this.box.style.display  = 'none';
 
+      if (is_ff) {
+        this.box.style.overflow = 'auto';
+      }
+
       var div = document.createElement('h2');
       div.appendChild(document.createTextNode(pfc.res.getLabel('Input Required')));
       this.box.appendChild(div);
@@ -115,6 +119,7 @@ pfcPrompt.prototype = {
   {
     // _doSubmit is called when the user enters or cancels the box.
     var val = this.prompt_field.value;
+    this.box.focus();
     this.box.style.display   = 'none'; // clear out the dialog box
     this.bgbox.style.display = 'none'; // clear out the screen
     this.prompt_field.value  = ''; // clear out the text field
