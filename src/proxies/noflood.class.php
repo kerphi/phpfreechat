@@ -77,8 +77,10 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
 
         // kick the flooder
         $cmdp = $p;
-        $cmdp["param"] = $recipientid." ";
-        $cmdp["param"] .=_pfc("kicked from %s by %s", $u->channels[$recipientid]["name"], "noflood");
+        $cmdp["param"] = null;
+        $cmdp["params"][0] = "ch";
+        $cmdp["params"][1] = $u->channels[$recipientid]["name"];
+        $cmdp["params"][2] .=_pfc("kicked from %s by %s", $u->channels[$recipientid]["name"], "noflood");
         $cmd =& pfcCommand::Factory("leave");
         $cmd->run($xml_reponse, $cmdp);
         return false;
