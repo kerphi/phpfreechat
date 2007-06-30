@@ -381,4 +381,19 @@ $GLOBALS["i18n"]["OK"] = "OK";
 // line 479 in phpfreechat.class.php
 $GLOBALS["i18n"]["Cancel"] = "Annuler";
 
+// line 430 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["cannot create %s"] = "Impossible de créer %s";
+
+// line 436 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["cannot copy %s in %s"] = "Impossible de copier %s dans %s";
+
+// line 667 in pfcglobalconfig.class.php
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "Erreur : '%s' introuvable, vérifiez que votre theme_path '%s' et que votre theme '%s' sont correctes";
+
+// line 414 in phpfreechat.class.php
+$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "Êtes vous certain de vouloir fermer cet onglet ?";
+
+// line 42 in ban.class.php
+$GLOBALS["i18n"]["%s banished from %s by %s"] = "%s banni de %s par %s";
+
 ?>
