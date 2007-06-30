@@ -1550,11 +1550,10 @@ pfcClient.prototype = {
     if (document.selection && document.selection.createRange)
     {
       msgfield.focus();
-      sel = document.selection.createRange();
-      var text = sel.text;
+      pfcp.sel = document.selection.createRange();
+      var text = pfcp.sel.text;
       if (text == "" && promptifselempty)
       {
-        pfcp.sel = document.selection.createRange();
         pfcp.prompt(this.res.getLabel('Enter the text to format'), '');
         pfcp.focus();
       }
@@ -1594,7 +1593,6 @@ pfcClient.prototype = {
     var promptifselempty = pfcp.promptifselempty;
     var msgfield         = pfcp.msgfield;
     var sel              = pfcp.sel;
-
     // IE support
     if (document.selection && document.selection.createRange)
     {
