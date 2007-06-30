@@ -1475,7 +1475,7 @@ pfcClient.prototype = {
       if (this.nickname == '')
         this.askNick();
       else
-        this.sendRequest('/connect '+this.nickname);
+        this.sendRequest('/connect "'+this.nickname+'"');
     }
   },
   refresh_loginlogout: function()
