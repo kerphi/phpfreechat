@@ -411,6 +411,7 @@ class phpFreeChat
 
     $labels_to_load =
       array( "Do you really want to leave this room ?", // _pfc
+             "Are you sure you want to close this tab ?", // _pfc
              "Hide nickname marker", // _pfc
              "Show nickname marker", // _pfc
              "Hide dates and hours", // _pfc
