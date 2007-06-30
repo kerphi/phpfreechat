@@ -48,16 +48,16 @@ class pfcCommand_getnewmsg extends pfcCommand
     // create a new lock
     $_SESSION["pfc_lock_readnewmsg_".$c->getId()."_".$clientid] = time();
 
-
     // read the last from_id value
     $container =& pfcContainer::Instance();
     $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$recipientid;
+
     $from_id = 0;
     if (isset($_SESSION[$from_id_sid]))
       $from_id = $_SESSION[$from_id_sid];
     else
     {
-      $from_id = $container->getLastId($recipient)-$c->max_msg;
+      $from_id = $container->getLastId($recipient) - $c->max_msg - 1;
       if ($from_id < 0) $from_id = 0;
     }
     // check if this is the first time you get messages
