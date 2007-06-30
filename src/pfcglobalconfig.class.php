@@ -121,8 +121,6 @@ class pfcGlobalConfig
   var $theme_default_path  = '';
   var $theme_url           = '';
   var $theme_default_url   = '';
-
-  var $baseurl             = "";
   
   var $language            = "";      // could be something in i18n/* directory ("" means the language is guess from the server config)
   var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
@@ -173,7 +171,7 @@ class pfcGlobalConfig
   
   // private parameters
   var $_sys_proxies         = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
-  var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg", "nickmeta","baseurl","time_offset","date_format","time_format");
+  var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg", "nickmeta","time_offset","date_format","time_format");
   var $_params_type         = array();
   var $_query_string        = '';
   
