@@ -174,7 +174,7 @@ pfcGui.prototype = {
 
     // empty the chat div content
     var div_chat = this.getChatContentFromTabId(tabid);
-    div_chat.update('');
+    div_chat.innerHTML = ''; // do not use ".update('')" or ".remove()" because it do not works on IE6
 
     // remove the tab from the list
     var tabpos = indexOf(this.tabids, tabid);
