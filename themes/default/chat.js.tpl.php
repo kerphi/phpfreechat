@@ -73,7 +73,7 @@ function pfc_handleRequest(cmd) {
   params['f']   = 'handleRequest';
   params['cmd'] = cmd;
   new Ajax.Request(url, {
-    method: 'post',
+    method: 'get',
     parameters: params,
     onSuccess: function(transport) {
       eval( transport.responseText );
