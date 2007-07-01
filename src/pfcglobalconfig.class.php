@@ -421,6 +421,12 @@ class pfcGlobalConfig
       $this->server_script_url = relativePath($this->client_script_path, $this->server_script_path).'/'.basename($filetotest).$this->_query_string;
     }
 
+    // check if the theme_path parameter are correctly setup
+    if ($this->theme_default_path == '' || !is_dir($this->theme_default_path))
+      $this->theme_default_path = dirname(__FILE__).'/../themes';
+    if ($this->theme_path == '' || !is_dir($this->theme_path))
+      $this->theme_path = $this->theme_default_path;
+
     // If the user didn't give any theme_default_url value,
     // copy the default theme resources in a public directory
     if ($this->theme_default_url == '')
@@ -437,19 +443,25 @@ class pfcGlobalConfig
                                  dirname(__FILE__).'/../themes/default',
                                  $this->data_public_path.'/themes/default');
       }
+      $this->theme_default_url = $this->data_public_url.'/themes';
+    }
+    if ($this->theme_url == '')
+    {
+      mkdir_r($this->data_public_path.'/themes/'.$this->theme);
+      if (!is_dir($this->data_public_path.'/themes/'.$this->theme))
+        $this->errors[] = _pfc("cannot create %s", $this->data_public_path.'/themes/'.$this->theme);
+      else
+      {
+        $ret = copy_r( $this->theme_path.'/'.$this->theme,
+                       $this->data_public_path.'/themes/'.$this->theme );
+        if (!$ret)
+          $this->errors[] = _pfc("cannot copy %s in %s",
+                                 $this->theme_path.'/'.$this->theme,
+                                 $this->data_public_path.'/themes/'.$this->theme);
+      }      
+      $this->theme_url = $this->theme_default_url;
     }
 
-    // check if the theme_path parameter are correctly setup
-    if ($this->theme_default_path == '' || !is_dir($this->theme_default_path))
-      $this->theme_default_path = dirname(__FILE__).'/../themes';
-    if ($this->theme_path == '' || !is_dir($this->theme_path))
-      $this->theme_path = $this->theme_default_path;
-    // calculate theme url
-    if ($this->theme_default_url == '')
-      $this->theme_default_url = $this->data_public_url.'/themes';
-    if ($this->theme_url == '')
-      $this->theme_url = $this->theme_default_url;
-    
     // if the user do not have an existing prototype.js library, we use the embeded one
     if ($this->prototypejs_url == '') $this->prototypejs_url = $this->data_public_url.'/js/prototype.js';
 
@@ -526,12 +538,13 @@ class pfcGlobalConfig
     $result = array();
     foreach($theme as $line)
     {
+      $line = trim($line);
       if (preg_match("/^#.*/",$line))
         continue;
-      else if (preg_match("/^([a-z_\-0-9]*(\.gif|\.png))(.*)$/i",$line,$res))
+      else if (preg_match("/([a-z_\-0-9\.]+)(.*)$/i",$line,$res))
       {
         $smiley_file = 'smileys/'.$res[1];
-        $smiley_str = trim($res[3])."\n";
+        $smiley_str = trim($res[2])."\n";
         $smiley_str = str_replace("\n", "", $smiley_str);
         $smiley_str = str_replace("\t", " ", $smiley_str);
         $smiley_str_tab = explode(" ", $smiley_str);

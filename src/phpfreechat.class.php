@@ -349,7 +349,11 @@ class phpFreeChat
     if ($xml_reponse == null) $xml_reponse =& new pfcResponse();
 
     $c =& pfcGlobalConfig::Instance();
-    $c->theme = $theme;
+
+    // do not overload the theme parameter as long as 
+    // the ajax request do not give the correct one
+    //    $c->theme = $theme;
+
     $u =& pfcUserConfig::Instance();
 
     $js = '';//file_get_contents(dirname(__FILE__).'/client/createstylerule.js');
@@ -396,7 +400,7 @@ class phpFreeChat
     if ($xml_reponse == null) $xml_reponse =& new pfcResponse();
 
     $c =& pfcGlobalConfig::Instance();
-
+    
     $js = '';
 
     // load customize.js.php
@@ -524,7 +528,11 @@ if (pfc_connect_at_startup) pfc.connect_disconnect();
     if ($xml_reponse == null) $xml_reponse =& new pfcResponse();
 
     $c =& pfcGlobalConfig::Instance();
-    $c->theme = $theme;
+
+    // do not overload the theme parameter as long as 
+    // the ajax request do not give the correct one
+    //    $c->theme = $theme;
+    
     $u =& pfcUserConfig::Instance();
 
     $html = '';
