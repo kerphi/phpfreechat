@@ -27,7 +27,7 @@ eusa_drool.gif		=P~
 eusa_hand.gif		=;
 eusa_sick.gif		:-&
 eusa_boohoo.gif		:boohoo:
-eusa_dance.gif		\\:D/
+eusa_dance.gif		:dance:
 eusa_silenced.gif		:-#
 eusa_whistle.gif		:-"
 eusa_wall.gif		](*,)
