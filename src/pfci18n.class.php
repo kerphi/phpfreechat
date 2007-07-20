@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/pfctools.php");
 function _pfc()
 {
   $args = func_get_args();
-  $serverid = $GLOBALS['serverid']; // serverid is used to avoid conflicts with external code using same 'i18n' key
+  $serverid = isset($GLOBALS['serverid']) ? $GLOBALS['serverid'] : 0; // serverid is used to avoid conflicts with external code using same 'i18n' key
   $args[0] = isset($GLOBALS[$serverid]["i18n"][$args[0]]) && $GLOBALS[$serverid]["i18n"][$args[0]] != "" ?
     ($GLOBALS["output_encoding"] == "UTF-8" ?
        $GLOBALS[$serverid]["i18n"][$args[0]] :
@@ -40,7 +40,7 @@ function _pfc()
 function _pfc2()
 {
   $args = func_get_args();
-  $serverid = $GLOBALS['serverid']; // serverid is used to avoid conflicts with external code using same 'i18n' key
+  $serverid = isset($GLOBALS['serverid']) ? $GLOBALS['serverid'] : 0; // serverid is used to avoid conflicts with external code using same 'i18n' key
   $args[0] = isset($GLOBALS[$serverid]["i18n"][$args[0]]) && $GLOBALS[$serverid]["i18n"][$args[0]] != "" ?
     ($GLOBALS["output_encoding"] == "UTF-8" ?
        $GLOBALS[$serverid]["i18n"][$args[0]] :
@@ -64,7 +64,7 @@ class pfcI18N
     else
       require_once(dirname(__FILE__)."/../i18n/".$language."/main.php");
 
-    $serverid = $GLOBALS['serverid']; // serverid is used to avoid conflicts with external code using same 'i18n' key
+    $serverid = isset($GLOBALS['serverid']) ? $GLOBALS['serverid'] : 0; // serverid is used to avoid conflicts with external code using same 'i18n' key
     $GLOBALS[$serverid]['i18n'] = $GLOBALS['i18n']; // do not pass by reference because $GLOBALS['i18n'] is maybe used by unknown external code
     
     $GLOBALS["output_encoding"] = "UTF-8"; // by default client/server communication is utf8 encoded
