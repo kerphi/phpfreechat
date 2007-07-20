@@ -226,7 +226,7 @@ pfcClient.prototype = {
         var tabid = param[0];
         var name  = param[1];
         this.gui.createTab(name, tabid, "ch");
-        if (cmd != "join2") this.gui.setTabById(tabid);
+        if (cmd != "join2" || this.gui.tabs.length == 1) this.gui.setTabById(tabid);
         this.refresh_Smileys();
         this.refresh_WhosOnline();
       }
@@ -269,7 +269,7 @@ pfcClient.prototype = {
         var tabid = param[0];
         var name  = param[1];
         this.gui.createTab(name, tabid, "pv");
-        if (cmd != "privmsg2") this.gui.setTabById(tabid);
+        if (cmd != "privmsg2" || this.gui.tabs.length == 1) this.gui.setTabById(tabid);
         
         this.privmsgs.push(name);
         this.privmsgids.push(tabid);
