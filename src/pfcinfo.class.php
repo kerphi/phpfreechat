@@ -28,6 +28,12 @@ class pfcInfo
     $this->c =& pfcGlobalConfig::Instance($params);    
   }
   
+  function free()
+  {
+    // free the pfcglobalconfig instance
+    pfcGlobalConfig::Instance(array(), true);
+  }
+  
   /**
    * @return array(string) a list of errors
    */

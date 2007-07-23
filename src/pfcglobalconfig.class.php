@@ -275,14 +275,16 @@ class pfcGlobalConfig
     $this->nick = $this->filterNickname($this->nick);
   }
 
-  function &Instance( $params = array() )
+  function &Instance( $params = array(), $destroy_instance = false )
   {
     static $i;
-    if (!isset($i))
-      $i = new pfcGlobalConfig( $params );
+    if ($destroy_instance)
+      $i = NULL;
+    else
+      if (!isset($i))
+        $i = new pfcGlobalConfig( $params );
     return $i;
   }
-
   
   /**
    * This function saves all the parameters types in order to check later if the types are ok
