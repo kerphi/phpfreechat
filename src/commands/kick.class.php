@@ -22,6 +22,11 @@ class pfcCommand_kick extends pfcCommand
     $reason = isset($params[1]) ? $params[1] : '';
     if ($reason == '') $reason = _pfc("no reason");
 
+    // to allow unquotted reason
+    if (count($params) > 2) 
+      for ($x=2;$x<count($params);$x++) 
+        $reason.=" ".$params[$x];
+    
     if ($nick == '')
     {
       // error
