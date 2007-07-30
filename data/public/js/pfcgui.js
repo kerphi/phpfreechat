@@ -404,12 +404,13 @@ pfcGui.prototype = {
     {
       s_url    = sl[i];
       s_symbol = smileys[sl[i]];
+      s_symbol = s_symbol.unescapeHTML();
 
       var img = document.createElement('img');
       img.setAttribute('src', s_url);
       img.setAttribute('alt', s_symbol);
       img.setAttribute('title', s_symbol);
-      img.s_symbol = s_symbol.unescapeHTML();
+      img.s_symbol = s_symbol;
       img.onclick = function(){ pfc.insertSmiley(this.s_symbol); }
       container.appendChild(img);
       container.appendChild(document.createTextNode(' ')); // so smileys will wrap fine if lot of smiles in theme.
