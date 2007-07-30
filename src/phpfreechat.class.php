@@ -271,18 +271,19 @@ class phpFreeChat
 
     }
     
-    // before playing the wanted command
-    // play the found commands into the meta 'cmdtoplay'
-    pfcCommand::RunPendingCmdToPlay($u->nickid, $clientid, $xml_reponse);
-    
-    $cmd =& pfcCommand::Factory($cmdname);
+
     $cmdp = array();
     $cmdp["clientid"]    = $clientid;
-    $cmdp["param"]       = $param;
-    $cmdp["params"]      = $params;
     $cmdp["sender"]      = $sender;
     $cmdp["recipient"]   = $recipient;
     $cmdp["recipientid"] = $recipientid;
+    // before playing the wanted command
+    // play the found commands into the meta 'cmdtoplay'
+    pfcCommand::RunPendingCmdToPlay($u->nickid, $cmdp, $xml_reponse);    
+    // play the wanted command
+    $cmd =& pfcCommand::Factory($cmdname);
+    $cmdp["param"]       = $param;
+    $cmdp["params"]      = $params;
     if ($cmd != NULL)
     {
       // call the command

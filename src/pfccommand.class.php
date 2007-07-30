@@ -194,7 +194,7 @@ class pfcCommand
       return false;
   }
 
-  function RunPendingCmdToPlay($nickid,$clientid,&$xml_reponse)
+  function RunPendingCmdToPlay($nickid,$context,&$xml_reponse)
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
@@ -217,10 +217,10 @@ class pfcCommand
       $cmd =& pfcCommand::Factory($cmdtmp['cmdstr']);
       $cmdp = $cmdtmp['params'];
       if (!isset($cmdp['param']))       $cmdp['param'] = '';
-      if (!isset($cmdp['sender']))      $cmdp['sender'] = null;
-      if (!isset($cmdp['recipient']))   $cmdp['recipient']   = null;      
-      if (!isset($cmdp['recipientid'])) $cmdp['recipientid'] = null;      
-      $cmdp['clientid']  = $clientid; // the clientid must be the current user one
+      if (!isset($cmdp['sender']))      $cmdp['sender'] = $context['sender'];
+      if (!isset($cmdp['recipient']))   $cmdp['recipient']   = $context['recipient'];
+      if (!isset($cmdp['recipientid'])) $cmdp['recipientid'] = $context['recipientid'];
+      $cmdp['clientid']  = $context['clientid']; // the clientid must be the current user one
       $cmdp['cmdtoplay'] = true; // used to run some specials actions in the command (ex:  if the cmdtoplay is a 'leave' command, then show an alert to the kicked or banished user)
       if ($c->debug)
         $cmd->run($xml_reponse, $cmdp);
