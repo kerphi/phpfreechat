@@ -282,6 +282,7 @@ pfcClient.prototype = {
       else if (resp == "unknown")
       {
         // speak to unknown user
+        this.displayMsg( cmd, this.res.getLabel('You are trying to speak to a unknown (or not connected) user') );
       }
       else if (resp == "speak_to_myself")
       {

@@ -4,10 +4,12 @@ require_once(dirname(__FILE__)."/../pfccommand.class.php");
 
 class pfcCommand_privmsg extends pfcCommand
 {
+  var $usage = "/privmsg {nickname}";
+
   function run(&$xml_reponse, $p)
   {
     $clientid    = $p["clientid"];
-    $param       = $p["param"];
+    $params      = $p["params"];
     $sender      = $p["sender"];
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
@@ -16,17 +18,28 @@ class pfcCommand_privmsg extends pfcCommand
     $u =& pfcUserConfig::Instance();
     $ct =& pfcContainer::Instance();
     
+    if (count($params) == 0)
+    {
+      // error
+      $cmdp = $p;
+      $cmdp["param"] = _pfc("Missing parameter");
+      $cmdp["param"] .= " (".$this->usage.")";
+      $cmd =& pfcCommand::Factory("error");
+      $cmd->run($xml_reponse, $cmdp);
+      return false;
+    }
+
     // check the pvname exists on the server
     $pvname = '';
     $pvnickid = '';
     if ($this->name == 'privmsg2')
     {
-      $pvnickid = $param;
+      $pvnickid = $params[0];
       $pvname   = $ct->getNickname($pvnickid);
     }
     else
     {
-      $pvname   = $param;
+      $pvname   = $params[0];
       $pvnickid = $ct->getNickId($pvname);
     }
     $nickid   = $u->nickid;

@@ -29,6 +29,7 @@ require_once(dirname(__FILE__)."/privmsg.class.php");
  */
 class pfcCommand_privmsg2 extends pfcCommand_privmsg
 {
+  var $usage = "/privmsg2 {nicknameid}";
 }
 
 ?>

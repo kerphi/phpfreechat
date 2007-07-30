@@ -457,6 +457,7 @@ class phpFreeChat
              "Input Required", // _pfc
              "OK", // _pfc
              "Cancel", // _pfc
+             "You are trying to speak to a unknown (or not connected) user", // _pfc
              );
     foreach($labels_to_load as $l)
     {
