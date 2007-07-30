@@ -411,13 +411,13 @@ function flock_get_contents($filename, $mode = "rb")
   $data = '';
   if (!file_exists($filename)) return $data;
 
-  $size = filesize($filename);
-  if ($size == 0) return $data;
-  
   $fp   = fopen( $filename, $mode );
   if( $fp && flock( $fp, LOCK_SH ) )
   {
-    $data = fread( $fp, $size );
+    clearstatcache();
+    $size = filesize($filename);
+    if ($size > 0)
+      $data = fread( $fp, $size );
     // flock($fp, LOCK_UN); // will be done by fclose
   }
   fclose( $fp );
