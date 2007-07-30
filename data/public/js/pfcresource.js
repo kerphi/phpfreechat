@@ -28,7 +28,7 @@ pfcResource.prototype = {
       return String.sprintf2(this.getLabel.arguments);
     }
     else
-      return "";
+      return '_'+key+'_';
   },
 
   setFileUrl: function(key, value)
@@ -66,20 +66,5 @@ pfcResource.prototype = {
   }
   
 };
-
-
-
-
-
- 
-
-
-
- 
-
-
-
-
-
 
 
