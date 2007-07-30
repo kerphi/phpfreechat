@@ -409,9 +409,7 @@ if (!function_exists('iconv'))
 function flock_get_contents($filename, $mode = "rb")
 { 
   $data = '';
-  if (!file_exists($filename)) return $data;
-
-  $fp   = fopen( $filename, $mode );
+  $fp = fopen( $filename, $mode );
   if( $fp && flock( $fp, LOCK_SH ) )
   {
     clearstatcache();
