@@ -85,13 +85,11 @@ class pfcContainer_File extends pfcContainerInterface
     $leafexists = file_exists($leaffilename);
     if ($leafvalue == NULL)
     {
-      if (file_exists($leaffilename) &&
-          filesize($leaffilename)>0) unlink($leaffilename);
-      touch($leaffilename);     
+    	file_put_contents($leaffilename, '', LOCK_EX);
     }
     else
     {
-      flock_put_contents($leaffilename, $leafvalue);
+      file_put_contents($leaffilename, $leafvalue, LOCK_EX);
     }
 
     // store the value in the memory cache
@@ -157,7 +155,7 @@ class pfcContainer_File extends pfcContainerInterface
 
     if (!file_exists($leaffilename)) return $ret;
     if ($withleafvalue)
-      $ret["value"][] = flock_get_contents($leaffilename);
+      $ret["value"][] = file_get_contents_flock($leaffilename);
     else
       $ret["value"][] = NULL;
     $ret["timestamp"][] = filemtime($leaffilename);

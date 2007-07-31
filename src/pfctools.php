@@ -255,7 +255,41 @@ function install_dir($src_dir, $dst_dir)
   return $errors;
 }
 
+/**
+ * file_get_contents_flock
+ * define an alternative file_get_contents when this function doesn't exists on the used php version (<4.3.0)
+ */
 
+if (!defined('LOCK_SH')) {
+    define('LOCK_SH', 1);
+}
+
+function file_get_contents_flock($filename, $incpath = false, $resource_context = null)
+{
+    if (false === $fh = fopen($filename, 'rb', $incpath)) {
+        user_error('file_get_contents() failed to open stream: No such file or directory ['.$filename.']',
+            E_USER_WARNING);
+        return false;
+    }
+
+    // Attempt to get a shared (read) lock
+    if (!flock($fh, LOCK_SH)) {
+      return false;
+    }
+
+    clearstatcache();
+    if ($fsize = @filesize($filename)) {
+        $data = fread($fh, $fsize);
+    } else {
+        $data = '';
+        while (!feof($fh)) {
+            $data .= fread($fh, 8192);
+        }
+    }
+
+    fclose($fh);
+    return $data;
+}
 
 /**
  * file_get_contents
@@ -267,7 +301,7 @@ if (!function_exists('file_get_contents'))
   {
     if (false === $fh = fopen($filename, 'rb', $incpath))
     {
-      trigger_error('file_get_contents() failed to open stream: No such file or directory', E_USER_WARNING);
+      trigger_error('file_get_contents() failed to open stream: No such file or directory ['.$filename.']', E_USER_WARNING);
       return false;
     }
     clearstatcache();
@@ -402,41 +436,5 @@ if (!function_exists('iconv'))
     }
   }
 }    
-
-/**
- * Almost the Same as file_get_contents except that it uses flock() to lock the file
- */
-function flock_get_contents($filename, $mode = "rb")
-{ 
-  $data = '';
-  $fp = fopen( $filename, $mode );
-  if( $fp && flock( $fp, LOCK_SH ) )
-  {
-    clearstatcache();
-    $size = filesize($filename);
-    if ($size > 0)
-      $data = fread( $fp, $size );
-    // flock($fp, LOCK_UN); // will be done by fclose
-  }
-  fclose( $fp );
-  return $data;
-}
-
-/**
- * Almost the Same as file_put_contents except that it uses flock() to lock the file
- */
-function flock_put_contents($filename, $data, $mode = "wb")
-{
-  $fp   = fopen( $filename, $mode );
-  if( $fp )
-  {
-    if ( flock( $fp, LOCK_EX ) )
-    {
-      fwrite( $fp, $data );
-      // flock($fp, LOCK_UN); // will be done by fclose
-    }
-    fclose( $fp );
-  }
-}
 
 ?>
