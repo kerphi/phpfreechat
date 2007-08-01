@@ -128,7 +128,6 @@ function trace(text) {
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcgui.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcresource.js"></script>
 <script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcprompt.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfccomet.js"></script>
 
 
 <div id="pfc_notloading" style="width:270px;background-color:#FFF;color:#000;border:1px solid #000;text-align:center;margin:5px auto 0 auto;font-size:10px;background-image:url('http://img402.imageshack.us/img402/3766/stopcc3.gif');background-repeat:no-repeat;background-position:center center;">

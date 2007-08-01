@@ -3,14 +3,14 @@
  * thus the clients are informed in realtime from the server changes (very usefull for a chat application)
  * Usage:
  *   var comet = new pfcComet({'url': './cometbackend.php', 'id': 1});
- *   comet.onResponse   = function(req) { alert('id:'+req['id']+' response:'+req['data']); };
+ *   comet.onRead       = function(req) { alert('id:'+req['id']+' response:'+req['data']); };
  *   comet.onConnect    = function(comet) { alert('connected'); };
  *   comet.onDisconnect = function(comet) { alert('disconnected'); };
  */
 var pfcComet = Class.create();
 pfcComet.prototype = {
 
-  url: null,
+  read_url: null,
   id: 0,
   timeout: 5000,
 
@@ -20,8 +20,9 @@ pfcComet.prototype = {
 
   initialize: function(params) {
     if (!params) params = {};
-    if (!params['url']) alert('error: url parameter is mandatory');
-    this.url       = params['url'];
+    if (!params['read_url']) alert('error: read_url parameter is mandatory');
+//    if (!params['write_url']) alert('error: write_url parameter is mandatory');
+    this.read_url       = params['read_url'];
     if (params['id'])      this.id = params['id'];
     if (params['timeout']) this.timeout = params['timeout'];
   },
@@ -31,7 +32,7 @@ pfcComet.prototype = {
     if (this._isconnected) return;
     this._isconnected = true;
     this.onConnect(this);
-    this.waitForData();
+    this._waitForData();
   },
 
   disconnect: function()
@@ -40,15 +41,20 @@ pfcComet.prototype = {
     this._isconnected = false;
     this.onDisconnect(this);
     // remove the registred callbacks in order to ignore the next response
-    this._ajax.options.onSuccess =  null;
-    this._ajax.options.onComplete = null;
+    this._ajax.transport.abort();
+//    this._ajax.options.onSuccess =  null;
+//    this._ajax.options.onComplete = null;
   },
 
-  waitForData: function()
+  write: function(data)
+  {
+  },
+
+  _waitForData: function()
   {
     if (!this._isconnected) return;
 
-    this._ajax = new Ajax.Request(this.url, {
+    this._ajax = new Ajax.Request(this.read_url, {
       method: 'get',
       parameters: { 'id' : this.id },
       onSuccess: function(transport) {
@@ -62,10 +68,10 @@ pfcComet.prototype = {
         // send a new ajax request when this request is finished
         if (!this.comet._noerror)
           // if a connection problem occurs, try to reconnect periodicaly
-          setTimeout(function(){ this.comet.waitForData(); }.bind(this), this.comet.timeout); 
+          setTimeout(function(){ this.comet._waitForData(); }.bind(this), this.comet.timeout); 
         else
           // of wait for the next data
-          this.comet.waitForData();
+          this.comet._waitForData();
         this.comet._noerror = false;
       }
     });
@@ -75,7 +81,10 @@ pfcComet.prototype = {
   /**
    * User's callbacks
    */
-  onResponse: function(response)
+  onRead: function(data)
+  {
+  },
+  onWrite: function(data)
   {
   },
   onConnect: function(comet)
