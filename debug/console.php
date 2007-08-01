@@ -9,13 +9,9 @@ function getnewlog($chatid, $section = "")
 {
   $filename = dirname(__FILE__)."/../data/private/debug".$section."_".$chatid.".log";
   $xml_reponse = new xajaxResponse();
-  if (file_exists($filename))
+  if (false !== $html = @file_get_contents_flock($filename))
   {
-    $fp = fopen($filename, "r");
-    $html = "<pre>";
-    $html .= fread($fp, filesize($filename));
-    $html .= "</pre>";
-    fclose($fp);
+    $html = "<pre>" . $html . "</pre>";
     unlink($filename);
     $xml_reponse->addAppend("debug".$section, "innerHTML", $html);
   }

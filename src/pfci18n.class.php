@@ -123,11 +123,11 @@ class pfcI18N
     }
     closedir($dh);
     $i18n_accepted_lang_str = "array('" . implode("','", $i18n_accepted_lang) . "');";
-    $data = file_get_contents(__FILE__);
+    $data = file_get_contents_flock(__FILE__);
     $data = preg_replace("/(\/\*<GetAcceptedLanguage>\*\/)(.*)(\/\*<\/GetAcceptedLanguage>\*\/)/",
                          "$1".$i18n_accepted_lang_str."$3",
                          $data);
-    file_put_contents(__FILE__,$data);
+    file_put_contents(__FILE__, $data, FILE_EX);
 
     // Now scan the source code in order to find "_pfc" patterns
     $files = array();
@@ -170,7 +170,7 @@ class pfcI18N
     foreach( $dst_filenames as $dst_filename )
     {
       // filter lines to keep, line to add
-      $old_content = file_get_contents($dst_filename);
+      $old_content = file_get_contents_flock($dst_filename);
       // remove php tags to keep only real content
       $old_content = preg_replace("/^\<\?php/", "", $old_content);
       $old_content = preg_replace("/\?\>$/", "", $old_content);
@@ -187,7 +187,7 @@ class pfcI18N
       $content = "<?php" . $old_content . $new_content . "?>";
       //echo $content;
       
-      file_put_contents($dst_filename, $content);
+      file_put_contents($dst_filename, $content, FILE_EX);
     }
   }
 }
