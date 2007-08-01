@@ -405,6 +405,10 @@ pfcGui.prototype = {
       s_url    = sl[i];
       s_symbol = smileys[sl[i]];
       s_symbol = s_symbol.unescapeHTML();
+      // Replace &quot; with " for IE and Webkit browsers.
+      // The prototype.js version 1.5.1.1 does not do this.
+      if (window.attachEvent && !window.opera) // IE detection from prototype.js
+        s_symbol = s_symbol.replace(/&quot;/g,'"');
 
       var img = document.createElement('img');
       img.setAttribute('src', s_url);
