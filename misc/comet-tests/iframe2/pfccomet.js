@@ -35,7 +35,7 @@ pfcComet.prototype = {
   {
     this._iframe    = null;
     this._iframediv = null;
-    Event.observe(window, "unload", this._onUnload);
+    Event.observe(window, "unload", this._onDisconnect);
 
     if (navigator.appVersion.indexOf("MSIE") != -1) {
 
@@ -48,7 +48,7 @@ pfcComet.prototype = {
       this._iframe.close();
       this._iframediv = this._iframe.createElement("div");
       this._iframe.appendChild(this._iframediv);
-      this._iframe.parentWindow.comet = comet;
+      this._iframe.parentWindow.pfccomet = this;
       this._iframediv.innerHTML = '<iframe id="comet_iframe" src="' + this.url + '"></iframe>';
 
     } else if (navigator.appVersion.indexOf("KHTML") != -1) {
@@ -92,8 +92,10 @@ pfcComet.prototype = {
 
   _onDisconnect: function()
   {
-    this._iframe.remove();
-    this._onUnload();
+    if (this._iframe) {
+      if (navigator.appVersion.indexOf("MSIE") == -1) { this._iframe.remove(); }
+      this._iframe = false; // release the iframe to prevent problems with IE when reloading the page
+    }
     this._isconnected = false;
     this.onDisconnect(this);
   },
@@ -101,12 +103,6 @@ pfcComet.prototype = {
   _onResponse: function(data)
   {
     this.onResponse(this,data);
-  },
-
-  _onUnload: function() {
-    if (this._iframe) {
-      this._iframe = false; // release the iframe to prevent problems with IE when reloading the page
-    }
   },
 
   /**
