@@ -93,7 +93,11 @@ pfcComet.prototype = {
   _onDisconnect: function()
   {
     if (this._iframe) {
-      if (navigator.appVersion.indexOf("MSIE") == -1) { this._iframe.remove(); }
+      if (navigator.appVersion.indexOf("MSIE") == -1 &&
+          navigator.appVersion.indexOf("KHTML") == -1) // or Konqueror will crash
+      {
+        this._iframe.remove();
+      }
       this._iframe = false; // release the iframe to prevent problems with IE when reloading the page
     }
     this._isconnected = false;

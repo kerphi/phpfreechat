@@ -8,6 +8,9 @@ class pfcComet {
   var $backend_callback = null;
   var $backend_loop       = false;
   var $backend_loop_sleep = 1;
+  var $onresponse_callback   = null;
+  var $onconnect_callback    = null;
+  var $ondisconnect_callback = null;
   
   function pfcComet()
   {
@@ -29,23 +32,25 @@ class pfcComet {
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <script type="text/javascript">
-  // KHTML browser don\'t share javascripts between iframes
-  var is_khtml = navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML");
-  if (is_khtml)
-  {
-    var prototypejs = document.createElement("script");
-    prototypejs.setAttribute("type","text/javascript");
-    prototypejs.setAttribute("src","'.$this->prototypejs_url.'");
-    var head = document.getElementsByTagName("head");
-    head[0].appendChild(prototypejs);
-  }
+//   // KHTML browser don\'t share javascripts between iframes
+//    var is_khtml = navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML");
+//    if (is_khtml)
+//    {
+//      var prototypejs = document.createElement("script");
+//      prototypejs.setAttribute("type","text/javascript");
+//      prototypejs.setAttribute("src","'.$this->prototypejs_url.'");
+//      var head = document.getElementsByTagName("head");
+//      head[0].appendChild(prototypejs);
+//    }
   // load the comet object
   var pfccomet = window.parent.pfccomet;
-</script>';
+</script>
+<body>
+';
       flush();
 
       // trigger the onConnect callback
-      echo '<script type="text/javascript">pfccomet._onConnect();</script>';
+      echo '<script type="text/javascript">pfccomet._onConnect();</script>'."\n";
       flush();
 
       // trigger the backend callback
@@ -64,7 +69,8 @@ class pfcComet {
       } while($this->backend_loop);
 
       // trigger the onDisconnect callback
-      echo '<script type="text/javascript">pfccomet._onDisconnect();</script>';
+      echo '<script type="text/javascript">pfccomet._onDisconnect();</script>'."\n";
+      echo '</body></html>';
       flush();
 
       die();
@@ -73,7 +79,7 @@ class pfcComet {
 
   function formatResponse($data)
   {
-    return '<script type="text/javascript">pfccomet._onResponse(\''.addslashes($data).'\');</script>';
+    return '<script type="text/javascript">pfccomet._onResponse(\''.addslashes($data).'\');</script>'."\n";
   }
   
   function printJavascript($return = false)
@@ -82,10 +88,14 @@ class pfcComet {
     $output .= '<script type="text/javascript" src="'.$this->pfccometjs_url.'"></script>'."\n";
     $output .= '<script type="text/javascript">
 Event.observe(window, "load", function() {
-  pfccomet = new pfcComet({"url":"'.$this->backend_url.'?'.$this->backend_param.'"});
-  pfccomet.onConnect     = function(comet) { alert("connected"); };
-  pfccomet.onDisconnect  = function(comet) { alert("disconnected"); };
-  pfccomet.onResponse    = function(comet,data) { alert("response:"+data); };
+  pfccomet = new pfcComet({"url":"'.$this->backend_url.'?'.$this->backend_param.'"});'."\n";
+    if ( $this->onresponse_callback )
+      $output .= '  pfccomet.onResponse = '.$this->onresponse_callback.';'."\n";
+    if ( $this->onconnect_callback )
+      $output .= '  pfccomet.onConnect = '.$this->onconnect_callback.';'."\n";
+    if ( $this->ondisconnect_callback )
+      $output .= '  pfccomet.onDisconnect = '.$this->ondisconnect_callback.';'."\n";
+    $output .= '
   pfccomet.connect();
 });
 </script>'."\n";
