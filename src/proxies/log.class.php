@@ -59,7 +59,7 @@ class pfcProxyCommand_log extends pfcProxyCommand
           $log .= date("H:i:s")."\t";
           $log .= $sender."\t";
           $log .= $param."\n";         
-          file_put_contents($logfile, $log, FILE_APPEND);
+          file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
         }
       }
     }
