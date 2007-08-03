@@ -1,6 +1,9 @@
 <?php
 
 function macallback($pfccomet) {
+  static $id;
+  if (!isset($id)) $id = md5(uniqid(rand(), true));
+  file_put_contents('/tmp/cometdebug',"id=".$id." ".time()."\n",FILE_APPEND|LOCK_EX);
   return $pfccomet->formatResponse(time());
 }
 
@@ -34,6 +37,8 @@ function update_servertime_area(comet,time)
   <body>
 
   <div id="date">here will be displayed the server time</div>
+  <input type="button" value="Disconnect" onclick="pfccomet.disconnect()" />
+  <input type="button" value="Connect" onclick="pfccomet.connect()" />
 
   </body>
 </html>
