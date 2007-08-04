@@ -30,18 +30,15 @@ for($c = 0; $c < 2000; $c++)
           flock($fh, LOCK_UN);
           break;
         }
-        usleep(rand(1000,5000));  // If flock is working properly, this will never be reached
+        // If flock is working properly, this will never be reached
+        usleep(rand(1000,5000));  // TODO: implement exponential backoff
       }
       fclose($fh);
     }
     else 
     {
-      $fh = fopen($msgid_filename, 'w');
-      flock($fh, LOCK_EX);
       $msgid="1";
-      fwrite($fh, $msgid);
-      flock($fh, LOCK_UN);
-      fclose($fh);
+      file_put_contents($msgid_filename, $msgid, LOCK_EX);
     }
   } 
 
