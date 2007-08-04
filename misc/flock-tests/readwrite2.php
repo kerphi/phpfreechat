@@ -31,7 +31,8 @@ for($c = 0; $c < 2000; $c++)
           break;
         }
         // If flock is working properly, this will never be reached
-        usleep(rand(1000,5000));  // TODO: implement exponential backoff
+        $delay = (pow (2, ($i+1)) - 1) * rand(0,5000);  // Exponential backoff
+        usleep($delay);  
       }
       fclose($fh);
     }
