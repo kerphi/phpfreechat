@@ -165,12 +165,13 @@ class pfcContainer_Mysql extends pfcContainerInterface
 
     if ($leafvalue == NULL){$leafvalue="";};
     
-    $sql_select = "SELECT * FROM ".$c->container_cfg_mysql_table." WHERE `server`='$server' AND `group`='$group' AND `subgroup`='$subgroup' AND `leaf`='$leaf'";
+    $sql_count = "SELECT COUNT(*) AS C FROM ".$c->container_cfg_mysql_table." WHERE `server`='$server' AND `group`='$group' AND `subgroup`='$subgroup' AND `leaf`='$leaf' LIMIT 1";
     $sql_insert="REPLACE INTO ".$c->container_cfg_mysql_table." (`server`, `group`, `subgroup`, `leaf`, `leafvalue`, `timestamp`) VALUES('$server', '$group', '$subgroup', '$leaf', '".addslashes($leafvalue)."', '".time()."')";
     $sql_update="UPDATE ".$c->container_cfg_mysql_table." SET `leafvalue`='".addslashes($leafvalue)."', `timestamp`='".time()."' WHERE  `server`='$server' AND `group`='$group' AND `subgroup`='$subgroup' AND `leaf`='$leaf'";
-    
-    $res = mysql_query($sql_select, $db);
-    if( !(mysql_num_rows($res)>0) )
+
+    $res = mysql_query($sql_count, $db);
+    $row = mysql_fetch_array($res, MYSQL_ASSOC);
+    if( $row['C'] == 0 )
     {
       if ($c->debug)
         file_put_contents("/tmp/debug.txt", "\nsetSQL(".$sql_insert.")", FILE_APPEND | LOCK_EX);
