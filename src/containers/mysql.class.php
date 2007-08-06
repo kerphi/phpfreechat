@@ -276,7 +276,7 @@ class pfcContainer_Mysql extends pfcContainerInterface
     $time = time();
 
     // search for the existing leafvalue
-    mysql_query('LOCK TABLES phpfreechat WRITE;', $db);    
+    mysql_query('LOCK TABLES '.$c->container_cfg_mysql_table.' WRITE;', $db);    
     $sql_select = "SELECT leafvalue FROM ".$c->container_cfg_mysql_table." WHERE `server`='$server' AND `group`='$group' AND `subgroup`='$subgroup' AND `leaf`='$leaf' LIMIT 1";
     $res = mysql_query($sql_select, $db);
     $row = mysql_fetch_array($res, MYSQL_ASSOC);
