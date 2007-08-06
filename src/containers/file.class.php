@@ -248,35 +248,33 @@ class pfcContainer_File extends pfcContainerInterface
         {
           $ret["value"][] = chop(fread($fh, filesize($leaffilename)));
           $ret["timestamp"][] = filemtime($leaffilename);
-          $leafvalue = $ret;
-          array_pop($leafvalue);
+          $leafvalue = array_pop($ret);
           // check if array is now empty
-          if (count($leafvalue) == 0)
+          if (count($ret) == 0)
           {
+            fclose($fh);
           	unlink($leaffilename);
           	break;
           }
           rewind($fh);
-          fwrite($fh, $leafvalue);
+          fwrite($fh, $ret);
           fflush($fh);
           ftruncate($fh, ftell($fh));
           flock($fh, LOCK_UN);
+          fclose($fh);
           break;
         }
         // If flock is working properly, this will never be reached
         $delay = rand(0, pow(2, ($i+1)) - 1) * 5000;  // Exponential backoff
         usleep($delay);
       }
-      fclose($fh);
+      $ret = $leafvalue;
     }
     else 
     {
+    	// return empty array
       return $ret;
     }
-    
-    $ret["value"][] = $leafvalue;
-    $ret["timestamp"][] = filemtime($leaffilename);
-
     return $ret;
   }  
 
@@ -294,11 +292,6 @@ class pfcContainer_File extends pfcContainerInterface
     
     // create or replace metadata file
     $leaffilename = $dir."/".$leaf;
-
-    // create return array
-    $ret = array();
-    $ret["timestamp"] = array();
-    $ret["value"]     = array();
 
     // read and increment data from metadata file
     clearstatcache();
