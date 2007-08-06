@@ -668,33 +668,6 @@ class pfcContainer extends pfcContainerInterface
     return $ret;
   }
 
-
-  function incMeta($group, $subgroup, $leaf)
-  {
-    $ret = $this->_container->incMeta($group, $subgroup, $leaf);
-
-    if ($this->_usememorycache)
-    {
-      // store the modifications in the cache
-      if (isset($this->_cache[$group]['value']) &&
-          !in_array($subgroup, $this->_cache[$group]['value']))
-      {
-        $this->_cache[$group]['value'][]     = $subgroup;
-        $this->_cache[$group]['timestamp'][] = time();
-      }
-      if (isset($this->_cache[$group]['childs'][$subgroup]['value']) &&
-          !in_array($leaf, $this->_cache[$group]['childs'][$subgroup]['value']))
-      {
-        $this->_cache[$group]['childs'][$subgroup]['value'][]     = $leaf;
-        $this->_cache[$group]['childs'][$subgroup]['timestamp'][] = time();
-      }
-      $this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]['value'] = array($leafvalue);
-      $this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]['timestamp'] = array(time());
-    }
-    
-    return $ret;    
-  } 
-
   /**
    * Increment a counter identified by the following path : group / subgroup / leaf
    * Notice: this step must be atomic in order to avoid multithread problem (don't forget to use locking features)
