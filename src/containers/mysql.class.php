@@ -276,11 +276,10 @@ class pfcContainer_Mysql extends pfcContainerInterface
     $time = time();
 
     // search for the existing leafvalue
-    mysql_query('LOCK TABLES '.$c->container_cfg_mysql_table.' WRITE;', $db);    
-    $sql_select = "SELECT leafvalue FROM ".$c->container_cfg_mysql_table." WHERE `server`='$server' AND `group`='$group' AND `subgroup`='$subgroup' AND `leaf`='$leaf' LIMIT 1";
-    $res = mysql_query($sql_select, $db);
+    $sql_count = "SELECT COUNT(*) AS C FROM ".$c->container_cfg_mysql_table." WHERE `server`='$server' AND `group`='$group' AND `subgroup`='$subgroup' AND `leaf`='$leaf' LIMIT 1";
+    $res = mysql_query($sql_count, $db);
     $row = mysql_fetch_array($res, MYSQL_ASSOC);
-    if( !isset($row['leafvalue']) )
+    if( $row['C'] == 0 )
     {
       if ($c->debug)
         file_put_contents("/tmp/debug.txt", "\nsetSQL(".$sql_insert.")", FILE_APPEND | LOCK_EX);
@@ -292,11 +291,12 @@ class pfcContainer_Mysql extends pfcContainerInterface
     {
       if ($c->debug)
         file_put_contents("/tmp/debug.txt", "\nsetSQL(".$sql_update.")", FILE_APPEND | LOCK_EX);
-      $leafvalue = $row['leafvalue'] + 1;
-      $sql_update="UPDATE ".$c->container_cfg_mysql_table." SET `leafvalue`='".$leafvalue."', `timestamp`='".$time."' WHERE  `server`='$server' AND `group`='$group' AND `subgroup`='$subgroup' AND `leaf`='$leaf'";
+      $sql_update="UPDATE ".$c->container_cfg_mysql_table." SET `leafvalue`= LAST_INSERT_ID( leafvalue + 1 ), `timestamp`='".$time."' WHERE  `server`='$server' AND `group`='$group' AND `subgroup`='$subgroup' AND `leaf`='$leaf'";
       mysql_query($sql_update, $db);
+      $res = mysql_query('SELECT LAST_INSERT_ID();', $db);      
+      $row = mysql_fetch_array($res, MYSQL_ASSOC);
+      $leafvalue = $row['LAST_INSERT_ID()'];
     }
-    mysql_query('UNLOCK TABLES;', $db);
     
     $ret["value"][]     = $leafvalue;
     $ret["timestamp"][] = $time;
