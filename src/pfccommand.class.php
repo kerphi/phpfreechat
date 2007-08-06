@@ -206,7 +206,7 @@ class pfcCommand
       // take a command from the list
       $cmdtoplay = $ct->getUserMeta($nickid, 'cmdtoplay');
       $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
-      if (count($cmdtoplay) == 0) { $morecmd = false; continue; }
+      if (count($cmdtoplay) == 0) { $morecmd = false; break; }
       // take the last posted command
       $cmdtmp = array_pop($cmdtoplay);
       // store the new cmdtoplay list (-1 item)
@@ -226,12 +226,6 @@ class pfcCommand
         $cmd->run($xml_reponse, $cmdp);
       else
         @$cmd->run($xml_reponse, $cmdp);
-      
-      // check if there is other command to play
-      $cmdtoplay = $ct->getUserMeta($nickid, 'cmdtoplay');
-      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);        
-
-      $morecmd = (count($cmdtoplay) > 0);
     }
   }
 
