@@ -171,7 +171,6 @@ class pfcContainer_File extends pfcContainerInterface
     // create directories
     $dir_base = $c->container_cfg_server_dir;
     $dir = $dir_base.'/'.$group.'/'.$subgroup;
-
     if (!is_dir($dir)) mkdir_r($dir);
     
     // create or replace metadata file
@@ -202,22 +201,21 @@ class pfcContainer_File extends pfcContainerInterface
         }
         // If flock is working properly, this will never be reached
         $delay = rand(0, pow(2, ($i+1)) - 1) * 5000;  // Exponential backoff
-        echo "try=".$i." ".$delay."\n";
-        usleep($delay);  
+        usleep($delay);
       }
       fclose($fh);
     }
     else 
     {
       $leafvalue="1";
-    	file_put_contents($leaffilename, $leafvalue, LOCK_EX);
+      file_put_contents($leaffilename, $leafvalue, LOCK_EX);
     }
     
     $ret["value"][] = $leafvalue;
     $ret["timestamp"][] = filemtime($leaffilename);
 
     return $ret;
-  }
+  }  
 
   function rmMeta($group, $subgroup = null, $leaf = null)
   {
