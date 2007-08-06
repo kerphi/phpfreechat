@@ -476,10 +476,12 @@ class pfcContainer extends pfcContainerInterface
   {
     if ($chan == NULL) $chan = 'SERVER';
     
-    $lastmsgid = $this->getLastId($chan);
-    $lastmsgid++;
-    $this->setMeta("channelid-to-msgid", $this->encode($chan), 'lastmsgid', $lastmsgid);
+    $lastmsgid = $this->incMeta("channelid-to-msgid", $this->encode($chan), 'lastmsgid');
     
+    if (count($lastmsgid["value"]) == 0)
+      $lastmsgid = 0;
+    else
+      $lastmsgid = $lastmsgid["value"][0];
     return $lastmsgid;
   }
 
@@ -665,7 +667,33 @@ class pfcContainer extends pfcContainerInterface
     
     return $ret;
   }
-  
+
+
+  function incMeta($group, $subgroup, $leaf)
+  {
+    $ret = $this->_container->incMeta($group, $subgroup, $leaf);
+
+    if ($this->_usememorycache)
+    {
+      // store the modifications in the cache
+      if (isset($this->_cache[$group]['value']) &&
+          !in_array($subgroup, $this->_cache[$group]['value']))
+      {
+        $this->_cache[$group]['value'][]     = $subgroup;
+        $this->_cache[$group]['timestamp'][] = time();
+      }
+      if (isset($this->_cache[$group]['childs'][$subgroup]['value']) &&
+          !in_array($leaf, $this->_cache[$group]['childs'][$subgroup]['value']))
+      {
+        $this->_cache[$group]['childs'][$subgroup]['value'][]     = $leaf;
+        $this->_cache[$group]['childs'][$subgroup]['timestamp'][] = time();
+      }
+      $this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]['value'] = array($leafvalue);
+      $this->_cache[$group]['childs'][$subgroup]['childs'][$leaf]['timestamp'] = array(time());
+    }
+    
+    return $ret;    
+  } 
 
   /**
    * Remove a meta data or a group of metadata

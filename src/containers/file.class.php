@@ -102,7 +102,6 @@ class pfcContainer_File extends pfcContainerInterface
       return 0; // value created
   }
 
-  
   function getMeta($group, $subgroup = null, $leaf = null, $withleafvalue = false)
   {
     $c =& pfcGlobalConfig::Instance();
@@ -158,6 +157,63 @@ class pfcContainer_File extends pfcContainerInterface
       $ret["value"][] = file_get_contents_flock($leaffilename);
     else
       $ret["value"][] = NULL;
+    $ret["timestamp"][] = filemtime($leaffilename);
+
+    return $ret;
+  }  
+
+  function incMeta($group, $subgroup, $leaf)
+  {
+    $c =& pfcGlobalConfig::Instance();
+    if ($c->debug)
+      file_put_contents("/tmp/debug", "\nincMeta(".$group.",".$subgroup.",".$leaf.")", FILE_APPEND | LOCK_EX);
+
+    // create directories
+    $dir_base = $c->container_cfg_server_dir;
+    $dir = $dir_base.'/'.$group.'/'.$subgroup;
+
+    if (!is_dir($dir)) mkdir_r($dir);
+    
+    // create or replace metadata file
+    $leaffilename = $dir."/".$leaf;
+
+    // create return array
+    $ret = array();
+    $ret["timestamp"] = array();
+    $ret["value"]     = array();
+
+    // read and increment data from metadata file
+    clearstatcache();
+    if (file_exists($leaffilename))
+    {
+      $fh = fopen($leaffilename, 'r+');
+      for($i = 0; $i < 10; $i++)  // Try 10 times until an exclusive lock can be obtained
+      {
+        if (flock($fh, LOCK_EX))
+        {
+          $leafvalue = chop(fread($fh, filesize($leaffilename)));
+          $leafvalue++;
+          rewind($fh);
+          fwrite($fh, $leafvalue);
+          fflush($fh);
+          ftruncate($fh, ftell($fh));
+          flock($fh, LOCK_UN);
+          break;
+        }
+        // If flock is working properly, this will never be reached
+        $delay = rand(0, pow(2, ($i+1)) - 1) * 5000;  // Exponential backoff
+        echo "try=".$i." ".$delay."\n";
+        usleep($delay);  
+      }
+      fclose($fh);
+    }
+    else 
+    {
+      $leafvalue="1";
+    	file_put_contents($leaffilename, $leafvalue, LOCK_EX);
+    }
+    
+    $ret["value"][] = $leafvalue;
     $ret["timestamp"][] = filemtime($leaffilename);
 
     return $ret;

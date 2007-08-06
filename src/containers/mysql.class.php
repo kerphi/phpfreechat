@@ -263,6 +263,82 @@ class pfcContainer_Mysql extends pfcContainerInterface
     return $ret;
   }
 
+
+  function incMeta($group, $subgroup, $leaf)
+  {
+    $c =& pfcGlobalConfig::Instance();      
+
+    if ($c->debug)
+      file_put_contents("/tmp/debug.txt", "\ngetMeta(".$group.",".$subgroup.",".$leaf.")", FILE_APPEND | LOCK_EX);
+    
+    $ret = array();
+    $ret["timestamp"] = array();
+    $ret["value"]     = array();
+    
+    $server = $c->serverid;    
+    $db = $this->_connect();
+    
+    $sql_where   .= " AND `leaf`='$leaf'";
+    $value        = "leafvalue";
+    $sql_group_by = "";
+    
+    $sql_select="SELECT `$value`, `timestamp` FROM ".$c->container_cfg_mysql_table." WHERE `server`='$server' $sql_where $sql_group_by ORDER BY timestamp FOR UPDATE";    
+
+    if ($c->debug)
+      file_put_contents("/tmp/debug.txt", "\ngetSQL(".$sql_select.")", FILE_APPEND | LOCK_EX);
+    
+    if ($sql_select != "")
+    {
+      $thisresult = mysql_query($sql_select, $db);
+      if (mysql_num_rows($thisresult))
+      {
+        while ($regel = mysql_fetch_array($thisresult))
+        {
+          $ret["timestamp"][] = $regel["timestamp"];
+          $ret["value"][] = $regel[$value];
+        }
+      }
+    }
+
+    $leafvalue = $ret["value"][];
+    
+    if ($leafvalue == NULL)
+      $leafvalue = 0;
+    else
+      $leafvalue++;
+    
+    $timestamp = time();
+
+    $sql_count = "SELECT COUNT(*) AS C FROM ".$c->container_cfg_mysql_table." WHERE `server`='$server' AND `group`='$group' AND `subgroup`='$subgroup' AND `leaf`='$leaf' LIMIT 1";
+    $sql_insert="REPLACE INTO ".$c->container_cfg_mysql_table." (`server`, `group`, `subgroup`, `leaf`, `leafvalue`, `timestamp`) VALUES('$server', '$group', '$subgroup', '$leaf', '".addslashes($leafvalue)."', '".$timestamp."')";
+    $sql_update="UPDATE ".$c->container_cfg_mysql_table." SET `leafvalue`='".addslashes($leafvalue)."', `timestamp`='".$timestamp."' WHERE  `server`='$server' AND `group`='$group' AND `subgroup`='$subgroup' AND `leaf`='$leaf'";
+
+    $res = mysql_query($sql_count, $db);
+    $row = mysql_fetch_array($res, MYSQL_ASSOC);
+    if( $row['C'] == 0 )
+    {
+      if ($c->debug)
+        file_put_contents("/tmp/debug.txt", "\nsetSQL(".$sql_insert.")", FILE_APPEND | LOCK_EX);
+
+      mysql_query($sql_insert, $db);
+    }
+    else
+    {
+      if ($sql_update != "")
+      {
+        if ($c->debug)
+          file_put_contents("/tmp/debug.txt", "\nsetSQL(".$sql_update.")", FILE_APPEND | LOCK_EX);
+        
+        mysql_query($sql_update, $db);
+      }
+    }
+   $ret["value"][] = $leafvalue;
+   $ret["timestamp"][] = $timestamp;
+   
+   return $ret;
+  }
+
+
   function rmMeta($group, $subgroup = null, $leaf = null)
   {
     $c =& pfcGlobalConfig::Instance();      
