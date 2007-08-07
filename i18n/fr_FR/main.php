@@ -396,4 +396,10 @@ $GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "Êtes vous cert
 // line 42 in ban.class.php
 $GLOBALS["i18n"]["%s banished from %s by %s"] = "%s banni de %s par %s";
 
+// line 461 in phpfreechat.class.php
+$GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "Vous essayez de parler à un utilisateur inconnu (ou inconnu)";
+
+// line 89 in invite.class.php
+$GLOBALS["i18n"]["%s was invited by %s"] = "%s a été invité par %s";
+
 ?>

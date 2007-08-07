@@ -86,7 +86,7 @@ class pfcCommand_invite extends pfcCommand
 
     // notify the aimed channel that a user has been invited
     $cmdp = array();
-    $cmdp["param"] = $nicktoinvite.' was invited by '.$sender;
+    $cmdp["param"] = _pfc("%s was invited by %s",$nicktoinvite,$sender);
     $cmdp["flag"]  = 1;
     $cmdp["recipient"]   = pfcCommand_join::GetRecipient($channeltarget);
     $cmdp["recipientid"] = pfcCommand_join::GetRecipientId($channeltarget);

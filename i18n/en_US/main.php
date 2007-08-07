@@ -381,7 +381,6 @@ $GLOBALS["i18n"]["OK"] = "OK";
 // line 479 in phpfreechat.class.php
 $GLOBALS["i18n"]["Cancel"] = "Cancel";
 
-
 // line 430 in pfcglobalconfig.class.php
 $GLOBALS["i18n"]["cannot create %s"] = "cannot create %s";
 
@@ -396,5 +395,11 @@ $GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "Are you sure yo
 
 // line 42 in ban.class.php
 $GLOBALS["i18n"]["%s banished from %s by %s"] = "%s banished from %s by %s";
+
+// line 461 in phpfreechat.class.php
+$GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "You are trying to speak to a unknown (or not connected) user";
+
+// line 89 in invite.class.php
+$GLOBALS["i18n"]["%s was invited by %s"] = "%s was invited by %s";
 
 ?>
