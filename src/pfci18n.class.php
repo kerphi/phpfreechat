@@ -103,7 +103,7 @@ class pfcI18N
    */
   function GetAcceptedLanguage($type="main")
   {
-    return /*<GetAcceptedLanguage>*/array('ar_LB','sv_SE','uk_RO','ja_JP','ba_BA','pt_PT','el_GR','tr_TR','nb_NO','zh_TW','ru_RU','hy_AM','fr_FR','es_ES','bg_BG','zh_CN','nl_NL','eo','bn_BD','uk_UA','de_DE-informal','pl_PL','pt_BR','it_IT','id_ID','hu_HU','en_US','sr_CS','de_DE-formal','ko_KR','da_DK','nn_NO','vi_VN','hr_HR');/*</GetAcceptedLanguage>*/
+    return /*<GetAcceptedLanguage>*/array('pl_PL','pt_BR','da_DK','uk_UA','nb_NO','fr_FR','hr_HR','vi_VN','hy_AM','ru_RU','eo','en_US','es_ES','ko_KR','ba_BA','zh_TW','zh_CN','it_IT','el_GR','uk_RO','pt_PT','sr_CS','tr_TR','de_DE-informal','de_DE-formal','ja_JP','sv_SE','bn_BD','nl_NL','ar_LB','hu_HU','nn_NO','bg_BG','id_ID');/*</GetAcceptedLanguage>*/
   }
   
   /**
@@ -127,7 +127,7 @@ class pfcI18N
     $data = preg_replace("/(\/\*<GetAcceptedLanguage>\*\/)(.*)(\/\*<\/GetAcceptedLanguage>\*\/)/",
                          "$1".$i18n_accepted_lang_str."$3",
                          $data);
-    file_put_contents(__FILE__, $data, FILE_EX);
+    file_put_contents(__FILE__, $data, LOCK_EX);
 
     // Now scan the source code in order to find "_pfc" patterns
     $files = array();
@@ -187,7 +187,7 @@ class pfcI18N
       $content = "<?php" . $old_content . $new_content . "?>";
       //echo $content;
       
-      file_put_contents($dst_filename, $content, FILE_EX);
+      file_put_contents($dst_filename, $content, LOCK_EX);
     }
   }
 }
