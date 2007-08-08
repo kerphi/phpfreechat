@@ -195,11 +195,10 @@ class pfcContainer extends pfcContainerInterface
       $this->rmMeta('metadata-to-nickid', 'nick', $this->encode($this->getNickname($nickid)));
       // remove disconnected nickname metadata
       $this->rmMeta('nickid-to-metadata', $nickid);
+      // remove users commands in queue
+      $this->rmMeta("nickid-to-cmdtoplay", $nickid);
+      $this->rmMeta("nickid-to-cmdtoplayid", $nickid);
     }
-
-    // remove users commands in queue
-    $this->rmMeta("nickid-to-cmdtoplay", $nickid);
-    $this->rmMeta("nickid-to-cmdtoplayid", $nickid);
 
     return $deleted_user;
   }
