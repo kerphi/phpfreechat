@@ -197,6 +197,10 @@ class pfcContainer extends pfcContainerInterface
       $this->rmMeta('nickid-to-metadata', $nickid);
     }
 
+    // remove users commands in queue
+    $this->rmMeta("nickid-to-cmdtoplay", $nickid);
+    $this->rmMeta("nickid-to-cmdtoplayid", $nickid);
+
     return $deleted_user;
   }
 
