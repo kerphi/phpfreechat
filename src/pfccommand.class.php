@@ -223,16 +223,14 @@ class pfcCommand
 
     // Get all queued commands to be played
     $cmdtoplay_ids = $ct->getCmdMeta($nickid);
-
     // process each command and parse content
     foreach ( $cmdtoplay_ids as $cid )
     {
       // take a command from the list
       $cmdtoplay = $ct->getCmdMeta($nickid, $cid);
-      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
-      
+      $cmdtoplay = ($cmdtoplay == NULL || count($cmdtoplay) == 0) ? array() : unserialize($cmdtoplay[0]);
+
       // play the command
-      // print_r($cmdtoplay);
       $cmd =& pfcCommand::Factory($cmdtoplay['cmdstr']);
       $cmdp = $cmdtoplay['params'];
       if (!isset($cmdp['param']))       $cmdp['param'] = '';
