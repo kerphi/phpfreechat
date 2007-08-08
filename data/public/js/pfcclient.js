@@ -2,6 +2,9 @@ var is_ie    = navigator.appName.match("Explorer");
 var is_khtml = navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML");
 var is_ff    = navigator.appName.match("Netscape");
 var is_ie7   = navigator.userAgent.indexOf('MSIE 7') > 0;
+var is_opera = window.opera;
+var is_safari = document.childNodes && !document.all && !navigator.taintEnabled && !accentColorName;
+
 /**
  * This class is the client part of phpFreeChat
  * (depends on prototype library)
@@ -627,6 +630,34 @@ pfcClient.prototype = {
     {
       return this.doSendMessage();
     }
+    else if (code == 38 && is_ff || code == 63232 && is_safari) // up arrow key
+    {
+      // write the last command in the history
+      if (this.cmdhistory.length>0)
+      {
+        var w = this.el_words;
+        if (this.cmdhistoryissearching == false && w.value != "")
+          this.cmdhistory.push(w.value);
+        this.cmdhistoryissearching = true;
+        this.cmdhistoryid = this.cmdhistoryid-1;
+        if (this.cmdhistoryid<0) this.cmdhistoryid = this.cmdhistory.length-1;
+        w.value = this.cmdhistory[this.cmdhistoryid];
+      }
+    }
+    else if (code == 40 && is_ff || code == 63233 && is_safari) // down arrow key
+    {
+      // write the next command in the history
+      if (this.cmdhistory.length>0)
+      {
+        var w = this.el_words;
+        if (this.cmdhistoryissearching == false && w.value != "")
+          this.cmdhistory.push(w.value);
+        this.cmdhistoryissearching = true;
+        this.cmdhistoryid = this.cmdhistoryid+1;
+        if (this.cmdhistoryid>=this.cmdhistory.length) this.cmdhistoryid = 0;
+        w.value = this.cmdhistory[this.cmdhistoryid];
+      }
+    }
     else
     {
       /* allow other keys */
@@ -649,7 +680,7 @@ pfcClient.prototype = {
       this.completeNick();
       return false; /* do not leave the tab key default behavior */
     }
-    else if (code == 38) // up arrow key
+    else if (code == 38 && (is_ie || is_khtml || is_opera)) // up arrow key
     {
       // write the last command in the history
       if (this.cmdhistory.length>0)
@@ -663,7 +694,7 @@ pfcClient.prototype = {
         w.value = this.cmdhistory[this.cmdhistoryid];
       }
     }
-    else if (code == 40) // down arrow key
+    else if (code == 40 && (is_ie || is_khtml || is_opera)) // down arrow key
     {
       // write the next command in the history
       if (this.cmdhistory.length>0)
