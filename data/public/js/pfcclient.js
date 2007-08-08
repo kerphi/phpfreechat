@@ -25,9 +25,9 @@ pfcClient.prototype = {
     this.chanmeta = $H();
     this.nickwhoisbox = $H();
 
-    // this array contains all the sent command
-    // used the up and down key to navigate in the history
-    // (doesn't work on IE6)
+    // this array contains all the sent commands
+    // use the up and down arrow key to navigate through the history
+    // may not work in Safari 1.3
     this.cmdhistory   = Array();
     this.cmdhistoryid = -1;
     this.cmdhistoryissearching = false;
@@ -627,34 +627,6 @@ pfcClient.prototype = {
     {
       return this.doSendMessage();
     }
-    else if (code == 33 && false) // page up key
-    {
-      // write the last command in the history
-      if (this.cmdhistory.length>0)
-      {
-        var w = this.el_words;
-        if (this.cmdhistoryissearching == false && w.value != "")
-          this.cmdhistory.push(w.value);
-        this.cmdhistoryissearching = true;
-        this.cmdhistoryid = this.cmdhistoryid-1;
-        if (this.cmdhistoryid<0) this.cmdhistoryid = this.cmdhistory.length-1;
-        w.value = this.cmdhistory[this.cmdhistoryid];
-      }
-    }
-    else if (code == 34 && false) // page down key
-    {
-      // write the next command in the history
-      if (this.cmdhistory.length>0)
-      {
-        var w = this.el_words;
-        if (this.cmdhistoryissearching == false && w.value != "")
-          this.cmdhistory.push(w.value);
-        this.cmdhistoryissearching = true;
-        this.cmdhistoryid = this.cmdhistoryid+1;
-        if (this.cmdhistoryid>=this.cmdhistory.length) this.cmdhistoryid = 0;
-        w.value = this.cmdhistory[this.cmdhistoryid];
-      }
-    }
     else
     {
       /* allow other keys */
@@ -676,6 +648,34 @@ pfcClient.prototype = {
       /* do the nickname completion work like on IRC */
       this.completeNick();
       return false; /* do not leave the tab key default behavior */
+    }
+    else if (code == 38) // up arrow key
+    {
+      // write the last command in the history
+      if (this.cmdhistory.length>0)
+      {
+        var w = this.el_words;
+        if (this.cmdhistoryissearching == false && w.value != "")
+          this.cmdhistory.push(w.value);
+        this.cmdhistoryissearching = true;
+        this.cmdhistoryid = this.cmdhistoryid-1;
+        if (this.cmdhistoryid<0) this.cmdhistoryid = this.cmdhistory.length-1;
+        w.value = this.cmdhistory[this.cmdhistoryid];
+      }
+    }
+    else if (code == 40) // down arrow key
+    {
+      // write the next command in the history
+      if (this.cmdhistory.length>0)
+      {
+        var w = this.el_words;
+        if (this.cmdhistoryissearching == false && w.value != "")
+          this.cmdhistory.push(w.value);
+        this.cmdhistoryissearching = true;
+        this.cmdhistoryid = this.cmdhistoryid+1;
+        if (this.cmdhistoryid>=this.cmdhistory.length) this.cmdhistoryid = 0;
+        w.value = this.cmdhistory[this.cmdhistoryid];
+      }
     }
     else
     {
