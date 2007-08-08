@@ -630,7 +630,7 @@ pfcClient.prototype = {
     {
       return this.doSendMessage();
     }
-    else if (code == 38 && is_ff || code == 63232 && is_safari) // up arrow key
+    else if (code == 63232 && is_safari) // up arrow key
     {
       // write the last command in the history
       if (this.cmdhistory.length>0)
@@ -644,7 +644,7 @@ pfcClient.prototype = {
         w.value = this.cmdhistory[this.cmdhistoryid];
       }
     }
-    else if (code == 40 && is_ff || code == 63233 && is_safari) // down arrow key
+    else if (code == 63233 && is_safari) // down arrow key
     {
       // write the next command in the history
       if (this.cmdhistory.length>0)
@@ -680,7 +680,7 @@ pfcClient.prototype = {
       this.completeNick();
       return false; /* do not leave the tab key default behavior */
     }
-    else if (code == 38 && (is_ie || is_khtml || is_opera)) // up arrow key
+    else if (code == 38 && (is_ff || is_ie || is_khtml || is_opera)) // up arrow key
     {
       // write the last command in the history
       if (this.cmdhistory.length>0)
@@ -694,7 +694,7 @@ pfcClient.prototype = {
         w.value = this.cmdhistory[this.cmdhistoryid];
       }
     }
-    else if (code == 40 && (is_ie || is_khtml || is_opera)) // down arrow key
+    else if (code == 40 && (is_ff || is_ie || is_khtml || is_opera)) // down arrow key
     {
       // write the next command in the history
       if (this.cmdhistory.length>0)
