@@ -517,6 +517,18 @@ class pfcContainer extends pfcContainerInterface
     return $ret;
   }
 
+  function getCmdMeta($nickid, $key = NULL)
+  {
+    $ret = $this->getMeta("nickid-to-cmdtoplay", $nickid, $key, true);
+    return isset($ret['value'][0]) ? $ret['value'][0] : NULL;
+  }
+
+  function setCmdMeta($nickid, $key, $value)
+  {
+    $ret = $this->setMeta("nickid-to-cmdtoplay", $nickid, $key, $value);
+    return $ret;
+  }
+
   function getAllChanMeta($chan)
   {
     $result = array();

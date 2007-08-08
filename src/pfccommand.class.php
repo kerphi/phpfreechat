@@ -173,49 +173,68 @@ class pfcCommand
     }
   }
 
+  /**
+   * Add command to be played onto command stack
+   * @param $nickid is the user that entered the command
+   * @param $cmdstr is the command
+   * @param $cmdp is the command's parameters
+   * @return false if $nickid is blank, true for all other values of $nickid
+   */
   function AppendCmdToPlay($nickid, $cmdstr, $cmdp)
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
     
     $ct =& pfcContainer::Instance();
-    if ($nickid != "")
-    {
-      $cmdtoplay = $ct->getUserMeta($nickid, 'cmdtoplay');
-      $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
-      $cmdtmp = array();
-      $cmdtmp['cmdstr'] = $cmdstr;
-      $cmdtmp['params'] = $cmdp;
-      $cmdtoplay[] = $cmdtmp;
-      $ct->setUserMeta($nickid, 'cmdtoplay', serialize($cmdtoplay));
-      return true;
-    }
+
+    // check for empty nickid
+    if ($nickid == "") return false;
+
+    // get new command id
+    $cmdtoplay_id = $ct->incMeta("nickid-to-cmdtoplayid", $nickid, 'cmdtoplayid');
+    if (count($cmdtoplay_id["value"]) == 0)
+      $cmdtoplay_id = 0;
     else
-      return false;
+      $cmdtoplay_id = $cmdtoplay_id["value"][0];
+
+    // create command array
+    $cmdtoplay = array();
+    $cmdtoplay['cmdstr'] = $cmdstr;
+    $cmdtoplay['params'] = $cmdp;
+    
+    // store command to play
+    $ct->setCmdMeta($nickid, $cmdtoplay_id, serialize($cmdtoplay));
+    
+    return true;
   }
 
-  function RunPendingCmdToPlay($nickid,$context,&$xml_reponse)
+
+  /**
+   * Run all commands to be played for a user
+   * @param $nickid is the user that entered the command
+   * @param $context
+   * @param $xml_reponse
+   */
+  function RunPendingCmdToPlay($nickid, $context, &$xml_reponse)
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
     $ct =& pfcContainer::Instance();
 
-    $morecmd = true;
-    while($morecmd)
+    // Get all queued commands to be played
+    $cmdtoplay_ids = $ct->getCmdMeta($nickid);
+
+    // process each command and parse content
+    foreach ( $cmdtoplay_ids as $cid )
     {
       // take a command from the list
-      $cmdtoplay = $ct->getUserMeta($nickid, 'cmdtoplay');
+      $cmdtoplay = $ct->getCmdMeta($nickid, $cid);
       $cmdtoplay = ($cmdtoplay == NULL) ? array() : unserialize($cmdtoplay);
-      if (count($cmdtoplay) == 0) { $morecmd = false; break; }
-      // take the last posted command
-      $cmdtmp = array_pop($cmdtoplay);
-      // store the new cmdtoplay list (-1 item)
-      $ct->setUserMeta($nickid, 'cmdtoplay', serialize($cmdtoplay));
       
       // play the command
-      //      print_r($cmdtmp);
-      $cmd =& pfcCommand::Factory($cmdtmp['cmdstr']);
-      $cmdp = $cmdtmp['params'];
+      // print_r($cmdtoplay);
+      $cmd =& pfcCommand::Factory($cmdtoplay['cmdstr']);
+      $cmdp = $cmdtoplay['params'];
       if (!isset($cmdp['param']))       $cmdp['param'] = '';
       if (!isset($cmdp['sender']))      $cmdp['sender'] = $context['sender'];
       if (!isset($cmdp['recipient']))   $cmdp['recipient']   = $context['recipient'];
@@ -226,6 +245,9 @@ class pfcCommand
         $cmd->run($xml_reponse, $cmdp);
       else
         @$cmd->run($xml_reponse, $cmdp);
+
+      // delete command when complete
+      $ct->rmMeta("nickid-to-cmdtoplay", $nickid, $cid);
     }
   }
 
