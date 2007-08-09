@@ -613,6 +613,48 @@ pfcClient.prototype = {
   },
 
   /**
+   * Cycle to older entry in history
+   * TODO: Fix up arrow issue in Opera
+   */
+  historyUp: function()
+  {
+	    // write the previous command in the history
+    if (this.cmdhistory.length > 0)
+    {
+      var w = this.el_words;
+      if (this.cmdhistoryissearching == false && w.value != "")
+        this.cmdhistory.push(w.value);
+      this.cmdhistoryissearching = true;
+      this.cmdhistoryid = this.cmdhistoryid - 1;
+      if (this.cmdhistoryid < 0) this.cmdhistoryid = 0; // stop at oldest entry
+      w.value = this.cmdhistory[this.cmdhistoryid];
+    }
+  },
+
+  /**
+   * Cycle to newer entry in history
+   */
+  historyDown: function()
+  {
+    // write the next command in the history
+    if (this.cmdhistory.length > 0)
+    {
+      var w = this.el_words;
+      if (this.cmdhistoryissearching == false && w.value != "")
+        this.cmdhistory.push(w.value);
+      this.cmdhistoryissearching = true;
+      this.cmdhistoryid = this.cmdhistoryid + 1;
+      if (this.cmdhistoryid >= this.cmdhistory.length)
+      {
+        this.cmdhistoryid = this.cmdhistory.length; // stop at newest entry + 1
+        w.value = ""; // blank input box
+      }
+      else
+        w.value = this.cmdhistory[this.cmdhistoryid];
+    }
+  },
+
+  /**
    * Handle the pressed keys
    * see also callbackWords_OnKeydown
    */
@@ -634,35 +676,14 @@ pfcClient.prototype = {
     else if (code == 63232 && is_webkit) // up arrow key
     {
       // write the previous command in the history
-      if (this.cmdhistory.length > 0)
-      {
-        var w = this.el_words;
-        if (this.cmdhistoryissearching == false && w.value != "")
-          this.cmdhistory.push(w.value);
-        this.cmdhistoryissearching = true;
-        this.cmdhistoryid = this.cmdhistoryid - 1;
-        if (this.cmdhistoryid < 0) this.cmdhistoryid = 0; // stop at oldest entry
-        w.value = this.cmdhistory[this.cmdhistoryid];
-      }
+      this.historyUp();
+      return false;  // do not leave the tab key default behavior
     }
     else if (code == 63233 && is_webkit) // down arrow key
     {
       // write the next command in the history
-      if (this.cmdhistory.length > 0)
-      {
-        var w = this.el_words;
-        if (this.cmdhistoryissearching == false && w.value != "")
-          this.cmdhistory.push(w.value);
-        this.cmdhistoryissearching = true;
-        this.cmdhistoryid = this.cmdhistoryid + 1;
-        if (this.cmdhistoryid >= this.cmdhistory.length)
-        {
-          this.cmdhistoryid = this.cmdhistory.length; // stop at newest entry + 1
-          w.value = ""; // blank input box
-        }
-        else
-          w.value = this.cmdhistory[this.cmdhistoryid];
-      }
+      this.historyDown();
+      return false;  // do not leave the tab key default behavior
     }
     else
     {
@@ -689,38 +710,17 @@ pfcClient.prototype = {
       this.completeNick();
       return false; /* do not leave the tab key default behavior */
     }
-    else if (code == 38 && (is_gecko || is_ie || is_khtml || is_opera)) // up arrow key
+    else if (code == 38 && (is_gecko || is_ie || is_opera)) // up arrow key
     {
       // write the previous command in the history
-      if (this.cmdhistory.length > 0)
-      {
-        var w = this.el_words;
-        if (this.cmdhistoryissearching == false && w.value != "")
-          this.cmdhistory.push(w.value);
-        this.cmdhistoryissearching = true;
-        this.cmdhistoryid = this.cmdhistoryid - 1;
-        if (this.cmdhistoryid < 0) this.cmdhistoryid = 0; // stop at oldest entry
-        w.value = this.cmdhistory[this.cmdhistoryid];
-      }
+      this.historyUp();
+      return false;  // do not leave the tab key default behavior
     }
-    else if (code == 40 && (is_gecko || is_ie || is_khtml || is_opera)) // down arrow key
+    else if (code == 40 && (is_gecko || is_ie || is_opera)) // down arrow key
     {
       // write the next command in the history
-      if (this.cmdhistory.length > 0)
-      {
-        var w = this.el_words;
-        if (this.cmdhistoryissearching == false && w.value != "")
-          this.cmdhistory.push(w.value);
-        this.cmdhistoryissearching = true;
-        this.cmdhistoryid = this.cmdhistoryid + 1;
-        if (this.cmdhistoryid >= this.cmdhistory.length)
-        {
-          this.cmdhistoryid = this.cmdhistory.length; // stop at newest entry + 1
-          w.value = ""; // blank input box
-        }
-        else
-          w.value = this.cmdhistory[this.cmdhistoryid];
-      }
+      this.historyDown();
+      return false;  // do not leave the tab key default behavior
     }
     else
     {
