@@ -1419,7 +1419,7 @@ pfcClient.prototype = {
       for(var i = 0; elts.length > i; i++)
       {
         // this is not supported in konqueror =>>>  elts[i].removeAttribute('style');
-        Elts[i].style.color = '';
+        elts[i].style.color = '';
       }
     }
   },
