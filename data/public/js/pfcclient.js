@@ -1,8 +1,8 @@
-var is_ie     = window.attachEvent && !window.opera;
+var is_ie     = !!(window.attachEvent && !window.opera);
 var is_khtml  = navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML");
 var is_gecko  = navigator.userAgent.indexOf('Gecko') > -1 && navigator.userAgent.indexOf('KHTML') == -1;
 var is_ie7    = navigator.userAgent.indexOf('MSIE 7') > 0;
-var is_opera  = window.opera;
+var is_opera  = !!window.opera;
 var is_webkit = navigator.userAgent.indexOf('AppleWebKit/') > -1;
 
 /**
@@ -614,11 +614,10 @@ pfcClient.prototype = {
 
   /**
    * Cycle to older entry in history
-   * TODO: Fix up arrow issue in Opera
    */
   historyUp: function()
   {
-	    // write the previous command in the history
+	  // write the previous command in the history
     if (this.cmdhistory.length > 0)
     {
       var w = this.el_words;
@@ -626,7 +625,8 @@ pfcClient.prototype = {
         this.cmdhistory.push(w.value);
       this.cmdhistoryissearching = true;
       this.cmdhistoryid = this.cmdhistoryid - 1;
-      if (this.cmdhistoryid < 0) this.cmdhistoryid = 0; // stop at oldest entry
+      if (this.cmdhistoryid < 0)
+        this.cmdhistoryid = 0; // stop at oldest entry
       w.value = this.cmdhistory[this.cmdhistoryid];
     }
   },
@@ -673,18 +673,6 @@ pfcClient.prototype = {
     {
       return this.doSendMessage();
     }
-    else if (code == 63232 && is_webkit) // up arrow key
-    {
-      // write the previous command in the history
-      this.historyUp();
-      return false;  // do not leave the tab key default behavior
-    }
-    else if (code == 63233 && is_webkit) // down arrow key
-    {
-      // write the next command in the history
-      this.historyDown();
-      return false;  // do not leave the tab key default behavior
-    }
     else
     {
       /* allow other keys */
@@ -710,20 +698,24 @@ pfcClient.prototype = {
       this.completeNick();
       return false; /* do not leave the tab key default behavior */
     }
-    else if (code == 38 && (is_gecko || is_ie || is_opera)) // up arrow key
+    else if (code == 38 && (is_gecko || is_ie || is_opera || is_webkit)) // up arrow key
     {
+      /* TODO: Fix up arrow issue in Opera */
+      // Konqueror does not work due to keycode conflicts
       // write the previous command in the history
       this.historyUp();
       return false;  // do not leave the tab key default behavior
     }
-    else if (code == 40 && (is_gecko || is_ie || is_opera)) // down arrow key
+    else if (code == 40 && (is_gecko || is_ie || is_opera || is_webkit)) // down arrow key
     {
+      // Konqueror does not work due to keycode conflicts
       // write the next command in the history
       this.historyDown();
       return false;  // do not leave the tab key default behavior
     }
     else
     {
+      /* allow other keys */
       return true;
     }
   },
