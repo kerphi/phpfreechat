@@ -605,9 +605,9 @@ pfcClient.prototype = {
       var n_list = this.getChanMeta(tabid,'users')['nick'];
       for (var i=0; i<n_list.length; i++)
       {
-	var nick = n_list[i];
-	if (nick.indexOf(nick_src) == 0)
-	  w.value = w.value.replace(nick_src, nick);
+        var nick = n_list[i];
+        if (nick.indexOf(nick_src) == 0)
+        w.value = w.value.replace(nick_src, nick);
       }
     }
   },
@@ -618,6 +618,7 @@ pfcClient.prototype = {
    */
   callbackWords_OnKeypress: function(evt)
   {
+    // All browsers except for IE should use evt.which
     var code = (evt.which) ? evt.which : evt.keyCode;
     if (code == Event.KEY_TAB) /* tab key */
     {
@@ -632,30 +633,35 @@ pfcClient.prototype = {
     }
     else if (code == 63232 && is_webkit) // up arrow key
     {
-      // write the last command in the history
-      if (this.cmdhistory.length>0)
+      // write the previous command in the history
+      if (this.cmdhistory.length > 0)
       {
         var w = this.el_words;
         if (this.cmdhistoryissearching == false && w.value != "")
           this.cmdhistory.push(w.value);
         this.cmdhistoryissearching = true;
-        this.cmdhistoryid = this.cmdhistoryid-1;
-        if (this.cmdhistoryid<0) this.cmdhistoryid = this.cmdhistory.length-1;
+        this.cmdhistoryid = this.cmdhistoryid - 1;
+        if (this.cmdhistoryid < 0) this.cmdhistoryid = 0; // stop at oldest entry
         w.value = this.cmdhistory[this.cmdhistoryid];
       }
     }
     else if (code == 63233 && is_webkit) // down arrow key
     {
       // write the next command in the history
-      if (this.cmdhistory.length>0)
+      if (this.cmdhistory.length > 0)
       {
         var w = this.el_words;
         if (this.cmdhistoryissearching == false && w.value != "")
           this.cmdhistory.push(w.value);
         this.cmdhistoryissearching = true;
-        this.cmdhistoryid = this.cmdhistoryid+1;
-        if (this.cmdhistoryid>=this.cmdhistory.length) this.cmdhistoryid = 0;
-        w.value = this.cmdhistory[this.cmdhistoryid];
+        this.cmdhistoryid = this.cmdhistoryid + 1;
+        if (this.cmdhistoryid >= this.cmdhistory.length)
+        {
+          this.cmdhistoryid = this.cmdhistory.length; // stop at newest entry + 1
+          w.value = ""; // blank input box
+        }
+        else
+          w.value = this.cmdhistory[this.cmdhistoryid];
       }
     }
     else
@@ -667,6 +673,9 @@ pfcClient.prototype = {
   /**
    * Handle the pressed keys
    * see also callbackWords_OnKeypress
+   * WARNING: Suppressing defaults on the keydown event 
+   *          may prevent keypress and/or keyup events
+   *          from firing.
    */
   callbackWords_OnKeydown: function(evt)
   {
@@ -682,30 +691,35 @@ pfcClient.prototype = {
     }
     else if (code == 38 && (is_gecko || is_ie || is_khtml || is_opera)) // up arrow key
     {
-      // write the last command in the history
-      if (this.cmdhistory.length>0)
+      // write the previous command in the history
+      if (this.cmdhistory.length > 0)
       {
         var w = this.el_words;
         if (this.cmdhistoryissearching == false && w.value != "")
           this.cmdhistory.push(w.value);
         this.cmdhistoryissearching = true;
-        this.cmdhistoryid = this.cmdhistoryid-1;
-        if (this.cmdhistoryid<0) this.cmdhistoryid = this.cmdhistory.length-1;
+        this.cmdhistoryid = this.cmdhistoryid - 1;
+        if (this.cmdhistoryid < 0) this.cmdhistoryid = 0; // stop at oldest entry
         w.value = this.cmdhistory[this.cmdhistoryid];
       }
     }
     else if (code == 40 && (is_gecko || is_ie || is_khtml || is_opera)) // down arrow key
     {
       // write the next command in the history
-      if (this.cmdhistory.length>0)
+      if (this.cmdhistory.length > 0)
       {
         var w = this.el_words;
         if (this.cmdhistoryissearching == false && w.value != "")
           this.cmdhistory.push(w.value);
         this.cmdhistoryissearching = true;
-        this.cmdhistoryid = this.cmdhistoryid+1;
-        if (this.cmdhistoryid>=this.cmdhistory.length) this.cmdhistoryid = 0;
-        w.value = this.cmdhistory[this.cmdhistoryid];
+        this.cmdhistoryid = this.cmdhistoryid + 1;
+        if (this.cmdhistoryid >= this.cmdhistory.length)
+        {
+          this.cmdhistoryid = this.cmdhistory.length; // stop at newest entry + 1
+          w.value = ""; // blank input box
+        }
+        else
+          w.value = this.cmdhistory[this.cmdhistoryid];
       }
     }
     else
@@ -778,13 +792,13 @@ pfcClient.prototype = {
     {
       if (this.blinkloop[id] == 1)
       {
-	$(id).style.backgroundColor = '#FFDFC0';
-	this.blinkloop[id] = 2;
+        $(id).style.backgroundColor = '#FFDFC0';
+        this.blinkloop[id] = 2;
       }
       else
       {
-	$(id).style.backgroundColor = '#FFFFFF';
-	this.blinkloop[id] = 1;
+        $(id).style.backgroundColor = '#FFFFFF';
+        this.blinkloop[id] = 1;
       }
       this.blinktimeout[id] = setTimeout('pfc.blink(\'' + id + '\',\'loop\')', 500);
     }
@@ -844,15 +858,15 @@ pfcClient.prototype = {
       line += '<span class="pfc_heure">'+ time +'</span> ';
       if (cmd == 'send')
       {
-      	line += ' <span class="pfc_nick">';
-      	line += '&#x2039;';
-      	line += '<span ';
+        line += ' <span class="pfc_nick">';
+        line += '&#x2039;';
+        line += '<span ';
         line += 'onclick="pfc.insert_text(\'' + sender.replace("'", '\\\'') + ', \',\'\',false)" ';
-      	line += 'class="pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(sender)) +'">';
-      	line += sender;
-      	line += '</span>';
-      	line += '&#x203A;';
-      	line += '</span> ';
+        line += 'class="pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(sender)) +'">';
+        line += sender;
+        line += '</span>';
+        line += '&#x203A;';
+        line += '</span> ';
       }
       if (cmd == 'notice' || cmd == 'me')
         line += '<span class="pfc_words">* '+ this.parseMessage(param) +'</span> ';
@@ -1353,8 +1367,9 @@ pfcClient.prototype = {
     var rx2 = new RegExp('.*'+clsIgnore+'.*');
     for(i=0; i<els.length; i++) {
       if(els.item(i).className.match(rx1) &&
-         (clsIgnore == '' || !els.item(i).className.match(rx2)) ) {
-	matches.push(els.item(i));
+         (clsIgnore == '' || !els.item(i).className.match(rx2)) )
+      {
+        matches.push(els.item(i));
       }
     }
     return matches;
@@ -1403,8 +1418,8 @@ pfcClient.prototype = {
       var elts = this.getElementsByClassName(root, 'pfc_nickmarker', '');
       for(var i = 0; elts.length > i; i++)
       {
-	// this is not supported in konqueror =>>>  elts[i].removeAttribute('style');
-	elts[i].style.color = '';
+        // this is not supported in konqueror =>>>  elts[i].removeAttribute('style');
+        Elts[i].style.color = '';
       }
     }
   },
