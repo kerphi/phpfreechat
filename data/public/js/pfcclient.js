@@ -1,9 +1,9 @@
-var is_ie    = navigator.appName.match("Explorer");
-var is_khtml = navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML");
-var is_ff    = navigator.appName.match("Netscape");
-var is_ie7   = navigator.userAgent.indexOf('MSIE 7') > 0;
-var is_opera = window.opera;
-var is_safari = document.childNodes && !document.all && !navigator.taintEnabled && !accentColorName;
+var is_ie     = window.attachEvent && !window.opera;
+var is_khtml  = navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML");
+var is_gecko  = navigator.userAgent.indexOf('Gecko') > -1 && navigator.userAgent.indexOf('KHTML') == -1;
+var is_ie7    = navigator.userAgent.indexOf('MSIE 7') > 0;
+var is_opera  = window.opera;
+var is_webkit = navigator.userAgent.indexOf('AppleWebKit/') > -1;
 
 /**
  * This class is the client part of phpFreeChat
@@ -630,7 +630,7 @@ pfcClient.prototype = {
     {
       return this.doSendMessage();
     }
-    else if (code == 63232 && is_safari) // up arrow key
+    else if (code == 63232 && is_webkit) // up arrow key
     {
       // write the last command in the history
       if (this.cmdhistory.length>0)
@@ -644,7 +644,7 @@ pfcClient.prototype = {
         w.value = this.cmdhistory[this.cmdhistoryid];
       }
     }
-    else if (code == 63233 && is_safari) // down arrow key
+    else if (code == 63233 && is_webkit) // down arrow key
     {
       // write the next command in the history
       if (this.cmdhistory.length>0)
@@ -680,7 +680,7 @@ pfcClient.prototype = {
       this.completeNick();
       return false; /* do not leave the tab key default behavior */
     }
-    else if (code == 38 && (is_ff || is_ie || is_khtml || is_opera)) // up arrow key
+    else if (code == 38 && (is_gecko || is_ie || is_khtml || is_opera)) // up arrow key
     {
       // write the last command in the history
       if (this.cmdhistory.length>0)
@@ -694,7 +694,7 @@ pfcClient.prototype = {
         w.value = this.cmdhistory[this.cmdhistoryid];
       }
     }
-    else if (code == 40 && (is_ff || is_ie || is_khtml || is_opera)) // down arrow key
+    else if (code == 40 && (is_gecko || is_ie || is_khtml || is_opera)) // down arrow key
     {
       // write the next command in the history
       if (this.cmdhistory.length>0)
@@ -908,7 +908,7 @@ pfcClient.prototype = {
       while (elt)
       {
         // delete this element to save browser memory
-        if (is_ff)
+        if (is_gecko)
           elt.innerHTML = '';
         else
           //  this code don't work in FF, why ? don't know ..
