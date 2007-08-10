@@ -1,5 +1,5 @@
 var is_ie     = !!(window.attachEvent && !window.opera);
-var is_khtml  = navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML");
+var is_khtml  = !!(navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML"));
 var is_gecko  = navigator.userAgent.indexOf('Gecko') > -1 && navigator.userAgent.indexOf('KHTML') == -1;
 var is_ie7    = navigator.userAgent.indexOf('MSIE 7') > 0;
 var is_opera  = !!window.opera;
@@ -593,31 +593,52 @@ pfcClient.prototype = {
 
   /**
    * Try to complete a nickname like on IRC when pressing the TAB key
-   * @todo: improve the algorithme, it should take into account the cursor position
    */
   completeNick: function()
   {
     var w = this.el_words;
-    var nick_src = w.value.substring(w.value.lastIndexOf(' ')+1,w.value.length);
+    var nick_src = w.value;
     if (nick_src != '')
     {
       var tabid = this.gui.getTabId();
       var n_list = this.getChanMeta(tabid,'users')['nick'];
-      for (var i=0; i<n_list.length; i++)
+      var nick_match = false;
+      for (var i = 0; i < n_list.length; i++)
       {
-        var nick = n_list[i];
-        if (nick.indexOf(nick_src) == 0)
-        w.value = w.value.replace(nick_src, nick);
+        var nick_tmp = n_list[i];
+        if (nick_tmp.indexOf(nick_src) == 0)
+        {
+          if (! nick_match)
+          {
+            nick_match = true;
+            nick_replace = nick_tmp;
+          }
+          else
+          {
+            // more than one possibility for completion
+            // return common characters only
+            var nick_len = Math.min(nick_tmp.length, nick_replace.length);
+            for (var j = 0; j < nick_len; j++)
+            {
+              if (nick_tmp.charAt(j) != nick_replace.charAt(j))
+              {
+                nick_replace = nick_replace.substr(0,j);
+                break;
+              }
+            }            
+          }
+        }
       }
+      if (nick_match == true)
+        w.value = w.value.replace(nick_src, nick_replace);
     }
   },
-
   /**
    * Cycle to older entry in history
    */
   historyUp: function()
   {
-	  // write the previous command in the history
+    // write the previous command in the history
     if (this.cmdhistory.length > 0)
     {
       var w = this.el_words;
