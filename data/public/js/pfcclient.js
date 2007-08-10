@@ -936,11 +936,12 @@ pfcClient.prototype = {
       while (elt)
       {
         // delete this element to save browser memory
-        if (is_gecko)
-          elt.innerHTML = '';
-        else
-          //  this code don't work in FF, why ? don't know ..
+        if(elt.parentNode)
+          elt.parentNode.removeChild(elt);
+        else if(elt.parentElement)  // older IE browsers (<6.0) may not support parentNode
           elt.parentElement.removeChild(elt);
+        else  // if all else fails
+          elt.innerHTML = '';
         limit_msgid--;
         elt = $('pfc_msg_'+recipientid+'_'+limit_msgid);
       }
