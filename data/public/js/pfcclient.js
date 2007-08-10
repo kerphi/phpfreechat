@@ -601,7 +601,7 @@ pfcClient.prototype = {
     if (nick_src != '')
     {
       var tabid = this.gui.getTabId();
-      var n_list = this.getChanMeta(tabid,'users')['nick'];
+      var n_list = this.getChanMeta(tabid, 'users')['nick'];
       var nick_match = false;
       for (var i = 0; i < n_list.length; i++)
       {
@@ -616,21 +616,18 @@ pfcClient.prototype = {
           else
           {
             // more than one possibility for completion
-            // return common characters only
             var nick_len = Math.min(nick_tmp.length, nick_replace.length);
-            for (var j = 0; j < nick_len; j++)
-            {
+            // only keep characters that are common to all matches
+            var j = 0;
+            for (j = 0; j < nick_len; j++)
               if (nick_tmp.charAt(j) != nick_replace.charAt(j))
-              {
-                nick_replace = nick_replace.substr(0,j);
                 break;
-              }
-            }
-            nick_replace = nick_replace.substr(0,nick_len);
+
+            nick_replace = nick_replace.substr(0, j);
           }
         }
       }
-      if (nick_match == true)
+      if (nick_match)
         w.value = w.value.replace(nick_src, nick_replace);
     }
   },
