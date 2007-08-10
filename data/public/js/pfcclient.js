@@ -625,7 +625,8 @@ pfcClient.prototype = {
                 nick_replace = nick_replace.substr(0,j);
                 break;
               }
-            }            
+            }
+            nick_replace = nick_replace.substr(0,nick_len);
           }
         }
       }
