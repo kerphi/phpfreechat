@@ -591,19 +591,12 @@ pfcClient.prototype = {
     return false;
   },
 
-  reverse: function(inp)
-  {
-    var outp = '';
-
-    for (var i = 0; i < inp.length; i++)
-      outp = inp.charAt(i) + outp;
-
-    return outp;
-  },
-
   /**
    * Try to complete a nickname like on IRC when pressing the TAB key
    * Nicks with spaces may not work under certain circumstances
+   * Replacing standards spaces with alternate spaces (e.g., &nbsp;) helps
+   * Gecko browsers convert the &nbsp; to regular spaces
+   * TODO: Move cursor to end of line after nick completion in Konqueror and Webkit browsers
    * Note: IRC does not allow nicks with spaces
    */
   completeNick: function()
@@ -621,6 +614,8 @@ pfcClient.prototype = {
       for (var i = 0; i < n_list.length; i++)
       {
         var nick_tmp = n_list[i];
+        // replace spaces in nicks with &nbsp;
+        nick_tmp = nick_tmp.replace(/ /g, '\240');
         if (nick_tmp.indexOf(nick_src) == 0)
         {
           if (! nick_match)
