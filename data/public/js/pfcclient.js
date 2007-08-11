@@ -591,13 +591,28 @@ pfcClient.prototype = {
     return false;
   },
 
+  reverse: function(inp)
+  {
+    var outp = '';
+
+    for (var i = 0; i < inp.length; i++)
+      outp = inp.charAt(i) + outp;
+
+    return outp;
+  },
+
   /**
    * Try to complete a nickname like on IRC when pressing the TAB key
+   * Nicks with spaces may not work under certain circumstances
+   * Note: IRC does not allow nicks with spaces
    */
   completeNick: function()
   {
     var w = this.el_words;
-    var nick_src = w.value;
+    var last_space = w.value.lastIndexOf(' ');
+    var nick_src = w.value.substring(last_space+1, w.value.length);
+    var non_nick_src = w.value.substring(0,last_space+1);
+    
     if (nick_src != '')
     {
       var tabid = this.gui.getTabId();
@@ -628,7 +643,7 @@ pfcClient.prototype = {
         }
       }
       if (nick_match)
-        w.value = w.value.replace(nick_src, nick_replace);
+        w.value = non_nick_src + nick_src.replace(nick_src, nick_replace);
     }
   },
   /**
