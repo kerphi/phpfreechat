@@ -638,7 +638,17 @@ pfcClient.prototype = {
         }
       }
       if (nick_match)
+      {
         w.value = non_nick_src + nick_src.replace(nick_src, nick_replace);
+        // Move cursor to end of line.
+        // This fixes Webkit (Safari) and hopefully newer Konqueror releases.
+        /* Konqueror does not support setSelectionRange() on KDE versions <3.5.2. */
+        if (w.setSelectionRange)
+        {
+          var selEnd = w.value.length;
+          w.setSelectionRange(selEnd, selEnd);
+        }
+      }
     }
   },
   
@@ -744,21 +754,9 @@ pfcClient.prototype = {
     }
     else if (code == 9) /* TAB key */
     {
-      /* Konqueror has the same problem as Webkit (Safari),
-         but setSelectionRange() won't work on 
-         KDE versions <3.5.2.  Therefore, I'm leaving
-         the Webkit fix out for these browsers. */
-
       // Do nickname completion like on IRC / Unix command line.
       this.completeNick();
       
-      var tb = evt.srcElement || evt.target;
-      if (is_webkit)
-      {
-        // Move cursor to end of line for Webkit (Safari).
-        var selEnd = this.el_words.value.length;
-        tb.setSelectionRange(selEnd, selEnd);
-      }
       if (is_opera)
       {
         // Fixes Opera's loss of focus after TAB key is pressed.
@@ -766,7 +764,8 @@ pfcClient.prototype = {
         // that executes the default key operation BEFORE the
         // keydown and keypress event handler.
         // This is probably the reason for the "up arrow" issue above.
-        window.setTimeout(function(){tb.focus();}, 0);
+        //window.setTimeout(function(){evt.target.focus();}, 0);
+        evt.target.onblur = function() { this.focus(); this.onblur = null; };
       }
       
       if (evt.returnValue) // IE
@@ -1030,10 +1029,30 @@ pfcClient.prototype = {
   /**
    * insert a smiley
    */
-  insertSmiley: function(s)
+  insertSmiley: function(smiley)
   {
-    this.el_words.value += s;
-    this.el_words.focus();
+    var w = this.el_words;
+    
+    if (w.setSelectionRange) {
+      // Gecko
+      var s = w.selectionStart;
+      var e = w.selectionEnd;
+      w.value = w.value.substring(0, s) + smiley + w.value.substr(e);
+      w.setSelectionRange(s + smiley.length, s + smiley.length);
+      w.focus();
+    }
+    else if (w.createTextRange)
+    {
+      // IE
+      w.focus();
+      document.selection.createRange().text = smiley;
+    }
+    else
+    {
+      // Unsupported browsers get smiley at end of string like old times.
+      w.value += smiley;
+      w.focus();
+    }
   },
 
   updateNickBox: function(nickid)
