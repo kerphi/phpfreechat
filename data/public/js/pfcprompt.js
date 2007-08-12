@@ -27,7 +27,7 @@ pfcPrompt.prototype = {
       this.box.style.zIndex   = 100;
       this.box.style.display  = 'none';
 
-      if (is_ff) {
+      if (is_gecko) {
         this.box.style.overflow = 'auto';
       }
 
@@ -119,7 +119,7 @@ pfcPrompt.prototype = {
   {
     // _doSubmit is called when the user enters or cancels the box.
     var val = this.prompt_field.value;
-    if (is_ff) this.box.focus(); // test is_ff because it doesn't work on KHTML browser, the popup shows infinitly
+    if (is_gecko) this.box.focus(); // test is_ff because it doesn't work on KHTML browser, the popup shows infinitly
     this.box.style.display   = 'none'; // clear out the dialog box
     this.bgbox.style.display = 'none'; // clear out the screen
     this.prompt_field.value  = ''; // clear out the text field

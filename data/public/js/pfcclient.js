@@ -1,3 +1,4 @@
+// Browser detection mostly taken from prototype.js 1.5.1.1.
 var is_ie     = !!(window.attachEvent && !window.opera);
 var is_khtml  = !!(navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML"));
 var is_gecko  = navigator.userAgent.indexOf('Gecko') > -1 && navigator.userAgent.indexOf('KHTML') == -1;
@@ -189,7 +190,6 @@ pfcClient.prototype = {
           trace('handleResponse: '+cmd + "-"+resp+"-"+param);
       }
 
-
     // store the new refresh time
     this.last_response_time = new Date().getTime();
 
@@ -321,10 +321,10 @@ pfcClient.prototype = {
       }
       else if (resp == "notallowed")
       {
-        // when frozen_nick is true and the nickname is allready used, server will return
+        // When frozen_nick is true and the nickname is already used, server will return
         // the 'notallowed' status. It will display a message and stop chat update.
-        // if the chat update is not stopped, this will loop forever 
-        // as long as the forced nickname is not changed
+        // If the chat update is not stopped, this will loop forever 
+        // as long as the forced nickname is not changed.
 
         // display a message
         this.setError(this.res.getLabel('Choosen nickname is not allowed'), Array());
@@ -556,32 +556,32 @@ pfcClient.prototype = {
     var w = this.el_words;
     var wval = w.value;
 
-    // append the string to the history
+    // Append the string to the history.
     this.cmdhistory.push(wval);
     this.cmdhistoryid = this.cmdhistory.length;
     this.cmdhistoryissearching = false;
 
-    // send the string to the server
+    // Send the string to the server.
     re = new RegExp("^(\/[a-zA-Z0-9]+)( (.*)|)");
     if (wval.match(re))
     {
-      // a user command
+      // A user command.
       cmd = wval.replace(re, '$1');
       param = wval.replace(re, '$3');
       this.sendRequest(cmd +' '+ param.substr(0, pfc_max_text_len + 2*this.clientid.length));
     }
     else
     {
-      // a classic 'send' command
+      // A classic 'send' command.
 
-      // empty messages with only spaces
+      // Empty messages with only spaces.
       rx = new RegExp('^[ ]*$','g');
       wval = wval.replace(rx,'');
         
-      // truncate the text length 
+      // Truncate the text length.
       wval = wval.substr(0,pfc_max_text_len);
 
-      // colorize the text with current_text_color
+      // Colorize the text with current_text_color.
       if (this.current_text_color != '' && wval.length != '')
         wval = '[color=#' + this.current_text_color + '] ' + wval + ' [/color]';
 
@@ -592,19 +592,19 @@ pfcClient.prototype = {
   },
 
   /**
-   * Try to complete a nickname like on IRC when pressing the TAB key
-   * Nicks with spaces may not work under certain circumstances
-   * Replacing standards spaces with alternate spaces (e.g., &nbsp;) helps
-   * Gecko browsers convert the &nbsp; to regular spaces
-   * TODO: Move cursor to end of line after nick completion in Konqueror and Webkit browsers
-   * Note: IRC does not allow nicks with spaces
+   * Try to complete a nickname like on IRC when pressing the TAB key.
+   * Nicks with spaces may not work under certain circumstances.
+   * Replacing spaces with alternate spaces (e.g., &nbsp;) helps.
+   * Gecko browsers convert the &nbsp; to regular spaces, so no help for these browsers.
+   * Note: IRC does not allow nicks with spaces, so it's much easier for those clients. :)
+   * @author Gerard Pinzone
    */
   completeNick: function()
   {
     var w = this.el_words;
     var last_space = w.value.lastIndexOf(' ');
     var nick_src = w.value.substring(last_space+1, w.value.length);
-    var non_nick_src = w.value.substring(0,last_space+1);
+    var non_nick_src = w.value.substring(0, last_space+1);
     
     if (nick_src != '')
     {
@@ -641,12 +641,13 @@ pfcClient.prototype = {
         w.value = non_nick_src + nick_src.replace(nick_src, nick_replace);
     }
   },
+  
   /**
    * Cycle to older entry in history
    */
   historyUp: function()
   {
-    // write the previous command in the history
+    // Write the previous command in the history.
     if (this.cmdhistory.length > 0)
     {
       var w = this.el_words;
@@ -665,7 +666,7 @@ pfcClient.prototype = {
    */
   historyDown: function()
   {
-    // write the next command in the history
+    // Write the next command in the history.
     if (this.cmdhistory.length > 0)
     {
       var w = this.el_words;
@@ -684,32 +685,26 @@ pfcClient.prototype = {
   },
 
   /**
-   * Handle the pressed keys
+   * Handle the pressed keys.
    * see also callbackWords_OnKeydown
    */
   callbackWords_OnKeypress: function(evt)
   {
-    // All browsers except for IE should use evt.which
+    // All browsers except for IE should use "evt.which."
     var code = (evt.which) ? evt.which : evt.keyCode;
-    if (code == Event.KEY_TAB) /* tab key */
-    {
-      /* FF & Konqueror workaround : ignore TAB key here */
-      /* do the nickname completion work like on IRC */
-      this.completeNick();
-      return false; /* do not leave the tab key default behavior */
-    }
-    else if (code == Event.KEY_RETURN) /* enter key */
+    if (code == Event.KEY_RETURN) /* ENTER key */
     {
       return this.doSendMessage();
     }
     else
     {
-      /* allow other keys */
+      // Allow other key defaults.
       return true;
     }
   },
+  
   /**
-   * Handle the pressed keys
+   * Handle the pressed keys.
    * see also callbackWords_OnKeypress
    * WARNING: Suppressing defaults on the keydown event 
    *          may prevent keypress and/or keyup events
@@ -720,31 +715,69 @@ pfcClient.prototype = {
     if (!this.isconnected) return false;
     this.clearError(Array(this.el_words));
     var code = (evt.which) ? evt.which : evt.keyCode
-    if (code == 9) /* tab key */
+    if (code == 38 && (is_gecko || is_ie || is_opera || is_webkit)) // up arrow key
     {
-      /* IE workaround : ignore TAB key here */
-      /* do the nickname completion work like on IRC */
-      this.completeNick();
-      return false; /* do not leave the tab key default behavior */
-    }
-    else if (code == 38 && (is_gecko || is_ie || is_opera || is_webkit)) // up arrow key
-    {
-      /* TODO: Fix up arrow issue in Opera */
-      // Konqueror does not work due to keycode conflicts
-      // write the previous command in the history
+      /* TODO: Fix up arrow issue in Opera - may be a bug in Opera. See TAB handler comments below. */
+      /* Konqueror cannot use this feature due to keycode conflicts. */
+      
+      // Write the previous command in the history.
       this.historyUp();
-      return false;  // do not leave the tab key default behavior
+
+      if (evt.returnValue) // IE
+        evt.returnValue = false;
+      if (evt.preventDefault) // DOM
+        evt.preventDefault();
+      return false; // should work in all browsers
     }
     else if (code == 40 && (is_gecko || is_ie || is_opera || is_webkit)) // down arrow key
     {
-      // Konqueror does not work due to keycode conflicts
-      // write the next command in the history
+      /* Konqueror cannot use this feature due to keycode conflicts. */
+      
+      // Write the previous command in the history.
       this.historyDown();
-      return false;  // do not leave the tab key default behavior
+
+      if (evt.returnValue) // IE
+        evt.returnValue = false;
+      if (evt.preventDefault) // DOM
+        evt.preventDefault();
+      return false; // should work in all browsers
+    }
+    else if (code == 9) /* TAB key */
+    {
+      /* Konqueror has the same problem as Webkit (Safari),
+         but setSelectionRange() won't work on 
+         KDE versions <3.5.2.  Therefore, I'm leaving
+         the Webkit fix out for these browsers. */
+
+      // Do nickname completion like on IRC / Unix command line.
+      this.completeNick();
+      
+      var tb = evt.srcElement || evt.target;
+      if (is_webkit)
+      {
+        // Move cursor to end of line for Webkit (Safari).
+        var selEnd = this.el_words.value.length;
+        tb.setSelectionRange(selEnd, selEnd);
+      }
+      if (is_opera)
+      {
+        // Fixes Opera's loss of focus after TAB key is pressed.
+        // This is most likely due to a bug in Opera
+        // that executes the default key operation BEFORE the
+        // keydown and keypress event handler.
+        // This is probably the reason for the "up arrow" issue above.
+        window.setTimeout(function(){tb.focus();}, 0);
+      }
+      
+      if (evt.returnValue) // IE
+        evt.returnValue = false;
+      if (evt.preventDefault) // DOM
+        evt.preventDefault();
+      return false; // Should work in all browsers.
     }
     else
     {
-      /* allow other keys */
+      // Allow other key defaults.
       return true;
     }
   },
