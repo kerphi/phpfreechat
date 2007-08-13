@@ -81,6 +81,8 @@ pfcClient.prototype = {
 // don't use this line because when doing completeNick the "return false" doesn't work (focus is lost)
 //    Event.observe(this.el_words,     'keypress',  this.callbackWords_OnKeypress.bindAsEventListener(this), false);
     Event.observe(this.el_words,     'keydown',   this.callbackWords_OnKeydown.bindAsEventListener(this), false);
+    Event.observe(this.el_words,     'keyup',     this.callbackWords_OnKeyup.bindAsEventListener(this), false);
+    Event.observe(this.el_words,     'mouseup',   this.callbackWords_OnMouseup.bindAsEventListener(this), false);
     Event.observe(this.el_words,     'focus',     this.callbackWords_OnFocus.bindAsEventListener(this), false);
     Event.observe(this.el_handle,    'keydown',   this.callbackHandle_OnKeydown.bindAsEventListener(this), false);
     Event.observe(this.el_handle,    'change',    this.callbackHandle_OnChange.bindAsEventListener(this), false);
@@ -780,6 +782,16 @@ pfcClient.prototype = {
       return true;
     }
   },
+  callbackWords_OnKeyup: function(evt)
+  {
+    // Needed for IE since the text box loses caret position on blur
+    this.storeSelectionPos();
+  },
+  callbackWords_OnMouseup: function(evt)
+  {
+    // Needed for IE since the text box loses caret position on blur
+    this.storeSelectionPos();
+  },
   callbackWords_OnFocus: function(evt)
   {
     //    if (this.el_handle && this.el_handle.value == '' && !this.minmax_status)
@@ -1027,6 +1039,35 @@ pfcClient.prototype = {
   },
 
   /**
+   * Stores the caret position for IE 6.x and 7.x
+   * Code based on: http://www.bazon.net/mishoo/articles.epl?art_id=1292
+   */
+  storeSelectionPos: function()
+  {
+    var w = this.el_words;
+    
+    // IE
+    if (w.createTextRange && document.selection)
+    {
+      // Determine current selection start position.
+      var range = document.selection.createRange();
+      var isCollapsed = range.compareEndPoints("StartToEnd", range) == 0;
+      if (!isCollapsed)
+        range.collapse(true);
+	    var b = range.getBookmark();
+	    w.selStart = b.charCodeAt(2) - b.charCodeAt(0) - 1;
+	
+      // Determine current selection end position.
+      range = document.selection.createRange();
+	    isCollapsed = range.compareEndPoints("StartToEnd", range) == 0;
+      if (!isCollapsed)
+        range.collapse(false);
+      b = range.getBookmark();
+      w.selEnd = b.charCodeAt(2) - b.charCodeAt(0) - 1;
+    }
+  },
+
+  /**
    * insert a smiley
    */
   insertSmiley: function(smiley)
@@ -1045,7 +1086,25 @@ pfcClient.prototype = {
     {
       // IE
       w.focus();
-      document.selection.createRange().text = smiley;
+
+      // Set range based on stored values.
+		  var range = w.createTextRange();
+		  range.collapse(true);
+		  range.moveStart("character", w.selStart);
+		  range.moveEnd("character", w.selEnd - w.selStart);
+		  range.select();
+      
+      //document.selection.createRange().text = smiley;
+      range.text = smiley;
+
+      // Check if internally kept values for selection are initialized.
+      if (w.selStart && w.selEnd)
+      {
+        w.selStart += smiley.length;
+        w.selEnd = w.selStart;
+      }
+      else
+      	this.storeSelectionPos();
     }
     else
     {
