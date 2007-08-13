@@ -1097,14 +1097,10 @@ pfcClient.prototype = {
       //document.selection.createRange().text = smiley;
       range.text = smiley;
 
+      // Increment caret position.
       // Check if internally kept values for selection are initialized.
-      if (w.selStart && w.selEnd)
-      {
-        w.selStart += smiley.length;
-        w.selEnd = w.selStart;
-      }
-      else
-      	this.storeSelectionPos();
+      w.selStart = (w.selStart) ? w.selStart + smiley.length : smiley.length;
+      w.selEnd   = w.selStart;
     }
     else
     {
