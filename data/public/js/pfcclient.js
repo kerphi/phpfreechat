@@ -784,18 +784,21 @@ pfcClient.prototype = {
   },
   callbackWords_OnKeyup: function(evt)
   {
-    // Needed for IE since the text box loses caret position on blur
-    this.storeSelectionPos();
+    // Needed for IE since the text box loses selection/caret position on blur
+    this.storeSelectionPos(this.el_words);
   },
   callbackWords_OnMouseup: function(evt)
   {
-    // Needed for IE since the text box loses caret position on blur
-    this.storeSelectionPos();
+    // Needed for IE since the text box loses selection/caret position on blur
+    this.storeSelectionPos(this.el_words);
   },
   callbackWords_OnFocus: function(evt)
   {
     //    if (this.el_handle && this.el_handle.value == '' && !this.minmax_status)
     //      this.el_handle.focus();
+    
+    // Needed for IE since the text box loses selection/caret position on blur
+    this.setSelectionIE(this.el_words);
   },
   callbackHandle_OnKeydown: function(evt)
   {
@@ -1039,34 +1042,56 @@ pfcClient.prototype = {
   },
 
   /**
-   * Stores the caret position for IE 6.x and 7.x
+   * Stores the caret/selection position for IE 6.x and 7.x
    * Code based on: http://www.bazon.net/mishoo/articles.epl?art_id=1292
    */
-  storeSelectionPos: function()
+  storeSelectionPos: function(obj)
   {
-    var w = this.el_words;
-    
+    // Exit function if browser supports Gecko selection model
+    if (obj.setSelectionRange) return false;
+
     // IE
-    if (w.createTextRange && document.selection)
+    if (obj.createTextRange && document.selection)
     {
       // Determine current selection start position.
       var range = document.selection.createRange();
       var isCollapsed = range.compareEndPoints("StartToEnd", range) == 0;
       if (!isCollapsed)
         range.collapse(true);
-	    var b = range.getBookmark();
-	    w.selStart = b.charCodeAt(2) - b.charCodeAt(0) - 1;
-	
+      var b = range.getBookmark();
+      obj.selStart = b.charCodeAt(2) - b.charCodeAt(0) - 1;
+  
       // Determine current selection end position.
       range = document.selection.createRange();
-	    isCollapsed = range.compareEndPoints("StartToEnd", range) == 0;
+      isCollapsed = range.compareEndPoints("StartToEnd", range) == 0;
       if (!isCollapsed)
         range.collapse(false);
       b = range.getBookmark();
-      w.selEnd = b.charCodeAt(2) - b.charCodeAt(0) - 1;
+      obj.selEnd = b.charCodeAt(2) - b.charCodeAt(0) - 1;
+      
+      return true;
     }
   },
 
+  /**
+   * Sets the selection/caret in the object based on the object's selStart and selEnd parameters.
+   * This is for IE 6.x and 7.x only.
+   */
+  setSelectionIE: function(obj)
+  {
+    // IE - Don't process if browser supports Gecko selection model
+    if (obj.createTextRange && !obj.setSelectionRange)
+    {
+      var range = obj.createTextRange();
+      range.collapse(true);
+      range.moveStart("character", obj.selStart);
+      range.moveEnd("character", obj.selEnd - obj.selStart);
+      range.select();
+    
+      return range;
+    }
+  },
+  
   /**
    * insert a smiley
    */
@@ -1088,11 +1113,7 @@ pfcClient.prototype = {
       w.focus();
 
       // Set range based on stored values.
-		  var range = w.createTextRange();
-		  range.collapse(true);
-		  range.moveStart("character", w.selStart);
-		  range.moveEnd("character", w.selEnd - w.selStart);
-		  range.select();
+      var range = this.setSelectionIE(w);
       
       //document.selection.createRange().text = smiley;
       range.text = smiley;
@@ -1689,6 +1710,7 @@ pfcClient.prototype = {
       content.style.display = 'block';
     }
   },
+
   
   /**
    * BBcode ToolBar
@@ -1704,21 +1726,15 @@ pfcClient.prototype = {
     pfcp.promptifselempty = promptifselempty;
     pfcp.callback = this.insert_text_callback;
 
-    // IE support
-    if (document.selection && document.selection.createRange)
+    // Mozilla support
+    if (msgfield.selectionStart || msgfield.selectionStart == '0')
     {
-      msgfield.focus();
+      var startPos = msgfield.selectionStart;
+      var endPos   = msgfield.selectionEnd;
       
-      // Set range based on stored values.
-		  var range = msgfield.createTextRange();
-		  range.collapse(true);
-		  range.moveStart("character", msgfield.selStart);
-		  range.moveEnd("character", msgfield.selEnd - msgfield.selStart);
-		  range.select();
-      
-      pfcp.sel = range;
-      var text = pfcp.sel.text;
-      if (text == "" && promptifselempty)
+      var text = msgfield.value.substring(startPos, endPos);
+      var extralength = 0;
+      if (startPos == endPos && promptifselempty)
       {
         pfcp.prompt(this.res.getLabel('Enter the text to format'), '');
         pfcp.focus();
@@ -1727,15 +1743,15 @@ pfcClient.prototype = {
         this.insert_text_callback(text,pfcp);
     }
 
-    // Mozilla support
-    else if (msgfield.selectionStart || msgfield.selectionStart == '0')
+    // IE support
+    else if (document.selection && document.selection.createRange)
     {
-      var startPos = msgfield.selectionStart;
-      var endPos   = msgfield.selectionEnd;
+      msgfield.focus();
       
-      var text = msgfield.value.substring(startPos, endPos);
-      var extralength = 0;
-      if (startPos == endPos && promptifselempty)
+      // Set range based on stored values.
+      pfcp.range = this.setSelectionIE(msgfield);
+      var text = pfcp.range.text;
+      if (text == "" && promptifselempty)
       {
         pfcp.prompt(this.res.getLabel('Enter the text to format'), '');
         pfcp.focus();
@@ -1758,24 +1774,10 @@ pfcClient.prototype = {
     var close            = pfcp.close;
     var promptifselempty = pfcp.promptifselempty;
     var msgfield         = pfcp.msgfield;
-    var sel              = pfcp.sel;
-    // IE support
-    if (document.selection && document.selection.createRange)
-    {
-      if (text == null) text = "";
-      if (text.length > 0 || !promptifselempty)
-      {
-        msgfield.focus();
-        sel.text = open + text + close;
-        // @todo move the cursor just after the BBCODE, this doesn't work when the text to enclose is selected, IE6 keeps the whole selection active after the operation.
-        // Increment caret position.
-        // Check if internally kept values for selection are initialized.
-        msgfield.selStart = (msgfield.selStart) ? msgfield.selStart + sel.text.length : sel.text.length;
-        msgfield.selEnd   = msgfield.selStart;
-      }
-    }
+    var range            = pfcp.range;
+
     // Mozilla support
-    else if (msgfield.selectionStart || msgfield.selectionStart == '0')
+    if (msgfield.selectionStart || msgfield.selectionStart == '0')
     {
       var startPos = msgfield.selectionStart;
       var endPos   = msgfield.selectionEnd;
@@ -1789,7 +1791,26 @@ pfcClient.prototype = {
       if (text.length > 0 || !promptifselempty)
       {
         msgfield.value = msgfield.value.substring(0, startPos) + open + text + close + msgfield.value.substring(endPos, msgfield.value.length);
-        msgfield.selectionStart = msgfield.selectionEnd = endPos + open.length + extralength + close.length;
+        var caretPos = endPos + open.length + extralength + close.length;
+        msgfield.setSelectionRange(caretPos, caretPos);
+        msgfield.focus();
+      }
+    }
+    // IE support
+    else if (document.selection && document.selection.createRange)
+    {
+      if (text == null) text = "";
+      if (text.length > 0 || !promptifselempty)
+      {
+        msgfield.focus();
+
+        range.text = open + text + close;
+
+        // Increment caret position.
+        // Check if internally kept values for selection are initialized.
+        msgfield.selStart = (msgfield.selStart) ? msgfield.selStart + open.length + text.length + close.length : open.length + text.length + close.length;
+        msgfield.selEnd   = msgfield.selStart;
+
         msgfield.focus();
       }
     }
