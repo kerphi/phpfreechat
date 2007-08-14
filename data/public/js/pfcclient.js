@@ -1708,7 +1708,15 @@ pfcClient.prototype = {
     if (document.selection && document.selection.createRange)
     {
       msgfield.focus();
-      pfcp.sel = document.selection.createRange();
+      
+      // Set range based on stored values.
+		  var range = msgfield.createTextRange();
+		  range.collapse(true);
+		  range.moveStart("character", msgfield.selStart);
+		  range.moveEnd("character", msgfield.selEnd - msgfield.selStart);
+		  range.select();
+      
+      pfcp.sel = range;
       var text = pfcp.sel.text;
       if (text == "" && promptifselempty)
       {
@@ -1757,9 +1765,13 @@ pfcClient.prototype = {
       if (text == null) text = "";
       if (text.length > 0 || !promptifselempty)
       {
+        msgfield.focus();
         sel.text = open + text + close;
         // @todo move the cursor just after the BBCODE, this doesn't work when the text to enclose is selected, IE6 keeps the whole selection active after the operation.
-        msgfield.focus();
+        // Increment caret position.
+        // Check if internally kept values for selection are initialized.
+        msgfield.selStart = (msgfield.selStart) ? msgfield.selStart + sel.text.length : sel.text.length;
+        msgfield.selEnd   = msgfield.selStart;
       }
     }
     // Mozilla support
