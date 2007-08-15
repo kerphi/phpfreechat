@@ -318,8 +318,8 @@ pfcClient.prototype = {
       }
       else if (resp == "isused")
       {
-        this.setError(this.res.getLabel('Choosen nickname is already used'), Array());
-        this.askNick(param,this.res.getLabel('Choosen nickname is already used'));
+        this.setError(this.res.getLabel('Chosen nickname is already used'), Array());
+        this.askNick(param,this.res.getLabel('Chosen nickname is already used'));
       }
       else if (resp == "notallowed")
       {
@@ -329,7 +329,7 @@ pfcClient.prototype = {
         // as long as the forced nickname is not changed.
 
         // display a message
-        this.setError(this.res.getLabel('Choosen nickname is not allowed'), Array());
+        this.setError(this.res.getLabel('Chosen nickname is not allowed'), Array());
         // then stop chat updates
         this.updateChat(false);
         this.isconnected = false;

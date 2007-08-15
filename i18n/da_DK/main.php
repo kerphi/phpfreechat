@@ -291,7 +291,7 @@ $GLOBALS["i18n"]["Configuration has been rehashed"] = "Konfigurationen er blevet
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "Der opstår et problem under rehash";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is already used"] = "Det valgte chatnavn er allerede i brug";
+$GLOBALS["i18n"]["Chosen nickname is already used"] = "Det valgte chatnavn er allerede i brug";
 
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "phpfreechat nuværende version er %s";
@@ -313,7 +313,7 @@ $GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "";
 $GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "";
 
 // line 474 in phpfreechat.class.php
-$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "";
+$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "";
 
 // line 475 in phpfreechat.class.php
 $GLOBALS["i18n"]["Enable sound notifications"] = "";

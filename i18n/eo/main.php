@@ -298,7 +298,7 @@ $GLOBALS["i18n"]["Configuration has been rehashed"] = "";
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "";
 
 // line 74 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is already used"] = "";
+$GLOBALS["i18n"]["Chosen nickname is already used"] = "";
 
 // line 75 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "";
@@ -322,7 +322,7 @@ $GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "";
 $GLOBALS["i18n"]["Close"] = "";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "";
+$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "";
 
 // line 83 in chat.js.tpl.php
 $GLOBALS["i18n"]["Enable sound notifications"] = "";

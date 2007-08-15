@@ -444,7 +444,7 @@ class phpFreeChat
              "Enter the text to format", // _pfc
              "Configuration has been rehashed", // _pfc
              "A problem occurs during rehash", // _pfc
-             "Choosen nickname is already used", // _pfc
+             "Chosen nickname is already used", // _pfc
              "phpfreechat current version is %s", // _pfc
              "Maximum number of joined channels has been reached", // _pfc
              "Maximum number of private chat has been reached", // _pfc
@@ -452,7 +452,7 @@ class phpFreeChat
              "Send", // _pfc
              "You are not allowed to speak to yourself", // _pfc
              "Close", // _pfc
-             "Choosen nickname is not allowed", // _pfc
+             "Chosen nickname is not allowed", // _pfc
              "Enable sound notifications", // _pfc
              "Disable sound notifications", // _pfc
              "Input Required", // _pfc

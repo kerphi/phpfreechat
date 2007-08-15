@@ -294,7 +294,7 @@ $GLOBALS["i18n"]["Configuration has been rehashed"] = "Փոփոխություն�
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "Վերաբեռնավորման ընթացքում սխալ տեղի ունեցավ";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is already used"] = "Ընտրված ծածկանունն արդեն զբաղված է";
+$GLOBALS["i18n"]["Chosen nickname is already used"] = "Ընտրված ծածկանունն արդեն զբաղված է";
 
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "phpfreechat-ի ներկա տարբերակը` %s";
@@ -322,7 +322,7 @@ $GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "";
 $GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "";
+$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "";
 
 // line 83 in chat.js.tpl.php
 $GLOBALS["i18n"]["Enable sound notifications"] = "";

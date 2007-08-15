@@ -292,7 +292,7 @@ $GLOBALS["i18n"]["Configuration has been rehashed"] = "Các thay đổi đã đ�
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "Không cập nhật được các thay đổi";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is already used"] = "Tên truy cập này đã được sử dụng";
+$GLOBALS["i18n"]["Chosen nickname is already used"] = "Tên truy cập này đã được sử dụng";
 
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "Phiên bản hiện thời của PFC là %s";
@@ -319,7 +319,7 @@ $GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Lỗi Mysql: kh�
 $GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "Bạn không được phép tự chat một mình";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "Tên truy cập không được chấp nhận";
+$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "Tên truy cập không được chấp nhận";
 
 // line 83 in chat.js.tpl.php
 $GLOBALS["i18n"]["Enable sound notifications"] = "Bật chức năng thông báo bằng âm thanh";

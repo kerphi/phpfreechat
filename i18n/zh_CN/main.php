@@ -294,7 +294,7 @@ $GLOBALS["i18n"]["Configuration has been rehashed"] = "设置已被更新";
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "更新时发生了错误";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is already used"] = "您选择的昵称已经被别人使用了";
+$GLOBALS["i18n"]["Chosen nickname is already used"] = "您选择的昵称已经被别人使用了";
 
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "phpfreechat 当前版本是 %s";
@@ -321,7 +321,7 @@ $GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Mysql 容器: �
 $GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "您不能对自己说话";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "所选昵称已被禁用";
+$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "所选昵称已被禁用";
 
 // line 83 in chat.js.tpl.php
 $GLOBALS["i18n"]["Enable sound notifications"] = "启用声音通知";

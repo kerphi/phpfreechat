@@ -296,7 +296,7 @@ $GLOBALS["i18n"]["Configuration has been rehashed"] = "Konfigurationen är uppda
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "Ett problem inträffade vid uppdateringen";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is already used"] = "Vald alias används";
+$GLOBALS["i18n"]["Chosen nickname is already used"] = "Vald alias används";
 
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "phpfreechat - chat, version: %s";
@@ -327,7 +327,7 @@ $GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Mysql container:
 $GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "Ehmm.. Du kan inte prata med dig själv";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "Vald alias är inte tillåten";
+$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "Vald alias är inte tillåten";
 
 // line 83 in chat.js.tpl.php
 $GLOBALS["i18n"]["Enable sound notifications"] = "Tillåt ljud";
