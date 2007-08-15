@@ -798,7 +798,7 @@ pfcClient.prototype = {
     //      this.el_handle.focus();
     
     // Needed for IE since the text box loses selection/caret position on blur
-    this.setSelectionIE(this.el_words);
+    this.setSelection(this.el_words);
   },
   callbackHandle_OnKeydown: function(evt)
   {
@@ -1043,15 +1043,25 @@ pfcClient.prototype = {
 
   /**
    * Stores the caret/selection position for IE 6.x and 7.x
+   * Returns true if text range start and end values were updated.
    * Code based on: http://www.bazon.net/mishoo/articles.epl?art_id=1292
    */
   storeSelectionPos: function(obj)
   {
-    // Exit function if browser supports Gecko selection model
-    if (obj.setSelectionRange) return false;
-
+    // We don't need to store the start and end positions if the browser
+    // supports the Gecko selection model. However, these values may be
+    // useful for debugging. Also, Opera recognizes Gecko and IE range
+    // commands, so we need to ensure Opera only uses the Gecko model.
+    if (obj.setSelectionRange) 
+    {
+      obj.selStart = obj.selectionStart;
+      obj.selEnd   = obj.selectionEnd;
+      
+      return true;
+    }
+    
     // IE
-    if (obj.createTextRange && document.selection)
+    else if (obj.createTextRange && document.selection)
     {
       // Determine current selection start position.
       var range = document.selection.createRange();
@@ -1071,16 +1081,31 @@ pfcClient.prototype = {
       
       return true;
     }
+    
+    // Browser does not support selection range processing.
+    else
+      return false;
   },
 
   /**
-   * Sets the selection/caret in the object based on the object's selStart and selEnd parameters.
-   * This is for IE 6.x and 7.x only.
+   * Sets the selection/caret in the object based on the
+   * object's selStart and selEnd parameters.
+   * This should only be needed for IE only.
    */
-  setSelectionIE: function(obj)
+  setSelection: function(obj)
   {
-    // IE - Don't process if browser supports Gecko selection model
-    if (obj.createTextRange && !obj.setSelectionRange)
+    // This part of the function is included to prevent
+    // Opera from executing the IE portion.
+    /* WARNING: Do not attempt to use this function as
+       a wrapper for the Gekco based setSelectionRange.
+       It causes problems in Opera when executed from
+       the event trigger onFocus. */
+    if (obj.setSelectionRange)
+    {
+      return null;
+    }  
+    // IE
+    else if (obj.createTextRange)
     {
       var range = obj.createTextRange();
       range.collapse(true);
@@ -1090,16 +1115,21 @@ pfcClient.prototype = {
     
       return range;
     }
+    // Browser does not support selection range processing.
+    else
+      return null;
   },
   
   /**
    * insert a smiley
+   * TODO: Merge functionality into "insert_text" function and eliminate.
    */
   insertSmiley: function(smiley)
   {
     var w = this.el_words;
     
-    if (w.setSelectionRange) {
+    if (w.setSelectionRange)
+    {
       // Gecko
       var s = w.selectionStart;
       var e = w.selectionEnd;
@@ -1112,13 +1142,12 @@ pfcClient.prototype = {
       // IE
       w.focus();
 
-      // Set range based on stored values.
-      var range = this.setSelectionIE(w);
+      // Get range based on stored values.
+      var range = this.setSelection(w);
       
-      //document.selection.createRange().text = smiley;
       range.text = smiley;
 
-      // Increment caret position.
+      // Move caret position to end of smiley and collapse selection, if any.
       // Check if internally kept values for selection are initialized.
       w.selStart = (w.selStart) ? w.selStart + smiley.length : smiley.length;
       w.selEnd   = w.selStart;
@@ -1677,7 +1706,6 @@ pfcClient.prototype = {
   },
 
 
-
   /**
    * Minimize/Maximized the chat zone
    */
@@ -1726,30 +1754,31 @@ pfcClient.prototype = {
     pfcp.promptifselempty = promptifselempty;
     pfcp.callback = this.insert_text_callback;
 
-    // Mozilla support
+    // Gecko
+    /* Always check for Gecko selection processing commands
+       first. This is needed for Opera. */
     if (msgfield.selectionStart || msgfield.selectionStart == '0')
     {
       var startPos = msgfield.selectionStart;
       var endPos   = msgfield.selectionEnd;
       
       var text = msgfield.value.substring(startPos, endPos);
-      var extralength = 0;
       if (startPos == endPos && promptifselempty)
       {
         pfcp.prompt(this.res.getLabel('Enter the text to format'), '');
         pfcp.focus();
       }
       else
-        this.insert_text_callback(text,pfcp);
+        this.insert_text_callback(text, pfcp);
     }
 
-    // IE support
+    // IE
     else if (document.selection && document.selection.createRange)
     {
       msgfield.focus();
       
-      // Set range based on stored values.
-      pfcp.range = this.setSelectionIE(msgfield);
+      // Get selection range.
+      pfcp.range = this.setSelection(msgfield);
       var text = pfcp.range.text;
       if (text == "" && promptifselempty)
       {
@@ -1757,7 +1786,7 @@ pfcClient.prototype = {
         pfcp.focus();
       }
       else
-        this.insert_text_callback(text,pfcp);
+        this.insert_text_callback(text, pfcp);
     }
     
     // Fallback support for other browsers
@@ -1768,7 +1797,7 @@ pfcClient.prototype = {
     }
     return;
   },
-  insert_text_callback: function(text,pfcp)
+  insert_text_callback: function(text, pfcp)
   {
     var open             = pfcp.open;
     var close            = pfcp.close;
@@ -1776,7 +1805,9 @@ pfcClient.prototype = {
     var msgfield         = pfcp.msgfield;
     var range            = pfcp.range;
 
-    // Mozilla support
+    // Gecko
+    /* Always check for Gecko selection processing commands
+       first. This is needed for Opera. */
     if (msgfield.selectionStart || msgfield.selectionStart == '0')
     {
       var startPos = msgfield.selectionStart;
@@ -1796,7 +1827,7 @@ pfcClient.prototype = {
         msgfield.focus();
       }
     }
-    // IE support
+    // IE
     else if (document.selection && document.selection.createRange)
     {
       if (text == null) text = "";
