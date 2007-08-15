@@ -193,7 +193,7 @@ class pfcGlobalConfig
     else
       $this->data_private_path = $params["data_private_path"];
     
-    // check if a cached configuration allready exists
+    // check if a cached configuration already exists
     // don't load parameters if the cache exists
     $cachefile = $this->_GetCacheFile();    
     if (!file_exists($cachefile))

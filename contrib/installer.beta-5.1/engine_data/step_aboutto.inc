@@ -4,7 +4,7 @@ $gpvpath = $gpvobj->path();
 
 if(is_dir($gpvobj->is_writable())){
 	echo <<<HTML
-	<p><b>The directory you chose ($gpvpath) allready exists. 
+	<p><b>The directory you chose ($gpvpath) already exists. 
 	This isn't a really bad thing, but a few errors may appear because the
 	directories all ready exist, and any files in the list below will be overwritten.</b></p>
 HTML;

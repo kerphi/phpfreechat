@@ -444,7 +444,7 @@ class phpFreeChat
              "Enter the text to format", // _pfc
              "Configuration has been rehashed", // _pfc
              "A problem occurs during rehash", // _pfc
-             "Choosen nickname is allready used", // _pfc
+             "Choosen nickname is already used", // _pfc
              "phpfreechat current version is %s", // _pfc
              "Maximum number of joined channels has been reached", // _pfc
              "Maximum number of private chat has been reached", // _pfc

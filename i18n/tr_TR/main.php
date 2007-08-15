@@ -292,7 +292,7 @@ $GLOBALS["i18n"]["Configuration has been rehashed"] = "Ayarlar tekrar okundu";
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "Tekrar okuma sırasında hata";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is allready used"] = "Seçtiğiniz takma ad başkası tarafından kullanılmakta";
+$GLOBALS["i18n"]["Choosen nickname is already used"] = "Seçtiğiniz takma ad başkası tarafından kullanılmakta";
 
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "Şu anki phpfreechat versiyonu %s";

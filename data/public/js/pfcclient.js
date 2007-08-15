@@ -318,8 +318,8 @@ pfcClient.prototype = {
       }
       else if (resp == "isused")
       {
-        this.setError(this.res.getLabel('Choosen nickname is allready used'), Array());
-        this.askNick(param,this.res.getLabel('Choosen nickname is allready used'));
+        this.setError(this.res.getLabel('Choosen nickname is already used'), Array());
+        this.askNick(param,this.res.getLabel('Choosen nickname is already used'));
       }
       else if (resp == "notallowed")
       {
@@ -1498,17 +1498,17 @@ pfcClient.prototype = {
   getAndAssignNickColor: function(nick)
   {
     /* check the nickname is colorized or not */
-    var allready_colorized = false;
+    var already_colorized = false;
     var nc = '';
-    for(var j = 0; j < this.nickcolor.length && !allready_colorized; j++)
+    for(var j = 0; j < this.nickcolor.length && !already_colorized; j++)
     {
       if (this.nickcolor[j][0] == nick)
       {
-        allready_colorized = true;
+        already_colorized = true;
         nc = this.nickcolor[j][1];
       }
     }
-    if (!allready_colorized)
+    if (!already_colorized)
     {
       /* reload the color stack if it's empty */
       if (this.colorlist.length == 0) this.reloadColorList();

@@ -11,7 +11,7 @@ class pfcInfo
   
   function pfcInfo( $serverid, $data_private_path = "" )
   {
-    // check if the cache allready exists
+    // check if the cache already exists
     // if it doesn't exists, just stop the process
     // because we can't initialize the chat from the external API
     if ($data_private_path == "") $data_private_path = dirname(__FILE__)."/../data/private";

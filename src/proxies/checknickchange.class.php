@@ -83,7 +83,7 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
         else
           $xml_reponse->script("pfc.handleResponse('nick', 'isused', '".addslashes($newnick)."');");
         if ($c->debug)
-          pxlog("/nick ".$newnick." (wanted nick is allready in use -> wantednickid=".$newnickid.")", "chat", $c->getId());
+          pxlog("/nick ".$newnick." (wanted nick is already in use -> wantednickid=".$newnickid.")", "chat", $c->getId());
         return false;
       }
     }

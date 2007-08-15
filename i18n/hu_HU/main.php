@@ -294,7 +294,7 @@ $GLOBALS["i18n"]["Configuration has been rehashed"] = "A beállításokat újra 
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "Probléma akadt az újra hash-elés közben";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is allready used"] = "A választott becenevet már valaki használja";
+$GLOBALS["i18n"]["Choosen nickname is already used"] = "A választott becenevet már valaki használja";
 
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "phpfreechat aktuális verziója: %s";

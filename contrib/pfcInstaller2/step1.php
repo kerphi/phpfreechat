@@ -38,7 +38,7 @@
  <?php }?>
 
 <?php } else { ?>
-<p>phpfreechat (<?php echo $archivename2; ?>) is allready installed <a href="./data/<?php echo $archivename2; ?>">here</a>.</p>
+<p>phpfreechat (<?php echo $archivename2; ?>) is already installed <a href="./data/<?php echo $archivename2; ?>">here</a>.</p>
 <?php } ?>
 
 

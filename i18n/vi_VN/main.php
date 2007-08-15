@@ -292,7 +292,7 @@ $GLOBALS["i18n"]["Configuration has been rehashed"] = "Các thay đổi đã đ�
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "Không cập nhật được các thay đổi";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is allready used"] = "Tên truy cập này đã được sử dụng";
+$GLOBALS["i18n"]["Choosen nickname is already used"] = "Tên truy cập này đã được sử dụng";
 
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "Phiên bản hiện thời của PFC là %s";

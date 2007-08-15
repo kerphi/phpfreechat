@@ -297,7 +297,7 @@ $GLOBALS["i18n"]["Configuration has been rehashed"] = "Конфигурация 
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "Произошла ошибка при перехешировании";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is allready used"] = "Выбраний ник уже используется";
+$GLOBALS["i18n"]["Choosen nickname is already used"] = "Выбраний ник уже используется";
 
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "Текущая версия phpfreechat - %s";
