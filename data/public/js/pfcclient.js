@@ -604,10 +604,30 @@ pfcClient.prototype = {
   completeNick: function()
   {
     var w = this.el_words;
-    var last_space = w.value.lastIndexOf(' ');
-    var nick_src = w.value.substring(last_space+1, w.value.length);
-    var non_nick_src = w.value.substring(0, last_space+1);
+    var selStart = w.value.length; // Default for browsers that don't support selection/caret position commands.
+    var selEnd = selStart;
     
+    // Get selection/caret position.
+    if (w.setSelectionRange) 
+    {
+      // We don't rely on the stored values for browsers that support
+      // the selectionStart and selectionEnd commands.
+      selStart = w.selectionStart;
+      selEnd   = w.selectionEnd;
+    }
+    else if (w.createTextRange && document.selection)
+    {
+      // We must rely on the stored values for IE browsers.
+      selStart = (w.selStart != null) ? w.selStart : w.value.length;
+      selEnd   = (w.selEnd != null) ? w.selEnd : w.value.length;
+    }
+    
+    var begin          = w.value.lastIndexOf(' ', selStart - 1) + 1;
+    var end            = (w.value.indexOf(' ', selStart) >= 0) ? w.value.indexOf(' ', selStart) : w.value.length;
+    var nick_src       = w.value.substring(begin, end);
+    var non_nick_begin = w.value.substring(0, begin);
+    var non_nick_end   = w.value.substring(end, w.value.length);
+
     if (nick_src != '')
     {
       var tabid = this.gui.getTabId();
@@ -641,15 +661,14 @@ pfcClient.prototype = {
       }
       if (nick_match)
       {
-        w.value = non_nick_src + nick_src.replace(nick_src, nick_replace);
-        // Move cursor to end of line.
-        // This fixes Webkit (Safari) and hopefully newer Konqueror releases.
-        /* Konqueror does not support setSelectionRange() on KDE versions <3.5.2. */
+        w.value = non_nick_begin + nick_src.replace(nick_src, nick_replace) + non_nick_end;
+        w.selStart = w.selEnd = non_nick_begin.length + nick_replace.length;
+        
+        // Move cursor to end of completed nick.
         if (w.setSelectionRange)
-        {
-          var selEnd = w.value.length;
-          w.setSelectionRange(selEnd, selEnd);
-        }
+          w.setSelectionRange(w.selEnd, w.selEnd); // Gecko
+        else
+          this.setSelection(w);  // IE
       }
     }
   },
