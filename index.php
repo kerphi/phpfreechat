@@ -95,7 +95,7 @@ $chat = new phpFreeChat( $params );
       </ul>
       <p class="partner">
         <a href="http://www.phpfreechat.net"><img alt="phpfreechat.net" src="style/logo_88x31.gif" /></a><br/>
-        <a href="http://sourceforge.net/projects/phpfreechat"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=158880&amp;type=1" alt="SourceForge.net Logo" height="31px" width="88px" /></a><br/><br/>
+        <a href="http://sourceforge.net/projects/phpfreechat"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=158880&amp;type=1" alt="SourceForge.net Logo" height="31" width="88" /></a><br/><br/>
         <a href="http://www.hotscripts.com/?RID=N452772">hotscripts.com</a><br/>
         <a href="http://www.jeu-gratuit.net/">jeu-gratuit.net</a><br/>
         <a href="http://www.pronofun.com/">pronofun.com</a><br/>
