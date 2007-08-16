@@ -5,7 +5,7 @@ var pfcPrompt = Class.create();
 pfcPrompt.prototype = { 
   initialize: function(container)
   {
-    if (container == undefined || is_ie)
+    if (container == undefined || (is_ie && !is_ie7))
       container = document.getElementsByTagName('body')[0];
     this.container    = container;
     this.box          = $('pfc_promptbox');
@@ -102,8 +102,18 @@ pfcPrompt.prototype = {
     var pos = this._findPos(this.container);
     this.bgbox.style.top     = pos[1]+'px';
     this.bgbox.style.left    = pos[0]+'px';
-    this.bgbox.style.height  = this.container.offsetHeight+'px';
-    this.bgbox.style.width   = this.container.offsetWidth+'px';
+    /* Some older IE browsers (e.g., IE 5.5) need scrollHeight/scrollWidth.
+       See: http://www.quirksmode.org/viewport/compatibility.html */
+    if (this.container.scrollHeight > this.container.offsetHeight)
+    {
+      this.bgbox.style.height  = this.container.scrollHeight+'px';
+      this.bgbox.style.width   = this.container.scrollWidth+'px';
+    }
+    else
+    {
+      this.bgbox.style.height  = this.container.offsetHeight+'px';
+      this.bgbox.style.width   = this.container.offsetWidth+'px';
+    }
     this.bgbox.style.display = 'block';
 
     // Position the dialog box on the screen and make it visible.
@@ -132,13 +142,13 @@ pfcPrompt.prototype = {
 
   _findPos: function(obj)
   {
-	  var curleft = curtop = 0;
+    var curleft = curtop = 0;
     if (obj.offsetParent) {
-  	  curleft = obj.offsetLeft;
-	  	curtop = obj.offsetTop;
-		  while (obj = obj.offsetParent) {
+      curleft = obj.offsetLeft;
+      curtop = obj.offsetTop;
+      while (obj = obj.offsetParent) {
         curleft += obj.offsetLeft;
-			  curtop += obj.offsetTop;
+        curtop += obj.offsetTop;
       }
     }
     return [curleft,curtop];
