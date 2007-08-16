@@ -119,7 +119,7 @@ pfcPrompt.prototype = {
   {
     // _doSubmit is called when the user enters or cancels the box.
     var val = this.prompt_field.value;
-    if (is_gecko) this.box.focus(); // test is_ff because it doesn't work on KHTML browser, the popup shows infinitly
+    if (is_gecko) this.box.focus(); // test is_gecko because it doesn't work on KHTML browser, the popup shows infinitly
     this.box.style.display   = 'none'; // clear out the dialog box
     this.bgbox.style.display = 'none'; // clear out the screen
     this.prompt_field.value  = ''; // clear out the text field

@@ -31,7 +31,6 @@ pfcClient.prototype = {
 
     // this array contains all the sent commands
     // use the up and down arrow key to navigate through the history
-    // may not work in Safari 1.3
     this.cmdhistory   = Array();
     this.cmdhistoryid = -1;
     this.cmdhistoryissearching = false;
@@ -1071,6 +1070,8 @@ pfcClient.prototype = {
     // supports the Gecko selection model. However, these values may be
     // useful for debugging. Also, Opera recognizes Gecko and IE range
     // commands, so we need to ensure Opera only uses the Gecko model.
+    /* WARNING: Do not use this for textareas. They require a more
+                complex algorithm. */
     if (obj.setSelectionRange) 
     {
       obj.selStart = obj.selectionStart;
@@ -1141,7 +1142,6 @@ pfcClient.prototype = {
   
   /**
    * insert a smiley
-   * TODO: Merge functionality into "insert_text" function and eliminate.
    */
   insertSmiley: function(smiley)
   {
