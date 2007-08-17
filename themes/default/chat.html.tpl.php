@@ -95,46 +95,52 @@
     </div>
 
     <div id="pfc_bbcode_container">
-      <div class="pfc_btn">
+      <div id="pfc_bt_strong_btn" class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('images/bt_strong.gif'); ?>"
+             id="pfc_bt_strong"
              alt="<?php echo _pfc("Bold"); ?>"
              title="<?php echo _pfc("Bold"); ?>"
              class="pfc_bt_strong"
              onclick="pfc.insert_text('[b]','[/b]',true)" />
       </div>
-      <div class="pfc_btn">
+      <div id="pfc_bt_italics_btn" class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('images/bt_em.gif'); ?>"
+             id="pfc_bt_italics"
              alt="<?php echo _pfc("Italics"); ?>"
              title="<?php echo _pfc("Italics"); ?>"
-             class="pfc_bt_strong"
+             class="pfc_bt_italics"
              onclick="pfc.insert_text('[i]','[/i]',true)" />
       </div>
-      <div class="pfc_btn">
+      <div id="pfc_bt_underline_btn" class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('images/bt_ins.gif'); ?>"
+             id="pfc_bt_underline"
              alt="<?php echo _pfc("Underline"); ?>"
              title="<?php echo _pfc("Underline"); ?>"
-             class="pfc_bt_strong"
+             class="pfc_bt_underline"
              onclick="pfc.insert_text('[u]','[/u]',true)" />
       </div>
-      <div class="pfc_btn">
+      <div id="pfc_bt_delete_btn" class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('images/bt_del.gif'); ?>"
+             id="pfc_bt_delete"
              alt="<?php echo _pfc("Delete"); ?>"
              title="<?php echo _pfc("Delete"); ?>"
-             class="pfc_bt_strong"
+             class="pfc_bt_delete"
              onclick="pfc.insert_text('[s]','[/s]',true)" />
       </div>
-      <div class="pfc_btn">
+      <div id="pfc_bt_mail_btn" class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('images/bt_mail.gif'); ?>"
+             id="pfc_bt_mail"
              alt="<?php echo _pfc("Mail"); ?>"
              title="<?php echo _pfc("Mail"); ?>"
-             class="pfc_bt_strong"
+             class="pfc_bt_mail"
              onclick="pfc.insert_text('[email]','[/email]',true)" />
       </div>
-      <div class="pfc_btn">
+      <div id="pfc_bt_color_btn" class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('images/bt_color.gif'); ?>"
              alt="<?php echo _pfc("Color"); ?>"
              title="<?php echo _pfc("Color"); ?>"
              id="pfc_bt_color"
+             class="pfc_bt_color"
              onclick="pfc.minimize_maximize('pfc_colorlist','inline')" />
       </div>
       <div id="pfc_colorlist"></div>

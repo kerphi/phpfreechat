@@ -680,9 +680,11 @@ pfcGui.prototype = {
 
     // bbcode del
     var btn = document.createElement('div');
+    btn.setAttribute('id', 'pfc_bt_delete_btn');
     btn.setAttribute('class', 'pfc_btn')
     btn.setAttribute('className', 'pfc_btn'); // for IE6
     var img = document.createElement('img');
+    img.setAttribute('id', 'pfc_bt_delete');
     img.setAttribute('class', 'pfc_bt_delete');
     img.setAttribute('className', 'pfc_bt_delete'); // for IE6
     img.setAttribute('title', pfc.res.getLabel("Delete"));
