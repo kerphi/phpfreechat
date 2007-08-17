@@ -552,6 +552,7 @@ pfcGui.prototype = {
 
     // button login/logout
     var btn = document.createElement('div');
+    btn.setAttribute('id', 'pfc_loginlogout_btn');
     btn.setAttribute('class', 'pfc_btn')
     btn.setAttribute('className', 'pfc_btn'); // for IE6
     var img = document.createElement('img');
@@ -563,6 +564,7 @@ pfcGui.prototype = {
 
     // button nickname color on/off
     var btn = document.createElement('div');
+    btn.setAttribute('id', 'pfc_nickmarker_btn');
     btn.setAttribute('class', 'pfc_btn');
     btn.setAttribute('className', 'pfc_btn'); // for IE6
     var img = document.createElement('img');
@@ -574,6 +576,7 @@ pfcGui.prototype = {
  
     // button clock on/off
     var btn = document.createElement('div');
+    btn.setAttribute('id', 'pfc_clock_btn');
     btn.setAttribute('class', 'pfc_btn');
     btn.setAttribute('className', 'pfc_btn'); // for IE6
     var img = document.createElement('img');
@@ -585,6 +588,7 @@ pfcGui.prototype = {
 
     // button sound on/off
     var btn = document.createElement('div');
+    btn.setAttribute('id', 'pfc_sound_btn');
     btn.setAttribute('class', 'pfc_btn');
     btn.setAttribute('className', 'pfc_btn'); // for IE6
     var img = document.createElement('img');
@@ -598,6 +602,7 @@ pfcGui.prototype = {
     if (pfc_btn_sh_smileys)
     {
       var btn = document.createElement('div');
+      btn.setAttribute('id', 'pfc_showHideSmileysbtn_btn');
       btn.setAttribute('class', 'pfc_btn');
       btn.setAttribute('className', 'pfc_btn'); // for IE6
       var img = document.createElement('img');
@@ -612,6 +617,7 @@ pfcGui.prototype = {
     if (pfc_btn_sh_whosonline)
     {
       var btn = document.createElement('div');
+      btn.setAttribute('id', 'pfc_showHideWhosOnlineBtn_btn');
       btn.setAttribute('class', 'pfc_btn');
       btn.setAttribute('className', 'pfc_btn'); // for IE6
       var img = document.createElement('img');
@@ -629,9 +635,11 @@ pfcGui.prototype = {
 
     // bbcode strong
     var btn = document.createElement('div');
+    btn.setAttribute('id', 'pfc_bt_strong_btn');
     btn.setAttribute('class', 'pfc_btn');
     btn.setAttribute('className', 'pfc_btn'); // for IE6
     var img = document.createElement('img');
+    img.setAttribute('id', 'pfc_bt_strong');
     img.setAttribute('class', 'pfc_bt_strong');
     img.setAttribute('className', 'pfc_bt_strong'); // for IE6
     img.setAttribute('title', pfc.res.getLabel("Bold"));
@@ -642,9 +650,11 @@ pfcGui.prototype = {
 
     // bbcode italics
     var btn = document.createElement('div');
+    btn.setAttribute('id', 'pfc_bt_italics_btn');
     btn.setAttribute('class', 'pfc_btn');
     btn.setAttribute('className', 'pfc_btn'); // for IE6
     var img = document.createElement('img');
+    img.setAttribute('id', 'pfc_bt_italics');
     img.setAttribute('class', 'pfc_bt_italics');
     img.setAttribute('className', 'pfc_bt_italics'); // for IE6
     img.setAttribute('title', pfc.res.getLabel("Italics"));
@@ -655,9 +665,11 @@ pfcGui.prototype = {
 
     // bbcode underline
     var btn = document.createElement('div');
+    btn.setAttribute('id', 'pfc_bt_underline_btn');
     btn.setAttribute('class', 'pfc_btn');
     btn.setAttribute('className', 'pfc_btn'); // for IE6
     var img = document.createElement('img');
+    img.setAttribute('id', 'pfc_bt_underline');
     img.setAttribute('class', 'pfc_bt_underline');
     img.setAttribute('className', 'pfc_bt_underline'); // for IE6
     img.setAttribute('title', pfc.res.getLabel("Underline"));
@@ -681,9 +693,11 @@ pfcGui.prototype = {
 
     // bbcode mail
     var btn = document.createElement('div');
+    btn.setAttribute('id', 'pfc_bt_mail_btn');
     btn.setAttribute('class', 'pfc_btn');
     btn.setAttribute('className', 'pfc_btn'); // for IE6
     var img = document.createElement('img');
+    img.setAttribute('id', 'pfc_bt_mail');
     img.setAttribute('class', 'pfc_bt_mail');
     img.setAttribute('className', 'pfc_bt_mail'); // for IE6
     img.setAttribute('title', pfc.res.getLabel("Mail"));
@@ -694,9 +708,11 @@ pfcGui.prototype = {
 
     // bbcode color
     var btn = document.createElement('div');
+    btn.setAttribute('id', 'pfc_bt_color_btn');
     btn.setAttribute('class', 'pfc_btn');
     btn.setAttribute('className', 'pfc_btn'); // for IE6
     var img = document.createElement('img');
+    img.setAttribute('id', 'pfc_bt_color');
     img.setAttribute('class', 'pfc_bt_color');
     img.setAttribute('className', 'pfc_bt_color'); // for IE6
     img.setAttribute('title', pfc.res.getLabel("Color"));
