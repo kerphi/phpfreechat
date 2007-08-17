@@ -104,7 +104,8 @@ pfcPrompt.prototype = {
     this.bgbox.style.left    = pos[0]+'px';
     /* Some older IE browsers (e.g., IE 5.5) need scrollHeight/scrollWidth.
        See: http://www.quirksmode.org/viewport/compatibility.html */
-    if (this.container.scrollHeight > this.container.offsetHeight)
+    if (this.container.scrollHeight > this.container.offsetHeight
+          || this.container.scrollWidth > this.container.offsetWidth)
     {
       this.bgbox.style.height  = this.container.scrollHeight+'px';
       this.bgbox.style.width   = this.container.scrollWidth+'px';
