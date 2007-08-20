@@ -13,7 +13,7 @@
  * Notes: the email one might get annoying - it's easy to make it more restrictive, though.. maybe
  * have it require something like xxxx@yyyy.zzzz or such. We'll see.
  */
-function make_clickable($text)
+function make_hyperlink($text)
 {
 	$text = preg_replace('#(script|about|applet|activex|chrome):#is', "\\1&#058;", $text);
 
@@ -50,7 +50,7 @@ function make_clickable($text)
  * - Does not distinguish between "www.xxxx.yyyy" and "http://aaaa.bbbb" type URLs.
  *
  */
-function undo_make_clickable($text)
+function undo_make_hyperlink($text)
 {
 	$text = preg_replace("#<!-- BBCode auto-link start --><a href=\"(.*?)\" target=\"_blank\">.*?</a><!-- BBCode auto-link end -->#i", "\\1", $text);
 	$text = preg_replace("#<!-- BBcode auto-mailto start --><a href=\"mailto:(.*?)\">.*?</a><!-- BBCode auto-mailto end -->#i", "\\1", $text);

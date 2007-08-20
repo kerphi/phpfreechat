@@ -383,7 +383,7 @@ class pfcContainer extends pfcContainerInterface
     $msgid = $this->_requestMsgId($chan);
 
     // convert URLs to html
-    $param = make_clickable($param);
+    $param = make_hyperlink($param);
 
     // format message
     $data = "\n";
