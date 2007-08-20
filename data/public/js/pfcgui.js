@@ -441,11 +441,12 @@ pfcGui.prototype = {
       elt.onclick = function(){ pfc.switch_text_color(this.bbc); }
       clist.appendChild(elt);
     }
+/*
   },
 
-/* buildChat is not used.  Use templates instead. */
+// buildChat is not used.  Use templates instead. 
 
-/*  buildChat: function()
+  buildChat: function()
   {
     var container = $('pfc_container');
 
@@ -759,6 +760,6 @@ pfcGui.prototype = {
     var soundcontainerbox = document.createElement('div');
     soundcontainerbox.setAttribute('id', 'pfc_sound_container');
     container.appendChild(soundcontainerbox);
-  }  
   */
+  }  
 };
