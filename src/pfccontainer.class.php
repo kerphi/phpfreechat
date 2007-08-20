@@ -21,6 +21,7 @@
  */
 
  require_once dirname(__FILE__)."/pfccontainerinterface.class.php";
+ require_once dirname(__FILE__)."/urlprocessing.php";
  
 /**
  * pfcContainer is an abstract class which define interface
@@ -380,6 +381,9 @@ class pfcContainer extends pfcContainerInterface
     if ($chan == NULL) $chan = 'SERVER';
     
     $msgid = $this->_requestMsgId($chan);
+
+    // convert URLs to html
+    $param = make_clickable($param);
 
     // format message
     $data = "\n";

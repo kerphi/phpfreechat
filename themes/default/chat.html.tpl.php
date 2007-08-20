@@ -127,6 +127,7 @@
              class="pfc_bt_delete"
              onclick="pfc.insert_text('[s]','[/s]',true)" />
       </div>
+<!--
       <div id="pfc_bt_mail_btn" class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('images/bt_mail.gif'); ?>"
              id="pfc_bt_mail"
@@ -135,6 +136,7 @@
              class="pfc_bt_mail"
              onclick="pfc.insert_text('[email]','[/email]',true)" />
       </div>
+-->
       <div id="pfc_bt_color_btn" class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('images/bt_color.gif'); ?>"
              alt="<?php echo _pfc("Color"); ?>"

@@ -1387,7 +1387,7 @@ pfcClient.prototype = {
   parseMessage: function(msg)
   {
     var rx = null;
-
+/*
     // parse urls
     var rx_url = new RegExp('(^|[^\\"])([a-z]+\:\/\/[a-z0-9.\\~\\/\\?\\=\\&\\-\\_\\#:;%,@]*[a-z0-9\\/\\?\\=\\&\\-\\_\\#])([^\\"]|$)','ig');
     var ttt = msg.split(rx_url);
@@ -1428,7 +1428,7 @@ pfcClient.prototype = {
     // replace double spaces by &nbsp; entity
     rx = new RegExp('  ','g');
     msg = msg.replace(rx, '&nbsp;&nbsp;');
-
+*/
     // try to parse bbcode
     rx = new RegExp('\\[b\\](.+?)\\[\/b\\]','ig');
     msg = msg.replace(rx, '<span style="font-weight: bold">$1</span>');
@@ -1440,10 +1440,12 @@ pfcClient.prototype = {
     msg = msg.replace(rx, '<span style="text-decoration: line-through">$1</span>');
     //    rx = new RegExp('\\[pre\\](.+?)\\[\/pre\\]','ig');
     // msg = msg.replace(rx, '<pre>$1</pre>'); 
+/*
     rx = new RegExp('\\[email\\]([A-z0-9][\\w.-]*@[A-z0-9][\\w\\-\\.]+\\.[A-z0-9]{2,6})\\[\/email\\]','ig');
     msg = msg.replace(rx, '<a href="mailto: $1">$1</a>'); 
     rx = new RegExp('\\[email=([A-z0-9][\\w.-]*@[A-z0-9][\\w\\-\\.]+\\.[A-z0-9]{2,6})\\](.+?)\\[\/email\\]','ig');
     msg = msg.replace(rx, '<a href="mailto: $1">$2</a>');
+*/
     rx = new RegExp('\\[color=([a-zA-Z]+|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.+?)\\[\/color\\]','ig');
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');
     // parse bbcode colors twice because the current_text_color is a bbcolor
