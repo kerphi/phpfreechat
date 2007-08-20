@@ -67,7 +67,6 @@ class pfcContainer_File extends pfcContainerInterface
     return $errors;
   }
 
-
   function setMeta($group, $subgroup, $leaf, $leafvalue = NULL)
   {
     $c =& pfcGlobalConfig::Instance();
@@ -217,120 +216,6 @@ class pfcContainer_File extends pfcContainerInterface
     return $ret;
   }  
 
-
-  function popMeta($group, $subgroup, $leaf)
-  {
-    $c =& pfcGlobalConfig::Instance();
-    if ($c->debug)
-      file_put_contents("/tmp/debug", "\npopMeta(".$group.",".$subgroup.",".$leaf.")", FILE_APPEND | LOCK_EX);
-
-    // create directories
-    $dir_base = $c->container_cfg_server_dir;
-    $dir = $dir_base.'/'.$group.'/'.$subgroup;
-    if (!is_dir($dir)) mkdir_r($dir);
-    
-    // create or replace metadata file
-    $leaffilename = $dir."/".$leaf;
-
-    // create return array
-    $ret = array();
-    $ret["timestamp"] = array();
-    $ret["value"]     = array();
-
-    // read and increment data from metadata file
-    clearstatcache();
-    if (file_exists($leaffilename))
-    {
-      $fh = fopen($leaffilename, 'r+');
-      for($i = 0; $i < 10; $i++)  // Try 10 times until an exclusive lock can be obtained
-      {
-        if (flock($fh, LOCK_EX))
-        {
-          $ret["value"][] = chop(fread($fh, filesize($leaffilename)));
-          $ret["timestamp"][] = filemtime($leaffilename);
-          $leafvalue = array_pop($ret);
-          // check if array is now empty
-          if (count($ret) == 0)
-          {
-            fclose($fh);
-          	unlink($leaffilename);
-          	break;
-          }
-          rewind($fh);
-          fwrite($fh, $ret);
-          fflush($fh);
-          ftruncate($fh, ftell($fh));
-          flock($fh, LOCK_UN);
-          fclose($fh);
-          break;
-        }
-        // If flock is working properly, this will never be reached
-        $delay = rand(0, pow(2, ($i+1)) - 1) * 5000;  // Exponential backoff
-        usleep($delay);
-      }
-      $ret = $leafvalue;
-    }
-    else 
-    {
-    	// return empty array
-      return $ret;
-    }
-    return $ret;
-  }  
-
-
-  function pushMeta($group, $subgroup, $leaf, $leafvalue = NULL)
-  {
-    $c =& pfcGlobalConfig::Instance();
-    if ($c->debug)
-      file_put_contents("/tmp/debug", "\npushMeta(".$group.",".$subgroup.",".$leaf.",".$leafvalue.")", FILE_APPEND | LOCK_EX);
-
-    // create directories
-    $dir_base = $c->container_cfg_server_dir;
-    $dir = $dir_base.'/'.$group.'/'.$subgroup;
-    if (!is_dir($dir)) mkdir_r($dir);
-    
-    // create or replace metadata file
-    $leaffilename = $dir."/".$leaf;
-
-    // read and increment data from metadata file
-    clearstatcache();
-    if ( $leafexists = file_exists($leaffilename) )
-    {
-      $fh = fopen($leaffilename, 'r+');
-      for($i = 0; $i < 10; $i++)  // Try 10 times until an exclusive lock can be obtained
-      {
-        if (flock($fh, LOCK_EX))
-        {
-        	if ( $leafvalue == NULL ) $leafvalue = '';
-          $leafvaltmp = chop(fread($fh, filesize($leaffilename)));
-          array_push($leafvaltmp, $leafvalue);
-          rewind($fh);
-          fwrite($fh, $leafvaltmp);
-          fflush($fh);
-          ftruncate($fh, ftell($fh));
-          flock($fh, LOCK_UN);
-          break;
-        }
-        // If flock is working properly, this will never be reached
-        $delay = rand(0, pow(2, ($i+1)) - 1) * 5000;  // Exponential backoff
-        usleep($delay);
-      }
-      fclose($fh);
-    }
-    else 
-    {
-      file_put_contents($leaffilename, $leafvalue, LOCK_EX);
-    }
-    
-    if ($leafexists)
-      return 1; // value overwritten
-    else
-      return 0; // value created
-  }  
-
-
-
   function rmMeta($group, $subgroup = null, $leaf = null)
   {
     $c =& pfcGlobalConfig::Instance();
@@ -376,7 +261,6 @@ class pfcContainer_File extends pfcContainerInterface
     return true;
   }
 
-
   /**
    * Used to encode UTF8 strings to ASCII filenames
    */  
@@ -392,7 +276,5 @@ class pfcContainer_File extends pfcContainerInterface
   {
     return urldecode($str);
   }
-
 }
-
 ?>

@@ -443,7 +443,9 @@ pfcGui.prototype = {
     }
   },
 
-  buildChat: function()
+/* buildChat is not used.  Use templates instead. */
+
+/*  buildChat: function()
   {
     var container = $('pfc_container');
 
@@ -758,4 +760,5 @@ pfcGui.prototype = {
     soundcontainerbox.setAttribute('id', 'pfc_sound_container');
     container.appendChild(soundcontainerbox);
   }  
+  */
 };
