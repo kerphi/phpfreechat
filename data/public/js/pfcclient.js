@@ -1461,8 +1461,8 @@ pfcClient.prototype = {
       // Emulate negative lookbehind in JavaScript.
       // We don't want to replace smiley strings inside of tags.
       // See http://blog.stevenlevithan.com/archives/mimic-lookbehind-javascript for more info.
-      rx = new RegExp('(<[^>]*)?' + RegExp.escape(sl[i]),'g');
-      msg = msg.replace(rx, function($0, $1){ return $1 ? $0 : $1 + '<img src="'+ smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />'; });
+      rx = new RegExp("(<[^>]*)?" + RegExp.escape(sl[i]),'g');
+      msg = msg.replace(rx, function($0, $1){ return $1 ? $0 : '<img src="'+ smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />'; });
     }
     
     // try to parse nickname for highlighting 
