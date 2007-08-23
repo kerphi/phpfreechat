@@ -1455,14 +1455,14 @@ pfcClient.prototype = {
 
     // try to parse smileys
     var smileys = this.res.getSmileyHash();
-    var sl = smileys.keys();
+    // Sort keys by longest to shortest. This prevents a smiley like :) from being used on >:)
+    var sl = smileys.keys().sort(function (a,b){return (b.unescapeHTML().length - a.unescapeHTML().length);});
     for(var i = 0; i < sl.length; i++)
     {
-      // Emulate negative lookbehind in JavaScript.
       // We don't want to replace smiley strings inside of tags.
-      // See http://blog.stevenlevithan.com/archives/mimic-lookbehind-javascript for more info.
-      rx = new RegExp("(<[^>]*)?" + RegExp.escape(sl[i]),'g');
-      msg = msg.replace(rx, function($0, $1){ return $1 ? $0 : '<img src="'+ smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />'; });
+      // Use negative lookahead to search for end of tag.
+      rx = new RegExp(RegExp.escape(sl[i]) + "(?![^<]*>)",'g');
+      msg = msg.replace(rx, '<img src="'+ smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
     }
     
     // try to parse nickname for highlighting 
