@@ -437,4 +437,22 @@ if (!function_exists('iconv'))
   }
 }    
 
+/**
+ * html_entity_decode
+ * For users prior to PHP 4.3.0
+ */
+if (!function_exists('html_entity_decode'))
+{
+  function html_entity_decode($string)
+  {
+    // replace numeric entities
+    $string = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $string);
+    $string = preg_replace('~&#([0-9]+);~e', 'chr("\\1")', $string);
+    // replace literal entities
+    $trans_tbl = get_html_translation_table(HTML_ENTITIES);
+    $trans_tbl = array_flip($trans_tbl);
+    return strtr($string, $trans_tbl);
+  }
+}
+
 ?>

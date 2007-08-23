@@ -61,10 +61,12 @@ function pfc_undo_make_hyperlink($text)
 
 function pfc_shorten_url($url)
 {
-  $len = strlen($url);
-  $short_url = ($len > 40) ? substr($url, 0, 30) . "..." . substr($url, -7) : $url;
+  $decodedurl = html_entity_decode($url, ENT_QUOTES);
   
-  return $short_url;
+  $len = strlen($decodedurl);
+  $short_url = ($len > 40) ? substr($decodedurl, 0, 30) . "..." . substr($decodedurl, -7) : $decodedurl;
+  
+  return htmlentities($short_url, ENT_QUOTES);
 }
 
 ?>
