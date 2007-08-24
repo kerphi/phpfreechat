@@ -382,9 +382,6 @@ class pfcContainer extends pfcContainerInterface
     
     $msgid = $this->_requestMsgId($chan);
 
-    // convert URLs to html
-    $param = pfc_make_hyperlink($param);
-
     // format message
     $data = "\n";
     $data .= $msgid."\t";
@@ -445,7 +442,8 @@ class pfcContainer extends pfcContainerInterface
         $data["timestamp"] = $formated_line[1];
         $data["sender"]    = $formated_line[2];
         $data["cmd"]       = $formated_line[3];
-        $data["param"]     = $formated_line[4];
+        // convert URLs to html
+        $data["param"]     = pfc_make_hyperlink($formated_line[4]);
         $datalist[$data["id"]] = $data;
       }
     }

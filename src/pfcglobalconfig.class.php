@@ -100,6 +100,8 @@ class pfcGlobalConfig
   var $startwithsound      = true; // start with sound enabled
   var $openlinknewwindow   = true; // used to open the links in a new window
   var $notify_window       = true; // true : appends a prefix to the window title with the number of new posted messages
+  var $short_url           = true; // true : shortens long urls entered by users in the chat area
+  var $short_url_width     = 40; // final width of the shortened url
   
   /**
    * Be sure that you are conform to the license page before setting this to false !
