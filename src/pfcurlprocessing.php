@@ -15,7 +15,12 @@
  */
 function pfc_make_hyperlink($text)
 {
-	$text = preg_replace('#(script|about|applet|activex|chrome):#is', "\\1&#058;", $text);
+  if ($openlinknewwindow)
+    $target = " onclick=\"window.open(this.href,\\'_blank\\');return false;\"";
+  else
+    $target = '';
+  
+  $text = preg_replace('#(script|about|applet|activex|chrome):#is', "\\1&#058;", $text);
 
 	// pad it with a space so we can match things at the start of the 1st line.
 	$ret = ' ' . $text;
@@ -24,14 +29,14 @@ function pfc_make_hyperlink($text)
 	// xxxx can only be alpha characters.
 	// yyyy is anything up to the first space, newline, comma, double quote or <
 	//$ret = preg_replace("#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is", "\\1<a href=\"\\2\" target=\"_blank\">\\2</a>", $ret);
-	$ret = preg_replace("#(^|[\n \]])([\w]+?://[\w\#$%&~/.\-;:=,?@+]*)#ise", "'\\1<a href=\"\\2\" target=\"_blank\">' . pfc_shorten_url('\\2') . '</a>'", $ret);
+	$ret = preg_replace("#(^|[\n \]])([\w]+?://[\w\#$%&~/.\-;:=,?@+]*)#ise", "'\\1<a href=\"\\2\"" . $target . ">' . pfc_shorten_url('\\2') . '</a>'", $ret);
 
 	// matches a "www|ftp.xxxx.yyyy[/zzzz]" kinda lazy URL thing
 	// Must contain at least 2 dots. xxxx contains either alphanum, or "-"
 	// zzzz is optional.. will contain everything up to the first space, newline, 
 	// comma, double quote or <.
 	//$ret = preg_replace("#(^|[\n ])((www|ftp)\.[\w\#$%&~/.\-;:=,?@\[\]+]*)#is", "\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>", $ret);
-	$ret = preg_replace("#(^|[\n \]])((www|ftp)\.[\w\#$%&~/.\-;:=,?@+]*)#ise", "'\\1<a href=\"http://\\2\" target=\"_blank\">' . pfc_shorten_url('\\2') . '</a>'", $ret);
+	$ret = preg_replace("#(^|[\n \]])((www|ftp)\.[\w\#$%&~/.\-;:=,?@+]*)#ise", "'\\1<a href=\"http://\\2\"" . $target . ">' . pfc_shorten_url('\\2') . '</a>'", $ret);
 
 	// matches an email@domain type address at the start of a line, or after a space.
 	// Note: Only the followed chars are valid; alphanums, "-", "_" and or ".".
