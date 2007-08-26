@@ -1435,9 +1435,9 @@ pfcClient.prototype = {
       msg = msg.replace(rx, '$1');
     }
 
-    // replace double spaces by &nbsp; entity
-    rx = new RegExp('  ','g');
-    msg = msg.replace(rx, '&nbsp;&nbsp;');
+    // Replace double spaces outside of tags by "&nbsp; " entity.
+    rx = new RegExp(' (?= )(?![^<]*>)','g');
+    msg = msg.replace(rx, '&nbsp;');
     
     // try to parse bbcode
     rx = new RegExp('\\[b\\](.+?)\\[\/b\\]','ig');
@@ -1471,7 +1471,7 @@ pfcClient.prototype = {
     {
       // We don't want to replace smiley strings inside of tags.
       // Use negative lookahead to search for end of tag.
-      rx = new RegExp(RegExp.escape(sl[i]) + "(?![^<]*>)",'g');
+      rx = new RegExp(RegExp.escape(sl[i]) + '(?![^<]*>)','g');
       msg = msg.replace(rx, '<img src="'+ smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
     }
     
