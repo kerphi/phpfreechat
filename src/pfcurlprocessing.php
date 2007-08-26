@@ -62,8 +62,8 @@ function pfc_make_hyperlink($text)
  */
 function pfc_undo_make_hyperlink($text)
 {
-  $text = preg_replace("#<!-- BBCode auto-link start --><a href=\"(.*?)\" target=\"_blank\">.*?</a><!-- BBCode auto-link end -->#i", "\\1", $text);
-  $text = preg_replace("#<!-- BBcode auto-mailto start --><a href=\"mailto:(.*?)\">.*?</a><!-- BBCode auto-mailto end -->#i", "\\1", $text);
+  $text = preg_replace("#<!-- BBcode auto-mailto start --><a href=\"mailto:(.*?)\".*?>.*?</a><!-- BBCode auto-mailto end -->#i", "\\1", $text);
+  $text = preg_replace("#<!-- BBCode auto-link start --><a href=\"(.*?)\".*?>.*?</a><!-- BBCode auto-link end -->#i", "\\1", $text);
 
   return $text;
 

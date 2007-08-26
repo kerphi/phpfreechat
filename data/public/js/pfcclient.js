@@ -1424,11 +1424,21 @@ pfcClient.prototype = {
       replace = replace + '>$2</a>$3';
       msg = msg.replace(rx_url, replace);
     }
-    
+*/    
+
+    // Remove auto-linked entries.
+    if ( false )
+    {
+      rx = new RegExp('<a href="mailto:(.*?)".*?>.*?<\/a>','ig');
+      msg = msg.replace(rx, '$1');
+      rx = new RegExp('<a href="(.*?)".*?>.*?<\/a>','ig');
+      msg = msg.replace(rx, '$1');
+    }
+
     // replace double spaces by &nbsp; entity
     rx = new RegExp('  ','g');
     msg = msg.replace(rx, '&nbsp;&nbsp;');
-*/
+    
     // try to parse bbcode
     rx = new RegExp('\\[b\\](.+?)\\[\/b\\]','ig');
     msg = msg.replace(rx, '<span style="font-weight: bold">$1</span>');
