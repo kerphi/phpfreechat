@@ -660,7 +660,7 @@ pfcClient.prototype = {
       }
       if (nick_match)
       {
-        w.value = non_nick_begin + nick_src.replace(nick_src, nick_replace) + non_nick_end;
+        w.value = non_nick_begin + nick_replace + non_nick_end;
         w.selStart = w.selEnd = non_nick_begin.length + nick_replace.length;
         
         // Move cursor to end of completed nick.
