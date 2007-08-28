@@ -31,12 +31,73 @@ require_once dirname(__FILE__).'/pfccontainer.class.php';
  */
 class pfcGlobalConfig
 {
-  var $serverid            = ""; // this is the chat server id (comparable to the server host in IRC)
+  /**
+   * <p>This is the only mandatory parameter used to identify the chat server.
+   * You can compare it to the server ip/host like on an IRC server.
+   * If you don't know what to write, just try : <code>$params["serverid"] = md5(__FILE__);</code></p>
+   */
+  var $serverid = '';
   
-  // these parameters are dynamic (not cached)
-  var $nick                = ""; // the initial nickname ("" means the user will be queried)
+  /**
+   * <p>Used to change the chat title that is visible just above the messages list.
+   * ("My Chat" by default)</p>
+   */
+  var $title = '';
+
+  /**
+   * <p>If you have already identified the user (forum, portal...) you can force the user's nickname with this parameter.
+   * Defining a nick will skip the "Please enter your nickname" popup.</p>
+   * <p>Warning : Nicknames must be encoded in UTF-8.
+   * For example, if you get nicks from a databases where they are ISO-8859-1 encoded,
+   * you must convert it: <code>$params["nick"] = iconv("ISO-8859-1", "UTF-8", $bdd_nickname);</code>
+   * (of course, change the <code>$bdd_nickname</code> parameter for your needs)</p>
+   * <p>("" value by default, means users must choose a nickname when s/he connects)</p>
+   */
+  var $nick = "";
+
+  /**
+   * <p>This is the maximum nickname length, a longer nickname is forbidden.
+   * ( 15 caracteres by default)</p>
+   */
+  var $max_nick_len = 15;
+  
+  /**
+   * <p>Setting this to true will forbid the user to change his/her nickname later.
+   * (false value by default)</p>
+   */
+  var $frozen_nick = false;
+
   var $nickmeta            = array(); // this is the nickname user's metadata, you can add : sexe, age, real name ... (ex: array('sexe'=>'f') )
   var $nickmeta_private    = array('ip'); // this is the meta that only admins can see
+
+
+  /**
+   * <p>Used to create default rooms (auto-joined at startup). It contains an array of rooms names.
+   * (by default only one room is created named "My room")</p>
+   */
+  var $channels = array();
+  var $frozen_channels     = array(); // if empty, allows users to create there own channels
+  var $max_channels        = 10; // this the max number of allowed channels by users
+  var $privmsg             = array(); // the joined private chat when opening the chat (the nicknames must be online)
+  var $max_privmsg         = 5;  // this the max number of allowed privmsg by users
+
+  
+  /**
+   * <p>This is the time to wait between two refreshes.
+   * A refresh is a HTTP request which asks the server if there are new messages to display.
+   * If there are no new messages, then a empty HTTP response is returned.
+   * ( 5000 by default, 5000ms = 5s)</p>
+   */
+  var $refresh_delay = 5000;
+
+  /**
+   * <p>This is the time of inactivity to wait before to considere to disconnecte user (in milliseconds).
+   * A user is inactive only if he closed his chat windows.
+   * A user with a open chat window is not inactive because he sends each <code>refresh_delay</code> a HTTP request.
+   * ( 20000 by default, 20000ms = 20s)</p>
+   */
+  var $timeout = 20000;
+  
 
   var $isadmin             = false;
   var $admins              = array("admin" => ""); // the key is the nickname, the value is the password
@@ -74,63 +135,178 @@ class pfcGlobalConfig
   var $proxies_path_default = ""; // dirname(__FILE__).'/proxies'
   var $cmd_path            = ""; // a custom commands path
   var $cmd_path_default    = ""; // dirname(__FILE__).'/commands'
-  var $title               = ""; // default is _pfc("My Chat")
-  var $channels            = array(); // the default joined channels when opening the chat
-  var $frozen_channels     = array(); // if empty, allows users to create there own channels
-  var $max_channels        = 10; // this the max number of allowed channels by users
-  var $privmsg             = array(); // the joined private chat when opening the chat (the nicknames must be online)
-  var $max_privmsg         = 5;  // this the max number of allowed privmsg by users
-  var $frozen_nick         = false; // set it to true if you don't want the user to be able to change his nickname
-  var $max_nick_len        = 15;
-  var $max_text_len        = 400;
-  var $refresh_delay       = 5000; // in mili-seconds (5 seconds)
+
+  /**
+   * <p>This is the maximum message length, a longer message is forbidden.
+   * ( 250 characters by default)</p>
+   */
+  var $max_text_len = 400;
+
+  
   var $max_refresh_delay   = 60000; // in mili-seconds (60 seconds)
-  var $timeout             = 20000; // in mili-seconds (20 seconds)
-  var $max_msg             = 20; // number of messages keept in the history (this is what you see when you reload the chat)
+  
+  /**
+   * <p>This is the number of messages keept in the history.
+   * This is what you see when you reload the chat.
+   * The number of messages s/he can see is defined by this parameter.
+   * (20 lines by default)</p>
+   */
+  var $max_msg = 20;  
   var $max_displayed_lines = 150; // maximum number of displayed lines (old lines will be deleted to save browser's memory)
-  var $quit_on_closedwindow = true; // could be annoying because the reload event is the same as a close event
-  var $focus_on_connect    = true;
-  var $connect_at_startup  = true;
-  var $start_minimized     = false;
-  var $height              = "440px";
-  var $width               = "";
-  var $shownotice          = 3; // show: 0 = nothing, 1 = just nickname changes, 2 = join/quit, 3 = 1+2
-  var $nickmarker          = true; // show/hide nicknames colors
-  var $clock               = true; // show/hide dates and hours
+
+  /**
+   * <p>Setting this to true will send a <code>/quit</code> command when the user close his window
+   * (doesn't work on Firefox).
+   * This parameter isn't true by default because on IE and Konqueror/Safari,
+   * reloading the window (F5) will generate the same event as closing the window which can be annoying.
+   * (false value by default)</p>
+   */
+  var $quit_on_closedwindow = true;
+
+  /**
+   * <p>Setting this to true will give the focus to the input text box when connecting to the chat.
+   * It can be usefull not touch the focus when integrating the chat into an existing website
+   * because when the focus is changed, the viewport follows the focus location.
+   * (true value by default)</p>
+   */
+  var $focus_on_connect = true;
+
+  /**
+   * <p>Setting this to false will oblige user to click on the connect button if s/he wants to chat.
+   * (true value by default, means when the chat web page is open,
+   * a connection to the chat is automaticaly performed)</p>
+   */
+  var $connect_at_startup = true;
+
+  /**
+   * <p>Setting it to true will start the chat minimized.
+   * (false value by default)</p>
+   */
+  var $start_minimized = false;
+
+  /**
+   * <p>Height of the chat area.
+   * ("440px" by default)</p>
+   */
+  var $height = "440px";
+
+  /**
+   * <p><ul><li>Setting this to 0 will show nothing.</li>
+   * <li>Setting it to 1 will show nicknames changes.</li>
+   * <li>Setting it to 2 will show connect/disconnect notifications.</li>
+   * <li>Setting it to 3 (1+2) will show nicknames and connect/disconnect notifications.</li></ul>
+   * (3 by default)</p>
+   */
+  var $shownotice = 3;
+
+  /**
+   * <p>Setting it to false will disable nickname colorization.
+   * (true value by default)</p>
+   **/
+  var $nickmarker = true;
+
+  /**
+   * <p>Setting it to false will hide the date/hour column.
+   * (true value by default)</p>
+   */
+  var $clock = true;
+  
   var $startwithsound      = true; // start with sound enabled
-  var $openlinknewwindow   = true; // used to open the links in a new window
+
+  /**
+   * <p>Setting it to true will add the <code>target="_blank"</code> into parsed links.
+   * This attribute can be used to open the followed link in a new window.
+   * (true value by default)</p>
+   */
+  var $openlinknewwindow = true;
+  
   var $notify_window       = true; // true : appends a prefix to the window title with the number of new posted messages
   var $short_url           = true; // true : shortens long urls entered by users in the chat area
   var $short_url_width     = 40; // final width of the shortened url
   
   /**
+   * Used to hide the phpfreechat linkback logo.
    * Be sure that you are conform to the license page before setting this to false !
    * http://www.phpfreechat.net/license.en.html
    */
-  var $display_pfc_logo    = true; 
+  var $display_pfc_logo = true; 
 
   var $displaytabimage       = true;
   var $displaytabclosebutton = true;
-  var $showwhosonline      = true;
-  var $showsmileys         = true;
-  var $btn_sh_whosonline   = true; // display show/hide button for who is online
-  var $btn_sh_smileys      = true; // display show/hide button for smileys
+
+  /**
+   * <p>Used to show/hide online users list at startup.
+   * (true value by default)</p>
+   */
+  var $showwhosonline = true;
+
+  /**
+   * <p>Used to show/hide the smiley selector at startup.
+   * (true value by default)</p>
+   */
+  var $showsmileys = true;
+
+  /**
+   * <p>Used to display or not the showwhosonline button.
+   * (true value by default)</p>
+   */
+  var $btn_sh_whosonline = true;
+
+  /**
+   * <p>Used to display or not the showsmileys button.
+   * (true value by default)</p>
+   */
+  var $btn_sh_smileys = true;
+  
   var $bbcode_colorlist    = array("#FFFFFF","#000000","#000055","#008000","#FF0000","#800000","#800080","#FF5500","#FFFF00","#00FF00","#008080","#00FFFF","#0000FF","#FF00FF","#7F7F7F","#D2D2D2");
   var $nickname_colorlist  = array('#CCCCCC','#000000','#3636B2','#2A8C2A','#C33B3B','#C73232','#80267F','#66361F','#D9A641','#3DCC3D','#1A5555','#2F8C74','#4545E6','#B037B0','#4C4C4C','#959595');
-  
-  var $theme               = "default";
+
+  /**
+   * <p>This parameter specifies which theme the chat will use.
+   * A theme is a package that make possible to completly change the chat appearance (CSS) and the chat dynamics (JS)
+   * You can found official themes in the <code>themes/</code> directory on your local phpfreechat distribution.
+   * ('default' by default)</p>
+   */
+  var $theme = 'default';
   var $theme_path          = '';
   var $theme_default_path  = '';
   var $theme_url           = '';
   var $theme_default_url   = '';
-  
-  var $language            = "";      // could be something in i18n/* directory ("" means the language is guess from the server config)
-  var $output_encoding     = "UTF-8"; // could be ISO-8859-1 or anything else (which must be supported by iconv php module)
-  var $container_type      = "File";
 
+  /**
+   * <p>Used to translate the chat text and messages. Accepted values are the <code>i18n/</code> sub directories names.
+   * (by default this is the local server language)</p>
+   */
+  var $language = '';
+
+  /**
+   * <p>Useful to set a sepcific encoding for chat labels.
+   * This is really useful when the Web page embedding the chat is not UTF-8 encoded.
+   * This parameter should be the same as the chat web page.
+   * Could be ISO-8859-1 or anything else but it must be supported by iconv php module.
+   * (UTF-8 by default )</p>
+   */
+  var $output_encoding = 'UTF-8';
+
+  /**
+   * <p>Used to specify the chat container (chat database).
+   * Accepted containers are : File and Mysql (in the future maybe other).
+   * ("File" by default)</p>
+   */
+  var $container_type = 'File';
+
+  /**
+   * <p>Used to specify the script which will handle asynchronous request.
+   * Very useful when the chat (client) script is resource consuming (ex: forum or portal chat integration).
+   * <code>server_script_url</code> must point to the server script browable url (useful when using url rewriting).
+   * (by default these parameters are calculated automaticaly)</p>
+   */
+  var $server_script_path  = '';
+  var $server_script_url   = '';
+
+
+  
   var $client_script_path  = "";
-  var $server_script_path  = "";
-  var $server_script_url   = ""; // default is calculated from 'server_script_path'
   var $data_private_path   = ""; // default is dirname(__FILE__)."/../data/private";
   var $data_public_path    = ""; // default is dirname(__FILE__)."/../data/public";
   var $data_public_url     = ""; // default is calculated from 'data_public_path' path
