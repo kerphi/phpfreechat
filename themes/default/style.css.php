@@ -1,3 +1,7 @@
+img, div {
+  behavior: url("<?php echo $c->getFileUrlFromTheme('iepngfix.htc'); ?>");
+}
+
 /*
 will break display (margins, paddings) on IE6
 div#pfc_container * {
