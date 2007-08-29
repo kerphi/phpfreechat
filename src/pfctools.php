@@ -36,25 +36,49 @@ if (!defined("DIRECTORY_SEPARATOR"))
  * Returns the absolute script filename
  * takes care of php cgi configuration which do not support SCRIPT_FILENAME variable.
  */
-function getScriptFilename()
+function pfc_GetScriptFilename()
 {
-  $sf = isset($_SERVER["PATH_TRANSLATED"]) ? $_SERVER["PATH_TRANSLATED"] : ""; // check for a cgi configurations
-  if ( $sf == "" ||
-       !file_exists($sf))
-    $sf = isset($_SERVER["SCRIPT_FILENAME"]) ? $_SERVER["SCRIPT_FILENAME"] : ""; // for 'normal' configurations
-  if ( $sf == "" ||
-       !file_exists($sf))
+  $sf = '';
+  if(function_exists('debug_backtrace'))
+  {
+    // browse the backtrace history and take the first unknown filename as the client script
+    foreach(debug_backtrace() as $db)
+    {
+      $f = $db['file'];
+      if (!preg_match('/phpfreechat.class.php/',$f) &&
+          !preg_match('/pfcglobalconfig.class.php/',$f) &&
+          !preg_match('/pfctools.class.php/',$f) &&
+          !preg_match('/pfcinfo.class.php/',$f)
+          )
+      {
+        $sf = $f;
+        break;
+      }
+    }
+  } 
+  else if (isset($_SERVER['PATH_TRANSLATED']) &&
+           file_exists($_SERVER['SCRIPT_FILENAME'])) // check for a cgi configurations
+  {
+    $sf = $_SERVER['PATH_TRANSLATED'];
+  }
+  else if (isset($_SERVER['SCRIPT_FILENAME'])&&
+           file_exists($_SERVER['SCRIPT_FILENAME'])) // for non-cgi configurations
+  {
+    $sf = $_SERVER['SCRIPT_FILENAME'];
+  }
+  else
   {
     echo "<pre>";
-    echo "<span style='color:red'>Error: GetScriptFilename function returns a wrong path. Please contact the pfc team (contact@phpfreechat.net) and copy/paste this array to help debugging.</span>\n";
+    echo "<span style='color:red'>Error: pfc_GetScriptFilename function returns a wrong path. Please contact the pfc team (contact@phpfreechat.net) and copy/paste these data to help debugging:</span>\n";
     print_r($_SERVER);
+    print_r(debug_backtrace());
     echo "</pre>";
     exit;
   }
   return $sf;
 }
 
-function relativePath($p1, $p2)
+function pfc_RelativePath($p1, $p2)
 {
   if (is_file($p1)) $p1 = dirname($p1);
   if (is_file($p2)) $p2 = dirname($p2);

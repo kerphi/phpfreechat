@@ -488,8 +488,6 @@ class pfcGlobalConfig
   {
     $ok = true;
 
-    if ($this->debug) pxlog("pfcGlobalConfig::init()", "chatconfig", $this->getId());
-
     // check the parameters types
     $array_params = $this->_params_type["array"];
     foreach( $array_params as $ap )
@@ -564,8 +562,7 @@ class pfcGlobalConfig
     // test client script
     // try to find the path into server configuration
     if ($this->client_script_path == '')
-      $this->client_script_path = getScriptFilename();
-
+      $this->client_script_path = pfc_GetScriptFilename();
 
     if ($this->server_script_url == '' && $this->server_script_path == '')
     {    
@@ -578,12 +575,9 @@ class pfcGlobalConfig
       $this->server_script_url  = './'.basename($filetotest).$this->_query_string;
     }
   
-    //if ($this->client_script_url == "")
-    //      $this->client_script_url = "./".basename($filetotest);
-    
     // calculate datapublic url
     if ($this->data_public_url == "")
-      $this->data_public_url = relativePath($this->client_script_path, $this->data_public_path);
+      $this->data_public_url = pfc_RelativePath($this->client_script_path, $this->data_public_path);
 
     if ($this->server_script_path == '')
       $this->server_script_path = $this->client_script_path;
@@ -598,7 +592,7 @@ class pfcGlobalConfig
         $filetotest = $res[1];
       if ( !file_exists($filetotest) )
         $this->errors[] = _pfc("%s doesn't exist", $filetotest);
-      $this->server_script_url = relativePath($this->client_script_path, $this->server_script_path).'/'.basename($filetotest).$this->_query_string;
+      $this->server_script_url = pfc_RelativePath($this->client_script_path, $this->server_script_path).'/'.basename($filetotest).$this->_query_string;
     }
 
     // check if the theme_path parameter are correctly setup
@@ -648,14 +642,11 @@ class pfcGlobalConfig
     // ---
     // run specific container initialisation
     $ct =& pfcContainer::Instance();
-    /*    $container_classname = "pfcContainer_".$this->container_type;
-    require_once dirname(__FILE__)."/containers/".strtolower($this->container_type).".class.php";
-    $container = new $container_classname($this);*/
     $ct_errors = $ct->init($this);
     $this->errors = array_merge($this->errors, $ct_errors);
     
     // load debug url
-    $this->debugurl = relativePath($this->client_script_path, dirname(__FILE__)."/../debug");
+    $this->debugurl = pfc_RelativePath($this->client_script_path, dirname(__FILE__)."/../debug");
 
     // check the language is known
     $lg_list = pfcI18N::GetAcceptedLanguage();
@@ -740,15 +731,6 @@ class pfcGlobalConfig
     return $this->serverid;
   }  
 
-  /*
-  function _getProxyFile($serverid = "", $data_public_path = "")
-  {
-    if ($serverid == "")          $serverid = $this->getId();
-    if ($data_public_path == "") $data_public_path = $this->data_public_path;
-    return $data_public_path."/".$serverid."/proxy.php";
-  }
-  */
-  
   function _GetCacheFile($serverid = "", $data_private_path = "")
   {
     if ($serverid == '')          $serverid = $this->getId();
@@ -838,7 +820,6 @@ class pfcGlobalConfig
     $data .= '?>';
     
     file_put_contents($cachefile, $data/*serialize(get_object_vars($this))*/);
-    if ($this->debug) pxlog("pfcGlobalConfig::saveInCache()", "chatconfig", $this->getId());
   }
 
   function isDefaultFile($file)
@@ -848,19 +829,6 @@ class pfcGlobalConfig
     return ($this->theme == "default" ? $fexists1 : !$fexists2);
   }
 
-  /*
-  function getFileUrlByProxy($file, $addprefix = true)
-  {
-    if (file_exists($this->theme_path."/".$this->theme."/".$file))
-      return ($addprefix ? $this->data_public_url."/".$this->getId()."/proxy.php" : "")."?p=".$this->theme."/".$file;
-    else
-      if (file_exists($this->theme_default_path."/default/".$file))
-        return ($addprefix ? $this->data_public_url."/".$this->getId()."/proxy.php" : "")."?p=default/".$file;
-      else
-	die(_pfc("Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct", $file, $this->theme_path, $this->theme));
-  }
-  */
-    
   function getFilePathFromTheme($file)
   {
     if (file_exists($this->theme_path."/".$this->theme."/".$file))
