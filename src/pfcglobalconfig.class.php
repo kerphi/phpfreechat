@@ -304,17 +304,41 @@ class pfcGlobalConfig
   var $server_script_path  = '';
   var $server_script_url   = '';
 
-
-  
-  var $client_script_path  = "";
-  var $data_private_path   = ""; // default is dirname(__FILE__)."/../data/private";
-  var $data_public_path    = ""; // default is dirname(__FILE__)."/../data/public";
-  var $data_public_url     = ""; // default is calculated from 'data_public_path' path
+  /**
+   * <p>Used to specify the script path which firstly display the chat.
+   * This path will be used to calculate relatives paths for resources : javascript lib and images.
+   * Useful when the php configuration is uncommon, this option can be used to force the automatic detection process.
+   * (by default this parameters are auto-detected)</p>
+   */
+  var $client_script_path  = '';
 
   /**
-   * This is the prototype javascript library url.
+   * <p>Used to store private data like cache, logs and chat history.
+   * Tip: you can optimize your chat performances,
+   * see <a href="http://www.phpfreechat.net/faq.en.html#tmpfs>this FAQ entry</a>.
+   * (<code>dirname(__FILE__)."/../data/private"</code> by default)</p>
+   */
+  var $data_private_path = '';
+
+  /**
+   * This path must be reachable by your web server.
+   * Javascript and every resources (theme) files will be stored here.
+   * (dirname(__FILE__)."/../data/public" by default)
+   */
+  var $data_public_path    = "";
+
+  /**
+   * This url should link to the <code>data_private_path</code> directory.
+   * So that the clients browsers will be able to load needed javascript files and theme resources.
+   * It can be usefull when url rewriting is done on the server.
+   * (by default this parameters is calculated automaticaly from <code>data_private_path</code>)
+   */
+  var $data_public_url = '';
+
+  /**
+   * <p>This is the prototype javascript library url.
    * Use this parameter to use your external library.
-   * default is data/js/prototype.js
+   * (default is <code>data/js/prototype.js</code>)</p>
    */
   var $prototypejs_url     = '';
   
@@ -323,21 +347,26 @@ class pfcGlobalConfig
   var $is_init             = false; // used internaly to know if the chat config is initialized
   var $version             = ""; // the phpfreechat version: taken from the 'version' file content
   var $debugurl            = "";
-  var $debug               = false;
+
+  /**
+   * <p>When debug is true, some traces will be shown on the chat clients
+   * (default is false)</p>
+   */
+  var $debug = false;
 
   /**
    * This is the user time zone
    * it is the difference in seconds between user clock and server clock
    */
-  var $time_offset         = 0;
+  var $time_offset = 0;
   /**
    * How to display the dates in the chat
    */
-  var $date_format         = "d/m/Y";
+  var $date_format = "d/m/Y";
   /**
    * How to display the time in the chat
    */
-  var $time_format         = "H:i:s";
+  var $time_format = "H:i:s";
   
   /**
    * This parameter is useful when your chat server is behind a reverse proxy that
@@ -345,7 +374,6 @@ class pfcGlobalConfig
    * see : http://www.phpfreechat.net/forum/viewtopic.php?id=1344
    */
   var $get_ip_from_xforwardedfor = false;
-
   
   // private parameters
   var $_sys_proxies         = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
