@@ -35,8 +35,6 @@ class pfcCommand_nick extends pfcCommand
     $newnickid = $ct->getNickId($newnick);
     $oldnickid = $u->nickid;
 
-    if ($c->debug) pxlog("/nick ".$newnick, "chat", $c->getId());
-
     // new nickname is undefined (not used) and
     // current nickname (oldnick) is mine and
     // oldnick is different from new nick
@@ -84,8 +82,6 @@ class pfcCommand_nick extends pfcCommand
 
       $xml_reponse->script("pfc.handleResponse('nick', 'connected', '".addslashes($newnick)."');");
     
-      if ($c->debug)
-        pxlog("/nick ".$newnick." (first connection, oldnick=".$oldnick.")", "chat", $c->getId());
       return true;
     }
 

@@ -52,8 +52,6 @@ class pfcCommand_send extends pfcCommand
     if (count($errors) > 0)
     {
       // an error occured, just ignore the message and display errors
-      foreach($errors as $e)
-        if ($c->debug) pxlog("error /send, user can't send a message -> nick=".$nick." err=".$e, "chat", $c->getId());
       $cmdp = $p;
       $cmdp["param"] = $errors;
       $cmd =& pfcCommand::Factory("error");

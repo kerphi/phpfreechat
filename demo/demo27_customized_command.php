@@ -35,7 +35,6 @@ class pfcCommand_roll extends pfcCommand
       $result = $dice->roll();
       $ct->write($recipient, $nick, "send", $result);
     }
-    if ($c->debug) pxlog("Cmd_roll[".$c->sessionid."]: msg=".$result, "chat", $c->getId());
   }
 }
 

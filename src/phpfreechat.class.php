@@ -334,7 +334,9 @@ class phpFreeChat
       // if a content not empty is captured it is a php error in the code
       $data = ob_get_contents();
       if ($data != "")
-        pxlog("HandleRequest: content=".$data, "chat", $c->getId());
+      {
+        // todo : display the $data somewhere to warn the user
+      }
       ob_end_clean();
     }
 

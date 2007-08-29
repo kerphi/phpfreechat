@@ -68,8 +68,6 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
           $newnickid == $oldnickid)
       {
         $xml_reponse->script("pfc.handleResponse('".$this->name."', 'notchanged', '".addslashes($newnick)."');");
-        if ($c->debug)
-          pxlog("/nick ".$newnick." (user just reloded the page so let him keep his nickname without any warnings)", "chat", $c->getId());
         return true;
       }
 
@@ -82,8 +80,6 @@ class pfcProxyCommand_checknickchange extends pfcProxyCommand
           $xml_reponse->script("pfc.handleResponse('nick', 'notallowed', '".addslashes($newnick)."');");
         else
           $xml_reponse->script("pfc.handleResponse('nick', 'isused', '".addslashes($newnick)."');");
-        if ($c->debug)
-          pxlog("/nick ".$newnick." (wanted nick is already in use -> wantednickid=".$newnickid.")", "chat", $c->getId());
         return false;
       }
     }

@@ -31,8 +31,6 @@ class pfcCommand_me extends pfcCommand
 
     $msg = phpFreeChat::PreFilterMsg($param);
     $ct->write($recipient, "*me*", $this->name, $u->getNickname()." ".$msg);
-    
-    if ($c->debug) pxlog("/me ".$msg, "chat", $c->getId());
   }
 }
 

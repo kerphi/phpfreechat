@@ -32,7 +32,6 @@ class pfcCommand_notice extends pfcCommand
         return;
       }
     }
-    if ($c->debug) pxlog("/notice ".$msg." (flag=".$flag.")", "chat", $c->getId());
   }
 }
 

@@ -50,8 +50,6 @@ class pfcCommand_quit extends pfcCommand
     */
     
     $xml_reponse->script("pfc.handleResponse('quit', 'ok', '');");
-
-    if ($c->debug) pxlog("/quit (a user just quit -> nick=".$nick.")", "chat", $c->getId());
   }
 }
 
