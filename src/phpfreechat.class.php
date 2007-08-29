@@ -476,6 +476,8 @@ class phpFreeChat
              'images/pv-active.gif',
              'images/user.gif',
              'images/user-me.gif',
+             'images/user_female.gif',
+             'images/user_female-me.gif',
              'images/color-on.gif',
              'images/color-off.gif',
              'images/clock-on.gif',
