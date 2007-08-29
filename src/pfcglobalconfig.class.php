@@ -39,12 +39,6 @@ class pfcGlobalConfig
   var $serverid = '';
   
   /**
-   * <p>Used to change the chat title that is visible just above the messages list.
-   * ("My Chat" by default)</p>
-   */
-  var $title = '';
-
-  /**
    * <p>If you have already identified the user (forum, portal...) you can force the user's nickname with this parameter.
    * Defining a nick will skip the "Please enter your nickname" popup.</p>
    * <p>Warning : Nicknames must be encoded in UTF-8.
@@ -67,20 +61,78 @@ class pfcGlobalConfig
    */
   var $frozen_nick = false;
 
-  var $nickmeta            = array(); // this is the nickname user's metadata, you can add : sexe, age, real name ... (ex: array('sexe'=>'f') )
-  var $nickmeta_private    = array('ip'); // this is the meta that only admins can see
+  /**
+   * <p>Contains some extra data (metadata) about the user that can be used to customize the display.
+   * For example: the user sexe, age, real name ... can be setup in order to display it in the user's info box.
+   * A example for the sexe is : <code>array('sexe'=>'f')</code>
+   * (by default the array is empty)</p>
+   */
+  var $nickmeta = array();
 
+  /**
+   * <p>I can be used to restrict metadata visibility only to admins.
+   * (by default <code>array('ip')</code> means that the ip parameter can be only viewed by admins)</p>
+   */
+  var $nickmeta_private = array('ip');
+
+  /**
+   * <p>Set this parameter to true if you want to give admin rights to the connected user.
+   * Attention : if you don't use any external registration system all your users will be admins.
+   * You have to test current user rights before setting this parameter to true.
+   * (default value is false)</p>
+   */
+  var $isadmin = false;
+
+  /**
+   * <p>This parameter contains a list of key/value that identify admin access.
+   * The keys are the nicknames and the values are the corresponding passwords.
+   * (by default the admin/nopassword account is available, don't forget to change it)</p>
+   */
+  var $admins = array("admin" => "");
+
+  /**
+   * <p>When this parameter is true, it gives admin rights to the first connected user on the server.
+   * (default value is false)</p>
+   */
+  var $firstisadmin  = false;
+  
+  /**
+   * <p>Used to change the chat title that is visible just above the messages list.
+   * ("My Chat" by default)</p>
+   */
+  var $title = '';  
 
   /**
    * <p>Used to create default rooms (auto-joined at startup). It contains an array of rooms names.
    * (by default only one room is created named "My room")</p>
    */
   var $channels = array();
-  var $frozen_channels     = array(); // if empty, allows users to create there own channels
-  var $max_channels        = 10; // this the max number of allowed channels by users
-  var $privmsg             = array(); // the joined private chat when opening the chat (the nicknames must be online)
-  var $max_privmsg         = 5;  // this the max number of allowed privmsg by users
 
+  /**
+   * <p>This parameter can be used to restrict channels to users.
+   * If the array is empty, it allows users to create there own channels.
+   * (by default it's empty)</p>
+   */
+  var $frozen_channels = array();
+
+  /**
+   * <p>Indicate the maximum number of allowed channels for each users.
+   * (10 by default)</p>
+   */
+  var $max_channels = 10;
+
+  /**
+   * <p>This array contains the nicknames list you want to initiate a private message at chat loading.
+   * Of course, the listed nicknames should be online or it will just be ignored.
+   * (by default the array is empty)</p>
+   */
+  var $privmsg = array();
+
+  /**
+   * <p>This is the maximum number of private message allowed at the same time for one user.
+   * (by default its value is 5)</p>
+   */
+  var $max_privmsg = 5;
   
   /**
    * <p>This is the time to wait between two refreshes.
@@ -98,15 +150,20 @@ class pfcGlobalConfig
    */
   var $timeout = 20000;
   
+  /**
+   * When this parameter is true, all the chatters will be redirected
+   * to the url indicated by the <code>lockurl</code> parameter.
+   * (false by default)</p>
+   */
+  var $islocked = false;
 
-  var $isadmin             = false;
-  var $admins              = array("admin" => ""); // the key is the nickname, the value is the password
-  var $firstisadmin        = false; // give admin rights to the first connected user on the server
-
-  var $islocked            = false; // set this parameter to true to lock the chat for all users
-  var $lockurl             = "http://www.phpfreechat.net"; // this is the url where the users must be redirected when the chat is locked
+  /**
+   * This url is used when <code>islocked</code> parameter is true.
+   * The users will be redirected (http redirect) to this url.
+   * (by default it is http://www.phpfreechat.net)
+   */
+  var $lockurl = 'http://www.phpfreechat.net';
   
-  // these parameters are static (cached)
   /**
    * These proxies will be skiped. ex: append "censor" to the list to disable words censoring
    */
@@ -142,8 +199,7 @@ class pfcGlobalConfig
    */
   var $max_text_len = 400;
 
-  
-  var $max_refresh_delay   = 60000; // in mili-seconds (60 seconds)
+  var $max_refresh_delay = 60000; // in mili-seconds (60 seconds)
   
   /**
    * <p>This is the number of messages keept in the history.
