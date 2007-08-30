@@ -45,13 +45,13 @@ class pfcGlobalConfig
    * For example, if you get nicks from a databases where they are ISO-8859-1 encoded,
    * you must convert it: <code>$params["nick"] = iconv("ISO-8859-1", "UTF-8", $bdd_nickname);</code>
    * (of course, change the <code>$bdd_nickname</code> parameter for your needs)</p>
-   * <p>("" value by default, means users must choose a nickname when s/he connects)</p>
+   * <p>("" value by default - means users must choose a nickname when s/he connects)</p>
    */
   var $nick = "";
 
   /**
    * <p>This is the maximum nickname length, a longer nickname is forbidden.
-   * ( 15 caracteres by default)</p>
+   * ( 15 characters by default)</p>
    */
   var $max_nick_len = 15;
   
@@ -63,21 +63,21 @@ class pfcGlobalConfig
 
   /**
    * <p>Contains some extra data (metadata) about the user that can be used to customize the display.
-   * For example: the user sexe, age, real name ... can be setup in order to display it in the user's info box.
-   * A example for the sexe is : <code>array('sexe'=>'f')</code>
-   * (by default the array is empty)</p>
+   * For example: the user's gender, age, real name ... can be setup in order to display it in the user's info box.
+   * A example for gender is : <code>$params["nickmeta"] = array('gender'=>'f');</code>
+   * (by default, the array is empty)</p>
    */
   var $nickmeta = array();
 
   /**
-   * <p>I can be used to restrict metadata visibility only to admins.
-   * (by default <code>array('ip')</code> means that the ip parameter can be only viewed by admins)</p>
+   * <p>Can be used to set user metadata that is only visible to admins.
+   * (by default, <code>array('ip')</code> means that the user's IP address is shown to admins only)</p>
    */
   var $nickmeta_private = array('ip');
 
   /**
    * <p>Set this parameter to true if you want to give admin rights to the connected user.
-   * Attention : if you don't use any external registration system all your users will be admins.
+   * Attention : if you don't use any external registration system, all your users will be admins.
    * You have to test current user rights before setting this parameter to true.
    * (default value is false)</p>
    */
@@ -86,7 +86,7 @@ class pfcGlobalConfig
   /**
    * <p>This parameter contains a list of key/value that identify admin access.
    * The keys are the nicknames and the values are the corresponding passwords.
-   * (by default the admin/nopassword account is available, don't forget to change it)</p>
+   * (by default, the admin/nopassword account is available, don't forget to change it)</p>
    */
   var $admins = array("admin" => "");
 
@@ -104,19 +104,19 @@ class pfcGlobalConfig
 
   /**
    * <p>Used to create default rooms (auto-joined at startup). It contains an array of rooms names.
-   * (by default only one room is created named "My room")</p>
+   * (by default, only one room is created named "My room")</p>
    */
   var $channels = array();
 
   /**
    * <p>This parameter can be used to restrict channels to users.
-   * If the array is empty, it allows users to create there own channels.
-   * (by default it's empty)</p>
+   * If the array is empty, it allows users to create their own channels.
+   * (by default, it's empty)</p>
    */
   var $frozen_channels = array();
 
   /**
-   * <p>Indicate the maximum number of allowed channels for each users.
+   * <p>The maximum number of allowed channels for each user.
    * (10 by default)</p>
    */
   var $max_channels = 10;
@@ -124,29 +124,29 @@ class pfcGlobalConfig
   /**
    * <p>This array contains the nicknames list you want to initiate a private message at chat loading.
    * Of course, the listed nicknames should be online or it will just be ignored.
-   * (by default the array is empty)</p>
+   * (by default, the array is empty)</p>
    */
   var $privmsg = array();
 
   /**
    * <p>This is the maximum number of private message allowed at the same time for one user.
-   * (by default its value is 5)</p>
+   * (5 by default)</p>
    */
   var $max_privmsg = 5;
   
   /**
    * <p>This is the time to wait between two refreshes.
-   * A refresh is a HTTP request which asks the server if there are new messages to display.
-   * If there are no new messages, then a empty HTTP response is returned.
+   * A refresh is an HTTP request which asks the server if there are new messages to display.
+   * If there are no new messages, then an empty HTTP response is returned.
    * ( 5000 by default, 5000ms = 5s)</p>
    */
   var $refresh_delay = 5000;
 
   /**
-   * <p>This is the time of inactivity to wait before to considere to disconnecte user (in milliseconds).
-   * A user is inactive only if he closed his chat windows.
-   * A user with a open chat window is not inactive because he sends each <code>refresh_delay</code> a HTTP request.
-   * ( 20000 by default, 20000ms = 20s)</p>
+   * <p>This is the time of inactivity to wait before a user can be disconnected (in milliseconds).
+   * A user is inactive only if s/he closed his/her chat window.
+   * A user with an open chat window is not inactive because s/he sends each <code>refresh_delay</code> an HTTP request.
+   * ( 20,000 by default, 20000ms = 20s)</p>
    */
   var $timeout = 20000;
   
@@ -160,16 +160,16 @@ class pfcGlobalConfig
   /**
    * This url is used when <code>islocked</code> parameter is true.
    * The users will be redirected (http redirect) to this url.
-   * (by default it is http://www.phpfreechat.net)
+   * (by default, it is http://www.phpfreechat.net)
    */
   var $lockurl = 'http://www.phpfreechat.net';
   
   /**
-   * These proxies will be skiped. ex: append "censor" to the list to disable words censoring
+   * These proxies will be skiped. ex: append "censor" to the list to disable words censoring.
    */
   var $skip_proxies         = array();
   /**
-   * These proxies will be handled just before to process commands and just after system proxies
+   * These proxies will be handled just before to process commands and just after system proxies.
    */
   var $post_proxies         = array();
   /**
@@ -177,7 +177,7 @@ class pfcGlobalConfig
    */
   var $pre_proxies          = array();
   /**
-   * Will contains proxies to execute on each command (filled in the init step) this parameter could not be overridden
+   * Contains proxies to execute on each command (filled in the init step) this parameter cannot be overridden.
    */
   var $proxies              = array();
   var $proxies_cfg          = array("auth"    => array(),
@@ -194,8 +194,8 @@ class pfcGlobalConfig
   var $cmd_path_default    = ""; // dirname(__FILE__).'/commands'
 
   /**
-   * <p>This is the maximum message length, a longer message is forbidden.
-   * ( 250 characters by default)</p>
+   * <p>This is the maximum message length. A longer message is forbidden.
+   * ( 400 characters by default)</p>
    */
   var $max_text_len = 400;
 
@@ -211,7 +211,7 @@ class pfcGlobalConfig
   var $max_displayed_lines = 150; // maximum number of displayed lines (old lines will be deleted to save browser's memory)
 
   /**
-   * <p>Setting this to true will send a <code>/quit</code> command when the user close his window
+   * <p>Setting this to true will send a <code>/quit</code> command when the user closes his/her window.
    * (doesn't work on Firefox).
    * This parameter isn't true by default because on IE and Konqueror/Safari,
    * reloading the window (F5) will generate the same event as closing the window which can be annoying.
@@ -221,7 +221,7 @@ class pfcGlobalConfig
 
   /**
    * <p>Setting this to true will give the focus to the input text box when connecting to the chat.
-   * It can be usefull not touch the focus when integrating the chat into an existing website
+   * It can be useful not to touch the focus when integrating the chat into an existing website
    * because when the focus is changed, the viewport follows the focus location.
    * (true value by default)</p>
    */
@@ -229,7 +229,7 @@ class pfcGlobalConfig
 
   /**
    * <p>Setting this to false will oblige user to click on the connect button if s/he wants to chat.
-   * (true value by default, means when the chat web page is open,
+   * (true value by default means when the chat web page is open,
    * a connection to the chat is automaticaly performed)</p>
    */
   var $connect_at_startup = true;
@@ -267,7 +267,7 @@ class pfcGlobalConfig
    */
   var $clock = true;
   
-  var $startwithsound      = true; // start with sound enabled
+  var $startwithsound = true; // start with sound enabled
 
   /**
    * <p>Setting it to true will add the <code>target="_blank"</code> into parsed links.
@@ -282,7 +282,7 @@ class pfcGlobalConfig
   
   /**
    * Used to hide the phpfreechat linkback logo.
-   * Be sure that you are conform to the license page before setting this to false !
+   * Be sure that you are conform to the license page before setting this to false!
    * http://www.phpfreechat.net/license.en.html
    */
   var $display_pfc_logo = true; 
@@ -303,13 +303,13 @@ class pfcGlobalConfig
   var $showsmileys = true;
 
   /**
-   * <p>Used to display or not the showwhosonline button.
+   * <p>Used to show/hide the showwhosonline button.
    * (true value by default)</p>
    */
   var $btn_sh_whosonline = true;
 
   /**
-   * <p>Used to display or not the showsmileys button.
+   * <p>Used to show/hide the showsmileys button.
    * (true value by default)</p>
    */
   var $btn_sh_smileys = true;
@@ -319,8 +319,8 @@ class pfcGlobalConfig
 
   /**
    * <p>This parameter specifies which theme the chat will use.
-   * A theme is a package that make possible to completly change the chat appearance (CSS) and the chat dynamics (JS)
-   * You can found official themes in the <code>themes/</code> directory on your local phpfreechat distribution.
+   * A theme is a package that makes it possible to completly change the chat appearance (CSS) and the chat dynamics (JS)
+   * You can find official themes in the <code>themes/</code> directory on your local phpfreechat distribution.
    * ('default' by default)</p>
    */
   var $theme = 'default';
@@ -336,32 +336,32 @@ class pfcGlobalConfig
   var $language = '';
 
   /**
-   * <p>Useful to set a sepcific encoding for chat labels.
+   * <p>Set a sepcific encoding for chat labels.
    * This is really useful when the Web page embedding the chat is not UTF-8 encoded.
    * This parameter should be the same as the chat web page.
    * Could be ISO-8859-1 or anything else but it must be supported by iconv php module.
-   * (UTF-8 by default )</p>
+   * ( UTF-8 by default )</p>
    */
   var $output_encoding = 'UTF-8';
 
   /**
    * <p>Used to specify the chat container (chat database).
-   * Accepted containers are : File and Mysql (in the future maybe other).
+   * Accepted containers are : File and Mysql (maybe others in the future).
    * ("File" by default)</p>
    */
   var $container_type = 'File';
 
   /**
-   * <p>Used to specify the script which will handle asynchronous request.
+   * <p>Used to specify the script which will handle asynchronous requests.
    * Very useful when the chat (client) script is resource consuming (ex: forum or portal chat integration).
-   * <code>server_script_url</code> must point to the server script browable url (useful when using url rewriting).
+   * <code>server_script_url</code> must point to the server script browsable url (useful when using url rewriting).
    * (by default these parameters are calculated automaticaly)</p>
    */
   var $server_script_path  = '';
   var $server_script_url   = '';
 
   /**
-   * <p>Used to specify the script path which firstly display the chat.
+   * <p>Used to specify the script path which first displays the chat.
    * This path will be used to calculate relatives paths for resources : javascript lib and images.
    * Useful when the php configuration is uncommon, this option can be used to force the automatic detection process.
    * (by default this parameters are auto-detected)</p>
@@ -386,7 +386,7 @@ class pfcGlobalConfig
   /**
    * This url should link to the <code>data_private_path</code> directory.
    * So that the clients browsers will be able to load needed javascript files and theme resources.
-   * It can be usefull when url rewriting is done on the server.
+   * It can be useful when url rewriting is done on the server.
    * (by default this parameters is calculated automaticaly from <code>data_private_path</code>)
    */
   var $data_public_url = '';
