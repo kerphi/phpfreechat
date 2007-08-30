@@ -411,23 +411,25 @@ class pfcGlobalConfig
   var $debug = false;
 
   /**
-   * This is the user time zone
-   * it is the difference in seconds between user clock and server clock
+   * <p>Can be used to setup the chat time zone.
+   * It is the difference in seconds between chat clock and server clock</p>
    */
   var $time_offset = 0;
   /**
-   * How to display the dates in the chat
+   * <p>How to display the dates in the chat</p>
    */
   var $date_format = "d/m/Y";
   /**
-   * How to display the time in the chat
+   * <p>How to display the time in the chat</p>
    */
   var $time_format = "H:i:s";
   
   /**
-   * This parameter is useful when your chat server is behind a reverse proxy that
-   * forward client ip address in HTTP_X_FORWARDED_FOR http header.
-   * see : http://www.phpfreechat.net/forum/viewtopic.php?id=1344
+   * <p>This parameter is useful when your chat server is behind a reverse proxy that
+   * forwards client ip address in HTTP_X_FORWARDED_FOR http header.
+   * Some discutions about this parameter are available
+   * on <a href="http://www.phpfreechat.net/forum/viewtopic.php?id=1344">the forum</a>.
+   * (default value is false)</p>
    */
   var $get_ip_from_xforwardedfor = false;
   
