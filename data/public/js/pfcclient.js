@@ -1197,14 +1197,18 @@ pfcClient.prototype = {
     var nickidlst = this.getChanMeta(chanid,'users')['nickid'];
     var nickdiv = this.gui.getOnlineContentFromTabId(chanid);
     var ul = document.createElement('ul');
-    ul.setAttribute('class',     'pfc_nicklist');
-    ul.setAttribute('className', 'pfc_nicklist'); // IE6
+    if (is_ie)
+      ul.setAttribute('className', 'pfc_nicklist'); // IE
+    else
+      ul.setAttribute('class',     'pfc_nicklist');
     for (var i=0; i<nickidlst.length; i++)
     {
       var nickid = nickidlst[i];
       var li = this.buildNickItem(nickid);
-      li.setAttribute('class',     'pfc_nickitem_'+nickid);
-      li.setAttribute('className', 'pfc_nickitem_'+nickid); // IE6
+      if (is_ie)
+        li.setAttribute('className', 'pfc_nickitem_'+nickid); // IE
+      else
+        li.setAttribute('class',     'pfc_nickitem_'+nickid);
       ul.appendChild(li);
     }
     var fc = nickdiv.firstChild;
@@ -1227,18 +1231,24 @@ pfcClient.prototype = {
     var usermeta = this.getAllUserMeta(nickid);
 
     var div  = document.createElement('div');
-    div.setAttribute('class',     'pfc_nickwhois');
-    div.setAttribute('className', 'pfc_nickwhois'); // for IE6
+    if (is_ie)
+      div.setAttribute('className', 'pfc_nickwhois'); // for IE
+    else
+      div.setAttribute('class',     'pfc_nickwhois');
 
     var p = document.createElement('p');
-    p.setAttribute('class',     'pfc_nickwhois_header');
-    p.setAttribute('className', 'pfc_nickwhois_header'); // for IE6
+    if (is_ie)
+      p.setAttribute('className', 'pfc_nickwhois_header'); // for IE
+    else
+      p.setAttribute('class',     'pfc_nickwhois_header');
     div.appendChild(p);
 
     // add the close button
     var img = document.createElement('img');
-    img.setAttribute('class',     'pfc_nickwhois_close');
-    img.setAttribute('className', 'pfc_nickwhois_close'); // for IE6
+    if (is_ie)
+      img.setAttribute('className', 'pfc_nickwhois_close'); // for IE
+    else
+      img.setAttribute('class',     'pfc_nickwhois_close');
     img.pfc_parent = div;
     img.onclick = function(evt){
       this.pfc_parent.style.display = 'none';
@@ -1269,11 +1279,15 @@ pfcClient.prototype = {
       {
         var tr = document.createElement('tr');
         var td1 = document.createElement('td');
-        td1.setAttribute('class',     'pfc_nickwhois_c1');
-        td1.setAttribute('className', 'pfc_nickwhois_c1'); // for IE6
+        if (is_ie)
+          td1.setAttribute('className', 'pfc_nickwhois_c1'); // for IE
+        else
+          td1.setAttribute('class',     'pfc_nickwhois_c1');
         var td2 = document.createElement('td');
-        td2.setAttribute('class',     'pfc_nickwhois_c2');
-        td2.setAttribute('className', 'pfc_nickwhois_c2'); // for IE6
+        if (is_ie)
+          td2.setAttribute('className', 'pfc_nickwhois_c2'); // for IE
+        else
+          td2.setAttribute('class',     'pfc_nickwhois_c2');
         td1.appendChild(document.createTextNode(k));
         td2.appendChild(document.createTextNode(v));
         tr.appendChild(td1);
@@ -1287,8 +1301,10 @@ pfcClient.prototype = {
     if (pfc.getUserMeta(nickid,'nick') != this.nickname)
     {
       var p = document.createElement('p');
-      p.setAttribute('class',     'pfc_nickwhois_pv');
-      p.setAttribute('className', 'pfc_nickwhois_pv'); // for IE6
+      if (is_ie)
+        p.setAttribute('className', 'pfc_nickwhois_pv'); // for IE
+      else
+        p.setAttribute('class',     'pfc_nickwhois_pv');
       var a = document.createElement('a');
       a.setAttribute('href', '');
       a.pfc_nickid = nickid;
@@ -1342,16 +1358,20 @@ pfcClient.prototype = {
     else
       img.setAttribute('src', this.res.getFileUrl('images/user.gif'));
     img.style.marginRight = '5px';
-    img.setAttribute('class',     'pfc_nickbutton');
-    img.setAttribute('className', 'pfc_nickbutton'); // for IE6
+    if (is_ie)
+      img.setAttribute('className', 'pfc_nickbutton'); // for IE
+    else
+      img.setAttribute('class',     'pfc_nickbutton');
     a.appendChild(img);
 
     // nobr is not xhtml valid but it's a workeround 
     // for IE which doesn't support 'white-space: pre' css rule
     var nobr = document.createElement('nobr');
     var span = document.createElement('span');
-    span.setAttribute('class',     'pfc_nickmarker pfc_nick_'+nickid);
-    span.setAttribute('className', 'pfc_nickmarker pfc_nick_'+nickid); // for IE6
+    if (is_ie)
+      span.setAttribute('className', 'pfc_nickmarker pfc_nick_'+nickid); // for IE
+    else
+      span.setAttribute('class',     'pfc_nickmarker pfc_nick_'+nickid);
     span.appendChild(document.createTextNode(nick));
     nobr.appendChild(span);
     a.appendChild(nobr);
