@@ -81,8 +81,10 @@ pfcGui.prototype = {
       if (this.tabids[i] == tabid)
       {
         // select the tab
-        tabtitle.setAttribute('class', 'selected');
-        tabtitle.setAttribute('className', 'selected'); // for IE6
+        if (! is_ie)
+          tabtitle.setAttribute('class', 'selected');
+        else
+          tabtitle.setAttribute('className', 'selected'); // for IE
         //Element.addClassName(tabtitle, 'selected');
         tab_to_show = tabcontent;
         this.current_tab     = this.tabs[i];
@@ -91,8 +93,10 @@ pfcGui.prototype = {
       else
       {
         // unselect the tab
-        tabtitle.setAttribute('class', '');
-        tabtitle.setAttribute('className', ''); // for IE6
+        if (! is_ie)
+          tabtitle.setAttribute('class', '');
+        else
+          tabtitle.setAttribute('className', ''); // for IE
         //Element.removeClassName(tabtitle, 'selected');
         tabcontent.style.display = 'none';
       }
@@ -133,8 +137,10 @@ pfcGui.prototype = {
     // if the chat content doesn't exists yet, just create a cached one
     cc = document.createElement('div');
     cc.setAttribute('id', 'pfc_chat_'+tabid);
-    cc.setAttribute('class', 'pfc_chat');
-    cc.setAttribute('className', 'pfc_chat'); // for IE6
+    if (! is_ie)
+      cc.setAttribute('class', 'pfc_chat');
+    else
+      cc.setAttribute('className', 'pfc_chat'); // for IE
 
     //    Element.addClassName(cc, 'pfc_chat');
     cc.style.display = "block"; // needed by IE6 to show the online div at startup (first loaded page)
@@ -151,8 +157,10 @@ pfcGui.prototype = {
 
     oc = document.createElement('div');
     oc.setAttribute('id', 'pfc_online_'+tabid);
-    oc.setAttribute('class', 'pfc_online');
-    oc.setAttribute('className', 'pfc_online'); // for IE6
+    if (! is_ie)
+      oc.setAttribute('class', 'pfc_online');
+    else
+      oc.setAttribute('className', 'pfc_online'); // for IE
     //Element.addClassName(oc, 'pfc_online');
     // I set the border style here because seting it in the CSS is not taken in account
     //    oc.style.borderLeft = "1px solid #555";
@@ -226,8 +234,10 @@ pfcGui.prototype = {
     li_title.appendChild(li_div);
     
     var a1 = document.createElement('a');
-    a1.setAttribute('class', 'pfc_tabtitle');
-    a1.setAttribute('className', 'pfc_tabtitle'); // for IE6    
+    if (! is_ie)
+      a1.setAttribute('class', 'pfc_tabtitle');
+    else
+      a1.setAttribute('className', 'pfc_tabtitle'); // for IE
     a1.setAttribute('href', '#');
     a1.pfc_tabid = tabid;
     a1.onclick = function(){pfc.gui.setTabById(this.pfc_tabid); return false;}
@@ -263,8 +273,10 @@ pfcGui.prototype = {
       }
       a2.alt   = pfc.res.getLabel('Close this tab');
       a2.title = a2.alt;
-      a2.setAttribute('class', 'pfc_tabclose');
-      a2.setAttribute('className', 'pfc_tabclose'); // for IE6
+      if (! is_ie)
+        a2.setAttribute('class', 'pfc_tabclose');
+      else
+        a2.setAttribute('className', 'pfc_tabclose'); // for IE
       var img = document.createElement('img');
       img.setAttribute('src', pfc.res.getFileUrl('images/tab_remove.gif'));
       a2.appendChild(img);
@@ -274,8 +286,10 @@ pfcGui.prototype = {
     var div_content = document.createElement('div');
     div_content.setAttribute('id', 'pfc_channel_content'+tabid);   
     //    Element.addClassName(div_content, 'pfc_content');
-    div_content.setAttribute('class', 'pfc_content');
-    div_content.setAttribute('className', 'pfc_content'); // for IE6    
+    if (! is_ie)
+      div_content.setAttribute('class', 'pfc_content');
+    else
+      div_content.setAttribute('className', 'pfc_content'); // for IE
     div_content.style.display = 'none';
 
     var div_chat    = this.getChatContentFromTabId(tabid);
@@ -354,13 +368,17 @@ pfcGui.prototype = {
     {
       if (div.blinkstat == true)
       {
-        div.setAttribute('class',     'pfc_tabblink1');
-        div.setAttribute('className', 'pfc_tabblink1'); // for IE6
+        if (! is_ie)
+          div.setAttribute('class',     'pfc_tabblink1');
+        else
+          div.setAttribute('className', 'pfc_tabblink1'); // for IE
       }
       else
       {
-        div.setAttribute('class',     'pfc_tabblink2');
-        div.setAttribute('className', 'pfc_tabblink2'); // for IE6
+        if (! is_ie)
+          div.setAttribute('class',     'pfc_tabblink2');
+        else
+          div.setAttribute('className', 'pfc_tabblink2'); // for IE
       }
       div.blinkstat = !div.blinkstat;
       div.blinktimeout = setTimeout('pfc.gui.notifyTab(\''+tabid+'\');', 500);
@@ -389,8 +407,10 @@ pfcGui.prototype = {
     var div = $('pfc_tabdiv'+tabid);
     if (div) 
     {
-      div.removeAttribute('class');
-      div.removeAttribute('className'); // for IE6
+      if (! is_ie)
+        div.removeAttribute('class');
+      else
+        div.removeAttribute('className'); // for IE
       clearTimeout(div.blinktimeout);
     }
   },
@@ -432,8 +452,10 @@ pfcGui.prototype = {
       var bbc = clist_v[i];
       var elt = document.createElement('img');
       elt.bbc = bbc;
-      elt.setAttribute('class', 'pfc_color');
-      elt.setAttribute('className', 'pfc_color'); // for IE6
+      if (! is_ie)
+        elt.setAttribute('class', 'pfc_color');
+      else
+        elt.setAttribute('className', 'pfc_color'); // for IE
       elt.setAttribute('id', 'pfc_color_'+bbc);
       elt.style.backgroundColor = '#'+bbc;
       elt.setAttribute('src', pfc.res.getFileUrl('images/color_transparent.gif'));
