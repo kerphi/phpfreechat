@@ -17,7 +17,8 @@
         <p id="pfc_handle"
            <?php if (! $frozen_nick) {
              echo ' title="' . _pfc("Enter your nickname here") . '"' 
-               . ' onclick="pfc.askNick(\'\')"';
+               . ' onclick="pfc.askNick(\'\')"'
+               . ' style="cursor: pointer"';
            }
            ?>
            ><?php echo $u->nick; ?></p>      

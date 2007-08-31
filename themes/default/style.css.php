@@ -249,7 +249,6 @@ div#pfc_cmd_container {
 p#pfc_handle {
   margin: 0; padding: 0;
   display: inline;
-  cursor: pointer;
   margin-right: 5px;
   color: black;
   font-weight: bold;
