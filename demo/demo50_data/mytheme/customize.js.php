@@ -1,26 +1,19 @@
 pfcClient.prototype.updateNickWhoisBox = function(nickid)
 {
+    var className = (! is_ie) ? 'class' : 'className';
+
     var usermeta = this.getAllUserMeta(nickid);
 
     var div  = document.createElement('div');
-    if (! is_ie)
-      div.setAttribute('class',     'pfc_nickwhois');
-    else
-      div.setAttribute('className', 'pfc_nickwhois'); // for IE
+    div.setAttribute(className, 'pfc_nickwhois');
 
     var p = document.createElement('p');
-    if (! is_ie)
-      p.setAttribute('class',     'pfc_nickwhois_header');
-    else
-      p.setAttribute('className', 'pfc_nickwhois_header'); // for IE
+    p.setAttribute(className, 'pfc_nickwhois_header');
     div.appendChild(p);
 
     // add the close button
     var img = document.createElement('img');
-    if (! is_ie)
-      img.setAttribute('class',     'pfc_nickwhois_close');
-    else
-      img.setAttribute('className', 'pfc_nickwhois_close'); // for IE
+    img.setAttribute(className, 'pfc_nickwhois_close');
     img.pfc_parent = div;
     img.onclick = function(evt){
       this.pfc_parent.style.display = 'none';
@@ -52,15 +45,9 @@ pfcClient.prototype.updateNickWhoisBox = function(nickid)
       {
         var tr = document.createElement('tr');
         var td1 = document.createElement('td');
-        if (! is_ie)
-          td1.setAttribute('class',     'pfc_nickwhois_c1');
-        else
-          td1.setAttribute('className', 'pfc_nickwhois_c1'); // for IE
+        td1.setAttribute(className, 'pfc_nickwhois_c1');
         var td2 = document.createElement('td');
-        if (! is_ie)
-          td2.setAttribute('class',     'pfc_nickwhois_c2');
-        else
-          td2.setAttribute('className', 'pfc_nickwhois_c2'); // for IE
+        td2.setAttribute(className, 'pfc_nickwhois_c2');
         td1.appendChild(document.createTextNode(k));
         td2.appendChild(document.createTextNode(v));
         tr.appendChild(td1);
@@ -75,10 +62,7 @@ pfcClient.prototype.updateNickWhoisBox = function(nickid)
     {
       var img = document.createElement('img');
       img.setAttribute('src',this.getUserMeta(nickid,'avatar'));
-      if (! is_ie)
-        img.setAttribute('class',     'pfc_nickwhois_avatar');
-      else
-        img.setAttribute('className', 'pfc_nickwhois_avatar'); // for IE
+      img.setAttribute(className, 'pfc_nickwhois_avatar');
       div.appendChild(img);
     }
     
@@ -86,10 +70,7 @@ pfcClient.prototype.updateNickWhoisBox = function(nickid)
     if (pfc.getUserMeta(nickid,'nick') != this.nickname)
     {
       var p = document.createElement('p');
-      if (! is_ie)
-        p.setAttribute('class',     'pfc_nickwhois_pv');
-      else
-        p.setAttribute('className', 'pfc_nickwhois_pv'); // for IE
+      p.setAttribute(className, 'pfc_nickwhois_pv');
       var a = document.createElement('a');
       a.setAttribute('href', '');
       a.pfc_nickid = nickid;
