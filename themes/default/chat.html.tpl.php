@@ -15,8 +15,12 @@
       <tr>
       <td class="pfc_td1">
         <p id="pfc_handle"
-           title="<?php echo _pfc("Enter your nickname here"); ?>"
-           onclick="pfc.askNick('')"><?php echo $u->nick; ?></p>      
+           <?php if (! $frozen_nick) {
+             echo ' title="' . _pfc("Enter your nickname here") . '"' 
+               . ' onclick="pfc.askNick(\'\')"';
+           }
+           ?>
+           ><?php echo $u->nick; ?></p>      
       </td>
       <td class="pfc_td2">
         <input type="text"
