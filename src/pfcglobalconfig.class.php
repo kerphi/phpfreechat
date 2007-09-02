@@ -532,7 +532,7 @@ class pfcGlobalConfig
   /**
    * <p>Used to store private data like cache, logs and chat history.
    * Tip: you can optimize your chat performances,
-   * see <a href="http://www.phpfreechat.net/faq.en.html#tmpfs>this FAQ entry</a>.
+   * see <a href="http://www.phpfreechat.net/faq.en.html#tmpfs">this FAQ entry</a>.
    * (<code>dirname(__FILE__)."/../data/private"</code> by default)</p>
    */
   var $data_private_path = '';
