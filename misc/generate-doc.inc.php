@@ -13,6 +13,7 @@ function pfc_generate_doc($f = NULL)
    $ct = stream_context_create($ct_params);
   $data = file_get_contents($f, false, $ct);
 
+  $offset = 0;
   if (preg_match('/class pfcGlobalConfig/',$data,$matches, PREG_OFFSET_CAPTURE, $offset))
   {
     $offset_start = $matches[0][1];
@@ -42,6 +43,7 @@ function pfc_generate_doc($f = NULL)
       $offset3 = $matches3[0][1];
 
       // search for the parameter description
+      $offset2 = $offset;
       $p['desc'] = '';
       while($offset2 < $offset3)
       {
