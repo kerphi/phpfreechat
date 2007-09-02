@@ -31,6 +31,10 @@ require_once dirname(__FILE__).'/pfccontainer.class.php';
  */
 class pfcGlobalConfig
 {
+  // ------------------
+  // public parameters
+  // ------------------
+
   /**
    * <p>This is the only mandatory parameter used to identify the chat server.
    * You can compare it to the server ip/host like on an IRC server.
@@ -38,6 +42,21 @@ class pfcGlobalConfig
    */
   var $serverid = '';
   
+  /**
+   * <p>Used to translate the chat text and messages. Accepted values are the <code>i18n/</code> sub directories names.
+   * (by default this is the local server language)</p>
+   */
+  var $language = '';
+
+  /**
+   * <p>Set a sepcific encoding for chat labels.
+   * This is really useful when the Web page embedding the chat is not UTF-8 encoded.
+   * This parameter should be the same as the chat web page.
+   * Could be ISO-8859-1 or anything else but it must be supported by iconv php module.
+   * ( UTF-8 by default )</p>
+   */
+  var $output_encoding = 'UTF-8';
+
   /**
    * <p>If you have already identified the user (forum, portal...) you can force the user's nickname with this parameter.
    * Defining a nick will skip the "Please enter your nickname" popup.</p>
@@ -143,10 +162,18 @@ class pfcGlobalConfig
   var $refresh_delay = 5000;
 
   /**
-   * <p>This is the time of inactivity to wait before a user can be disconnected (in milliseconds).
+   * <p>Indicate the maximum number of seconds to wait before the server response.
+   * If the latest refresh command is not received in this delay an other one will be created.
+   * This parameter is not implemented in the current version of phpfreechat.
+   * (by default 60000ms, it means 60 seconds)</p>
+   */
+  var $max_refresh_delay = 60000; // in mili-seconds (60 seconds)
+  
+  /**
+   * <p>This is the time of inactivity to wait before a user is disconnected (in milliseconds).
    * A user is inactive only if s/he closed his/her chat window.
    * A user with an open chat window is not inactive because s/he sends each <code>refresh_delay</code> an HTTP request.
-   * ( 20,000 by default, 20000ms = 20s)</p>
+   * ( 20000 by default, 20000ms = 20s)</p>
    */
   var $timeout = 20000;
   
@@ -165,41 +192,79 @@ class pfcGlobalConfig
   var $lockurl = 'http://www.phpfreechat.net';
   
   /**
-   * These proxies will be skiped. ex: append "censor" to the list to disable words censoring.
+   * <p>Contains the list of proxies to ingore.
+   * For example: append 'censor' to the list to disable words censoring.
+   * The list of system proxies can be found in src/proxies/.
+   * Attention: 'checktimeout' and 'checknickchange' proxies should not be disabled or the chat will not work anymore.
+   * (by default no proxy will be skiped)</p>
    */
-  var $skip_proxies         = array();
+  var $skip_proxies = array();
+
   /**
-   * These proxies will be handled just before to process commands and just after system proxies.
+   * <p>This array contains the proxies that will be handled just before to process a command
+   * and just after the system proxies.
+   * You can use this array to execute your own proxy.
+   * (by default empty array)</p>
    */
-  var $post_proxies         = array();
+  var $post_proxies = array();
+  
   /**
-   * These proxies will be handled before system proxies (at begining)
+   * <p>This array ocntains the proxies that will be handled just before system proxies.
+   * You can use this array to execute your own proxy.
+   * (by default empty array)</p>
    */
-  var $pre_proxies          = array();
+  var $pre_proxies = array();
+
   /**
-   * Contains proxies to execute on each command (filled in the init step) this parameter cannot be overridden.
+   * <p>Contains the proxies configuration.
+   * TODO: explain the possible values for each proxies.</p>
    */
-  var $proxies              = array();
-  var $proxies_cfg          = array("auth"    => array(),
-                                    "noflood" => array("charlimit" => 450,
-                                                       "msglimit"  => 10,
-                                                       "delay"     => 5),
-                                    "censor"  => array("words"     => array("fuck","sex","bitch"),
-                                                       "replaceby" => "*",
-                                                       "regex"     => false),
-                                    "log"     => array("path" => ""));
-  var $proxies_path         = ""; // a custom proxies path
-  var $proxies_path_default = ""; // dirname(__FILE__).'/proxies'
-  var $cmd_path            = ""; // a custom commands path
-  var $cmd_path_default    = ""; // dirname(__FILE__).'/commands'
+  var $proxies_cfg = array("auth"    => array(),
+                           "noflood" => array("charlimit" => 450,
+                                              "msglimit"  => 10,
+                                              "delay"     => 5),
+                           "censor"  => array("words"     => array("fuck","sex","bitch"),
+                                              "replaceby" => "*",
+                                              "regex"     => false),
+                           "log"     => array("path" => ""));
+
+  /**
+   * <p>A custom proxies path. Used to easily plugin your own proxy to the chat without modifying the code.
+   * (by default empty path)</p>
+   */
+  var $proxies_path = '';
+
+  /**
+   * <p>Contains the default proxies location.
+   * Do not change this parameter if you don't know what you are doing.
+   * If you try to add your own proxy, check the <code>proxies_path</code> parameter.
+   * (by default <code>dirname(__FILE__).'/proxies'</code>)</p>
+   */
+  var $proxies_path_default = '';
+
+  /**
+   * <p>This parameter indicate your own commands directory location.
+   * The chat uses commands to communicate between client and server.
+   * As an example, when a message is sent, the <code>/send your message</code> command is used,
+   * when a nickname is changed the <code>/nick newnickname</code> command is used.
+   * To create a new command you have to write it and indicate in this parameter where it is located.
+   * (by default empty string, taht means no custom command path is used)</p>
+   */
+  var $cmd_path = '';
+  
+  /**
+   * <p>Contains the default command path used by the system.
+   * Do not change this parameter if you don't know what you are doing.
+   * If you try to add your own command, check the <code>cmd_path</code> parameter.
+   * (by default <code>dirname(__FILE__).'/commands'</code>)</p>
+   */
+  var $cmd_path_default = '';
 
   /**
    * <p>This is the maximum message length. A longer message is forbidden.
-   * ( 400 characters by default)</p>
+   * (400 characters by default)</p>
    */
   var $max_text_len = 400;
-
-  var $max_refresh_delay = 60000; // in mili-seconds (60 seconds)
   
   /**
    * <p>This is the number of messages keept in the history.
@@ -207,8 +272,14 @@ class pfcGlobalConfig
    * The number of messages s/he can see is defined by this parameter.
    * (20 lines by default)</p>
    */
-  var $max_msg = 20;  
-  var $max_displayed_lines = 150; // maximum number of displayed lines (old lines will be deleted to save browser's memory)
+  var $max_msg = 20;
+
+  /**
+   * <p>It is the maximum number of displayed lines in the window.
+   * Old lines will be deleted to save browser's memory on clients.
+   * (by default 150 lines are keept)</p>
+   */
+  var $max_displayed_lines = 150;
 
   /**
    * <p>Setting this to true will send a <code>/quit</code> command when the user closes his/her window.
@@ -266,8 +337,12 @@ class pfcGlobalConfig
    * (true value by default)</p>
    */
   var $clock = true;
-  
-  var $startwithsound = true; // start with sound enabled
+
+  /**
+   * <p>Setting it to false will start the chat without sound notifications.
+   * (true by default)</p>
+   */
+  var $startwithsound = true;
 
   /**
    * <p>Setting it to true will add the <code>target="_blank"</code> into parsed links.
@@ -275,19 +350,46 @@ class pfcGlobalConfig
    * (true value by default)</p>
    */
   var $openlinknewwindow = true;
-  
-  var $notify_window       = true; // true : appends a prefix to the window title with the number of new posted messages
-  var $short_url           = true; // true : shortens long urls entered by users in the chat area
-  var $short_url_width     = 40; // final width of the shortened url
+
+  /**
+   * <p>Seting it to false will disable the window title nofitifaction.
+   * When a message is received and this parameter is true, the window title is modified with <code>[n]</code>
+   * (n is the number of new posted messages).
+   * (true by default)</p>
+   */
+  var $notify_window = true;
+
+  /**
+   * <p>Setting it to true will shortens long urls entered by users in the chat area.
+   * (true by default)</p>
+   */
+  var $short_url = true;
+
+  /**
+   * <p>Final width of the shortened url.
+   * This parameter is taken into accound only when <code>short_url</code> is true.
+   * (40 by default)</p>
+   */
+  var $short_url_width = 40;
   
   /**
-   * Used to hide the phpfreechat linkback logo.
-   * Be sure that you are conform to the license page before setting this to false!
-   * http://www.phpfreechat.net/license.en.html
+   * <p>Used to hide the phpfreechat linkback logo.
+   * Be sure that you are conform to the <a href="http://www.phpfreechat.net/license.en.html">license page</a>
+   * before setting this to false!
+   * (true by default)</p>
    */
   var $display_pfc_logo = true; 
 
-  var $displaytabimage       = true;
+  /**
+   * <p>Used to show/hide the images in the channels and pv tabs.
+   * (true by default)</p>
+   */
+  var $displaytabimage = true;
+
+  /**
+   * <p>Used to show/hide the close button in the channels tabs.
+   * (true by default)</p>
+   */
   var $displaytabclosebutton = true;
 
   /**
@@ -313,9 +415,48 @@ class pfcGlobalConfig
    * (true value by default)</p>
    */
   var $btn_sh_smileys = true;
-  
-  var $bbcode_colorlist    = array("#FFFFFF","#000000","#000055","#008000","#FF0000","#800000","#800080","#FF5500","#FFFF00","#00FF00","#008080","#00FFFF","#0000FF","#FF00FF","#7F7F7F","#D2D2D2");
-  var $nickname_colorlist  = array('#CCCCCC','#000000','#3636B2','#2A8C2A','#C33B3B','#C73232','#80267F','#66361F','#D9A641','#3DCC3D','#1A5555','#2F8C74','#4545E6','#B037B0','#4C4C4C','#959595');
+
+  /**
+   * <p>This is the list of colors that will appears into the bbcode palette.
+   * (by default it contains a list of basic colors: '#FFFFFF', '#000000', ...)</p>
+   */
+  var $bbcode_colorlist = array('#FFFFFF',
+                                '#000000',
+                                '#000055',
+                                '#008000',
+                                '#FF0000',
+                                '#800000',
+                                '#800080',
+                                '#FF5500',
+                                '#FFFF00',
+                                '#00FF00',
+                                '#008080',
+                                '#00FFFF',
+                                '#0000FF',
+                                '#FF00FF',
+                                '#7F7F7F',
+                                '#D2D2D2');
+
+  /**
+   * <p>This is the list of colors that will be used to automaticaly and randomly colorize the nicknames in the chat.
+   * (by default it contains a list of basic colors: '#CCCCCC','#000000')</p>
+   */
+  var $nickname_colorlist = array('#CCCCCC',
+                                  '#000000',
+                                  '#3636B2',
+                                  '#2A8C2A',
+                                  '#C33B3B',
+                                  '#C73232',
+                                  '#80267F',
+                                  '#66361F',
+                                  '#D9A641',
+                                  '#3DCC3D',
+                                  '#1A5555',
+                                  '#2F8C74',
+                                  '#4545E6',
+                                  '#B037B0',
+                                  '#4C4C4C',
+                                  '#959595');
 
   /**
    * <p>This parameter specifies which theme the chat will use.
@@ -324,25 +465,39 @@ class pfcGlobalConfig
    * ('default' by default)</p>
    */
   var $theme = 'default';
-  var $theme_path          = '';
-  var $theme_default_path  = '';
-  var $theme_url           = '';
-  var $theme_default_url   = '';
 
   /**
-   * <p>Used to translate the chat text and messages. Accepted values are the <code>i18n/</code> sub directories names.
-   * (by default this is the local server language)</p>
+   * <p>Indicates where the themes are located.
+   * Use this parameter if you want to store your own theme in a special location.
+   * (by default the same as <code>theme_default_path</code>)</p>
    */
-  var $language = '';
+  var $theme_path = '';
 
   /**
-   * <p>Set a sepcific encoding for chat labels.
-   * This is really useful when the Web page embedding the chat is not UTF-8 encoded.
-   * This parameter should be the same as the chat web page.
-   * Could be ISO-8859-1 or anything else but it must be supported by iconv php module.
-   * ( UTF-8 by default )</p>
+   * <p>This url indicates the <code>theme_path</code> location.
+   * It will be used by the browser to load theme resources : images, css, js.
+   * If this parameter is not indicated, the themes will be copied to <code>data_public_path/themes</code>
+   * and this parameter value will be set to <code>data_public_url/theme</code>.
+   * (empty by default)</p>
    */
-  var $output_encoding = 'UTF-8';
+  var $theme_url = '';
+
+  /**
+   * <p>Indicate where the official pfc default theme is located.
+   * Do not change this parameter if you don't know what you are doing.
+   * If you try to add your own theme, check the <code>theme_path</code> parameter.
+   * (<code>dirname(__FILE__).'/../themes'</code> by default)</p>
+   */
+  var $theme_default_path = '';
+
+  /**
+   * <p>This url indicates the <code>theme_default_path</code> location.
+   * Do not change this parameter if you don't know what you are doing.
+   * If you try to add your own theme, check the <code>theme_path</code> parameter.
+   * (by default the theme is copied into <code>data_public_path/themes</code>
+   * and this parameter will be set to <code>data_public_url/theme</code>)</p>
+   */
+  var $theme_default_url = '';
 
   /**
    * <p>Used to specify the chat container (chat database).
@@ -352,21 +507,27 @@ class pfcGlobalConfig
   var $container_type = 'File';
 
   /**
-   * <p>Used to specify the script which will handle asynchronous requests.
+   * <p>Used to specify the script that will handle asynchronous requests.
    * Very useful when the chat (client) script is resource consuming (ex: forum or portal chat integration).
-   * <code>server_script_url</code> must point to the server script browsable url (useful when using url rewriting).
-   * (by default these parameters are calculated automaticaly)</p>
+   * (by default this parameters is calculated automaticaly)</p>
    */
-  var $server_script_path  = '';
-  var $server_script_url   = '';
+  var $server_script_path = '';
+  
+  /**
+   * <p>This url indicates the <code>server_script_path</code>.
+   * It will be used to do AJAX requests from the browser. So this url should be a browsable public url.
+   * This parameter is useful when using url rewriting because basic auto-calculation will certainly fail.
+   * (by default this parameters is automaticaly calculated)</p>
+   */
+  var $server_script_url = '';
 
   /**
    * <p>Used to specify the script path which first displays the chat.
    * This path will be used to calculate relatives paths for resources : javascript lib and images.
    * Useful when the php configuration is uncommon, this option can be used to force the automatic detection process.
-   * (by default this parameters are auto-detected)</p>
+   * (by default this parameters is auto-detected)</p>
    */
-  var $client_script_path  = '';
+  var $client_script_path = '';
 
   /**
    * <p>Used to store private data like cache, logs and chat history.
@@ -381,7 +542,7 @@ class pfcGlobalConfig
    * Javascript and every resources (theme) files will be stored here.
    * (dirname(__FILE__)."/../data/public" by default)
    */
-  var $data_public_path    = "";
+  var $data_public_path = '';
 
   /**
    * This url should link to the <code>data_private_path</code> directory.
@@ -398,12 +559,6 @@ class pfcGlobalConfig
    */
   var $prototypejs_url     = '';
   
-  var $smileys             = array();
-  var $errors              = array();
-  var $is_init             = false; // used internaly to know if the chat config is initialized
-  var $version             = ""; // the phpfreechat version: taken from the 'version' file content
-  var $debugurl            = "";
-
   /**
    * <p>When debug is true, some traces will be shown on the chat clients
    * (default is false)</p>
@@ -412,17 +567,22 @@ class pfcGlobalConfig
 
   /**
    * <p>Can be used to setup the chat time zone.
-   * It is the difference in seconds between chat clock and server clock</p>
+   * It is the difference in seconds between chat clock and server clock.
+   * (0 by default)</p>
    */
   var $time_offset = 0;
+  
   /**
-   * <p>How to display the dates in the chat</p>
+   * <p>How to display the dates in the chat.
+   * (<code>'d/m/Y'</code> by default)</p>
    */
-  var $date_format = "d/m/Y";
+  var $date_format = 'd/m/Y';
+
   /**
-   * <p>How to display the time in the chat</p>
+   * <p>How to display the time in the chat
+   * (<code>'H:i:s'</code> by default)</p>
    */
-  var $time_format = "H:i:s";
+  var $time_format = 'H:i:s';
   
   /**
    * <p>This parameter is useful when your chat server is behind a reverse proxy that
@@ -432,8 +592,21 @@ class pfcGlobalConfig
    * (default value is false)</p>
    */
   var $get_ip_from_xforwardedfor = false;
-  
+
+  // ------------------
   // private parameters
+  // ------------------
+  /**
+   * Contains proxies to execute on each commands.
+   * Filled in the init step, this parameter cannot be overridden.
+   */
+  var $proxies              = array();
+
+  var $smileys             = array();
+  var $errors              = array();
+  var $is_init             = false; // used internaly to know if the chat config is initialized
+  var $version             = ''; // the phpfreechat version: taken from the 'version' file content
+  
   var $_sys_proxies         = array("lock", "checktimeout", "checknickchange", "auth", "noflood", "censor", "log");
   var $_dyn_params          = array("nick","isadmin","islocked","admins","frozen_channels", "channels", "privmsg", "nickmeta","time_offset","date_format","time_format");
   var $_params_type         = array();
@@ -731,9 +904,6 @@ class pfcGlobalConfig
     $ct_errors = $ct->init($this);
     $this->errors = array_merge($this->errors, $ct_errors);
     
-    // load debug url
-    $this->debugurl = pfc_RelativePath($this->client_script_path, dirname(__FILE__)."/../debug");
-
     // check the language is known
     $lg_list = pfcI18N::GetAcceptedLanguage();
     if ( $this->language != "" && !in_array($this->language, $lg_list) )
