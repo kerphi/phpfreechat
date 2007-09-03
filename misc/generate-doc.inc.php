@@ -2,7 +2,7 @@
 
 /**
  * This script is used to parse the parameter descriptions in pfcglobalconfig.class.php
- * So that the official doc is keept up to date.
+ * in order to keep the official documentation up to date.
  */
 function pfc_generate_doc($f = NULL)
 {
