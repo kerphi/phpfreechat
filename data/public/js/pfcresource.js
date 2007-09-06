@@ -12,7 +12,7 @@ pfcResource.prototype = {
     this.fileurl = $H();
     this.smileys = $H();
     this.smileysreverse = $H();
-    this.smileyskeys = new Array();
+    this.smileyskeyssorted = new Array();
   },
 
   setLabel: function(key, value)
@@ -49,9 +49,9 @@ pfcResource.prototype = {
   {
     this.smileys[key] = value;
     this.smileysreverse[value] = key;
-    this.smileyskeys.push(key);
+    this.smileyskeyssorted.push(key);
     // Sort keys by longest to shortest. This prevents a smiley like :) from being used on >:)
-    this.smileyskeys = this.smileyskeys.sort(function (a,b){return (b.unescapeHTML().length - a.unescapeHTML().length);})
+    this.smileyskeyssorted.sort(function (a,b){return (b.unescapeHTML().length - a.unescapeHTML().length);})
   },
   getSmiley: function(key)
   {
@@ -68,9 +68,9 @@ pfcResource.prototype = {
   {
     return this.smileysreverse;
   },
-  getSmileyKeys: function()
+  getSmileyKeysSorted: function()
   {
-    return this.smileyskeys;
+    return this.smileyskeyssorted;
   },
   
 };
