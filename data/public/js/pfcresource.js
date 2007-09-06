@@ -76,18 +76,18 @@ pfcResource.prototype = {
     return this.smileyskeys.sort(
         function (a,b)
         {
-          a = a.unescapeHTML();
-          b = b.unescapeHTML();
+          var x = a.unescapeHTML();
+          var y = b.unescapeHTML();
 
           // Replace &quot; with " for IE and Webkit browsers.
           // The prototype.js version 1.5.1.1 unescapeHTML() function does not do this.
           if (is_ie || is_webkit)
           {
-            a = a.replace(/&quot;/g,'"');
-            b = b.replace(/&quot;/g,'"');
+            x = x.replace(/&quot;/g,'"');
+            y = y.replace(/&quot;/g,'"');
           }    
     
-          return (b.length - a.length);
+          return (y.length - x.length);
         }
     );
   }
