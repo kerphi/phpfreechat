@@ -402,17 +402,17 @@ pfcGui.prototype = {
     var container = $('pfc_smileys');
     var smileys = pfc.res.getSmileyReverseHash();//getSmileyHash();
     var sl = smileys.keys();
+    pfc.res.sortSmileyKeys(); // Sort smiley keys once.
     for(var i = 0; i < sl.length; i++)
     {
       s_url    = sl[i];
       s_symbol = smileys[sl[i]];
       s_symbol = s_symbol.unescapeHTML();
       // Replace &quot; with " for IE and Webkit browsers.
-      // The prototype.js version 1.5.1.1 does not do this.
-      // IE and Webkit detection from prototype.js
-      if (window.attachEvent && !window.opera || navigator.userAgent.indexOf('AppleWebKit/') > -1)
+      // The prototype.js version 1.5.1.1 unescapeHTML() function does not do this.
+      if (is_ie || is_webkit)
         s_symbol = s_symbol.replace(/&quot;/g,'"');
-
+      
       var img = document.createElement('img');
       img.setAttribute('src', s_url);
       img.setAttribute('alt', s_symbol);
@@ -764,5 +764,5 @@ pfcGui.prototype = {
     soundcontainerbox.setAttribute('id', 'pfc_sound_container');
     container.appendChild(soundcontainerbox);
   */
-  }  
+  }
 };

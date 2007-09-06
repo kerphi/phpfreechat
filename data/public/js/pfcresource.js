@@ -12,7 +12,7 @@ pfcResource.prototype = {
     this.fileurl = $H();
     this.smileys = $H();
     this.smileysreverse = $H();
-    this.smileyskeyssorted = new Array();
+    this.smileyskeys = new Array();
   },
 
   setLabel: function(key, value)
@@ -49,9 +49,7 @@ pfcResource.prototype = {
   {
     this.smileys[key] = value;
     this.smileysreverse[value] = key;
-    //this.smileyskeyssorted.push(key);
-    // Sort keys by longest to shortest. This prevents a smiley like :) from being used on >:)
-    this.smileyskeyssorted.sort(function (a,b){return (b.unescapeHTML().length - a.unescapeHTML().length);})
+    this.smileyskeys.push(key);
   },
   getSmiley: function(key)
   {
@@ -68,11 +66,31 @@ pfcResource.prototype = {
   {
     return this.smileysreverse;
   },
-  getSmileyKeysSorted: function()
+  getSmileyKeys: function()
   {
-    return this.smileyskeyssorted;
+    return this.smileyskeys;
+  },
+  sortSmileyKeys: function()
+  {
+    // Sort keys by longest to shortest. This prevents a smiley like :) from being used on >:)
+    return this.smileyskeys.sort(
+        function (a,b)
+        {
+          a = a.unescapeHTML();
+          b = b.unescapeHTML();
+
+          // Replace &quot; with " for IE and Webkit browsers.
+          // The prototype.js version 1.5.1.1 unescapeHTML() function does not do this.
+          if (is_ie || is_webkit)
+          {
+            a = a.replace(/&quot;/g,'"');
+            b = b.replace(/&quot;/g,'"');
+          }    
+    
+          return (b.length - a.length);
+        }
+    );
   }
-  
 };
 
 

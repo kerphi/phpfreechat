@@ -1460,7 +1460,7 @@ pfcClient.prototype = {
 
     // try to parse smileys
     var smileys = this.res.getSmileyHash();
-    var sl = this.res.getSmileyKeysSorted();
+    var sl = this.res.getSmileyKeys(); // Keys should be sorted by length from pfc.gui.loadSmileyBox()
     for(var i = 0; i < sl.length; i++)
     {
       // We don't want to replace smiley strings inside of tags.
