@@ -49,7 +49,7 @@ pfcResource.prototype = {
   {
     this.smileys[key] = value;
     this.smileysreverse[value] = key;
-    this.smileyskeyssorted.push(key);
+    //this.smileyskeyssorted.push(key);
     // Sort keys by longest to shortest. This prevents a smiley like :) from being used on >:)
     this.smileyskeyssorted.sort(function (a,b){return (b.unescapeHTML().length - a.unescapeHTML().length);})
   },
@@ -71,7 +71,7 @@ pfcResource.prototype = {
   getSmileyKeysSorted: function()
   {
     return this.smileyskeyssorted;
-  },
+  }
   
 };
 
