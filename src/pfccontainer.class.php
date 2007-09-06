@@ -413,24 +413,10 @@ class pfcContainer extends pfcContainerInterface
     $c =& pfcGlobalConfig::Instance();
     if ($chan == NULL) $chan = 'SERVER';
 
-    // read new messages id
-    $new_msgid_list = array();
-    $new_from_id = $from_id;   
-    $msgid_list = $this->getMeta("channelid-to-msg", $this->encode($chan));
-    for($i = 0; $i<count($msgid_list["value"]); $i++)
-    {
-      $msgidtmp = $msgid_list["value"][$i];
-      
-      if ($msgidtmp > $from_id)
-      {
-        if ($msgidtmp > $new_from_id) $new_from_id = $msgidtmp;
-        $new_msgid_list[] = $msgidtmp;
-      }
-    }
-
-    // read messages content and parse content
+    // read new messages content + parse content
+    $new_from_id = $this->getLastId($chan);
     $datalist = array();
-    foreach ( $new_msgid_list as $mid )
+    for ( $mid = $from_id; $mid <= $new_from_id; $mid++ )
     {
       $line = $this->getMeta("channelid-to-msg", $this->encode($chan), $mid, true);
       $line = $line["value"][0];
@@ -446,11 +432,9 @@ class pfcContainer extends pfcContainerInterface
         $data["param"]     = pfc_make_hyperlink($formated_line[4]);
         $datalist[$data["id"]] = $data;
       }
-    }
-    ksort($datalist);
-    
+    }   
     return array("data" => $datalist,
-                 "new_from_id" => $new_from_id );
+                 "new_from_id" => $new_from_id+1 );
   }
 
   /**
