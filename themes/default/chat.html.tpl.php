@@ -49,7 +49,10 @@
              title="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" />
       </a>
 <?php } ?>
+
+<?php if ($display_ping) { ?>
       <span id="pfc_ping" title="<?php echo _pfc("Ping"); ?>"></span>
+<?php } ?>
 
       <div class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('images/logout.gif'); ?>"

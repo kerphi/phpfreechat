@@ -370,6 +370,14 @@ class pfcGlobalConfig
    * (Default value: 40)</p>
    */
   var $short_url_width = 40;
+
+  /**
+   * <p>Used to show/hide the ping information near the phpfreechat linkback logo.
+   * The ping is the time between a client request and a server response.
+   * More the ping is low, faster the chat is responding.
+   * (Default value: true)</p>
+   */
+  var $display_ping = true; 
   
   /**
    * <p>Used to hide the phpfreechat linkback logo.

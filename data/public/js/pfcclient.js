@@ -196,7 +196,7 @@ pfcClient.prototype = {
 
     // calculate the ping and display it
     this.ping = this.last_response_time - this.last_request_time;
-    $('pfc_ping').innerHTML = this.ping+'ms';
+    if ($('pfc_ping')) $('pfc_ping').innerHTML = this.ping+'ms';
 
     if (cmd == "connect")
     {
