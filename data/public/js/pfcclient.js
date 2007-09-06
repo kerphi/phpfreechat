@@ -1460,8 +1460,7 @@ pfcClient.prototype = {
 
     // try to parse smileys
     var smileys = this.res.getSmileyHash();
-    // Sort keys by longest to shortest. This prevents a smiley like :) from being used on >:)
-    var sl = smileys.keys().sort(function (a,b){return (b.unescapeHTML().length - a.unescapeHTML().length);});
+    var sl = this.res.getSmileyKeys();
     for(var i = 0; i < sl.length; i++)
     {
       // We don't want to replace smiley strings inside of tags.
