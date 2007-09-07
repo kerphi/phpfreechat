@@ -26,6 +26,7 @@
  * @author BSEMF <bsemfger <at> aim.com>
  * @author Karsten Hens www.karsten-hens.de
  * @author Thomas Stueven (ak Troubadix) <thomas.stueven <at> online.de>
+ * @author Michael Freßmann www.4horsemen.de
  */
 
 // line 45 in phpfreechatconfig.class.php
@@ -41,7 +42,7 @@ $GLOBALS["i18n"]["Please enter your nickname"] = "Bitte gib deinen Nicknamen ein
 $GLOBALS["i18n"]["Text cannot be empty"] = "Text darf nicht fehlen";
 
 // line 392 in phpfreechat.class.php
-$GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s ändert seinen Nicknamen zu %s";
+$GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s ändert den Nicknamen zu %s";
 
 // line 398 in phpfreechat.class.php
 $GLOBALS["i18n"]["%s is connected"] = "%s ist verbunden";
@@ -161,10 +162,10 @@ $GLOBALS["i18n"]["Hide smiley box"] = "Smileybox ausblenden";
 $GLOBALS["i18n"]["Show smiley box"] = "Smileybox einblenden";
 
 // line 88 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Hide online users box"] = "Liste der Online Benutzer verstecken";
+$GLOBALS["i18n"]["Hide online users box"] = "Liste der Online-Benutzer verstecken";
 
 // line 89 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Show online users box"] = "Liste der Online Benutzer zeigen";
+$GLOBALS["i18n"]["Show online users box"] = "Liste der Online-Benutzer zeigen";
 
 // line 75 in pfccommand.class.php
 $GLOBALS["i18n"]["%s must be implemented"] = "%s muss implementiert werden";
@@ -255,7 +256,7 @@ $GLOBALS["i18n"]["'%s' parameter must be an array"] = "Der Parameter '%s' muss e
 $GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "Der Parameter '%s' muss ein Boolean sein";
 
 // line 271 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "Der Parameter  '%s' muss eine Zeichenkette sein";
+$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "Der Parameter '%s' muss eine Zeichenkette sein";
 
 // line 395 in pfcglobalconfig.class.php
 $GLOBALS["i18n"]["'%s' must be writable"] = "'%s' muss beschreibbar sein";
@@ -312,13 +313,13 @@ $GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "Die maxim
 $GLOBALS["i18n"]["Send"] = "Senden";
 
 // line 86 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: connect error"] = "Mysql container: Verbindungsfehler";
+$GLOBALS["i18n"]["Mysql container: connect error"] = "MySQL container: Verbindungsfehler";
 
 // line 101 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "Mysql container: Fehler beim erstellen der Datenbank %s";
+$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "MySQL container: Fehler beim erstellen der Datenbank %s";
 
 // line 112 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Mysql container: Fehler beim erstellen einer Tabelle %s";
+$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "MySQL container: Fehler beim erstellen einer Tabelle %s";
 
 // line 80 in chat.js.tpl.php
 $GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "Du kannst nicht mit dir selber sprechen";
@@ -333,10 +334,10 @@ $GLOBALS["i18n"]["Enable sound notifications"] = "Akustische Signale einschalten
 $GLOBALS["i18n"]["Disable sound notifications"] = "Akustische Signale ausschalten";
 
 // line 23 in kick.class.php
-$GLOBALS["i18n"]["no reason"] = "kein grund";
+$GLOBALS["i18n"]["no reason"] = "kein Grund";
 
 // line 24 in banlist.class.php
-$GLOBALS["i18n"]["The banished user list is:"] = "Die verbannten Benutzer sind:";
+$GLOBALS["i18n"]["The banished user list is:"] = "Die gebannten Benutzer sind:";
 
 // line 39 in banlist.class.php
 $GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "'/unban {nickname}' hebt die Verbannung für den Benutzer {nickname} auf";
@@ -344,63 +345,62 @@ $GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nicknam
 // line 43 in kick.class.php
 $GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "rausgeworfen aus %s durch %s - Grund: %s";
 
-
 // line 20 in quit.class.php
-$GLOBALS["i18n"]["%s quit (%s)"] = "";
+$GLOBALS["i18n"]["%s quit (%s)"] = "%s verließ den Chat (%s)";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Chat loading ..."] = "";
+$GLOBALS["i18n"]["Chat loading ..."] = "Der Chat lädt";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please wait"] = "";
+$GLOBALS["i18n"]["Please wait"] = "Warte bitte";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "";
+$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "%s ist offenbar entweder abgestellt oder wird nicht von deinem Browser unterstützt.";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["This web application requires %s to work properly."] = "";
+$GLOBALS["i18n"]["This web application requires %s to work properly."] = "Dieses Programm erfordert, dass %s korrekt läuft.";
 
 // line 135 in chat.js.tpl.php
 $GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "";
 
 // line 137 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "";
+$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "Bitte wechsele auf einen Browser mit %s-Unterstützung und versuche es nochmal.";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "";
+$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "In älteren Internet-Explorer-Versionen als 7.0 wurde Ajax mittles ActiveX implementiert. Bitte stelle ActiveX in den Sicherheitseinstellungen deines Browsers an, oder wechsle auf einen Browser mit Ajax-Unterstützung und versuche es erneut.";
 
 // line 359 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "";
+$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "%s existiert nicht, data_public_path kann nicht installiert werden.";
 
 // line 73 in invite.class.php
-$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "";
+$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "Du musst % betreten, um Benutzer in diesen Kanal einladen zu können.";
 
 // line 47 in chat.html.tpl.php
-$GLOBALS["i18n"]["Ping"] = "";
+$GLOBALS["i18n"]["Ping"] = "Ping";
 
 // line 477 in phpfreechat.class.php
-$GLOBALS["i18n"]["Input Required"] = "";
+$GLOBALS["i18n"]["Input Required"] = "Eine Eingabe ist erforderlich.";
 
 // line 478 in phpfreechat.class.php
-$GLOBALS["i18n"]["OK"] = "";
+$GLOBALS["i18n"]["OK"] = "OK";
 
 // line 479 in phpfreechat.class.php
-$GLOBALS["i18n"]["Cancel"] = "";
+$GLOBALS["i18n"]["Cancel"] = "Abbrechen";
 
 // line 430 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot create %s"] = "";
+$GLOBALS["i18n"]["cannot create %s"] = "%s kann nicht erzeugt werden.";
 
 // line 436 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot copy %s in %s"] = "";
+$GLOBALS["i18n"]["cannot copy %s in %s"] = "%s kann nicht nach %s kopiert werden.";
 
 // line 667 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "";
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "Fehler: '%s' wurde nicht gefunden, prüfe bitte, ob dein theme_path '%s' und dein Theme '%s' korrekt sind.";
 
 // line 414 in phpfreechat.class.php
-$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "";
+$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "Willst du diesen Reiter wirklich schließen?";
 
 // line 42 in ban.class.php
-$GLOBALS["i18n"]["%s banished from %s by %s"] = "";
+$GLOBALS["i18n"]["%s banished from %s by %s"] = "%s wurde aus % von % gebannt.";
 
 // line 461 in phpfreechat.class.php
 $GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "";

@@ -384,21 +384,20 @@ $GLOBALS["i18n"]["OK"] = "OK";
 // line 479 in phpfreechat.class.php
 $GLOBALS["i18n"]["Cancel"] = "Annulla";
 
-
 // line 430 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot create %s"] = "";
+$GLOBALS["i18n"]["cannot create %s"] = "impossibile creare %s";
 
 // line 436 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot copy %s in %s"] = "";
+$GLOBALS["i18n"]["cannot copy %s in %s"] = "impossibile copiare %s in %s";
 
 // line 667 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "";
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "Errore: %s non può essere trovata, gentilmente controlla che la path del tema '%s' e il tema '%s' siano corretti";
 
 // line 414 in phpfreechat.class.php
-$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "";
+$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "Sei sicuro di voler chiudere questo Tab?";
 
 // line 42 in ban.class.php
-$GLOBALS["i18n"]["%s banished from %s by %s"] = "";
+$GLOBALS["i18n"]["%s banished from %s by %s"] = "%s bannato dalla chat %s da %s";
 
 // line 461 in phpfreechat.class.php
 $GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "";
