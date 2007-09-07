@@ -44,7 +44,6 @@ pfcClient.prototype = {
     
     this.timeout            = null;
     this.refresh_delay      = pfc_refresh_delay;
-    this.max_refresh_delay  = pfc_max_refresh_delay;
     this.last_response_time = new Date().getTime();
     this.last_request_time  = new Date().getTime();
 
@@ -190,13 +189,6 @@ pfcClient.prototype = {
         else
           trace('handleResponse: '+cmd + "-"+resp+"-"+param);
       }
-
-    // store the new refresh time
-    this.last_response_time = new Date().getTime();
-
-    // calculate the ping and display it
-    this.ping = this.last_response_time - this.last_request_time;
-    if ($('pfc_ping')) $('pfc_ping').innerHTML = this.ping+'ms';
 
     if (cmd == "connect")
     {
@@ -1027,6 +1019,9 @@ pfcClient.prototype = {
    */
   sendRequest: function(cmd, recipientid)
   {
+    // do not send another ajax requests if the last one is not yet finished 
+    if (cmd == '/update' && this.pfc_ajax_connected) return;
+
     if (cmd != "/update")
     {
       // setup a new timeout to update the chat in 5 seconds (in refresh_delay more exactly)
@@ -1036,12 +1031,42 @@ pfcClient.prototype = {
       if (pfc_debug)
         trace('sendRequest: '+cmd);
     }
-
-    this.last_request_time = new Date().getTime();
+  
+    // prepare the command string
     var rx = new RegExp('(^\/[^ ]+) *(.*)','ig');
     if (!recipientid) recipientid = this.gui.getTabId();
     cmd = cmd.replace(rx, '$1 '+this.clientid+' '+(recipientid==''?'0':recipientid)+' $2');
-    return pfc_handleRequest(cmd); //eval('pfc_handleRequest(cmd);');
+
+    // send the real ajax request
+    var url = pfc_server_script_url;
+    var params = $H();
+    params['pfc_ajax'] = 1;
+    params['f']   = 'handleRequest';
+    params['cmd'] = cmd;
+    new Ajax.Request(url, {
+      method: 'post',
+      parameters: params,
+      onCreate: function(transport) {
+        this.pfc_ajax_connected = true; 
+        // request time counter used by ping indicator
+        this.last_request_time = new Date().getTime();
+      }.bind(this),
+      onSuccess: function(transport) {
+        if (!transport.status) return; // fix strange behavior on KHTML
+
+        // request time counter used by ping indicator
+        this.last_response_time = new Date().getTime();
+        // evaluate the javascript response
+        eval( transport.responseText );
+      }.bind(this),
+      onComplete: function(transport) {
+        this.pfc_ajax_connected = false;
+
+        // calculate the ping and display it
+        this.ping = Math.abs(this.last_response_time - this.last_request_time);
+        if ($('pfc_ping')) $('pfc_ping').innerHTML = this.ping+'ms';
+      }.bind(this)
+    });
   },
 
   /**

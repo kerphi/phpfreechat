@@ -161,14 +161,6 @@ class pfcGlobalConfig
    * (Default value: 5000 - 5,000ms = 5 seconds)</p>
    */
   var $refresh_delay = 5000;
-
-  /**
-   * <p>Indicate the maximum number of seconds to wait before the server response.
-   * If the latest refresh command is not received in this delay an other one will be created.
-   * This parameter is not implemented in the current version of phpfreechat.
-   * (Default value: 60000 - 60,000ms = 60 seconds)</p>
-   */
-  var $max_refresh_delay = 60000;
   
   /**
    * <p>This is the time of inactivity to wait before a user is disconnected (in milliseconds).

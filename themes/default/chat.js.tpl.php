@@ -24,7 +24,6 @@ var pfc_version               = <?php echo $json->encode($version); ?>;
 var pfc_clientid              = <?php echo $json->encode(md5(uniqid(rand(), true))); ?>;
 var pfc_title                 = <?php echo $json->encode($title); ?>;
 var pfc_refresh_delay         = <?php echo $json->encode($refresh_delay); ?>;
-var pfc_max_refresh_delay     = <?php echo $json->encode($max_refresh_delay); ?>;
 var pfc_start_minimized       = <?php echo $json->encode($start_minimized); ?>;
 var pfc_nickmarker            = <?php echo $json->encode($nickmarker); ?>;
 var pfc_clock                 = <?php echo $json->encode($clock); ?>;
@@ -51,8 +50,9 @@ var pfc_bbcode_color_list     = <?php $list = array(); foreach($bbcode_colorlist
 var pfc_nickname_color_list   = <?php echo $json->encode($nickname_colorlist); ?>;
 var pfc_theme                 = <?php echo $json->encode($theme); ?>;
 var pfc_isready               = false;
+var pfc_server_script_url     = <?php echo $json->encode($c->server_script_url); ?>;
 
-/* prototype ajax config */
+// todo : move this code in pfcClient
 function pfc_loadChat() {
   var url = '<?php echo $c->server_script_url; ?>';
   var params = $H();
@@ -66,21 +66,6 @@ function pfc_loadChat() {
     }
   });
 }
-function pfc_handleRequest(cmd) {
-  var url = '<?php echo $c->server_script_url; ?>';
-  var params = $H();
-  params['pfc_ajax'] = 1;
-  params['f']   = 'handleRequest';
-  params['cmd'] = cmd;
-  new Ajax.Request(url, {
-    method: 'get',
-    parameters: params,
-    onSuccess: function(transport) {
-      eval( transport.responseText );
-    }
-  });
-}
-
 
 window.onload = function () {
   pfc = new pfcClient();
