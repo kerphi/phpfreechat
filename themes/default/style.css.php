@@ -1,15 +1,8 @@
-img, div {
+/* used to enable png transparency for IE6 */
+div#pfc_container img, div#pfc_container div {
   behavior: url("<?php echo $c->getFileUrlFromTheme('iepngfix.htc'); ?>");
 }
 
-/*
-will break display (margins, paddings) on IE6
-div#pfc_container * {
-  border: none;
-  margin: 0;
-  padding: 0;
-}
-*/
 div#pfc_container {
   margin: 0; padding: 0;
   border: 1px solid #555;
@@ -24,7 +17,7 @@ div#pfc_container {
 }
 
 div#pfc_container a img { border: 0px; }
-
+  
 #pfc_minmax {
   margin: 0; padding: 0;
   cursor: pointer;
@@ -56,7 +49,8 @@ ul#pfc_channels_list {
   display: block;
   z-index: 50;
   border-bottom: 1px solid #555;
-/*  margin-bottom: -5px;*/
+  /*  margin-bottom: -5px;*/
+  line-height: 100%;
 }
 ul#pfc_channels_list li {
   margin: 0; padding: 0;
@@ -151,6 +145,7 @@ div.pfc_online ul {
 ul.pfc_nicklist li {
   margin: 0 0 5px 0; padding: 0;
   border-bottom: 1px solid #AAA;
+  background-image: none;
 }
 ul.pfc_nicklist img {
   vertical-align: middle; /* fix icon position problem in IE6 */
@@ -211,6 +206,11 @@ div#pfc_input_container {
 div#pfc_input_container input {
   margin: 0; padding: 0;
 }
+
+div#pfc_input_container table  { border: none; margin: 0; padding: 0; }
+div#pfc_input_container tbody  { border: none; margin: 0; padding: 0; }
+div#pfc_input_container td     { border: none; margin: 0; padding: 0; }
+
 div#pfc_input_container td.pfc_td2 {
   padding-right: 5px;
   width: 100%;
@@ -373,14 +373,19 @@ div.pfc_nickwhois {
 div.pfc_nickwhois table {
   width: 120px;
 }
+
+div.pfc_nickwhois table  { border: none; margin: 0; padding: 0; }
+div.pfc_nickwhois tbody  { border: none; margin: 0; padding: 0; }
+div.pfc_nickwhois td     { border: none; margin: 0; padding: 0 0 0 2px; }
+
 td.pfc_nickwhois_c1 {
   font-weight: bold;
 }
 td.pfc_nickwhois_c2 {
 }
 .pfc_nickwhois_pv {
-  margin:0; padding: 0;
-  text-align: center;
+  margin:0; padding: 0 0 0 2px;
+  text-align: left;
 }
 .pfc_nickwhois_pv a {
   text-decoration: none;
