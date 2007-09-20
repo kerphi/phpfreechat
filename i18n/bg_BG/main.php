@@ -24,6 +24,7 @@
  * Bulgarian translation of the messages (utf8 encoded!)
  *
  * @author Marko Nikolov <marko.nikolov@gmail.com>
+ * @author Georgy Vassilev <georgy.vas at gmail.com>
  */
 
 // line 45 in phpfreechatconfig.class.php
@@ -173,226 +174,226 @@ $GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "'%s' парам�
 // line 386 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "'%s' параметър не е валиден. Възможните стойности са: '%s'";
 // line 186 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["My room"] = "";
+$GLOBALS["i18n"]["My room"] = "Моята стая";
 
 // line 19 in unban.class.php
-$GLOBALS["i18n"]["Missing parameter"] = "";
+$GLOBALS["i18n"]["Missing parameter"] = "Липсващ параметър";
 
 // line 38 in ban.class.php
-$GLOBALS["i18n"]["banished from %s by %s"] = "";
+$GLOBALS["i18n"]["banished from %s by %s"] = "изгонен от стая %s от %s";
 
 // line 23 in banlist.class.php
-$GLOBALS["i18n"]["The banished user's id list is:"] = "";
+$GLOBALS["i18n"]["The banished user's id list is:"] = "Листа с изгонените потребители е:";
 
 // line 32 in banlist.class.php
-$GLOBALS["i18n"]["Empty"] = "";
+$GLOBALS["i18n"]["Empty"] = "Празно";
 
 // line 34 in banlist.class.php
-$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "";
+$GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "'/unban {id}' ще ънбанне потребител индефициран като {id}";
 
 // line 35 in banlist.class.php
-$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "";
+$GLOBALS["i18n"]["'/unban all'  will unban all the users on this channel"] = "'/unban all'  ще ънбанне всичко потребители в стаята";
 
 // line 24 in update.class.php
-$GLOBALS["i18n"]["%s quit (timeout)"] = "";
+$GLOBALS["i18n"]["%s quit (timeout)"] = "%s излезна (timeout)";
 
 // line 46 in join.class.php
-$GLOBALS["i18n"]["%s joins %s"] = "";
+$GLOBALS["i18n"]["%s joins %s"] = "%s се присъедни в %s";
 
 // line 31 in kick.class.php
-$GLOBALS["i18n"]["kicked from %s by %s"] = "";
+$GLOBALS["i18n"]["kicked from %s by %s"] = "кикнат от стая %s от %s";
 
 // line 38 in send.class.php
-$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "";
+$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "Не може да пратиш съобщение, %s е офлайн";
 
 // line 27 in unban.class.php
-$GLOBALS["i18n"]["Nobody has been unbanished"] = "";
+$GLOBALS["i18n"]["Nobody has been unbanished"] = "Никой не беше ънбаннат";
 
 // line 42 in unban.class.php
-$GLOBALS["i18n"]["%s has been unbanished"] = "";
+$GLOBALS["i18n"]["%s has been unbanished"] = "%s беше ънбаннат";
 
 // line 49 in unban.class.php
-$GLOBALS["i18n"]["%s users have been unbanished"] = "";
+$GLOBALS["i18n"]["%s users have been unbanished"] = "%s бяха ънбаннати";
 
 // line 47 in auth.class.php
-$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "";
+$GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "Нямаш права за да пуснеш '%s' команда";
 
 // line 66 in auth.class.php
-$GLOBALS["i18n"]["Can't join %s because you are banished"] = "";
+$GLOBALS["i18n"]["Can't join %s because you are banished"] = "Не можеш да се присъединиш в %s защотото си баннат";
 
 // line 76 in auth.class.php
-$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "";
+$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "Can't join %s because the channels list is restricted";
 
 // line 89 in auth.class.php
-$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "";
+$GLOBALS["i18n"]["You are not allowed to change your nickname"] = "Ти нямаш права за да промениш твоя прякор";
 
 // line 56 in noflood.class.php
-$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "";
+$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "Моля не постай много съобщения, флуда не се толерира";
 
 // line 109 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Private message"] = "";
+$GLOBALS["i18n"]["Private message"] = "Лично съобщение";
 
 // line 110 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Close this tab"] = "";
+$GLOBALS["i18n"]["Close this tab"] = "Затвори таба";
 
 // line 199 in pfcgui.js.tpl.php
-$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "";
+$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "На истина ли искаш да напуснеш тази стая?";
 
 // line 169 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "";
+$GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "Error: '%s' is a private parameter, you are not allowed to change it";
 
 // line 253 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be an array"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be an array"] = "'%s' parameter must be an array";
 
 // line 265 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be a boolean"] = "'%s' parameter must be a boolean";
 
 // line 271 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "";
+$GLOBALS["i18n"]["'%s' parameter must be a charatere string"] = "'%s' parameter must be a charatere string";
 
 // line 395 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' must be writable"] = "";
+$GLOBALS["i18n"]["'%s' must be writable"] = "'%s' must be writable";
 
 // line 425 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["'%s' directory doesn't exist"] = "";
+$GLOBALS["i18n"]["'%s' directory doesn't exist"] = "'%s' директорията не съществува";
 
 // line 544 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Please correct these errors"] = "";
+$GLOBALS["i18n"]["Please correct these errors"] = "Моля коригирай тези грешки";
 
 // line 21 in pfcinfo.class.php
-$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "";
+$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "Error: the cached config file doesn't exists";
 
 // line 190 in phpfreechat.class.php
-$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "";
+$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum";
 
 // line 31 in help.class.php
-$GLOBALS["i18n"]["Here is the command list:"] = "";
+$GLOBALS["i18n"]["Here is the command list:"] = "Ето списък с командите:";
 
 // line 63 in identify.class.php
-$GLOBALS["i18n"]["Succesfully identified"] = "";
+$GLOBALS["i18n"]["Succesfully identified"] = "Успешна индификация";
 
 // line 68 in identify.class.php
-$GLOBALS["i18n"]["Identification failure"] = "";
+$GLOBALS["i18n"]["Identification failure"] = "Неуспешна индефикация";
 
 // line 25 in send.class.php
-$GLOBALS["i18n"]["Your must be connected to send a message"] = "";
+$GLOBALS["i18n"]["Your must be connected to send a message"] = "Трябва да си свързан за да изпратиш съобщението";
 
 // line 87 in chat.js.tpl.php
-$GLOBALS["i18n"]["Click here to send your message"] = "";
+$GLOBALS["i18n"]["Click here to send your message"] = "Кликни тук за се изпрати съобщението";
 
 // line 80 in chat.js.tpl.php
-$GLOBALS["i18n"]["Enter the text to format"] = "";
+$GLOBALS["i18n"]["Enter the text to format"] = "Въведете текст за форматиране";
 
 // line 81 in chat.js.tpl.php
-$GLOBALS["i18n"]["Configuration has been rehashed"] = "";
+$GLOBALS["i18n"]["Configuration has been rehashed"] = "Конфигурацията беше презаредена";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["A problem occurs during rehash"] = "";
+$GLOBALS["i18n"]["A problem occurs during rehash"] = "A problem occurs during rehash";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Chosen nickname is already used"] = "";
+$GLOBALS["i18n"]["Choosen nickname is allready used"] = "Избарният ник вече се използва";
 
 // line 84 in chat.js.tpl.php
-$GLOBALS["i18n"]["phpfreechat current version is %s"] = "";
+$GLOBALS["i18n"]["phpfreechat current version is %s"] = "phpfreechat current version is %s";
 
 // line 85 in chat.js.tpl.php
-$GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "";
+$GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "Maximum number of joined channels has been reached";
 
 // line 86 in chat.js.tpl.php
-$GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "";
+$GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "Maximum number of private chat has been reached";
 
 // line 88 in chat.js.tpl.php
-$GLOBALS["i18n"]["Send"] = "";
+$GLOBALS["i18n"]["Send"] = "Изпрати";
 
 // line 86 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: connect error"] = "";
+$GLOBALS["i18n"]["Mysql container: connect error"] = "Mysql container: connect error";
 
 // line 101 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "";
+$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "Mysql container: create database error '%s'";
 
 // line 112 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "";
+$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Mysql container: create table error '%s'";
 
 // line 80 in chat.js.tpl.php
-$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "";
+$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "Неможе да си говориш със себе си!";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "";
+$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "Избраният ник не е позволен";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Enable sound notifications"] = "";
+$GLOBALS["i18n"]["Enable sound notifications"] = "Включи звуковото известие";
 
 // line 84 in chat.js.tpl.php
-$GLOBALS["i18n"]["Disable sound notifications"] = "";
+$GLOBALS["i18n"]["Disable sound notifications"] = "Изключи звуковото известие";
 
 // line 23 in kick.class.php
-$GLOBALS["i18n"]["no reason"] = "";
+$GLOBALS["i18n"]["no reason"] = "без причина";
 
 // line 24 in banlist.class.php
-$GLOBALS["i18n"]["The banished user list is:"] = "";
+$GLOBALS["i18n"]["The banished user list is:"] = "Списъка с баннатите потребители е:";
 
 // line 39 in banlist.class.php
-$GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "";
+$GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "'/unban {nickname}' ще ънбанне потребител индефициран като {nickname}";
 
 // line 43 in kick.class.php
-$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "";
+$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "кикнат от стая %s от %s - причина: %s";
 
 // line 20 in quit.class.php
-$GLOBALS["i18n"]["%s quit (%s)"] = "";
+$GLOBALS["i18n"]["%s quit (%s)"] = "%s излезе (%s)";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Chat loading ..."] = "";
+$GLOBALS["i18n"]["Chat loading ..."] = "Зареждане на чата.";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please wait"] = "";
+$GLOBALS["i18n"]["Please wait"] = "Моля изчакайте!";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "";
+$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "%s appears to be either disabled or unsupported by your browser.";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["This web application requires %s to work properly."] = "";
+$GLOBALS["i18n"]["This web application requires %s to work properly."] = "This web application requires %s to work properly.";
 
 // line 135 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "";
+$GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "Please enable %s in your browser settings, or upgrade to a browser with %s support and try again.";
 
 // line 137 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "";
+$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "Please upgrade to a browser with %s support and try again.";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "";
+$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again.";
 
 // line 359 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "";
+$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "%s doesn't exist, data_public_path cannot be installed";
 
 // line 73 in invite.class.php
-$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "";
+$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "You must join %s to invite users in this channel";
 
 // line 47 in chat.html.tpl.php
-$GLOBALS["i18n"]["Ping"] = "";
+$GLOBALS["i18n"]["Ping"] = "Ping";
 
 // line 477 in phpfreechat.class.php
-$GLOBALS["i18n"]["Input Required"] = "";
+$GLOBALS["i18n"]["Input Required"] = "Input Required";
 
 // line 478 in phpfreechat.class.php
-$GLOBALS["i18n"]["OK"] = "";
+$GLOBALS["i18n"]["OK"] = "OK";
 
 // line 479 in phpfreechat.class.php
-$GLOBALS["i18n"]["Cancel"] = "";
+$GLOBALS["i18n"]["Cancel"] = "Cancel";
 
 // line 430 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot create %s"] = "";
+$GLOBALS["i18n"]["cannot create %s"] = "неможе да създаде %s";
 
 // line 436 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot copy %s in %s"] = "";
+$GLOBALS["i18n"]["cannot copy %s in %s"] = "неможе да се копира %s в %s";
 
 // line 667 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "";
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct";
 
 // line 414 in phpfreechat.class.php
-$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "";
+$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "Сигурен ли си, че искаш да затвориш този таб?";
 
 // line 42 in ban.class.php
-$GLOBALS["i18n"]["%s banished from %s by %s"] = "";
+$GLOBALS["i18n"]["%s banished from %s by %s"] = "%s е баннат от стая %s от %s";
 
 // line 461 in phpfreechat.class.php
 $GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "";
