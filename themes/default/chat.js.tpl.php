@@ -134,7 +134,7 @@ else
 }
   // ]]>
 </script></p>
-<a href="http://www.phpfreechat.net" style="text-align:center"><img src="http://www.phpfreechat.net/pub/logo_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-<?php echo $version ?>]" /></a>
+<a href="http://www.phpfreechat.net" style="text-align:center"><img src="http://www.phpfreechat.net/pub/logo2_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-<?php echo $version ?>]" /></a>
 </div> <!-- pfc_notloading -->
 
 </div> <!-- pfc_loader -->
