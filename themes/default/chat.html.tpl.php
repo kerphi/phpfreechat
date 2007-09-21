@@ -44,7 +44,7 @@
 <?php if ($display_pfc_logo) { ?>
       <a href="http://www.phpfreechat.net"
          id="pfc_logo"<?php if($openlinknewwindow) echo ' onclick="window.open(this.href,\'_blank\');return false;"'; ?>>
-        <img src="http://www.phpfreechat.net/pub/logo2_80x15.gif"
+        <img src="http://www.phpfreechat.net/pub/logo2_80x15.png" width="80" height="15"
              alt="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>"
              title="<?php echo _pfc("PHP FREE CHAT [powered by phpFreeChat-%s]", $version); ?>" />
       </a>
