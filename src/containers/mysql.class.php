@@ -157,9 +157,6 @@ class pfcContainer_Mysql extends pfcContainerInterface
   {
     $c =& pfcGlobalConfig::Instance();      
       
-    if ($c->debug)
-      file_put_contents("/tmp/debug.txt", "\nsetMeta(".$group.",".$subgroup.",".$leaf.",".$leafvalue.")", FILE_APPEND | LOCK_EX);
-    
     $server = $c->serverid;    
     $db = $this->_connect();
 
@@ -173,9 +170,6 @@ class pfcContainer_Mysql extends pfcContainerInterface
     $row = mysql_fetch_array($res, MYSQL_ASSOC);
     if( $row['C'] == 0 )
     {
-      if ($c->debug)
-        file_put_contents("/tmp/debug.txt", "\nsetSQL(".$sql_insert.")", FILE_APPEND | LOCK_EX);
-
       mysql_query($sql_insert, $db);
       return 0; // value created
     }
@@ -183,9 +177,6 @@ class pfcContainer_Mysql extends pfcContainerInterface
     {
       if ($sql_update != "")
       {
-        if ($c->debug)
-          file_put_contents("/tmp/debug.txt", "\nsetSQL(".$sql_update.")", FILE_APPEND | LOCK_EX);
-        
         mysql_query($sql_update, $db);
       }
       return 1; // value overwritten
@@ -197,9 +188,6 @@ class pfcContainer_Mysql extends pfcContainerInterface
   {
     $c =& pfcGlobalConfig::Instance();      
 
-    if ($c->debug)
-      file_put_contents("/tmp/debug.txt", "\ngetMeta(".$group.",".$subgroup.",".$leaf.",".$withleafvalue.")", FILE_APPEND | LOCK_EX);
-    
     $ret = array();
     $ret["timestamp"] = array();
     $ret["value"]     = array();
@@ -233,10 +221,6 @@ class pfcContainer_Mysql extends pfcContainerInterface
     }
     
     $sql_select="SELECT `$value`, `timestamp` FROM ".$c->container_cfg_mysql_table." WHERE `server`='$server' $sql_where $sql_group_by ORDER BY timestamp";    
-
-    if ($c->debug)
-      file_put_contents("/tmp/debug.txt", "\ngetSQL(".$sql_select.")", FILE_APPEND | LOCK_EX);
-    
     if ($sql_select != "")
     {
       $thisresult = mysql_query($sql_select, $db);
@@ -268,9 +252,6 @@ class pfcContainer_Mysql extends pfcContainerInterface
   {
     $c =& pfcGlobalConfig::Instance();      
       
-    if ($c->debug)
-      file_put_contents("/tmp/debug.txt", "\nsetMeta(".$group.",".$subgroup.",".$leaf.",".$leafvalue.")", FILE_APPEND | LOCK_EX);
-    
     $server = $c->serverid;    
     $db = $this->_connect();
     $time = time();
@@ -281,16 +262,12 @@ class pfcContainer_Mysql extends pfcContainerInterface
     $row = mysql_fetch_array($res, MYSQL_ASSOC);
     if( $row['C'] == 0 )
     {
-      if ($c->debug)
-        file_put_contents("/tmp/debug.txt", "\nsetSQL(".$sql_insert.")", FILE_APPEND | LOCK_EX);
       $leafvalue = 1;
       $sql_insert="REPLACE INTO ".$c->container_cfg_mysql_table." (`server`, `group`, `subgroup`, `leaf`, `leafvalue`, `timestamp`) VALUES('$server', '$group', '$subgroup', '$leaf', '".$leafvalue."', '".$time."')";
       mysql_query($sql_insert, $db);
     }
     else
     {
-      if ($c->debug)
-        file_put_contents("/tmp/debug.txt", "\nsetSQL(".$sql_update.")", FILE_APPEND | LOCK_EX);
       $sql_update="UPDATE ".$c->container_cfg_mysql_table." SET `leafvalue`= LAST_INSERT_ID( leafvalue + 1 ), `timestamp`='".$time."' WHERE  `server`='$server' AND `group`='$group' AND `subgroup`='$subgroup' AND `leaf`='$leaf'";
       mysql_query($sql_update, $db);
       $res = mysql_query('SELECT LAST_INSERT_ID();', $db);      
@@ -308,8 +285,6 @@ class pfcContainer_Mysql extends pfcContainerInterface
   function rmMeta($group, $subgroup = null, $leaf = null)
   {
     $c =& pfcGlobalConfig::Instance();      
-    if ($c->debug)
-      file_put_contents("/tmp/debug.txt", "\nrmMeta(".$group.",".$subgroup.",".$leaf.")", FILE_APPEND | LOCK_EX);
     
     $server = $c->serverid;    
     $db = $this->_connect();
@@ -324,9 +299,6 @@ class pfcContainer_Mysql extends pfcContainerInterface
 
     if ($leaf != NULL)
       $sql_delete .= " AND `leaf`='$leaf'";
-    
-    if ($c->debug)
-      file_put_contents("/tmp/debug.txt", "\nrmSQL(".$sql_delete.")", FILE_APPEND | LOCK_EX);
     
     mysql_query($sql_delete, $db);
     return true;

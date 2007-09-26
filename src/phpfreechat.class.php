@@ -40,9 +40,6 @@ class phpFreeChat
     if (!is_array($params))
       die('phpFreeChat parameters must be an array');
     
-    if ( isset($params["debug"]) && $params["debug"] )
-      require_once dirname(__FILE__)."/../debug/log.php";
-
     // initialize the global config object
     $c =& pfcGlobalConfig::Instance( $params );
 

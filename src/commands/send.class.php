@@ -74,7 +74,6 @@ class pfcCommand_send extends pfcCommand
         $cmd->run($xml_reponse, $cmdp);
         return;
       }
-      if ($c->debug) pxlog("/send ".$text." (a user just sent a message -> nick=".$nick.")", "chat", $c->getId());
       
       // a message has been posted so :
       // - clear errors

@@ -71,9 +71,6 @@ class pfcContainer_File extends pfcContainerInterface
   {
     $c =& pfcGlobalConfig::Instance();
 
-    if ($c->debug)
-      file_put_contents("/tmp/debug", "\nsetMeta(".$group.",".$subgroup.",".$leaf.",".$leafvalue.")", FILE_APPEND | LOCK_EX);
-    
     // create directories
     $dir_base = $c->container_cfg_server_dir;
     $dir = $dir_base.'/'.$group.'/'.$subgroup;
@@ -104,8 +101,6 @@ class pfcContainer_File extends pfcContainerInterface
   function getMeta($group, $subgroup = null, $leaf = null, $withleafvalue = false)
   {
     $c =& pfcGlobalConfig::Instance();
-    if ($c->debug)
-      file_put_contents("/tmp/debug", "\ngetMeta(".$group.",".$subgroup.",".$leaf.",".$withleafvalue.")", FILE_APPEND | LOCK_EX);
     
     // read data from metadata file
     $ret = array();
@@ -164,8 +159,6 @@ class pfcContainer_File extends pfcContainerInterface
   function incMeta($group, $subgroup, $leaf)
   {
     $c =& pfcGlobalConfig::Instance();
-    if ($c->debug)
-      file_put_contents("/tmp/debug", "\nincMeta(".$group.",".$subgroup.",".$leaf.")", FILE_APPEND | LOCK_EX);
 
     // create directories
     $dir_base = $c->container_cfg_server_dir;
@@ -219,8 +212,6 @@ class pfcContainer_File extends pfcContainerInterface
   function rmMeta($group, $subgroup = null, $leaf = null)
   {
     $c =& pfcGlobalConfig::Instance();
-    if ($c->debug)
-      file_put_contents("/tmp/debug", "\nrmMeta(".$group.",".$subgroup.",".$leaf.")", FILE_APPEND | LOCK_EX);
     
     $dir = $c->container_cfg_server_dir;
 
