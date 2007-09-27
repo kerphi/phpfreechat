@@ -401,4 +401,10 @@ $GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"]
 // line 89 in invite.class.php
 $GLOBALS["i18n"]["%s was invited by %s"] = "";
 
+// line 446 in phpfreechat.class.php
+$GLOBALS["i18n"]["Chosen nickname is already used"] = "";
+
+// line 454 in phpfreechat.class.php
+$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "";
+
 ?>
