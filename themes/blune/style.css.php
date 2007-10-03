@@ -27,7 +27,6 @@ div#pfc_errors {
   display: none;
   margin-top: 5px;
   padding: 2px;
-  height: 18px;
   border: #555 solid 1px;
   color: #EC4A1F;
   background-color: #BEC5D0;
