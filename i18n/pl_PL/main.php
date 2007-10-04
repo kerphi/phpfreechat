@@ -25,6 +25,7 @@
  *
  * @author Pawel
  * @author bejo
+ * @author jwaldek
  */
 
 // line 45 in phpfreechatconfig.class.php
@@ -70,10 +71,10 @@ $GLOBALS["i18n"]["%s doesn't exist"] = "%s nie istnieje";
 $GLOBALS["i18n"]["%s directory must be specified"] = "%s katalog musi być podany";
 
 // line 439 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s must be a directory"] = "%s musi byc katalogiem";
+$GLOBALS["i18n"]["%s must be a directory"] = "%s musi być katalogiem";
 
 // line 446 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s can't be created"] = "%s nie może zostac utworzony";
+$GLOBALS["i18n"]["%s can't be created"] = "%s nie może zostać utworzony";
 
 // line 451 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["%s is not writeable"] = "%s nie jest zapisywalny";
@@ -349,7 +350,7 @@ $GLOBALS["i18n"]["%s quit (%s)"] = "%s wyszedł (%s)";
 $GLOBALS["i18n"]["Chat loading ..."] = "Ladowanie chat'a...";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please wait"] = "Porsze czekac";
+$GLOBALS["i18n"]["Please wait"] = "Prosze czekac";
 
 // line 139 in chat.js.tpl.php
 $GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "%s wygląda na wyłączone lub nieobsługiwane przez Twoją przeglądarkę.";
