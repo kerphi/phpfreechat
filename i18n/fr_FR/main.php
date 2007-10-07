@@ -337,7 +337,7 @@ $GLOBALS["i18n"]["The banished user list is:"] = "La liste des utilisateurs bann
 $GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "'/unban {id}' va débannir l'utilisateur identifié par {nickname}";
 
 // line 43 in kick.class.php
-$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "kické de %s par %s";
+$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "kické de %s par %s - raison : %s";
 
 // line 20 in quit.class.php
 $GLOBALS["i18n"]["%s quit (%s)"] = "%s a quitté (%s)";
