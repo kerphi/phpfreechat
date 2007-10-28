@@ -98,22 +98,27 @@ class phpFreeChat
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
-
+    
     $output = '';
 
-    pfcI18N::SwitchOutputEncoding($c->output_encoding);
-
-    $path = $c->getFilePathFromTheme('chat.js.tpl.php');
-    $t = new pfcTemplate($path);
-    $t->assignObject($u,"u");
-    $t->assignObject($c,"c");
-    $output .= $t->getOutput();
+    if (count($c->getErrors()) > 0)
+    {
+      $output .= "<p>phpFreeChat cannot be initialized, please correct these errors:</p><ul>";
+      foreach( $c->getErrors() as $e ) $output .= "<li>".$e."</li>"; $output .= "</ul>";
+    }
+    else
+    {    
+      pfcI18N::SwitchOutputEncoding($c->output_encoding);
+      
+      $path = $c->getFilePathFromTheme('chat.js.tpl.php');
+      $t = new pfcTemplate($path);
+      $t->assignObject($u,"u");
+      $t->assignObject($c,"c");
+      $output .= $t->getOutput();
+      
+      pfcI18N::SwitchOutputEncoding();
+    }
     
-    pfcI18N::SwitchOutputEncoding();
-    /*
-    $output .= " // ]]>\n";
-    $output .= "</script>\n";
-    */
     if($return) 
       return $output;
     else 

@@ -1045,14 +1045,13 @@ class pfcGlobalConfig
       if (!$this->isInit())
         $this->init();
       $errors =& $this->getErrors();
-      if (count($errors) > 0)
+      if (count($errors) == 0)
       {
-        @unlink($cachefile_lock); // destroy the lock file for the next attempt
-        echo "<p>"._pfc("Please correct these errors").":</p><ul>"; foreach( $errors as $e ) echo "<li>".$e."</li>"; echo "</ul>";
-        exit;
+        // save the validated config in cache
+        $this->saveInCache();
       }
-      // save the validated config in cache
-      $this->saveInCache();
+      else
+        @unlink($cachefile_lock); // destroy the lock file for the next attempt
       return false; // new cache created
     }
   }

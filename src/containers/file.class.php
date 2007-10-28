@@ -64,6 +64,24 @@ class pfcContainer_File extends pfcContainerInterface
     $errors = array_merge($errors, @test_writable_dir($c->container_cfg_chat_dir,   "container_cfg_chat_dir"));
     $errors = array_merge($errors, @test_writable_dir($c->container_cfg_server_dir, "container_cfg_chat_dir/serverid"));
 
+    // test the filemtime php function because it doesn't work on special filesystem
+    // example : NFS, VZFS
+    $filename   = $c->data_private_path.'/filemtime.test';
+    $timetowait = 2;
+    if (is_writable(dirname($filename)))
+    {
+      file_put_contents($filename,'some-data1-'.time(), LOCK_EX);
+      clearstatcache();
+      $time1 = filemtime($filename);
+      sleep($timetowait);
+      file_put_contents($filename,'some-data2-'.time(), LOCK_EX);
+      clearstatcache();
+      $time2 = filemtime($filename);
+      unlink($filename);
+      if ($time2-$time1 != $timetowait)
+        $errors[] = "filemtime php fuction is not usable on your filesystem. Please do not use the 'file' container (try the 'mysql' container) or swith to another filesystem.";
+    }
+
     return $errors;
   }
 
