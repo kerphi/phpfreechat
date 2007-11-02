@@ -280,7 +280,7 @@ $GLOBALS["i18n"]["Identification failure"] = "Identification incorrecte";
 $GLOBALS["i18n"]["Your must be connected to send a message"] = "Vous devez être connecté pour envoyer un message";
 
 // line 87 in chat.js.tpl.php
-$GLOBALS["i18n"]["Click here to send your message"] = "Clickez ici pour envoyer votre message";
+$GLOBALS["i18n"]["Click here to send your message"] = "Cliquez ici pour envoyer votre message";
 
 // line 80 in chat.js.tpl.php
 $GLOBALS["i18n"]["Enter the text to format"] = "Entrez le texte à formater";
