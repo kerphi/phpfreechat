@@ -62,7 +62,7 @@ function pfc_generate_doc($f = NULL)
       $p['desc'] = trim($p['desc']);
     
       // search for the parameter name/default value
-      if (preg_match('/var\s+\$([a-z_]+)\s+=\s+(.*);/i', $data, $matches4, PREG_OFFSET_CAPTURE, $offset))
+      if (preg_match('/var\s+\$([a-z_]+)\s+=\s+(.*);/is', $data, $matches4, PREG_OFFSET_CAPTURE, $offset))
       {
         $offset = $matches4[1][1];
         $p['name']  = $matches4[1][0];
