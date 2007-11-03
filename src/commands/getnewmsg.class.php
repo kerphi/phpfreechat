@@ -79,8 +79,8 @@ class pfcCommand_getnewmsg extends pfcCommand
     foreach ($data as $d)
     {
       $m_id          = $d["id"];
-      $m_date        = gmdate($c->date_format, $d["timestamp"] + $c->time_offset);
-      $m_time        = gmdate($c->time_format, $d["timestamp"] + $c->time_offset);
+      $m_date        = date($c->date_format, $d["timestamp"] + $c->time_offset);
+      $m_time        = date($c->time_format, $d["timestamp"] + $c->time_offset);
       $m_sender      = $d["sender"];
       $m_recipientid = $recipientid;
       $m_cmd         = $d["cmd"];
@@ -92,7 +92,7 @@ class pfcCommand_getnewmsg extends pfcCommand
                     $m_recipientid,
                     $m_cmd,
                     $m_param,
-                    gmdate($c->date_format, time() + $c->time_offset) == $m_date ? 1 : 0, // posted today ?
+                    date($c->date_format, time() + $c->time_offset) == $m_date ? 1 : 0, // posted today ?
                     $oldmsg ? 1 : 0); // is it a new message in the current session or is it a part of the history
       $data_sent = true;
     }
