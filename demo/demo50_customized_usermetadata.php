@@ -16,10 +16,6 @@ $chat = new phpFreeChat( $params );
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>phpFreeChat demo</title>
-
-    <?php $chat->printJavascript(); ?>
-    <?php $chat->printStyle(); ?>
-
   </head>
 
   <body>
@@ -39,7 +35,7 @@ $chat = new phpFreeChat( $params );
 <?php
   // print the current file
   echo "<h2>The customized javascript</h2>";
-  $filename = dirname(__FILE__).'/demo50_data/mytheme/customize.js';
+  $filename = dirname(__FILE__).'/demo50_data/mytheme/customize.js.php';
   echo "<p><code>".$filename."</code></p>";
   echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
   $content = file_get_contents($filename);
