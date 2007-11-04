@@ -341,16 +341,16 @@ $GLOBALS["i18n"]["The banished user list is:"] = "Oto lista zbanowanych użytkow
 $GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "'/unban {nickname}' odbanuje użytkownika posługującego się pseudonimem {nickname}";
 
 // line 43 in kick.class.php
-$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "wkopany z %s przez %s - powód: %s";
+$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "wykopany z %s przez %s - powód: %s";
 
 // line 20 in quit.class.php
 $GLOBALS["i18n"]["%s quit (%s)"] = "%s wyszedł (%s)";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Chat loading ..."] = "Ladowanie chat'a...";
+$GLOBALS["i18n"]["Chat loading ..."] = "Ładowanie chat'a...";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please wait"] = "Prosze czekac";
+$GLOBALS["i18n"]["Please wait"] = "Proszę czekać";
 
 // line 139 in chat.js.tpl.php
 $GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "%s wygląda na wyłączone lub nieobsługiwane przez Twoją przeglądarkę.";
@@ -386,24 +386,24 @@ $GLOBALS["i18n"]["OK"] = "OK";
 $GLOBALS["i18n"]["Cancel"] = "Anuluj";
 
 // line 430 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot create %s"] = "";
+$GLOBALS["i18n"]["cannot create %s"] = "Nie można utworzyć %s";
 
 // line 436 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot copy %s in %s"] = "";
+$GLOBALS["i18n"]["cannot copy %s in %s"] = "Nie można skopiować %s z %s";
 
 // line 667 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "";
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "Błąd: '%s' nie może być odnalezione, sprawdź czy twoje theme_path '%s' oraz theme '%s' są prawidłowe";
 
 // line 414 in phpfreechat.class.php
-$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "";
+$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "Czy jesteś pewien, że chcesz zamknąć tą zakładkę ?";
 
 // line 42 in ban.class.php
-$GLOBALS["i18n"]["%s banished from %s by %s"] = "";
+$GLOBALS["i18n"]["%s banished from %s by %s"] = "%s banowany z %s przez %s";
 
 // line 461 in phpfreechat.class.php
-$GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "";
+$GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "Próbujesz rozmawiać z nieznanym (lub niezalogowanym) użytkownikiem";
 
 // line 89 in invite.class.php
-$GLOBALS["i18n"]["%s was invited by %s"] = "";
+$GLOBALS["i18n"]["%s was invited by %s"] = "%s został zaproszony przez %s";
 
 ?>
