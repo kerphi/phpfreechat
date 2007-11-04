@@ -128,6 +128,8 @@
       <li><a href="demo60_in_vietnamese.php">demo60 - Vietnamese translation of the chat</a></li>
       <li><a href="demo61_in_croatian.php">demo61 - Croatian translation of the chat</a></li>
       <li><a href="demo62_in_belgian_dutch.php">demo62 - Belgian Dutch translation of the chat</a></li>
+      <li><a href="demo63_in_thai.php">demo63 - Thai translation of the chat</a></li>
+      <li><a href="demo64_in_galician.php">demo64 - Galician translation of the chat</a></li>
     </ul>
 
 </div>
