@@ -75,6 +75,7 @@
       <li><a href="demo43_change_the_nicknames_colors.php">demo43 - shows how to change the nicknames automatic colors</a></li>
       <li><a href="demo50_customized_usermetadata.php">demo50 - shows how to use user metadata : add avatar (images) to each connected users</a></li>
       <li><a href="demo55_mysql_container.php">demo55 - shows how to use the mysql container</a></li>
+      <li><a href="demo65_metadata_and_html.php">demo65 - shows how to start a chat in a child popup window and how to display in this page a complete user profil comming from a chat request (user click) </a></li>
 </ul>
 
 

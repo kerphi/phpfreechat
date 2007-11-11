@@ -95,6 +95,12 @@ class pfcGlobalConfig
   var $nickmeta_private = array('ip');
 
   /**
+   * <p>Can be used to hide keys in the final displayed whoisbox.
+   * (Default value:  <code>array()</code> - means that nothing is hidden)</p>
+   */
+  var $nickmeta_key_to_hide = array();
+  
+  /**
    * <p>Set this parameter to true if you want to give admin rights to the connected user.
    * Attention : if you don't use any external registration system, all your users will be admins.
    * You have to test current user rights before setting this parameter to true.

@@ -1292,20 +1292,31 @@ pfcClient.prototype = {
          )
       {
         var tr = document.createElement('tr');
-        var td1 = document.createElement('td');
-        td1.setAttribute(className, 'pfc_nickwhois_c1');
-        var td2 = document.createElement('td');
-        td2.setAttribute(className, 'pfc_nickwhois_c2');
-        td1.appendChild(document.createTextNode(k));
-        td2.appendChild(document.createTextNode(v));
-        tr.appendChild(td1);
-        tr.appendChild(td2);
+        if (nickmeta_key_to_hide.indexOf(k) != -1)
+        {
+          var td2 = document.createElement('td');
+          td2.setAttribute(className, 'pfc_nickwhois_c2');
+          td2.setAttribute('colspan', 2);
+          td2.update(v);
+          tr.appendChild(td2);
+        }
+        else
+        {
+          var td1 = document.createElement('td');
+          td1.setAttribute(className, 'pfc_nickwhois_c1');
+          var td2 = document.createElement('td');
+          td2.setAttribute(className, 'pfc_nickwhois_c2');
+          td1.update(k);
+          td2.update(v);
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+        }
         tbody.appendChild(tr);
       }
     }
     div.appendChild(table);
 
-    // add the privmsg link (do not add it if this button is yourself)
+    // add the privmsg link (do not add it if the nick is yours)
     if (pfc.getUserMeta(nickid,'nick') != this.nickname)
     {
       var p = document.createElement('p');

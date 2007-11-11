@@ -51,6 +51,7 @@ var pfc_nickname_color_list   = <?php echo $json->encode($nickname_colorlist); ?
 var pfc_theme                 = <?php echo $json->encode($theme); ?>;
 var pfc_isready               = false;
 var pfc_server_script_url     = <?php echo $json->encode($c->server_script_url); ?>;
+var nickmeta_key_to_hide      = <?php echo $json->encode($c->nickmeta_key_to_hide); ?>;
 
 // todo : move this code in pfcClient
 function pfc_loadChat() {
