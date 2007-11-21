@@ -14,7 +14,6 @@ $params["max_privmsg"]    = 1;        // limit the number of private message tab
 $params["refresh_delay"]  = 10000;    // chat refresh speed is 10 secondes (10000ms)
 $params["max_msg"]        = 15;       // max message in the history is 15 (message seen when reloading the chat)
 $params["height"]         = "230px";  // height of chat area is 230px
-$params["width"]          = "800px";  // width of chat area is 800px
 $params["debug"]          = true;     // activate debug console
 $params["connect_at_startup"] = false;
 $params["start_minimized"]    = true;
