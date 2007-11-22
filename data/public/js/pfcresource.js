@@ -17,15 +17,15 @@ pfcResource.prototype = {
 
   setLabel: function(key, value)
   {
-    this.labels[key] = value;
+    this.labels.set(key,value);
   },
 
   getLabel: function()
   {
     var key = this.getLabel.arguments[0];
-    if (this.labels[key])
+    if (this.labels.get(key))
     {
-      this.getLabel.arguments[0] = this.labels[key];
+      this.getLabel.arguments[0] = this.labels.get(key);
       return String.sprintf2(this.getLabel.arguments);
     }
     else
@@ -34,27 +34,27 @@ pfcResource.prototype = {
 
   setFileUrl: function(key, value)
   {
-    this.fileurl[key] = value;
+    this.fileurl.set(key,value);
   },
   
   getFileUrl: function(key)
   {
-    if (this.fileurl[key])
-      return this.fileurl[key];
+    if (this.fileurl.get(key))
+      return this.fileurl.get(key);
     else
       return "";
   },
 
   setSmiley: function(key, value)
   {
-    this.smileys[key] = value;
-    this.smileysreverse[value] = key;
+    this.smileys.set(key, value);
+    this.smileysreverse.set(value,key);
     this.smileyskeys.push(key);
   },
   getSmiley: function(key)
   {
-    if (this.smileys[key])
-      return this.smileys[key];
+    if (this.smileys.get(key))
+      return this.smileys.get(key);
     else
       return "";
   },

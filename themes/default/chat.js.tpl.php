@@ -8,7 +8,24 @@
     <?php echo _pfc("Chat loading ..."); ?><br style="margin:0"/><?php echo _pfc("Please wait"); ?>
   </p>
 </div>
-  
+
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/compat.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/md5.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/cookie.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/image_preloader.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/myprototype.js"></script>
+<script type="text/javascript" src="<?php echo $c->prototypejs_url; ?>"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/regex.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/utf8.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/sprintf2.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/activity.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/mousepos.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/createstylerule.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcclient.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcgui.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcresource.js"></script>
+<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcprompt.js"></script>
+
 <script type="text/javascript">
   // <![CDATA[
 <?php
@@ -51,27 +68,12 @@ var pfc_nickname_color_list   = <?php echo $json->encode($nickname_colorlist); ?
 var pfc_theme                 = <?php echo $json->encode($theme); ?>;
 var pfc_isready               = false;
 var pfc_server_script_url     = <?php echo $json->encode($c->server_script_url); ?>;
-var nickmeta_key_to_hide      = <?php echo $json->encode($c->nickmeta_key_to_hide); ?>;
+var pfc_nickmeta_key_to_hide      = <?php echo $json->encode($c->nickmeta_key_to_hide); ?>;
 
-// todo : move this code in pfcClient
-function pfc_loadChat() {
-  var url = '<?php echo $c->server_script_url; ?>';
-  var params = $H();
-  params['pfc_ajax'] = 1;
-  params['f'] = 'loadChat';
-  new Ajax.Request(url, {
-    method: 'get',
-    parameters: params,
-    onSuccess: function(transport) {
-      eval( transport.responseText );
-    }
-  });
-}
-
-window.onload = function () {
+Event.observe(window, 'load', function() {
   pfc = new pfcClient();
-  if (pfc_isready) pfc_loadChat(pfc_theme);
-}
+  if (pfc_isready) pfc.loadChat(pfc_theme);
+});
 
 <?php if ($debug) { ?>
 var pfc_debug_color = true;
@@ -97,24 +99,6 @@ function trace(text) {
 
   // ]]>
 </script>
-
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/compat.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/md5.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/cookie.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/image_preloader.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/myprototype.js"></script>
-<script type="text/javascript" src="<?php echo $c->prototypejs_url; ?>"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/regex.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/utf8.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/sprintf2.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/activity.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/mousepos.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/createstylerule.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcclient.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcgui.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcresource.js"></script>
-<script type="text/javascript" src="<?php echo $c->data_public_url; ?>/js/pfcprompt.js"></script>
-
 
 <div id="pfc_notloading" style="width:270px;background-color:#FFF;color:#000;border:1px solid #000;text-align:center;margin:5px auto 0 auto;font-size:10px;background-image:url('http://img402.imageshack.us/img402/3766/stopcc3.gif');background-repeat:no-repeat;background-position:center center;">
 <noscript>

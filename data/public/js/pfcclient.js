@@ -62,6 +62,16 @@ pfcClient.prototype = {
     this.blinktimeout = Array(); 
   },
 
+  loadChat: function() {
+    new Ajax.Request(pfc_server_script_url, {
+      method: 'get',
+      parameters: {pfc_ajax: 1, f: 'loadChat'},
+      onSuccess: function(transport) {
+        eval( transport.responseText );
+      }
+    });
+  },
+
   connectListener: function()
   {
     this.el_words     = $('pfc_words');
@@ -170,8 +180,8 @@ pfcClient.prototype = {
         if (cmd == "who" || cmd == "who2")
         {
           param2 = $H(param2);
-          param2['meta'] = $H(param2['meta']);
-          param2['meta']['users'] = $H(param2['meta']['users']);
+          param2.set('meta', $H(param2.get('meta')));
+          param2.get('meta').set('users', $H(param2.get('meta').get('users')));
           trace('handleResponse: '+cmd + "-"+resp+"-"+param2.inspect());
         }
         else
@@ -407,7 +417,8 @@ pfcClient.prototype = {
     }
     else if (cmd == "whois" || cmd == "whois2")
     {
-      var nickid = param['nickid'];
+      param = $H(param);
+      var nickid = param.get('nickid');
       if (resp == "ok")
       {
         this.setUserMeta(nickid, param);
@@ -423,7 +434,7 @@ pfcClient.prototype = {
         for (var i=0; i<um_keys.length; i++)
         {
           var k = um_keys[i];
-          var v = um[k];
+          var v = um.get(k);
           if (v &&
               // these parameter are used internaly (don't display it)
               k != 'nickid' &&
@@ -437,18 +448,19 @@ pfcClient.prototype = {
     }
     else if (cmd == "who" || cmd == "who2")
     {
-      var chan   = param['chan'];
-      var chanid = param['chanid'];
-      var meta   = $H(param['meta']);
-      meta['users'] = $H(meta['users']);
+      param = $H(param);
+      var chan   = param.get('chan');
+      var chanid = param.get('chanid');
+      var meta   = $H(param.get('meta'));
+      meta.set('users', $H(meta.get('users')));
       if (resp == "ok") 
       { 
         this.setChanMeta(chanid,meta);
         // send /whois commands for unknown users 
-        for (var i=0; i<meta['users']['nickid'].length; i++)
+        for (var i=0; i<meta.get('users').get('nickid').length; i++)
         {
-          var nickid = meta['users']['nickid'][i];
-          var nick   = meta['users']['nick'][i];
+          var nickid = meta.get('users').get('nickid')[i];
+          var nick   = meta.get('users').get('nick')[i];
           var um = this.getAllUserMeta(nickid);  
           if (!um) this.sendRequest('/whois2 "'+nickid+'"');
         }
@@ -490,16 +502,16 @@ pfcClient.prototype = {
   
   getAllUserMeta: function(nickid)
   {
-    if (nickid && this.usermeta[nickid])
-      return this.usermeta[nickid];
+    if (nickid && this.usermeta.get(nickid))
+      return this.usermeta.get(nickid);
     else
       return null;
   },
 
   getUserMeta: function(nickid, key)
   {
-    if (nickid && key && this.usermeta[nickid] && this.usermeta[nickid][key])
-      return this.usermeta[nickid][key];    
+    if (nickid && key && this.usermeta.get(nickid) && this.usermeta.get(nickid).get(key))
+      return this.usermeta.get(nickid).get(key);    
     else
       return '';
   },
@@ -508,26 +520,26 @@ pfcClient.prototype = {
   {
     if (nickid && key)
     {
-      if (!this.usermeta[nickid]) this.usermeta[nickid] = $H();
+      if (!this.usermeta.get(nickid)) this.usermeta.set(nickid, $H());
       if (value)
-        this.usermeta[nickid][key] = value;
+        this.usermeta.get(nickid).set(key, value);
       else
-        this.usermeta[nickid] = $H(key);
+        this.usermeta.set(nickid, $H(key));
     }
   },
 
   getAllChanMeta: function(chanid)
   {
-    if (chanid && this.chanmeta[chanid])
-      return this.chanmeta[chanid];
+    if (chanid && this.chanmeta.get(chanid))
+      return this.chanmeta.get(chanid);
     else
       return null;
   },
 
   getChanMeta: function(chanid, key)
   {
-    if (chanid && key && this.chanmeta[chanid] && this.chanmeta[chanid][key])
-      return this.chanmeta[chanid][key];
+    if (chanid && key && this.chanmeta.get(chanid) && this.chanmeta.get(chanid).get(key))
+      return this.chanmeta.get(chanid).get(key);
     else
       return '';
   },
@@ -536,11 +548,11 @@ pfcClient.prototype = {
   {
     if (chanid && key)
     {
-      if (!this.chanmeta[chanid]) this.chanmeta[chanid] = $H();
+      if (!this.chanmeta.get(chanid)) this.chanmeta.set(chanid, $H());
       if (value)
-        this.chanmeta[chanid][key] = value;
+        this.chanmeta.get(chanid).set(key,value);
       else
-        this.chanmeta[chanid] = $H(key);
+        this.chanmeta.set(chanid, $H(key));
     }
   },
 
@@ -909,9 +921,8 @@ pfcClient.prototype = {
     var msg_html = $H();
     var max_msgid = $H();
     
-    //alert(cmds.inspect());
+//alert(cmds.inspect());
     
-    //    var html = '';
     for(var mid = 0; mid < cmds.length ; mid++)
     {
       var id          = cmds[mid][0];
@@ -923,7 +934,7 @@ pfcClient.prototype = {
       var param       = cmds[mid][6];
       var fromtoday   = cmds[mid][7];
       var oldmsg      = cmds[mid][8];
-      
+
       // format and post message
       var line = '';
       line += '<div id="pfc_msg_'+recipientid+'_'+id+'" class="pfc_cmd_'+ cmd +' pfc_message';
@@ -940,7 +951,7 @@ pfcClient.prototype = {
         line += '&#x2039;';
         line += '<span ';
         line += 'onclick="pfc.insert_text(\'' + sender.replace("'", '\\\'') + ', \',\'\',false)" ';
-        line += 'class="pfc_nickmarker pfc_nick_'+ hex_md5(_to_utf8(sender)) +'">';
+        line += 'class="pfc_nickmarker pfc_nick_'+ _to_utf8(sender).md5() +'">';
         line += sender;
         line += '</span>';
         line += '&#x203A;';
@@ -965,14 +976,14 @@ pfcClient.prototype = {
             this.gui.notifyWindow();
         }
         
-      if (msg_html[recipientid] == null)
-        msg_html[recipientid] = line;
+      if (msg_html.get(recipientid) == null)
+        msg_html.set(recipientid, line);
       else
-        msg_html[recipientid] += line;
-      
+        msg_html.set(recipientid, msg_html.get(recipientid) + line);
+
       // remember the max message id in order to clean old lines
-      if (!max_msgid[recipientid]) max_msgid[recipientid] = 0;
-      if (max_msgid[recipientid] < id) max_msgid[recipientid] = id;
+      if (!max_msgid.get(recipientid)) max_msgid.set(recipientid, 0);
+      if (max_msgid.get(recipientid) < id) max_msgid.set(recipientid, id);
     }
 
     // loop on all recipients and post messages
@@ -981,13 +992,12 @@ pfcClient.prototype = {
     {
       var recipientid  = keys[i];
       var tabid        = recipientid;
-      
       // create the tab if it doesn't exists yet
       var recipientdiv = this.gui.getChatContentFromTabId(tabid);
-      
+
       // create a dummy div to avoid konqueror bug when setting nickmarkers
       var m = document.createElement('div');  // do not setup a inline element (ex: span) because the element height will be wrong on FF2 -> scrollDown(..) will be broken
-      m.innerHTML = msg_html[recipientid];
+      m.innerHTML = msg_html.get(recipientid);
       this.colorizeNicks(m);
       this.refresh_clock(m);
       // finaly append this to the message list
@@ -995,7 +1005,7 @@ pfcClient.prototype = {
       this.gui.scrollDown(tabid, m);
 
       // delete the old messages from the client (save some memory)
-      var limit_msgid = max_msgid[recipientid] - pfc_max_displayed_lines;
+      var limit_msgid = max_msgid.get(recipientid) - pfc_max_displayed_lines;
       var elt = $('pfc_msg_'+recipientid+'_'+limit_msgid);
       while (elt)
       {
@@ -1009,8 +1019,7 @@ pfcClient.prototype = {
         limit_msgid--;
         elt = $('pfc_msg_'+recipientid+'_'+limit_msgid);
       }
-    }
-    
+    }    
   },
   
   /**
@@ -1039,13 +1048,9 @@ pfcClient.prototype = {
 
     // send the real ajax request
     var url = pfc_server_script_url;
-    var params = $H();
-    params['pfc_ajax'] = 1;
-    params['f']   = 'handleRequest';
-    params['cmd'] = cmd;
     new Ajax.Request(url, {
       method: 'post',
-      parameters: params,
+      parameters: {'pfc_ajax':1, 'f':'handleRequest', 'cmd': cmd },
       onCreate: function(transport) {
         this.pfc_ajax_connected = true; 
         // request time counter used by ping indicator
@@ -1221,7 +1226,7 @@ pfcClient.prototype = {
   {
     var className = (! is_ie) ? 'class' : 'className';
 
-    var nickidlst = this.getChanMeta(chanid,'users')['nickid'];
+    var nickidlst = this.getChanMeta(chanid,'users').get('nickid');
     var nickdiv = this.gui.getOnlineContentFromTabId(chanid);
     var ul = document.createElement('ul');
     ul.setAttribute(className, 'pfc_nicklist');
@@ -1242,9 +1247,9 @@ pfcClient.prototype = {
 
   getNickWhoisBox: function(nickid)
   {
-    if (!this.nickwhoisbox[nickid])
+    if (!this.nickwhoisbox.get(nickid))
       this.updateNickWhoisBox(nickid);
-    return this.nickwhoisbox[nickid];
+    return this.nickwhoisbox.get(nickid);
   },
 
   updateNickWhoisBox: function(nickid)
@@ -1252,7 +1257,6 @@ pfcClient.prototype = {
     var className = (! is_ie) ? 'class' : 'className';
 
     var usermeta = this.getAllUserMeta(nickid);
-
     var div  = document.createElement('div');
     div.setAttribute(className, 'pfc_nickwhois');
 
@@ -1271,7 +1275,7 @@ pfcClient.prototype = {
     img.setAttribute('src', this.res.getFileUrl('images/close-whoisbox.gif'));
     img.alt = this.res.getLabel('Close');
     p.appendChild(img);
-    p.appendChild(document.createTextNode(usermeta['nick'])); // append the nickname text in the title
+    p.appendChild(document.createTextNode(usermeta.get('nick'))); // append the nickname text in the title
 
     // add the whois information table
     var table = document.createElement('table');
@@ -1282,7 +1286,7 @@ pfcClient.prototype = {
     for (var i=0; i<um_keys.length; i++)
     {
       var k = um_keys[i];
-      var v = usermeta[k];
+      var v = usermeta.get(k);
       if (v && k != 'nickid'
             && k != 'nick' // useless because it is displayed in the box title
             && k != 'isadmin' // useless because of the gold shield icon
@@ -1292,12 +1296,12 @@ pfcClient.prototype = {
          )
       {
         var tr = document.createElement('tr');
-        if (nickmeta_key_to_hide.indexOf(k) != -1)
+        if (pfc_nickmeta_key_to_hide.indexOf(k) != -1)
         {
           var td2 = document.createElement('td');
           td2.setAttribute(className, 'pfc_nickwhois_c2');
           td2.setAttribute('colspan', 2);
-          td2.update(v);
+          td2.innerHTML = v;
           tr.appendChild(td2);
         }
         else
@@ -1306,8 +1310,8 @@ pfcClient.prototype = {
           td1.setAttribute(className, 'pfc_nickwhois_c1');
           var td2 = document.createElement('td');
           td2.setAttribute(className, 'pfc_nickwhois_c2');
-          td1.update(k);
-          td2.update(v);
+          td1.innerHTML = k;
+          td2.innerHTML = v;
           tr.appendChild(td1);
           tr.appendChild(td2);
         }
@@ -1340,7 +1344,7 @@ pfcClient.prototype = {
       div.appendChild(p);
     }
 
-    this.nickwhoisbox[nickid] = div;
+    this.nickwhoisbox.set(nickid, div);
   },
 
   buildNickItem: function(nickid)
@@ -1502,13 +1506,12 @@ pfcClient.prototype = {
       // We don't want to replace smiley strings inside of tags.
       // Use negative lookahead to search for end of tag.
       rx = new RegExp(RegExp.escape(sl[i]) + '(?![^<]*>)','g');
-      msg = msg.replace(rx, '<img src="'+ smileys[sl[i]] +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
+      msg = msg.replace(rx, '<img src="'+ smileys.get(sl[i]) +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
     }
-    
+
     // try to parse nickname for highlighting 
     rx = new RegExp('(^|[ :,;])'+RegExp.escape(this.nickname)+'([ :,;]|$)','gi');
     msg = msg.replace(rx, '$1<strong>'+ this.nickname +'</strong>$2');
-
     
     // this piece of code is replaced by the word-wrap CSS3 rule.
     /*
@@ -1593,7 +1596,7 @@ pfcClient.prototype = {
   applyNickColor: function(root, nick, color)
   {
     
-    var nicktochange = this.getElementsByClassName(root, 'pfc_nick_'+ hex_md5(_to_utf8(nick)), '');
+    var nicktochange = this.getElementsByClassName(root, 'pfc_nick_'+ _to_utf8(nick).md5(), '');
     for(var i = 0; nicktochange.length > i; i++) 
       nicktochange[i].style.color = color;
     
@@ -2070,7 +2073,6 @@ pfcClient.prototype = {
     for(var i = 0; i < contentlist.length; i++)
     {
       var chatdiv = contentlist[i];
-      var style = $H();
       if (!this.showwhosonline)
       {
         chatdiv.style.width = '100%';

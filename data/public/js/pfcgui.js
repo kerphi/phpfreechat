@@ -36,8 +36,8 @@ pfcGui.prototype = {
     if (this.getTabId() != tabid)
     {
       // no it's not the current active one so just cache the elttoscroll in the famouse this.elttoscroll array
-      if (!this.elttoscroll[tabid]) this.elttoscroll[tabid] = Array();
-      this.elttoscroll[tabid].push(elttoscroll);
+      if (!this.elttoscroll.get(tabid)) this.elttoscroll.set(tabid, Array());
+      this.elttoscroll.get(tabid).push(elttoscroll);
       return;
     }
     // the wanted tab is active so just scroll down the tab content element
@@ -48,7 +48,7 @@ pfcGui.prototype = {
     // http://sourceforge.net/tracker/index.php?func=detail&aid=1568264&group_id=158880&atid=809601
     var dudVar = content.scrollTop;
     content.scrollTop += elttoscroll.offsetHeight+2;
-    this.scrollpos[tabid] = content.scrollTop;
+    this.scrollpos.set(tabid, content.scrollTop);
   },
   
   isCreated: function(tabid)
@@ -69,7 +69,7 @@ pfcGui.prototype = {
 
     // first of all save the scroll pos of the visible tab
     var content = this.getChatContentFromTabId(this.current_tab_id);
-    this.scrollpos[this.current_tab_id] = content.scrollTop;
+    this.scrollpos.set(this.current_tab_id, content.scrollTop);
     
     // start without selected tabs
     this.current_tab     = '';
@@ -103,17 +103,17 @@ pfcGui.prototype = {
     
     // restore the scroll pos
     var content = this.getChatContentFromTabId(tabid);
-    content.scrollTop = this.scrollpos[tabid];
+    content.scrollTop = this.scrollpos.get(tabid);
 
     // scroll the new posted message
-    if (this.elttoscroll[tabid] &&
-        this.elttoscroll[tabid].length > 0)
+    if (this.elttoscroll.get(tabid) &&
+        this.elttoscroll.get(tabid).length > 0)
     {
       // on by one
-      for (var i=0; i<this.elttoscroll[tabid].length; i++)
-        this.scrollDown(tabid,this.elttoscroll[tabid][i]);
+      for (var i=0; i<this.elttoscroll.get(tabid).length; i++)
+        this.scrollDown(tabid,this.elttoscroll.get(tabid)[i]);
       // empty the cached element list because it has been scrolled
-      this.elttoscroll[tabid] = Array();
+      this.elttoscroll.set(tabid, Array());
     }
     
     this.unnotifyTab(tabid);
@@ -129,7 +129,7 @@ pfcGui.prototype = {
     var className = (! is_ie) ? 'class' : 'className';
 
     // return the chat content if it exists
-    var cc = this.chatcontent[tabid];
+    var cc = this.chatcontent.get(tabid);
     if (cc) return cc;
 
     // if the chat content doesn't exists yet, just create a cached one
@@ -141,7 +141,7 @@ pfcGui.prototype = {
     cc.style.display = "block"; // needed by IE6 to show the online div at startup (first loaded page)
     //    cc.style.marginLeft = "5px";
 
-    this.chatcontent[tabid] = cc;
+    this.chatcontent.set(tabid,cc);
     return cc;
   },
   getOnlineContentFromTabId: function(tabid)
@@ -149,7 +149,7 @@ pfcGui.prototype = {
     var className = (! is_ie) ? 'class' : 'className';
 
     // return the online content if it exists
-    var oc = this.onlinecontent[tabid];
+    var oc = this.onlinecontent.get(tabid);
     if (oc) return oc;
 
     oc = document.createElement('div');
@@ -160,7 +160,7 @@ pfcGui.prototype = {
     //    oc.style.borderLeft = "1px solid #555";
     oc.style.display = "block"; // needed by IE6 to show the online div at startup (first loaded page)
 
-    this.onlinecontent[tabid] = oc;
+    this.onlinecontent.set(tabid,oc);
     return oc;
   },
   
@@ -194,7 +194,7 @@ pfcGui.prototype = {
   /*
   removeTabByName: function(name)
   {
-    var tabid = hex_md5(_to_utf8(name));
+    var tabid = _to_utf8(name).md5();
     var ret = this.removeTabById(tabid);
     if (ret == name)
       return tabid;
@@ -214,7 +214,7 @@ pfcGui.prototype = {
     // do not create twice a the same tab
     if (this.isCreated(tabid)) return;
 
-    //    var tabid = hex_md5(_to_utf8(name));
+    //    var tabid = _to_utf8(name).md5();
     //alert(name+'='+tabid);
     this.tabs.push(name);
     this.tabids.push(tabid);
@@ -406,7 +406,7 @@ pfcGui.prototype = {
     for(var i = 0; i < sl.length; i++)
     {
       s_url    = sl[i];
-      s_symbol = smileys[sl[i]];
+      s_symbol = smileys.get(sl[i]);
       s_symbol = s_symbol.unescapeHTML();
       // Replace &quot; with " for IE and Webkit browsers.
       // The prototype.js version 1.5.1.1 unescapeHTML() function does not do this.

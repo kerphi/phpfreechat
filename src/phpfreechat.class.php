@@ -382,7 +382,6 @@ class phpFreeChat
     $t->setTemplate($c->getFilePathFromTheme('style.css.php'));
     $css_code .= $t->getOutput();
 
-
     $css->parse($css_code);
     foreach($css->css as $k => $v)
     {
@@ -391,7 +390,7 @@ class phpFreeChat
         $rules = '';
         foreach($v2 as $k3 => $v3)
           $rules .= $k3.':'.$v3.';';
-        $js .= "c['".$k2."']='".str_replace("\n", "", $rules)."';\n";
+        $js .= "c.set('".$k2."', '".str_replace("\n", "", $rules)."');\n";
       }
     }
     $js .= "var pfccss = new pfcCSS(); var k = c.keys(); c.each(function (a) { pfccss.applyRule(a[0],a[1]); });";
