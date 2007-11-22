@@ -10,7 +10,7 @@
 <p>
 Let us
 <a href=""
-   onclick="window.open('demo65_chat_popup.php','The chat popup','toolbar=0,menubar=0,scrollbars=1,width=800,height=630'); return false;">
+   onclick="window.open('demo65_chat_popup.php','chat_popup','toolbar=0,menubar=0,scrollbars=1,width=800,height=650'); return false;">
 start chatting
 </a>
 </p>
