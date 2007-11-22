@@ -64,7 +64,7 @@ class pfcCommand_who extends pfcCommand
 
     require_once dirname(__FILE__).'/../pfcjson.class.php';
     $json = new pfcJSON();
-     $js = $json->encode($chanmeta);
+    $js = $json->encode($chanmeta);
     return $js;
   }
 }
