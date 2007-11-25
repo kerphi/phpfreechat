@@ -110,7 +110,7 @@ class pfcCommand_connect extends pfcCommand
       $chanid    = pfcCommand_join::GetRecipientId($channame);
       // reset the fromid flag
       $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$chanid;
-      $from_id     = $ct->getLastId($chanrecip)-$c->max_msg;
+      $from_id     = $ct->getLastId($chanrecip)-$c->max_msg+1;
       $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
       // reset the oldmsg flag
       $oldmsg_sid = "pfc_oldmsg_".$c->getId()."_".$clientid."_".$chanid;
@@ -124,7 +124,7 @@ class pfcCommand_connect extends pfcCommand
         $recipient2  = $pv['recipient'];
         // reset the fromid flag
         $from_id_sid = "pfc_from_id_".$c->getId()."_".$clientid."_".$recipientid2;
-        $from_id     = $ct->getLastId($recipient2)-$c->max_msg;
+        $from_id     = $ct->getLastId($recipient2)-$c->max_msg+1;
         $_SESSION[$from_id_sid] = ($from_id<0) ? 0 : $from_id;
         // reset the oldmsg flag
         $oldmsg_sid = "pfc_oldmsg_".$c->getId()."_".$clientid."_".$recipientid2;
