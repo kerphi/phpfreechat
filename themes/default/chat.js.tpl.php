@@ -68,7 +68,7 @@ var pfc_nickname_color_list   = <?php echo $json->encode($nickname_colorlist); ?
 var pfc_theme                 = <?php echo $json->encode($theme); ?>;
 var pfc_isready               = false;
 var pfc_server_script_url     = <?php echo $json->encode($c->server_script_url); ?>;
-var pfc_nickmeta_key_to_hide      = <?php echo $json->encode($c->nickmeta_key_to_hide); ?>;
+var pfc_nickmeta_key_to_hide  = <?php echo $json->encode($c->nickmeta_key_to_hide); ?>;
 
 Event.observe(window, 'load', function() {
   pfc = new pfcClient();

@@ -429,7 +429,7 @@ class pfcContainer extends pfcContainerInterface
         $data["sender"]    = $formated_line[2];
         $data["cmd"]       = $formated_line[3];
         // convert URLs to html
-        $data["param"]     = pfc_make_hyperlink($formated_line[4]);
+        $data["param"]     = $formated_line[4];
         $datalist[$data["id"]] = $data;
       }
     }   

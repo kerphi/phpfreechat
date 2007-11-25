@@ -84,7 +84,7 @@ class pfcCommand_getnewmsg extends pfcCommand
       $m_sender      = $d["sender"];
       $m_recipientid = $recipientid;
       $m_cmd         = $d["cmd"];
-      $m_param       = phpFreeChat::PostFilterMsg($d["param"]);
+      $m_param       = phpFreeChat::PostFilterMsg(pfc_make_hyperlink($d["param"]));
       $js[] = array($m_id,
                     $m_date,
                     $m_time,
