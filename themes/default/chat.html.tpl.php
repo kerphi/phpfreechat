@@ -21,7 +21,7 @@
                . ' style="cursor: pointer"';
            }
            ?>
-           ><?php echo $u->nick; ?></p>      
+           ><?php echo phpFreeChat::FilterSpecialChar($u->nick); ?></p>      
       </td>
       <td class="pfc_td2">
         <input type="text"
