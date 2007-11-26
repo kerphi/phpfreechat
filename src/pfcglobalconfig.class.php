@@ -598,6 +598,17 @@ class pfcGlobalConfig
    */
   var $get_ip_from_xforwardedfor = false;
 
+  /**
+   * <p>Most of the chat parameters are stored in a internal cache for performances issues.
+   * It means that for all the clients the chat will have the same parameters. However sometime you need
+   * to customize some parameters for each clients.
+   * For example: the 'language' parameter could depends on the chatter profil so it could interesting to
+   * ignore the cache for this parameter.
+   * The 'dyn_params' contains the parameters that need to be dynamic (not stored in the cache).
+   * (Default value: array())</p>
+   */
+  var $dyn_params = array();
+  
   // ------------------
   // private parameters
   // ------------------
@@ -695,6 +706,8 @@ class pfcGlobalConfig
     }
 
     // load dynamic parameter even if the config exists in the cache
+    if (isset($params['dyn_params']) && is_array($params['dyn_params']))
+      $this->_dyn_params = array_merge($this->_dyn_params,$params['dyn_params']);
     foreach ( $this->_dyn_params as $dp )
       if (isset($params[$dp]))
         $this->$dp = $params[$dp];
