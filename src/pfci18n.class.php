@@ -103,7 +103,7 @@ class pfcI18N
    */
   function GetAcceptedLanguage($type="main")
   {
-    return /*<GetAcceptedLanguage>*/array('pl_PL','pt_BR','da_DK','uk_UA','nb_NO','fr_FR','hr_HR','vi_VN','hy_AM','ru_RU','eo','en_US','es_ES','ko_KR','nl_BE','ba_BA','zh_TW','zh_CN','it_IT','el_GR','uk_RO','pt_PT','sr_CS','tr_TR','de_DE-informal','de_DE-formal','ja_JP','sv_SE','bn_BD','nl_NL','ar_LB','hu_HU','nn_NO','bg_BG','id_ID','th_TH','gl_ES');/*</GetAcceptedLanguage>*/
+    return /*<GetAcceptedLanguage>*/array('nl_NL','ko_KR','nl_BE','tr_TR','pt_PT','en_US','eo','hr_HR','vi_VN','es_ES','zh_TW','nn_NO','ru_RU','id_ID','hu_HU','th_TH','hy_AM','oc','da_DK','de_DE-formal','uk_RO','nb_NO','fr_FR','it_IT','sv_SE','uk_UA','sr_CS','ar_LB','bg_BG','pt_BR','ba_BA','bn_BD','el_GR','zh_CN','gl_ES','pl_PL','de_DE-informal','ja_JP');/*</GetAcceptedLanguage>*/
   }
   
   /**

@@ -134,6 +134,7 @@
       <li><a href="demo62_in_belgian_dutch.php">demo62 - Belgian Dutch translation of the chat</a></li>
       <li><a href="demo63_in_thai.php">demo63 - Thai translation of the chat</a></li>
       <li><a href="demo64_in_galician.php">demo64 - Galician translation of the chat</a></li>
+      <li><a href="demo66_in_occitan.php">demo66 - Occitan translation of the chat</a></li>
     </ul>
 
 </div>

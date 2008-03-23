@@ -403,4 +403,5 @@ $GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"]
 // line 89 in invite.class.php
 $GLOBALS["i18n"]["%s was invited by %s"] = "%s fue invitado por %s";
 
+
 ?>
