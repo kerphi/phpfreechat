@@ -4,7 +4,7 @@ require_once dirname(__FILE__)."/src/phpfreechat.class.php";
 $params = array();
 $params["title"] = "Quick chat";
 $params["nick"] = "guest".rand(1,1000);  // setup the intitial nickname
-$params["isadmin"] = true; // just for debug ;)
+$params["isadmin"] = true; // do not use it on production servers ;)
 $params["serverid"] = md5(__FILE__); // calculate a unique id for this chat
 //$params["debug"] = true;
 $chat = new phpFreeChat( $params );
@@ -110,6 +110,7 @@ $chat = new phpFreeChat( $params );
 
 <div class="content">
   <?php $chat->printChat(); ?>
+  <p style="color:red;font-weight:bold;">Warning: because of "isadmin" parameter, everybody is admin. Please modify this script before using it on production servers !</p>
 </div>
 
 </body></html>
