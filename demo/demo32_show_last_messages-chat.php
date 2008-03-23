@@ -26,14 +26,14 @@ $chat = new phpFreeChat($pfc_config);
   echo "<p><code>".$filename."</code></p>";
   echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
   $content = file_get_contents($filename);
-  echo htmlentities($content);
+  highlight_string($content);
   echo "</pre>";
 
   $filename = __FILE__;
   echo "<p><code>".$filename."</code></p>";
   echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
   $content = file_get_contents($filename);
-  echo htmlentities($content);
+  highlight_string($content);
   echo "</pre>";
 ?>
   </body>
