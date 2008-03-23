@@ -164,15 +164,26 @@ class pfcGlobalConfig
    * <p>This is the time to wait between two refreshes.
    * A refresh is an HTTP request which asks the server if there are new messages to display.
    * If there are no new messages, then an empty HTTP response is returned.
-   * (Default value: 5000 - 5,000ms = 5 seconds)</p>
+   * This parameter will be dynamically changed depending on the chat activity, see refresh_delay_steps
+   * parameter for more information.
+   * (Default value: 2000 it means 2000 ms or 2 seconds)</p>
    */
-  var $refresh_delay = 5000;
-  
+  var $refresh_delay = 2000;
+
   /**
-   * <p>This is the time of inactivity to wait before a user is disconnected (in milliseconds).
-   * A user is inactive only if s/he closed his/her chat window.
-   * A user with an open chat window is not inactive because s/he sends each <code>refresh_delay</code> an HTTP request.
-   * (Default value: 20000 - 20000ms = 20 seconds)</p>
+   * <p>This parameter is used to control the refresh_delay value dynamically.
+   * More the chat is active, more the refresh_delay is low, that means more the chat is responsive.
+   * The first parameter is a refresh delay value, the second is a time inactivity boundary etc ...
+   * (Default value: array(2000,20000,3000,60000 ... that means: start with 2s delay after 20s of inactivity,
+   *  3s delay after 60s of inactivity ...)</p>
+   */
+  var $refresh_delay_steps = array(2000,20000,3000,30000,5000,60000,8000,300000,15000,600000,30000);
+
+  /**
+   * <p>This is the time of inactivity to wait before considering a user is disconnected (in milliseconds).
+   * A user is inactive only if s/he closed his/her chat window. A user with an open chat window
+   * is not inactive because s/he sends each <code>refresh_delay</code> an HTTP request.
+   * (Default value: 20000 it means 20000 ms or 20 seconds)</p>
    */
   var $timeout = 20000;
   
@@ -1066,8 +1077,8 @@ class pfcGlobalConfig
       $errors =& $this->getErrors();
       if (count($errors) == 0)
       {
-        // save the validated config in cache
-        $this->saveInCache();
+      // save the validated config in cache
+      $this->saveInCache();
       }
       else
         @unlink($cachefile_lock); // destroy the lock file for the next attempt

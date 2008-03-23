@@ -43,9 +43,13 @@ pfcClient.prototype = {
     this.privmsgids    = Array();
     
     this.timeout            = null;
-    this.refresh_delay      = pfc_refresh_delay;
+    this.timeout_time       = new Date().getTime();
+
+    this.refresh_delay       = pfc_refresh_delay;
+    this.refresh_delay_steps = pfc_refresh_delay_steps;
     this.last_response_time = new Date().getTime();
     this.last_request_time  = new Date().getTime();
+    this.last_activity_time = new Date().getTime();
 
     /* unique client id for each windows used to identify a open window
      * this id is passed every time the JS communicate with server
@@ -197,6 +201,19 @@ pfcClient.prototype = {
         else
           trace('handleResponse: '+cmd + "-"+resp+"-"+param);
       }
+
+    if (cmd != "update") 
+    {
+       // speed up timeout if activity
+       this.last_activity_time = new Date().getTime();
+       var delay = this.calcDelay();
+       if (this.timeout_time - new Date().getTime() > delay)
+       {
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout('pfc.updateChat(true)', delay);
+          this.timeout_time = new Date().getTime() + delay;
+       }
+    }
 
     if (cmd == "connect")
     {
@@ -913,8 +930,8 @@ pfcClient.prototype = {
     var msg_html = $H();
     var max_msgid = $H();
     
-//alert(cmds.inspect());
-    
+    //alert(cmds.inspect());
+
     for(var mid = 0; mid < cmds.length ; mid++)
     {
       var id          = cmds[mid][0];
@@ -926,7 +943,7 @@ pfcClient.prototype = {
       var param       = cmds[mid][6];
       var fromtoday   = cmds[mid][7];
       var oldmsg      = cmds[mid][8];
-
+      
       // format and post message
       var line = '';
       line += '<div id="pfc_msg_'+recipientid+'_'+id+'" class="pfc_cmd_'+ cmd +' pfc_message';
@@ -972,7 +989,7 @@ pfcClient.prototype = {
         msg_html.set(recipientid, line);
       else
         msg_html.set(recipientid, msg_html.get(recipientid) + line);
-
+      
       // remember the max message id in order to clean old lines
       if (!max_msgid.get(recipientid)) max_msgid.set(recipientid, 0);
       if (max_msgid.get(recipientid) < id) max_msgid.set(recipientid, id);
@@ -986,7 +1003,7 @@ pfcClient.prototype = {
       var tabid        = recipientid;
       // create the tab if it doesn't exists yet
       var recipientdiv = this.gui.getChatContentFromTabId(tabid);
-
+      
       // create a dummy div to avoid konqueror bug when setting nickmarkers
       var m = document.createElement('div');  // do not setup a inline element (ex: span) because the element height will be wrong on FF2 -> scrollDown(..) will be broken
       m.innerHTML = msg_html.get(recipientid);
@@ -1011,7 +1028,24 @@ pfcClient.prototype = {
         limit_msgid--;
         elt = $('pfc_msg_'+recipientid+'_'+limit_msgid);
       }
-    }    
+    }
+    
+  },
+
+  calcDelay: function()
+  {
+    var lastact = new Date().getTime() - this.last_activity_time;
+    var dlist = this.refresh_delay_steps.slice();
+    var delay = dlist.shift();
+    if (this.refresh_delay > delay) delay = this.refresh_delay;
+    var limit;
+    while (typeof (limit = dlist.shift()) != "undefined")
+    {
+      var d = dlist.shift();
+      if (d < delay) continue;
+      if (lastact > limit) delay = d;
+    }
+    return delay;
   },
   
   /**
@@ -1023,11 +1057,14 @@ pfcClient.prototype = {
     // do not send another ajax requests if the last one is not yet finished 
     if (cmd == '/update' && this.pfc_ajax_connected) return;
 
+    var delay = this.calcDelay();
+
     if (cmd != "/update")
     {
       // setup a new timeout to update the chat in 5 seconds (in refresh_delay more exactly)
       clearTimeout(this.timeout);
-      this.timeout = setTimeout('pfc.updateChat(true)', this.refresh_delay);
+      this.timeout = setTimeout('pfc.updateChat(true)', delay);
+      this.timeout_time = new Date().getTime() + delay;
 
       if (pfc_debug)
         trace('sendRequest: '+cmd);
@@ -1061,7 +1098,7 @@ pfcClient.prototype = {
 
         // calculate the ping and display it
         this.ping = Math.abs(this.last_response_time - this.last_request_time);
-        if ($('pfc_ping')) $('pfc_ping').innerHTML = this.ping+'ms';
+        if ($('pfc_ping')) $('pfc_ping').innerHTML = this.ping+'ms'+' ['+parseInt(this.calcDelay() / 1000)+'s]';
       }.bind(this)
     });
   },
@@ -1077,7 +1114,9 @@ pfcClient.prototype = {
       this.sendRequest('/update');
       
       // setup the next update
-      this.timeout = setTimeout('pfc.updateChat(true)', this.refresh_delay);
+      var delay = this.calcDelay();
+      this.timeout = setTimeout('pfc.updateChat(true)', delay);
+      this.timeout_time = new Date().getTime() + delay;
     }
   },
 
@@ -1500,7 +1539,7 @@ pfcClient.prototype = {
       rx = new RegExp(RegExp.escape(sl[i]) + '(?![^<]*>)','g');
       msg = msg.replace(rx, '<img src="'+ smileys.get(sl[i]) +'" alt="' + sl[i] + '" title="' + sl[i] + '" />');
     }
-
+    
     // try to parse nickname for highlighting 
     rx = new RegExp('(^|[ :,;])'+RegExp.escape(this.nickname)+'([ :,;]|$)','gi');
     msg = msg.replace(rx, '$1<strong>'+ this.nickname +'</strong>$2');
