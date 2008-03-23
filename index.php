@@ -52,46 +52,43 @@ $chat = new phpFreeChat( $params );
         <li>
           <ul>
             <li class="item">
-              <a href="http://www.phpfreechat.net/overview.en.html">Overview [en]</a>
+              <a href="http://www.phpfreechat.net/overview">Overview [en]</a>
             </li>
             <li class="item">
-              <a href="http://www.phpfreechat.net/overview.fr.html">Overview [fr]</a>
+              <a href="http://www.phpfreechat.net/fr/overview">Overview [fr]</a>
             </li>
             <li class="item">
-              <a href="http://www.phpfreechat.net/overview.es.html">Overview [es]</a>
+              <a href="http://www.phpfreechat.net/es/overview">Overview [es]</a>
             </li>
             <li class="item">
-              <a href="http://www.phpfreechat.net/overview.ar.html">Overview [zh]</a>
+              <a href="http://www.phpfreechat.net/zh/overview">Overview [zh]</a>
             </li>
             <li class="item">
-              <a href="http://www.phpfreechat.net/overview.ar.html">Overview [ar]</a>
+              <a href="http://www.phpfreechat.net/ar/overview">Overview [ar]</a>
             </li>
             <li class="item">
-              <a href="http://www.phpfreechat.net/install.en.html">Install [en]</a>
+              <a href="http://www.phpfreechat.net/quickstart">Quickstart [en]</a>
             </li>
             <li class="item">
-              <a href="http://www.phpfreechat.net/install.fr.html">Install [fr]</a>
+              <a href="http://www.phpfreechat.net/fr/quickstart">En avant ! [fr]</a>
             </li>
             <li class="item">
-              <a href="http://www.phpfreechat.net/parameters-list.en.html">Parameters list [en]</a>
+              <a href="http://www.phpfreechat.net/parameters">Parameters list [en]</a>
             </li>
             <li class="item">
-              <a href="http://www.phpfreechat.net/faq.en.html">FAQ [en]</a>
+              <a href="http://www.phpfreechat.net/faq">FAQ [en]</a>
             </li>
             <li class="item">
-              <a href="http://www.phpfreechat.net/faq.fr.html">FAQ [fr]</a>
+              <a href="http://www.phpfreechat.net/fr/faq">FAQ [fr]</a>
             </li>
             <li class="item">
-              <a href="http://www.phpfreechat.net/customize.en.html">Customize [en]</a>
+              <a href="http://www.phpfreechat.net/advanced-configuration">Advanced configuration [en]</a>
             </li>
             <li class="item">
-              <a href="http://www.phpfreechat.net/customize.fr.html">Customize [fr]</a>
-            </li>
+              <a href="http://www.phpfreechat.net/fr/advanced-configuration">Configuration avancée [fr]</a>
+            </li>            
             <li class="item">
-              <a href="http://www.phpfreechat.net/changelog.en.html">ChangeLog [en]</a>
-            </li>
-            <li class="item">
-              <a href="http://www.phpfreechat.net/changelog.fr.html">ChangeLog [fr]</a>
+              <a href="http://www.phpfreechat.net/customize">Customize [en]</a>
             </li>
           </ul>
         </li>
