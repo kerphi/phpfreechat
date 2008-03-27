@@ -1,31 +1,37 @@
 <?php
 
 class pfcComet {
-  var $pfccometjs_url   = './pfccomet.js';
-  var $prototypejs_url  = './prototype.js';
-  var $backend_url      = '';
-  var $backend_url_flag = 'backend';
-  var $backend_callback = null;
-  var $backend_loop       = false;
-  var $backend_loop_sleep = 1000000; // microseconds
-  var $onresponse_callback   = null;
-  var $onconnect_callback    = null;
-  var $ondisconnect_callback = null;
+    private $pfccometjs_url        = './pfccomet.js';
+    private $prototypejs_url       = './prototype.js';
+    private $instance_name         = 'pfccomet'; 
+    private $backend_url           = '';
+    private $backend_url_flag      = 'backend';
+    private $backend_callback      = null;
+    private $backend_loop          = false;
+    private $backend_loop_sleep    = 1000000; // 1000000 microseconds = 1 second
+    private $onresponse_callback   = null;
+    private $onconnect_callback    = null;
+    private $ondisconnect_callback = null;
   
-  function pfcComet()
-  {
-    if ($this->backend_url == '')
-      $this->backend_url = $_SERVER['PHP_SELF'];
-  }
-
-  function run()
-  {
-    if (isset($_REQUEST[$this->backend_url_flag]))
+    public function __construct($params = array())
     {
-      header("Cache-Control: no-cache, must-revalidate");
-      header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-      flush();
-      echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+        foreach(get_object_vars($this) as $k => $v)
+        {
+            if (isset($params[$k]))
+                $this->$k = $params[$k];
+        }
+        if ($this->backend_url == '')
+            $this->backend_url = $_SERVER['PHP_SELF'];
+    }
+
+    public function run()
+    {
+        if (isset($_REQUEST[$this->backend_url_flag]))
+        {
+            header("Cache-Control: no-cache, must-revalidate");
+            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+            flush();
+            echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>pfcComet backend iframe</title>
@@ -43,68 +49,68 @@ class pfcComet {
 //      head[0].appendChild(prototypejs);
 //    }
   // load the comet object
-  var pfccomet = window.parent.pfccomet;
+  var '.$this->instance_name.' = window.parent.'.$this->instance_name.';
 </script>
 <body>
 ';
-      flush();
+            flush();
 
-      // trigger the onConnect callback
-      echo '<script type="text/javascript">pfccomet._onConnect();</script>'."\n";
-      flush();
+            // trigger the onConnect callback
+            echo '<script type="text/javascript">'.$this->instance_name.'._onConnect();</script>'."\n";
+            flush();
 
-      // trigger the backend callback
-      do {
-        if (is_callable($this->backend_callback))
-        {
-          $func = $this->backend_callback;
-          if ( is_array($func) ){
-              echo $this->formatResponse($func[0]->$func[1]($this));
-          } else {
-              echo $this->formatResponse($func($this));
-          }
+            // trigger the backend callback
+            do {
+                if (is_callable($this->backend_callback))
+                {
+                    $func = $this->backend_callback;
+                    if ( is_array($func) ){
+                        echo $this->_formatResponse($func[0]->$func[1]($this));
+                    } else {
+                        echo $this->_formatResponse($func($this));
+                    }
+                }
+                flush();
+                if ($this->backend_loop)  // do not sleep if the loop is finished
+                    usleep($this->backend_loop_sleep);
+            } while($this->backend_loop);
+
+            // trigger the onDisconnect callback
+            echo '<script type="text/javascript">'.$this->instance_name.'._onDisconnect();</script>'."\n";
+            echo '</body></html>';
+            flush();
+
+            die();
         }
-        flush();
-        if ($this->backend_loop)  // do not sleep if the loop is finished
-            usleep($this->backend_loop_sleep);
-      } while($this->backend_loop);
-
-      // trigger the onDisconnect callback
-      echo '<script type="text/javascript">pfccomet._onDisconnect();</script>'."\n";
-      echo '</body></html>';
-      flush();
-
-      die();
     }
-  }
 
-  function formatResponse($data)
-  {
-    return '<script type="text/javascript">pfccomet._onResponse('.json_encode($data).');</script>'."\n";
-  }
+    protected function _formatResponse($data)
+    {
+        return '<script type="text/javascript">'.$this->instance_name.'._onResponse('.json_encode($data).');</script>'."\n";
+    }
   
-  function printJavascript($return = false)
-  {
-    $output  = '<script type="text/javascript" src="'.$this->prototypejs_url.'"></script>'."\n";
-    $output .= '<script type="text/javascript" src="'.$this->pfccometjs_url.'"></script>'."\n";
-    $output .= '<script type="text/javascript">
+    public function printJavascript($return = false)
+    {
+        $output  = '<script type="text/javascript" src="'.$this->prototypejs_url.'"></script>'."\n";
+        $output .= '<script type="text/javascript" src="'.$this->pfccometjs_url.'"></script>'."\n";
+        $output .= '<script type="text/javascript">
 Event.observe(window, "load", function() {
-  pfccomet = new pfcComet({"url":"'.$this->backend_url.'?'.$this->backend_url_flag.'"});'."\n";
-    if ( $this->onresponse_callback )
-      $output .= '  pfccomet.onResponse = '.$this->onresponse_callback.';'."\n";
-    if ( $this->onconnect_callback )
-      $output .= '  pfccomet.onConnect = '.$this->onconnect_callback.';'."\n";
-    if ( $this->ondisconnect_callback )
-      $output .= '  pfccomet.onDisconnect = '.$this->ondisconnect_callback.';'."\n";
-    $output .= '
-  pfccomet.connect();
+  '.$this->instance_name.' = new pfcComet({"url":"'.$this->backend_url.'?'.$this->backend_url_flag.'"});'."\n";
+        if ( $this->onresponse_callback )
+            $output .= '  '.$this->instance_name.'.onResponse = '.$this->onresponse_callback.';'."\n";
+        if ( $this->onconnect_callback )
+            $output .= '  '.$this->instance_name.'.onConnect = '.$this->onconnect_callback.';'."\n";
+        if ( $this->ondisconnect_callback )
+            $output .= '  '.$this->instance_name.'.onDisconnect = '.$this->ondisconnect_callback.';'."\n";
+        $output .= '
+  '.$this->instance_name.'.connect();
 });
 </script>'."\n";
-    if ($return)
-      return $output;
-    else
-      echo $output;
-  }
+        if ($return)
+            return $output;
+        else
+            echo $output;
+    }
 
 }
 
