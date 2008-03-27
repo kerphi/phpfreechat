@@ -4,10 +4,10 @@ class pfcComet {
   var $pfccometjs_url   = './pfccomet.js';
   var $prototypejs_url  = './prototype.js';
   var $backend_url      = '';
-  var $backend_param    = 'backend';
+  var $backend_url_flag = 'backend';
   var $backend_callback = null;
   var $backend_loop       = false;
-  var $backend_loop_sleep = 1;
+  var $backend_loop_sleep = 1000000; // microseconds
   var $onresponse_callback   = null;
   var $onconnect_callback    = null;
   var $ondisconnect_callback = null;
@@ -20,7 +20,7 @@ class pfcComet {
 
   function run()
   {
-    if (isset($_REQUEST[$this->backend_param]))
+    if (isset($_REQUEST[$this->backend_url_flag]))
     {
       header("Cache-Control: no-cache, must-revalidate");
       header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -59,13 +59,14 @@ class pfcComet {
         {
           $func = $this->backend_callback;
           if ( is_array($func) ){
-            echo $func[0]->$func[1]($this);
+              echo $this->formatResponse($func[0]->$func[1]($this));
           } else {
-            echo $func($this);
+              echo $this->formatResponse($func($this));
           }
         }
         flush();
-        sleep($this->backend_loop_sleep);
+        if ($this->backend_loop)  // do not sleep if the loop is finished
+            usleep($this->backend_loop_sleep);
       } while($this->backend_loop);
 
       // trigger the onDisconnect callback
@@ -79,7 +80,7 @@ class pfcComet {
 
   function formatResponse($data)
   {
-    return '<script type="text/javascript">pfccomet._onResponse(\''.addslashes($data).'\');</script>'."\n";
+    return '<script type="text/javascript">pfccomet._onResponse('.json_encode($data).');</script>'."\n";
   }
   
   function printJavascript($return = false)
@@ -88,7 +89,7 @@ class pfcComet {
     $output .= '<script type="text/javascript" src="'.$this->pfccometjs_url.'"></script>'."\n";
     $output .= '<script type="text/javascript">
 Event.observe(window, "load", function() {
-  pfccomet = new pfcComet({"url":"'.$this->backend_url.'?'.$this->backend_param.'"});'."\n";
+  pfccomet = new pfcComet({"url":"'.$this->backend_url.'?'.$this->backend_url_flag.'"});'."\n";
     if ( $this->onresponse_callback )
       $output .= '  pfccomet.onResponse = '.$this->onresponse_callback.';'."\n";
     if ( $this->onconnect_callback )

@@ -1,21 +1,17 @@
 <?php
 
 function macallback($pfccomet) {
-  static $id;
-  if (!isset($id)) $id = md5(uniqid(rand(), true));
-  file_put_contents('/tmp/cometdebug',"id=".$id." ".time()."\n",FILE_APPEND|LOCK_EX);
-  return time();
+    return array(time(),'blabla');
 }
 
 require_once 'pfccomet.class.php';
 $pfccomet = new pfcComet();
-$pfccomet->pfccometjs_url      = './pfccomet.js';
-$pfccomet->prototypejs_url     = '../../../data/public/js/prototype.js';
 $pfccomet->backend_loop        = true;
 $pfccomet->backend_loop_sleep  = 500000; // 100000 microsec = 100 milisec
 $pfccomet->backend_url         = './'.basename(__FILE__);
 $pfccomet->backend_callback    = 'macallback';
 $pfccomet->onresponse_callback = 'update_servertime_area';
+
 $pfccomet->run();
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -24,14 +20,21 @@ $pfccomet->run();
     <title>pfcComet tester</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<script type="text/javascript">
-function update_servertime_area(comet,time)
-{
-  document.getElementById('date').innerHTML = time;
-}
-</script>
 
-<?php $pfccomet->printJavascript(); ?>
+    <script type="text/javascript" src="../../../data/public/js/prototype.js"></script>
+    <script type="text/javascript" src="./pfccomet.js"></script>
+
+<script type="text/javascript">
+
+Event.observe(window, "load", function() {
+  pfccomet = new pfcComet({"url":"./<?php echo $pfccomet->backend_url; ?>?<?php echo $pfccomet->backend_url_flag; ?>"});
+  pfccomet.onResponse = function(comet,data) {
+    document.getElementById('date').innerHTML = data;
+  };
+  pfccomet.connect();
+});
+
+</script>
     
 
   </head>
