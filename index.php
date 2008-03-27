@@ -107,7 +107,9 @@ $chat = new phpFreeChat( $params );
 
 <div class="content">
   <?php $chat->printChat(); ?>
-  <p style="color:red;font-weight:bold;">Warning: because of "isadmin" parameter, everybody is admin. Please modify this script before using it on production servers !</p>
+  <?php if (isset($params["isadmin"]) && $params["isadmin"]) { ?>
+    <p style="color:red;font-weight:bold;">Warning: because of "isadmin" parameter, everybody is admin. Please modify this script before using it on production servers !</p>
+  <?php } ?>
 </div>
 
 </body></html>
