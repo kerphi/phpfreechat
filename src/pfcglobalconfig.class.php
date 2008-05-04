@@ -183,9 +183,9 @@ class pfcGlobalConfig
    * <p>This is the time of inactivity to wait before considering a user is disconnected (in milliseconds).
    * A user is inactive only if s/he closed his/her chat window. A user with an open chat window
    * is not inactive because s/he sends each <code>refresh_delay</code> an HTTP request.
-   * (Default value: 20000 it means 20000 ms or 20 seconds)</p>
+   * (Default value: 35000 it means 35000 ms or 35 seconds)</p>
    */
-  var $timeout = 20000;
+  var $timeout = 35000;
   
   /**
    * When this parameter is true, all the chatters will be redirected
