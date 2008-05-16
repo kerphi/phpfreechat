@@ -99,7 +99,7 @@ class pfcContainer_File extends pfcContainerInterface
     $leafexists = file_exists($leaffilename);
     if ($leafvalue == NULL)
     {
-    	file_put_contents($leaffilename, '', LOCK_EX);
+      touch($leaffilename);
     }
     else
     {
