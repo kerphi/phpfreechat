@@ -39,7 +39,7 @@ $GLOBALS["i18n"]["Please enter your nickname"] = "Bonvolu enskribi vian voknomon
 $GLOBALS["i18n"]["Text cannot be empty"] = "Hej! Vi forgesis skribi ion!!!";
 
 // line 392 in phpfreechat.class.php
-$GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s changes his/her nickname to %s";
+$GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s changes nickname to %s";
 
 // line 398 in phpfreechat.class.php
 $GLOBALS["i18n"]["%s is connected"] = "%s is connected";
@@ -173,7 +173,6 @@ $GLOBALS["i18n"]["'%s' parameter must be a positive number"] = "'%s' parameter m
 // line 386 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["'%s' parameter is not valid. Available values are : '%s'"] = "'%s' parameter is not valid. Available values are: '%s'";
 
-?>
 // line 183 in pfcglobalconfig.class.php
 $GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "";
 
