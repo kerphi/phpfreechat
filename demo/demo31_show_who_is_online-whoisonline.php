@@ -32,13 +32,6 @@ echo "</div>";
   // print the current file
   echo "<h2>The source code</h2>";
 
-  $filename = dirname(__FILE__)."/demo31_show_who_is_online-config.php";
-  echo "<p><code>".$filename."</code></p>";
-  echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
-  $content = file_get_contents($filename);
-  highlight_string($content);
-  echo "</pre>";
-
   $filename = __FILE__;
   echo "<p><code>".$filename."</code></p>";
   echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
