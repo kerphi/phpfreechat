@@ -112,7 +112,7 @@ class pfcGlobalConfig
    * <p>This parameter contains a list of key/value that identify admin access.
    * The keys are the nicknames and the values are the corresponding passwords.
    * Note: The "isadmin" parameter does not depend on this variable.
-   * (Default value: No admin/password accounts are available. Don't forget to change it.)</p>
+   * (Default value: nick 'admin' with no password is available. Don't forget to change it.)</p>
    */
   var $admins = array("admin" => "");
 
