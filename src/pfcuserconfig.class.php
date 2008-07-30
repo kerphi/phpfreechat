@@ -23,10 +23,10 @@ class pfcUserConfig
     // start the session : session is used for locking purpose and cache purpose
     session_name( "phpfreechat" );
     if(session_id() == "") session_start();
-    
-    //    echo "pfcUserConfig()<br>";
 
-    $this->nickid = session_id();
+    // the nickid is a public identifier shared between all the chatters
+    // this is why the session_id must not be assigned directly to the nickid
+    $this->nickid = sha1(session_id());
 
     // user parameters are cached in sessions
     $this->_getParam("nick");
