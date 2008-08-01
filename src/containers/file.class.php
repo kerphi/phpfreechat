@@ -110,6 +110,7 @@ class pfcContainer_File extends pfcContainerInterface
     $leafexists = file_exists($leaffilename);
     if ($leafvalue == NULL)
     {
+      unlink($leaffilename);
       touch($leaffilename);
     }
     else
