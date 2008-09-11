@@ -967,7 +967,7 @@ pfcClient.prototype = {
         line += '</span> ';
       }
       if (cmd == 'notice' || cmd == 'me')
-        line += '<span class="pfc_words">* '+ this.parseMessage(param) +'</span> ';
+        line += '<span class="pfc_words">* '+ sender.escapeHTML() + ' ' + this.parseMessage(param) +'</span> ';
       else
         line += '<span class="pfc_words">'+ this.parseMessage(param) +'</span> ';
       line += '</div>';
