@@ -74,7 +74,7 @@ class pfcCommand_connect extends pfcCommand
       for($i = 0 ; $i < count($pvlist) ; $i++)
       {
         $cmdp = array();
-        $cmdp["param"] = $pvlist[$i];
+        $cmdp["params"][0] = $pvlist[$i];
         $cmd =& pfcCommand::Factory( $i < count($pvlist)-1 || !$joinoldchan ? 'privmsg2' : 'privmsg' );
         $cmd->run($xml_reponse, $cmdp);
       }
