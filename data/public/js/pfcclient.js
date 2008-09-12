@@ -966,7 +966,9 @@ pfcClient.prototype = {
         line += '&#x203A;';
         line += '</span> ';
       }
-      if (cmd == 'notice' || cmd == 'me')
+      if (cmd == 'notice')
+        line += '<span class="pfc_words">* ' + this.parseMessage(param) +'</span> ';
+      else if (cmd == 'me')
         line += '<span class="pfc_words">* '+ sender.escapeHTML() + ' ' + this.parseMessage(param) +'</span> ';
       else
         line += '<span class="pfc_words">'+ this.parseMessage(param) +'</span> ';
