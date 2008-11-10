@@ -1524,11 +1524,11 @@ pfcClient.prototype = {
     rx = new RegExp('\\[email=([A-z0-9][\\w.-]*@[A-z0-9][\\w\\-\\.]+\\.[A-z0-9]{2,6})\\](.+?)\\[\/email\\]','ig');
     msg = msg.replace(rx, '<a href="mailto: $1">$2</a>');
 */
-    rx = new RegExp('\\[color=([a-zA-Z]+|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.+?)\\[\/color\\]','ig');
+    rx = new RegExp('\\[color=([a-zA-Z]+|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})\\](.+?)\\[\/color\\]','ig');
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');
     // parse bbcode colors twice because the current_text_color is a bbcolor
     // so it's possible to have a bbcode color imbrication
-    rx = new RegExp('\\[color=([a-zA-Z]+|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})](.+?)\\[\/color\\]','ig');
+    rx = new RegExp('\\[color=([a-zA-Z]+|\\#?[0-9a-fA-F]{6}|\\#?[0-9a-fA-F]{3})\\](.+?)\\[\/color\\]','ig');
     msg = msg.replace(rx, '<span style="color: $1">$2</span>');   
 
     // try to parse smileys
