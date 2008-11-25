@@ -921,7 +921,7 @@ class pfcGlobalConfig
                                  $this->theme_path.'/'.$this->theme,
                                  $this->data_public_path.'/themes/'.$this->theme);
       }      
-      $this->theme_url = $this->theme_default_url;
+      $this->theme_url = $this->data_public_url.'/themes';
     }
 
     // if the user do not have an existing prototype.js library, we use the embeded one
