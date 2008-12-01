@@ -438,7 +438,6 @@ pfcClient.prototype = {
       {
         this.setUserMeta(nickid, param);
         this.updateNickBox(nickid);
-        this.updateNickWhoisBox(nickid);
       }
       if (cmd == "whois")
       {
