@@ -21,7 +21,6 @@ class pfcUserConfig
     $c =& pfcGlobalConfig::Instance();
 
     // start the session : session is used for locking purpose and cache purpose
-    session_name( "phpfreechat" );
     if(session_id() == "") session_start();
 
     // the nickid is a public identifier shared between all the chatters
