@@ -37,7 +37,7 @@ class pfcUserConfig
     $this->_getParam("privmsg");
     if (!isset($this->privmsg)) $this->_setParam("privmsg",array());
     $this->_getParam("serverid");
-    if (!isset($this->privmsg)) $this->_setParam("serverid",$c->serverid);
+    if (!isset($this->serverid)) $this->_setParam("serverid",$c->serverid);
   }
 
   function &Instance()
@@ -56,7 +56,7 @@ class pfcUserConfig
     if (!isset($this->$p))
     {
       $c =& pfcGlobalConfig::Instance();
-      $nickid       = "pfcuserconfig_".$c->getId();
+      $nickid       = 'pfcuserconfig_'.$c->getId().'_'.$this->nickid;
       $nickid_param = $nickid."_".$p;
       if (isset($_SESSION[$nickid_param]))
         $this->$p = $_SESSION[$nickid_param];
@@ -67,7 +67,7 @@ class pfcUserConfig
   function _setParam($p, $v)
   {
     $c =& pfcGlobalConfig::Instance();
-    $nickid_param = "pfcuserconfig_".$c->getId()."_".$p;
+    $nickid_param = 'pfcuserconfig_'.$c->getId().'_'.$this->nickid.'_'.$p;
     $_SESSION[$nickid_param] = $v;
     $this->$p = $v;
   }
@@ -75,7 +75,7 @@ class pfcUserConfig
   function _rmParam($p)
   {
     $c =& pfcGlobalConfig::Instance();
-    $nickid_param = "pfcuserconfig_".$c->getId()."_".$p;    
+    $nickid_param = 'pfcuserconfig_'.$c->getId().'_'.$this->nickid.'_'.$p;    
     unset($_SESSION[$nickid_param]);
     unset($this->$p);
     if ($p == 'active') $this->active = false;
