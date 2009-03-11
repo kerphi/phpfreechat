@@ -400,9 +400,9 @@ $GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "Sei sicuro di v
 $GLOBALS["i18n"]["%s banished from %s by %s"] = "%s bannato dalla chat %s da %s";
 
 // line 461 in phpfreechat.class.php
-$GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "";
+$GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "Stai tentando di parlare ad un utente sconosciuto (o non connesso)";
 
 // line 89 in invite.class.php
-$GLOBALS["i18n"]["%s was invited by %s"] = "";
+$GLOBALS["i18n"]["%s was invited by %s"] = "%s è stato invitato da %s";
 
 ?>

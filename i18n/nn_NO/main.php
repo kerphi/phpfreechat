@@ -21,9 +21,9 @@
  */
 
 /**
+ * 20080801
  * Norwegian (Nynorsk) translation of the messages (utf8 encoded!)
- *
- * @author Yngve Spjeld Landro <nynorsk[ at ]strilen.net>
+ * @author Yngve Spjeld Landro <nynorsk[ at ]strilen.net> 
  */
 
 // line 45 in phpfreechatconfig.class.php
@@ -69,7 +69,7 @@ $GLOBALS["i18n"]["%s doesn't exist"] = "%s finst ikkje";
 $GLOBALS["i18n"]["%s directory must be specified"] = "ein må oppgje %s-katalogen";
 
 // line 439 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s must be a directory"] = "%s må vera ein filkatalog";
+$GLOBALS["i18n"]["%s must be a directory"] = "%s må vera ein katalog";
 
 // line 446 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["%s can't be created"] = "%s kan ikkje lagast";
@@ -84,7 +84,7 @@ $GLOBALS["i18n"]["%s is not readable"] = "kan ikkje lesa %s";
 $GLOBALS["i18n"]["%s is not a file"] = "%s er ikkje ei fil";
 
 // line 491 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not a directory"] = "%s er ikkje een filkatalog";
+$GLOBALS["i18n"]["%s is not a directory"] = "%s er ikkje ein filkatalog";
 
 // line 23 in chat.html.tpl.php
 $GLOBALS["i18n"]["PHP FREE CHAT [powered by phpFreeChat-%s]"] = "PHP FREE CHAT [driven av phpFreeChat-%s]";
@@ -286,7 +286,7 @@ $GLOBALS["i18n"]["Click here to send your message"] = "Klikk her for å senda me
 $GLOBALS["i18n"]["Enter the text to format"] = "Skriv inn teksten som skal formaterast";
 
 // line 81 in chat.js.tpl.php
-$GLOBALS["i18n"]["Configuration has been rehashed"] = "Innstillingane er blitt oppdatert";
+$GLOBALS["i18n"]["Configuration has been rehashed"] = "Innstillingane er blitt oppdaterte";
 
 // line 82 in chat.js.tpl.php
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "Det oppstod eit problem under oppdateringa";
@@ -307,13 +307,13 @@ $GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "Har nådd
 $GLOBALS["i18n"]["Send"] = "Send";
 
 // line 86 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: connect error"] = "Mysql container: tilkoplingsfeil";
+$GLOBALS["i18n"]["Mysql container: connect error"] = "Mysql-behaldar: tilkoplingsfeil";
 
 // line 101 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "Mysql container: databaseopprettingsfeil '%s'";
+$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "Mysql-behaldar: databaseopprettingsfeil '%s'";
 
 // line 112 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Mysql container: tabellopprettingsfeil '%s'";
+$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Mysql-behaldar: tabellopprettingsfeil '%s'";
 
 // line 80 in chat.js.tpl.php
 $GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "Du kan ikkje tala med deg sjølv";
@@ -383,24 +383,24 @@ $GLOBALS["i18n"]["Cancel"] = "Avbryt";
 
 
 // line 430 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot create %s"] = "";
+$GLOBALS["i18n"]["cannot create %s"] = "klarer ikkje å laga %s";
 
 // line 436 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot copy %s in %s"] = "";
+$GLOBALS["i18n"]["cannot copy %s in %s"] = "klarer ikkje å kopiera %s i %s";
 
 // line 667 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "";
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "Fann ikkje '%s'. Sjå etter om  temafilbana '%s' og temaet '%s' er rette";
 
 // line 414 in phpfreechat.class.php
-$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "";
+$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "Vil du verkeleg lukka denne fana?";
 
 // line 42 in ban.class.php
-$GLOBALS["i18n"]["%s banished from %s by %s"] = "";
+$GLOBALS["i18n"]["%s banished from %s by %s"] = "%s er bortvist frå %s av %s";
 
 // line 461 in phpfreechat.class.php
-$GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "";
+$GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "Du prøver å tala med ein ukjend (eller ikkje tilkopla) brukar";
 
 // line 89 in invite.class.php
-$GLOBALS["i18n"]["%s was invited by %s"] = "";
+$GLOBALS["i18n"]["%s was invited by %s"] = "%s blei invitert av %s";
 
 ?>

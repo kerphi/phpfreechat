@@ -104,10 +104,10 @@ $GLOBALS["i18n"]["Disconnect"] = "Szétkapcsolás";
 $GLOBALS["i18n"]["Connect"] = "Kapcsolódás";
 
 // line 427 in javascript1.js.tpl.php
-$GLOBALS["i18n"]["Magnify"] = "Nagyítás";
+$GLOBALS["i18n"]["Magnify"] = "Nagy méret";
 
 // line 434 in javascript1.js.tpl.php
-$GLOBALS["i18n"]["Cut down"] = "Kivágás";
+$GLOBALS["i18n"]["Cut down"] = "Kis méret";
 
 // line 345 in javascript1.js.tpl.php
 $GLOBALS["i18n"]["Hide dates and hours"] = "Dátum és idő elrejtése";
@@ -122,7 +122,7 @@ $GLOBALS["i18n"]["Enter your message here"] = "Ide írd az üzeneted";
 $GLOBALS["i18n"]["Enter your nickname here"] = "Ide írd a beceneved";
 
 // line 93 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "Hiba: meghatározatlan vagy elavult paraméter '%s', kérlek javítsd, vagy távolítsd el";
+$GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "Hiba: meghatározatlan vagy elavult paraméter '%s', kérlek, javítsd vagy távolítsd el";
 
 // line 86 in pfcclient.js.tpl.php
 $GLOBALS["i18n"]["Hide smiley box"] = "Hangulatjelek elrejtése";
@@ -231,16 +231,16 @@ $GLOBALS["i18n"]["%s users have been unbanished"] = "%s felhasználó visszaenge
 $GLOBALS["i18n"]["You are not allowed to run '%s' command"] = "'%s' parancs futtatása nincs engedélyezve";
 
 // line 67 in auth.class.php
-$GLOBALS["i18n"]["Can't join %s because you are banished"] = "nem csatlakozhatsz a(z) %s szobához, mert ki vagy tiltva";
+$GLOBALS["i18n"]["Can't join %s because you are banished"] = "Nem csatlakozhatsz a(z) %s szobához, mert ki vagy tiltva";
 
 // line 79 in auth.class.php
 $GLOBALS["i18n"]["You are not allowed to change your nickname"] = "Nincs engedélyed a becenév cseréjére";
 
 // line 76 in auth.class.php
-$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "Nem lehet csatlakozni %s, mert a csatornák listája korlátozott";
+$GLOBALS["i18n"]["Can't join %s because the channels list is restricted"] = "Nem lehet csatlakozni a(z) %s szobához, mert a csatornák listája korlátozott";
 
 // line 56 in noflood.class.php
-$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "Kérlek, ne küldj ilyen gyakran üzenetet, a flood-olást nem toleráljuk";
+$GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "Kérlek, ne küldj ilyen gyakran üzenetet, a flood-olást nem tűrjük";
 
 // line 169 in pfcglobalconfig.class.php
 $GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "Hiba: '%s' egy privát paraméter, nem vagy jogosult a módosítására";
@@ -279,7 +279,7 @@ $GLOBALS["i18n"]["Succesfully identified"] = "Sikeres azonosítás";
 $GLOBALS["i18n"]["Identification failure"] = "Azonosítás sikertelen";
 
 // line 25 in send.class.php
-$GLOBALS["i18n"]["Your must be connected to send a message"] = "Kapcsolódnod kell az üzenet küldéshez";
+$GLOBALS["i18n"]["Your must be connected to send a message"] = "Üzenet küldéshez kapcsolódnod kell";
 
 // line 87 in chat.js.tpl.php
 $GLOBALS["i18n"]["Click here to send your message"] = "Kattints ide az üzeneted elküldéséhez";
@@ -288,13 +288,13 @@ $GLOBALS["i18n"]["Click here to send your message"] = "Kattints ide az üzeneted
 $GLOBALS["i18n"]["Enter the text to format"] = "A formázáshoz írd be a szöveget";
 
 // line 81 in chat.js.tpl.php
-$GLOBALS["i18n"]["Configuration has been rehashed"] = "A beállításokat újra kell hash-elni";
+$GLOBALS["i18n"]["Configuration has been rehashed"] = "A beállítások újra hash-elése kész";
 
 // line 82 in chat.js.tpl.php
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "Probléma akadt az újra hash-elés közben";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is allready used"] = "A választott becenevet már valaki használja";
+$GLOBALS["i18n"]["Chosen nickname is already used"] = "A választott becenevet már valaki használja";
 
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "phpfreechat aktuális verziója: %s";
@@ -321,7 +321,7 @@ $GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "Mysql tároló: 
 $GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "Nem beszélgethetsz saját magaddal :-)";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["Choosen nickname is not allowed"] = "A választott becenév nem engedélyezett";
+$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "A választott becenév nem engedélyezett";
 
 // line 83 in chat.js.tpl.php
 $GLOBALS["i18n"]["Enable sound notifications"] = "Hang értesítés engedélyezése";
@@ -369,13 +369,13 @@ $GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implem
 $GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "%s nem létezik, a data_public_path nem telepíthető";
 
 // line 73 in invite.class.php
-$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "Csatlakozni kell ide: %s, hogy felhasználót lehessen hívni ebbe a csatornába";
+$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "Csatlakozni kell ide: %s, hogy felhasználót lehessen hívni ebbe a szobába";
 
 // line 47 in chat.html.tpl.php
 $GLOBALS["i18n"]["Ping"] = "Ping";
 
 // line 477 in phpfreechat.class.php
-$GLOBALS["i18n"]["Input Required"] = "Adatra van szükség";
+$GLOBALS["i18n"]["Input Required"] = "Adat szükség";
 
 // line 478 in phpfreechat.class.php
 $GLOBALS["i18n"]["OK"] = "OK";
@@ -390,7 +390,7 @@ $GLOBALS["i18n"]["cannot create %s"] = "%s nem hozható létre";
 $GLOBALS["i18n"]["cannot copy %s in %s"] = "%s nem másolható ide: %s";
 
 // line 667 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "Hiba: %s nem található, ellenőrizd a téma útvonalat: %s; és a %s témát, hogy megfelelő-e";
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "Hiba: %s nem található, ellenőrizd a téma útvonalat: %s; és a(z) %s témát, hogy megfelelő-e";
 
 // line 414 in phpfreechat.class.php
 $GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "Biztosan be akarod zárni ezt a fület ?";
@@ -406,9 +406,9 @@ $GLOBALS["i18n"]["%s was invited by %s"] = "%s meghívva %s által";
 
 
 // line 450 in phpfreechat.class.php
-$GLOBALS["i18n"]["Chosen nickname is already used"] = "";
+$GLOBALS["i18n"]["Chosen nickname is already used"] = "A választott becenevet már valaki használja";
 
 // line 458 in phpfreechat.class.php
-$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "";
+$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "A választott becenév nem engedélyezett";
 
 ?>

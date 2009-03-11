@@ -262,11 +262,10 @@ $GLOBALS["i18n"]["'%s' directory doesn't exist"] = "ディレクトリ「%s」�
 $GLOBALS["i18n"]["Please correct these errors"] = "これらのエラーを修正してください";
 
 // line 21 in pfcinfo.class.php
-$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "エラー: キャッシュ済設定ファイルが存在しません";
+$GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "エラー: キャッシュ済み設定ファイルが存在しません";
 
 // line 190 in phpfreechat.class.php
-$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "エラー: チャットを読み込めません! 2 つの可能性: ブラウザーが JavaScript をサポートしていないか、
-サーバーのディレクトリ権限を正しく設定していません - don't hesitate to ask some help on the forum";
+$GLOBALS["i18n"]["Error: the chat cannot be loaded! two possibilities: your browser doesn't support javascript or you didn't setup correctly the server directories rights - don't hesitate to ask some help on the forum"] = "エラー: チャットを読み込めません! 2 つの可能性: ブラウザーが JavaScript をサポートしていないか、サーバーのディレクトリ権限を正しく設定していません - don't hesitate to ask some help on the forum";
 
 // line 31 in help.class.php
 $GLOBALS["i18n"]["Here is the command list:"] = "ここはコマンド一覧です:";
@@ -293,7 +292,11 @@ $GLOBALS["i18n"]["Configuration has been rehashed"] = "設定は作り直され�
 $GLOBALS["i18n"]["A problem occurs during rehash"] = "作成中に問題が発生しました";
 
 // line 83 in chat.js.tpl.php
+<<<<<<< .mine
+$GLOBALS["i18n"]["Choosen nickname is allready used"] = "選択したニックネームは既に試用されています";
+=======
 $GLOBALS["i18n"]["Chosen nickname is already used"] = "選択したニックネームは既に試用されています";
+>>>>>>> .r1249
 
 // line 84 in chat.js.tpl.php
 $GLOBALS["i18n"]["phpfreechat current version is %s"] = "phpfreechat の現在のバージョンは %s です";
@@ -308,99 +311,99 @@ $GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "プライ
 $GLOBALS["i18n"]["Send"] = "送信する";
 
 // line 86 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: connect error"] = "";
+$GLOBALS["i18n"]["Mysql container: connect error"] = "MySQL コンテナー: 接続エラー";
 
 // line 101 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "";
+$GLOBALS["i18n"]["Mysql container: create database error '%s'"] = "MySQL コンテナー: データベース作成エラー「%s」";
 
 // line 112 in mysql.class.php
-$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "";
+$GLOBALS["i18n"]["Mysql container: create table error '%s'"] = "MySQL コンテナー: テーブル作成エラー「%s」";
 
 // line 80 in chat.js.tpl.php
-$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "";
+$GLOBALS["i18n"]["You are not allowed to speak to yourself"] = "自分自身との会話は許可していません";
 
 // line 82 in chat.js.tpl.php
-$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "";
+$GLOBALS["i18n"]["Chosen nickname is not allowed"] = "ニックネームの選択は許可していません";
 
 // line 83 in chat.js.tpl.php
-$GLOBALS["i18n"]["Enable sound notifications"] = "";
+$GLOBALS["i18n"]["Enable sound notifications"] = "音での通知を有効にする";
 
 // line 84 in chat.js.tpl.php
-$GLOBALS["i18n"]["Disable sound notifications"] = "";
+$GLOBALS["i18n"]["Disable sound notifications"] = "音での通知を無効にする";
 
 // line 23 in kick.class.php
-$GLOBALS["i18n"]["no reason"] = "";
+$GLOBALS["i18n"]["no reason"] = "理由なし";
 
 // line 24 in banlist.class.php
-$GLOBALS["i18n"]["The banished user list is:"] = "";
+$GLOBALS["i18n"]["The banished user list is:"] = "追放ユーザー一覧:";
 
 // line 39 in banlist.class.php
 $GLOBALS["i18n"]["'/unban {nickname}' will unban the user identified by {nickname}"] = "";
 
 // line 43 in kick.class.php
-$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "";
+$GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "%1$s により %1$s から追い出されました - 理由: %3$s";
 
 // line 20 in quit.class.php
-$GLOBALS["i18n"]["%s quit (%s)"] = "";
+$GLOBALS["i18n"]["%s quit (%s)"] = "%s 終了 (%s)";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Chat loading ..."] = "";
+$GLOBALS["i18n"]["Chat loading ..."] = "チャットの読み込み中 ...";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please wait"] = "";
+$GLOBALS["i18n"]["Please wait"] = "しばらくお待ちください";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "";
+$GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "%s は、ブラウザーから未サポートか無効にされているかのいずれかに見受けられます";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["This web application requires %s to work properly."] = "";
+$GLOBALS["i18n"]["This web application requires %s to work properly."] = "このウェブアプリケーションは %s が正しく動作することを要求します。";
 
 // line 135 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "";
+$GLOBALS["i18n"]["Please enable %s in your browser settings, or upgrade to a browser with %s support and try again."] = "ブラウザーの設定の %s を有効にするか、%s のサポートとブラウザーをアップグレードしてから再度試してください。";
 
 // line 137 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "";
+$GLOBALS["i18n"]["Please upgrade to a browser with %s support and try again."] = "%s のサポートとブラウザーをアップグレードしてから再度試してください。";
 
 // line 139 in chat.js.tpl.php
-$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "";
+$GLOBALS["i18n"]["In Internet Explorer versions earlier than 7.0, Ajax is implemented using ActiveX. Please enable ActiveX in your browser security settings or upgrade to a browser with Ajax support and try again."] = "7.0 以前のバージョンの Internet Explorer では Ajax は ActiveX を用いて実装されています。ブラウザーのセキュリティ設定から ActiveX を有効にするか、Ajax サポートのブラウザーにアップグレードしてから再度試してください。";
 
 // line 359 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "";
+$GLOBALS["i18n"]["%s doesn't exist, data_public_path cannot be installed"] = "%s が存在しません。data_public_path はインストールできませんでした";
 
 // line 73 in invite.class.php
-$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "";
+$GLOBALS["i18n"]["You must join %s to invite users in this channel"] = "このチャンネルにユーザーを招待するには %s に参加しなければなりません";
 
 // line 47 in chat.html.tpl.php
-$GLOBALS["i18n"]["Ping"] = "";
+$GLOBALS["i18n"]["Ping"] = "Ping";
 
 // line 477 in phpfreechat.class.php
-$GLOBALS["i18n"]["Input Required"] = "";
+$GLOBALS["i18n"]["Input Required"] = "要求された入力";
 
 // line 478 in phpfreechat.class.php
-$GLOBALS["i18n"]["OK"] = "";
+$GLOBALS["i18n"]["OK"] = "OK";
 
 // line 479 in phpfreechat.class.php
-$GLOBALS["i18n"]["Cancel"] = "";
+$GLOBALS["i18n"]["Cancel"] = "取り消し";
 
 // line 430 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot create %s"] = "";
+$GLOBALS["i18n"]["cannot create %s"] = "%s の作成ができません";
 
 // line 436 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["cannot copy %s in %s"] = "";
+$GLOBALS["i18n"]["cannot copy %s in %s"] = "%2$s の %1$s をコピーできません";
 
 // line 667 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "";
+$GLOBALS["i18n"]["Error: '%s' could not be found, please check your theme_path '%s' and your theme '%s' are correct"] = "エラー: 「%s」を見つけられません。theme_path「%s」とテーマ「%s」が正しいか確認してください";
 
 // line 414 in phpfreechat.class.php
-$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "";
+$GLOBALS["i18n"]["Are you sure you want to close this tab ?"] = "このタブを本当に閉じますか?";
 
 // line 42 in ban.class.php
-$GLOBALS["i18n"]["%s banished from %s by %s"] = "";
+$GLOBALS["i18n"]["%s banished from %s by %s"] = "%1$s は %$3s により、%2$s から追放されました";
 
 // line 461 in phpfreechat.class.php
-$GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "";
+$GLOBALS["i18n"]["You are trying to speak to a unknown (or not connected) user"] = "不明な(あるいは未接続な)ユーザーと会話をしようとしています";
 
 // line 89 in invite.class.php
-$GLOBALS["i18n"]["%s was invited by %s"] = "";
+$GLOBALS["i18n"]["%s was invited by %s"] = "%1$s は %2$s より招待されました";
 
 ?>
