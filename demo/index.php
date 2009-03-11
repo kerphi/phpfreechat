@@ -12,8 +12,7 @@
  <body>
 
 <div class="header">
-      <h1>phpFreeChat - Demos</h1>
-      <img alt="logo bulle" src="../style/bulle.png" class="logo2" />
+      <img alt="" src="../style/logo.gif" class="logo2" />
 </div>
 
 <div class="menu">
@@ -22,7 +21,7 @@
         <li>
           <ul class="sub">
             <li class="item">
-              <a href="../index.php">PFC Index</a>
+              <a href="../index.php">Index</a>
             </li>
           </ul>
         </li>
@@ -42,14 +41,7 @@
         </li>
       </ul>
       <p class="partner">
-        <a href="http://www.phpfreechat.net"><img alt="phpfreechat.net" src="style/logo_88x31.gif" /></a><br/>
-        <a href="http://www.jeu-gratuit.net/">jeu-gratuit</a><br/>
-        <a href="http://jeux-flash.jeu-gratuit.net/">jeux-flash</a><br/>
-        <a href="http://www.pronofun.com/">pronofun</a><br/>
-        <a href="http://areno.jeu-gratuit.net/">areno</a><br/>
-        <a href="http://www.micropolia.com/">micropolia</a><br/>
-        <a href="http://www.zeitoun.net/">zeitoun</a><br/>
-        <a href="http://www.hotscripts.com/?RID=N452772">hotscripts</a><br/>
+        <a href="http://www.phpfreechat.net"><img alt="phpfreechat" src="../style/logo_88x31.gif" /></a><br/>
       </p>
 </div>
 
@@ -137,6 +129,17 @@
       <li><a href="demo66_in_occitan.php">demo66 - Occitan translation of the chat</a></li>
     </ul>
 
+</div>
+     
+<div class="footer">
+  <span class="partners">phpFreeChat partners:</span>
+  <a href="http://www.jeu-gratuit.net">jeux gratuits</a> |
+  <a href="http://jeux-flash.jeu-gratuit.net">jeux flash</a> |
+  <a href="http://www.pronofun.com">pronofun</a> |
+  <a href="http://areno.jeu-gratuit.net">areno</a> |
+  <a href="http://www.micropolia.com">micropolia</a> |
+  <a href="http://www.zeitoun.net">zeitoun</a> |
+  <a href="http://federation.jeu-gratuit.net">federation</a>
 </div>
 
 </body></html>

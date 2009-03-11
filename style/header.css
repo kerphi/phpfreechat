@@ -2,9 +2,9 @@
 div.header {
   position: relative;
   display: block;
-  background-color: #99cc33;
-  border-bottom: 1px #acd233 solid;
-  height: 45px;
+  background-color: #7ebf36;
+/*  border-bottom: 1px #acd233 solid;*/
+  height: 76px;
 }
 div.header h1 {
   color: #FFF;
@@ -13,7 +13,7 @@ div.header h1 {
 div.header .logo2 {
   position: absolute;
   bottom: 0;
-  right: 0;
+  left: 0;
 }
 div.header .flags {
   position: absolute;

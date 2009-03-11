@@ -6,7 +6,7 @@ div.footer {
   color: #FFF;
   border-top: 1px #acd233 solid;
   border-bottom: 1px #acd233 solid;
-  font-size: 80%;
+  font-size: 8px;
   clear: both;
   padding-left: 12em;
 }
@@ -18,4 +18,12 @@ div.footer div.rss {
   position: absolute;
   left: 5px;
   float: left;
+}
+div.footer a {
+  color: #FFF;
+  font-weight: normal;
+}
+div.footer span.partners {
+  text-decoration: underline;
+  margin-right: 10px;
 }
