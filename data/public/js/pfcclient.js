@@ -1398,6 +1398,26 @@ pfcClient.prototype = {
     this.nickwhoisbox.set(nickid, div);
   },
 
+  buildNickItem_create_image: function(nickid)
+  {
+      var className = (! is_ie) ? 'class' : 'className';
+      var isadmin = this.getUserMeta(nickid, 'isadmin');
+      var img = document.createElement('img');
+      if (isadmin)
+        img.setAttribute('src', this.res.getFileUrl('images/user-admin.gif'));
+      else
+        img.setAttribute('src', this.res.getFileUrl('images/user.gif'));
+      img.style.marginRight = '5px';
+      img.setAttribute(className, 'pfc_nickbutton');
+      return img;
+  },
+  
+  buildNickItem_modify_nick_style: function(nickid, span)
+  {
+      // this method can be overloaded to change the nick style (color, font ...)
+      // example: span.style.color = 'red';
+  },
+
   buildNickItem: function(nickid)
   {
     var className = (! is_ie) ? 'class' : 'className';
@@ -1424,14 +1444,8 @@ pfcClient.prototype = {
     }
     li.appendChild(a);
 
-    var img = document.createElement('img');
-    if (isadmin)
-      img.setAttribute('src', this.res.getFileUrl('images/user-admin.gif'));
-    else
-      img.setAttribute('src', this.res.getFileUrl('images/user.gif'));
-    img.style.marginRight = '5px';
-    img.setAttribute(className, 'pfc_nickbutton');
-    a.appendChild(img);
+    var img = this.buildNickItem_create_image(nickid);
+    if (img) a.appendChild(img);
 
     // nobr is not xhtml valid but it's a workeround 
     // for IE which doesn't support 'white-space: pre' css rule
@@ -1439,6 +1453,7 @@ pfcClient.prototype = {
     var span = document.createElement('span');
     span.setAttribute(className, 'pfc_nickmarker pfc_nick_'+nickid);
     span.innerHTML = nick.escapeHTML();
+    this.buildNickItem_modify_nick_style(nickid, span);
     nobr.appendChild(span);
     a.appendChild(nobr);
 
