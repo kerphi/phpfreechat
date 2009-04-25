@@ -1283,7 +1283,28 @@ pfcClient.prototype = {
       this.updateNickWhoisBox(nickid);
     return this.nickwhoisbox.get(nickid);
   },
-
+  
+  updateNickWhoisBox_ignored_field: function(k)
+  {
+      return ( k == 'nickid' ||
+               k == 'nick' || // useless because it is displayed in the box title
+               k == 'isadmin' || // useless because of the gold shield icon
+               k == 'floodtime' ||
+               k == 'flood_nbmsg' ||
+               k == 'flood_nbchar'
+               );
+  },
+  
+  updateNickWhoisBox_append_html: function(nickid, div)
+  {
+      // this methode can be overloaded to append customized data to the whoisbox
+  },
+  
+  updateNickWhoisBox_prepend_html: function(nickid, div)
+  {
+      // this methode can be overloaded to prepend customized data to the whoisbox
+  },
+  
   updateNickWhoisBox: function(nickid)
   {
     var className = (! is_ie) ? 'class' : 'className';
@@ -1308,6 +1329,8 @@ pfcClient.prototype = {
     img.alt = this.res.getLabel('Close');
     p.appendChild(img);
     p.appendChild(document.createTextNode(usermeta.get('nick'))); // append the nickname text in the title
+    
+    this.updateNickWhoisBox_prepend_html(nickid,div);
 
     // add the whois information table
     var table = document.createElement('table');
@@ -1319,13 +1342,7 @@ pfcClient.prototype = {
     {
       var k = um_keys[i];
       var v = usermeta.get(k);
-      if (v && k != 'nickid'
-            && k != 'nick' // useless because it is displayed in the box title
-            && k != 'isadmin' // useless because of the gold shield icon
-            && k != 'floodtime'
-            && k != 'flood_nbmsg'
-            && k != 'flood_nbchar'
-         )
+      if (v && !this.updateNickWhoisBox_ignored_field(k))
       {
         var tr = document.createElement('tr');
         if (pfc_nickmeta_key_to_hide.indexOf(k) != -1)
@@ -1351,7 +1368,9 @@ pfcClient.prototype = {
       }
     }
     div.appendChild(table);
-
+    
+    this.updateNickWhoisBox_append_html(nickid,div);
+    
     // add the privmsg link (do not add it if the nick is yours)
     if (pfc.getUserMeta(nickid,'nick') != this.nickname)
     {
