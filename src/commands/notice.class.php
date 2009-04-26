@@ -11,7 +11,7 @@ class pfcCommand_notice extends pfcCommand
     $sender      = $p["sender"];
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
-    $flag        = isset($p["flag"]) ? $p["flag"] : 3;
+    $flag        = isset($p["flag"]) ? $p["flag"] : 7;
     
     $c  =& pfcGlobalConfig::Instance();
     $u  =& pfcUserConfig::Instance();

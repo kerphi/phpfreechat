@@ -14,6 +14,7 @@ class pfcCommand_leave extends pfcCommand
     $sender      = $p["sender"];
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
+    $flag        = isset($p["flag"]) ? $p["flag"] : 2;
 
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
@@ -95,7 +96,7 @@ class pfcCommand_leave extends pfcCommand
         $cmdp = $p;
         $cmdp["recipient"]   = $leave_recip;
         $cmdp["recipientid"] = $leave_id;
-        $cmdp["flag"]        = 2;
+        $cmdp["flag"]        = $flag;
         $cmdp["param"] = _pfc("%s quit",$u->getNickname());
         if ($reason != "") $cmdp["param"] .= " (".$reason.")";
         $cmd =& pfcCommand::Factory("notice");

@@ -330,10 +330,11 @@ class pfcGlobalConfig
    * <p><ul><li>Setting this to 0 will show nothing.</li>
    * <li>Setting it to 1 will show nicknames changes.</li>
    * <li>Setting it to 2 will show connect/disconnect notifications.</li>
-   * <li>Setting it to 3 (1+2) will show nicknames and connect/disconnect notifications.</li></ul>
-   * (Default value: 3)</p>
+   * <li>Setting it to 4 will show kick/ban notifications.</li>
+   * <li>Setting it to 7 (1+2+4) will show all the notifications.</li></ul>
+   * (Default value: 7)</p>
    */
-  var $shownotice = 3;
+  var $shownotice = 7;
 
   /**
    * <p>Setting it to false will disable nickname colorization.

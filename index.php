@@ -5,9 +5,9 @@ $params = array();
 $params["title"] = "Quick chat";
 $params["nick"] = "guest".rand(1,1000);  // setup the intitial nickname
 $params['firstisadmin'] = true;
-//$params["isadmin"] = true; // do not use it on production servers ;)
+//$params["isadmin"] = true; // makes everybody admin: do not use it on production servers ;)
 $params["serverid"] = md5(__FILE__); // calculate a unique id for this chat
-$params["debug"] = true;
+$params["debug"] = false;
 $chat = new phpFreeChat( $params );
 
 ?>
