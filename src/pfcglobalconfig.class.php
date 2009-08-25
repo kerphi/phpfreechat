@@ -934,7 +934,7 @@ class pfcGlobalConfig
     $ct_errors = $ct->init($this);
     $this->errors = array_merge($this->errors, $ct_errors);
     
-    // check the language is known
+    // check if the wanted language is known
     $lg_list = pfcI18N::GetAcceptedLanguage();
     if ( $this->language != "" && !in_array($this->language, $lg_list) )
       $this->errors[] = _pfc("'%s' parameter is not valid. Available values are : '%s'", "language", implode(", ", $lg_list));
@@ -959,6 +959,21 @@ class pfcGlobalConfig
         $this->proxies[] = $px;
         
     }
+
+    if (in_array('log',$this->proxies)) {
+      // test the LOCK_EX feature because the log proxy needs to write in a file
+      $filename = $c->data_private_path.'/filemtime2.test';
+      if (is_writable(dirname($filename)))
+      {
+	$data1 = time();
+	file_put_contents($filename, $data1, LOCK_EX);
+	$data2 = file_get_contents($filename);
+	if ($data1 != $data2) {
+          unset($this->proxies[array_search('log',$this->proxies)]);
+	}
+      }
+    }
+
     // save the proxies path
     $this->proxies_path_default = dirname(__FILE__).'/proxies';
     // check the customized proxies path
