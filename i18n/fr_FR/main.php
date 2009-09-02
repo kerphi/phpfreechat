@@ -36,7 +36,7 @@ $GLOBALS["i18n"]["%s not found, %s library can't be found."] = "%s non trouvé, 
 $GLOBALS["i18n"]["Please enter your nickname"] = "Entrez votre pseudonyme";
 
 // line 565 in phpfreechat.class.php
-$GLOBALS["i18n"]["Text cannot be empty"] = "Le message ne peux pas être vide";
+$GLOBALS["i18n"]["Text cannot be empty"] = "Le message ne peut pas être vide";
 
 // line 392 in phpfreechat.class.php
 $GLOBALS["i18n"]["%s changes his nickname to %s"] = "%s s'appelle maintenant %s";
@@ -72,13 +72,13 @@ $GLOBALS["i18n"]["%s directory must be specified"] = "le répertoire %s doit êt
 $GLOBALS["i18n"]["%s must be a directory"] = "%s doit être un répertoire";
 
 // line 446 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s can't be created"] = "%s ne peux pas être créé";
+$GLOBALS["i18n"]["%s can't be created"] = "%s ne peut pas être créé";
 
 // line 451 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not writeable"] = "%s ne peux pas être écrit";
+$GLOBALS["i18n"]["%s is not writeable"] = "%s ne peut pas être écrit";
 
 // line 496 in phpfreechatconfig.class.php
-$GLOBALS["i18n"]["%s is not readable"] = "%s ne peux pas être lu";
+$GLOBALS["i18n"]["%s is not readable"] = "%s ne peut pas être lu";
 
 // line 469 in phpfreechatconfig.class.php
 $GLOBALS["i18n"]["%s is not a file"] = "%s n'est pas un fichier";
