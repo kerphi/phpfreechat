@@ -13,9 +13,9 @@ class pfcCommand_roll extends pfcCommand
     $recipient   = $p["recipient"];
     $recipientid = $p["recipientid"];
     
-    $c =& pfcGlobalConfig::Instance();
+    $u =& pfcUserConfig::Instance();
     
-    $nick = $c->nick;
+    $nick = $u->nick;
     $ct   =& pfcContainer::Instance();
     $text = trim($param);
     
@@ -27,7 +27,7 @@ class pfcCommand_roll extends pfcCommand
       $result = $dice->error_get();
       $cmdp = $p;
       $cmdp["param"] = "Cmd_roll failed: " . $result;
-      $cmd =& pfcCommand::Factory("error", $c);
+      $cmd =& pfcCommand::Factory("error");
       $cmd->run($xml_reponse, $cmdp);
     }
     else
