@@ -2,7 +2,7 @@
 /**
  * file.class.php
  *
- * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
+ * Copyright ï¿½ 2006 Stephane Gully <stephane.gully@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -110,7 +110,7 @@ class pfcContainer_File extends pfcContainerInterface
     $leafexists = file_exists($leaffilename);
     if ($leafvalue == NULL)
     {
-      unlink($leaffilename);
+      @unlink($leaffilename);
       touch($leaffilename);
     }
     else

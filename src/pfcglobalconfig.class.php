@@ -962,15 +962,15 @@ class pfcGlobalConfig
 
     if (in_array('log',$this->proxies)) {
       // test the LOCK_EX feature because the log proxy needs to write in a file
-      $filename = $c->data_private_path.'/filemtime2.test';
+      $filename = $this->data_private_path.'/filemtime2.test';
       if (is_writable(dirname($filename)))
       {
-	$data1 = time();
-	file_put_contents($filename, $data1, LOCK_EX);
-	$data2 = file_get_contents($filename);
-	if ($data1 != $data2) {
-          unset($this->proxies[array_search('log',$this->proxies)]);
-	}
+        $data1 = time();
+        file_put_contents($filename, $data1, LOCK_EX);
+        $data2 = file_get_contents($filename);
+        if ($data1 != $data2) {
+              unset($this->proxies[array_search('log',$this->proxies)]);
+        }
       }
     }
 

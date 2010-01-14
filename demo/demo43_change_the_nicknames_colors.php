@@ -32,14 +32,5 @@ $chat = new phpFreeChat( $params );
   echo "</pre>";
 ?>
 
-<?php
-  $filename = dirname(__FILE__)."/demo43_change_the_nicknames_colors/mytheme/templates/pfcclient-custo.js.tpl.php";
-  echo "<p><code>".$filename."</code></p>";
-  echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
-  $content = file_get_contents($filename);
-  highlight_string($content);
-  echo "</pre>";
-?>
-
   </body>
 </html>

@@ -41,7 +41,7 @@ $chat = new phpFreeChat( $params );
 ?>
 
 <?php
-  $filename = dirname(__FILE__)."/demo5_customized_style_data/mytheme/templates/style.css.tpl.php";
+  $filename = dirname(__FILE__)."/demo5_customized_style_data/mytheme/style.css.php";
   echo "<p><code>".$filename."</code></p>";
   echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
   $content = file_get_contents($filename);

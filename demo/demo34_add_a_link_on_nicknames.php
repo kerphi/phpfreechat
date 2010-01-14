@@ -33,7 +33,7 @@ $chat = new phpFreeChat( $params );
 ?>
 
 <?php
-  $filename = dirname(__FILE__)."/demo34_add_a_link_on_nicknames/mytheme/customize.js";
+  $filename = dirname(__FILE__)."/demo34_add_a_link_on_nicknames/mytheme/customize.js.php";
   echo "<p><code>".$filename."</code></p>";
   echo "<pre style=\"margin: 0 50px 0 50px; padding: 10px; background-color: #DDD;\">";
   $content = file_get_contents($filename);
