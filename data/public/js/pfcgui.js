@@ -65,7 +65,7 @@ pfcGui.prototype = {
   
   setTabById: function(tabid)
   {
-    var className = (! is_ie) ? 'class' : 'className';
+    var className = (!is_ie7 && !is_ie6) ? 'class' : 'className';
 
     // first of all save the scroll pos of the visible tab
     var content = this.getChatContentFromTabId(this.current_tab_id);
@@ -126,7 +126,7 @@ pfcGui.prototype = {
 
   getChatContentFromTabId: function(tabid)
   {
-    var className = (! is_ie) ? 'class' : 'className';
+    var className = (!is_ie7 && !is_ie6) ? 'class' : 'className';
 
     // return the chat content if it exists
     var cc = this.chatcontent.get(tabid);
@@ -146,7 +146,7 @@ pfcGui.prototype = {
   },
   getOnlineContentFromTabId: function(tabid)
   {
-    var className = (! is_ie) ? 'class' : 'className';
+    var className = (!is_ie7 && !is_ie6) ? 'class' : 'className';
 
     // return the online content if it exists
     var oc = this.onlinecontent.get(tabid);
@@ -205,7 +205,7 @@ pfcGui.prototype = {
   
   createTab: function(name, tabid, type)
   {
-    var className = (! is_ie) ? 'class' : 'className';
+    var className = (!is_ie7 && !is_ie6) ? 'class' : 'className';
 
     // do not create empty tabs
     if(name == '') return;
@@ -333,7 +333,7 @@ pfcGui.prototype = {
    */
   notifyTab: function(tabid)
   {
-    var className = (! is_ie) ? 'class' : 'className';
+    var className = (!is_ie7 && !is_ie6) ? 'class' : 'className';
 
     // first of all be sure the tab highlighting is cleared
     this.unnotifyTab(tabid);
@@ -373,7 +373,7 @@ pfcGui.prototype = {
    */
   unnotifyTab: function(tabid)
   {
-    var className = (! is_ie) ? 'class' : 'className';
+    var className = (!is_ie7 && !is_ie6) ? 'class' : 'className';
 
     var tabpos = indexOf(this.tabids, tabid);
     var tabtype = this.tabtypes[tabpos];
@@ -426,7 +426,7 @@ pfcGui.prototype = {
 
   loadBBCodeColorList: function()
   {
-    var className = (! is_ie) ? 'class' : 'className';
+    var className = (!is_ie7 && !is_ie6) ? 'class' : 'className';
 
     // color list
     var clist = $('pfc_colorlist');

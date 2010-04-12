@@ -3,6 +3,7 @@ var is_ie     = !!(window.attachEvent && !window.opera);
 var is_khtml  = !!(navigator.appName.match("Konqueror") || navigator.appVersion.match("KHTML"));
 var is_gecko  = navigator.userAgent.indexOf('Gecko') > -1 && navigator.userAgent.indexOf('KHTML') == -1;
 var is_ie7    = navigator.userAgent.indexOf('MSIE 7') > 0;
+var is_ie6    = navigator.userAgent.indexOf('MSIE 6') > 0;
 var is_opera  = !!window.opera;
 var is_webkit = navigator.userAgent.indexOf('AppleWebKit/') > -1;
 
@@ -1256,7 +1257,7 @@ pfcClient.prototype = {
    */
   updateNickListBox: function(chanid)
   {
-    var className = (! is_ie) ? 'class' : 'className';
+    var className = (!is_ie7 && !is_ie6) ? 'class' : 'className';
 
     var nickidlst = this.getChanMeta(chanid,'users').get('nickid');
     var nickdiv = this.gui.getOnlineContentFromTabId(chanid);
@@ -1307,7 +1308,7 @@ pfcClient.prototype = {
   
   updateNickWhoisBox: function(nickid)
   {
-    var className = (! is_ie) ? 'class' : 'className';
+    var className = (!is_ie7 && !is_ie6) ? 'class' : 'className';
 
     var usermeta = this.getAllUserMeta(nickid);
     var div  = document.createElement('div');
@@ -1400,7 +1401,7 @@ pfcClient.prototype = {
 
   buildNickItem_create_image: function(nickid)
   {
-      var className = (! is_ie) ? 'class' : 'className';
+      var className = (!is_ie7 && !is_ie6) ? 'class' : 'className';
       var isadmin = this.getUserMeta(nickid, 'isadmin');
       var img = document.createElement('img');
       if (isadmin)
@@ -1420,7 +1421,7 @@ pfcClient.prototype = {
 
   buildNickItem: function(nickid)
   {
-    var className = (! is_ie) ? 'class' : 'className';
+    var className = (!is_ie7 && !is_ie6) ? 'class' : 'className';
 
     var nick = this.getUserMeta(nickid, 'nick');
     var isadmin = this.getUserMeta(nickid, 'isadmin');
