@@ -50,7 +50,7 @@ class pfcProxyCommand extends pfcCommand
 
   function linkTo(&$cmd)
   {
-    $this->next =& $cmd;
+    $this->next = $cmd;
   }
 }
 

@@ -219,7 +219,7 @@ class phpFreeChat
 
     if ($c->debug) ob_start(); // capture output
     
-    $xml_reponse =& new pfcResponse();
+    $xml_reponse = new pfcResponse();
 
     // check the command
     $cmdstr      = "";
@@ -348,7 +348,7 @@ class phpFreeChat
 
   function &loadStyles($theme = 'default', &$xml_reponse)
   {
-    if ($xml_reponse == null) $xml_reponse =& new pfcResponse();
+    if ($xml_reponse == null) $xml_reponse = new pfcResponse();
 
     $c =& pfcGlobalConfig::Instance();
 
@@ -398,7 +398,7 @@ class phpFreeChat
 
   function &loadScripts($theme, &$xml_reponse)
   {
-    if ($xml_reponse == null) $xml_reponse =& new pfcResponse();
+    if ($xml_reponse == null) $xml_reponse = new pfcResponse();
 
     $c =& pfcGlobalConfig::Instance();
     
@@ -529,7 +529,7 @@ if (pfc_connect_at_startup) pfc.connect_disconnect();
   
   function loadInterface($theme = 'default', &$xml_reponse)
   {
-    if ($xml_reponse == null) $xml_reponse =& new pfcResponse();
+    if ($xml_reponse == null) $xml_reponse = new pfcResponse();
 
     $c =& pfcGlobalConfig::Instance();
 
@@ -559,7 +559,7 @@ if (pfc_connect_at_startup) pfc.connect_disconnect();
 
   function &loadChat($theme = 'default')
   {
-    $xml_reponse =& new pfcResponse();
+    $xml_reponse = new pfcResponse();
 
     $this->loadInterface($theme,$xml_reponse);
     $this->loadStyles($theme,$xml_reponse);

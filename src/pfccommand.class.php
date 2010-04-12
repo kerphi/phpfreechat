@@ -67,11 +67,11 @@ class pfcCommand
     
     if (!class_exists($cmd_classname)) { $tmp = NULL; return $tmp; }
     
-    $cmd =& new $cmd_classname;
-    $cmd->name = $cmd_name;
-      
+    $firstproxy = new $cmd_classname;
+    $firstproxy->name = $cmd_name;
+
     // instanciate the proxies chaine
-    $firstproxy =& $cmd;
+    $proxies = array();
     for($i = count($c->proxies)-1; $i >= 0; $i--)
     {
       $proxy_name      = $c->proxies[$i];
@@ -87,11 +87,11 @@ class pfcCommand
         return $firstproxy;
       
       // instanciate the proxy
-      $proxy =& new $proxy_classname;
-      $proxy->name      = $cmd_name;
-      $proxy->proxyname = $proxy_name;
-      $proxy->linkTo($firstproxy);
-      $firstproxy =& $proxy;
+      $proxies[$i] = new $proxy_classname;
+      $proxies[$i]->name      = $cmd_name;
+      $proxies[$i]->proxyname = $proxy_name;
+      $proxies[$i]->linkTo($firstproxy);
+      $firstproxy =& $proxies[$i];
     }
 
     /*

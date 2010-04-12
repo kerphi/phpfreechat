@@ -2,7 +2,7 @@
 /**
  * pfccontainer.class.php
  *
- * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
+ * Copyright ï¿½ 2006 Stephane Gully <stephane.gully@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -54,7 +54,7 @@ class pfcContainer extends pfcContainerInterface
     // create the concrete container instance
     require_once dirname(__FILE__)."/containers/".$type.".class.php";
     $container_classname = "pfcContainer_".$type;
-    $this->_container =& new $container_classname();
+    $this->_container = new $container_classname();
   }
   function getDefaultConfig()
   {
