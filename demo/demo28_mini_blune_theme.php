@@ -6,7 +6,6 @@ $params =  array("title"          => "Blune PHPFreeChat",
                  "showwhosonline" => false,
                  "showsmileys"    => false,
                  "height"         => "270px",
-                 "width"          => "300px",
                  "serverid"       => md5(__FILE__),
                  "theme"          => "blune",
                  );
