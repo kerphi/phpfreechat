@@ -100,9 +100,13 @@ function trace(text) {
 
 <div id="pfc_notloading" style="width:270px;background-color:#FFF;color:#000;border:1px solid #000;text-align:center;margin:5px auto 0 auto;font-size:10px;">
 <noscript>
-<p><?php echo _pfc("%s appears to be either disabled or unsupported by your browser.","JavaScript"); ?> <?php echo _pfc("This web application requires %s to work properly.","JavaScript"); ?> <?php echo _pfc("Please enable %s in your browser settings, or upgrade to a browser with %s support and try again.","JavaScript","JavaScript"); ?></p>
+<p>
+<?php echo _pfc("%s appears to be either disabled or unsupported by your browser.","JavaScript"); ?> <?php echo _pfc("This web application requires %s to work properly.","JavaScript"); ?> <?php echo _pfc("Please enable %s in your browser settings, or upgrade to a browser with %s support and try again.","JavaScript","JavaScript"); ?>
+<hr />
+Please ask the <a href="http://www.phpfreechat.net">phpfreechat</a> community on the <a href="http://www.phpfreechat.net/forum/">forum</a> if you are not able to load the chat.
+</p>
 </noscript>
-<p><script type="text/javascript">
+<script type="text/javascript">
   // <![CDATA[
 if (!browserSupportsCookies())
   document.write('<?php echo _pfc("%s appears to be either disabled or unsupported by your browser.","Cookies"); ?> <?php echo _pfc("This web application requires %s to work properly.","Cookies"); ?> <?php echo _pfc("Please enable %s in your browser settings, or upgrade to a browser with %s support and try again.","Cookies","Cookies"); ?>');
@@ -116,8 +120,7 @@ else
   pfc_isready = true;
 }
   // ]]>
-</script></p>
-<a href="http://www.phpfreechat.net" style="text-align:center"><img src="http://www.phpfreechat.net/pub/logo2_80x15.gif" alt="PHP FREE CHAT [powered by phpFreeChat-<?php echo $version ?>]" /></a>
+</script>
 </div> <!-- pfc_notloading -->
 
 </div> <!-- pfc_loader -->
