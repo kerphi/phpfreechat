@@ -1047,6 +1047,10 @@ pfcClient.prototype = {
       if (d < delay) continue;
       if (lastact > limit) delay = d;
     }
+
+    // a security for very slow connections
+    if (this.ping*2 > delay) delay = this.ping*2;
+
     return delay;
   },
   
