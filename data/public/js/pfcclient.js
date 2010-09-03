@@ -649,7 +649,7 @@ pfcClient.prototype = {
     if (nick_src != '')
     {
       var tabid = this.gui.getTabId();
-      var n_list = this.getChanMeta(tabid, 'users')['nick'];
+      var n_list = this.getChanMeta(tabid, 'users').get('nick');
       var nick_match = false;
       for (var i = 0; i < n_list.length; i++)
       {
