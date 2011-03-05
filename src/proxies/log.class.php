@@ -48,14 +48,14 @@ class pfcProxyCommand_log extends pfcProxyCommand
       $day = date("d");
     
       $logpath = ($c->proxies_cfg[$this->proxyname]["path"] == "" ? $c->data_private_path."/logs" :
-      $c->proxies_cfg[$this->proxyname]["path"]);
+		$c->proxies_cfg[$this->proxyname]["path"]);
       $logpath .= "/".$c->getId();
       $logpath .= "/".$year."/".$month;
       
       if (!file_exists($logpath)) @mkdir_r($logpath);
       if (file_exists($logpath) && is_writable($logpath))
       {
-	$logfile = $logpath."/".$day.".log";
+		$logfile = $logpath."/".$day.".log";
         if (is_writable($logpath))
         {
           // @todo write logs in a cleaner structured language (xml, html ... ?)
