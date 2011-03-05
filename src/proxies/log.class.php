@@ -42,15 +42,20 @@ class pfcProxyCommand_log extends pfcProxyCommand
       $recipientid = $p["recipientid"];   
       $c =& pfcGlobalConfig::Instance();
       $u =& pfcUserConfig::Instance();
+	  
+	 $year = date("Y"); /* Date changes implemented by Cweener. It now organizes by Year/Month/Day */
+	$month = date("F");
+	$day = date("d");
     
       $logpath = ($c->proxies_cfg[$this->proxyname]["path"] == "" ? $c->data_private_path."/logs" :
                   $c->proxies_cfg[$this->proxyname]["path"]);
       $logpath .= "/".$c->getId();
+	  $logpath .= "/".$year."/".$month;
       
       if (!file_exists($logpath)) @mkdir_r($logpath);
       if (file_exists($logpath) && is_writable($logpath))
       {
-        $logfile = $logpath."/chat.log";
+		$logfile = $logpath."/".$day.".log";
         if (is_writable($logpath))
         {
           // @todo write logs in a cleaner structured language (xml, html ... ?)
