@@ -42,7 +42,7 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
 
-    $cmdtocheck = array("send", "nick", "me");
+    $cmdtocheck = array("send", "nick","notice","me");
     if ( in_array($this->name, $cmdtocheck) )
     {
       $container =& pfcContainer::Instance();
