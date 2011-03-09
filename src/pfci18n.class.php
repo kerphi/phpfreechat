@@ -100,10 +100,11 @@ class pfcI18N
   /**
    * Return the language list supported bye i18n system
    * (content of the i18n directory)
+   * fix for the slovak language UTAN
    */
   function GetAcceptedLanguage($type="main")
   {
-    return /*<GetAcceptedLanguage>*/array('nl_NL','ko_KR','nl_BE','tr_TR','pt_PT','en_US','eo','hr_HR','vi_VN','es_ES','zh_TW','nn_NO','ru_RU','id_ID','hu_HU','th_TH','hy_AM','oc_FR','da_DK','de_DE-formal','uk_RO','nb_NO','fr_FR','it_IT','sv_SE','uk_UA','sr_CS','ar_LB','bg_BG','pt_BR','ba_BA','bn_BD','el_GR','zh_CN','gl_ES','pl_PL','de_DE-informal','ja_JP');/*</GetAcceptedLanguage>*/
+    return /*<GetAcceptedLanguage>*/array('nl_NL','ko_KR','nl_BE','tr_TR','pt_PT','en_US','eo','hr_HR','vi_VN','es_ES','zh_TW','nn_NO','ru_RU','id_ID','hu_HU','th_TH','hy_AM','oc_FR','da_DK','de_DE-formal','uk_RO','nb_NO','fr_FR','it_IT','sv_SE','uk_UA','sr_CS','ar_LB','bg_BG','pt_BR','ba_BA','bn_BD','el_GR','zh_CN','gl_ES','pl_PL','de_DE-informal','ja_JP','sk_SK');/*</GetAcceptedLanguage>*/
   }
   
   /**
