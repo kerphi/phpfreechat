@@ -40,7 +40,7 @@ class pfcUserConfig
     if (!isset($this->serverid)) $this->_setParam("serverid",$c->serverid);
   }
 
-  function &Instance()
+  static function &Instance()
   {
     static $i;
     

@@ -2,7 +2,7 @@
 /**
  * pfccontainer.class.php
  *
- * Copyright � 2006 Stephane Gully <stephane.gully@gmail.com>
+ * Copyright © 2006 Stephane Gully <stephane.gully@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,7 @@ class pfcContainer extends pfcContainerInterface
   var $_usememorycache  = true;
 
 
-  function &Instance($type = 'File', $usememorycache = true)
+  static function &Instance($type = 'File', $usememorycache = true)
   {
     static $i;
     if (!isset($i))

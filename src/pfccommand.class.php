@@ -51,7 +51,7 @@ class pfcCommand
    * Used to instanciate a command
    * $tag is the command name : "nick", "me", "update" ...
    */
-  function &Factory($name)
+  static function &Factory($name)
   {
     $c =& pfcGlobalConfig::Instance();
 
@@ -180,7 +180,7 @@ class pfcCommand
    * @param $cmdp is the command's parameters
    * @return false if $nickid is blank, true for all other values of $nickid
    */
-  function AppendCmdToPlay($nickid, $cmdstr, $cmdp)
+  static function AppendCmdToPlay($nickid, $cmdstr, $cmdp)
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
@@ -215,7 +215,7 @@ class pfcCommand
    * @param $context
    * @param $xml_reponse
    */
-  function RunPendingCmdToPlay($nickid, $context, &$xml_reponse)
+  static function RunPendingCmdToPlay($nickid, $context, &$xml_reponse)
   {
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
@@ -264,7 +264,7 @@ class pfcCommand
 
   }
 
-  function ParseCommand($cmd_str, $one_parameter = false)
+  static function ParseCommand($cmd_str, $one_parameter = false)
   {
     $pattern_quote   = '/([^\\\]|^)"([^"]+[^\\\])"/';
     $pattern_quote   = '/"([^"]+)"/';

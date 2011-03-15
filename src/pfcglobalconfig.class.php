@@ -742,7 +742,7 @@ class pfcGlobalConfig
     $this->nick = $this->filterNickname($this->nick);
   }
 
-  function &Instance( $params = array(), $destroy_instance = false )
+  static function &Instance( $params = array(), $destroy_instance = false )
   {
     static $i;
     if ($destroy_instance)

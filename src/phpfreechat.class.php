@@ -128,7 +128,7 @@ class phpFreeChat
   /**
    * Encode special caracteres and remove extra slashes
    */
-  function FilterSpecialChar($str)
+  static function FilterSpecialChar($str)
   {
     return htmlspecialchars($str, ENT_NOQUOTES);
   }
@@ -136,7 +136,7 @@ class phpFreeChat
   /**
    * Just check the nicknames doesn't start with spaces and is not longer than the max_nick_len
    */
-  function FilterNickname($nickname)
+  static function FilterNickname($nickname)
   {
     $c =& pfcGlobalConfig::Instance();
     //$nickname = str_replace("\\", "", $nickname); // '\' is a forbidden charactere for nicknames
@@ -148,7 +148,7 @@ class phpFreeChat
   /**
    * search/replace smileys
    */
-  function FilterSmiley($msg)
+  static function FilterSmiley($msg)
   {
     $c =& pfcGlobalConfig::Instance();
     // build a preg_replace array
@@ -179,7 +179,7 @@ class phpFreeChat
   /**
    * Filter messages before they are sent to container
    */
-  function PreFilterMsg($msg)
+  static function PreFilterMsg($msg)
   {
     $c =& pfcGlobalConfig::Instance();
     if (preg_match("/^\[/i",$msg))
@@ -204,7 +204,7 @@ class phpFreeChat
   /**
    * Filter messages when they are recived from container
    */
-  function PostFilterMsg($msg)
+  static function PostFilterMsg($msg)
   {
     //$c =& pfcGlobalConfig::Instance();
     //    $msg = preg_replace('/('.preg_quote($c->nick,'/').')/i', "<strong>$1</strong>", $msg );
@@ -459,6 +459,7 @@ class phpFreeChat
              "OK", // _pfc
              "Cancel", // _pfc
              "You are trying to speak to a unknown (or not connected) user", // _pfc
+             "Sorry %s couldn't be found", // _pfc
              );
     foreach($labels_to_load as $l)
     {
