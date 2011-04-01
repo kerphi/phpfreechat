@@ -114,19 +114,19 @@ $GLOBALS["i18n"]["Hide dates and hours"] = "Απόκρυψη ημερομηνί�
 $GLOBALS["i18n"]["Show dates and hours"] = "Εμφάνιση ημερομηνίας και ώρας";
 
 // line 21 in chat.html.tpl.php
-$GLOBALS["i18n"]["Enter your message here"] = "Εισάγετε το μήνυμα σας εδώ ";
+$GLOBALS["i18n"]["Enter your message here"] = "Εισάγετε το μήνυμα σας εδώ";
 
 // line 24 in chat.html.tpl.php
 $GLOBALS["i18n"]["Enter your nickname here"] = "Εισάγετε το ψευδώνυμο σας εδώ";
 
 // line 59 in pfcproxycommand.class.php
-$GLOBALS["i18n"]["%s must be implemented"] = "";
+$GLOBALS["i18n"]["%s must be implemented"] = "Το %s πρέπει να υλοποιηθεί";
 
 // line 126 in pfcglobalconfig.class.php
 $GLOBALS["i18n"]["Error: undefined or obsolete parameter '%s', please correct or remove this parameter"] = "";
 
 // line 186 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["My room"] = "";
+$GLOBALS["i18n"]["My room"] = "Το δωμάτιο μου";
 
 // line 289 in pfcglobalconfig.class.php
 $GLOBALS["i18n"]["'%s' parameter is mandatory by default use '%s' value"] = "";
@@ -153,7 +153,7 @@ $GLOBALS["i18n"]["banished from %s by %s"] = "";
 $GLOBALS["i18n"]["The banished user's id list is:"] = "";
 
 // line 32 in banlist.class.php
-$GLOBALS["i18n"]["Empty"] = "";
+$GLOBALS["i18n"]["Empty"] = "Άδειο";
 
 // line 34 in banlist.class.php
 $GLOBALS["i18n"]["'/unban {id}' will unban the user identified by {id}"] = "";
@@ -171,7 +171,7 @@ $GLOBALS["i18n"]["%s joins %s"] = "";
 $GLOBALS["i18n"]["kicked from %s by %s"] = "";
 
 // line 38 in send.class.php
-$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "";
+$GLOBALS["i18n"]["Can't send the message, %s is offline"] = "Αδυναμία αποστολής μηνύματος, ο/η %s είναι εκτός σύνδεσης";
 
 // line 27 in unban.class.php
 $GLOBALS["i18n"]["Nobody has been unbanished"] = "";
@@ -198,46 +198,46 @@ $GLOBALS["i18n"]["You are not allowed to change your nickname"] = "";
 $GLOBALS["i18n"]["Please don't post so many message, flood is not tolerated"] = "";
 
 // line 29 in chat.html.tpl.php
-$GLOBALS["i18n"]["Bold"] = "";
+$GLOBALS["i18n"]["Bold"] = "Έντονα";
 
 // line 30 in chat.html.tpl.php
-$GLOBALS["i18n"]["Italics"] = "";
+$GLOBALS["i18n"]["Italics"] = "Πλάγια";
 
 // line 31 in chat.html.tpl.php
-$GLOBALS["i18n"]["Underline"] = "";
+$GLOBALS["i18n"]["Underline"] = "Υπογραμμισμένα";
 
 // line 32 in chat.html.tpl.php
-$GLOBALS["i18n"]["Delete"] = "";
+$GLOBALS["i18n"]["Delete"] = "Διαγραφή";
 
 // line 33 in chat.html.tpl.php
 $GLOBALS["i18n"]["Pre"] = "";
 
 // line 34 in chat.html.tpl.php
-$GLOBALS["i18n"]["Mail"] = "";
+$GLOBALS["i18n"]["Mail"] = "Mail";
 
 // line 35 in chat.html.tpl.php
-$GLOBALS["i18n"]["Color"] = "";
+$GLOBALS["i18n"]["Color"] = "Χρώμα";
 
 // line 104 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Hide smiley box"] = "";
+$GLOBALS["i18n"]["Hide smiley box"] = "Απόκρυψη κουτιού smiley";
 
 // line 105 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Show smiley box"] = "";
+$GLOBALS["i18n"]["Show smiley box"] = "Εμφάνιση κουτιού smiley";
 
 // line 106 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Hide online users box"] = "";
+$GLOBALS["i18n"]["Hide online users box"] = "Απόκρυψη κουτιού συνδεδεμένων χρηστών";
 
 // line 107 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Show online users box"] = "";
+$GLOBALS["i18n"]["Show online users box"] = "Εμφάνιση κουτιού συνδεδεμένων χρηστών";
 
 // line 109 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Private message"] = "";
+$GLOBALS["i18n"]["Private message"] = "Προσωπικό μήνυμα";
 
 // line 110 in pfcclient.js.tpl.php
-$GLOBALS["i18n"]["Close this tab"] = "";
+$GLOBALS["i18n"]["Close this tab"] = "Κλείσιμο αυτής της καρτέλας";
 
 // line 199 in pfcgui.js.tpl.php
-$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "";
+$GLOBALS["i18n"]["Do you really want to leave this room ?"] = "Είστε σίγουρος/σίγουρη ότι θέλετε να φύγετε από αυτό το δωμάτιο;";
 
 // line 169 in pfcglobalconfig.class.php
 $GLOBALS["i18n"]["Error: '%s' is a private parameter, you are not allowed to change it"] = "";
@@ -258,7 +258,7 @@ $GLOBALS["i18n"]["'%s' must be writable"] = "";
 $GLOBALS["i18n"]["'%s' directory doesn't exist"] = "";
 
 // line 544 in pfcglobalconfig.class.php
-$GLOBALS["i18n"]["Please correct these errors"] = "";
+$GLOBALS["i18n"]["Please correct these errors"] = "Παρακαλώ διορθώστε τα παρακάτω σφάλματα";
 
 // line 21 in pfcinfo.class.php
 $GLOBALS["i18n"]["Error: the cached config file doesn't exists"] = "";
@@ -303,7 +303,7 @@ $GLOBALS["i18n"]["Maximum number of joined channels has been reached"] = "";
 $GLOBALS["i18n"]["Maximum number of private chat has been reached"] = "";
 
 // line 88 in chat.js.tpl.php
-$GLOBALS["i18n"]["Send"] = "";
+$GLOBALS["i18n"]["Send"] = "Αποστολή";
 
 // line 86 in mysql.class.php
 $GLOBALS["i18n"]["Mysql container: connect error"] = "";
@@ -342,10 +342,10 @@ $GLOBALS["i18n"]["kicked from %s by %s - reason: %s"] = "";
 $GLOBALS["i18n"]["%s quit (%s)"] = "";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Chat loading ..."] = "";
+$GLOBALS["i18n"]["Chat loading ..."] = "Το chat φορτώνει...";
 
 // line 124 in chat.js.tpl.php
-$GLOBALS["i18n"]["Please wait"] = "";
+$GLOBALS["i18n"]["Please wait"] = "Παρακαλώ περιμένετε";
 
 // line 139 in chat.js.tpl.php
 $GLOBALS["i18n"]["%s appears to be either disabled or unsupported by your browser."] = "";
@@ -375,10 +375,10 @@ $GLOBALS["i18n"]["Ping"] = "";
 $GLOBALS["i18n"]["Input Required"] = "";
 
 // line 478 in phpfreechat.class.php
-$GLOBALS["i18n"]["OK"] = "";
+$GLOBALS["i18n"]["OK"] = "OK";
 
 // line 479 in phpfreechat.class.php
-$GLOBALS["i18n"]["Cancel"] = "";
+$GLOBALS["i18n"]["Cancel"] = "Ακύρωση";
 
 // line 430 in pfcglobalconfig.class.php
 $GLOBALS["i18n"]["cannot create %s"] = "";
