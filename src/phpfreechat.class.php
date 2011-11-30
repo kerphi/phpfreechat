@@ -254,6 +254,7 @@ class phpFreeChat
       if ($cmdname != "update" &&
           $cmdname != "leave" &&  // do not open the pv tab when other user close the tab
           $cmdname != "quit" &&
+			 $cmdname != "nocensor" &&
           $cmdname != "privmsg2")
       {
         // alert the other from the new pv
