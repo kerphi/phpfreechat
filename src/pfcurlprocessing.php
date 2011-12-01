@@ -34,7 +34,7 @@ function pfc_make_hyperlink($text)
   // xxxx can only be alpha characters.
   // yyyy is anything up to the first space, newline, comma, double quote or <
   //$ret = preg_replace("#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is", "\\1<a href=\"\\2\" target=\"_blank\">\\2</a>", $ret);
-  $ret = preg_replace("#(^|[\n \]])([\w]+?://[\w\#$%&~/!.\-;:=,?@+]*)#ise", "'\\1<a href=\"\\2\"" . $target . ">' . pfc_shorten_url('\\2') . '</a>'", $ret);
+  $ret = preg_replace("#(^|[\n \]])([\w]+?://[\w\#$%\(\)&~/!.\-;:=,?@+]*)#ise", "'\\1<a href=\"\\2\"" . $target . ">' . pfc_shorten_url('\\2') . '</a>'", $ret);
 
   // matches a "www|ftp.xxxx.yyyy[/zzzz]" kinda lazy URL thing
   // Must contain at least 2 dots. xxxx contains either alphanum, or "-"
