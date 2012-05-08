@@ -9,10 +9,10 @@
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details. 
+ * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
@@ -28,6 +28,9 @@ require_once dirname(__FILE__)."/../../lib/utf8/utf8_strlen.php";
  * pfcProxyCommand_noflood
  * this proxy will protect the chat from flooders
  * @author Stephane Gully <stephane.gully@gmail.com>
+ * fixes noflood not detecting /notice, /invite and
+ * kicking users when the type empy strings in chat.
+ * Neumann Valle, aka UTAN, RE*S.T.A.R.S.*2 email at : vcomputadoras@yahoo.com
  */
 class pfcProxyCommand_noflood extends pfcProxyCommand
 {
@@ -41,9 +44,14 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
 
     $c =& pfcGlobalConfig::Instance();
     $u =& pfcUserConfig::Instance();
+    /**
+     * fixes some anoying issues with noflood not detecting user flooding the chat
+     * those are notice and invite
+     */
+    $cmdtocheck = array("send", "nick", "me","notice","invite");
 
-    $cmdtocheck = array("send", "nick","notice","me");
-    if ( in_array($this->name, $cmdtocheck) )
+    // fixes the count of noflood even if the text posted was empty (Neumann Valle (UTAN))
+    if ( in_array($this->name, $cmdtocheck) && $param != "")
     {
       $container =& pfcContainer::Instance();
       $nickid        = $u->nickid;
@@ -65,7 +73,7 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
         $flood_nbmsg = 0;
         $flood_nbchar = 0;
       }
-      
+
       if (!$isadmin &&
           ($flood_nbmsg>$c->proxies_cfg[$this->proxyname]["msglimit"] ||
            $flood_nbchar>$c->proxies_cfg[$this->proxyname]["charlimit"])
@@ -91,7 +99,7 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
       $container->setUserMeta($nickid,   'flood_nbmsg',  $flood_nbmsg);
       $container->setUserMeta($nickid,   'flood_nbchar', $flood_nbchar);
     }
-    
+
     // forward the command to the next proxy or to the final command
     $p["clientid"]    = $clientid;
     $p["param"]       = $param;
@@ -101,5 +109,4 @@ class pfcProxyCommand_noflood extends pfcProxyCommand
     return $this->next->run($xml_reponse, $p);
   }
 }
-
 ?>
