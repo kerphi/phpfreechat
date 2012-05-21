@@ -511,6 +511,9 @@ pfcClient.prototype = {
     else if (cmd == "send")
     {
     }
+	 else if (cmd == "nocensor") {
+
+	 }
     else
       alert(cmd + "-"+resp+"-"+param);
   },
@@ -2133,6 +2136,13 @@ pfcClient.prototype = {
     this.refresh_Chat();
   },
 
+  /**
+	*	Enable/disable censorship
+	*/
+
+	toggleCensor: function () {
+		this.sendRequest('/nocensor');
+	},
   /**
    * Resize chat
    */

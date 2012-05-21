@@ -100,7 +100,14 @@
       </div>
       <?php } ?>
 
-    </div>
+      <div class="pfc_btn">
+        <img src="<?php echo $c->getFileUrlFromTheme('smileys/emoticon_evilgrin.png'); ?>"
+             alt="Disable censorship" title=""
+             id="pfc_nocensor"
+             onclick="pfc.toggleCensor()" />
+      </div>
+
+ </div>
 
     <div id="pfc_bbcode_container">
       <div id="pfc_bt_strong_btn" class="pfc_btn">
