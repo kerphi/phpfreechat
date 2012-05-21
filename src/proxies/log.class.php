@@ -46,16 +46,18 @@ class pfcProxyCommand_log extends pfcProxyCommand
       $year = date("Y");
       $month = date("F");
       $day = date("d");
-    
+      $separate = false;//Set to true if you wish to keep the logs in a multiple files. *WARNING* It's harder on servers.
       $logpath = ($c->proxies_cfg[$this->proxyname]["path"] == "" ? $c->data_private_path."/logs" :
                   $c->proxies_cfg[$this->proxyname]["path"]);
       $logpath .= "/".$c->getId();
-      $logpath .= "/".$year."/".$month;
+      if($separate) {$logpath .= "/".$year."/".$month;}
+      else {$logpath .= "/logs";}
       
       if (!file_exists($logpath)) @mkdir_r($logpath);
       if (file_exists($logpath) && is_writable($logpath))
       {
-        $logfile = $logpath."/".$day.".log";
+        if($separate){$logfile = $logpath."/".$day.".log";}
+        else {$logfile = $logpath."/log.log";}
         if (is_writable($logpath))
         {
           // @todo write logs in a cleaner structured language (xml, html ... ?)
