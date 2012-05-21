@@ -102,7 +102,7 @@
 
       <div class="pfc_btn">
         <img src="<?php echo $c->getFileUrlFromTheme('smileys/emoticon_evilgrin.png'); ?>"
-             alt="Disable censorship" title=""
+             alt="Disable/enable censorship" title="Disable/enable censorship"
              id="pfc_nocensor"
              onclick="pfc.toggleCensor()" />
       </div>
