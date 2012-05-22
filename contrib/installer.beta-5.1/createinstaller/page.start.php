@@ -1,1 +1,0 @@
-<div style="text-align:left;"><h1>Welcome to the Installer creater.</h1></div>
