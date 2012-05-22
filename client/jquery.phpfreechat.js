@@ -1,6 +1,6 @@
 ;(function ($, window, undefined) {
 
-  var pluginName = 'phpFreeChat',
+  var pluginName = 'phpfreechat',
       document = window.document,
       defaults = {
         propertyName: "value"
@@ -11,14 +11,42 @@
     this.options = $.extend({}, defaults, options) ;
     this._defaults = defaults;
     this._name = pluginName;
+
+    /**
+    * Check if the backlink is in the page
+    */
+    this.hasBacklink = function() {
+      var backlink = $('a[href="http://www.phpfreechat.net"]').length;
+      if (!backlink) {
+        $(this.element).html(
+          '<div class="pfc-backlink">'
+          +'<p>Please insert the phpfreechat backlink somewhere in your HTML in order to load the chat. The attended backlink is:</p>'
+          +'<pre>'
+          +$('<div/>').text('<a href="http://www.phpfreechat.net">phpFreeChat: simple Web chat</a>').html()
+          +'</pre>'
+          +'</div>'
+        );
+        return false;
+      }
+      return true;
+    }
+    
     this.init();
   }
 
+
   Plugin.prototype.init = function () {
-    
+
+    // are available here:
     // this.element 
     // this.options
     
+    // check backlink presence
+    if (!this.hasBacklink()) {
+      return;
+    }
+    
+    // load chat HTML
     $(this.element).html(
        '      <div class="pfc-content">'
       +'        <div class="pfc-tabs">'
@@ -119,6 +147,7 @@
       +'            </li>'    
     );*/
   };
+  
 
   // multiple instantiations are forbidden
   $.fn[pluginName] = function ( options ) {
