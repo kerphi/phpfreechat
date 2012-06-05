@@ -23,11 +23,13 @@
 
 
   <script>
+
     $(document).ready(function(){
-      
+
       test("the phpfreechat jquery interface", function() {
         ok( $('.pfc-content').length, "should be loaded" );
       });
+
 
 //       module("Module A");
 // 
@@ -75,7 +77,16 @@
     <div class="pfc-hook"><a href="http://www.phpfreechat.net">phpFreeChat: simple Web chat</a></div>
     <script>
       $('.pfc-hook').phpfreechat({
-        propertyName: 'a custom value'
+        loaded: function (pfc) {
+
+          test("the phpfreechat user list", function() {
+            pfc.appendUser({name: 'AdminQUnit', role: 'admin'});
+            ok( $('.pfc-role-admin li').length >= 1, "should be able to append an admin user" );
+            pfc.appendUser({name: 'UserQUnit', role: 'user'});
+            ok( $('.pfc-role-user li').length >= 1, "should be able to append a user" );
+          });
+
+        }
       });
     </script>
 

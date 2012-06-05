@@ -3,7 +3,7 @@
   var pluginName = 'phpfreechat',
       document = window.document,
       defaults = {
-        propertyName: "value"
+        loaded: function (pfc) {}
       };
 
   function Plugin(element, options) {
@@ -13,8 +13,43 @@
     this._name = pluginName;
 
     /**
-    * Check if the backlink is in the page
-    */
+     * Append a username in the right list 
+     */
+    this.appendUser = function(user) {
+
+      // user.role = admin or user
+      // user.name = nickname
+      // user.email = user email used to calculate gravatar
+      // user.active = true if active
+
+      // user list DOM element
+      var users_ul = $(this.element).find(user.role == 'admin' ? 'div.pfc-role-admin ul' :
+                                                                 'div.pfc-role-user ul');
+
+      // create a blank DOM element for the user
+      var html = $('              <li>'
+                  +'                <div class="status"></div>'
+                  +'                <div class="name"></div>'
+                  +'                <div class="avatar"></div>'
+                  +'              </li>');
+      html.find('.name').text(user.name);
+
+      // fill the DOM element
+      if (user.name) {
+        html.find('div.name').text(user.name);
+      }
+      if (users_ul.find('li').length == 0) {
+        html.addClass('first');
+      }
+      html.find('div.status').addClass(user.active ? 'st-active' : 'st-inactive'); 
+
+      // append the HTML element to the interface
+      users_ul.append(html);            
+    }
+
+    /**
+     * Check if the backlink is in the page
+     */
     this.hasBacklink = function() {
       var backlink = $('a[href="http://www.phpfreechat.net"]').length;
       if (!backlink) {
@@ -30,6 +65,7 @@
       }
       return true;
     }
+
     
     this.init();
   }
@@ -146,6 +182,11 @@
       +'              <div class="close"></div>'
       +'            </li>'    
     );*/
+
+    // call the loaded callback when finished 
+    if (this.options.loaded) {
+      this.options.loaded(this);
+    }
   };
   
 
