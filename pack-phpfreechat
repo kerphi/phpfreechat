@@ -1,0 +1,17 @@
+#!/bin/bash
+# Script used to minify css and js
+# TODO : move this code to a Makefile
+
+# npm install -g pack
+# npm install -g uglify-js
+# npm install -g less
+# npm install -g clean-css
+
+# compress javascript
+cat client/jquery.phpfreechat.js | packnode > client/jquery.phpfreechat.min.js
+
+# compile css
+lessc client/themes/default/jquery.phpfreechat.less client/themes/default/jquery.phpfreechat.css
+
+# minify css
+cleancss client/themes/default/jquery.phpfreechat.css > client/themes/default/jquery.phpfreechat.min.css 
