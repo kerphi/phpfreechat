@@ -27,7 +27,7 @@
     $(document).ready(function(){
 
       test("the phpfreechat jquery interface", function() {
-        ok( $('.pfc-content').length, "should be loaded" );
+        ok( $('.pfc-content').length, "is loaded" );
       });
 
 
@@ -81,9 +81,9 @@
 
           test("the phpfreechat user list", function() {
             pfc.appendUser({name: 'AdminQUnit', role: 'admin'});
-            ok( $('.pfc-role-admin li').length >= 1, "should be able to append an admin user" );
+            ok( $('.pfc-role-admin li').length >= 1, "admin user has been added" );
             pfc.appendUser({name: 'UserQUnit', role: 'user'});
-            ok( $('.pfc-role-user li').length >= 1, "should be able to append a user" );
+            ok( $('.pfc-role-user li').length >= 1, "user has been added" );
           });
 
         }
