@@ -13,7 +13,7 @@
     this._name = pluginName;
 
     /**
-     * Append a username in the right list 
+     * Append a username in the user list 
      */
     this.appendUser = function(user) {
 
@@ -45,6 +45,13 @@
 
       // append the HTML element to the interface
       users_ul.append(html);            
+    }
+    
+    /**
+     * Remove a username from the user list 
+     */
+    this.removeUser = function(username) {
+      // TODO
     }
 
     /**
