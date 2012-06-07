@@ -80,10 +80,12 @@
         loaded: function (pfc) {
 
           test("the phpfreechat user list", function() {
-            pfc.appendUser({name: 'AdminQUnit', role: 'admin'});
-            ok( $('.pfc-role-admin li').length >= 1, "contains now an admin user" );
-            pfc.appendUser({name: 'UserQUnit', role: 'user'});
-            ok( $('.pfc-role-user li').length >= 1, "contains now an unprivileged user" );
+            var dom_admin = pfc.appendUser({name: 'AdminQUnit', role: 'admin'});
+            ok( $('.pfc-role-admin li').length >= 1, "contains an admin user" );
+            var dom_user = pfc.appendUser({name: 'UserQUnit', role: 'user'});
+            ok( $('.pfc-role-user li').length >= 1, "contains an unprivileged user" );
+            ok( dom_user.find('div.avatar img').length == 1, "contains users with avatars" );
+            
           });
 
         }
