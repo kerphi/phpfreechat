@@ -34,10 +34,13 @@
     <script>
       $('.pfc-hook').phpfreechat({
         loaded: function(pfc) {
-          var userid1 = pfc.appendUser({ email: 'chuck.norris@gmail.com', role: 'admin', id: 2345});
+          pfc.appendUser({ name: 'admin', email: 'admin@gmail.com', role: 'admin', id: 1});
+          pfc.appendUser({ name: 'kerphi', email: 'stephane.gully@gmail.com', role: 'admin', id: 2});
+          pfc.appendUser({ name: 'Chuck Norris', email: 'chuck.norris@gmail.com', role: 'user', active: false, id: 3});
           var userid2 = pfc.appendUser({ email: 'bob@gmail.com', role: 'user'});
           console.log(pfc.removeUser(userid2));
-          console.log([userid1, userid2]);
+          console.log([userid2]);
+          console.log(pfc.clearUserList());
         }
       });
     </script>

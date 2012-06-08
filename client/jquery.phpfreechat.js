@@ -31,8 +31,8 @@
       user.active = (user.active != undefined) ? user.active : true;
       
       // user list DOM element
-      var users_ul = $(this.element).find(user.role == 'admin' ? 'div.pfc-role-admin ul' :
-                                                                 'div.pfc-role-user ul');
+      var users_dom = $(this.element).find(user.role == 'admin' ? 'div.pfc-role-admin' :
+                                                                  'div.pfc-role-user');
 
       // create a blank DOM element for the user
       var html = $('              <li class="user">'
@@ -45,7 +45,7 @@
       if (user.name) {
         html.find('div.name').text(user.name);
       }
-      if (users_ul.find('li').length == 0) {
+      if (users_dom.find('li').length == 0) {
         html.addClass('first');
       }
       html.find('div.status').addClass(user.active ? 'st-active' : 'st-inactive'); 
@@ -70,18 +70,43 @@
         return 0;
       }
 
-      // append the HTML element to the interface
-      users_ul.append(html);
+      // append the user dom element to the interface
+      users_dom.find('ul').append(html);
+      this.updateRolesTitles();
 
       return user.id;
     }
     
     /**
      * Remove a user from the user list
-     * return true if user has been found, else returns false
+     * returns true if user has been found, else returns false
      */
     this.removeUser = function(userid) {
-      return ($(this.element).find('#user_'+userid).remove().length > 0);
+      var removed = ($(this.element).find('#user_'+userid).remove().length > 0);
+      this.updateRolesTitles();
+      return removed;
+    }
+
+    /**
+     * Hide or show the roles titles
+     */
+    this.updateRolesTitles = function() {
+      [ $(this.element).find('div.pfc-role-admin'), $(this.element).find('div.pfc-role-user') ].forEach(function (item, index) {
+        if (item.find('li').length == 0) {
+          item.find('.role-title').hide();
+        } else {
+          item.find('.role-title').show();
+        }
+      });
+    }
+
+    /**
+     * Clear the user list
+     */
+    this.clearUserList = function() {
+      $(this.element).find('li.user').remove();
+      this.updateRolesTitles();
+      return true;
     }
 
     /**
@@ -173,17 +198,17 @@
       +'          <div class="pfc-role-admin">'
       +'            <p class="role-title">Administrators</p>'
       +'            <ul>'
-      +'              <li class="first">'
+/*      +'              <li class="first">'
       +'                <div class="status st-active"></div>'
       +'                <div class="name">admin</div>'
       +'                <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000001?d=wavatar&s=20" alt="" /></div>'
-      +'              </li>'
+      +'              </li>'*/
       +'            </ul>'
       +'          </div>'
       +'          <div class="pfc-role-user">'
       +'            <p class="role-title">Users</p>'
       +'            <ul>'
-      +'              <li class="first">'
+/*      +'              <li class="first">'
       +'                <div class="status st-active"></div>'
       +'                <div class="name myself">kerphi</div>'
       +'                <div class="avatar"><img src="http://www.gravatar.com/avatar/ae5979732c49cae7b741294a1d3a8682?d=wavatar&s=20" alt="" /></div>'
@@ -192,7 +217,7 @@
       +'                <div class="status st-inactive"></div>'
       +'                <div class="name">Stéphane Gully</div>'
       +'                <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000002?d=wavatar&s=20" alt="" /></div>'
-      +'              </li>'
+      +'              </li>'*/
       +'            </ul>'
       +'          </div>'
       +'        </div>'
@@ -213,15 +238,7 @@
       +'        </div>'
       +'      </div>'
     );
-
-/*    $('.pfc-tabs ul').append(
-       '            <li class="channel">'
-      +'              <div class="icon"></div>'
-      +'              <div class="name">Channel 2</div>'
-      +'              <div class="close"></div>'
-      +'            </li>'    
-    );*/
-
+    
     // call the loaded callback when finished 
     if (this.options.loaded) {
       this.options.loaded(this);

@@ -92,6 +92,10 @@
             var remove_ok = pfc.removeUser(user2_id);
             ok( remove_ok, "tells that a user has been removed from the list" );
             ok( $('.pfc-role-user #user_'+user2_id).length == 0, "is able to remove a user from the list" );
+
+            // test the clearUserList function
+            pfc.clearUserList();
+            ok( $('.pfc-role-admin #user_'+user1_id).length == 0, "is able to be cleared" );
             
           });
 
