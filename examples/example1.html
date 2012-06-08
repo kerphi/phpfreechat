@@ -36,6 +36,7 @@
         loaded: function(pfc) {
           var userid1 = pfc.appendUser({ email: 'chuck.norris@gmail.com', role: 'admin', id: 2345});
           var userid2 = pfc.appendUser({ email: 'bob@gmail.com', role: 'user'});
+          console.log(pfc.removeUser(userid2));
           console.log([userid1, userid2]);
         }
       });

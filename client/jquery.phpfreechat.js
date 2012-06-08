@@ -14,7 +14,7 @@
 
     /**
      * Appends a username in the user list 
-     * returns the dom id of the user element
+     * returns the id of the user's dom element
      */
     this.appendUser = function(user) {
 
@@ -77,10 +77,11 @@
     }
     
     /**
-     * Remove a username from the user list 
+     * Remove a user from the user list
+     * return true if user has been found, else returns false
      */
-    this.removeUser = function(username) {
-      // TODO
+    this.removeUser = function(userid) {
+      return ($(this.element).find('#user_'+userid).remove().length > 0);
     }
 
     /**

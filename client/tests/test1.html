@@ -80,12 +80,19 @@
         loaded: function (pfc) {
 
           test("the phpfreechat user list", function() {
+          
+            // test the addUser function
             var user1_id = pfc.appendUser({name: 'AdminQUnit', role: 'admin'});
-            ok( $('.pfc-role-admin #user_'+user1_id).length == 1, "contains an admin user" );
+            ok( $('.pfc-role-admin #user_'+user1_id).length == 1, "is able to append an admin user" );
             var user2_id = pfc.appendUser({name: 'UserQUnit', role: 'user'});
-            ok( $('.pfc-role-user #user_'+user2_id).length == 1, "contains an unprivileged user" );
-            ok( $('#user_'+user2_id+' div.avatar img').length == 1, "contains one user with an avatar" );
-
+            ok( $('.pfc-role-user #user_'+user2_id).length == 1, "is able to append an unprivileged user" );
+            ok( $('#user_'+user2_id+' div.avatar img').length == 1, "is able to assign avatar to a user" );
+            
+            // test the removeUser function
+            var remove_ok = pfc.removeUser(user2_id);
+            ok( remove_ok, "tells that a user has been removed from the list" );
+            ok( $('.pfc-role-user #user_'+user2_id).length == 0, "is able to remove a user from the list" );
+            
           });
 
         }
