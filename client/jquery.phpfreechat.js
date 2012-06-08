@@ -13,7 +13,8 @@
     this._name = pluginName;
 
     /**
-     * Append a username in the user list 
+     * Appends a username in the user list 
+     * returns the dom id of the user element
      */
     this.appendUser = function(user) {
 
@@ -23,6 +24,7 @@
       // user.active = true if active
       
       // default values
+      user.id     = (user.id != undefined) ? user.id : 0;
       user.role   = (user.role != undefined) ? user.role : 'user';
       user.name   = (user.name != undefined) ? user.name : 'Guest '+Math.round(Math.random()*100);
       user.email  = (user.email != undefined) ? user.email : '';
@@ -33,7 +35,7 @@
                                                                  'div.pfc-role-user ul');
 
       // create a blank DOM element for the user
-      var html = $('              <li>'
+      var html = $('              <li class="user">'
                   +'                <div class="status"></div>'
                   +'                <div class="name"></div>'
                   +'                <div class="avatar"></div>'
@@ -48,11 +50,30 @@
       }
       html.find('div.status').addClass(user.active ? 'st-active' : 'st-inactive'); 
       html.find('div.avatar').append('<img src="http://www.gravatar.com/avatar/' + this.md5(user.email) + '?d=wavatar&amp;s=20" alt="" />');
-      
+
+      // get all userids from the list (could be cached)
+      var userids = [];
+      $(this.element).find('div.pfc-users li.user').each(function (i, dom_user) {
+        userids.push(parseInt($(dom_user).attr('id').split('_')[1]));
+      });
+      // if no user id is indicated, generate a new one
+      if (user.id == 0) {
+        do {
+          user.id = Math.round(Math.random()*10000);
+        } while (userids.indexOf(user.id) != -1);
+      }
+      // add the id in the user's dom element
+      if (user.id != 0 && userids.indexOf(user.id) == -1) {
+        html.attr('id', 'user_'+user.id);
+      } else {
+        delete html;
+        return 0;
+      }
+
       // append the HTML element to the interface
       users_ul.append(html);
-      
-      return html;
+
+      return user.id;
     }
     
     /**

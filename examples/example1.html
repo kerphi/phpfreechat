@@ -32,7 +32,13 @@
     
     <div class="pfc-hook"><a href="http://www.phpfreechat.net">phpFreeChat: simple Web chat</a></div>
     <script>
-      $('.pfc-hook').phpfreechat();
+      $('.pfc-hook').phpfreechat({
+        loaded: function(pfc) {
+          var userid1 = pfc.appendUser({ email: 'chuck.norris@gmail.com', role: 'admin', id: 2345});
+          var userid2 = pfc.appendUser({ email: 'bob@gmail.com', role: 'user'});
+          console.log([userid1, userid2]);
+        }
+      });
     </script>
 
     <p>Bla bla bla</p>
