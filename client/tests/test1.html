@@ -26,7 +26,7 @@
 
     $(document).ready(function(){
 
-      test("the phpfreechat jquery interface", function() {
+      test("phpfreechat interface", function() {
         ok( $('.pfc-content').length, "has been loaded" );
       });
 
@@ -79,7 +79,7 @@
       $('.pfc-hook').phpfreechat({
         loaded: function (pfc) {
 
-          test("the phpfreechat user list", function() {
+          test("phpfreechat user list", function() {
           
             // test the addUser function
             var user1_id = pfc.appendUser({name: 'AdminQUnit', role: 'admin'});
@@ -90,7 +90,7 @@
             
             // test the removeUser function
             var remove_ok = pfc.removeUser(user2_id);
-            ok( remove_ok, "tells that a user has been removed from the list" );
+            ok( remove_ok, "tells that a user has been removed from the list with success" );
             ok( $('.pfc-role-user #user_'+user2_id).length == 0, "is able to remove a user from the list" );
 
             // test the clearUserList function
@@ -98,7 +98,17 @@
             ok( $('.pfc-role-admin #user_'+user1_id).length == 0, "is able to be cleared" );
             
           });
-
+          
+          test("phpfreechat messages", function() {
+          
+            // test the appendMessage function
+            var message1 = pfc.appendMessage({name: 'AdminQUnit', message: 'my super message'});
+            ok( message1.is(':visible'), "are able to be appended" );
+            var message2 = pfc.appendMessage({name: 'AdminQUnit', message: 'my super message 2'});
+            ok( message2.is(':visible'), "are able to be appended twice" );
+            ok( message2.parent()[0] == message1.parent()[0], "are able to be appended twice in a group" );
+            
+          });
         }
       });
     </script>
