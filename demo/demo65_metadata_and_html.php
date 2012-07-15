@@ -16,7 +16,7 @@ start chatting
 </p>
 
 <?php if (isset($_GET['profil'])) { ?>
-  <p>Here is the user (id=<?php echo $_GET['profil']; ?>)profil</p>
+  <p>Here is the user (id=<?php echo (integer)$_GET['profil']; ?>)profil</p>
 <?php } ?>
 
 <?php /* start hide */ ?>
