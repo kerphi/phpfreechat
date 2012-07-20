@@ -17,14 +17,18 @@ class Route_auth {
     } 
 
     // check if a login/password has been set
-    if (!isset($req['headers']['Authorization'])) {
+    // allow Pfc-Authorization header because Authorization can be disabled by reverse proxy
+    $auth = isset($req['headers']['Authorization']) ?
+      $req['headers']['Authorization'] :
+      (isset($req['headers']['Pfc-Authorization']) ? $req['headers']['Pfc-Authorization'] : '');
+    if (!$auth) {
       header('HTTP/1.1 403');
       header('WWW-Authenticate: Basic realm="Authentication"');
       return;
     }
 
     // decode basic http auth header
-    $auth = @explode(':', @base64_decode(@array_pop(@explode(' ', $req['headers']['Authorization']))));
+    $auth = @explode(':', @base64_decode(@array_pop(@explode(' ', $auth))));
     if (!isset($auth[0]) && !$auth[0]) {
       header("HTTP/1.1 400 Login is missing");
       return;
@@ -36,8 +40,9 @@ class Route_auth {
     if ($login == 'kerphi' and $password == 'kerphi') {
       $_SESSION['userdata'] = array(
         'id'       => 1,
-        'nickname' => 'kerphi',
+        'name'     => 'kerphi',
         'email'    => 'stephane.gully@gmail.com',
+        'role'     => 'user',
       );
       header("HTTP/1.1 200");
       header('Content-Type: application/json; charset=utf-8');
@@ -66,6 +71,7 @@ class Route_auth {
     $cache = $_SESSION['userdata'];
     
     // logout
+    $_SESSION['userdata'] = array();
     session_destroy();
     
     // return ok and the user data
