@@ -136,7 +136,7 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
           class="block"><?php echo $lang[$l][9]; ?></label><textarea id="css_text" name="css_text" rows="20" cols="35"><?php if(isset($_REQUEST['css_text'])) echo htmlspecialchars($_REQUEST['css_text']); ?></textarea>
             <label for="url"><?php echo $lang[$l][10]; ?></label> <input type="text"
           name="url" id="url" <?php if(isset($_REQUEST['url']) &&
-          !empty($_REQUEST['url'])) echo 'value="'.$_REQUEST['url'].'"'; ?>
+          !empty($_REQUEST['url'])) echo 'value="'.strip_tags($_REQUEST['url']).'"'; ?>
           size="35" /><br />
           <input type="submit" value="<?php echo $lang[$l][35]; ?>" id="submit" />
         </fieldset>
