@@ -22,8 +22,8 @@ class Route_auth {
       $req['headers']['Authorization'] :
       (isset($req['headers']['Pfc-Authorization']) ? $req['headers']['Pfc-Authorization'] : '');
     if (!$auth) {
-      header('HTTP/1.1 403');
-      header('WWW-Authenticate: Basic realm="Authentication"');
+      header('HTTP/1.1 403 Need authentication');
+      header('Pfc-WWW-Authenticate: Basic realm="Authentication"');
       return;
     }
 
@@ -50,7 +50,7 @@ class Route_auth {
       return;
     } else {
       header('HTTP/1.1 403 Wrong credentials');
-      header('WWW-Authenticate: Basic realm="Authentication"');         
+      header('Pfc-WWW-Authenticate: Basic realm="Authentication"');         
       return;
     }
 
