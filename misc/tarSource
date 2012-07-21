@@ -1,64 +1,54 @@
-#!/bin/sh
+#!/bin/bash
 
-NAME=phpfreechat-`cat ../version.txt`
-PFCSETUPNAME=pfcsetup-`cat ../version.txt`
+set -e
 
-echo "-- creating archive $NAME --"
-echo "-> copying files"
-rm -rf ./$NAME
-svn export .. ./$NAME
+if [ ! $# -eq 1 ] ; then
+  echo "Usage $0 [Numero de version]"
+  exit 1
+fi
+VERSION=$1
+NAME="phpfreechat-$VERSION"
+
+git pull --tags
+if [ "`git tag -l | grep $VERSION`" != "" ] ; then
+  echo "Warning: version $VERISON already exists. Aborting ..."
+  exit 2
+fi
+
+echo "-> add the version in a file and push on github"
+echo $VERSION > ../version.txt
+git commit -m "Version $VERSION" ../version.txt 
+git push
+
+echo "-> tag the new version on github"
+git tag -a -m "Version $VERSION" $VERSION
+git push --tags
+
+echo "-- create archives $NAME --"
+echo "-> copying file from github"
+rm -rf ./$NAME $NAME.tgz
+wget https://github.com/kerphi/phpfreechat/tarball/$VERSION -q -O $NAME.tgz
+
+echo "-> untar"
+GITHUB_NAME=`tar -ztf $NAME.tgz 2>/dev/null | head -1`
+tar xzf $NAME.tgz
+mv $GITHUB_NAME $NAME
+rm -f $NAME.tgz
+
+echo "-> cleanup"
+find $NAME/ -name ".gitignore" -exec rm -f {} \;
 rm -rf ./$NAME/contrib
 rm -rf ./$NAME/admin
 rm -rf ./$NAME/lib/pear/.registry
 
-#echo "-> downloading documentation"
-#wget http://www.phpfreechat.net/pages/fr/install.html   -q -O ./$NAME/install.fr.html
-#wget http://www.phpfreechat.net/pages/en/install.html   -q -O ./$NAME/install.en.html
-#wget http://www.phpfreechat.net/pages/fr/faq.html       -q -O ./$NAME/faq.fr.html
-#wget http://www.phpfreechat.net/pages/en/faq.html       -q -O ./$NAME/faq.en.html
-#wget http://www.phpfreechat.net/pages/fr/overview.html  -q -O ./$NAME/overview.fr.html
-#wget http://www.phpfreechat.net/pages/en/overview.html  -q -O ./$NAME/overview.en.html
-#wget http://www.phpfreechat.net/pages/ar/overview.html  -q -O ./$NAME/overview.ar.html
-#wget http://www.phpfreechat.net/pages/es/overview.html  -q -O ./$NAME/overview.es.html
-#wget http://www.phpfreechat.net/pages/zh/overview.html  -q -O ./$NAME/overview.zh.html
-#wget http://www.phpfreechat.net/pages/fr/customize.html -q -O ./$NAME/customize.fr.html
-#wget http://www.phpfreechat.net/pages/en/customize.html -q -O ./$NAME/customize.en.html
-#wget http://www.phpfreechat.net/pages/fr/changelog.html -q -O ./$NAME/changelog.fr.html
-#wget http://www.phpfreechat.net/pages/en/changelog.html -q -O ./$NAME/changelog.en.html
-
-echo "-> creating checkmd5.php file"
+echo "-> create checkmd5.php file"
 ./checkmd5 ./$NAME ./$NAME/checkmd5.php
 
-echo "-> creating $NAME.tar.gz"
+echo "-> create $NAME.tar.gz"
 tar czfp $NAME.tar.gz ./$NAME 
-echo "-> creating $NAME.zip"
+echo "-> create $NAME.zip"
 zip -Tq9r $NAME.zip ./$NAME
-echo "-> creating $NAME-setup.php"
-php ./createwebinstaller.php `cat ../version.txt` > /dev/null
 
-#echo "-> creating $PFCSETUPNAME.tar.gz"
-#rm -rf ./$PFCSETUPNAME
-#svn export ../contrib/pfcInstaller2 $PFCSETUPNAME
-#rm -rf ./$PFCSETUPNAME/.registry
-#rm -rf ./$PFCSETUPNAME/.depdblock
-#rm -rf ./$PFCSETUPNAME/.lock
-#rm -rf ./$PFCSETUPNAME/.channels
-#rm -rf ./$PFCSETUPNAME/tmp
-#rm -rf ./$PFCSETUPNAME/bin
-#rm -rf ./$PFCSETUPNAME/PEAR
-#rm -rf ./$PFCSETUPNAME/System.php
-#rm -rf ./$PFCSETUPNAME/peclcmd.php
-#rm -rf ./$PFCSETUPNAME/pearcmd.php
-#rm -rf ./$PFCSETUPNAME/pear.sh
-#rm -rf ./$PFCSETUPNAME/pearrc
-#rm -rf ./$PFCSETUPNAME/OS
-#echo "$NAME.tar.gz" > $PFCSETUPNAME/archivename
-#echo `pwd` >> $PFCSETUPNAME/mirrors
-#tar czfp $PFCSETUPNAME.tar.gz ./$PFCSETUPNAME
-#echo "-> creating $PFCSETUPNAME.zip"
-#zip -Tq9r $PFCSETUPNAME.zip ./$PFCSETUPNAME
-#rm -rf ./$PFCSETUPNAME
-
-echo "-> removing temporary files"
+echo "-> remove temporary files"
 rm -rf ./$NAME
-echo "-- creating archive $NAME, done --"
+echo "-- archive $NAME created successfully --"
