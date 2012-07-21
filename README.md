@@ -1,16 +1,16 @@
 Work in progress...
 
-## Options (client side):
+## Options (client side)
 
 * serverUrl [String:'../server']: where is located the pfc's server folder
 * loaded [Function:null]: a callback executed when pfc's interface is totaly loaded
 
-## Events (client side):
+## Events (client side)
 
 * pfc-loaded : triggered when pfc's interface is totaly loaded
 
 
-## Routes design (server side):
+## Routes design (server side)
 
 
 * `/auth`
