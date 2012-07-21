@@ -2,13 +2,16 @@ Work in progress...
 
 ## Options (client side)
 
-* serverUrl [String:'../server']: where is located the pfc's server folder
-* loaded [Function:null]: a callback executed when pfc's interface is totaly loaded
+* `serverUrl` [String:'../server']: where is located the pfc's server folder
+* `loaded` [Function:null]: a callback executed when pfc's interface is totaly loaded
+
+Example: TODO
 
 ## Events (client side)
 
-* pfc-loaded : triggered when pfc's interface is totaly loaded
+* `pfc-loaded` : triggered when pfc's interface is totaly loaded
 
+Example: TODO
 
 ## Routes design (server side)
 
