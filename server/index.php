@@ -8,10 +8,10 @@ if (!preg_match("#$server_dir/(.*)$#", $_SERVER['REQUEST_URI'], $matches)) {
   header("HTTP/1.1 404 Unable to locate the server URI");
   die();
 }
-$uri = $matches[1];
+$uri = parse_url($matches[1]);
 
 // extract the route name
-$route_fragments = explode('/', $uri);
+$route_fragments = explode('/', $uri['path']);
 $route = $route_fragments[0];
 
 // load the route

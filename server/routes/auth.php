@@ -37,12 +37,12 @@ class Route_auth {
     $password = isset($auth[1]) ? $auth[1] : '';
     
     // check login/password
-    if ($login == 'kerphi' and $password == 'kerphi') {
+    if ($login) {
       $_SESSION['userdata'] = array(
         'id'       => 1,
-        'name'     => 'kerphi',
-        'email'    => 'stephane.gully@gmail.com',
-        'role'     => 'admin',
+        'name'     => $login,
+        'email'    => (isset($req['params']['email']) and $req['params']['email']) ? $req['params']['email'] : (string)rand(1,10000),
+        'role'     => 'user',
       );
       header("HTTP/1.1 200");
       header('Content-Type: application/json; charset=utf-8');

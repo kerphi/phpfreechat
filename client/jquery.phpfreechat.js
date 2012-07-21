@@ -294,17 +294,19 @@
     setTimeout(function () { $(pfc.element).trigger('pfc-loaded', [ pfc ]) }, 0);
   };
 
-  Plugin.prototype.tryToLogin = function (login, password, callback) {
-    var h = login ? { 'Pfc-Authorization': 'Basic '+$.base64.encode(login + ':' + password) } : {};
+  Plugin.prototype.tryToLogin = function (credentials, callback) {
+    var h = credentials ? { 'Pfc-Authorization': 'Basic '+$.base64.encode(credentials.login + ':' + credentials.password) } : {};
+    var d = credentials ? {'email': credentials.email} : null;
     $.ajax({
       type: 'GET',
       url:  pfc.options.serverUrl + '/auth',
       headers: h,
+      data: d,
     }).done(function (userdata) {
       pfc.appendUser(userdata);
       callback ? callback(null, userdata) : null;
     }).error(function (err) {
-      pfc.showAuthForm(login ? err.statusText : null);
+      pfc.showAuthForm(credentials ? err.statusText : null);
       callback ? callback(err) : null;
     });
   };
@@ -325,16 +327,18 @@
     modalbox.open(
         '<form>'
       +'  <input type="text" name="login" placeholder="Login"/><br/>'
-      +'  <input type="text" name="password" placeholder="Password"/><br/>'
+      //+'  <input type="text" name="password" placeholder="Password"/><br/>'
+      +'  <input type="text" name="email" placeholder="Email"/><br/>'
       +'  <input type="submit" name="submit" value="Sign in" />'
       +(err ? '<p>'+err+'</p>' : '')
       +'</form>'
     ).submit(function () {
       var login    = $(this).find('[name=login]').attr('value');
       var password = $(this).find('[name=password]').attr('value');
+      var email    = $(this).find('[name=email]').attr('value');
       if (!login) return false;
       
-      pfc.tryToLogin(login, password);
+      pfc.tryToLogin({'login': login, 'password': password, 'email': email});
       modalbox.close(true);
       
       return false;
