@@ -9,7 +9,8 @@ fi
 VERSION=$1
 NAME="phpfreechat-$VERSION"
 
-git pull --tags
+echo "-> check that version doen't exists yet"
+git fetch --tags
 if [ "`git tag -l | grep $VERSION`" != "" ] ; then
   echo "Warning: version $VERISON already exists. Aborting ..."
   exit 2
