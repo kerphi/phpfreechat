@@ -15,8 +15,17 @@
 @tab-active-bg-color: #FFF;
 @tab-inactive-bg-color: #0C91EC;
 @border-color: lighten(grey, 30%);
+@dialog-bg-color: @top-bg-color;
+@dialog-overlay-color: #000;
+@dialog-border-color: darken(@border-color, 20%);
 
 @h: 500px;
+
+.rounded-corners (@radius: 5px) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
 
 div.pfc-content {
   position: relative;
@@ -367,6 +376,29 @@ div.pfc-content {
       -webkit-border-bottom-left-radius: 3px;
     }
   }
+
+  /* modalbox styles */
+  div.pfc-modal-overlay {
+    display: none;
+    position: absolute;
+    background-color: #000;
+    opacity: 0.2;
+    z-index: 50;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: -@padding-top;
+    .rounded-corners(5px);
+  }
+  div.pfc-modal-box {
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    z-index: 55;
+    padding: 20px;
+    .rounded-corners(5px);
+  }
+
 }
 
 div.pfc-backlink {
@@ -381,3 +413,4 @@ div.pfc-backlink {
     background-color: #DDD;
   }
 }
+  

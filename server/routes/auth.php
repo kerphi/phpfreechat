@@ -42,7 +42,7 @@ class Route_auth {
         'id'       => 1,
         'name'     => 'kerphi',
         'email'    => 'stephane.gully@gmail.com',
-        'role'     => 'user',
+        'role'     => 'admin',
       );
       header("HTTP/1.1 200");
       header('Content-Type: application/json; charset=utf-8');

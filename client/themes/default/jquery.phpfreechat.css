@@ -5,6 +5,8 @@ div.pfc-content {
   padding: 0px;
   /* channels tabs */
 
+  /* modalbox styles */
+
 }
 div.pfc-content div.pfc-tabs ul {
   list-style: none;
@@ -328,6 +330,30 @@ div.pfc-content div.pfc-compose textarea {
   -moz-border-radius-bottomleft: 3px;
   -webkit-border-bottom-right-radius: 3px;
   -webkit-border-bottom-left-radius: 3px;
+}
+div.pfc-content div.pfc-modal-overlay {
+  display: none;
+  position: absolute;
+  background-color: #000;
+  opacity: 0.2;
+  z-index: 50;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  top: -6px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+div.pfc-content div.pfc-modal-box {
+  display: none;
+  position: absolute;
+  background-color: #FFF;
+  z-index: 55;
+  padding: 20px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
 }
 div.pfc-backlink {
   padding: 10px;
