@@ -11,6 +11,8 @@ Example: TODO
 ## Events (client side)
 
 * `pfc-loaded` : triggered when pfc's interface is totaly loaded
+* `pfc-login` : triggered when the user is logged
+* `pfc-logout` : triggered when the user is loggouted
 
 Example: TODO
 

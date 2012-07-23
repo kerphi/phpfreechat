@@ -15,7 +15,7 @@ class Messages_utils {
     $msg = json_encode(array(
       'id'        => $mid,
       'sender'    => $uid,
-      'recipient' => 'channel|'+$cid,
+      'recipient' => 'channel|'.$cid,
       'message'   => $msg,
       'timestamp' => time(),
     ));

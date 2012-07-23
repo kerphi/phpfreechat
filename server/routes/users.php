@@ -132,7 +132,7 @@ class Users_utils {
   }
 
   static public function setUserInfo($info) {
-    file_put_contents(Users_utils::getUserDir($info['id']).'/info.json', $info);
+    file_put_contents(Users_utils::getUserDir($info['id']).'/info.json', json_encode($info));
   }
   
   static public function getUsers() {

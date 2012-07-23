@@ -16,6 +16,7 @@
     pfc.options = $.extend({}, defaults, options) ;
     pfc._defaults = defaults;
     pfc._name = pluginName;
+    pfc.users = {}; // users of the chat (uid -> userdata)
 
     // check backlink presence
     if (!pfc.hasBacklink()) {
@@ -26,7 +27,93 @@
     pfc.loadHTML();
         
     // try to authenticate
-    pfc.tryToLogout(function (err) { pfc.tryToLogin() });
+    //pfc.tryToLogout(function (err) { pfc.tryToLogin(); });
+    pfc.tryToLogin();
+    
+    // when logged in
+    $(pfc.element).bind('pfc-login', function (evt, pfc, userdata) {
+      pfc.userdata = userdata;
+      pfc.cid = 'xxx'; // static channel id for the first 2.x version
+      
+      // join a channel
+      $.ajax({
+        type: 'POST',
+        url:  pfc.options.serverUrl + '/channels/'+pfc.cid+'/users/',
+      }).done(function (users) {
+        
+        // request user info who are on this channel
+        users.forEach(function (uid) {
+          $.ajax({
+            type: 'GET',
+            url:  pfc.options.serverUrl + '/users/'+uid+'/',
+          }).done(function (userdata) {
+            pfc.users[userdata.id] = userdata;
+            pfc.appendUser(userdata);
+          }).error(function (err) {
+            console.log(err);
+          });
+        });
+        
+        
+        // read my pending messages
+        function readmymessages() {
+          $.ajax({
+            type: 'GET',
+            url:  pfc.options.serverUrl + '/users/'+pfc.userdata.id+'/msg/',
+          }).done(function (msgs) {
+
+            msgs.forEach(function (m,i) {
+              pfc.appendMessage(m);
+            });
+
+            setTimeout(readmymessages, 2000);
+          }).error(function (err) {
+            console.log(err);
+            setTimeout(readmymessages, 2000);
+          });
+        }
+        readmymessages();
+
+        
+        function postamessage(msg) {
+          // post a message on the channel
+          var msg = {
+            message: msg
+          };
+          $.ajax({
+            type: 'POST',
+            url:  pfc.options.serverUrl + '/channels/'+pfc.cid+'/msg/',
+            data: msg,
+          }).done(function (msg) {
+            pfc.appendMessage(msg);
+
+          }).error(function (err) {
+            console.log(err);
+          });
+        }        
+        
+        // connect the textarea
+        $('.pfc-compose textarea').keydown(function (evt) {
+          if (evt.keyCode == 13 && evt.shiftKey == false) {
+            postamessage($('.pfc-compose textarea').val());
+            $('.pfc-compose textarea').val('');
+            return false;
+          }
+        });
+        
+        
+      }).error(function (err) {
+        console.log(err);
+      });
+      
+      //pfc.join('xxx');
+    });
+
+    // when logged out
+    $(pfc.element).bind('pfc-logout', function (evt, pfc, userdata) {
+      pfc.userdata = {};
+      pfc.clearUserList();
+    });
   }
   
   /**
@@ -66,7 +153,7 @@
       html.addClass('first');
     }
     html.find('div.status').addClass(user.active ? 'st-active' : 'st-inactive'); 
-    html.find('div.avatar').append('<img src="http://www.gravatar.com/avatar/' + md5(user.email) + '?d=wavatar&amp;s=20" alt="" />');
+    //html.find('div.avatar').append('<img src="http://www.gravatar.com/avatar/' + md5(user.email) + '?d=wavatar&amp;s=20" alt="" />');
 
     // get all userids from the list (could be cached)
     var userids = [];
@@ -132,7 +219,7 @@
   Plugin.prototype.appendMessage = function(msg) {
 
     // default values
-    msg.name      = (msg.name != undefined) ? msg.name : '';
+    msg.name      = (pfc.users[msg.sender] != undefined) ? pfc.users[msg.sender].name : '???';
     msg.message   = (msg.message != undefined) ? msg.message : '';
     msg.timestamp = (msg.timestamp != undefined) ? msg.timestamp : Math.round(new Date().getTime() / 1000);
     msg.date      = new Date(msg.timestamp*1000).toLocaleTimeString();
@@ -191,6 +278,11 @@
        '      <div class="pfc-content">'
       +'        <div class="pfc-tabs">'
       +'          <ul>'
+      +'            <li class="channel active">'
+      +'              <div class="icon"></div>'
+      +'              <div class="name">Default channel</div>'
+      +'              <div class="close"></div>'
+      +'            </li>'
       +(pfc.options.loadTestData ? ''
       +'            <li class="channel active">'
       +'              <div class="icon"></div>'
@@ -311,7 +403,7 @@
       headers: h,
       data: d,
     }).done(function (userdata) {
-      pfc.appendUser(userdata);
+      $(pfc.element).trigger('pfc-login', [ pfc, userdata ]);
       callback ? callback(null, userdata) : null;
     }).error(function (err) {
       pfc.showAuthForm(credentials ? err.statusText : null);
@@ -324,8 +416,8 @@
       type: 'DELETE',
       url:  pfc.options.serverUrl + '/auth',
     }).done(function (userdata) {
-      userdata ? pfc.removeUser(userdata) : null;
-      callback ? callback(null) : null;
+      $(pfc.element).trigger('pfc-logout', [ pfc, userdata ]);
+      callback ? callback(null, userdata) : null;
     }).error(function (err) {
       callback ? callback(err) : null;
     });

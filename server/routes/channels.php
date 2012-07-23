@@ -145,10 +145,6 @@ class Route_channels_msg {
     }
 
     // check that request content contains a message
-    if (!isset($req['params']['name']) or $req['params']['name'] === '') {
-      header("HTTP/1.1 400 Missing parameter [name]");
-      return;
-    }
     if (!isset($req['params']['message']) or $req['params']['message'] === '') {
       header("HTTP/1.1 400 Missing parameter [message]");
       return;
@@ -194,7 +190,7 @@ class Route_channels_users {
   }
 
   /**
-   * User wants to join a channel
+   * User join a channel
    * /channels/:cid/users/
    */
   public function post($req) {
@@ -207,24 +203,33 @@ class Route_channels_users {
     // check this user is online
     include_once 'routes/users.php';
     if (!Users_utils::checkUser($uid)) {
-      header("HTTP/1.1 400 User is not connected");
+      header('HTTP/1.1 400 User is not connected');
       return;
     }
     
+    // todo remove this code when channel create/join will be implemented
+    $cdir = Channels_utils::getChannelsDir();
+    $cpath = $cdir.'/'.$this->rc->cid.'/';
+    @mkdir($cpath, 0777, true);
+    @mkdir($cpath.'/users', 0777, true);
+    
     $cupath = Channels_utils::getChannelUserPath($this->rc->cid, $uid);    
     if (file_exists($cupath)) {
-      header("HTTP/1.1 200 User already subscribed");
+      header('HTTP/1.1 200 User already subscribed');
+      header('Content-Type: application/json; charset=utf-8');
+      echo json_encode(Channels_utils::getChannelUsers($this->rc->cid));
+      return;
     } else {
       // join the channel
       touch($cupath);
       
       // post a joind message (todo: add a 'join' type to the message)
       include_once 'routes/messages.php';
-      $msg = Messages_utils::postMsgToChannel($this->rc->cid, $uid, $uid.' joined '.$cid);
+      $msg = Messages_utils::postMsgToChannel($this->rc->cid, $uid, $uid.' joined Default room');
       
-      header("HTTP/1.1 201 User joined the channel");
+      header('HTTP/1.1 201 User joined the channel');
       header('Content-Type: application/json; charset=utf-8');
-      echo $msg;
+      echo json_encode(Channels_utils::getChannelUsers($this->rc->cid));
       return;
     }
   }
