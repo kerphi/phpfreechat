@@ -15,16 +15,12 @@ Example: TODO
 
 ## Routes design (server side)
 
-
 * `/auth`
-* `/channels/`
-* `/channels/:cid/`
-* `/channels/:cid/name`
-* `/channels/:cid/msg/:mid` (one message in a channel)
-* `/channels/:cid/users/` (list users in a channel)
-* `/channels/:cid/users/:uid/` (gives info on the user)
-* `/users/`
-* `/users/:uid/name`
-* `/users/:uid/email`
-* `/users/:uid/msg/`
-* `/users/:uid/msg/:mid` (private messages)
+* `/channels/`                     (list available channels)
+* `/channels/:cid/name`            (channel little name)
+* `/channels/:cid/users/`          (list users in the channel)
+* `/channels/:cid/users/:uid`      (show a subscribed user to this channel)
+* `/channels/:cid/msg/`            (used to post a new message on this channel)
+* `/users/`                        (global users list)
+* `/users/:uid/`                   (user info)
+* `/users/:uid/msg/`               (messages received by the user: from a channel or a private message)

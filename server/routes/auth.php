@@ -38,12 +38,16 @@ class Route_auth {
     
     // check login/password
     if ($login) {
+      include_once 'routes/users.php';
+      $uid = Users_utils::generateUid();
       $_SESSION['userdata'] = array(
-        'id'       => 1,
+        'id'       => $uid,
         'name'     => $login,
         'email'    => (isset($req['params']['email']) and $req['params']['email']) ? $req['params']['email'] : (string)rand(1,10000),
         'role'     => 'user',
       );
+      Users_utils::setUserInfo($_SESSION['userdata']);
+      
       header("HTTP/1.1 200");
       header('Content-Type: application/json; charset=utf-8');
       echo json_encode($_SESSION['userdata']);
