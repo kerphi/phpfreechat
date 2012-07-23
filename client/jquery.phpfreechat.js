@@ -247,6 +247,7 @@
     }
 
     // add the message to the latest active message group
+    msg.message = $('<pre></pre>').text(msg.message).html();
     var message = $('<div class="message"></div>').html(nl2br(msg.message));
     groupmsg_dom.append(message);
 
