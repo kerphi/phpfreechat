@@ -4,7 +4,8 @@
       document = window.document,
       defaults = {
         serverUrl: '../server', // phpfreechat server url
-        loaded: null, // executed when interface is loaded
+        loaded: null,           // executed when interface is loaded
+        loadTestData: false,    // load interface data for tests
       };
   var pfc = {}; // to have a global reference to "this" (Plugin)
   
@@ -190,6 +191,7 @@
        '      <div class="pfc-content">'
       +'        <div class="pfc-tabs">'
       +'          <ul>'
+      +(pfc.options.loadTestData ? ''
       +'            <li class="channel active">'
       +'              <div class="icon"></div>'
       +'              <div class="name">Channel 1</div>'
@@ -205,6 +207,7 @@
       +'              <div class="name">admin</div>'
       +'              <div class="close"></div>'
       +'            </li>'
+      : '')
       +'            <li class="new-tab">'
       +'              <div class="icon"></div>'
       +'            </li>'
@@ -216,6 +219,7 @@
       +'        </div>'
       +''
       +'        <div class="pfc-messages">'
+      +(pfc.options.loadTestData ? ''
       +'          <div class="messages-group" data-stamp="1336815502" data-from="kerphi">'
       +'            <div class="avatar"><img src="http://www.gravatar.com/avatar/ae5979732c49cae7b741294a1d3a8682?d=wavatar&s=30" alt="" /></div>'
       +'            <div class="date">11:38:21</div>'
@@ -231,23 +235,27 @@
       +'            <div class="message">World</div>'
       +'            <div class="message">!</div>'
       +'          </div>'
+      : '')
       +'        </div>'
       +''
       +'        <div class="pfc-users">'
       +'          <div class="pfc-role-admin">'
       +'            <p class="role-title">Administrators</p>'
       +'            <ul>'
-/*      +'              <li class="first">'
+      +(pfc.options.loadTestData ? ''
+      +'              <li class="first">'
       +'                <div class="status st-active"></div>'
       +'                <div class="name">admin</div>'
       +'                <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000001?d=wavatar&s=20" alt="" /></div>'
-      +'              </li>'*/
+      +'              </li>'
+      : '')
       +'            </ul>'
       +'          </div>'
       +'          <div class="pfc-role-user">'
       +'            <p class="role-title">Users</p>'
       +'            <ul>'
-/*      +'              <li class="first">'
+      +(pfc.options.loadTestData ? ''
+      +'              <li class="first">'
       +'                <div class="status st-active"></div>'
       +'                <div class="name myself">kerphi</div>'
       +'                <div class="avatar"><img src="http://www.gravatar.com/avatar/ae5979732c49cae7b741294a1d3a8682?d=wavatar&s=20" alt="" /></div>'
@@ -256,29 +264,29 @@
       +'                <div class="status st-inactive"></div>'
       +'                <div class="name">Stéphane Gully</div>'
       +'                <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000002?d=wavatar&s=20" alt="" /></div>'
-      +'              </li>'*/
+      +'              </li>'
+      : '')
       +'            </ul>'
       +'          </div>'
       +'        </div>'
       +''
       +'        <div class="pfc-footer">'
       +'          <p class="logo"><a href="http://www.phpfreechat.net">Powered by phpFreeChat</a></p>'
-      +'          <p class="ping">150ms</p>'
+      //+'          <p class="ping">150ms</p>'
       +'          <ul>'
       //+'            <li><div class="logout-btn"></div></li>'
-      +'            <li><div class="smiley-btn" title="Not implemented"></div></li>'
-      +'            <li><div class="sound-btn" title="Not implemented"></div></li>'
+      //+'            <li><div class="smiley-btn" title="Not implemented"></div></li>'
+      //+'            <li><div class="sound-btn" title="Not implemented"></div></li>'
       //+'            <li><div class="online-btn"></div></li>'
       +'          </ul>'
       +'        </div>'
       +''
       +'        <div class="pfc-compose">'
-      +'          <textarea data-to="channel1"></textarea>'
+      +'          <textarea data-to="channel|xxx"></textarea>'
       +'        </div>'
-     // +'        <div class="pfc-modal-wrap">'
-      +'          <div class="pfc-modal-overlay"></div>'
-      +'          <div class="pfc-modal-box"></div>'
-    //  +'        </div>'
+      +''
+      +'        <div class="pfc-modal-overlay"></div>'
+      +'        <div class="pfc-modal-box"></div>'
       +'      </div>'
     );
 

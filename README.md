@@ -4,6 +4,7 @@ Work in progress...
 
 * `serverUrl` [String:'../server']: where is located the pfc's server folder
 * `loaded` [Function:null]: a callback executed when pfc's interface is totaly loaded
+* `loadTestData` [Bool:false]]: used for interface unit tests
 
 Example: TODO
 
