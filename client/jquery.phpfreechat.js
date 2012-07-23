@@ -248,7 +248,7 @@
 
     // add the message to the latest active message group
     msg.message = $('<pre></pre>').text(msg.message).html();
-    var message = $('<div class="message"></div>').html(nl2br(msg.message));
+    var message = $('<div class="message"></div>').html(msg.message);
     groupmsg_dom.append(message);
 
     // scroll to the last message and memorize the scroll position
@@ -466,14 +466,6 @@
               $.data(this, 'plugin_' + pluginName, new Plugin( this, options ));
           }
       });
-  }
-
-  /**
-   * nl2br php equivalent function
-   */
-  function nl2br(str, is_xhtml) {
-    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
-    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
   }
   
   /**
