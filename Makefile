@@ -22,9 +22,12 @@ setup-client-test:
 	@cd $(path) && wget http://phantomjs.googlecode.com/files/phantomjs-1.5.0-linux-x86-dynamic.tar.gz
 	@tar xzf phantomjs-1.5.0-linux-x86-dynamic.tar.gz
 
+setup-minify:
+	@cd $(path) && wget http://phantomjs.googlecode.com/files/phantomjs-1.5.0-linux-x86-dynamic.tar.gz
+	@tar xzf phantomjs-1.5.0-linux-x86-dynamic.tar.gz
+
 # compress javascript and css
 minify: $(path)/client/jquery.phpfreechat.js $(path)/client/themes/default/jquery.phpfreechat.less
-	@npm install -g pack uglify-js less clean-css
 	@cat $(path)/client/jquery.phpfreechat.js | packnode > $(path)/client/jquery.phpfreechat.min.js
 	@lessc $(path)/client/themes/default/jquery.phpfreechat.less $(path)/client/themes/default/jquery.phpfreechat.css
 	@cleancss $(path)/client/themes/default/jquery.phpfreechat.css > $(path)/client/themes/default/jquery.phpfreechat.min.css 

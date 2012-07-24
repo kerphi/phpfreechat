@@ -1,5 +1,7 @@
 <?php
 
+include_once 'container/users.php';
+
 class Route_auth {
 
   /**
@@ -33,20 +35,23 @@ class Route_auth {
       header("HTTP/1.1 400 Login is missing");
       return;
     }
-    $login    = $auth[0];
+    $login    = trim($auth[0]);
     $password = isset($auth[1]) ? $auth[1] : '';
     
     // check login/password
-    if ($login) {
-      include_once 'routes/users.php';
-      $uid = Users_utils::generateUid();
+    if ($login and Container_indexes::getIndex('users/name', $login)) {
+      header('HTTP/1.1 403 Login already used');
+      header('Pfc-WWW-Authenticate: Basic realm="Authentication"');         
+      return;
+    } else if ($login) {
+      $uid = Container_users::generateUid();
       $udata = array(
         'id'       => $uid,
         'name'     => $login,
         'email'    => (isset($req['params']['email']) and $req['params']['email']) ? $req['params']['email'] : (string)rand(1,10000),
         'role'     => 'user',
       );
-      Users_utils::setUserInfo($udata);
+      Container_users::setUserData($uid, $udata);
       $_SESSION['userdata'] = $udata;
 
       header("HTTP/1.1 200");

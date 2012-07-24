@@ -213,6 +213,7 @@ div.pfc-content div.pfc-messages .messages-group .message {
   margin: 0;
   padding-left: 50px;
   word-wrap: break-word;
+  white-space: pre;
 }
 div.pfc-content div.pfc-topic {
   z-index: 5;

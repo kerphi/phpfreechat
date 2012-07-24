@@ -1,5 +1,8 @@
 <?php
 
+include_once 'container/channels.php';
+include_once 'container/users.php';
+
 class Route_channels {
 
   public $cid = 'xxx';
@@ -61,7 +64,7 @@ class Route_channels {
 
     // /channels/  (create a new channel)
     if (!isset($req['url'][1]) or $req['url'][1] === '') {
-      $cid = Channels_utils::generateCid();
+      $cid = Container_channels::generateCid();
       
       // todo: handle channel name
       
@@ -109,26 +112,6 @@ class Route_channels_msg {
   }
   
   /**
-   * 
-   */
-//   public function get($req) {
-//   
-//     // /channels/xxx/users/ (list subscribed users on the channel)
-//     if (!isset($req['url'][3]) or $req['url'][3] === '') {
-//       header("HTTP/1.1 501"); // not implemented
-//       return;
-//     } 
-//   
-//     $mid = $req['url'][3];
-//     
-//     // todo return the message details
-//     
-//     header("HTTP/1.1 200");
-//     header('Content-Type: application/json; charset=utf-8');
-//     echo json_encode($mid);
-//   }
-
-  /**
    * Post a new message on the channel
    * /channels/:cid/msg/
    */
@@ -139,7 +122,7 @@ class Route_channels_msg {
 
     // check that user is subscribed to the channel
     $uid = $_SESSION['userdata']['id'];
-    if (!Channels_utils::checkChannelUser($this->rc->cid, $uid)) {
+    if (!Container_channels::checkChannelUser($this->rc->cid, $uid)) {
       header("HTTP/1.1 403 You have to join channel before post a message");
       return;
     }
@@ -152,7 +135,7 @@ class Route_channels_msg {
 
     // post message
     include_once 'routes/messages.php';
-    $msg = Messages_utils::postMsgToChannel($this->rc->cid, $uid, $req['params']['message']);
+    $msg = Container_messages::postMsgToChannel($this->rc->cid, $uid, $req['params']['message']);
 
     header("HTTP/1.1 200");
     header('Content-Type: application/json; charset=utf-8');
@@ -182,7 +165,7 @@ class Route_channels_users {
     if (!isset($req['url'][3]) or $req['url'][3] === '') {
       header("HTTP/1.1 200");
       header('Content-Type: application/json; charset=utf-8');
-      echo json_encode(Channels_utils::getChannelUsers($this->rc->cid));
+      echo json_encode(Container_channels::getChannelUsers($this->rc->cid));
       return;
     }
 
@@ -201,23 +184,22 @@ class Route_channels_users {
     $uid = $_SESSION['userdata']['id'];
 
     // check this user is online
-    include_once 'routes/users.php';
-    if (!Users_utils::checkUser($uid)) {
+    if (!Container_users::checkUser($uid)) {
       header('HTTP/1.1 400 User is not connected');
       return;
     }
     
     // todo remove this code when channel create/join will be implemented
-    $cdir = Channels_utils::getChannelsDir();
+    $cdir = Container_channels::getChannelsDir();
     $cpath = $cdir.'/'.$this->rc->cid.'/';
     @mkdir($cpath, 0777, true);
     @mkdir($cpath.'/users', 0777, true);
     
-    $cupath = Channels_utils::getChannelUserPath($this->rc->cid, $uid);    
+    $cupath = Container_channels::getChannelUserPath($this->rc->cid, $uid);    
     if (file_exists($cupath)) {
       header('HTTP/1.1 200 User already subscribed');
       header('Content-Type: application/json; charset=utf-8');
-      echo json_encode(Channels_utils::getChannelUsers($this->rc->cid));
+      echo json_encode(Container_channels::getChannelUsers($this->rc->cid));
       return;
     } else {
       // join the channel
@@ -225,66 +207,15 @@ class Route_channels_users {
       
       // post a joind message (todo: add a 'join' type to the message)
       include_once 'routes/messages.php';
-      $msg = Messages_utils::postMsgToChannel($this->rc->cid, $uid, $uid.' joined Default room');
+      $msg = Container_messages::postMsgToChannel($this->rc->cid, $uid, $uid.' joined Default room');
       
       header('HTTP/1.1 201 User joined the channel');
       header('Content-Type: application/json; charset=utf-8');
-      echo json_encode(Channels_utils::getChannelUsers($this->rc->cid));
+      echo json_encode(Container_channels::getChannelUsers($this->rc->cid));
       return;
     }
   }
 
 
-}
-
-
-class Channels_utils {
-  
-  static public function getChannelsDir() {
-    $datadir = __DIR__.'/../data';
-    $cdir = $datadir.'/channels';
-    return $cdir;
-  }
-  
-  static public function generateCid() {
-    $cdir = self::getChannelsDir();
-    do {
-      $cid = sha1(uniqid('', true));
-      $cpath = $cdir.'/'.$cid.'/';
-    } while (file_exists($cpath));
-    @mkdir($cpath, 0777, true);
-    @mkdir($cpath.'/users', 0777, true);
-    return $cid;
-  }
-  
-  
-  static public function getChannelMsgPath($cid, $mid) {
-    $cdir = self::getChannelsDir();
-    $mpath = $cdir.'/'.$cid.'/msg/'.$mid.'.json';
-    return $mpath;
-  }
-  
-  static public function getChannelUserPath($cid, $uid) {
-    $cdir = self::getChannelsDir();
-    $cupath = $cdir.'/'.$cid.'/users/'.$uid;
-    return $cupath;
-  }
-  
-  static public function getChannelUsers($cid) {
-    $cdir = self::getChannelsDir();
-    $cupath = $cdir.'/'.$cid.'/users/';  
-    $subscribers = array();
-    foreach(scandir($cupath) as $value) {
-      if($value === '.' || $value === '..') {continue;}
-      $subscribers[] = $value;
-    }
-    return $subscribers;
-  }
-  
-  static public function checkChannelUser($cid, $uid) {
-    $cdir = self::getChannelsDir();
-    $cupath = $cdir.'/'.$cid.'/users/'.$uid;  
-    return file_exists($cupath);
-  }  
 }
 
