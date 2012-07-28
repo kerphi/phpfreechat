@@ -17,11 +17,14 @@
     pfc.options = $.extend({}, defaults, options) ;
     pfc._defaults = defaults;
     pfc._name = pluginName;
-    pfc.users = {}; // users of the chat (uid -> userdata)
+    
+    // cached data
+    pfc.users    = {}; // users of the chat (uid -> userdata)
+    pfc.channels = {}; // channels of the chat (cid -> chandata)
 
     // session data
-    // pfc.session.uid;
-    // pfc.session.cid;
+    pfc.uid = null; // current connected user
+    pfc.cid = null; // current active channel
 
     // check backlink presence
     if (!pfc.hasBacklink()) {
@@ -37,7 +40,8 @@
     
     // when logged in
     $(pfc.element).bind('pfc-login', function (evt, pfc, userdata) {
-      pfc.userdata = userdata;
+      pfc.uid = userdata.id;
+      pfc.users[userdata.id] = userdata;
       pfc.cid = 'xxx'; // static channel id for the first 2.x version
       
       pfc.join(pfc.cid);
@@ -45,7 +49,7 @@
 
     // when logged out
     $(pfc.element).bind('pfc-logout', function (evt, pfc, userdata) {
-      pfc.userdata = {};
+      pfc.uid = null;
       pfc.clearUserList();
     });
   }
@@ -57,7 +61,7 @@
     
     $.ajax({
       type: 'GET',
-      url:  pfc.options.serverUrl + '/users/'+pfc.userdata.id+'/msg/',
+      url:  pfc.options.serverUrl + '/users/'+pfc.uid+'/msg/',
     }).done(function (msgs) {
 
       msgs.forEach(function (m,i) {
@@ -85,15 +89,17 @@
       url:  pfc.options.serverUrl + '/channels/'+cid+'/users/',
     }).done(function (users) {
       
-      // update userdata in the cache and in the interface
+      // store userdata in the cache 
+      // refresh the interface
+      pfc.clearUserList();
       Object.keys(users).forEach(function (uid) {
         pfc.users[uid] = users[uid];
         pfc.appendUser(users[uid]);
       });
       
-      // start read pending messages
+      // start to read pending messages
       pfc.readPendingMessages(true); // true = loop
-      
+
     }).error(function (err) {
       console.log(err);
     });
@@ -199,7 +205,11 @@
     * Hide or show the roles titles
     */
   Plugin.prototype.updateRolesTitles = function() {
-    [ $(pfc.element).find('div.pfc-role-admin'), $(pfc.element).find('div.pfc-role-user') ].forEach(function (item, index) {
+    // do not show/hide role titles because not planned for 2.0
+    return;
+
+    [ $(pfc.element).find('div.pfc-role-admin'),
+      $(pfc.element).find('div.pfc-role-user') ].forEach(function (item, index) {
       if (item.find('li').length == 0) {
         item.find('.role-title').hide();
       } else {
@@ -234,7 +244,7 @@
     if (groupmsg_dom.attr('data-from') != msg.name) {
       var html = $('<div class="messages-group" data-stamp="" data-from="">'
 //          +'            <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000001?d=wavatar&s=30" alt="" /></div>'
-        +'            <div class="avatar"><div style="width:30px; height: 30px; background-color: #DDD;"></div></div>'
+//        +'            <div class="avatar"><div style="width:30px; height: 30px; background-color: #DDD;"></div></div>'
         +'            <div class="date"></div>'
         +'            <div class="name"></div>'
         +'          </div>');
