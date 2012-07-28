@@ -32,13 +32,17 @@ class Container_channels {
     return $cupath;
   }
   
-  static public function getChannelUsers($cid) {
+  static public function getChannelUsers($cid, $withudata = false) {
     $cdir = self::getChannelsDir();
     $cupath = $cdir.'/'.$cid.'/users/';  
     $subscribers = array();
     foreach(scandir($cupath) as $value) {
       if($value === '.' || $value === '..') {continue;}
-      $subscribers[] = $value;
+      if ($withudata) {
+        $subscribers[$value] = Container_users::getUserData($value);
+      } else {
+        $subscribers[] = $value;
+      }
     }
     return $subscribers;
   }

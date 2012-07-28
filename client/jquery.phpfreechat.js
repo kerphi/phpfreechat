@@ -85,20 +85,13 @@
       url:  pfc.options.serverUrl + '/channels/'+cid+'/users/',
     }).done(function (users) {
       
-      // request user info who are on this channel
-      // todo: when joining a channel, all user's info on this channel should be returned
-      users.forEach(function (uid) {
-        $.ajax({
-          type: 'GET',
-          url:  pfc.options.serverUrl + '/users/'+uid+'/',
-        }).done(function (userdata) {
-          pfc.users[userdata.id] = userdata;
-          pfc.appendUser(userdata);
-        }).error(function (err) {
-          console.log(err);
-        });
+      // update userdata in the cache and in the interface
+      Object.keys(users).forEach(function (uid) {
+        pfc.users[uid] = users[uid];
+        pfc.appendUser(users[uid]);
       });
       
+      // start read pending messages
       pfc.readPendingMessages(true); // true = loop
       
     }).error(function (err) {

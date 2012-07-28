@@ -147,7 +147,7 @@ class Route_channels_msg {
 
 
 /**
- * /channels/:cid/users/:uid
+ * /channels/:cid/users/
  */
 class Route_channels_users {
   
@@ -199,7 +199,7 @@ class Route_channels_users {
     if (file_exists($cupath)) {
       header('HTTP/1.1 200 User already subscribed');
       header('Content-Type: application/json; charset=utf-8');
-      echo json_encode(Container_channels::getChannelUsers($this->rc->cid));
+      echo json_encode(Container_channels::getChannelUsers($this->rc->cid, true));
       return;
     } else {
       // join the channel
@@ -211,7 +211,7 @@ class Route_channels_users {
       
       header('HTTP/1.1 201 User joined the channel');
       header('Content-Type: application/json; charset=utf-8');
-      echo json_encode(Container_channels::getChannelUsers($this->rc->cid));
+      echo json_encode(Container_channels::getChannelUsers($this->rc->cid, true));
       return;
     }
   }
