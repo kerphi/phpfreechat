@@ -6,6 +6,7 @@
         serverUrl: '../server', // phpfreechat server url
         loaded: null,           // executed when interface is loaded
         loadTestData: false,    // load interface data for tests
+        refresh_delay: 5000,
       };
   var pfc = {}; // to have a global reference to "this" (Plugin)
   
@@ -18,6 +19,10 @@
     pfc._name = pluginName;
     pfc.users = {}; // users of the chat (uid -> userdata)
 
+    // session data
+    // pfc.session.uid;
+    // pfc.session.cid;
+
     // check backlink presence
     if (!pfc.hasBacklink()) {
       return;
@@ -27,86 +32,15 @@
     pfc.loadHTML();
         
     // try to authenticate
-    //pfc.tryToLogout(function (err) { pfc.tryToLogin(); });
-    pfc.tryToLogin();
+    //pfc.logout(function (err) { pfc.login(); });
+    pfc.login();
     
     // when logged in
     $(pfc.element).bind('pfc-login', function (evt, pfc, userdata) {
       pfc.userdata = userdata;
       pfc.cid = 'xxx'; // static channel id for the first 2.x version
       
-      // join a channel
-      $.ajax({
-        type: 'POST',
-        url:  pfc.options.serverUrl + '/channels/'+pfc.cid+'/users/',
-      }).done(function (users) {
-        
-        // request user info who are on this channel
-        users.forEach(function (uid) {
-          $.ajax({
-            type: 'GET',
-            url:  pfc.options.serverUrl + '/users/'+uid+'/',
-          }).done(function (userdata) {
-            pfc.users[userdata.id] = userdata;
-            pfc.appendUser(userdata);
-          }).error(function (err) {
-            console.log(err);
-          });
-        });
-        
-        
-        // read my pending messages
-        function readmymessages() {
-          $.ajax({
-            type: 'GET',
-            url:  pfc.options.serverUrl + '/users/'+pfc.userdata.id+'/msg/',
-          }).done(function (msgs) {
-
-            msgs.forEach(function (m,i) {
-              pfc.appendMessage(m);
-            });
-
-            setTimeout(readmymessages, 2000);
-          }).error(function (err) {
-            console.log(err);
-            setTimeout(readmymessages, 2000);
-          });
-        }
-        readmymessages();
-
-        
-        function postamessage(msg) {
-          // post a message on the channel
-          var msg = {
-            message: msg
-          };
-          $.ajax({
-            type: 'POST',
-            url:  pfc.options.serverUrl + '/channels/'+pfc.cid+'/msg/',
-            data: msg,
-          }).done(function (msg) {
-            pfc.appendMessage(msg);
-
-          }).error(function (err) {
-            console.log(err);
-          });
-        }        
-        
-        // connect the textarea
-        $('.pfc-compose textarea').keydown(function (evt) {
-          if (evt.keyCode == 13 && evt.shiftKey == false) {
-            postamessage($('.pfc-compose textarea').val());
-            $('.pfc-compose textarea').val('');
-            return false;
-          }
-        });
-        
-        
-      }).error(function (err) {
-        console.log(err);
-      });
-      
-      //pfc.join('xxx');
+      pfc.join(pfc.cid);
     });
 
     // when logged out
@@ -115,7 +49,84 @@
       pfc.clearUserList();
     });
   }
+
+  /**
+   * Read current user pending messages
+   */
+  Plugin.prototype.readPendingMessages = function(loop) {
+    
+    $.ajax({
+      type: 'GET',
+      url:  pfc.options.serverUrl + '/users/'+pfc.userdata.id+'/msg/',
+    }).done(function (msgs) {
+
+      msgs.forEach(function (m,i) {
+        pfc.appendMessage(m);
+      });
+      if (loop) {
+        setTimeout(pfc.readPendingMessages, pfc.options.refresh_delay);
+      }
+    }).error(function (err) {
+      console.log(err);
+      if (loop) {
+        setTimeout(pfc.readPendingMessages, pfc.options.refresh_delay);
+      }
+    });
+
+  };
+
+  /**
+   * Join a channel
+   */
+  Plugin.prototype.join = function(cid) {
+
+    $.ajax({
+      type: 'POST',
+      url:  pfc.options.serverUrl + '/channels/'+cid+'/users/',
+    }).done(function (users) {
+      
+      // request user info who are on this channel
+      // todo: when joining a channel, all user's info on this channel should be returned
+      users.forEach(function (uid) {
+        $.ajax({
+          type: 'GET',
+          url:  pfc.options.serverUrl + '/users/'+uid+'/',
+        }).done(function (userdata) {
+          pfc.users[userdata.id] = userdata;
+          pfc.appendUser(userdata);
+        }).error(function (err) {
+          console.log(err);
+        });
+      });
+      
+      pfc.readPendingMessages(true); // true = loop
+      
+    }).error(function (err) {
+      console.log(err);
+    });
+    
+
+  };
   
+
+  /**
+   * Post a message to a channel
+   */
+  Plugin.prototype.postToChannel = function(cid, msg) {
+
+    $.ajax({
+      type: 'POST',
+      url:  pfc.options.serverUrl + '/channels/'+cid+'/msg/',
+      data: { message: msg },
+    }).done(function (msg) {
+      pfc.appendMessage(msg);
+    }).error(function (err) {
+      console.log(err);
+    });
+
+  };
+
+
   /**
    * Appends a username in the user list 
    * returns the id of the user's dom element
@@ -266,8 +277,8 @@
 
 
   /**
-    * Check if the backlink is in the page
-    */
+   * Check backlink in the page
+   */
   Plugin.prototype.hasBacklink = function() {
     var backlink = $('a[href="http://www.phpfreechat.net"]').length;
     if (!backlink) {
@@ -284,7 +295,9 @@
     return true;
   }
 
-
+  /**
+   * Load HTML used by the interface in the browser DOM
+   */
   Plugin.prototype.loadHTML = function () {
     // load chat HTML
     $(pfc.element).html(
@@ -395,6 +408,15 @@
       +'      </div>'
     );
 
+    // connect the textarea enter key event
+    $('.pfc-compose textarea').keydown(function (evt) {
+      if (evt.keyCode == 13 && evt.shiftKey == false) {
+        pfc.postToChannel(pfc.cid, $('.pfc-compose textarea').val());
+        $('.pfc-compose textarea').val('');
+        return false;
+      }
+    });
+
     // once html is loaded init modalbox
     // because modalbox is hooked in pfc's html
     modalbox.init();
@@ -407,7 +429,11 @@
     setTimeout(function () { $(pfc.element).trigger('pfc-loaded', [ pfc ]) }, 0);
   };
 
-  Plugin.prototype.tryToLogin = function (credentials, callback) {
+  /**
+   * Login the user
+   * Shows a popup if no credentials are provided
+   */
+  Plugin.prototype.login = function (credentials, callback) {
     var h = credentials ? { 'Pfc-Authorization': 'Basic '+$.base64.encode(credentials.login + ':' + credentials.password) } : {};
     var d = credentials ? {'email': credentials.email} : null;
     $.ajax({
@@ -424,7 +450,10 @@
     });
   };
 
-  Plugin.prototype.tryToLogout = function (callback) {
+  /**
+   * Logout the user from the chat
+   */
+  Plugin.prototype.logout = function (callback) {
     $.ajax({
       type: 'DELETE',
       url:  pfc.options.serverUrl + '/auth',
@@ -436,14 +465,18 @@
     });
   };
   
-  Plugin.prototype.showAuthForm = function (err) {
+  /**
+   * Open the authentication dialog box (login, email, password) 
+   * msg: message to display
+   */
+  Plugin.prototype.showAuthForm = function (msg) {
     modalbox.open(
         '<form>'
       +'  <input type="text" name="login" placeholder="Login"/><br/>'
       //+'  <input type="text" name="password" placeholder="Password"/><br/>'
       +'  <input type="text" name="email" placeholder="Email"/><br/>'
       +'  <input type="submit" name="submit" value="Sign in" />'
-      +(err ? '<p>'+err+'</p>' : '')
+      +(msg ? '<p>'+msg+'</p>' : '')
       +'</form>'
     ).submit(function () {
       var login    = $(this).find('[name=login]').attr('value');
@@ -451,14 +484,13 @@
       var email    = $(this).find('[name=email]').attr('value');
       if (!login) return false;
       
-      pfc.tryToLogin({'login': login, 'password': password, 'email': email});
+      pfc.login({'login': login, 'password': password, 'email': email});
       modalbox.close(true);
       
       return false;
     }).find('[name=login]').focus();
   };
 
-  
   // multiple instantiations are forbidden
   $.fn[pluginName] = function ( options ) {
       return this.each(function () {
@@ -511,6 +543,6 @@
         });
       }).trigger('resize');
     }
-  }
+  };
 
 }(jQuery, window));
