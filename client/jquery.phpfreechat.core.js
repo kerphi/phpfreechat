@@ -21,6 +21,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
           pfc.users[m.sender] = m.body; // store new joined user data
           m.body = pfc.users[m.sender].name + ' joined Default channel';
           pfc.appendMessage(m); // post the message
+          pfc.appendUser(pfc.users[m.sender]); // append the user to the list
         } else {
           console.log('not implemented message type');
         }
