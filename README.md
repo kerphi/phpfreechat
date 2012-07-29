@@ -19,7 +19,7 @@ Add a piece of HTML in your `<body>` where you want the chat to be displayed:
 
 Hook the phpfreechat plugin to this element:
 
-```javascript
+```html
 <script>
   $('#mychat').phpfreechat();
 </script>
@@ -34,11 +34,9 @@ Hook the phpfreechat plugin to this element:
 
 Example:
 ```javascript
-<script>
-  $('#mychat').phpfreechat({
-    refresh_delay: 2000
-  });
-</script>
+$('#mychat').phpfreechat({
+  refresh_delay: 2000
+});
 ```
 
 ## Modules (client side)
