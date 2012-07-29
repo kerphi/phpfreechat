@@ -15,7 +15,15 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }).done(function (msgs) {
 
       msgs.forEach(function (m,i) {
-        pfc.appendMessage(m);
+        if (m.type == 'msg') {
+          pfc.appendMessage(m);
+        } else if (m.type == 'join') {
+          pfc.users[m.sender] = m.body; // store new joined user data
+          m.body = pfc.users[m.sender].name + ' joined Default channel';
+          pfc.appendMessage(m); // post the message
+        } else {
+          console.log('not implemented message type');
+        }
       });
       if (loop) {
         setTimeout(function () { pfc.readPendingMessages(true) }, pfc.options.refresh_delay);
@@ -183,6 +191,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   pfc.appendMessage = function(msg) {
 
     // default values
+    msg.from      = (msg.type == 'msg') ? msg.sender : 'system';
     msg.name      = (pfc.users[msg.sender] != undefined) ? pfc.users[msg.sender].name : '???';
     msg.body      = (msg.body != undefined) ? msg.body : '';
     msg.timestamp = (msg.timestamp != undefined) ? msg.timestamp : Math.round(new Date().getTime() / 1000);
@@ -191,17 +200,24 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     var groupmsg_last_dom = groupmsg_dom = $(pfc.element).find('.pfc-messages .messages-group:last');
     var messages_dom = $(pfc.element).find('.pfc-messages');
     
-    if (groupmsg_dom.attr('data-from') != msg.name) {
+    if (groupmsg_dom.attr('data-from') != msg.from) {
       var html = $('<div class="messages-group" data-stamp="" data-from="">'
 //          +'            <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000001?d=wavatar&s=30" alt="" /></div>'
 //        +'            <div class="avatar"><div style="width:30px; height: 30px; background-color: #DDD;"></div></div>'
         +'            <div class="date"></div>'
         +'            <div class="name"></div>'
         +'          </div>');
-        
+      
+      // system messages (join)
+      if (msg.from == 'system') {
+        html.addClass('system-message');
+        html.find('.name').remove();
+        html.find('.avatar').remove();
+      }
+
       // fill the html fragment
       html.find('.name').text(msg.name);
-      html.attr('data-from', msg.name);
+      html.attr('data-from', msg.from);
       html.find('.date').text(msg.date);
       html.attr('data-stamp', msg.timestamp);
         

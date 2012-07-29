@@ -2,6 +2,7 @@
 
 include_once 'container/channels.php';
 include_once 'container/users.php';
+include_once 'container/messages.php';
 
 class Route_channels {
 
@@ -134,7 +135,6 @@ class Route_channels_msg {
     }
 
     // post message
-    include_once 'routes/messages.php';
     $msg = Container_messages::postMsgToChannel($this->rc->cid, $uid, $req['params']['body']);
 
     header("HTTP/1.1 200");
@@ -206,8 +206,7 @@ class Route_channels_users {
       touch($cupath);
       
       // post a joind message (todo: add a 'join' type to the message)
-      include_once 'routes/messages.php';
-      $msg = Container_messages::postMsgToChannel($this->rc->cid, $uid, $uid.' joined Default room');
+      $msg = Container_messages::postMsgToChannel($this->rc->cid, $uid, null, 'join');
       
       header('HTTP/1.1 201 User joined the channel');
       header('Content-Type: application/json; charset=utf-8');

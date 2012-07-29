@@ -13,14 +13,22 @@ class Container_messages {
   static public function postMsgToChannel($cid, $uid, $body, $type = 'msg') {
 
     $mid = self::generateMid($cid);
-    $msg = json_encode(array(
+    $msg = array(
       'id'        => $mid,
       'sender'    => $uid,
       'recipient' => 'channel|'.$cid,
       'type'      => $type,
       'body'      => $body,
       'timestamp' => time(),
-    ));
+    );
+
+    // when a join message is sent, body contains user's data
+    if ($type == 'join') {
+      $msg['body'] = Container_users::getUserData($uid);
+    }
+
+    // json encode msg before storing
+    $msg = json_encode($msg);
 
     // search users subscribed to the channel
     foreach(Container_channels::getChannelUsers($cid) as $subuid) {
