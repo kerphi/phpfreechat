@@ -128,14 +128,14 @@ class Route_channels_msg {
     }
 
     // check that request content contains a message
-    if (!isset($req['params']['message']) or $req['params']['message'] === '') {
+    if (!isset($req['params']['body']) or $req['params']['body'] === '') {
       header("HTTP/1.1 400 Missing parameter [message]");
       return;
     }
 
     // post message
     include_once 'routes/messages.php';
-    $msg = Container_messages::postMsgToChannel($this->rc->cid, $uid, $req['params']['message']);
+    $msg = Container_messages::postMsgToChannel($this->rc->cid, $uid, $req['params']['body']);
 
     header("HTTP/1.1 200");
     header('Content-Type: application/json; charset=utf-8');
@@ -215,7 +215,6 @@ class Route_channels_users {
       return;
     }
   }
-
 
 }
 

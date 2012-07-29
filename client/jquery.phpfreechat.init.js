@@ -47,11 +47,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     });
 
   }
-  pfc.hello = function() {
-    console.log('hello ' + this.p._name);
-    return this;
-  };
-
 
   /**
    * Check backlink in the page

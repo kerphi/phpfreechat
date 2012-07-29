@@ -18,12 +18,12 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         pfc.appendMessage(m);
       });
       if (loop) {
-        setTimeout(pfc.readPendingMessages, pfc.options.refresh_delay);
+        setTimeout(function () { pfc.readPendingMessages(true) }, pfc.options.refresh_delay);
       }
     }).error(function (err) {
       console.log(err);
       if (loop) {
-        setTimeout(pfc.readPendingMessages, pfc.options.refresh_delay);
+        setTimeout(function () { pfc.readPendingMessages(true) }, pfc.options.refresh_delay);
       }
     });
 
@@ -66,7 +66,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     $.ajax({
       type: 'POST',
       url:  pfc.options.serverUrl + '/channels/'+cid+'/msg/',
-      data: { message: msg },
+      data: { body: msg },
     }).done(function (msg) {
       pfc.appendMessage(msg);
     }).error(function (err) {
@@ -142,9 +142,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   };
   
   /**
-    * Remove a user from the user list
-    * returns true if user has been found, else returns false
-    */
+   * Remove a user from the user list
+   * returns true if user has been found, else returns false
+   */
   pfc.removeUser = function(userid) {
     var removed = ($(pfc.element).find('#user_'+userid).remove().length > 0);
     pfc.updateRolesTitles();
@@ -152,8 +152,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   }
 
   /**
-    * Hide or show the roles titles
-    */
+   * Hide or show the roles titles
+   */
   pfc.updateRolesTitles = function() {
     // do not show/hide role titles because not planned for 2.0
     return;
@@ -169,8 +169,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   }
 
   /**
-    * Clear the user list
-    */
+   * Clear the user list
+   */
   pfc.clearUserList = function() {
     $(pfc.element).find('li.user').remove();
     pfc.updateRolesTitles();
@@ -178,13 +178,13 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   }
 
   /**
-    * Appends a message to the interface 
-    */
+   * Appends a message to the interface 
+   */
   pfc.appendMessage = function(msg) {
 
     // default values
     msg.name      = (pfc.users[msg.sender] != undefined) ? pfc.users[msg.sender].name : '???';
-    msg.message   = (msg.message != undefined) ? msg.message : '';
+    msg.body      = (msg.body != undefined) ? msg.body : '';
     msg.timestamp = (msg.timestamp != undefined) ? msg.timestamp : Math.round(new Date().getTime() / 1000);
     msg.date      = new Date(msg.timestamp*1000).toLocaleTimeString();
     
@@ -211,8 +211,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }
 
     // add the message to the latest active message group
-    msg.message = $('<pre></pre>').text(msg.message).html();
-    var message = $('<div class="message"></div>').html(msg.message);
+    msg.body = $('<pre></pre>').text(msg.body).html();
+    var message = $('<div class="message"></div>').html(msg.body);
     groupmsg_dom.append(message);
 
     // scroll to the last message and memorize the scroll position

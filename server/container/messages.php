@@ -10,14 +10,15 @@ class Container_messages {
    * uid : sender
    * msg : message to send
    */
-  static public function postMsgToChannel($cid, $uid, $msg) {
+  static public function postMsgToChannel($cid, $uid, $body, $type = 'msg') {
 
     $mid = self::generateMid($cid);
     $msg = json_encode(array(
       'id'        => $mid,
       'sender'    => $uid,
       'recipient' => 'channel|'.$cid,
-      'message'   => $msg,
+      'type'      => $type,
+      'body'      => $body,
       'timestamp' => time(),
     ));
 
