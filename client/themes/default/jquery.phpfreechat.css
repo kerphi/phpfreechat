@@ -204,14 +204,12 @@ div.pfc-content div.pfc-messages .messages-group .date {
 div.pfc-content div.pfc-messages .messages-group .name {
   padding: 0;
   margin: 0;
-  padding-left: 50px;
   word-wrap: break-word;
   font-weight: bold;
 }
 div.pfc-content div.pfc-messages .messages-group .message {
   padding: 0;
   margin: 0;
-  padding-left: 50px;
   word-wrap: break-word;
   white-space: pre;
 }
