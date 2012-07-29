@@ -8,6 +8,7 @@ test: test-server test-client
 
 # run just server tests
 test-server: dummy
+	@rm -rf server/data/*
 	@vows $(TESTS) --spec
 
 # run just client tests

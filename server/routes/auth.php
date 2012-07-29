@@ -78,15 +78,15 @@ class Route_auth {
     }
     
     // store userdata in a cache in order to return it later
-    $cache = $_SESSION['userdata'];
-    
+    $ud = $_SESSION['userdata'];
+
     // logout
     $_SESSION['userdata'] = array();
     session_destroy();
-    
+
     // return ok and the user data
-    header("HTTP/1.1 204 Disconnected");
+    header("HTTP/1.1 201 Disconnected");
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($userdata);
+    echo json_encode($ud);
   }
 }
