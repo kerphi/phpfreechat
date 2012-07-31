@@ -17,7 +17,7 @@ test-client: dummy
 
 # install needed packages for tests run
 setup-server-test:
-	@cd $(path)/server/tests && npm install vows request && npm install -g vows
+	@cd $(path)/server/tests && npm install vows request async && npm install -g vows
 
 setup-client-test:
 	@cd $(path) && wget http://phantomjs.googlecode.com/files/phantomjs-1.5.0-linux-x86-dynamic.tar.gz
