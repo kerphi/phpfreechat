@@ -57,7 +57,7 @@ Example: TODO
 
 ## Routes design (server side)
 
-* `/auth`
+* `/auth`                          (authentication)
 * `/channels/`                     (list available channels)
 * `/channels/:cid/name`            (channel little name)
 * `/channels/:cid/users/`          (list users in the channel)
