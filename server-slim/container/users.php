@@ -49,7 +49,7 @@ class Container_users {
   static public function setUserData($uid, $userdata) {
     // create or update the index
     if (isset($userdata['name'])) {
-      if (self::checkUser($uid)) {
+      if (self::checkUserExists($uid)) {
         Container_indexes::rmIndex('users/name', self::getUserData($uid, 'name'));
       }
       Container_indexes::setIndex('users/name', $userdata['name'], $uid);
@@ -94,7 +94,7 @@ class Container_users {
     return $injson ? '['.implode(',', $msgs).']' : array_map("json_decode", $msgs);
   }
 
-  static public function checkUser($uid) {
+  static public function checkUserExists($uid) {
     // do not just check uid existance
     // also check user's 'name' 
     // or it will return bad things for setUserData function  

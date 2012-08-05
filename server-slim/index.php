@@ -8,5 +8,7 @@ $res = $app->response();
 $res['X-Powered-By'] = 'phpFreeChat';
 
 require 'routes/auth.php';
+require 'routes/channels.php';
+require 'routes/users.php';
 
 $app->run();

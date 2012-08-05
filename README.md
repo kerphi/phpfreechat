@@ -69,5 +69,9 @@ Example: TODO
 
 ## File container structure (server side)
 
+* `/indexes/users/name/:name`      (index on user's nicknames: name -> uid)
+* `/users/:uid/index.json`         (full user data without messages and channels)
+* `/users/:uid/name`               (user name)
+* `/users/:uid/messages/:mid`      (pending messages for the user)
+* `/users/:uid/channels/:cid`      (channels joinded by the user)
 * TODO
-* `/indexes/users/name/`           (index on user's nicknames: name -> uid)
