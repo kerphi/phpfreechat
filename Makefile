@@ -1,17 +1,23 @@
 path = $(shell pwd)
 TESTS=$(wildcard $(path)/server/tests/*.js)
+TESTSSLIM=$(wildcard $(path)/server-slim/tests/*.js)
 
 dummy:
 
 # run all tests
 test: test-server test-client
 
-# run just server tests
+# run server tests
 test-server: dummy
 	@rm -rf server/data/*
 	@vows $(TESTS) --spec
 
-# run just client tests
+# run server-slim tests
+test-slim: dummy
+	@rm -rf server-slim/data/*
+	@vows $(TESTSSLIM) --spec
+
+# run client tests
 test-client: dummy
 	@./phantomjs/bin/phantomjs ./phantomjs/examples/run-qunit.js http://127.0.0.1:32773/phpfreechat/client/tests/test1.html
 

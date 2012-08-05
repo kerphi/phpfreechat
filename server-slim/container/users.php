@@ -4,24 +4,14 @@ include_once 'container/indexes.php';
 
 class Container_users {
   
-  static public function getUsersDir() {
+  static public function getDir() {
     $datadir = __DIR__.'/../data';
     $udir = $datadir.'/users';
     return $udir;
   }
-  
-  static public function getUserDir($uid) {
-    $udir = self::getUsersDir();
-    return $udir.'/'.$uid;
-  }
-  
-  static public function getUserMsgDir($uid) {
-    $udir = self::getUsersDir();
-    return $udir.'/'.$uid.'/messages';
-  }
-  
+
   static public function generateUid() {
-    $udir = self::getUsersDir();
+    $udir = self::getDir();
     do {
       $uid = sha1(uniqid('', true));
       $upath = $udir.'/'.$uid;
@@ -40,7 +30,7 @@ class Container_users {
    * getUserData('xxxx', null, true);
    */
   static public function getUserData($uid, $field = null, $injson = false) {
-    $udir = self::getUserDir($uid);
+    $udir = self::getDir().'/'.$uid;
     if ($field) {
       $data = file_get_contents($udir.'/'.$field);
       $data = $injson ? json_encode($data) : $data;
@@ -67,7 +57,7 @@ class Container_users {
   
     // write user data on disk
     $ignore_keys = array('.', '..', 'index.json', 'messages', 'channels', 'id');
-    $udir = self::getUserDir($uid);
+    $udir = self::getDir().'/'.$uid;
     foreach($userdata as $k => $v) {
       if (in_array($k, $ignore_keys)) {
         continue;
@@ -86,7 +76,7 @@ class Container_users {
   
   static public function getUsers() {
     $users = array();
-    foreach(scandir(self::getUsersDir()) as $value) {
+    foreach(scandir(self::getDir()) as $value) {
         if($value === '.' || $value === '..') {continue;}
         $users[] = $value;
     }
@@ -94,7 +84,7 @@ class Container_users {
   }
   
   static public function getUserMsgs($uid, $injson = false) {
-    $umdir = self::getUserMsgDir($uid);
+    $umdir = self::getUserDir().'/'.$uid.'/messages';
     $msgs = array();
     foreach(scandir($umdir) as $value) {
       if($value === '.' || $value === '..') {continue;}
@@ -106,18 +96,13 @@ class Container_users {
 
   static public function checkUser($uid) {
     // do not just check uid existance
-    // also check user name 
+    // also check user's 'name' 
     // or it will return bad things for setUserData function  
-    return file_exists(self::getUserDir($uid).'/name');
-  }
-
-  static public function getUserChannelsDir($uid) {
-    $udir = self::getUsersDir();
-    return $udir.'/'.$uid.'/channels';
+    return file_exists(self::getDir().'/'.$uid.'/name');
   }
 
   static public function getUserChannels($uid, $injson = false) {
-    $ucdir = self::getUserChannelsDir($uid);
+    $ucdir = self::getDir().'/'.$uid.'/channels';
     $channels = array();
     foreach(scandir($ucdir) as $value) {
       if($value === '.' || $value === '..') {continue;}
@@ -128,7 +113,7 @@ class Container_users {
 
   static public function joinChannel($uid, $cid) {
     $cupath = Container_channels::getChannelUserPath($cid, $uid);    
-    $ucpath  = self::getUserChannelsDir($uid).'/'.$cid;
+    $ucpath  = self::getDir().'/'.$uid.'/channels/'.$cid;
     if (file_exists($ucpath) and file_exists($cupath)) {
       return false;
     } else {
@@ -138,7 +123,7 @@ class Container_users {
   }
 
   static public function leaveChannel($uid, $cid) {
-    $ucdir = self::getUserChannelsDir($uid);
+    $ucdir = self::getDir().'/'.$uid.'/channels';
     if (file_exists($ucdir.'/'.$cid)) {
       unlink($ucdir.'/'.$cid);
       return true;
