@@ -25,9 +25,9 @@ $app->get('/channels/:cid/', function ($cid) use ($app, $req, $res) {
  * List users on a channel
  */
 $app->get('/channels/:cid/users/', function ($cid) use ($app, $req, $res) {
-  $res->status(501);
+  $res->status(200);
   $res['Content-Type'] = 'application/json; charset=utf-8';
-  $res->body('list users on a channel '.$cid);
+  $res->body(json_encode(Container_channels::getChannelUsers($cid)));
 });
 
 /**
@@ -72,6 +72,17 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
     $res->body(json_encode(Container_channels::getChannelUsers($cid, true)));
     return;
   }
+
+});
+
+/**
+ * Leave a channel
+ */
+$app->delete('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $res) {
+  
+  $res->status(501);
+  $res['Content-Type'] = 'application/json; charset=utf-8';
+  $res->body($uid.' leave channel '.$cid);
 
 });
 

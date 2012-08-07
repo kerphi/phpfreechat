@@ -112,7 +112,7 @@ vows.describe('Messages: send and receive').addBatch({
     },
 
     'server returns success status codes': function (error, results, requests, steps) {
-      var codes = [ 200, 200, 200, 200, 200, 200 ];
+      var codes = [ 200, 200, 200, 200, 200, 200, 200, 200 ];
       results.forEach(function (r, i) {
         assert.equal(r[0].statusCode, codes[i], 'response '+ i +' code is wrong (expected '+ codes[i] +' got '+ r[0].statusCode +')');
       });

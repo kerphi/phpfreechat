@@ -3,6 +3,7 @@
 var vows = require('vows'),
     assert = require('assert'),
     request = require('request'),
+    async = require('async'),
     baseurl = 'http://127.0.0.1:32773/server-slim',
     j1 = request.jar(),
     j2 = request.jar(),
@@ -125,5 +126,103 @@ vows.describe('Channels route').addBatch({
       assert.include(userids, userdata2.id);
     },
   },
+
+}).addBatch({
+
+  'when two users join a channel and one user leave the channel': {
+    topic: function () {
+      var self = this;
+      var requests = [
+        // [0] auth u1
+        function USER1LOGIN(callback) {
+          request({
+            method: 'GET',
+            url: baseurl+'/auth',
+            headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testm1:password").toString('base64') }, 
+            jar: j1,
+          }, function (err, res, body) {
+            userdata1 = JSON.parse(body); 
+            callback(err, res, body);
+          });
+        },
+        // [1] auth u2
+        function USER2LOGIN(callback) {
+          request({
+            method: 'GET',
+            url: baseurl+'/auth',
+            headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testm2:password").toString('base64') }, 
+            jar: j2,
+          }, function (err, res, body) {
+            userdata2 = JSON.parse(body); 
+            callback(err, res, body);
+          });
+        },
+        // [2] u1 join cid1
+        function USER1JOIN(callback) {
+          request({
+            method: 'POST',
+            url: baseurl+'/channels/'+cid1+'/users/'+userdata1.id,
+            jar: j1,
+          }, callback);
+        },
+        // [3] u2 join cid1
+        function USER2JOIN(callback) {
+          request({
+            method: 'PUT',
+            url: baseurl+'/channels/'+cid1+'/users/'+userdata2.id,
+            jar: j2,
+          }, callback);
+        },
+        // [4] u2 list channel users
+        function USER1LISTWITHU2(callback) {
+          request({
+            method: 'GET',
+            url: baseurl+'/channels/'+cid1+'/users/',
+            jar: j1,
+          }, callback);
+        },
+        // [5] u2 leave cid1
+        function USER2LEAVE(callback) {
+          request({
+            method: 'DELETE',
+            url: baseurl+'/channels/'+cid1+'/users/'+userdata2.id,
+            jar: j2,
+          }, callback);
+        },
+        // [6] u2 list channel users
+        function USER1LISTWITHOUTU2(callback) {
+          request({
+            method: 'GET',
+            url: baseurl+'/channels/'+cid1+'/users/',
+            jar: j1,
+          }, callback);
+        },
+      ];
+
+      // store function names in the steps array
+      // so following asserts are easier to read
+      var steps = {};
+      requests.forEach(function (fn, i) {
+        steps[fn.name] = i;
+      });
+
+      // run the function array in a sequential order
+      // each function result is stored in the 'results' array
+      async.series(requests, function (error, results) {
+        self.callback(error, results, requests, steps);
+      });
+    },
+
+    'server returns success status codes': function (error, results, requests, steps) {
+      var codes = [ 200, 200, 200, 200, 200, 200, 200 ];
+      results.forEach(function (r, i) {
+        assert.equal(r[0].statusCode, codes[i], 'response '+ i +' code is wrong (expected '+ codes[i] +' got '+ r[0].statusCode +')');
+      });
+    },
+
+    // TODO write test to check users lists
+     
+  },
+
 
 }).export(module);
