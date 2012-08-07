@@ -118,7 +118,7 @@ vows.describe('Messages: send and receive').addBatch({
       });
     },
 
-    'server stores and returns messages': function (error, results, requests, steps) {
+    'server stores and returns user1 messages': function (error, results, requests, steps) {
       try {
         var messages = JSON.parse(results[steps.USER1READMSG][0].body);       
       } catch(err) {
@@ -130,6 +130,20 @@ vows.describe('Messages: send and receive').addBatch({
       assert.equal(messages[0].sender, userdata2.id);      
       assert.equal(messages[0].type, 'msg');
       assert.equal(messages[0].body, 'my user2 message');
+    },
+
+    'server stores and returns user2 messages': function (error, results, requests, steps) {
+      try {
+        var messages = JSON.parse(results[steps.USER2READMSG][0].body);       
+      } catch(err) {
+        assert.isNull(err, 'response body should be JSON formated');
+      }
+
+      assert.equal(messages.length, 1, 'user2 should have received one message (user1 message)');
+
+      assert.equal(messages[0].sender, userdata1.id);      
+      assert.equal(messages[0].type, 'msg');
+      assert.equal(messages[0].body, 'my user1 message');
     },
   },
 }).export(module);
