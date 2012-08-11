@@ -60,7 +60,7 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
   @mkdir($cpath.'/users', 0777, true);
   
   if (!Container_users::joinChannel($uid, $cid)) {
-    $res->status(200); // header('HTTP/1.1 200 User already subscribed');
+    $res->status(200); // User already joined the channel
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res->body(json_encode(Container_channels::getChannelUsers($cid, true)));
     return;
@@ -68,7 +68,7 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
     // post a join message
     $msg = Container_messages::postMsgToChannel($cid, $uid, null, 'join');
     
-    $res->status(201); //    header('HTTP/1.1 201 User joined the channel');
+    $res->status(201); // User joined the channel
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res->body(json_encode(Container_channels::getChannelUsers($cid, true)));
     return;

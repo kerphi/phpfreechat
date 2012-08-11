@@ -37,7 +37,7 @@ vows.describe('Channels route').addBatch({
       });
     },
     'server returns ok': function (error, res, body) {
-      assert.equal(res.statusCode, 200);
+      assert.equal(res.statusCode, 201);
     },
     'server returns the user list': function (error, res, body) {
       try {
@@ -73,7 +73,7 @@ vows.describe('Channels route').addBatch({
         });
       },
       'server returns ok': function (error, res, body) {
-        assert.equal(res.statusCode, 200);
+        assert.equal(res.statusCode, 201);
       },
       'server returns the user list': function (error, res, body) {
         try {
