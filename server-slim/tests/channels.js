@@ -160,7 +160,7 @@ vows.describe('Channels route').addBatch({
         // [2] u1 join cid1
         function USER1JOIN(callback) {
           request({
-            method: 'POST',
+            method: 'PUT',
             url: baseurl+'/channels/'+cid1+'/users/'+userdata1.id,
             jar: j1,
           }, callback);
@@ -220,7 +220,15 @@ vows.describe('Channels route').addBatch({
       });
     },
 
-    // TODO write test to check users lists
+    'server returns array with only user1 id': function (error, results, requests, steps) {
+      try {
+        var userids = JSON.parse(results[steps.USER1LISTWITHOUTU2][0].body);
+      } catch(err) {
+        assert.isNull(err, 'response body should be JSON formated');
+      }
+      assert.lengthOf(userids, 1);
+      assert.deepEqual([ userdata1.id ], userids);
+    },
      
   },
 

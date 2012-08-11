@@ -123,12 +123,24 @@ class Container_users {
   }
 
   static public function leaveChannel($uid, $cid) {
-    $ucdir = self::getDir().'/'.$uid.'/channels';
-    if (file_exists($ucdir.'/'.$cid)) {
-      unlink($ucdir.'/'.$cid);
-      return true;
+    $ret = true;
+    
+    // clean user data
+    $ucpath  = self::getDir().'/'.$uid.'/channels/'.$cid;
+    if (file_exists($ucpath)) {
+      unlink($ucpath);
     } else {
-      return false;
+      $ret = false;
     }
+
+    // clean channel data
+    $cupath = Container_channels::getChannelUserPath($cid, $uid);    
+    if (file_exists($cupath)) {
+      unlink($cupath);
+    } else {
+      $ret = false;
+    }
+
+    return $ret;
   }
 }
