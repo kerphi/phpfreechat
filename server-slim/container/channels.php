@@ -1,5 +1,8 @@
 <?php
 
+include_once 'container/indexes.php';
+include_once 'container/users.php';
+
 class Container_channels {
   
   static public function getChannelsDir() {

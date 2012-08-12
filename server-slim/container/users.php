@@ -84,7 +84,7 @@ class Container_users {
   }
   
   static public function getUserMsgs($uid, $injson = false) {
-    $umdir = self::getUserDir().'/'.$uid.'/messages';
+    $umdir = self::getDir().'/'.$uid.'/messages';
     $msgs = array();
     foreach(scandir($umdir) as $value) {
       if($value === '.' || $value === '..') {continue;}
@@ -119,6 +119,7 @@ class Container_users {
     } else {
       touch($ucpath);
       touch($cupath);
+      return true;
     }
   }
 

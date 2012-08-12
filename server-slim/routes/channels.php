@@ -2,6 +2,7 @@
 
 include_once 'container/users.php';
 include_once 'container/channels.php';
+include_once 'container/messages.php';
 
 /**
  * Returns channel list
@@ -34,7 +35,7 @@ $app->get('/channels/:cid/users/', function ($cid) use ($app, $req, $res) {
  * Join a channel
  */
 $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $res) {
-  
+
   // check user acces
   session_start();
   if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
