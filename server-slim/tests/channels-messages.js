@@ -120,6 +120,8 @@ vows.describe('Channels system messages').addBatch({
       },
       'server returns a join system message to user1': function (err, user1msg, user2msg) {
         assert.lengthOf(user1msg, 1);
+        assert.equal(user1msg[0].type, 'join');
+        assert.equal(user1msg[0].sender, userdata2.id);        
       },
       
       'and user1 leave the channel': {
@@ -143,7 +145,7 @@ vows.describe('Channels system messages').addBatch({
                 url: baseurl+'/users/'+userdata1.id+'/msg/',
                 jar: j1,
               }, function (err, res, body) {
-                user1msg = []; // todo <- body
+                user1msg = JSON.parse(body);
                 callback(err, res, body);
               });
             },
@@ -154,7 +156,7 @@ vows.describe('Channels system messages').addBatch({
                 url: baseurl+'/users/'+userdata2.id+'/msg/',
                 jar: j2,
               }, function (err, res, body) {
-                user2msg = []; // todo <- body
+                user2msg = JSON.parse(body);
                 callback(err, res, body);
               });
             },
@@ -175,10 +177,12 @@ vows.describe('Channels system messages').addBatch({
 
         },
         'server does not return any system message to user1': function (err, user1msg, user2msg) {
-          assert.ok(false);
+          assert.lengthOf(user1msg, 0);
         },
         'server returns a leave system message to user2': function (err, user1msg, user2msg) {
-          assert.ok(false);
+          assert.lengthOf(user2msg, 1);
+          assert.equal(user2msg[0].type, 'leave');
+          assert.equal(user2msg[0].sender, userdata1.id);        
         },
       },
 
