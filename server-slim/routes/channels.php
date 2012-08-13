@@ -153,6 +153,8 @@ $app->post('/channels/:cid/msg/', function ($cid) use ($app, $req, $res) {
   $data = json_decode($req->getBody());
   if (!isset($data->body) or $data->body === '') {
     $res->status(400); // Missing parameter [body]
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body("{ error: 'Missing parameter [body]' }");
     return;
   }
 
