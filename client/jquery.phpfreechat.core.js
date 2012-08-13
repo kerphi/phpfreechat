@@ -22,6 +22,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
           m.body = pfc.users[m.sender].name + ' joined Default channel';
           pfc.appendMessage(m); // post the message
           pfc.appendUser(pfc.users[m.sender]); // append the user to the list
+        } else if (m.type == 'leave') {
+          m.body = pfc.users[m.sender].name + ' leave Default channel';
+          pfc.appendMessage(m); // post the message
+          pfc.removeUser(m.sender); // append the user to the list
         } else {
           console.log('not implemented message type');
         }
@@ -44,8 +48,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   pfc.join = function(cid) {
 
     $.ajax({
-      type: 'POST',
-      url:  pfc.options.serverUrl + '/channels/'+cid+'/users/',
+      type: 'PUT',
+      url:  pfc.options.serverUrl + '/channels/'+cid+'/users/'+pfc.uid,
     }).done(function (users) {
       
       // store userdata in the cache 
@@ -75,7 +79,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     $.ajax({
       type: 'POST',
       url:  pfc.options.serverUrl + '/channels/'+cid+'/msg/',
-      data: { body: msg },
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ body: msg }),
     }).done(function (msg) {
       pfc.appendMessage(msg);
     }).error(function (err) {
@@ -154,8 +159,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    * Remove a user from the user list
    * returns true if user has been found, else returns false
    */
-  pfc.removeUser = function(userid) {
-    var removed = ($(pfc.element).find('#user_'+userid).remove().length > 0);
+  pfc.removeUser = function(uid) {
+    var removed = ($(pfc.element).find('#user_'+uid).remove().length > 0);
     pfc.updateRolesTitles();
     return removed;
   }
