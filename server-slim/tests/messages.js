@@ -15,7 +15,7 @@ var vows = require('vows'),
 
 vows.describe('Messages: send and receive').addBatch({
 
-  'when two users join a channel and post message': {
+  'when two users join a channel and post a message': {
     topic: function () {
       var self = this;
       var requests = [
@@ -46,7 +46,7 @@ vows.describe('Messages: send and receive').addBatch({
         // [2] u1 join cid1
         function USER1JOIN(callback) {
           request({
-            method: 'POST',
+            method: 'PUT',
             url: baseurl+'/channels/'+cid1+'/users/'+userdata1.id,
             jar: j1,
           }, callback);
@@ -112,7 +112,7 @@ vows.describe('Messages: send and receive').addBatch({
     },
 
     'server returns success status codes': function (error, results, requests, steps) {
-      var codes = [ 200, 200, 200, 200, 200, 200, 200, 200 ];
+      var codes = [ 200, 200, 201, 201, 200, 200, 200, 200 ];
       results.forEach(function (r, i) {
         assert.equal(r[0].statusCode, codes[i], 'response '+ i +' code is wrong (expected '+ codes[i] +' got '+ r[0].statusCode +')');
       });

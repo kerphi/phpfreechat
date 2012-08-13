@@ -127,7 +127,38 @@ $app->delete('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req,
  * Post a message on a channel
  */
 $app->post('/channels/:cid/msg/', function ($cid) use ($app, $req, $res) {
-  $res->status(501);
+
+  // check user acces
+  session_start();
+  if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
+    $res->status(401); // Need to authenticate
+    return;
+  }
+  $uid = $_SESSION['userdata']['id'];
+
+  
+  // check this user is online
+  if (!Container_users::checkUserExists($uid)) {
+    $res->status(400); // User is not connected
+    return;
+  }
+
+  // check this user has joined the channel
+  if (!Container_channels::checkChannelUser($cid, $uid)) {
+    $res->status(403); // You have to join channel before post a message
+    return;
+  }
+
+//   // check that request content contains a message
+//   if (!isset($req['params']['body']) or $req['params']['body'] === '') {
+//     header("HTTP/1.1 400 Missing parameter [body]");
+//     return;
+//   }
+
+  // post message
+  $msg = Container_messages::postMsgToChannel($cid, $uid, 'xxxx TODO xxxx');
+
+  $res->status(200);
   $res['Content-Type'] = 'application/json; charset=utf-8';
-  $res->body('post a messages on a channel '.$cid);
+  $res->body($msg);
 });
