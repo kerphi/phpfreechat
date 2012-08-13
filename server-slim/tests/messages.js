@@ -64,8 +64,7 @@ vows.describe('Messages: send and receive').addBatch({
           request({
             method: 'POST',
             url: baseurl+'/channels/'+cid1+'/msg/',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, // importent or PHP will not parse body
-            body: querystring.stringify({ body: 'my user2 message' }),
+            json: { body: 'my user2 message' },
             jar: j2,
           }, callback);
         },
@@ -76,14 +75,14 @@ vows.describe('Messages: send and receive').addBatch({
             url: baseurl+'/users/'+userdata1.id+'/msg/',
             jar: j1,
           }, callback);
+
         }, 
         // [6] u1 send a message on cid1
         function USER1SENDMSG(callback) {
           request({
             method: 'POST',
             url: baseurl+'/channels/'+cid1+'/msg/',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, // importent or PHP will not parse body
-            body: querystring.stringify({ body: 'my user1 message' }),
+            json: { body: 'my user1 message' },
             jar: j1,
           }, callback);
         },
@@ -112,7 +111,7 @@ vows.describe('Messages: send and receive').addBatch({
     },
 
     'server returns success status codes': function (error, results, requests, steps) {
-      var codes = [ 200, 200, 201, 201, 200, 200, 200, 200 ];
+      var codes = [ 200, 200, 201, 201, 201, 200, 201, 200 ];
       results.forEach(function (r, i) {
         assert.equal(r[0].statusCode, codes[i], 'response '+ i +' code is wrong (expected '+ codes[i] +' got '+ r[0].statusCode +')');
       });
@@ -123,13 +122,20 @@ vows.describe('Messages: send and receive').addBatch({
         var messages = JSON.parse(results[steps.USER1READMSG][0].body);       
       } catch(err) {
         assert.isNull(err, 'response body should be JSON formated');
-      }
-
+      }      
       assert.equal(messages.length, 2, 'user1 should have received two messages (join and normal message)');
 
-      assert.equal(messages[0].sender, userdata2.id);      
-      assert.equal(messages[0].type, 'msg');
-      assert.equal(messages[0].body, 'my user2 message');
+      messages.forEach(function (m) {
+        assert.equal(m.recipient, 'channel|' + cid1);      
+        assert.equal(m.sender, userdata2.id);
+        if (m.type == 'msg') {
+          assert.equal(m.body, 'my user2 message');
+        } else if (m.type = 'join') {
+          assert.equal(m.body.name, 'testm2');
+        } else {
+          assert.ok(false);
+        }        
+      });
     },
 
     'server stores and returns user2 messages': function (error, results, requests, steps) {
