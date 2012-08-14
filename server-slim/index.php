@@ -1,6 +1,7 @@
 <?php
 
 include_once __DIR__.'/lib/Slim/Slim/Slim.php';
+include_once __DIR__.'/config.php';
 
 $app = new Slim();
 

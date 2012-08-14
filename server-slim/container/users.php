@@ -1,5 +1,6 @@
 <?php
 
+include_once 'container/channels.php';
 include_once 'container/indexes.php';
 
 class Container_users {
@@ -73,6 +74,64 @@ class Container_users {
     }
     file_put_contents($udir.'/index.json', json_encode($ud));    
   }
+
+  /**
+   * Remove user's data
+   */
+  static public function rmUser($uid) {
+    $udir = self::getDir().'/'.$uid;
+    if (!is_dir($udir)) {
+      return false;
+    } else {
+      // remove user's indexes
+      Container_indexes::rmIndex('users/name', self::getUserData($uid, 'name'));
+      // remove user's data
+      rrmdir($udir);
+      return true;
+    }
+  }
+  
+  /**
+   * Update the last activity of a user
+   * Has to be called each time the user check his messages
+   */
+  static public function setIsAlive($uid) {
+    file_put_contents(self::getDir().'/'.$uid.'/timestamp', time());
+  }
+  
+  /**
+   * Run the garbage collector (disconnect timeouted users)
+   * Has to be called by each users when they check pending messages
+   */
+  static public function runGC() {
+    // get the GC time
+    $gc = __DIR__.'/../data/gc';
+    if (file_exists($gc)) {
+      $gctime = (integer)file_get_contents($gc);
+    } else {
+      $gctime = time();
+    }
+    
+    if (time() >= $gctime) {
+      // write next gc time
+      file_put_contents($gc, time()+$GLOBALS['pfc_timeout']);
+
+      // run the GC
+      foreach(self::getUsers() as $uid) {
+        $timestamp = file_get_contents(self::getDir().'/'.$uid.'/timestamp');
+        $timeouted = ($timestamp <= (time() - $GLOBALS['pfc_timeout']));
+        if ($timeouted) {
+          // disconnect the user (send leave messages on his channels)
+          foreach(self::getUserChannels($uid) as $cid) {
+            self::leaveChannel($uid, $cid);
+          }
+          // clear user data
+          self::rmUser($uid);
+        }
+      }
+    }
+  }
+  
   
   static public function getUsers() {
     $users = array();
@@ -144,4 +203,14 @@ class Container_users {
 
     return $ret;
   }
+}
+
+function rrmdir($dir) {
+    foreach(glob($dir . '/*') as $file) {
+        if(is_dir($file))
+            rrmdir($file);
+        else
+            unlink($file);
+    }
+    rmdir($dir);
 }

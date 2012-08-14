@@ -42,7 +42,7 @@ vows.describe('User timeout').addBatch({
           });
           
         }, 3000);
-
+        
       });
       
       // user2 auth
@@ -61,12 +61,13 @@ vows.describe('User timeout').addBatch({
               url: baseurl+'/users/'+userdata2.id+'/msg/',
               jar: j2,
             }, function (err, res, body) {
+              // TODO: the timeout leave message doesn't appear if no channels are joined
               tmsg = tmsg.concat(JSON.parse(body)); // get the timeout leave message of user1
             });
             user2readmsg();
           }, 1000);
-          user2readmsg();
         }
+        user2readmsg();
       });
 
     },

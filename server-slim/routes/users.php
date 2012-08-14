@@ -35,6 +35,11 @@ $app->get('/users/:uid/msg/', function ($uid) use ($app, $req, $res) {
     $res->status(403); // Forbidden
     return;
   }
+  
+  // store that user is alive
+  Container_users::setIsAlive($uid);
+  // run garbage collector
+  Container_users::runGC();
 
   $res->status(200);
   $res['Content-Type'] = 'application/json; charset=utf-8';

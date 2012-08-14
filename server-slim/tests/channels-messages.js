@@ -46,7 +46,11 @@ vows.describe('Channels system messages').addBatch({
       });
     },
     'server does not return any system message': function (error, res, body) {
-      user1msg = JSON.parse(body);
+      try {
+        user1msg = JSON.parse(body);
+      } catch(err) {
+        assert.isNull(err, 'response body should be JSON formated');
+      }
       assert.lengthOf(user1msg, 0);
     },
 

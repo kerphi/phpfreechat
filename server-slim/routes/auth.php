@@ -49,7 +49,8 @@ $app->get('/auth', function () use ($app, $req, $res) {
     );
     Container_users::setUserData($uid, $udata);
     $_SESSION['userdata'] = $udata;
-
+    Container_users::setIsAlive($uid);
+    
     $res->status(200);
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res->body(json_encode($_SESSION['userdata']));
