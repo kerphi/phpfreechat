@@ -23,9 +23,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
           pfc.appendMessage(m); // post the message
           pfc.appendUser(pfc.users[m.sender]); // append the user to the list
         } else if (m.type == 'leave') {
-          m.body = pfc.users[m.sender].name + ' leave Default channel';
+          m.body = pfc.users[m.sender].name + ' leave Default channel (' + m.body + ')';
           pfc.appendMessage(m); // post the message
-          pfc.removeUser(m.sender); // append the user to the list
+          pfc.removeUser(m.sender); // remove the user from the list
         } else {
           console.log('not implemented message type');
         }

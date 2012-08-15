@@ -72,6 +72,7 @@ class Container_users {
       }
       $ud[$v] = file_get_contents($udir.'/'.$v);
     }
+    $ud['id'] = $uid;
     file_put_contents($udir.'/index.json', json_encode($ud));    
   }
 
