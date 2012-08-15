@@ -10,12 +10,13 @@ var vows = require('vows'),
     j2 = request.jar(),
     userdata1 = {},
     userdata2 = {},
-    cid1 = 'cidtimeout_1',
-    cid2 = 'cidtimeout_2';
+    cid1 = 'ciddata_1',
+    cid2 = 'ciddata_2';
 
-vows.describe('User data').addBatch({
+vows.describe('User data')
 
-  'when connected user check his data': {
+.addBatch({
+  'when connected user check his own data': {
     topic: function () {
       var self = this;
       
@@ -41,6 +42,79 @@ vows.describe('User data').addBatch({
     'server returns a success code': function (error, res, body) {
       assert.equal(res.statusCode, 200);      
     },
+    'server returns user data': function (error, res, body) {
+       try {
+        var data = JSON.parse(body);
+      } catch(err) {
+        assert.isNull(err, 'response body should be JSON formated');
+      }
+      assert.equal(data.name, 'testdata1');  
+    },
+  },
+})
+
+.addBatch({
+  'when a user not on the same channel check user data of another user': {
+    topic: function () {
+      var self = this;
+      
+      // user2 auth
+      request({
+        method: 'GET',
+        url: baseurl+'/auth',
+        headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testdata2:password").toString('base64') }, 
+        jar: j2,
+      }, function (err, res, body) {
+        userdata2 = JSON.parse(body); 
+        
+        // check that the userdata are available
+        request({
+          method: 'GET',
+          url: baseurl+'/users/'+userdata1.id+'/',
+          jar: j2,
+        }, self.callback);
+        
+      });
+            
+    },
+    'server returns a forbidden code': function (error, res, body) {
+      assert.equal(res.statusCode, 403);      
+    },
+  },
+})
+
+
+.addBatch({
+  'when user1 and user2 are on the same channel and user2 check user1 data': {
+    topic: function () {
+      var self = this;
+      
+      // user1 join
+      request({
+        method: 'PUT',
+        url: baseurl+'/channels/'+cid1+'/users/'+userdata1.id,
+        jar: j1,
+      }, function (err, res, body) {
+        // user2 join
+        request({
+          method: 'PUT',
+          url: baseurl+'/channels/'+cid1+'/users/'+userdata2.id,
+          jar: j2,
+        }, function (err, res, body) {
+        
+          // check that user2 can read user1 data
+          request({
+            method: 'GET',
+            url: baseurl+'/users/'+userdata1.id+'/',
+            jar: j2,
+          }, self.callback);
+          
+        });
+      });
+    },
+    'server returns a success code': function (error, res, body) {
+      assert.equal(res.statusCode, 200);      
+    },
     'server returns user1 data': function (error, res, body) {
        try {
         var data = JSON.parse(body);
@@ -50,6 +124,6 @@ vows.describe('User data').addBatch({
       assert.equal(data.name, 'testdata1');  
     },
   },
+})
 
-  
-}).export(module);
+.export(module);

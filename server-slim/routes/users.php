@@ -15,9 +15,39 @@ $app->get('/users/', function () use ($app, $req, $res) {
  * Returns users data or 404
  */
 $app->get('/users/:uid/', function ($uid) use ($app, $req, $res) {
-  $res->status(501);
+
+  // check user acces
+  session_start();
+  if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
+    $res->status(401); // Need to authenticate
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body('{ error: "Need to authenticate" }');
+    return;
+  }
+
+  if (!Container_users::checkUserExists($uid)) {
+    $res->status(404);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body('{ error: "user $uid does not exist" }');
+    return;
+  }
+  
+  // Only allow to get userdata if connected user is in the same channel
+  if ($_SESSION['userdata']['id'] != $uid) {
+    $cuser1 = Container_users::getUserChannels($uid);
+    $cuser2 = Container_users::getUserChannels($_SESSION['userdata']['id']);  
+    if (count(array_intersect($cuser1, $cuser2)) == 0) {
+      $res->status(403); // Forbidden
+      $res['Content-Type'] = 'application/json; charset=utf-8';
+      $res->body('{ error: "Forbidden" }');
+      return;
+    }
+  }
+
+  // returns user data in json
+  $res->status(200);
   $res['Content-Type'] = 'application/json; charset=utf-8';
-  $res->body('returns users data '.$uid);
+  $res->body(Container_users::getUserData($uid, null, true));
 });
 
 /**
