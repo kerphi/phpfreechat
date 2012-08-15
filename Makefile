@@ -5,17 +5,16 @@ TESTSSLIM=$(wildcard $(path)/server-slim/tests/*.js)
 dummy:
 
 # run all tests
-test: test-server test-client
-
-# run server tests
-test-server: setup-server-test-config
-	@rm -rf server/data/*
-	@vows $(TESTS) --spec
+test: test-slim test-client
 
 # run server-slim tests
-test-slim: setup-server-test-config
+test-slim: dummy
+	@touch $(path)/server-slim/config.local.php
+	@mv -f $(path)/server-slim/config.local.php $(path)/server-slim/config.local.php.tmp
+	@cp -f $(path)/server-slim/tests/config.local.php $(path)/server-slim/config.local.php
 	@rm -rf server-slim/data/*
 	@vows $(TESTSSLIM) --spec
+	@mv -f $(path)/server-slim/config.local.php.tmp $(path)/server-slim/config.local.php
 
 # run client tests
 test-client: dummy
@@ -24,9 +23,6 @@ test-client: dummy
 # install needed packages for tests run
 setup-server-test:
 	@cd $(path)/server/tests && npm install vows request async && npm install -g vows
-
-setup-server-test-config:
-	@cp -f $(path)/server-slim/tests/config.local.php $(path)/server-slim/config.local.php
 
 setup-default-config:
 	@rm -f $(path)/server-slim/config.local.php
