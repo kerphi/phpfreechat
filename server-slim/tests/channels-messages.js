@@ -12,7 +12,7 @@ var vows = require('vows'),
     cid1 = 'cid_1',
     cid2 = 'cid_2';
 
-vows.describe('Channels system messages').addBatch({
+vows.describe('System messages on a channel').addBatch({
 
   'when a user1 join a channel': {
     topic: function () {

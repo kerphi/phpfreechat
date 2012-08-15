@@ -13,7 +13,7 @@ var vows = require('vows'),
     cid1 = 'cid_1',
     cid2 = 'cid_2';
 
-vows.describe('Messages: send and receive').addBatch({
+vows.describe('Send and receive messages').addBatch({
 
   'when two users join a channel and post a message': {
     topic: function () {

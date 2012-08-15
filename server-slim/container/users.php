@@ -124,6 +124,8 @@ class Container_users {
           // disconnect the user (send leave messages on his channels)
           foreach(self::getUserChannels($uid) as $cid) {
             self::leaveChannel($uid, $cid);
+            // post a leave message related to timeout
+            $msg = Container_messages::postMsgToChannel($cid, $uid, 'timeout', 'leave');
           }
           // clear user data
           self::rmUser($uid);
