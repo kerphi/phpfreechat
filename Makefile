@@ -20,6 +20,12 @@ test-slim: dummy
 test-client: dummy
 	@./phantomjs/bin/phantomjs ./phantomjs/examples/run-qunit.js http://127.0.0.1:32773/phpfreechat/client/tests/test1.html
 
+setup-server: dummy
+	@cd $(path)/server-slim/lib/ && curl -L https://nodeload.github.com/codeguy/Slim/tarball/1.6.5 > slim.tar.gz && pwd && tar -ztf slim.tar.gz 2>/dev/null | head -1 > /tmp/slimname
+	@cd $(path)/server-slim/lib/ && tar xzf slim.tar.gz
+	@rm -rf $(path)/server-slim/lib/Slim && mv $(path)/server-slim/lib/`cat /tmp/slimname` $(path)/server-slim/lib/Slim
+	@rm -f /tmp/slimname && rm -f $(path)/server-slim/lib/slim.tar.gz
+
 # install needed packages for tests run
 setup-server-test:
 	@cd $(path)/server/tests && npm install vows request async && npm install -g vows
