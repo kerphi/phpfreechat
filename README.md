@@ -39,7 +39,26 @@ $('#mychat').phpfreechat({
 });
 ```
 
-## Modules (client side)
+## Developments
+
+### Installation
+
+```bash
+git clone ...
+make setup
+```
+
+### Makefile
+
+* `make setup`: download and install Slim library for server side
+* `make test`: run all tests client and server side
+* `make setup-client-test`: install dependencies needed for running client tests
+* `make test-client`: run tests client side
+* `make setup-server-test`: install dependencies needed for running server tests
+* `make test-server`: run tests server side
+* `make clean`: ...
+
+### Modules (client side)
 
 * `jquery.phpfreechat.js`: just jquery plugin stuff
 * `jquery.phpfreechat.init.js`: phpfreechat's initialization related function
@@ -47,7 +66,7 @@ $('#mychat').phpfreechat({
 * `jquery.phpfreechat.auth.js`: phpfreechat's authentication related function
 * `jquery.phpfreechat.utils.js`: phpfreechat's helpers
 
-## Events (client side)
+### Events (client side)
 
 * `pfc-loaded` : triggered when pfc's interface is totaly loaded
 * `pfc-login` : triggered when the user is logged
@@ -55,7 +74,7 @@ $('#mychat').phpfreechat({
 
 Example: TODO
 
-## Routes design (server side)
+### Routes design (server side)
 
 * `/auth`                          (authentication)
 * `/channels/`                     (list available channels)
@@ -67,7 +86,7 @@ Example: TODO
 * `/users/:uid/`                   (user info)
 * `/users/:uid/msg/`               (messages received by the user: from a channel or a private message)
 
-## File container structure (server side)
+### File container structure (server side)
 
 * `/indexes/users/name/:name`      (index on user's nicknames: name -> uid)
 * `/users/:uid/index.json`         (full user data without messages and channels)
