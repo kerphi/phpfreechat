@@ -46,9 +46,9 @@ minify: $(path)/client/jquery.phpfreechat.js $(path)/client/themes/default/jquer
 setup-jshint:
 	@npm install -g jshint
 
-jshint: clean
-	@jshint $(wildcard $(path)/client/*.js) --config client/config-jshint.json
-	@jshint $(wildcard $(path)/server/tests/*.js) --config server/config-jshint.json
+jshint:
+	@jshint $(wildcard $(path)/client/*.js)
+	@jshint $(wildcard $(path)/server/tests/*.js)
 
 clean: dummy
 	@rm -f $(path)/client/*.min.js

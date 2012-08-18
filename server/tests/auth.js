@@ -1,4 +1,4 @@
-/*jslint node: true, maxlen: 100, maxerr: 50, indent: 2 */
+/*jslint node: true, browser: false, jquery: false, maxlen: 100, maxerr: 50, indent: 2 */
 'use strict';
 
 var vows = require('vows'),
