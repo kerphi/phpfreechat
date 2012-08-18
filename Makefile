@@ -1,8 +1,6 @@
 path=$(shell pwd)
 SERVERURL=`cat serverurl 2>/dev/null | echo "http://127.0.0.1:32773"`
 TESTS=$(wildcard $(path)/server/tests/*.js)
-JS_CLIENT=$(wildcard $(path)/client/*.js)
-JS_SERVER=$(wildcard $(path)/server/tests/*.js)
 
 dummy:
 
@@ -48,8 +46,11 @@ minify: $(path)/client/jquery.phpfreechat.js $(path)/client/themes/default/jquer
 setup-jshint:
 	@npm install -g jshint
 
-jshint:
-	@jshint $(JS_CLIENT) --config client/config-jshint.json
-	@jshint $(JS_SERVER) --config server/config-jshint.json
+jshint: clean
+	@jshint $(wildcard $(path)/client/*.js) --config client/config-jshint.json
+	@jshint $(wildcard $(path)/server/tests/*.js) --config server/config-jshint.json
 
 clean: dummy
+	@rm -f $(path)/client/*.min.js
+	@rm -f $(path)/client/themes/default/jquery.phpfreechat.css
+	@rm -f $(path)/client/themes/default/jquery.phpfreechat.min.css
