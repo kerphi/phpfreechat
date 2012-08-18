@@ -1,10 +1,11 @@
-/*jslint node: true, maxlen: 100, maxerr: 50, indent: 2 */
+/*jslint node: true, maxlen: 150, maxerr: 50, indent: 2 */
 'use strict';
 
 var vows = require('vows'),
     assert = require('assert'),
     request = require('request'),
     async = require('async'),
+    fs = require('fs'),
     querystring = require('querystring'),
     baseurl = 'http://127.0.0.1:32773',
     j1 = request.jar(),
@@ -15,8 +16,8 @@ var vows = require('vows'),
     cid2 = 'cidtimeout_2';
 
 try {
-  baseurl = fs.readFileSync(__dirname+'/../../serverurl', 'utf8');
-} catch(err) {}
+  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8');
+} catch (err) {}
 
 vows.describe('User timeout')
 
@@ -29,8 +30,9 @@ vows.describe('User timeout')
       // user1 auth
       request({
         method: 'GET',
-        url: baseurl+'/server/auth',
-        headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testtimeout1:password").toString('base64') }, 
+        url: baseurl + '/server/auth',
+        headers: { 'Pfc-Authorization': 'Basic '
+                   + new Buffer("testtimeout1:password").toString('base64') },
         jar: j1,
       }, function (err, res, body) {
         userdata1 = JSON.parse(body);
@@ -38,7 +40,7 @@ vows.describe('User timeout')
         // user1 join
         request({
           method: 'PUT',
-          url: baseurl+'/server/channels/'+cid1+'/users/'+userdata1.id,
+          url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata1.id,
           jar: j1,
         }, function (err, res, body) {
           
@@ -48,7 +50,7 @@ vows.describe('User timeout')
             // check that the user has been well disconnected
             request({
               method: 'GET',
-              url: baseurl+'/server/users/'+userdata1.id+'/',
+              url: baseurl + '/server/users/' + userdata1.id + '/',
               jar: j1,
             }, function (err, res, body) {
               self.callback(null, tmsg);
@@ -60,8 +62,9 @@ vows.describe('User timeout')
           // then user2 auth
           request({
             method: 'GET',
-            url: baseurl+'/server/auth',
-            headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testtimeout2:password").toString('base64') }, 
+            url: baseurl + '/server/auth',
+            headers: { 'Pfc-Authorization': 'Basic '
+                       + new Buffer("testtimeout2:password").toString('base64') },
             jar: j2,
           }, function (err, res, body) {
             userdata2 = JSON.parse(body);
@@ -69,7 +72,7 @@ vows.describe('User timeout')
             // user2 join
             request({
               method: 'PUT',
-              url: baseurl+'/server/channels/'+cid1+'/users/'+userdata2.id,
+              url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata2.id,
               jar: j2,
             }, function (err, res, body) {
 
@@ -80,7 +83,7 @@ vows.describe('User timeout')
                 setTimeout(function () {
                   request({
                     method: 'GET',
-                    url: baseurl+'/server/users/'+userdata2.id+'/msg/',
+                    url: baseurl + '/server/users/' + userdata2.id + '/msg/',
                     jar: j2,
                   }, function (err, res, body) {
                     tmsg = tmsg.concat(JSON.parse(body)); // get the timeout leave message of user1

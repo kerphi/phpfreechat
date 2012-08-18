@@ -1,10 +1,11 @@
-/*jslint node: true, maxlen: 100, maxerr: 50, indent: 2 */
+/*jslint node: true, maxlen: 150, maxerr: 50, indent: 2 */
 'use strict';
 
 var vows = require('vows'),
     assert = require('assert'),
     request = require('request'),
     async = require('async'),
+    fs = require('fs'),
     baseurl = 'http://127.0.0.1:32773',
     j1 = request.jar(),
     j2 = request.jar(),
@@ -14,8 +15,8 @@ var vows = require('vows'),
     cid2 = 'cid_2';
 
 try {
-  baseurl = fs.readFileSync(__dirname+'/../../serverurl', 'utf8');
-} catch(err) {}
+  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8');
+} catch (err) {}
 
 vows.describe('Channels route').addBatch({
 
@@ -26,8 +27,9 @@ vows.describe('Channels route').addBatch({
       // auth
       request({
         method: 'GET',
-        url: baseurl+'/server/auth',
-        headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testch:testchpassword").toString('base64') }, 
+        url: baseurl + '/server/auth',
+        headers: { 'Pfc-Authorization': 'Basic '
+                   + new Buffer("testch:testchpassword").toString('base64') },
         jar: j1,
       }, function (err, res, body) {
         userdata1 = JSON.parse(body);
@@ -35,7 +37,7 @@ vows.describe('Channels route').addBatch({
         // join the channel cid1
         request({
           method: 'PUT',
-          url: baseurl+'/server/channels/'+cid1+'/users/'+userdata1.id,
+          url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata1.id,
           jar: j1,
         }, self.callback);
 
@@ -45,9 +47,10 @@ vows.describe('Channels route').addBatch({
       assert.equal(res.statusCode, 201);
     },
     'server returns the user list': function (error, res, body) {
+      var userlist = {};
       try {
-        var userlist = JSON.parse(body);
-      } catch(err) {
+        userlist = JSON.parse(body);
+      } catch (err) {
         assert.isNull(err, 'response body should be JSON formated');
       }
 
@@ -62,8 +65,9 @@ vows.describe('Channels route').addBatch({
         // auth user2
         request({
           method: 'GET',
-          url: baseurl+'/server/auth',
-          headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testch2:testch2password").toString('base64') }, 
+          url: baseurl + '/server/auth',
+          headers: { 'Pfc-Authorization': 'Basic '
+                     + new Buffer("testch2:testch2password").toString('base64') },
           jar: j2,
         }, function (err, res, body) {
           userdata2 = JSON.parse(body);
@@ -71,7 +75,7 @@ vows.describe('Channels route').addBatch({
           // join the channel cid1
           request({
             method: 'PUT',
-            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata2.id,
+            url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata2.id,
             jar: j2,
           }, self.callback);
 
@@ -81,9 +85,10 @@ vows.describe('Channels route').addBatch({
         assert.equal(res.statusCode, 201);
       },
       'server returns the user list': function (error, res, body) {
+        var userlist = {};
         try {
-          var userlist = JSON.parse(body);
-        } catch(err) {
+          userlist = JSON.parse(body);
+        } catch (err) {
           assert.isNull(err, 'response body should be JSON formated');
         }
 
@@ -92,9 +97,10 @@ vows.describe('Channels route').addBatch({
         assert.include(Object.keys(userlist), userdata2.id);
       },
       'the user list contains full userdata': function (error, res, body) {
+        var userlist;
         try {
-          var userlist = JSON.parse(body);
-        } catch(err) {
+          userlist = JSON.parse(body);
+        } catch (err) {
           assert.isNull(err, 'response body should be JSON formated');
         }
         assert.equal(userlist[userdata1.id].name, userdata1.name);
@@ -112,7 +118,7 @@ vows.describe('Channels route').addBatch({
       // list users in channel1
       request({
         method: 'GET',
-        url: baseurl+'/server/channels/'+cid1+'/users/',
+        url: baseurl + '/server/channels/' + cid1 + '/users/',
         jar: j1,
       }, self.callback);
 
@@ -121,9 +127,10 @@ vows.describe('Channels route').addBatch({
       assert.equal(res.statusCode, 200);
     },
     'server returns user ids of this channel': function (error, res, body) {
+      var userids = [];
       try {
-        var userids = JSON.parse(body);
-      } catch(err) {
+        userids = JSON.parse(body);
+      } catch (err) {
         assert.isNull(err, 'response body should be JSON formated');
       }
       assert.lengthOf(userids, 2);
@@ -142,11 +149,12 @@ vows.describe('Channels route').addBatch({
         function USER1LOGIN(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/server/auth',
-            headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testm1:password").toString('base64') }, 
+            url: baseurl + '/server/auth',
+            headers: { 'Pfc-Authorization': 'Basic '
+                       + new Buffer("testm1:password").toString('base64') },
             jar: j1,
           }, function (err, res, body) {
-            userdata1 = JSON.parse(body); 
+            userdata1 = JSON.parse(body);
             callback(err, res, body);
           });
         },
@@ -154,11 +162,12 @@ vows.describe('Channels route').addBatch({
         function USER2LOGIN(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/server/auth',
-            headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testm2:password").toString('base64') }, 
+            url: baseurl + '/server/auth',
+            headers: { 'Pfc-Authorization': 'Basic '
+                       + new Buffer("testm2:password").toString('base64') },
             jar: j2,
           }, function (err, res, body) {
-            userdata2 = JSON.parse(body); 
+            userdata2 = JSON.parse(body);
             callback(err, res, body);
           });
         },
@@ -166,7 +175,7 @@ vows.describe('Channels route').addBatch({
         function USER1JOIN(callback) {
           request({
             method: 'PUT',
-            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata1.id,
+            url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata1.id,
             jar: j1,
           }, callback);
         },
@@ -174,7 +183,7 @@ vows.describe('Channels route').addBatch({
         function USER2JOIN(callback) {
           request({
             method: 'PUT',
-            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata2.id,
+            url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata2.id,
             jar: j2,
           }, callback);
         },
@@ -182,7 +191,7 @@ vows.describe('Channels route').addBatch({
         function USER1LISTWITHU2(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/server/channels/'+cid1+'/users/',
+            url: baseurl + '/server/channels/' + cid1 + '/users/',
             jar: j1,
           }, callback);
         },
@@ -190,7 +199,7 @@ vows.describe('Channels route').addBatch({
         function USER2LEAVE(callback) {
           request({
             method: 'DELETE',
-            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata2.id,
+            url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata2.id,
             jar: j2,
           }, callback);
         },
@@ -198,7 +207,7 @@ vows.describe('Channels route').addBatch({
         function USER1LISTWITHOUTU2(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/server/channels/'+cid1+'/users/',
+            url: baseurl + '/server/channels/' + cid1 + '/users/',
             jar: j1,
           }, callback);
         },
@@ -221,14 +230,15 @@ vows.describe('Channels route').addBatch({
     'server returns success status codes': function (error, results, requests, steps) {
       var codes = [ 200, 200, 200, 200, 200, 200, 200 ];
       results.forEach(function (r, i) {
-        assert.equal(r[0].statusCode, codes[i], 'response '+ i +' code is wrong (expected '+ codes[i] +' got '+ r[0].statusCode +')');
+        assert.equal(r[0].statusCode, codes[i], 'response ' + i + ' code is wrong (expected ' + codes[i] + ' got ' + r[0].statusCode + ')');
       });
     },
 
     'server returns array with only user1 id': function (error, results, requests, steps) {
+      var userids = [];
       try {
-        var userids = JSON.parse(results[steps.USER1LISTWITHOUTU2][0].body);
-      } catch(err) {
+        userids = JSON.parse(results[steps.USER1LISTWITHOUTU2][0].body);
+      } catch (err) {
         assert.isNull(err, 'response body should be JSON formated');
       }
       assert.lengthOf(userids, 1);

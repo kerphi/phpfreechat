@@ -1,10 +1,11 @@
-/*jslint node: true, maxlen: 100, maxerr: 50, indent: 2 */
+/*jslint node: true, maxlen: 150, maxerr: 50, indent: 2 */
 'use strict';
 
 var vows = require('vows'),
     assert = require('assert'),
     request = require('request'),
     async = require('async'),
+    fs = require('fs'),
     querystring = require('querystring'),
     baseurl = 'http://127.0.0.1:32773',
     j1 = request.jar(),
@@ -15,8 +16,8 @@ var vows = require('vows'),
     cid2 = 'cid_2';
     
 try {
-  baseurl = fs.readFileSync(__dirname+'/../../serverurl', 'utf8');
-} catch(err) {}
+  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8');
+} catch (err) {}
 
 vows.describe('Send and receive messages').addBatch({
 
@@ -28,11 +29,12 @@ vows.describe('Send and receive messages').addBatch({
         function USER1LOGIN(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/server/auth',
-            headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testm1:password").toString('base64') }, 
+            url: baseurl + '/server/auth',
+            headers: { 'Pfc-Authorization': 'Basic '
+                       + new Buffer("testm1:password").toString('base64') },
             jar: j1,
           }, function (err, res, body) {
-            userdata1 = JSON.parse(body); 
+            userdata1 = JSON.parse(body);
             callback(err, res, body);
           });
         },
@@ -40,11 +42,12 @@ vows.describe('Send and receive messages').addBatch({
         function USER2LOGIN(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/server/auth',
-            headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testm2:password").toString('base64') }, 
+            url: baseurl + '/server/auth',
+            headers: { 'Pfc-Authorization': 'Basic '
+                       + new Buffer("testm2:password").toString('base64') },
             jar: j2,
           }, function (err, res, body) {
-            userdata2 = JSON.parse(body); 
+            userdata2 = JSON.parse(body);
             callback(err, res, body);
           });
         },
@@ -52,7 +55,7 @@ vows.describe('Send and receive messages').addBatch({
         function USER1JOIN(callback) {
           request({
             method: 'PUT',
-            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata1.id,
+            url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata1.id,
             jar: j1,
           }, callback);
         },
@@ -60,7 +63,7 @@ vows.describe('Send and receive messages').addBatch({
         function USER2JOIN(callback) {
           request({
             method: 'PUT',
-            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata2.id,
+            url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata2.id,
             jar: j2,
           }, callback);
         },
@@ -68,7 +71,7 @@ vows.describe('Send and receive messages').addBatch({
         function USER2SENDMSG(callback) {
           request({
             method: 'POST',
-            url: baseurl+'/server/channels/'+cid1+'/msg/',
+            url: baseurl + '/server/channels/' + cid1 + '/msg/',
             json: { body: 'my user2 message' },
             jar: j2,
           }, callback);
@@ -77,16 +80,16 @@ vows.describe('Send and receive messages').addBatch({
         function USER1READMSG(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/server/users/'+userdata1.id+'/msg/',
+            url: baseurl + '/server/users/' + userdata1.id + '/msg/',
             jar: j1,
           }, callback);
 
-        }, 
+        },
         // [6] u1 send a message on cid1
         function USER1SENDMSG(callback) {
           request({
             method: 'POST',
-            url: baseurl+'/server/channels/'+cid1+'/msg/',
+            url: baseurl + '/server/channels/' + cid1 + '/msg/',
             json: { body: 'my user1 message' },
             jar: j1,
           }, callback);
@@ -95,10 +98,10 @@ vows.describe('Send and receive messages').addBatch({
         function USER2READMSG(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/server/users/'+userdata2.id+'/msg/',
+            url: baseurl + '/server/users/' + userdata2.id + '/msg/',
             jar: j2,
           }, callback);
-        },         
+        },
       ];
 
       // store function names in the steps array
@@ -118,41 +121,43 @@ vows.describe('Send and receive messages').addBatch({
     'server returns success status codes': function (error, results, requests, steps) {
       var codes = [ 200, 200, 201, 201, 201, 200, 201, 200 ];
       results.forEach(function (r, i) {
-        assert.equal(r[0].statusCode, codes[i], 'response '+ i +' code is wrong (expected '+ codes[i] +' got '+ r[0].statusCode +')');
+        assert.equal(r[0].statusCode, codes[i], 'response ' + i + ' code is wrong (expected ' + codes[i] + ' got ' + r[0].statusCode + ')');
       });
     },
 
     'server stores and returns user1 messages': function (error, results, requests, steps) {
+      var messages = [];
       try {
-        var messages = JSON.parse(results[steps.USER1READMSG][0].body);       
-      } catch(err) {
+        messages = JSON.parse(results[steps.USER1READMSG][0].body);
+      } catch (err) {
         assert.isNull(err, 'response body should be JSON formated');
-      }      
+      }
       assert.equal(messages.length, 2, 'user1 should have received two messages (join and normal message)');
 
       messages.forEach(function (m) {
-        assert.equal(m.recipient, 'channel|' + cid1);      
+        assert.equal(m.recipient, 'channel|' + cid1);
         assert.equal(m.sender, userdata2.id);
         if (m.type == 'msg') {
           assert.equal(m.body, 'my user2 message');
-        } else if (m.type = 'join') {
+        } else if (m.type == 'join') {
           assert.equal(m.body.name, 'testm2');
         } else {
           assert.ok(false);
-        }        
+        }
       });
     },
 
     'server stores and returns user2 messages': function (error, results, requests, steps) {
+      var messages = [];
       try {
-        var messages = JSON.parse(results[steps.USER2READMSG][0].body);       
-      } catch(err) {
+        messages = JSON.parse(results[steps.USER2READMSG][0].body);
+      } catch (err) {
         assert.isNull(err, 'response body should be JSON formated');
       }
 
       assert.equal(messages.length, 1, 'user2 should have received one message (user1 message)');
 
-      assert.equal(messages[0].sender, userdata1.id);      
+      assert.equal(messages[0].sender, userdata1.id);
       assert.equal(messages[0].type, 'msg');
       assert.equal(messages[0].body, 'my user1 message');
     },

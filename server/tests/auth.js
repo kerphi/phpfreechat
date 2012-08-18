@@ -1,4 +1,4 @@
-/*jslint node: true, browser: false, jquery: false, maxlen: 100, maxerr: 50, indent: 2 */
+/*jslint node: true, browser: false, jquery: false, maxlen: 150, maxerr: 50, indent: 2 */
 'use strict';
 
 var vows = require('vows'),
@@ -8,8 +8,8 @@ var vows = require('vows'),
     baseurl = 'http://127.0.0.1:32773';
 
 try {
-  baseurl = fs.readFileSync(__dirname+'/../../serverurl', 'utf8');
-} catch(err) {}
+  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8');
+} catch (err) {}
 
 vows.describe('Auth route').addBatch({
 
@@ -17,7 +17,7 @@ vows.describe('Auth route').addBatch({
     topic: function () {
       request({
         method: 'GET',
-        url: baseurl+'/server/auth',
+        url: baseurl + '/server/auth',
         jar: false,
       }, this.callback);
     },
@@ -33,8 +33,9 @@ vows.describe('Auth route').addBatch({
     topic: function () {
       request({
         method: 'GET',
-        url: baseurl+'/server/auth',
-        headers: { 'Pfc-Authorization': 'Basic '+new Buffer("test:testpassword").toString('base64') }, 
+        url: baseurl + '/server/auth',
+        headers: { 'Pfc-Authorization': 'Basic '
+                   + new Buffer("test:testpassword").toString('base64') },
         jar: false,
       }, this.callback);
     },
@@ -42,16 +43,16 @@ vows.describe('Auth route').addBatch({
       assert.equal(res.statusCode, 200);
       
       try {
-        var x = JSON.parse(body);  
-      } catch(err) {
+        var x = JSON.parse(body);
+      } catch (err) {
         console.log(body);
         assert.isNull(err, 'response body should be JSON formated');
       }
 
       assert.equal(JSON.parse(body).name, 'test', 'test username should be returned');
-      assert.isNotNull(JSON.parse(body).id, 'a user id should be returned');      
+      assert.isNotNull(JSON.parse(body).id, 'a user id should be returned');
     },
-    'server open a session and returns a cookie': function(error, res, body) {
+    'server open a session and returns a cookie': function (error, res, body) {
       assert.isNotNull(res.headers['set-cookie']);
     },
   },
@@ -63,13 +64,15 @@ vows.describe('Auth route').addBatch({
       var self = this;
       request({
         method: 'GET',
-        url: baseurl+'/server/auth',
-        headers: { 'Pfc-Authorization': 'Basic '+new Buffer("test2:test2password").toString('base64') }, 
+        url: baseurl + '/server/auth',
+        headers: { 'Pfc-Authorization': 'Basic '
+                   + new Buffer("test2:test2password").toString('base64') },
       }, function (err) {
         request({
           method: 'GET',
-          url: baseurl+'/server/auth',
-          headers: { 'Pfc-Authorization': 'Basic '+new Buffer("test3:test3password").toString('base64') }, 
+          url: baseurl + '/server/auth',
+          headers: { 'Pfc-Authorization': 'Basic '
+                     + new Buffer("test3:test3password").toString('base64') },
         }, self.callback);
       });
     },
@@ -86,14 +89,16 @@ vows.describe('Auth route').addBatch({
       var self = this;
       request({
         method: 'GET',
-        url: baseurl+'/server/auth',
-        headers: { 'Pfc-Authorization': 'Basic '+new Buffer("test4:test4password").toString('base64') }, 
+        url: baseurl + '/server/auth',
+        headers: { 'Pfc-Authorization': 'Basic '
+                   + new Buffer("test4:test4password").toString('base64') },
         jar: false,
       }, function (err) {
         request({
           method: 'GET',
-          url: baseurl+'/server/auth',
-          headers: { 'Pfc-Authorization': 'Basic '+new Buffer("test4:test4password").toString('base64') }, 
+          url: baseurl + '/server/auth',
+          headers: { 'Pfc-Authorization': 'Basic '
+                     + new Buffer("test4:test4password").toString('base64') },
           jar: false,
         }, self.callback);
       });
@@ -111,13 +116,14 @@ vows.describe('Auth route').addBatch({
       var j = request.jar(); // to have no cookies in cache
       request({
         method: 'GET',
-        url: baseurl+'/server/auth',
-        headers: { 'Pfc-Authorization': 'Basic '+new Buffer("test5:test5password").toString('base64') }, 
+        url: baseurl + '/server/auth',
+        headers: { 'Pfc-Authorization': 'Basic '
+                   + new Buffer("test5:test5password").toString('base64') },
         jar: j,
       }, function (err) {
         request({
           method: 'DELETE',
-          url: baseurl+'/server/auth',
+          url: baseurl + '/server/auth',
           jar: j,
         }, self.callback);
       });
@@ -127,8 +133,8 @@ vows.describe('Auth route').addBatch({
       assert.equal(res.statusCode, 201);
 
       try {
-        var x = JSON.parse(body);  
-      } catch(err) {
+        var x = JSON.parse(body);
+      } catch (err) {
         assert.isNull(err, 'response body should be JSON formated');
       }
 
