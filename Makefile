@@ -18,7 +18,7 @@ test-server: dummy
 
 # run client tests
 test-client: dummy
-	@./phantomjs/bin/phantomjs ./phantomjs/examples/run-qunit.js http://127.0.0.1:32773/phpfreechat/client/tests/test1.html
+	@./phantomjs/bin/phantomjs ./phantomjs/examples/run-qunit.js http://127.0.0.1:32773/client/tests/test1.html
 
 setup: dummy
 	@cd $(path)/server-slim/lib/ && curl -L https://nodeload.github.com/codeguy/Slim/tarball/1.6.5 > slim.tar.gz && pwd && tar -ztf slim.tar.gz 2>/dev/null | head -1 > /tmp/slimname
@@ -31,8 +31,8 @@ setup-server-test:
 	@cd $(path)/server/tests && npm install vows request async && npm install -g vows
 
 setup-client-test:
-	@cd $(path) && wget http://phantomjs.googlecode.com/files/phantomjs-1.5.0-linux-x86-dynamic.tar.gz
-	@tar xzf phantomjs-1.5.0-linux-x86-dynamic.tar.gz
+	@cd $(path) && wget http://phantomjs.googlecode.com/files/phantomjs-1.6.1-linux-x86_64-dynamic.tar.bz2
+	@tar xzf phantomjs-1.6.1-linux-x86_64-dynamic.tar.bz2
 
 setup-minify:
 	@npm install -g less clean-css pack
