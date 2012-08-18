@@ -1,4 +1,5 @@
-#!/usr/bin/env node
+/*jslint node: true, maxlen: 100, maxerr: 50, indent: 2 */
+'use strict';
 
 var vows = require('vows'),
     assert = require('assert'),

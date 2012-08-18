@@ -1,3 +1,6 @@
+/*jslint node: true, maxlen: 100, maxerr: 50, indent: 2 */
+'use strict';
+
 /**
  * phpfreechat's core functions
  */
@@ -144,7 +147,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     if (user.id != 0 && userids.indexOf(user.id) == -1) {
       html.attr('id', 'user_'+user.id);
     } else {
-      delete html;
       return 0;
     }
 
@@ -203,7 +205,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     msg.timestamp = (msg.timestamp != undefined) ? msg.timestamp : Math.round(new Date().getTime() / 1000);
     msg.date      = new Date(msg.timestamp*1000).toLocaleTimeString();
     
-    var groupmsg_last_dom = groupmsg_dom = $(pfc.element).find('.pfc-messages .messages-group:last');
+    var groupmsg_dom = $(pfc.element).find('.pfc-messages .messages-group:last');
+    var groupmsg_last_dom = groupmsg_dom;
     var messages_dom = $(pfc.element).find('.pfc-messages');
     
     if (groupmsg_dom.attr('data-from') != msg.from) {

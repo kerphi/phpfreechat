@@ -1,4 +1,5 @@
-#!/usr/bin/env node
+/*jslint node: true, maxlen: 100, maxerr: 50, indent: 2 */
+'use strict';
 
 var vows = require('vows'),
     assert = require('assert'),
@@ -9,6 +10,8 @@ var vows = require('vows'),
     j2 = request.jar(),
     userdata1 = {},
     userdata2 = {},
+    user1msg = [],
+    user2msg = [],
     cid1 = 'cid_1',
     cid2 = 'cid_2';
     

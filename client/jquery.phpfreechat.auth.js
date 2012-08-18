@@ -1,3 +1,6 @@
+/*jslint node: true, maxlen: 100, maxerr: 50, indent: 2 */
+'use strict';
+
 /**
  * phpfreechat's authentication related functions
  */
