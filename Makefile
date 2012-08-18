@@ -1,30 +1,29 @@
 path = $(shell pwd)
 TESTS=$(wildcard $(path)/server/tests/*.js)
-TESTSSLIM=$(wildcard $(path)/server-slim/tests/*.js)
 
 dummy:
 
 # run all tests
 test: test-server test-client
 
-# run server-slim tests
+# run server tests
 test-server: dummy
-	@touch $(path)/server-slim/config.local.php
-	@mv -f $(path)/server-slim/config.local.php $(path)/server-slim/config.local.php.tmp
-	@cp -f $(path)/server-slim/tests/config.local.php $(path)/server-slim/config.local.php
-	@rm -rf server-slim/data/*
-	@vows $(TESTSSLIM) --spec
-	@mv -f $(path)/server-slim/config.local.php.tmp $(path)/server-slim/config.local.php
+	@touch $(path)/server/config.local.php
+	@mv -f $(path)/server/config.local.php $(path)/server/config.local.php.tmp
+	@cp -f $(path)/server/tests/config.local.php $(path)/server/config.local.php
+	@rm -rf server/data/*
+	@vows $(TESTS) --spec
+	@mv -f $(path)/server/config.local.php.tmp $(path)/server/config.local.php
 
 # run client tests
 test-client: dummy
 	@./phantomjs/bin/phantomjs ./phantomjs/examples/run-qunit.js http://127.0.0.1:32773/client/tests/test1.html
 
 setup: dummy
-	@cd $(path)/server-slim/lib/ && curl -L https://nodeload.github.com/codeguy/Slim/tarball/1.6.5 > slim.tar.gz && pwd && tar -ztf slim.tar.gz 2>/dev/null | head -1 > /tmp/slimname
-	@cd $(path)/server-slim/lib/ && tar xzf slim.tar.gz
-	@rm -rf $(path)/server-slim/lib/Slim && mv $(path)/server-slim/lib/`cat /tmp/slimname` $(path)/server-slim/lib/Slim
-	@rm -f /tmp/slimname && rm -f $(path)/server-slim/lib/slim.tar.gz
+	@cd $(path)/server/lib/ && curl -L https://nodeload.github.com/codeguy/Slim/tarball/1.6.5 > slim.tar.gz && pwd && tar -ztf slim.tar.gz 2>/dev/null | head -1 > /tmp/slimname
+	@cd $(path)/server/lib/ && tar xzf slim.tar.gz
+	@rm -rf $(path)/server/lib/Slim && mv $(path)/server/lib/`cat /tmp/slimname` $(path)/server/lib/Slim
+	@rm -f /tmp/slimname && rm -f $(path)/server/lib/slim.tar.gz
 
 # install needed packages for tests run
 setup-server-test:

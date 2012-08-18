@@ -1,62 +1,77 @@
 <?php
 
 include_once 'container/users.php';
-class Route_users {
 
-  public $uid = null;
-  
-  /**
-   * List users or
-   * Read user info or
-   * Read pending messages of a user
-   * /users/
-   * /users/:uid/
-   * /users/:uid/msg/
-   */
-  public function get($req) {
-    // 0 users
-    // 1 :uid
-    // 2 msg
+/**
+ * Returns users list
+ */
+$app->get('/users/', function () use ($app, $req, $res) {
+  $res->status(501);
+  $res['Content-Type'] = 'application/json; charset=utf-8';
+  $res->body('returns the users list');
+});
 
-    // /users/  (list users)
-    if (!isset($req['url'][1]) or $req['url'][1] === '') {
-      header("HTTP/1.1 200");
-      header('Content-Type: application/json; charset=utf-8');
-      echo json_encode(Container_users::getUsers());
-      return;
-    }
-    
-    $this->uid = $req['url'][1];
+/**
+ * Returns users data or 404
+ */
+$app->get('/users/:uid/', function ($uid) use ($app, $req, $res) {
 
-    // /users/:uid/  (user info)
-    if (!isset($req['url'][2]) or $req['url'][2] === '') {
-      header("HTTP/1.1 200");
-      header('Content-Type: application/json; charset=utf-8');
-      echo Container_users::getUserData($this->uid, null, true);
-      return;
-    }
-  
-    // /users/:uid/msg/ (pending messages)
-    if (isset($req['url'][2]) and $req['url'][2] === 'msg') {
-
-      // check user acces
-      session_start();
-      if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
-        header("HTTP/1.1 401 Need to authenticate");
-        return;
-      } else if ($_SESSION['userdata']['id'] !== $this->uid) {
-        header("HTTP/1.1 403");
-        return;
-      }
-
-      header("HTTP/1.1 200");
-      header('Content-Type: application/json; charset=utf-8');
-      echo Container_users::getUserMsgs($this->uid, true);
-      return;
-    }
-
-    header("HTTP/1.1 501");
+  // check user acces
+  session_start();
+  if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
+    $res->status(401); // Need to authenticate
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body('{ error: "Need to authenticate" }');
+    return;
   }
 
-}
+  if (!Container_users::checkUserExists($uid)) {
+    $res->status(404);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body('{ error: "user $uid does not exist" }');
+    return;
+  }
+  
+  // Only allow to get userdata if connected user is in the same channel
+  if ($_SESSION['userdata']['id'] != $uid) {
+    $cuser1 = Container_users::getUserChannels($uid);
+    $cuser2 = Container_users::getUserChannels($_SESSION['userdata']['id']);  
+    if (count(array_intersect($cuser1, $cuser2)) == 0) {
+      $res->status(403); // Forbidden
+      $res['Content-Type'] = 'application/json; charset=utf-8';
+      $res->body('{ error: "Forbidden" }');
+      return;
+    }
+  }
 
+  // returns user data in json
+  $res->status(200);
+  $res['Content-Type'] = 'application/json; charset=utf-8';
+  $res->body(Container_users::getUserData($uid, null, true));
+});
+
+/**
+ * Returns user's pending messages
+ */
+$app->get('/users/:uid/msg/', function ($uid) use ($app, $req, $res) {
+
+  // check user acces
+  session_start();
+  if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
+    $res->status(401); // Need to authenticate
+    return;
+  }
+  if ($uid !== $_SESSION['userdata']['id']) {
+    $res->status(403); // Forbidden
+    return;
+  }
+  
+  // store that user is alive
+  Container_users::setIsAlive($uid);
+  // run garbage collector
+  Container_users::runGC();
+
+  $res->status(200);
+  $res['Content-Type'] = 'application/json; charset=utf-8';
+  $res->body(Container_users::getUserMsgs($uid, true));
+});

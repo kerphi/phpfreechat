@@ -1,37 +1,24 @@
 <?php
 
-include_once 'functions.inc.php';
+include_once __DIR__.'/lib/Slim/Slim/Slim.php';
+include_once __DIR__.'/config.php';
 
-// extract the full route uri
-$server_dir = basename(__DIR__);
-if (!preg_match("#$server_dir/(.*)$#", $_SERVER['REQUEST_URI'], $matches)) {
-  header("HTTP/1.1 404 Unable to locate the server URI");
-  die();
+$app = new Slim();
+
+function debug($msg) {
+  if (is_string($msg)) {
+    file_put_contents(__DIR__.'/logs/pfc.log', $msg."\n", FILE_APPEND);
+  } else {
+    file_put_contents(__DIR__.'/logs/pfc.log', print_r($msg, true), FILE_APPEND);
+  }
 }
-$uri = parse_url($matches[1]);
 
-// extract the route name
-$route_fragments = explode('/', $uri['path']);
-$route = $route_fragments[0];
+$req = $app->request();
+$res = $app->response();
+$res['X-Powered-By'] = 'phpFreeChat';
 
-// load the route
-$route_file = __DIR__ . '/routes/' . $route . '.php';
-if (!file_exists($route_file)) {
-  header("HTTP/1.1 404 Unable to locate the route");
-  die();
-}
-include_once $route_file;
+require 'routes/auth.php';
+require 'routes/channels.php';
+require 'routes/users.php';
 
-// build the request object
-$req = array(
-  'url' => $route_fragments,
-  'body' => '',
-  'params' => $_REQUEST,
-  'headers' => getallheaders(),
-);
-
-// execute the route
-$route_class = "Route_$route";
-$r = new $route_class();
-$method = strtolower($_SERVER['REQUEST_METHOD']);
-$r->$method($req);
+$app->run();

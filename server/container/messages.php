@@ -35,7 +35,7 @@ class Container_messages {
       // post this message on each users subscribed on the channel
       // /users/:uid/msg/
       if ($subuid != $uid) { // don't post message to the current connected user
-        $umdir = Container_users::getUserMsgDir($subuid);
+        $umdir = Container_users::getDir().'/'.$subuid.'/messages';
         file_put_contents($umdir.'/'.$mid, $msg);
       }
     }

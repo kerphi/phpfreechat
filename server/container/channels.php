@@ -1,5 +1,8 @@
 <?php
 
+include_once 'container/indexes.php';
+include_once 'container/users.php';
+
 class Container_channels {
   
   static public function getChannelsDir() {
@@ -47,6 +50,9 @@ class Container_channels {
     return $subscribers;
   }
   
+  /**
+   * Check if a user is on the given channel
+   */
   static public function checkChannelUser($cid, $uid) {
     $cdir = self::getChannelsDir();
     $cupath = $cdir.'/'.$cid.'/users/'.$uid;  

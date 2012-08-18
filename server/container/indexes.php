@@ -1,7 +1,7 @@
 <?php
 
 class Container_indexes {
-
+  
   static public function getIndexDir() {
     return __DIR__ . '/../data/indexes';
   }

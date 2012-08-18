@@ -1,219 +1,167 @@
 <?php
 
-include_once 'container/channels.php';
 include_once 'container/users.php';
+include_once 'container/channels.php';
 include_once 'container/messages.php';
 
-class Route_channels {
-
-  public $cid = 'xxx';
-  
-  /**
-   * 
-   */
-  public function get($req) {
-    // 0 channels
-    // 1 :cid
-    // 2 users
-    // 3 :uid
-
-    // /channels/  (list available channels)
-    if (!isset($req['url'][1]) or $req['url'][1] === '') {
-      header("HTTP/1.1 200");
-      header('Content-Type: application/json; charset=utf-8');
-      echo json_encode(array('xxx'));
-      return;
-    }
-
-    $this->cid = $req['url'][1];
-
-    // /channels/xxx/ (list available field for the channel)
-    if (!isset($req['url'][2]) or $req['url'][2] === '') {
-      header("HTTP/1.1 501"); // not implemented
-      return;
-    }
-
-    // /channels/xxx/users/ (users connected in the channel)
-    if (isset($req['url'][2]) and $req['url'][2] === 'users') {
-      $rcm = new Route_channels_users($this);
-      return $rcm->get($req);
-    }
-    
-    header("HTTP/1.1 404");
-  }
-
-  /**
-   * Create a new channel or
-   * Post a message on a channel or
-   * Join a channel
-   * /channels/
-   * /channels/:cid/msg/
-   * /channels/:cid/users/
-   */
-  public function post($req) {
-    // 0 channels
-    // 1 :cid
-    // 2 users | msg
-    // 3 :uid
-
-    // check user acces
-    session_start();
-    if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
-      header("HTTP/1.1 401 Need to authenticate");
-      return;
-    }
-
-    // /channels/  (create a new channel)
-    if (!isset($req['url'][1]) or $req['url'][1] === '') {
-      $cid = Container_channels::generateCid();
-      
-      // todo: handle channel name
-      
-      header("HTTP/1.1 204");
-      header('Content-Type: application/json; charset=utf-8');
-      echo json_encode(array('id' => $cid));
-      return;
-    }
-
-    $this->cid = $req['url'][1];
-
-    // /channels/xxx/
-    if (!isset($req['url'][2]) or $req['url'][2] === '') {
-      header("HTTP/1.1 404");
-      return;
-    }
-
-    // /channels/xxx/msg/ (post a new message on the channel)
-    if (isset($req['url'][2]) and $req['url'][2] === 'msg') {
-      $rcm = new Route_channels_msg($this);
-      return $rcm->post($req);
-    }
-
-    // /channels/xxx/users/ (join the channel)
-    if (isset($req['url'][2]) and $req['url'][2] === 'users') {
-      $rcm = new Route_channels_users($this);
-      return $rcm->post($req);
-    }
-    
-    header("HTTP/1.1 404");
-  }
-
-
-}
+/**
+ * Returns channel list
+ */
+$app->get('/channels/', function () use ($app, $req, $res) {
+  $res->status(501);
+  $res['Content-Type'] = 'application/json; charset=utf-8';
+  $res->body('returns the channel list');
+});
 
 /**
- * /channels/:cid/msg/
+ * Returns channel data or 404
  */
-class Route_channels_msg {
-  
-  public $rc = null;
-  
-  function __construct(Route_channels $rc) {
-    $this->rc = $rc;
-  }
-  
-  /**
-   * Post a new message on the channel
-   * /channels/:cid/msg/
-   */
-  public function post($req) {
-    // 0 channels
-    // 1 :cid
-    // 2 msg
-
-    // check that user is subscribed to the channel
-    $uid = $_SESSION['userdata']['id'];
-    if (!Container_channels::checkChannelUser($this->rc->cid, $uid)) {
-      header("HTTP/1.1 403 You have to join channel before post a message");
-      return;
-    }
-
-    // check that request content contains a message
-    if (!isset($req['params']['body']) or $req['params']['body'] === '') {
-      header("HTTP/1.1 400 Missing parameter [message]");
-      return;
-    }
-
-    // post message
-    $msg = Container_messages::postMsgToChannel($this->rc->cid, $uid, $req['params']['body']);
-
-    header("HTTP/1.1 200");
-    header('Content-Type: application/json; charset=utf-8');
-    echo $msg;
-  }
-
-
-}
-
+$app->get('/channels/:cid/', function ($cid) use ($app, $req, $res) {
+  $res->status(501);
+  $res['Content-Type'] = 'application/json; charset=utf-8';
+  $res->body('returns channel data of '.$cid);
+});
 
 /**
- * /channels/:cid/users/
+ * List users on a channel
  */
-class Route_channels_users {
+$app->get('/channels/:cid/users/', function ($cid) use ($app, $req, $res) {
+  $res->status(200);
+  $res['Content-Type'] = 'application/json; charset=utf-8';
+  $res->body(json_encode(Container_channels::getChannelUsers($cid)));
+});
+
+/**
+ * Join a channel
+ */
+$app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $res) {
+
+  // check user acces
+  session_start();
+  if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
+    $res->status(401); // Need to authenticate
+    return;
+  }
+  if ($uid !== $_SESSION['userdata']['id']) {
+    $res->status(403); // Forbidden
+    return;
+  }
+
+  // check this user is online
+  if (!Container_users::checkUserExists($uid)) {
+    $res->status(400); // User is not connected
+    return;
+  }
   
-  public $rc = null;
+  // todo remove this code when channel create/join will be implemented
+  $cdir = Container_channels::getChannelsDir();
+  $cpath = $cdir.'/'.$cid.'/';
+  @mkdir($cpath, 0777, true);
+  @mkdir($cpath.'/users', 0777, true);
   
-  function __construct(Route_channels $rc) {
-    $this->rc = $rc;
-  }
-
-  /**
-   * List users in a channel
-   * /channels/:cid/users/
-   */
-  public function get($req) {
-    if (!isset($req['url'][3]) or $req['url'][3] === '') {
-      header("HTTP/1.1 200");
-      header('Content-Type: application/json; charset=utf-8');
-      echo json_encode(Container_channels::getChannelUsers($this->rc->cid));
-      return;
-    }
-
-    header("HTTP/1.1 501");
-  }
-
-  /**
-   * User join a channel
-   * /channels/:cid/users/
-   */
-  public function post($req) {
-    // 0 channels
-    // 1 :cid
-    // 2 users
-
-    $uid = $_SESSION['userdata']['id'];
-
-    // check this user is online
-    if (!Container_users::checkUser($uid)) {
-      header('HTTP/1.1 400 User is not connected');
-      return;
-    }
+  if (!Container_users::joinChannel($uid, $cid)) {
+    $res->status(200); // User already joined the channel
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body(json_encode(Container_channels::getChannelUsers($cid, true)));
+    return;
+  } else {
+    // post a join message
+    $msg = Container_messages::postMsgToChannel($cid, $uid, null, 'join');
     
-    // todo remove this code when channel create/join will be implemented
-    $cdir = Container_channels::getChannelsDir();
-    $cpath = $cdir.'/'.$this->rc->cid.'/';
-    @mkdir($cpath, 0777, true);
-    @mkdir($cpath.'/users', 0777, true);
-    
-    $cupath = Container_channels::getChannelUserPath($this->rc->cid, $uid);    
-    if (file_exists($cupath)) {
-      header('HTTP/1.1 200 User already subscribed');
-      header('Content-Type: application/json; charset=utf-8');
-      echo json_encode(Container_channels::getChannelUsers($this->rc->cid, true));
-      return;
-    } else {
-      // join the channel
-      touch($cupath);
-      
-      // post a joind message (todo: add a 'join' type to the message)
-      $msg = Container_messages::postMsgToChannel($this->rc->cid, $uid, null, 'join');
-      
-      header('HTTP/1.1 201 User joined the channel');
-      header('Content-Type: application/json; charset=utf-8');
-      echo json_encode(Container_channels::getChannelUsers($this->rc->cid, true));
-      return;
-    }
+    $res->status(201); // User joined the channel
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body(json_encode(Container_channels::getChannelUsers($cid, true)));
+    return;
   }
 
-}
+});
 
+/**
+ * Leave a channel
+ */
+$app->delete('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $res) {
+
+  
+  // check user acces
+  session_start();
+  if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
+    $res->status(401); // Need to authenticate
+    return;
+  }
+  if ($uid !== $_SESSION['userdata']['id']) {
+    $res->status(403); // Forbidden
+    return;
+  }
+
+  // check this user is online
+  if (!Container_users::checkUserExists($uid)) {
+    $res->status(400); // User is not connected
+    return;
+  }
+
+
+  if (!Container_users::leaveChannel($uid, $cid)) {
+    $res->status(404);
+    // $res['Content-Type'] = 'application/json; charset=utf-8';
+    // $res->body(json_encode(Container_channels::getChannelUsers($cid, true)));
+    return;
+  } else {
+    // post a leave message
+    $msg = Container_messages::postMsgToChannel($cid, $uid, null, 'leave');
+    
+    $res->status(200);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body(json_encode(Container_channels::getChannelUsers($cid, true)));
+    return;
+  }
+
+
+  
+  $res->status(501);
+  $res['Content-Type'] = 'application/json; charset=utf-8';
+  $res->body($uid.' leave channel '.$cid);
+
+});
+
+/**
+ * Post a message on a channel
+ */
+$app->post('/channels/:cid/msg/', function ($cid) use ($app, $req, $res) {  
+
+  // check user acces
+  session_start();
+  if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
+    $res->status(401); // Need to authenticate
+    return;
+  }
+  $uid = $_SESSION['userdata']['id'];
+
+  
+  // check this user is online
+  if (!Container_users::checkUserExists($uid)) {
+    $res->status(400); // User is not connected
+    return;
+  }
+
+  // check this user has joined the channel
+  if (!Container_channels::checkChannelUser($cid, $uid)) {
+    $res->status(403); // You have to join channel before post a message
+    return;
+  }
+ 
+   // check that request content contains a message
+  $data = json_decode($req->getBody());
+  if (!isset($data->body) or $data->body === '') {
+    $res->status(400); // Missing parameter [body]
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body("{ error: 'Missing parameter [body]' }");
+    return;
+  }
+
+  // post message
+  $msg = Container_messages::postMsgToChannel($cid, $uid, $data->body);
+
+  $res->status(201);
+  $res['Content-Type'] = 'application/json; charset=utf-8';
+  $res->body($msg);
+});

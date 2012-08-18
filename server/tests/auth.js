@@ -3,7 +3,7 @@
 var vows = require('vows'),
     assert = require('assert'),
     request = require('request'),
-    baseurl = 'http://127.0.0.1:32773/server-slim';
+    baseurl = 'http://127.0.0.1:32773/server';
 
 vows.describe('Auth route').addBatch({
 

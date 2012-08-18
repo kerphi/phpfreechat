@@ -3,7 +3,7 @@
 
     RewriteEngine On
     #RewriteBase /path/to/app
-    RewriteRule ^ index.php [L]
+    RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
 
