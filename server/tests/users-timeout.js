@@ -5,13 +5,17 @@ var vows = require('vows'),
     request = require('request'),
     async = require('async'),
     querystring = require('querystring'),
-    baseurl = 'http://127.0.0.1:32773/server',
+    baseurl = 'http://127.0.0.1:32773',
     j1 = request.jar(),
     j2 = request.jar(),
     userdata1 = {},
     userdata2 = {},
     cid1 = 'cidtimeout_1',
     cid2 = 'cidtimeout_2';
+
+try {
+  baseurl = fs.readFileSync(__dirname+'/../../serverurl', 'utf8');
+} catch(err) {}
 
 vows.describe('User timeout')
 
@@ -24,7 +28,7 @@ vows.describe('User timeout')
       // user1 auth
       request({
         method: 'GET',
-        url: baseurl+'/auth',
+        url: baseurl+'/server/auth',
         headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testtimeout1:password").toString('base64') }, 
         jar: j1,
       }, function (err, res, body) {
@@ -33,7 +37,7 @@ vows.describe('User timeout')
         // user1 join
         request({
           method: 'PUT',
-          url: baseurl+'/channels/'+cid1+'/users/'+userdata1.id,
+          url: baseurl+'/server/channels/'+cid1+'/users/'+userdata1.id,
           jar: j1,
         }, function (err, res, body) {
           
@@ -43,7 +47,7 @@ vows.describe('User timeout')
             // check that the user has been well disconnected
             request({
               method: 'GET',
-              url: baseurl+'/users/'+userdata1.id+'/',
+              url: baseurl+'/server/users/'+userdata1.id+'/',
               jar: j1,
             }, function (err, res, body) {
               self.callback(null, tmsg);
@@ -55,7 +59,7 @@ vows.describe('User timeout')
           // then user2 auth
           request({
             method: 'GET',
-            url: baseurl+'/auth',
+            url: baseurl+'/server/auth',
             headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testtimeout2:password").toString('base64') }, 
             jar: j2,
           }, function (err, res, body) {
@@ -64,7 +68,7 @@ vows.describe('User timeout')
             // user2 join
             request({
               method: 'PUT',
-              url: baseurl+'/channels/'+cid1+'/users/'+userdata2.id,
+              url: baseurl+'/server/channels/'+cid1+'/users/'+userdata2.id,
               jar: j2,
             }, function (err, res, body) {
 
@@ -75,7 +79,7 @@ vows.describe('User timeout')
                 setTimeout(function () {
                   request({
                     method: 'GET',
-                    url: baseurl+'/users/'+userdata2.id+'/msg/',
+                    url: baseurl+'/server/users/'+userdata2.id+'/msg/',
                     jar: j2,
                   }, function (err, res, body) {
                     tmsg = tmsg.concat(JSON.parse(body)); // get the timeout leave message of user1

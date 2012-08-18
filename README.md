@@ -58,6 +58,16 @@ make setup
 * `make test-server`: run tests server side
 * `make clean`: ...
 
+
+### Playing with unit tests
+
+Tests (client and server side) need phpfreechat's base absolute url. By default `http://127.0.0.1:32773` is used but it can be customized. For that, you have to create a `serverurl` file that contains the absolute url to your phpfreechat installation without the trailing slash  (ex: ``http://localhost/phpfreechat``)
+
+Client side tests are written with [qunit](http://qunitjs.com/) and are located here: `client/tests/`
+
+Server side tests are written with [vows](http://vowsjs.org/) and are located here: `server/tests/`
+
+
 ### Modules (client side)
 
 * `jquery.phpfreechat.js`: just jquery plugin stuff

@@ -1,4 +1,5 @@
-path = $(shell pwd)
+path=$(shell pwd)
+SERVERURL=`cat serverurl 2>/dev/null | echo "http://127.0.0.1:32773"`
 TESTS=$(wildcard $(path)/server/tests/*.js)
 
 dummy:
@@ -17,7 +18,7 @@ test-server: dummy
 
 # run client tests
 test-client: dummy
-	@./phantomjs/bin/phantomjs ./phantomjs/examples/run-qunit.js http://127.0.0.1:32773/client/tests/test1.html
+	@./phantomjs/bin/phantomjs ./phantomjs/examples/run-qunit.js $(SERVERURL)/client/tests/test1.html
 
 setup: dummy
 	@cd $(path)/server/lib/ && curl -L https://nodeload.github.com/codeguy/Slim/tarball/1.6.5 > slim.tar.gz && pwd && tar -ztf slim.tar.gz 2>/dev/null | head -1 > /tmp/slimname

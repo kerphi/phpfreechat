@@ -5,13 +5,17 @@ var vows = require('vows'),
     request = require('request'),
     async = require('async'),
     querystring = require('querystring'),
-    baseurl = 'http://127.0.0.1:32773/server',
+    baseurl = 'http://127.0.0.1:32773',
     j1 = request.jar(),
     j2 = request.jar(),
     userdata1 = {},
     userdata2 = {},
     cid1 = 'cid_1',
     cid2 = 'cid_2';
+    
+try {
+  baseurl = fs.readFileSync(__dirname+'/../../serverurl', 'utf8');
+} catch(err) {}
 
 vows.describe('Send and receive messages').addBatch({
 
@@ -23,7 +27,7 @@ vows.describe('Send and receive messages').addBatch({
         function USER1LOGIN(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/auth',
+            url: baseurl+'/server/auth',
             headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testm1:password").toString('base64') }, 
             jar: j1,
           }, function (err, res, body) {
@@ -35,7 +39,7 @@ vows.describe('Send and receive messages').addBatch({
         function USER2LOGIN(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/auth',
+            url: baseurl+'/server/auth',
             headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testm2:password").toString('base64') }, 
             jar: j2,
           }, function (err, res, body) {
@@ -47,7 +51,7 @@ vows.describe('Send and receive messages').addBatch({
         function USER1JOIN(callback) {
           request({
             method: 'PUT',
-            url: baseurl+'/channels/'+cid1+'/users/'+userdata1.id,
+            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata1.id,
             jar: j1,
           }, callback);
         },
@@ -55,7 +59,7 @@ vows.describe('Send and receive messages').addBatch({
         function USER2JOIN(callback) {
           request({
             method: 'PUT',
-            url: baseurl+'/channels/'+cid1+'/users/'+userdata2.id,
+            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata2.id,
             jar: j2,
           }, callback);
         },
@@ -63,7 +67,7 @@ vows.describe('Send and receive messages').addBatch({
         function USER2SENDMSG(callback) {
           request({
             method: 'POST',
-            url: baseurl+'/channels/'+cid1+'/msg/',
+            url: baseurl+'/server/channels/'+cid1+'/msg/',
             json: { body: 'my user2 message' },
             jar: j2,
           }, callback);
@@ -72,7 +76,7 @@ vows.describe('Send and receive messages').addBatch({
         function USER1READMSG(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/users/'+userdata1.id+'/msg/',
+            url: baseurl+'/server/users/'+userdata1.id+'/msg/',
             jar: j1,
           }, callback);
 
@@ -81,7 +85,7 @@ vows.describe('Send and receive messages').addBatch({
         function USER1SENDMSG(callback) {
           request({
             method: 'POST',
-            url: baseurl+'/channels/'+cid1+'/msg/',
+            url: baseurl+'/server/channels/'+cid1+'/msg/',
             json: { body: 'my user1 message' },
             jar: j1,
           }, callback);
@@ -90,7 +94,7 @@ vows.describe('Send and receive messages').addBatch({
         function USER2READMSG(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/users/'+userdata2.id+'/msg/',
+            url: baseurl+'/server/users/'+userdata2.id+'/msg/',
             jar: j2,
           }, callback);
         },         

@@ -5,13 +5,17 @@ var vows = require('vows'),
     request = require('request'),
     async = require('async'),
     querystring = require('querystring'),
-    baseurl = 'http://127.0.0.1:32773/server',
+    baseurl = 'http://127.0.0.1:32773',
     j1 = request.jar(),
     j2 = request.jar(),
     userdata1 = {},
     userdata2 = {},
     cid1 = 'ciddata_1',
     cid2 = 'ciddata_2';
+
+try {
+  baseurl = fs.readFileSync(__dirname+'/../../serverurl', 'utf8');
+} catch(err) {}
 
 vows.describe('User data')
 
@@ -23,7 +27,7 @@ vows.describe('User data')
       // user1 auth
       request({
         method: 'GET',
-        url: baseurl+'/auth',
+        url: baseurl+'/server/auth',
         headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testdata1:password").toString('base64') }, 
         jar: j1,
       }, function (err, res, body) {
@@ -32,7 +36,7 @@ vows.describe('User data')
         // check that the userdata are available
         request({
           method: 'GET',
-          url: baseurl+'/users/'+userdata1.id+'/',
+          url: baseurl+'/server/users/'+userdata1.id+'/',
           jar: j1,
         }, self.callback);
         
@@ -61,7 +65,7 @@ vows.describe('User data')
       // user2 auth
       request({
         method: 'GET',
-        url: baseurl+'/auth',
+        url: baseurl+'/server/auth',
         headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testdata2:password").toString('base64') }, 
         jar: j2,
       }, function (err, res, body) {
@@ -70,7 +74,7 @@ vows.describe('User data')
         // check that the userdata are available
         request({
           method: 'GET',
-          url: baseurl+'/users/'+userdata1.id+'/',
+          url: baseurl+'/server/users/'+userdata1.id+'/',
           jar: j2,
         }, self.callback);
         
@@ -92,20 +96,20 @@ vows.describe('User data')
       // user1 join
       request({
         method: 'PUT',
-        url: baseurl+'/channels/'+cid1+'/users/'+userdata1.id,
+        url: baseurl+'/server/channels/'+cid1+'/users/'+userdata1.id,
         jar: j1,
       }, function (err, res, body) {
         // user2 join
         request({
           method: 'PUT',
-          url: baseurl+'/channels/'+cid1+'/users/'+userdata2.id,
+          url: baseurl+'/server/channels/'+cid1+'/users/'+userdata2.id,
           jar: j2,
         }, function (err, res, body) {
         
           // check that user2 can read user1 data
           request({
             method: 'GET',
-            url: baseurl+'/users/'+userdata1.id+'/',
+            url: baseurl+'/server/users/'+userdata1.id+'/',
             jar: j2,
           }, self.callback);
           

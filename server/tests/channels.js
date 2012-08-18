@@ -4,13 +4,17 @@ var vows = require('vows'),
     assert = require('assert'),
     request = require('request'),
     async = require('async'),
-    baseurl = 'http://127.0.0.1:32773/server',
+    baseurl = 'http://127.0.0.1:32773',
     j1 = request.jar(),
     j2 = request.jar(),
     userdata1 = {},
     userdata2 = {},
     cid1 = 'cid_1',
     cid2 = 'cid_2';
+
+try {
+  baseurl = fs.readFileSync(__dirname+'/../../serverurl', 'utf8');
+} catch(err) {}
 
 vows.describe('Channels route').addBatch({
 
@@ -21,7 +25,7 @@ vows.describe('Channels route').addBatch({
       // auth
       request({
         method: 'GET',
-        url: baseurl+'/auth',
+        url: baseurl+'/server/auth',
         headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testch:testchpassword").toString('base64') }, 
         jar: j1,
       }, function (err, res, body) {
@@ -30,7 +34,7 @@ vows.describe('Channels route').addBatch({
         // join the channel cid1
         request({
           method: 'PUT',
-          url: baseurl+'/channels/'+cid1+'/users/'+userdata1.id,
+          url: baseurl+'/server/channels/'+cid1+'/users/'+userdata1.id,
           jar: j1,
         }, self.callback);
 
@@ -57,7 +61,7 @@ vows.describe('Channels route').addBatch({
         // auth user2
         request({
           method: 'GET',
-          url: baseurl+'/auth',
+          url: baseurl+'/server/auth',
           headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testch2:testch2password").toString('base64') }, 
           jar: j2,
         }, function (err, res, body) {
@@ -66,7 +70,7 @@ vows.describe('Channels route').addBatch({
           // join the channel cid1
           request({
             method: 'PUT',
-            url: baseurl+'/channels/'+cid1+'/users/'+userdata2.id,
+            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata2.id,
             jar: j2,
           }, self.callback);
 
@@ -107,7 +111,7 @@ vows.describe('Channels route').addBatch({
       // list users in channel1
       request({
         method: 'GET',
-        url: baseurl+'/channels/'+cid1+'/users/',
+        url: baseurl+'/server/channels/'+cid1+'/users/',
         jar: j1,
       }, self.callback);
 
@@ -137,7 +141,7 @@ vows.describe('Channels route').addBatch({
         function USER1LOGIN(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/auth',
+            url: baseurl+'/server/auth',
             headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testm1:password").toString('base64') }, 
             jar: j1,
           }, function (err, res, body) {
@@ -149,7 +153,7 @@ vows.describe('Channels route').addBatch({
         function USER2LOGIN(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/auth',
+            url: baseurl+'/server/auth',
             headers: { 'Pfc-Authorization': 'Basic '+new Buffer("testm2:password").toString('base64') }, 
             jar: j2,
           }, function (err, res, body) {
@@ -161,7 +165,7 @@ vows.describe('Channels route').addBatch({
         function USER1JOIN(callback) {
           request({
             method: 'PUT',
-            url: baseurl+'/channels/'+cid1+'/users/'+userdata1.id,
+            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata1.id,
             jar: j1,
           }, callback);
         },
@@ -169,7 +173,7 @@ vows.describe('Channels route').addBatch({
         function USER2JOIN(callback) {
           request({
             method: 'PUT',
-            url: baseurl+'/channels/'+cid1+'/users/'+userdata2.id,
+            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata2.id,
             jar: j2,
           }, callback);
         },
@@ -177,7 +181,7 @@ vows.describe('Channels route').addBatch({
         function USER1LISTWITHU2(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/channels/'+cid1+'/users/',
+            url: baseurl+'/server/channels/'+cid1+'/users/',
             jar: j1,
           }, callback);
         },
@@ -185,7 +189,7 @@ vows.describe('Channels route').addBatch({
         function USER2LEAVE(callback) {
           request({
             method: 'DELETE',
-            url: baseurl+'/channels/'+cid1+'/users/'+userdata2.id,
+            url: baseurl+'/server/channels/'+cid1+'/users/'+userdata2.id,
             jar: j2,
           }, callback);
         },
@@ -193,7 +197,7 @@ vows.describe('Channels route').addBatch({
         function USER1LISTWITHOUTU2(callback) {
           request({
             method: 'GET',
-            url: baseurl+'/channels/'+cid1+'/users/',
+            url: baseurl+'/server/channels/'+cid1+'/users/',
             jar: j1,
           }, callback);
         },
