@@ -166,7 +166,7 @@ vows.describe('User timeout')
           userdata2 = JSON.parse(body);
           user2join();
         });
-      }      
+      }
 
       function user2join() {
         //console.log('4');
@@ -203,7 +203,8 @@ vows.describe('User timeout')
       user1auth(); // run the topic
     },
     
-    'server should not tell anything to user1 (because user1/2 timeout message should not be displayed)': function (error, tmsg, userdata1, userdata2) {
+    'server should not tell anything to user1 (because user1/2 timeout message should not be displayed)':
+    function (error, tmsg, userdata1, userdata2) {
       assert.lengthOf(tmsg, 0);
     },
   },
