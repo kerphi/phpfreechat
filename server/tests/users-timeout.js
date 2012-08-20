@@ -7,13 +7,7 @@ var vows = require('vows'),
     async = require('async'),
     fs = require('fs'),
     querystring = require('querystring'),
-    baseurl = 'http://127.0.0.1:32773',
-    j1 = request.jar(),
-    j2 = request.jar(),
-    userdata1 = {},
-    userdata2 = {},
-    cid1 = 'cidtimeout_1',
-    cid2 = 'cidtimeout_2';
+    baseurl = 'http://127.0.0.1:32773';
 
 try {
   baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8');
@@ -26,7 +20,12 @@ vows.describe('User timeout')
     topic: function () {
       var self = this;
       var tmsg = [];
-      
+      var j1 = request.jar();
+      var j2 = request.jar();
+      var cid = 'cidtimeout1';
+      var userdata1 = {};
+      var userdata2 = {};
+
       // user1 auth
       request({
         method: 'GET',
@@ -40,7 +39,7 @@ vows.describe('User timeout')
         // user1 join
         request({
           method: 'PUT',
-          url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata1.id,
+          url: baseurl + '/server/channels/' + cid + '/users/' + userdata1.id,
           jar: j1,
         }, function (err, res, body) {
           
@@ -53,7 +52,7 @@ vows.describe('User timeout')
               url: baseurl + '/server/users/' + userdata1.id + '/',
               jar: j1,
             }, function (err, res, body) {
-              self.callback(null, tmsg);
+              self.callback(null, tmsg, userdata1, userdata2);
             });
             
           }, 5500);
@@ -72,7 +71,7 @@ vows.describe('User timeout')
             // user2 join
             request({
               method: 'PUT',
-              url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata2.id,
+              url: baseurl + '/server/channels/' + cid + '/users/' + userdata2.id,
               jar: j2,
             }, function (err, res, body) {
 
@@ -102,11 +101,110 @@ vows.describe('User timeout')
       
     },
     
-    'server tells that user1 has leave because of a timeout': function (error, tmsg) {
+    'server tells that user1 has leave because of a timeout': function (error, tmsg, userdata1, userdata2) {
       assert.lengthOf(tmsg, 1);
       assert.equal(tmsg[0].type, 'leave');
       assert.equal(tmsg[0].body, 'timeout');
       assert.equal(tmsg[0].sender, userdata1.id);
+    },
+  },
+})
+
+.addBatch({
+  'user1 and user2 join a channel, wait for a timeout, then user1 join again and check his messages': {
+    topic: function () {
+      var self = this;
+      var tmsg = [];
+      var j1 = request.jar();
+      var j2 = request.jar();
+      var cid = 'cidtimeout2';
+      var userdata1 = {};
+      var userdata2 = {};
+      
+      function user1auth(flag) {
+        //console.log('1');
+        // user1 auth
+        request({
+          method: 'GET',
+          url: baseurl + '/server/auth',
+          headers: { 'Pfc-Authorization': 'Basic '
+                    + new Buffer("testtimeout11:password").toString('base64') },
+          jar: j1,
+        }, function (err, res, body) {
+          if (!flag) {
+            userdata1 = JSON.parse(body);
+          }
+          user1join(flag);
+        });
+      }
+
+      function user1join(flag) {
+        //console.log('2');
+        // user1 join
+        request({
+          method: 'PUT',
+          url: baseurl + '/server/channels/' + cid + '/users/' + userdata1.id,
+          jar: j1,
+        }, function (err, res, body) {
+          if (!flag) {
+            user2auth();
+          } else {
+            user1getmsg();
+          }
+        });
+      }
+
+      function user2auth() {
+        //console.log('3');
+        request({
+          method: 'GET',
+          url: baseurl + '/server/auth',
+          headers: { 'Pfc-Authorization': 'Basic '
+                      + new Buffer("testtimeout22:password").toString('base64') },
+          jar: j2,
+        }, function (err, res, body) {
+          userdata2 = JSON.parse(body);
+          user2join();
+        });
+      }      
+
+      function user2join() {
+        //console.log('4');
+        // user2 join
+        request({
+          method: 'PUT',
+          url: baseurl + '/server/channels/' + cid + '/users/' + userdata2.id,
+          jar: j2,
+        }, function (err, res, body) {
+          waituser1user2timeout();
+        });
+      }
+      
+      function waituser1user2timeout() {
+        //console.log('5');
+        // this user is timouted (simulates a browser close or connection problem)
+        setTimeout(function () {
+          user1auth(true); // auth again after a timeout
+        }, 5500);
+      }
+
+      function user1getmsg() {
+        //console.log('6');
+        request({
+          method: 'GET',
+          url: baseurl + '/server/users/' + userdata1.id + '/msg/',
+          jar: j1,
+        }, function (err, res, body) {
+          tmsg = JSON.parse(body);
+          self.callback(null, tmsg, userdata1, userdata2);
+        });
+      }
+      
+      user1auth(); // run the topic
+    },
+    
+    'server should not tell anything to user1 (because user1/2 timeout message should not be displayed)': function (error, tmsg, userdata1, userdata2) {
+      assert.lengthOf(tmsg, 0);
     },
   },
 })

@@ -3,10 +3,18 @@
 include_once 'container/users.php';
 
 $app->get('/auth', function () use ($app, $req, $res) {
-  
   // check if a user session already exists
   session_start();
   if (isset($_SESSION['userdata']) and isset($_SESSION['userdata']['id'])) {
+    
+    // if user has been timeouted (network problem)
+    $uid = $_SESSION['userdata']['id'];
+    $uid = Container_users::generateUid($uid); // needed to recreate directories
+    if (!Container_users::checkUserExists($uid)) {
+      Container_users::setUserData($uid, $_SESSION['userdata']);
+    }
+    Container_users::setIsAlive($uid);
+    
     $res->status(200, 'User authenticated');
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res->body(json_encode($_SESSION['userdata']));

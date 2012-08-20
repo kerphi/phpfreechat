@@ -65,7 +65,14 @@ $app->get('/users/:uid/msg/', function ($uid) use ($app, $req, $res) {
     $res->status(403); // Forbidden
     return;
   }
-  
+
+  if (!Container_users::checkUserExists($uid)) {
+    $res->status(404);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body('{ error: "user data does not exist" }');
+    return;
+  }
+
   // store that user is alive
   Container_users::setIsAlive($uid);
   // run garbage collector

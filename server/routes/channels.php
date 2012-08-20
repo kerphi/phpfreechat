@@ -47,9 +47,14 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
     return;
   }
 
+  // run garbage collector to purge old timeout message
+  Container_users::runGC();
+
   // check this user is online
   if (!Container_users::checkUserExists($uid)) {
     $res->status(400); // User is not connected
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body('{ error: "User is not connected" }');
     return;
   }
   

@@ -11,12 +11,16 @@ class Container_users {
     return $udir;
   }
 
-  static public function generateUid() {
+  static public function generateUid($uid = null) {
     $udir = self::getDir();
-    do {
-      $uid = sha1(uniqid('', true));
+    if (!$uid) {
+      do {
+        $uid = sha1(uniqid('', true));
+        $upath = $udir.'/'.$uid;
+      } while (file_exists($upath));
+    } else {
       $upath = $udir.'/'.$uid;
-    } while (file_exists($upath));
+    }
     @mkdir($upath, 0777, true);
     @mkdir($upath.'/messages', 0777, true);
     @mkdir($upath.'/channels', 0777, true);
