@@ -18,20 +18,17 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }).done(function (msgs) {
 
       msgs.forEach(function (m, i) {
-        if (m.type == 'msg') {
-          pfc.appendMessage(m);
-        } else if (m.type == 'join') {
+        // specific actions for special messages
+        if (m.type == 'join') {
           pfc.users[m.sender] = m.body; // store new joined user data
-          m.body = pfc.users[m.sender].name + ' joined the channel';
-          pfc.appendMessage(m); // post the message
           pfc.appendUser(pfc.users[m.sender]); // append the user to the list
         } else if (m.type == 'leave') {
           m.body = pfc.users[m.sender].name + ' leave the channel (' + m.body + ')';
-          pfc.appendMessage(m); // post the message
           pfc.removeUser(m.sender); // remove the user from the list
-        } else {
-          console.log('not implemented message type');
         }
+        
+        // display the message of the chat interface
+        pfc.appendMessage(m);
       });
       if (loop) {
         setTimeout(function () { pfc.readPendingMessages(true) }, pfc.options.refresh_delay);
@@ -207,11 +204,18 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
     // default values
     msg.from      = (msg.type == 'msg') ? msg.sender : 'system';
-    msg.name      = (pfc.users[msg.sender] !== undefined) ? pfc.users[msg.sender].name : '???';
+    msg.name      = (pfc.users[msg.sender] !== undefined) ? pfc.users[msg.sender].name : msg.name;
     msg.body      = (msg.body !== undefined) ? msg.body : '';
     msg.timestamp = (msg.timestamp !== undefined) ? msg.timestamp : Math.round(new Date().getTime() / 1000);
     msg.date      = new Date(msg.timestamp * 1000).toLocaleTimeString();
     
+    // reformat body text
+    if (msg.type == 'join') {
+      msg.body = msg.name + ' joined the channel';
+    } else if (msg.type == 'leave') {
+      msg.body = msg.name + ' leave the channel (' + msg.body + ')';
+    }
+        
     var groupmsg_dom = $(pfc.element).find('.pfc-messages .messages-group:last');
     var groupmsg_last_dom = groupmsg_dom;
     var messages_dom = $(pfc.element).find('.pfc-messages');

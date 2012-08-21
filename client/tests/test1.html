@@ -110,6 +110,10 @@
             var message2 = pfc.appendMessage({name: 'AdminQUnit', body: 'my super message 2'});
             ok( message2.is(':visible'), "are able to be appended twice" );
             ok( message2.parent()[0] == message1.parent()[0], "are able to be appended twice in a group" );
+            var message3 = pfc.appendMessage({name: 'AdminQUnit', type: 'join'});
+            ok( message3.text().indexOf('joined') !== -1, "are able to display a joined channel system message" );
+            var message4 = pfc.appendMessage({name: 'AdminQUnit', type: 'leave'});
+            ok( message4.text().indexOf('leave') !== -1, "are able to display a leave channel system message" );
             
           });
         }
