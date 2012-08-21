@@ -53,7 +53,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         '<form>'
       + '  <input type="text" name="login" placeholder="Login"/><br/>'
       //+ '  <input type="text" name="password" placeholder="Password"/><br/>'
-      + '  <input type="text" name="email" placeholder="Email"/><br/>'
+      //+ '  <input type="text" name="email" placeholder="Email"/><br/>'
       + '  <input type="submit" name="submit" value="Sign in" />'
       + (msg ? '<p>' + msg + '</p>' : '')
       + '</form>'
