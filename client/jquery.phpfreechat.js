@@ -13,7 +13,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     serverUrl: '../server', // phpfreechat server url
     loaded: null,           // executed when interface is loaded
     loadTestData: false,    // load interface data for tests
-    refresh_delay: 5000,
+    refresh_delay: 5000,    //
+    focus_on_connect: true, // Setting this to true will give the focus to the input text box when connecting to the chat
   };
 
   function Plugin(element, options) {

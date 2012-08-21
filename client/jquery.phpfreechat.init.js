@@ -40,6 +40,11 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       pfc.users[userdata.id] = userdata;
       pfc.cid = 'xxx'; // static channel id for the first 2.x version
       
+      if (pfc.options.focus_on_connect) {
+        // give focus to input textarea when auth
+        $('div.pfc-compose textarea').focus();
+      }
+      
       pfc.join(pfc.cid);
     });
 
