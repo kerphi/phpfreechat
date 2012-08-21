@@ -15,7 +15,7 @@ $app->get('/auth', function () use ($app, $req, $res) {
     }
     Container_users::setIsAlive($uid);
     
-    $res->status(200, 'User authenticated');
+    $res->status(200); // , 'User authenticated'
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res->body(json_encode($_SESSION['userdata']));
     return;
@@ -27,16 +27,19 @@ $app->get('/auth', function () use ($app, $req, $res) {
     $req->headers('Authorization') :
     ($req->headers('Pfc-Authorization') ? $req->headers('Pfc-Authorization') : '');
   if (!$auth) {
-    $res->status(403, 'Need authentication');
+    $res->status(403);
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res['Pfc-WWW-Authenticate'] = 'Basic realm="Authentication"';
+    $res->body('{ "error": "Need authentication" }');
     return;
   }
 
   // decode basic http auth header
   $auth = @explode(':', @base64_decode(@array_pop(@explode(' ', $auth))));
   if (!isset($auth[0]) && !$auth[0]) {
-    $res->status(400, 'Login is missing');
+    $res->status(400);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body('{ "error": "Login is missing" }');
     return;
   }
   $login    = trim($auth[0]);
@@ -44,8 +47,10 @@ $app->get('/auth', function () use ($app, $req, $res) {
   
   // check login/password
   if ($login and Container_indexes::getIndex('users/name', $login)) {
-    $res->status(403, 'Login already used');
+    $res->status(403);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
     $res['Pfc-WWW-Authenticate'] = 'Basic realm="Authentication"';
+    $res->body('{ "error": "Login already used" }');
     return;
   } else if ($login) {
     $uid = Container_users::generateUid();
@@ -64,8 +69,10 @@ $app->get('/auth', function () use ($app, $req, $res) {
     $res->body(json_encode($_SESSION['userdata']));
     return;
   } else {
-    $res->status(403, 'Wrong credentials');
+    $res->status(403);
     $res['Pfc-WWW-Authenticate'] = 'Basic realm="Authentication"';
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body('{ "error": "Wrong credentials" }');    
     return;
   }
 
@@ -76,7 +83,9 @@ $app->delete('/auth', function () use ($app, $req, $res) {
   // check if session exists
   session_start();
   if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
-    $res->status(200, 'Already disconnected');
+    $res->status(200);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body('{ "error": "Already disconnected" }');    
     return;
   }
   

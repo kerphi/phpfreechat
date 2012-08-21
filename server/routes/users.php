@@ -21,14 +21,14 @@ $app->get('/users/:uid/', function ($uid) use ($app, $req, $res) {
   if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
     $res->status(401); // Need to authenticate
     $res['Content-Type'] = 'application/json; charset=utf-8';
-    $res->body('{ error: "Need to authenticate" }');
+    $res->body('{ "error": "Need to authenticate" }');
     return;
   }
 
   if (!Container_users::checkUserExists($uid)) {
     $res->status(404);
     $res['Content-Type'] = 'application/json; charset=utf-8';
-    $res->body('{ error: "user $uid does not exist" }');
+    $res->body('{ "error": "user $uid does not exist" }');
     return;
   }
   
@@ -39,7 +39,7 @@ $app->get('/users/:uid/', function ($uid) use ($app, $req, $res) {
     if (count(array_intersect($cuser1, $cuser2)) == 0) {
       $res->status(403); // Forbidden
       $res['Content-Type'] = 'application/json; charset=utf-8';
-      $res->body('{ error: "Forbidden" }');
+      $res->body('{ "error": "Forbidden" }');
       return;
     }
   }
@@ -69,7 +69,7 @@ $app->get('/users/:uid/msg/', function ($uid) use ($app, $req, $res) {
   if (!Container_users::checkUserExists($uid)) {
     $res->status(404);
     $res['Content-Type'] = 'application/json; charset=utf-8';
-    $res->body('{ error: "user data does not exist" }');
+    $res->body('{ "error": "user data does not exist" }');
     return;
   }
 
