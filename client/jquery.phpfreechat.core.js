@@ -22,11 +22,11 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
           pfc.appendMessage(m);
         } else if (m.type == 'join') {
           pfc.users[m.sender] = m.body; // store new joined user data
-          m.body = pfc.users[m.sender].name + ' joined Default channel';
+          m.body = pfc.users[m.sender].name + ' joined the channel';
           pfc.appendMessage(m); // post the message
           pfc.appendUser(pfc.users[m.sender]); // append the user to the list
         } else if (m.type == 'leave') {
-          m.body = pfc.users[m.sender].name + ' leave Default channel (' + m.body + ')';
+          m.body = pfc.users[m.sender].name + ' leave the channel (' + m.body + ')';
           pfc.appendMessage(m); // post the message
           pfc.removeUser(m.sender); // remove the user from the list
         } else {
@@ -61,6 +61,13 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       Object.keys(users).forEach(function (uid) {
         pfc.users[uid] = users[uid];
         pfc.appendUser(users[uid]);
+      });
+
+      // display a join message for him
+      pfc.appendMessage({
+        type: 'join',
+        sender: pfc.uid,
+        body: 'you joined the channel',
       });
       
       // start to read pending messages
