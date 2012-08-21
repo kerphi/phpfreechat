@@ -54,5 +54,7 @@ clean: dummy
 	@rm -f $(path)/client/*.min.js
 	@rm -f $(path)/client/themes/default/jquery.phpfreechat.css
 	@rm -f $(path)/client/themes/default/jquery.phpfreechat.min.css
+	@rm -rf $(path)/server/data/*
+	@rm -f $(path)/server/logs/*
 
 release: dummy
