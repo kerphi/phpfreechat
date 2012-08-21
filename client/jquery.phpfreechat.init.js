@@ -76,15 +76,15 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   pfc.loadHTML = function () {
     // load chat HTML
     $(pfc.element).html(
-       '      <div class="pfc-content">'
+       '      <div class="pfc-content pfc-notabs">'
       + '        <div class="pfc-tabs">'
       + '          <ul>'
+      + (pfc.options.loadTestData ? ''
       + '            <li class="channel active">'
       + '              <div class="icon"></div>'
       + '              <div class="name">Default channel</div>'
       + '              <div class="close"></div>'
       + '            </li>'
-      + (pfc.options.loadTestData ? ''
       + '            <li class="channel active">'
       + '              <div class="icon"></div>'
       + '              <div class="name">Channel 1</div>'

@@ -1,25 +1,5 @@
-@tabs-height: 30px;
-@topic-height: 25px;
-@footer-height: 25px;
-@compose-height: 40px;
-@users-width: 200px;
-
-@padding-left: 6px;
-@padding-right: 6px;
-@padding-top: 6px;
-@padding-bottom: 6px;
-@border-width: 1px;
-
-@top-bg-color: #EEF;
-@footer-bg-color: #EEF;
-@tab-active-bg-color: #FFF;
-@tab-inactive-bg-color: #0C91EC;
-@border-color: lighten(grey, 30%);
-@dialog-bg-color: @top-bg-color;
-@dialog-overlay-color: #000;
-@dialog-border-color: darken(@border-color, 20%);
-
-@h: 500px;
+@import "jquery.phpfreechat.variables.less";
+@import "jquery.phpfreechat.notabs.less";
 
 .rounded-corners (@radius: 5px) {
   border-radius: @radius;
@@ -115,7 +95,6 @@ div.pfc-content {
         }
         &.new-tab {
           display: none;
-          @tab-indent-height: 6;
           background: none;
           background-color: @top-bg-color;
           padding: 0; margin: 0;
@@ -430,4 +409,3 @@ div.pfc-backlink {
     background-color: #DDD;
   }
 }
-  
