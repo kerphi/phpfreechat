@@ -153,7 +153,7 @@ class Container_users {
     $umdir = self::getDir().'/'.$uid.'/messages';
     $msgs = array();
     foreach (scandir($umdir) as $value) {
-      if ($value === '.' || $value === '..') continue
+      if ($value === '.' || $value === '..') continue;
       $msgs[] = file_get_contents($umdir.'/'.$value);
       unlink($umdir.'/'.$value);
     }
