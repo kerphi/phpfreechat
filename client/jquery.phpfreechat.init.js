@@ -23,7 +23,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     pfc.cid = null; // current active channel
 
     // check backlink presence
-    if (!pfc.hasBacklink()) {
+    if (pfc.options.check_backlink && !pfc.hasBacklink()) {
       return;
     }
     

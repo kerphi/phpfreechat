@@ -24,6 +24,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     
      // Setting this to true will give the focus to the input text box when connecting to the chat
     focus_on_connect: true,
+    
+    // if true a backlink to phpfreechat muse be present (see license page for more info)
+    check_backlink: true,
   };
 
   function Plugin(element, options) {
