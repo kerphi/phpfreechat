@@ -27,6 +27,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     
     // if true a backlink to phpfreechat muse be present (see license page for more info)
     check_backlink: true,
+
+    // if true powered by phpfreechat text is shown
+    show_powered_by: true,
   };
 
   function Plugin(element, options) {
