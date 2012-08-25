@@ -120,12 +120,6 @@ $app->delete('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req,
     return;
   }
 
-
-  
-  $res->status(501);
-  $res['Content-Type'] = 'application/json; charset=utf-8';
-  $res->body($uid.' leave channel '.$cid);
-
 });
 
 /**
