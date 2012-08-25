@@ -63,14 +63,14 @@ class Container_users {
     // write user data on disk
     $ignore_keys = array('.', '..', 'index.json', 'messages', 'channels', 'id');
     $udir = self::getDir().'/'.$uid;
-    foreach($userdata as $k => $v) {
+    foreach ($userdata as $k => $v) {
       if (in_array($k, $ignore_keys)) {
         continue;
       }
       file_put_contents($udir.'/'.$k, $v);
     }
     $ud = array();
-    foreach(scandir($udir) as $v) {
+    foreach (scandir($udir) as $v) {
       if (in_array($v, $ignore_keys)) {
         continue;
       }
@@ -122,12 +122,12 @@ class Container_users {
       file_put_contents($gc, time()+$GLOBALS['pfc_timeout']);
 
       // run the GC
-      foreach(self::getUsers() as $uid) {
+      foreach (self::getUsers() as $uid) {
         $timestamp = file_get_contents(self::getDir().'/'.$uid.'/timestamp');
         $timeouted = ($timestamp <= (time() - $GLOBALS['pfc_timeout']));
         if ($timeouted) {
           // disconnect the user (send leave messages on his channels)
-          foreach(self::getUserChannels($uid) as $cid) {
+          foreach (self::getUserChannels($uid) as $cid) {
             self::leaveChannel($uid, $cid);
             // post a leave message related to timeout
             $msg = Container_messages::postMsgToChannel($cid, $uid, 'timeout', 'leave');
@@ -142,8 +142,8 @@ class Container_users {
   
   static public function getUsers() {
     $users = array();
-    foreach(scandir(self::getDir()) as $value) {
-        if($value === '.' || $value === '..') {continue;}
+    foreach (scandir(self::getDir()) as $value) {
+        if ($value === '.' || $value === '..') continue;
         $users[] = $value;
     }
     return $users;
@@ -152,8 +152,8 @@ class Container_users {
   static public function getUserMsgs($uid, $injson = false) {
     $umdir = self::getDir().'/'.$uid.'/messages';
     $msgs = array();
-    foreach(scandir($umdir) as $value) {
-      if($value === '.' || $value === '..') {continue;}
+    foreach (scandir($umdir) as $value) {
+      if ($value === '.' || $value === '..') continue
       $msgs[] = file_get_contents($umdir.'/'.$value);
       unlink($umdir.'/'.$value);
     }
@@ -170,8 +170,8 @@ class Container_users {
   static public function getUserChannels($uid, $injson = false) {
     $ucdir = self::getDir().'/'.$uid.'/channels';
     $channels = array();
-    foreach(scandir($ucdir) as $value) {
-      if($value === '.' || $value === '..') {continue;}
+    foreach (scandir($ucdir) as $value) {
+      if ($value === '.' || $value === '..') continue;
       $channels[] = $value;
     }
     return $injson ? json_encode($channels) : $channels;
@@ -213,7 +213,7 @@ class Container_users {
 }
 
 function rrmdir($dir) {
-    foreach(glob($dir . '/*') as $file) {
+    foreach (glob($dir . '/*') as $file) {
         if(is_dir($file))
             rrmdir($file);
         else

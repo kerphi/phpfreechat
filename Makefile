@@ -47,8 +47,10 @@ setup-jshint:
 	@npm install -g jshint
 
 jshint:
-	@jshint $(wildcard $(path)/client/*.js)
-	@jshint $(wildcard $(path)/server/tests/*.js)
+	@jshint $(wildcard $(path)/client/*.js) $(wildcard $(path)/server/tests/*.js)
+
+phpcs:
+	@phpcs --standard=Zend --tab-width=2  --encoding=utf-8 --sniffs=Generic.Functions.FunctionCallArgumentSpacing,Generic.Functions.OpeningFunctionBraceBsdAllmann,Generic.PHP.DisallowShortOpenTag,Generic.WhiteSpace.DisallowTabIndent,PEAR.ControlStructures.ControlSignature,PEAR.Functions.ValidDefaultValue,PEAR.WhiteSpace.ScopeClosingBrace,Generic.Files.LineEndings -s $(wildcard $(path)/server/*.php) $(wildcard $(path)/server/routes/*.php) $(wildcard $(path)/server/container/*.php)
 
 clean: dummy
 	@rm -f $(path)/client/*.min.js

@@ -31,7 +31,7 @@ class Container_messages {
     $msg = json_encode($msg);
 
     // search users subscribed to the channel
-    foreach(Container_channels::getChannelUsers($cid) as $subuid) {
+    foreach (Container_channels::getChannelUsers($cid) as $subuid) {
       // post this message on each users subscribed on the channel
       // /users/:uid/msg/
       if ($subuid != $uid) { // don't post message to the current connected user

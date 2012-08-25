@@ -39,8 +39,8 @@ class Container_channels {
     $cdir = self::getChannelsDir();
     $cupath = $cdir.'/'.$cid.'/users/';  
     $subscribers = array();
-    foreach(scandir($cupath) as $value) {
-      if($value === '.' || $value === '..') {continue;}
+    foreach (scandir($cupath) as $value) {
+      if ($value === '.' || $value === '..') continue;
       if ($withudata) {
         $subscribers[$value] = Container_users::getUserData($value);
       } else {
