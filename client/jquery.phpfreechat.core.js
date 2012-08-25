@@ -74,10 +74,31 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       console.log(err);
     });
     
-
   };
   
+  /**
+   * Leave a channel
+   */
+  pfc.leave = function (cid) {
 
+    $.ajax({
+      type: 'DELETE',
+      url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid,
+    }).done(function (users) {
+      pfc.clearUserList();
+      
+      // display a leave message for him
+      pfc.appendMessage({
+        type: 'leave',
+        sender: pfc.uid,
+      });
+
+    }).error(function (err) {
+      console.log(err);
+    });
+    
+  };
+  
   /**
    * Post a message to a channel
    */
@@ -213,7 +234,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     if (msg.type == 'join') {
       msg.body = msg.name + ' joined the channel';
     } else if (msg.type == 'leave') {
-      msg.body = msg.name + ' leave the channel (' + msg.body + ')';
+      msg.body = msg.name + ' leave the channel' + (msg.body ? ' (' + msg.body + ')' : '');
     }
         
     var groupmsg_dom = $(pfc.element).find('.pfc-messages .messages-group:last');
