@@ -1,5 +1,6 @@
 @import "jquery.phpfreechat.variables.less";
 @import "jquery.phpfreechat.notabs.less";
+@import "jquery.phpfreechat.responsive.less";
 
 .rounded-corners (@radius: 5px) {
   border-radius: @radius;
@@ -133,7 +134,7 @@ div.pfc-content {
     -webkit-box-shadow: inset 0 3px 10px #E8E8E8;
     
     .role-title {
-      display: none;
+      display: @role-title-display;
       font-weight: bold;
       margin: 15px 0 0px 10px; padding: 0
     }
@@ -150,9 +151,6 @@ div.pfc-content {
         &.first {
           border-top:  @border-width solid @border-color;
         }
-        
-        //@userlist-avatar-w: 30px; // avatar not planned for 2.0
-        @userlist-avatar-w: 0px;
 
         .name {
           margin-right: @userlist-avatar-w;
@@ -174,22 +172,26 @@ div.pfc-content {
           height: 16px;
           position: absolute;
           left: 8px;
-          top: 8px;
+          top: 6px;
         }
         .myself {
-          background-color: @top-bg-color;
+          font-style: italic;
         }
         .st-active {
-          background-image: url(img/active.png);
+          //background-image: url(img/active.png);
+          background-image: url(img/neutral.png);
         }
         .st-inactive {
-          background-image: url(img/inactive.png);
+          //background-image: url(img/inactive.png);
+          background-image: url(img/neutral.png);
         }
         .st-admin.st-active {
-          background-image: url(img/user-admin-active.png);
+          //background-image: url(img/user-admin-active.png);
+          background-image: url(img/neutral.png);
         }
         .st-admin.st-inactive {
-          background-image: url(img/user-admin-inactive.png);
+          //background-image: url(img/user-admin-inactive.png);
+          background-image: url(img/neutral.png);
         }
       }
     }
@@ -230,14 +232,14 @@ div.pfc-content {
       
       .name {
         padding: 0; margin: 0;
-        // padding-left: 50px; // disable avatar for 2.0
+        padding-left: @message-padding-left;
         word-wrap: break-word;
         font-weight: bold;
       }
       
       .message {
         padding: 0; margin: 0;
-        // padding-left: 50px; // disable avatar for 2.0
+        padding-left: @message-padding-left;
         word-wrap: break-word;
         white-space: pre;
       }
