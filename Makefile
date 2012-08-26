@@ -24,6 +24,7 @@ setup: dummy
 	@cd $(path)/server/lib/ && curl -L https://nodeload.github.com/codeguy/Slim/tarball/1.6.5 > slim.tar.gz && pwd && tar -ztf slim.tar.gz 2>/dev/null | head -1 > /tmp/slimname
 	@cd $(path)/server/lib/ && tar xzf slim.tar.gz
 	@rm -rf $(path)/server/lib/Slim && mv $(path)/server/lib/`cat /tmp/slimname` $(path)/server/lib/Slim
+	@rm -rf $(path)/server/lib/Slim/tests ; rm -rf $(path)/server/lib/Slim/docs
 	@rm -f /tmp/slimname && rm -f $(path)/server/lib/slim.tar.gz
 
 # install needed packages for tests run
@@ -58,5 +59,35 @@ clean: dummy
 	@rm -f $(path)/client/themes/default/jquery.phpfreechat.min.css
 	@rm -rf $(path)/server/data/*
 	@rm -f $(path)/server/logs/*
+
+release-clean: setup setup-minify minify
+	@rm -f $(path)/client/lib/less-*.js
+	@rm -rf $(path)/client/tests
+	@rm -rf $(path)/server/tests
+	@rm -rf $(path)/server/data/*
+	@rm -f $(path)/server/logs/*
+	@rm -rf $(path)/tools
+	@rm -f $(path)/Makefile
+	@rm -f $(path)/.jshintrc
+	@rm -f $(path)/.jshintignore
+	@rm -rf $(path)/.git
+
+release-clean-for-dev: release-clean
+	@rm -f $(path)/client/*.min.js
+	@cat $(path)/client/*.js > $(path)/client/jquery.phpfreechat.js.tmp
+	@rm -f $(path)/client/*.js
+	@mv $(path)/client/jquery.phpfreechat.js.tmp $(path)/client/jquery.phpfreechat.js
+	@rm -f $(path)/client/themes/default/*.less
+	@rm -f $(path)/client/themes/default/jquery.phpfreechat.min.css
+
+release-clean-for-prod: release-clean
+	@mv $(path)/client/jquery.phpfreechat.min.js $(path)/client/jquery.phpfreechat.min.js.tmp
+	@rm -f $(path)/client/*.js
+	@mv $(path)/client/jquery.phpfreechat.min.js.tmp $(path)/client/jquery.phpfreechat.min.js
+	@rm -f $(path)/client/themes/default/*.less
+	@mv $(path)/client/themes/default/jquery.phpfreechat.min.css $(path)/client/themes/default/jquery.phpfreechat.min.css.tmp 
+	@rm -f $(path)/client/themes/default/*.css
+	@mv $(path)/client/themes/default/jquery.phpfreechat.min.css.tmp $(path)/client/themes/default/jquery.phpfreechat.min.css
+
 
 release: dummy
