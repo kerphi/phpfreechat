@@ -4,8 +4,8 @@ Work in progress...
 
 Include phpfreechat plugin in your html `<head>`:
 ```html
-  <link type="text/css" href="phpfreechat/client/themes/default/jquery.phpfreechat.min.css" />
-  <script src="phpfreechat/client/jquery.phpfreechat.min.js" type="text/javascript"></script>
+  <link type="text/css" href="phpfreechat-2.0.0/client/themes/default/jquery.phpfreechat.min.css" />
+  <script src="phpfreechat-2.0.0/client/jquery.phpfreechat.min.js" type="text/javascript"></script>
 ```
 
 Add a piece of HTML in your `<body>` where you want the chat to be displayed:
@@ -30,6 +30,8 @@ Hook the phpfreechat plugin to this element:
 * `loaded` [Function:null]: a callback executed when pfc's interface is totaly loaded
 * `loadTestData` [Bool:false]]: used for interface unit tests
 
+Client side parameters can be given to phpfreechat client side jquery plugin as a javascript object.
+
 Example:
 ```javascript
 $('#mychat').phpfreechat({
@@ -38,6 +40,10 @@ $('#mychat').phpfreechat({
 ```
 
 ## Parameters (server side)
+
+Server side parameters are located in `server/config.php` or `server/config.local.php` files. By default only `server/config.php` exists and contains default parameters. Parameters can be modified directly in this file but for easier upgrade, you can also overload just parameters you want to change in the file `server/config.local.php` (to create).
+
+Parameters list:
 
 * `pfc_timeout` [Integer:35]: time (in second) of inactivity to wait before considering a user is disconnected. A user is inactive only if s/he closed his/her chat window. A user with an open chat window is not inactive because s/he sends each refresh_delay an HTTP request.
 
