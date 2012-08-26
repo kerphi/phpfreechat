@@ -3,14 +3,12 @@ Work in progress...
 ## Installation
 
 Include phpfreechat plugin in your html `<head>`:
-
 ```html
   <link type="text/css" href="phpfreechat/client/themes/default/jquery.phpfreechat.min.css" />
   <script src="phpfreechat/client/jquery.phpfreechat.min.js" type="text/javascript"></script>
 ```
 
 Add a piece of HTML in your `<body>` where you want the chat to be displayed:
-
 ```html
 ...
 <div id="mychat"><a href="http://www.phpfreechat.net">phpFreeChat: simple Web chat</a></div>
@@ -18,14 +16,13 @@ Add a piece of HTML in your `<body>` where you want the chat to be displayed:
 ```
 
 Hook the phpfreechat plugin to this element:
-
 ```html
 <script>
   $('#mychat').phpfreechat();
 </script>
 ```
 
-## Options (client side)
+## Parameters (client side)
 
 * `refresh_delay` [Integer:5000]: miliseconds to wait before next pending messages are checked
 * `focus_on_connect` [Bool:true]: setting this to true will give the focus to the input text box when connecting to the chat. It can be useful not to touch the focus when integrating the chat into an existing website because when the focus is changed, the viewport follows the focus location.
@@ -38,6 +35,17 @@ Example:
 $('#mychat').phpfreechat({
   refresh_delay: 2000
 });
+```
+
+## Parameters (server side)
+
+* `pfc_timeout` [Integer:35]: time (in second) of inactivity to wait before considering a user is disconnected. A user is inactive only if s/he closed his/her chat window. A user with an open chat window is not inactive because s/he sends each refresh_delay an HTTP request.
+
+Example in `server/config.php` or `server/config.local.php`:
+```php
+<?php
+
+$GLOBALS['pfc_timeout'] = 50;
 ```
 
 ## Developments
