@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -e
+
+MY_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
+TOOL_PATH=`dirname "$MY_PATH"`
+PFC_PATH=$TOOL_PATH/..
+
+# a temp folder to clone the git
+TMP_DIR=$PFC_PATH/tmp
+mkdir -p $TMP_DIR
+
+if [ "$1" == "--dev" ]; then
+  PFC_AN_SUFFIX=""
+  PFC_ARCHIVE_NAME="phpfreechat-`$TOOL_PATH/getpfcversion`"
+  
+  # clone the git with the correct name
+  rm -rf $TMP_DIR/$PFC_ARCHIVE_NAME
+  git clone file://$PFC_PATH $TMP_DIR/$PFC_ARCHIVE_NAME
+  
+  # cleanup the pfc files
+  cd $TMP_DIR/$PFC_ARCHIVE_NAME
+  make release-clean-for-dev
+else
+  PFC_AN_SUFFIX="-min"
+  PFC_ARCHIVE_NAME="phpfreechat-`$TOOL_PATH/getpfcversion`"
+
+  # clone the git with the correct name
+  rm -rf $TMP_DIR/$PFC_ARCHIVE_NAME
+  git clone file://$PFC_PATH $TMP_DIR/$PFC_ARCHIVE_NAME
+  
+  # cleanup the pfc files
+  cd $TMP_DIR/$PFC_ARCHIVE_NAME
+  make release-clean-for-prod
+fi
+
+# generate the tar.gz
+cd $TMP_DIR
+tar czf $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.tar.gz $PFC_ARCHIVE_NAME/
+mv $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.tar.gz $PFC_PATH
+
+# cleanup 
+rm -rf $TMP_DIR
+cd $PFC_PATH
+exit 0
