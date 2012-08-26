@@ -66,7 +66,6 @@ clean-release: setup setup-minify minify
 	@rm -rf $(path)/server/tests
 	@rm -rf $(path)/server/data/*
 	@rm -f $(path)/server/logs/*
-	@rm -rf $(path)/tools
 	@rm -f $(path)/Makefile
 	@rm -f $(path)/.jshintrc
 	@rm -f $(path)/.jshintignore
@@ -80,6 +79,7 @@ clean-release-for-dev: clean-release
 	@rm -f $(path)/client/themes/default/*.less
 	@rm -f $(path)/client/themes/default/jquery.phpfreechat.min.css
 	@tools/switch-examples-head --dev
+	@rm -rf $(path)/tools
 
 clean-release-for-prod: clean-release
 	@mv $(path)/client/jquery.phpfreechat.min.js $(path)/client/jquery.phpfreechat.min.js.tmp
@@ -90,6 +90,7 @@ clean-release-for-prod: clean-release
 	@rm -f $(path)/client/themes/default/*.css
 	@mv $(path)/client/themes/default/jquery.phpfreechat.min.css.tmp $(path)/client/themes/default/jquery.phpfreechat.min.css
 	@tools/switch-examples-head --prod
+	@rm -rf $(path)/tools
 
 release: dummy
 	@tools/build-release
