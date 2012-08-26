@@ -79,6 +79,7 @@ clean-release-for-dev: clean-release
 	@mv $(path)/client/jquery.phpfreechat.js.tmp $(path)/client/jquery.phpfreechat.js
 	@rm -f $(path)/client/themes/default/*.less
 	@rm -f $(path)/client/themes/default/jquery.phpfreechat.min.css
+	@tools/switch-examples-head --dev
 
 clean-release-for-prod: clean-release
 	@mv $(path)/client/jquery.phpfreechat.min.js $(path)/client/jquery.phpfreechat.min.js.tmp
@@ -88,7 +89,7 @@ clean-release-for-prod: clean-release
 	@mv $(path)/client/themes/default/jquery.phpfreechat.min.css $(path)/client/themes/default/jquery.phpfreechat.min.css.tmp 
 	@rm -f $(path)/client/themes/default/*.css
 	@mv $(path)/client/themes/default/jquery.phpfreechat.min.css.tmp $(path)/client/themes/default/jquery.phpfreechat.min.css
-
+	@tools/switch-examples-head --prod
 
 release: dummy
 	@tools/build-release
