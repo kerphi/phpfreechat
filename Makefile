@@ -60,7 +60,7 @@ clean: dummy
 	@rm -rf $(path)/server/data/*
 	@rm -f $(path)/server/logs/*
 
-release-clean: setup setup-minify minify
+clean-release: setup setup-minify minify
 	@rm -f $(path)/client/lib/less-*.js
 	@rm -rf $(path)/client/tests
 	@rm -rf $(path)/server/tests
@@ -72,7 +72,7 @@ release-clean: setup setup-minify minify
 	@rm -f $(path)/.jshintignore
 	@rm -rf $(path)/.git
 
-release-clean-for-dev: release-clean
+clean-release-for-dev: clean-release
 	@rm -f $(path)/client/*.min.js
 	@cat $(path)/client/*.js > $(path)/client/jquery.phpfreechat.js.tmp
 	@rm -f $(path)/client/*.js
@@ -80,7 +80,7 @@ release-clean-for-dev: release-clean
 	@rm -f $(path)/client/themes/default/*.less
 	@rm -f $(path)/client/themes/default/jquery.phpfreechat.min.css
 
-release-clean-for-prod: release-clean
+clean-release-for-prod: clean-release
 	@mv $(path)/client/jquery.phpfreechat.min.js $(path)/client/jquery.phpfreechat.min.js.tmp
 	@rm -f $(path)/client/*.js
 	@mv $(path)/client/jquery.phpfreechat.min.js.tmp $(path)/client/jquery.phpfreechat.min.js
@@ -91,4 +91,4 @@ release-clean-for-prod: release-clean
 
 
 release: dummy
-	@tools/buildrelease
+	@tools/build-release

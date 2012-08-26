@@ -12,7 +12,7 @@ mkdir -p $TMP_DIR
 
 if [ "$1" == "--dev" ]; then
   PFC_AN_SUFFIX=""
-  PFC_ARCHIVE_NAME="phpfreechat-`$TOOL_PATH/getpfcversion`"
+  PFC_ARCHIVE_NAME="phpfreechat-`$TOOL_PATH/get-version`"
   
   # clone the git with the correct name
   rm -rf $TMP_DIR/$PFC_ARCHIVE_NAME
@@ -20,10 +20,10 @@ if [ "$1" == "--dev" ]; then
   
   # cleanup the pfc files
   cd $TMP_DIR/$PFC_ARCHIVE_NAME
-  make release-clean-for-dev
+  make clean-release-for-dev
 else
   PFC_AN_SUFFIX="-min"
-  PFC_ARCHIVE_NAME="phpfreechat-`$TOOL_PATH/getpfcversion`"
+  PFC_ARCHIVE_NAME="phpfreechat-`$TOOL_PATH/get-version`"
 
   # clone the git with the correct name
   rm -rf $TMP_DIR/$PFC_ARCHIVE_NAME
@@ -31,7 +31,7 @@ else
   
   # cleanup the pfc files
   cd $TMP_DIR/$PFC_ARCHIVE_NAME
-  make release-clean-for-prod
+  make clean-release-for-prod
 fi
 
 # generate the tar.gz

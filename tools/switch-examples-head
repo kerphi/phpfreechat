@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # restore default file
-git checkout examples/example1.html
+git checkout examples/*.html
 
 # switch to the desired status
 if [ "$1" == "--debug" ]; then
-  sed -i '/pfc-debug/d' examples/example1.html
-  sed -i '/pfc-prod/,/\/pfc-prod/d' examples/example1.html
-  sed -i '/pfc-dev/,/\/pfc-dev/d' examples/example1.html
+  sed -i '/pfc-debug/d' examples/*.html
+  sed -i '/pfc-prod/,/\/pfc-prod/d' examples/*.html
+  sed -i '/pfc-dev/,/\/pfc-dev/d' examples/*.html
 elif [ "$1" == "--dev" ]; then
-  sed -i '/pfc-dev/d' examples/example1.html
-  sed -i '/pfc-debug/,/\/pfc-debug/d' examples/example1.html
-  sed -i '/pfc-prod/,/\/pfc-prod/d' examples/example1.html
+  sed -i '/pfc-dev/d' examples/*.html
+  sed -i '/pfc-debug/,/\/pfc-debug/d' examples/*.html
+  sed -i '/pfc-prod/,/\/pfc-prod/d' examples/*.html
 elif [ "$1" == "--prod" ]; then
-  sed -i '/pfc-prod/d' examples/example1.html
-  sed -i '/pfc-debug/,/\/pfc-debug/d' examples/example1.html
-  sed -i '/pfc-dev/,/\/pfc-dev/d' examples/example1.html
+  sed -i '/pfc-prod/d' examples/*.html
+  sed -i '/pfc-debug/,/\/pfc-debug/d' examples/*.html
+  sed -i '/pfc-dev/,/\/pfc-dev/d' examples/*.html
 fi
