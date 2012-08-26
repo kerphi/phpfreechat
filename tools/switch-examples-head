@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# restore default file
+git checkout examples/example1.html
+
+# switch to the desired status
+if [ "$1" == "--debug" ]; then
+  sed -i '/pfc-debug/d' examples/example1.html
+  sed -i '/pfc-prod/,/\/pfc-prod/d' examples/example1.html
+  sed -i '/pfc-dev/,/\/pfc-dev/d' examples/example1.html
+elif [ "$1" == "--dev" ]; then
+  sed -i '/pfc-dev/d' examples/example1.html
+  sed -i '/pfc-debug/,/\/pfc-debug/d' examples/example1.html
+  sed -i '/pfc-prod/,/\/pfc-prod/d' examples/example1.html
+elif [ "$1" == "--prod" ]; then
+  sed -i '/pfc-prod/d' examples/example1.html
+  sed -i '/pfc-debug/,/\/pfc-debug/d' examples/example1.html
+  sed -i '/pfc-dev/,/\/pfc-dev/d' examples/example1.html
+fi
