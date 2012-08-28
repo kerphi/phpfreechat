@@ -196,6 +196,12 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       }
     });
 
+    // resize the textarea with javascript (because absolute positionning doesn't work on firefox)
+    $(window).resize(function () {
+      $('.pfc-compose textarea').width($('.pfc-compose').innerWidth()-6);
+    });
+
+    
     // once html is loaded init modalbox
     // because modalbox is hooked in pfc's html
     pfc.modalbox.init();
