@@ -238,7 +238,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }
         
     var groupmsg_dom = $(pfc.element).find('.pfc-messages .messages-group:last');
-    var groupmsg_last_dom = groupmsg_dom;
     var messages_dom = $(pfc.element).find('.pfc-messages');
     
     if (groupmsg_dom.attr('data-from') != msg.from) {
@@ -272,15 +271,12 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     var message = $('<div class="message"></div>').html(msg.body);
     groupmsg_dom.append(message);
 
-    // scroll to the last message and memorize the scroll position
-    var scroll_pos = 0;
-    if (groupmsg_last_dom.length === 0) {
-      scroll_pos = groupmsg_dom.outerHeight();
+    // scroll when a message is received
+    if (groupmsg_dom == html) { 
+      messages_dom.scrollTop(messages_dom.scrollTop() + groupmsg_dom.outerHeight() + 10);
     } else {
-      scroll_pos = groupmsg_dom.outerHeight() + groupmsg_last_dom.data('scroll-pos');
+      messages_dom.scrollTop(messages_dom.scrollTop() + message.outerHeight());
     }
-    messages_dom.animate({scrollTop: scroll_pos});
-    groupmsg_dom.data('scroll-pos', scroll_pos);
     
     return message;
   }
