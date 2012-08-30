@@ -167,7 +167,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + ''
       + '        <div class="pfc-footer">'
       + (pfc.options.show_powered_by ? 
-        '          <p class="logo"><a href="http://www.phpfreechat.net">Powered by phpFreeChat</a></p>' :
+        '          <p class="logo"><a href="http://www.phpfreechat.net" target="_blank">Powered by phpFreeChat</a></p>' :
         '')
       //+ '          <p class="ping">150ms</p>'
       + '          <ul>'
