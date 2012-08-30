@@ -7,9 +7,9 @@ $app = new Slim();
 
 function debug($msg) {
   if (is_string($msg)) {
-    file_put_contents(__DIR__.'/logs/pfc.log', $msg."\n", FILE_APPEND);
+    file_put_contents(__DIR__.'/log/pfc.log', $msg."\n", FILE_APPEND);
   } else {
-    file_put_contents(__DIR__.'/logs/pfc.log', print_r($msg, true), FILE_APPEND);
+    file_put_contents(__DIR__.'/log/pfc.log', print_r($msg, true), FILE_APPEND);
   }
 }
 
