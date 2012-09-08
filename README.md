@@ -110,6 +110,7 @@ Example: TODO
 * `/users/`                        (global users list)
 * `/users/:uid/`                   (user info)
 * `/users/:uid/msg/`               (messages received by the user: from a channel or a private message)
+* `/users/:uid/closed`             (flag used to indicate when the user has closed his window)
 
 ### File container structure (server side)
 

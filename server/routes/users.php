@@ -82,3 +82,36 @@ $app->get('/users/:uid/msg/', function ($uid) use ($app, $req, $res) {
   $res['Content-Type'] = 'application/json; charset=utf-8';
   $res->body(Container_users::getUserMsgs($uid, true));
 });
+
+
+/**
+ * Set the close flag (when a user reload or close his window)
+ */
+$app->put('/users/:uid/closed', function ($uid) use ($app, $req, $res) {
+
+  // check user acces
+  session_start();
+  if (!isset($_SESSION['userdata']) or !isset($_SESSION['userdata']['id'])) {
+    $res->status(401); // Need to authenticate
+    return;
+  }
+  if ($uid !== $_SESSION['userdata']['id']) {
+    $res->status(403); // Forbidden
+    return;
+  }
+
+  if (!Container_users::checkUserExists($uid)) {
+    $res->status(404);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body('{ "error": "user data does not exist" }');
+    return;
+  }
+
+  // set the close flag
+  Container_users::setCloseFlag($uid);
+
+  $res->status(200);
+  $res['Content-Type'] = 'application/json; charset=utf-8';
+  $res->body('1');
+});
+

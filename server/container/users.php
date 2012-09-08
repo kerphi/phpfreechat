@@ -95,6 +95,23 @@ class Container_users {
       return true;
     }
   }
+
+  /**
+   * Update the close flag of a user
+   * Called when the user close his window or reload his window
+   */
+  static public function setCloseFlag($uid) {
+    $close_file = self::getDir().'/'.$uid.'/closed';
+    if (!file_exists($close_file)) {
+      touch($close_file);
+      
+      // adjust the timestamp so that when someone quit, the quit message occurs faster
+      $ts_file = self::getDir().'/'.$uid.'/timestamp';
+      $ts = (integer)file_get_contents($ts_file);
+      $ts = $ts - $GLOBALS['pfc_timeout']/2;
+      file_put_contents($ts_file, $ts);
+    }
+  }  
   
   /**
    * Update the last activity of a user
@@ -102,6 +119,12 @@ class Container_users {
    */
   static public function setIsAlive($uid) {
     file_put_contents(self::getDir().'/'.$uid.'/timestamp', time());
+
+    // remove if necessary the close flag (positioned when the user close his window)
+    $close_file = self::getDir().'/'.$uid.'/closed';
+    if (file_exists($close_file)) {
+      unlink($close_file);
+    }
   }
   
   /**
@@ -118,7 +141,7 @@ class Container_users {
     }
     
     if (time() >= $gctime) {
-      // write next gc time
+      // write next gc check time
       file_put_contents($gc, time()+$GLOBALS['pfc_timeout']);
 
       // run the GC
@@ -126,11 +149,14 @@ class Container_users {
         $timestamp = file_get_contents(self::getDir().'/'.$uid.'/timestamp');
         $timeouted = ($timestamp <= (time() - $GLOBALS['pfc_timeout']));
         if ($timeouted) {
+          // check the leave reason
+          $close_file = self::getDir().'/'.$uid.'/closed';
+          $reason = file_exists($close_file) ? 'close' : 'timeout';
           // disconnect the user (send leave messages on his channels)
           foreach (self::getUserChannels($uid) as $cid) {
             self::leaveChannel($uid, $cid);
             // post a leave message related to timeout
-            $msg = Container_messages::postMsgToChannel($cid, $uid, 'timeout', 'leave');
+            $msg = Container_messages::postMsgToChannel($cid, $uid, $reason, 'leave');
           }
           // clear user data
           self::rmUser($uid);
