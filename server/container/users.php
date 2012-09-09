@@ -24,6 +24,7 @@ class Container_users {
     @mkdir($upath, 0777, true);
     @mkdir($upath.'/messages', 0777, true);
     @mkdir($upath.'/channels', 0777, true);
+    file_put_contents($upath.'/timestamp', time());
     return $uid;
   }
   
@@ -142,24 +143,29 @@ class Container_users {
     
     if (time() >= $gctime) {
       // write next gc check time
-      file_put_contents($gc, time()+$GLOBALS['pfc_timeout']);
+      file_put_contents($gc, time() + $GLOBALS['pfc_timeout']);
 
       // run the GC
       foreach (self::getUsers() as $uid) {
-        $timestamp = file_get_contents(self::getDir().'/'.$uid.'/timestamp');
-        $timeouted = ($timestamp <= (time() - $GLOBALS['pfc_timeout']));
-        if ($timeouted) {
-          // check the leave reason
-          $close_file = self::getDir().'/'.$uid.'/closed';
-          $reason = file_exists($close_file) ? 'close' : 'timeout';
-          // disconnect the user (send leave messages on his channels)
-          foreach (self::getUserChannels($uid) as $cid) {
-            self::leaveChannel($uid, $cid);
-            // post a leave message related to timeout
-            $msg = Container_messages::postMsgToChannel($cid, $uid, $reason, 'leave');
+        $timestamp_file = self::getDir().'/'.$uid.'/timestamp';
+        if (file_exists($timestamp_file)) {
+          $timestamp = file_get_contents($timestamp_file);
+          $timeouted = ($timestamp <= (time() - $GLOBALS['pfc_timeout']));
+          if ($timeouted) {
+            // check the leave reason
+            $close_file = self::getDir().'/'.$uid.'/closed';
+            $reason = file_exists($close_file) ? 'quit' : 'timeout';
+            // disconnect the user (send leave messages on his channels)
+            foreach (self::getUserChannels($uid) as $cid) {
+              self::leaveChannel($uid, $cid);
+              // post a leave message related to timeout
+              $msg = Container_messages::postMsgToChannel($cid, $uid, $reason, 'leave');
+            }
+            // clear user data
+            self::rmUser($uid);
           }
-          // clear user data
-          self::rmUser($uid);
+        } else {
+          self::rmUser($uid); // no timeout file, just delete the user
         }
       }
     }
