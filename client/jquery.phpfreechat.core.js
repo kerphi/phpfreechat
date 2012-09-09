@@ -23,7 +23,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
           pfc.users[m.sender] = m.body; // store new joined user data
           pfc.appendUser(pfc.users[m.sender]); // append the user to the list
         } else if (m.type == 'leave') {
-          m.body = pfc.users[m.sender].name + ' leave the channel (' + m.body + ')';
           pfc.removeUser(m.sender); // remove the user from the list
         }
         
