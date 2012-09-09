@@ -196,11 +196,16 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       }
     });
 
+    // when window is resized,
     // resize the textarea with javascript (because absolute positionning doesn't work on firefox)
     $(window).resize(function () {
       $('.pfc-compose textarea').width($('.pfc-compose').innerWidth()-6);
     });
 
+    // when window is reloaded or closed
+    $(window).unload(function () {
+      pfc.notifyThatWindowIsClosed();
+    });
     
     // once html is loaded init modalbox
     // because modalbox is hooked in pfc's html

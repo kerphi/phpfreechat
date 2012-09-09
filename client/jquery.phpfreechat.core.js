@@ -117,6 +117,23 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
   };
 
+  /**
+   * Notify phpfreechat server that a windows close event occured
+   * Thanks to this notification, server can tell other users that this user just leave the channels
+   */
+  pfc.notifyThatWindowIsClosed = function () {
+    console.log('notifyThatWindowIsClosed');
+    $.ajax({
+      type: 'PUT',
+      async: false, // important or this request will be lost when windows is closed
+      url:  pfc.options.serverUrl + '/users/' + pfc.uid + '/closed',
+      data: '1',
+    }).done(function () {
+      //      console.log('notifyThatWindowIsClosed done');
+    }).error(function (err) {
+      console.log(err);
+    });
+  };
 
   /**
    * Appends a username in the user list
