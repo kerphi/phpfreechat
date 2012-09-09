@@ -108,7 +108,7 @@ vows.describe('User close his window')
       assert.equal(userdata1.res.statusCode, 200);
       assert.lengthOf(tmsg, 1);
       assert.equal(tmsg[0].type, 'leave');
-      assert.equal(tmsg[0].body, 'close');
+      assert.equal(tmsg[0].body, 'quit');
       assert.equal(tmsg[0].sender, userdata1.id);
     },
   },
