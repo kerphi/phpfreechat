@@ -29,7 +29,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     
     // load the interface
     pfc.loadHTML();
-        
+    pfc.loadResponsiveBehavior();
+    
     // try to authenticate
     //pfc.logout(function (err) { pfc.login(); });
     pfc.login();
@@ -102,15 +103,18 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + '              <div class="name">admin</div>'
       + '              <div class="close"></div>'
       + '            </li>'
-      : '')
       + '            <li class="new-tab">'
       + '              <div class="icon"></div>'
       + '            </li>'
+      : '')
       + '          </ul>'
       + '        </div>'
       + ''
       + '        <div class="pfc-topic">'
-      + '          <p><span class="pfc-topic-label">Topic:</span> <span class="pfc-topic-value">no topic for this channel</span></p>'
+      +'           <a class="pfc-toggle-tabs"></a>'
+      + '          <p><span class="pfc-topic-label">Topic:</span> <span class="pfc-topic-value">no topic for this channel</span>'
+      +'           <a class="pfc-toggle-users"></a>'
+      +'           </p>'
       + '        </div>'
       + ''
       + '        <div class="pfc-messages">'
@@ -129,6 +133,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + '            <div class="message">Hello</div>'
       + '            <div class="message">World</div>'
       + '            <div class="message">!</div>'
+      + '            <div class="message">A very very very very very very very very very very very very very very very very very very very long text</div>'
       + '          </div>'
       : '')
       + '        </div>'
@@ -184,6 +189,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + ''
       + '        <div class="pfc-modal-overlay"></div>'
       + '        <div class="pfc-modal-box"></div>'
+      + ''
+      + '        <div class="pfc-ad-desktop"></div>'
+      + '        <div class="pfc-ad-tablet"></div>'
+      + '        <div class="pfc-ad-mobile"></div>'
       + '      </div>'
     );
 
@@ -218,6 +227,123 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // trigger the pfc-loaded event when finished
     setTimeout(function () { $(pfc.element).trigger('pfc-loaded', [ pfc ]) }, 0);
   };
+
+  /**
+   * For mobile ergonomics
+   **/
+  pfc.loadResponsiveBehavior = function () {
+    var elt_tabs     = $(".pfc-tabs");
+    var elt_users    = $(".pfc-users");
+    var elt_messages = $(".pfc-messages");
+    var height_slidetabs = elt_tabs.height();
+    var width_users      = elt_users.width();
+    var tab_slide_status = 0;
+    
+    
+    // monitor mobile/desktop version
+    // and switch tabs css class to adapte styles
+    var elt_toggle_tabs_btn  = $('a.pfc-toggle-tabs');
+    var elt_toggle_users_btn = $('a.pfc-toggle-users');
+    $(window).resize(function () {
+      if (elt_toggle_tabs_btn.is(':visible')) {
+        switchTabsToMobileLook();
+      } else {
+        switchTabsToDesktopLook();
+      }
+      if (elt_toggle_users_btn.is(':visible')) {
+        switchUsersToMobileLook();
+      } else {
+        switchUsersToDesktopLook();
+      }
+    });
+
+    
+    // tabs mobile version
+    function switchTabsToMobileLook() {
+      elt_tabs.removeClass('pfc-tabs').addClass('pfc-mobile-tabs');      
+      elt_tabs.hide();
+      if (tab_slide_status == 1) {
+        slideTabsUp();
+        tab_slide_status = 0;
+      }
+    }
+
+    // tabs desktop version
+    function switchTabsToDesktopLook() {
+      elt_tabs.addClass('pfc-tabs').removeClass('pfc-mobile-tabs');      
+      elt_tabs.show();
+      if (tab_slide_status == 1) {
+        slideTabsUp();
+        tab_slide_status = 0;
+      }
+    }
+    
+    // move messages/users up and down if needed
+    function slideTabsUp(withtabs) {
+      if (withtabs) {
+        elt_tabs.slideUp(500);
+      }
+      elt_messages.animate({
+          top:"-=" + height_slidetabs
+      },500);
+      elt_users.animate({
+          top:"-=" + height_slidetabs
+      },500);
+    }
+    function slideTabsDown(withtabs) {
+      if (withtabs) {
+        elt_tabs.slideDown(500);
+      }
+      elt_messages.animate({
+          top: "+=" + height_slidetabs
+      }, 500);
+      elt_users.animate({
+          top: "+=" + height_slidetabs
+      }, 500);
+    }
+    
+    // show/hide channels tabs
+    elt_toggle_tabs_btn.click(function () {
+      elt_tabs.removeClass('pfc-tabs').addClass('pfc-mobile-tabs');
+      height_slidetabs = elt_tabs.height();
+      if (elt_tabs.is(":visible")) {
+        tab_slide_status = 0;  
+        slideTabsUp(true);
+      } else {
+        tab_slide_status = 1;
+        slideTabsDown(true);
+      }
+    });
+    
+    // show/hide user list
+    elt_toggle_users_btn.click(function () {
+      if (elt_users.is(":visible")) {
+        elt_users.animate({
+          width:"-=" + width_users
+        }, 500);
+        setTimeout(function() {
+          elt_users.hide();
+        }, 500);
+      } else {
+        elt_users.css("width", "0px").show();
+        elt_users.animate({
+          width: "+=" + width_users
+        }, 500);
+      }
+    });
+
+    // users mobile version
+    function switchUsersToMobileLook() {
+      elt_users.hide();
+    }
+
+    // users desktop version
+    function switchUsersToDesktopLook() {
+      elt_users.css("width", width_users + "px").show();
+    }
+    
+  };
+  
 
 
   return pfc;
