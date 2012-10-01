@@ -292,25 +292,26 @@ div.pfc-content {
 
   // message zone
   div.pfc-messages {
-    background-color:#FFF;
-    position:absolute;
+    background-color: #FFF;
+    position: absolute;
     top: @tabs-height + @topic-height + 2 * @border-width;
     bottom: @footer-height + @compose-height + @padding-bottom + 3 * @border-width;
     right: @users-width;
     left: @padding-left;
     overflow: auto;
-    padding: 12px 14px 0;
+    padding: @messages-padding-top @messages-padding-right-left 0 @messages-padding-right-left;
     border-left: @border-width solid @border-color;
     
     /* internal shadow effect */
     box-shadow: inset 0 3px 10px #E8E8E8;
     -moz-box-shadow: inset 0 3px 10px #e8e8e8;
     -webkit-box-shadow: inset 0 3px 10px #E8E8E8;
-
+    
+    @messages-group-height: 1 + 8 + 10;
     .messages-group {
       border-bottom: 1px dotted #D0D0D0;
       padding-bottom: 8px;
-      margin-bottom: 10px;          
+      margin-bottom: 10px;
 
       .avatar {
         margin: 4px 0 0 6px;
@@ -345,6 +346,13 @@ div.pfc-content {
         }
       }
     }
+    
+    // used to move scroll at bottom on mobile interface (hidden by default)
+    .pfc-message-mobile-padding {
+      display: none;
+      height: @h - (@tabs-height + @topic-height + 5 * @border-width + @footer-height + @compose-height + @padding-bottom + @messages-group-height);
+    }
+    
   }
 
   // top zone (between tabs and messages)

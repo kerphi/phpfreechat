@@ -118,6 +118,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + '        </div>'
       + ''
       + '        <div class="pfc-messages">'
+      + '          <div class="pfc-message-mobile-padding"></div>' // used to move message at bottom on mobile interface
       + (pfc.options.loadTestData ? ''
       + '          <div class="messages-group" data-stamp="1336815502" data-from="kerphi">'
       + '            <div class="avatar"><img src="http://www.gravatar.com/avatar/ae5979732c49cae7b741294a1d3a8682?d=wavatar&s=30" alt="" /></div>'
@@ -247,11 +248,13 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     $(window).resize(function () {
       if (elt_toggle_tabs_btn.is(':visible')) {
         switchTabsToMobileLook();
+        scrollMessagesToBottom();
       } else {
         switchTabsToDesktopLook();
       }
       if (elt_toggle_users_btn.is(':visible')) {
         switchUsersToMobileLook();
+        scrollMessagesToBottom();
       } else {
         switchUsersToDesktopLook();
       }
@@ -340,6 +343,17 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // users desktop version
     function switchUsersToDesktopLook() {
       elt_users.css("width", width_users + "px").show();
+    }
+    
+    // function in charge of scrolling messages list to bottom
+    function scrollMessagesToBottom() {
+      var messages_dom = $(pfc.element).find('.pfc-messages');
+      
+      // calculate how many to scroll to have a bottom scrollbar
+      var messages_height = 0;
+      messages_dom.each(function (i, elt) { messages_height += $(elt).height(); });
+      
+      messages_dom.scrollTop(messages_dom.scrollTop() + messages_height);
     }
     
   };
