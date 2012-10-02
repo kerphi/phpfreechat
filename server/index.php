@@ -5,6 +5,7 @@ include_once __DIR__.'/config.php';
 
 $app = new Slim();
 
+
 function debug($msg) {
   if (is_string($msg)) {
     file_put_contents(__DIR__.'/log/pfc.log', $msg."\n", FILE_APPEND);
@@ -16,6 +17,13 @@ function debug($msg) {
 $req = $app->request();
 $res = $app->response();
 $res['X-Powered-By'] = 'phpFreeChat';
+
+// connect custom user hooks
+foreach($GLOBALS['pfc_hooks'] as $hook_name => $hooks) {
+  foreach($hooks as $priority => $function) {
+    $app->hook($hook_name, $function($app, $req, $res), $priority);
+  }
+}
 
 require 'routes/auth.php';
 require 'routes/channels.php';

@@ -7,6 +7,20 @@
 // (Default value: 35 seconds)
 $GLOBALS['pfc_timeout'] = 35;
 
+
+// custom user hooks
+$GLOBALS['pfc_hooks'] = array();
+
+// HOOK - pfc.before.auth
+// Can be used to automaticaly login to the chat 
+// with your own auth system (forum, ldap, database, sso ...)
+// example:
+// $GLOBALS['pfc_hooks']['pfc.before.auth'][5] = function ($app, $req, $res) {
+//   return function ($hr) use ($app, $req, $res) {
+//     $hr->login = 'kerphi'; // TODO: replace this code with a real example
+//   };
+// };
+
 // include the local config if defined
 $clocal = __DIR__.'/config.local.php';
 if (file_exists($clocal)) {
