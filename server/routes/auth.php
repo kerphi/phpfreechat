@@ -23,6 +23,7 @@ $app->get('/auth', function () use ($app, $req, $res) {
 
   // apply the user defined auth hook
   $app->applyHook('pfc.before.auth', $hr = new stdClass);
+  $hr->login = isset($hr->login) ? $hr->login : '';
   // TODO: check if $hr->login is defined and use it to overload default login step
   
   // check if a login/password has been set
@@ -30,7 +31,7 @@ $app->get('/auth', function () use ($app, $req, $res) {
   $auth = $req->headers('Authorization') ?
     $req->headers('Authorization') :
     ($req->headers('Pfc-Authorization') ? $req->headers('Pfc-Authorization') : '');
-  if (!$auth) {
+  if (!$auth and $hr->login == '') {
     $res->status(403);
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res['Pfc-WWW-Authenticate'] = 'Basic realm="Authentication"';
@@ -38,16 +39,21 @@ $app->get('/auth', function () use ($app, $req, $res) {
     return;
   }
 
-  // decode basic http auth header
-  $auth = @explode(':', @base64_decode(@array_pop(@explode(' ', $auth))));
-  if (!isset($auth[0]) && !$auth[0]) {
-    $res->status(400);
-    $res['Content-Type'] = 'application/json; charset=utf-8';
-    $res->body('{ "error": "Login is missing" }');
-    return;
+  if ($auth) {
+    // decode basic http auth header
+    $auth = @explode(':', @base64_decode(@array_pop(@explode(' ', $auth))));
+    if (!isset($auth[0]) && !$auth[0]) {
+      $res->status(400);
+      $res['Content-Type'] = 'application/json; charset=utf-8';
+      $res->body('{ "error": "Login is missing" }');
+      return;
+    }
+    $login    = trim($auth[0]);
+    $password = isset($auth[1]) ? $auth[1] : '';
+  } else {
+    // or get the login from the before.auth hook
+    $login = $hr->login;
   }
-  $login    = trim($auth[0]);
-  $password = isset($auth[1]) ? $auth[1] : '';
   
   // check login/password
   if ($login and Container_indexes::getIndex('users/name', $login)) {
