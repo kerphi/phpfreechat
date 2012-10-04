@@ -295,9 +295,14 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }
     
     return message;
-  }
-
-
+  };
+  
+  /**
+   * Setup topic text
+   */
+  pfc.setTopic = function (topic) {
+    $(pfc.element).find('.pfc-topic-value').text(topic);
+  };
 
   return pfc;
 }(phpFreeChat || {}, jQuery, window));

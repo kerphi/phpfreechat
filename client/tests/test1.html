@@ -116,6 +116,15 @@
             ok( message4.text().indexOf('leave') !== -1, "are able to display a leave channel system message" );
             
           });
+          
+          test("phpfreechat topic", function() {
+          
+            pfc.setTopic('HelloQUnit');
+            ok( $('span').text().indexOf('HelloQUnit') != -1, "are able to be changed" );
+            
+          });
+          
+          
         }
       });
     </script>
