@@ -94,3 +94,4 @@ clean-release-for-prod: clean-release
 
 release: dummy
 	@tools/build-release
+	@tools/build-release --dev
