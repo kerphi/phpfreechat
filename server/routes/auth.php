@@ -24,7 +24,11 @@ $app->get('/auth', function () use ($app, $req, $res) {
   // apply the user defined auth hook
   $app->applyHook('pfc.before.auth', $hr = new stdClass);
   $hr->login = isset($hr->login) ? $hr->login : '';
-  // TODO: check if $hr->login is defined and use it to overload default login step
+  
+  // check if the hook want to redirect the response
+  if ($res->isRedirection()) {
+    return;
+  }
   
   // check if a login/password has been set
   // allow Pfc-Authorization header because Authorization can be disabled by reverse proxy
