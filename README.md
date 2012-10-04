@@ -1,6 +1,6 @@
 # phpFreeChat
 
-## Installation
+## Quick start
 
 Include phpfreechat plugin in your html `<head>`:
 ```html
@@ -20,6 +20,22 @@ Hook the phpfreechat plugin to this element:
 <script>
   $('#mychat').phpfreechat();
 </script>
+```
+
+## Themes
+
+phpfreechat is released with few themes. You can choose which one you want to use:
+
+* `default`
+* `carbon`
+
+To change the theme, you only have to change one line in your html `<head>`. To use the `default` theme:
+```html
+  <link type="text/css" href="phpfreechat-2.0.0/client/themes/default/jquery.phpfreechat.min.css" />
+```
+or this code for `carbon` theme:
+```html
+  <link type="text/css" href="phpfreechat-2.0.0/client/themes/carbon/jquery.phpfreechat.min.css" />
 ```
 
 ## Parameters (client side)
