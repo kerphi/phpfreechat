@@ -54,6 +54,22 @@ Example in `server/config.php` or `server/config.local.php`:
 $GLOBALS['pfc_timeout'] = 50;
 ```
 
+## Hooks (server side)
+
+Hooks can be used to plug piece of code into the official phpfreechat code. Thanks to hooks, you can customize or extend phpfreechat's features.
+
+### pfc.before.auth
+
+This hook can be used to connect the chat authentication system to you own one. It is activated just before asking a login to the user. It can check for an user in a cookie, an external database or through a sso. The hook has to return the login in the parameter object (`$hr` in the following example). Here is an basic example:
+```php
+$GLOBALS['pfc_hooks']['pfc.before.auth'][5] = function ($app, $req, $res) {
+  return function ($hr) use ($app, $req, $res) {
+    $hr->login = 'guest'.rand(1,1000);
+  };
+};
+```
+This hook will randomly assign a nickname to each users (`[5]` is the hook priority cause it can have several hooks with one type)
+
 ## Developments
 
 ### Installation
