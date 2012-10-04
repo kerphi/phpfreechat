@@ -9,7 +9,7 @@
 
 // the phpbb3 forum path
 define('IN_PHPBB', true);
-$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : __DIR__.'/../../../../forum/';
+$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : __DIR__.'/../../../../../forum/';
 $phpEx           = substr(strrchr(__FILE__, '.'), 1);
 
 // prepare the tickets stuff
