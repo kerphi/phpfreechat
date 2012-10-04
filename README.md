@@ -28,7 +28,7 @@ Hook the phpfreechat plugin to this element:
 * `focus_on_connect` [Bool:true]: setting this to true will give the focus to the input text box when connecting to the chat. It can be useful not to touch the focus when integrating the chat into an existing website because when the focus is changed, the viewport follows the focus location.
 * `serverUrl` [String:'../server']: where is located the pfc's server folder
 * `loaded` [Function:null]: a callback executed when pfc's interface is totaly loaded
-* `loadTestData` [Bool:false]]: used for interface unit tests
+* `loadTestData` [Bool:false]: used for interface unit tests
 
 Client side parameters can be given to phpfreechat client side jquery plugin as a javascript object.
 
