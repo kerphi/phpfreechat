@@ -95,3 +95,9 @@ clean-release-for-prod: clean-release
 release: dummy
 	@tools/build-release
 	@tools/build-release --dev
+
+setup-bench: dummy
+	@npm install shelljs
+
+bench: dummy
+	@node tools/run-bench.js
