@@ -104,5 +104,8 @@ simulate-user-session: dummy
 	@vows $(path)/server/tests/bench/user-session.js
 
 bench: dummy
+	@touch $(path)/server/config.local.php
+	@mv -f $(path)/server/config.local.php $(path)/server/config.local.php.tmp
 	@rm -rf server/data/*
 	@node tools/run-bench.js
+	@mv -f $(path)/server/config.local.php.tmp $(path)/server/config.local.php
