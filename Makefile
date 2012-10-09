@@ -98,6 +98,11 @@ release: dummy
 
 setup-bench: dummy
 	@npm install shelljs
+	@cd $(path)/server/tests/bench && npm install Faker
+
+simulate-user-session: dummy
+	@vows $(path)/server/tests/bench/user-session.js
 
 bench: dummy
+	@rm -rf server/data/*
 	@node tools/run-bench.js
