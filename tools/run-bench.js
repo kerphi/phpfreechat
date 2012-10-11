@@ -1,7 +1,8 @@
 require('shelljs/global');
+var package = require('../package.json');
 
 // start N user session to stress the server
-var nb_users = 20;
+var nb_users = 50;
 while (nb_users-- > 0) {
   exec('make simulate-user-session', {silent: true, async: true});
 }
@@ -74,7 +75,17 @@ function calculate_ressources_average() {
     average.disk_write = Math.round(average.disk_write/records.length);
     
     console.log('');
-    console.log(average);
+    //console.log(average);
+     
+    var heuristic = ((average.disk_write / 14000000) + (average.disk_read / 40000))*2 +
+                    (average.mem_rss / 42000)*5 +
+                    (average.cpu / 60)*10;
+    console.log('[' + new Date().toUTCString() + '] [' 
+                    + package.name + '-' + package.version 
+                    + '] Bench result: ' + heuristic.toFixed(2)
+                    + ' (cpu=' + average.cpu + '% mem=' + Math.round(average.mem_rss/1024) 
+                    + 'Mo dread=' + Math.round(average.disk_read/1000) + 'k dwrite=' + Math.round(average.disk_write/1000) + 'k)');
+    
 }
 
 function get_pids() {
