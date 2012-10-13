@@ -111,10 +111,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + '        </div>'
       + ''
       + '        <div class="pfc-topic">'
-      +'           <a class="pfc-toggle-tabs"></a>'
-      + '          <p><span class="pfc-topic-label">Topic:</span> <span class="pfc-topic-value">no topic for this channel</span>'
-      +'           <a class="pfc-toggle-users"></a>'
-      +'           </p>'
+      + '          <a class="pfc-toggle-tabs"></a>'
+      + '          <p><span class="pfc-topic-label">Topic:</span> <span class="pfc-topic-value">no topic for this channel</span></p>'
+      + '          <a class="pfc-toggle-users"></a>'
       + '        </div>'
       + ''
       + '        <div class="pfc-messages">'
@@ -172,7 +171,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + '        </div>'
       + ''
       + '        <div class="pfc-footer">'
-      + (pfc.options.show_powered_by ? 
+      + (pfc.options.show_powered_by ?
         '          <p class="logo"><a href="http://www.phpfreechat.net" target="_blank">Powered by phpFreeChat</a></p>' :
         '')
       //+ '          <p class="ping">150ms</p>'
@@ -209,7 +208,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // when window is resized,
     // resize the textarea with javascript (because absolute positionning doesn't work on firefox)
     $(window).resize(function () {
-      $('.pfc-compose textarea').width($('.pfc-compose').innerWidth()-6);
+      $('.pfc-compose textarea').width($('.pfc-compose').innerWidth() - 6);
     });
 
     // when window is reloaded or closed
@@ -263,7 +262,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     
     // tabs mobile version
     function switchTabsToMobileLook() {
-      elt_tabs.removeClass('pfc-tabs').addClass('pfc-mobile-tabs');      
+      elt_tabs.removeClass('pfc-tabs').addClass('pfc-mobile-tabs');
       elt_tabs.hide();
       if (tab_slide_status == 1) {
         slideTabsUp();
@@ -273,7 +272,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
     // tabs desktop version
     function switchTabsToDesktopLook() {
-      elt_tabs.addClass('pfc-tabs').removeClass('pfc-mobile-tabs');      
+      elt_tabs.addClass('pfc-tabs').removeClass('pfc-mobile-tabs');
       elt_tabs.show();
       if (tab_slide_status == 1) {
         slideTabsUp();
@@ -287,21 +286,21 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         elt_tabs.slideUp(500);
       }
       elt_messages.animate({
-          top:"-=" + height_slidetabs
-      },500);
+        top: "-=" + height_slidetabs
+      }, 500);
       elt_users.animate({
-          top:"-=" + height_slidetabs
-      },500);
+        top: "-=" + height_slidetabs
+      }, 500);
     }
     function slideTabsDown(withtabs) {
       if (withtabs) {
         elt_tabs.slideDown(500);
       }
       elt_messages.animate({
-          top: "+=" + height_slidetabs
+        top: "+=" + height_slidetabs
       }, 500);
       elt_users.animate({
-          top: "+=" + height_slidetabs
+        top: "+=" + height_slidetabs
       }, 500);
     }
     
@@ -310,7 +309,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       elt_tabs.removeClass('pfc-tabs').addClass('pfc-mobile-tabs');
       height_slidetabs = elt_tabs.height();
       if (elt_tabs.is(":visible")) {
-        tab_slide_status = 0;  
+        tab_slide_status = 0;
         slideTabsUp(true);
       } else {
         tab_slide_status = 1;
@@ -322,9 +321,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     elt_toggle_users_btn.click(function () {
       if (elt_users.is(":visible")) {
         elt_users.animate({
-          width:"-=" + width_users
+          width: "-=" + width_users
         }, 500);
-        setTimeout(function() {
+        setTimeout(function () {
           elt_users.hide();
         }, 500);
       } else {

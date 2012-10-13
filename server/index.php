@@ -20,8 +20,8 @@ $res = $app->response();
 $res['X-Powered-By'] = 'phpFreeChat';
 
 // connect custom user hooks
-foreach($GLOBALS['pfc_hooks'] as $hook_name => $hooks) {
-  foreach($hooks as $priority => $function) {
+foreach ($GLOBALS['pfc_hooks'] as $hook_name => $hooks) {
+  foreach ($hooks as $priority => $function) {
     $app->hook($hook_name, $function($app, $req, $res), $priority);
   }
 }

@@ -255,14 +255,14 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         
     var groupmsg_dom = $(pfc.element).find('.pfc-messages .messages-group:last');
     var messages_dom = $(pfc.element).find('.pfc-messages');
-    
+    var html         = null;
     if (groupmsg_dom.attr('data-from') != msg.from) {
-      var html = $('<div class="messages-group" data-stamp="" data-from="">'
-//      + '            <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000001?d=wavatar&s=30" alt="" /></div>'
-//      + '            <div class="avatar"><div style="width:30px; height: 30px; background-color: #DDD;"></div></div>'
-        + '            <div class="date"></div>'
-        + '            <div class="name"></div>'
-        + '          </div>');
+      html = $('<div class="messages-group" data-stamp="" data-from="">'
+//      + '       <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000001?d=wavatar&s=30" alt="" /></div>'
+//      + '       <div class="avatar"><div style="width:30px; height: 30px; background-color: #DDD;"></div></div>'
+        + '       <div class="date"></div>'
+        + '       <div class="name"></div>'
+        + '     </div>');
       
       // system messages (join)
       if (msg.from == 'system') {
@@ -288,7 +288,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     groupmsg_dom.append(message);
 
     // scroll when a message is received
-    if (groupmsg_dom == html) { 
+    if (groupmsg_dom == html) {
       messages_dom.scrollTop(messages_dom.scrollTop() + groupmsg_dom.outerHeight() + 10);
     } else {
       messages_dom.scrollTop(messages_dom.scrollTop() + message.outerHeight());

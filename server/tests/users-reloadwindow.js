@@ -93,7 +93,7 @@ vows.describe('User reload his window')
           url: baseurl + '/server/channels/' + cid + '/users/' + userdata2.id,
           jar: j2,
         }, function (err, res, body) {
-          user1reload();          
+          user1reload();
           user2getmsg();
         });
       }
