@@ -99,12 +99,24 @@ make setup
 
 * `make setup`: download and install Slim library for server side
 * `make test`: run all tests client and server side
-* `make setup-client-test`: install dependencies needed for running client tests
 * `make test-client`: run tests client side
-* `make setup-server-test`: install dependencies needed for running server tests
 * `make test-server`: run tests server side
+* `make bench`: simulate 50 users chatting (telling 1 sentence per 2 seconds) on 2 channels during 60 seconds
+* `make jshint`: check client side syntaxe
+* `make phpcs`: check client side syntaxe
+* `make minify`: compile and minify css and js
 * `make clean`: ...
 
+* `make release`: create a tar.gz ready to download
+* `make clean-release-for-dev`: used by `make release`
+* `make clean-release-for-prod`: used by `make release`
+
+* `make setup-client-test`: install dependencies needed for running client tests
+* `make setup-server-test`: install dependencies needed for running server tests
+* `make setup-client-test`: install dependencies needed for running client tests
+* `make setup-jshint`: install dependencies needed for `make jshint`
+* `make setup-minify`: install dependencies needed for `make minify`
+* `make setup-bench`: install dependencies needed for `make bench`
 
 ### Playing with unit tests
 
