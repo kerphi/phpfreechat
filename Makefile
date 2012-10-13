@@ -39,10 +39,10 @@ setup-minify:
 	@npm install -g less clean-css pack
 
 # compress javascript and css
-minify: $(path)/client/jquery.phpfreechat.js $(path)/client/themes/default/jquery.phpfreechat.less $(path)/client/themes/default/jquery.phpfreechat.variables.less $(path)/client/themes/default/jquery.phpfreechat.notabs.less
+minify: $(path)/client/jquery.phpfreechat.js $(path)/client/jquery.phpfreechat.*.js $(path)/client/themes/*/jquery.phpfreechat.less $(path)/client/themes/*/jquery.phpfreechat.*.less
 	@cat $(path)/client/jquery.phpfreechat.js $(path)/client/jquery.phpfreechat.*.js | packnode > $(path)/client/jquery.phpfreechat.min.js
-	@lessc $(path)/client/themes/default/jquery.phpfreechat.less $(path)/client/themes/default/jquery.phpfreechat.css
-	@cleancss $(path)/client/themes/default/jquery.phpfreechat.css > $(path)/client/themes/default/jquery.phpfreechat.min.css 
+	@for f in `ls client/themes/*/jquery.phpfreechat.less`; do lessc $f `echo $f | sed s/.less/.css/g`; done
+	@for f in `ls client/themes/*/jquery.phpfreechat.css`; do cleancss $f > `echo $f | sed s/.css/.min.css/g`; done
 
 setup-jshint:
 	@npm install -g jshint
@@ -55,8 +55,8 @@ phpcs:
 
 clean: dummy
 	@rm -f $(path)/client/*.min.js
-	@rm -f $(path)/client/themes/default/jquery.phpfreechat.css
-	@rm -f $(path)/client/themes/default/jquery.phpfreechat.min.css
+	@rm -f $(path)/client/themes/*/jquery.phpfreechat.css
+	@rm -f $(path)/client/themes/*/jquery.phpfreechat.min.css
 	@rm -rf $(path)/server/data/*
 	@rm -f $(path)/server/logs/*
 
@@ -76,8 +76,8 @@ clean-release-for-dev: clean-release
 	@cat $(path)/client/*.js > $(path)/client/jquery.phpfreechat.js.tmp
 	@rm -f $(path)/client/*.js
 	@mv $(path)/client/jquery.phpfreechat.js.tmp $(path)/client/jquery.phpfreechat.js
-	@rm -f $(path)/client/themes/default/*.less
-	@rm -f $(path)/client/themes/default/jquery.phpfreechat.min.css
+	@rm -f $(path)/client/themes/*/*.less
+	@rm -f $(path)/client/themes/*/jquery.phpfreechat.min.css
 	@tools/switch-examples-head --dev
 	@rm -rf $(path)/tools
 
@@ -85,10 +85,8 @@ clean-release-for-prod: clean-release
 	@mv $(path)/client/jquery.phpfreechat.min.js $(path)/client/jquery.phpfreechat.min.js.tmp
 	@rm -f $(path)/client/*.js
 	@mv $(path)/client/jquery.phpfreechat.min.js.tmp $(path)/client/jquery.phpfreechat.min.js
-	@rm -f $(path)/client/themes/default/*.less
-	@mv $(path)/client/themes/default/jquery.phpfreechat.min.css $(path)/client/themes/default/jquery.phpfreechat.min.css.tmp 
-	@rm -f $(path)/client/themes/default/*.css
-	@mv $(path)/client/themes/default/jquery.phpfreechat.min.css.tmp $(path)/client/themes/default/jquery.phpfreechat.min.css
+	@rm -f $(path)/client/themes/*/*.less
+	@rm -f $(path)/client/themes/*/jquery.phpfreechat.css
 	@tools/switch-examples-head --prod
 	@rm -rf $(path)/tools
 
