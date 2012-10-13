@@ -76,7 +76,7 @@ Hooks can be used to plug piece of code into the official phpfreechat code. Than
 
 ### pfc.before.auth
 
-This hook can be used to connect the chat authentication system to you own one. It is activated just before asking a login to the user. It can check for an user in a cookie, an external database or through a sso. The hook has to return the login in the parameter object (`$hr` in the following example). Here is an basic example:
+This hook can be used to connect the chat authentication system to you own one. It is activated just before asking a login to the user. It can check for an user in a cookie, an external database or through a sso. The hook has to return the login as an attribut of the object in the first parameter (`$hr` in the following example). Here is a basic example:
 ```php
 $GLOBALS['pfc_hooks']['pfc.before.auth'][5] = function ($app, $req, $res) {
   return function ($hr) use ($app, $req, $res) {
@@ -85,6 +85,8 @@ $GLOBALS['pfc_hooks']['pfc.before.auth'][5] = function ($app, $req, $res) {
 };
 ```
 This hook will randomly assign a nickname to each users (`[5]` is the hook priority cause it can have several hooks with one type)
+
+A hook to connect phpbb3 authentication system to the chat (used on the [phpfreechat web site](http://www.phpfreechat.net)) can be found [at github here](https://github.com/kerphi/phpfreechat/tree/master/server/contrib/phpbb3-auth). 
 
 ## Developments
 
