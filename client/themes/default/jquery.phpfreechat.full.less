@@ -559,7 +559,6 @@ div.pfc-content {
     -webkit-border-top-left-radius: 3px;      
     
     p {
-      display: @topic-text-display;
       color: @topic-font-color;
       font-size: @topic-font-size;
       font-family: @topic-font-family;
@@ -571,12 +570,16 @@ div.pfc-content {
       padding: 0;
       margin: 0 10px 0 0;
       span.pfc-topic-label {
+        display: @topic-text-display;
         color: @topic-label-font-color; 
         font-size: @topic-label-font-size;
         font-family: @topic-label-font-family;
         font-weight: @topic-label-font-weight;
         font-style: @topic-label-font-style;
         text-decoration: @topic-label-text-decoration;
+      }
+      span.pfc-topic-value {
+        display: @topic-text-display;
       }
     }
   }
