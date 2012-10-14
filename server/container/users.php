@@ -38,7 +38,7 @@ class Container_users {
   static public function getUserData($uid, $field = null, $injson = false) {
     $udir = self::getDir().'/'.$uid;
     if ($field) {
-      $data = file_get_contents($udir.'/'.$field);
+      $data = file_exists($udir.'/'.$field) ? file_get_contents($udir.'/'.$field) : '';
       $data = $injson ? json_encode($data) : $data;
     } else {
       $data = file_get_contents($udir.'/index.json'); 
