@@ -253,7 +253,7 @@ div.pfc-content {
             height: @tab-bt-close-height;
             margin-top: (@tabs-height - @tab-bt-close-height) / 2;
             &:hover {
-                background-position: bottom center;
+              background-position: bottom center;
             }
           }
         }
@@ -340,7 +340,8 @@ div.pfc-content {
       font-style: @users-role-title-font-style;
       text-decoration: @users-role-title-text-decoration;
       color: @users-role-title-font-color;
-      margin: 15px 0 0px 10px; padding: 0
+      padding: 15px 0 5px 10px; margin: 0;
+      border-bottom: @users-role-title-border-width @users-role-title-border-type @users-role-title-border-color;
     }
     
     ul {
@@ -348,14 +349,13 @@ div.pfc-content {
       margin: 0;
       
       li {
-        border-bottom:  @users-border-width @users-border-type @users-border-color;
+        border-top:  @users-border-top-width @users-border-type @users-border-color;
+        border-bottom:  @users-border-bottom-width @users-border-type @users-border-color;
         height: @users-list-height;
         display: block;
         position: relative;
-        &.first {
-          border-top:  @users-role-title-border-width @users-role-title-border-type @users-role-title-border-color;
-        }
-        &:hover{
+        margin-top: @users-margin-top;
+        &:hover {
           background-color: @users-bg-color-hover;
           font-size: @users-font-size-hover;
           font-family: @users-font-family-hover;
@@ -439,7 +439,7 @@ div.pfc-content {
       font-style: @messages-a-font-style;
       text-decoration: @messages-a-text-decoration;
       color: @messages-a-font-color;
-      &:hover{
+      &:hover {
         font-size: @messages-a-font-size-hover;
         font-family: @messages-a-font-family-hover;
         font-weight: @messages-a-font-weight-hover;
@@ -648,11 +648,14 @@ div.pfc-content {
           width: @footer-bt-width;
           height: @footer-bt-height;
           margin-top: 4px;
-          /*
+          cursor: pointer;
+          &:hover {
+            background-position: bottom center;
+          }
           &.logout-btn {
             background-image: @footer-url-bt-logout;
           }
-          &.online-btn {
+          /*&.online-btn {
             background-image: @footer-url-bt-online;
           }
           */
@@ -688,7 +691,8 @@ div.pfc-content {
       right: 0; left: 0;
       top: 0; bottom: 0;
       margin: 0; padding: 2px;
-
+      background-color: @compose-bg-color ;
+      
       color: @compose-font-color; 
       font-size: @compose-font-size;
       font-family: @compose-font-family;
@@ -732,6 +736,7 @@ div.pfc-content {
     z-index: 55;
     padding: 20px;
     .rounded-corners(5px);
+    .box-shadow(@modalbox-shadow-top, @modalbox-shadow-left, @modalbox-shadow-size, @modalbox-shadow-color);
   }
 
 }

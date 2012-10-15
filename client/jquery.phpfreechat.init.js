@@ -123,7 +123,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + '            <div class="avatar"><img src="http://www.gravatar.com/avatar/ae5979732c49cae7b741294a1d3a8682?d=wavatar&s=30" alt="" /></div>'
       + '            <div class="date">11:38:21</div>'
       + '            <div class="name">kerphi</div>'
-      + '            <div class="message">123</div>'
+      + '            <div class="message">123 <a href="#">test de lien</a></div>'
       + '            <div class="message">456</div>'
       + '          </div>'
       + '          <div class="messages-group" data-stamp="1336815503" data-from="admin">'
@@ -174,13 +174,15 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + (pfc.options.show_powered_by ?
         '          <p class="logo"><a href="http://www.phpfreechat.net" target="_blank">Powered by phpFreeChat</a></p>' :
         '')
-      //+ '          <p class="ping">150ms</p>'
+      + (pfc.options.loadTestData ? ''
+      + '          <p class="ping">150ms</p>'
       + '          <ul>'
-      //+ '            <li><div class="logout-btn"></div></li>'
-      //+ '            <li><div class="smiley-btn" title="Not implemented"></div></li>'
-      //+ '            <li><div class="sound-btn" title="Not implemented"></div></li>'
-      //+ '            <li><div class="online-btn"></div></li>'
+      + '            <li><div class="logout-btn" title="Logout"></div></li>'
+      + '            <li><div class="smiley-btn" title="Not implemented"></div></li>'
+      + '            <li><div class="sound-btn" title="Not implemented"></div></li>'
+      + '            <li><div class="online-btn"></div></li>'
       + '          </ul>'
+      : '')
       + '        </div>'
       + ''
       + '        <div class="pfc-compose">'
