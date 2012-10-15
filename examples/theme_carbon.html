@@ -6,14 +6,14 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <title>phpfreechat example 2</title>
+  <title>phpfreechat example 1</title>
 
   <meta name="viewport" content="width=device-width" />
 
   <!-- pfc-debug -->
   <script src="../client/lib/jquery-1.8.2.min.js"></script>
 
-  <link rel="stylesheet/less" type="text/css" href="../client/themes/default/jquery.phpfreechat.less" />
+  <link rel="stylesheet/less" type="text/css" href="../client/themes/carbon/jquery.phpfreechat.less" />
   <script type="text/javascript">var less = { env: 'development' };</script>
   <script src="../client/lib/less-1.3.0.min.js" type="text/javascript"></script>
   
@@ -26,16 +26,24 @@
 
   <!-- pfc-prod
   <script src="../client/lib/jquery-1.8.2.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="../client/themes/default/jquery.phpfreechat.min.css" />
+  <link rel="stylesheet" type="text/css" href="../client/themes/carbon/jquery.phpfreechat.min.css" />
   <script src="../client/jquery.phpfreechat.min.js" type="text/javascript"></script>
   /pfc-prod -->
 
   <!-- pfc-dev
   <script src="../client/lib/jquery-1.8.2.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="../client/themes/default/jquery.phpfreechat.css" />
+  <link rel="stylesheet" type="text/css" href="../client/themes/carbon/jquery.phpfreechat.css" />
   <script src="../client/jquery.phpfreechat.js" type="text/javascript"></script>
   /pfc-dev -->
 
+  <!-- customized styles for the body -->
+  <style type="text/css">
+    body, html {
+      background: url("../client/themes/carbon/img/bg.jpg") top center no-repeat;
+      background-color: #2c2e37;
+      color: #FFF;
+    }
+  </style>  
   
 </head>
 <body>
@@ -45,13 +53,11 @@
   <div role="main">
 
 
-    <h1 style="font-size:1.5em">phpFreeChat - fast refresh_delay</h1>
+    <h1 style="font-size:1.5em">phpFreeChat - theme carbon</h1>
     
     <div class="pfc-hook"><a href="http://www.phpfreechat.net">phpFreeChat: simple Web chat</a></div>
     <script>
-      $('.pfc-hook').phpfreechat({
-        refresh_delay: 2000,
-      });
+      $('.pfc-hook').phpfreechat();
     </script>
 
   </div>
