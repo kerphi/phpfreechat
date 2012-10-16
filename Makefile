@@ -90,9 +90,14 @@ clean-release-for-prod: clean-release
 	@tools/switch-examples-head --prod
 	@rm -rf $(path)/tools
 
+clean-release-for-debug: clean
+	@tools/switch-examples-head --debug
+	@rm -rf $(path)/tools
+
 release: dummy
-	@tools/build-release
+	@tools/build-release --prod
 	@tools/build-release --dev
+	@tools/build-release --debug
 
 setup-bench: dummy
 	@npm install shelljs

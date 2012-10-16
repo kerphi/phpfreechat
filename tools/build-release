@@ -11,7 +11,7 @@ TMP_DIR=$PFC_PATH/tmp
 mkdir -p $TMP_DIR
 
 if [ "$1" == "--dev" ]; then
-  PFC_AN_SUFFIX=""
+  PFC_AN_SUFFIX="-dev"
   PFC_ARCHIVE_NAME="phpfreechat-`$TOOL_PATH/get-version`"
   
   # clone the git with the correct name
@@ -21,8 +21,19 @@ if [ "$1" == "--dev" ]; then
   # cleanup the pfc files
   cd $TMP_DIR/$PFC_ARCHIVE_NAME
   make clean-release-for-dev
+elif [ "$1" == "--debug" ]; then
+  PFC_AN_SUFFIX="-debug"
+  PFC_ARCHIVE_NAME="phpfreechat-`$TOOL_PATH/get-version`"
+  
+  # clone the git with the correct name
+  rm -rf $TMP_DIR/$PFC_ARCHIVE_NAME
+  git clone file://$PFC_PATH $TMP_DIR/$PFC_ARCHIVE_NAME
+  
+  # cleanup the pfc files
+  cd $TMP_DIR/$PFC_ARCHIVE_NAME
+  make clean-release-for-debug
 else
-  PFC_AN_SUFFIX="-min"
+  PFC_AN_SUFFIX=""
   PFC_ARCHIVE_NAME="phpfreechat-`$TOOL_PATH/get-version`"
 
   # clone the git with the correct name
