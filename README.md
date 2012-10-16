@@ -1,8 +1,8 @@
 # phpFreeChat
 
-phpfreechat is a web based chat written in JQuery and PHP. Perfect if you need an easy to integrate chat for your Web site.
+phpFreeChat (pfc) is a Web based chat written in JQuery and PHP. Perfect if you need an easy to integrate chat for your Web site.
 
-phpfreechat is splited in two distinct parts:
+pfc is splited in two distinct parts:
 
 - client: a themable jquery plugin in charge of displaying the chat interface and to communicate with the server side using for example AJAX
 - server: a [RESTful architecture](http://en.wikipedia.org/wiki/Representational_state_transfer) coded in PHP using the [Slim framework](http://www.slimframework.com/) in charge of the chat logic. It stores messages and send messages updates to the clients using classic HTTP methods (GET, POST, PUT, DELETE).
