@@ -91,6 +91,14 @@ clean-release-for-prod: clean-release
 	@rm -rf $(path)/tools
 
 clean-release-for-debug: clean
+	@rm -rf $(path)/client/tests
+	@rm -rf $(path)/server/tests
+	@rm -rf $(path)/server/data/*
+	@rm -f $(path)/server/logs/*
+	@rm -f $(path)/Makefile
+	@rm -f $(path)/.jshintrc
+	@rm -f $(path)/.jshintignore
+	@rm -rf $(path)/.git
 	@tools/switch-examples-head --debug
 	@rm -rf $(path)/tools
 
