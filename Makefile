@@ -90,7 +90,7 @@ clean-release-for-prod: clean-release
 	@tools/switch-examples-head --prod
 	@rm -rf $(path)/tools
 
-clean-release-for-debug: clean
+clean-release-for-debug: clean setup
 	@rm -rf $(path)/client/tests
 	@rm -rf $(path)/server/tests
 	@rm -rf $(path)/server/data/*
