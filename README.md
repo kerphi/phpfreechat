@@ -1,6 +1,18 @@
 # phpFreeChat
 
-## Quick start
+phpfreechat is splited in two distinct parts:
+
+- client: a themable jquery plugin in charge of displaying the chat interface and to communicate with the server side using for example AJAX
+- server: a RESTful architecture coded in PHP using the [Slim framework](http://www.slimframework.com/) in charge of the chat logic. It stores messages and send messages updates to the clients using classic HTTP methods (GET, POST, PUT, DELETE).
+
+Here is an example of a basic communication between client and server:
+
+* Client asks server to authenticate the user, server stores the user and returns a session id to the client.
+* Client joins a channel, server stores that this user joined the channel and sends a "join" message to every connected users in this channel.
+* Client sends a message into this channel, server publish this message into a queue for each connected users in this channel.
+* Client read its pending messages, server read the user's queue and returns the messages list, client displays the messages on the interface.
+
+## Quick start installation
 
 Include phpfreechat plugin in your html `<head>`:
 ```html
@@ -29,7 +41,7 @@ phpfreechat is released with few themes. You can choose which one you want to us
 * `default`
 * `carbon`
 
-To change the theme, you only have to change one line in your html `<head>`. To use the `default` theme:
+To select the theme, you only have to change one line in your html `<head>`. To use the `default` theme:
 ```html
   <link type="text/css" href="phpfreechat-2.0.0/client/themes/default/jquery.phpfreechat.min.css" />
 ```
@@ -44,7 +56,7 @@ or this code for `carbon` theme:
 * `focus_on_connect` [Bool:true]: setting this to true will give the focus to the input text box when connecting to the chat. It can be useful not to touch the focus when integrating the chat into an existing website because when the focus is changed, the viewport follows the focus location.
 * `serverUrl` [String:'../server']: where is located the pfc's server folder
 * `loaded` [Function:null]: a callback executed when pfc's interface is totaly loaded
-* `loadTestData` [Bool:false]: used for interface unit tests
+* `loadTestData` [Bool:false]: used for unit tests. It load test data into the interface.
 
 Client side parameters can be given to phpfreechat client side jquery plugin as a javascript object.
 
