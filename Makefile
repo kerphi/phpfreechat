@@ -67,7 +67,6 @@ clean-release: setup setup-minify minify
 	@rm -rf $(path)/server/data/*
 	@rm -f $(path)/server/logs/*
 	@rm -f $(path)/Makefile
-	@rm -f $(path)/README.md
 	@rm -f $(path)/.jshintrc
 	@rm -f $(path)/.jshintignore
 	@rm -rf $(path)/.git
@@ -97,7 +96,6 @@ clean-release-for-debug: clean setup
 	@rm -rf $(path)/server/data/*
 	@rm -f $(path)/server/logs/*
 	@rm -f $(path)/Makefile
-	@rm -f $(path)/README.md
 	@rm -f $(path)/.jshintrc
 	@rm -f $(path)/.jshintignore
 	@rm -rf $(path)/.git
