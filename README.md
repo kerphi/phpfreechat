@@ -174,9 +174,11 @@ Example: TODO
 
 ### File container structure (server side)
 
-* `/indexes/users/name/:name`      (index on user's nicknames: name -> uid)
-* `/users/:uid/index.json`         (full user data without messages and channels)
-* `/users/:uid/name`               (user name)
-* `/users/:uid/messages/:mid`      (pending messages for the user)
-* `/users/:uid/channels/:cid`      (channels joinded by the user)
+Server stores data into the `server/data/` folder as following:
+
+* `server/data/indexes/users/name/:name`      (index on user's nicknames: name -> uid)
+* `server/data/users/:uid/index.json`         (full user data without messages and channels)
+* `server/data/users/:uid/name`               (user name)
+* `server/data/users/:uid/messages/:mid`      (pending messages for the user)
+* `server/data/users/:uid/channels/:cid`      (channels joinded by the user)
 * TODO
