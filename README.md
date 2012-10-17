@@ -2,7 +2,30 @@
 
 phpFreeChat (pfc) is a Web based chat written in JQuery and PHP. Perfect if you need an easy to integrate chat for your Web site.
 
-pfc is splited in two distinct parts:
+Features list:
+
+* themable web interface (2 themes are available)
+* responsive web interface (mobile, tablet, desktop)
+* multi-user management
+* polling refresh system (with ajax)
+* modular authentication system (phpbb3 integration available)
+* hook system to enable features extension
+* coming soon:
+  * be able to rename the username (/nick command)
+  * be able to create private messages
+  * multi-channel management
+  * long polling refresh system (to improve reactvity)
+  * user's avatars management
+  * user's role management (admin, users)
+  * user's presence management (away, online)
+  * messages with smiley
+  * messages with url detection (open in a new window)
+  * messages with color, bold, or underline
+  * news message notification
+  * log message system
+
+
+pfc architecture is splited in two distinct parts:
 
 - client: a themable jquery plugin in charge of displaying the chat interface and to communicate with the server side using for example AJAX
 - server: a [RESTful architecture](http://en.wikipedia.org/wiki/Representational_state_transfer) coded in PHP using the [Slim framework](http://www.slimframework.com/) in charge of the chat logic. It stores messages and send messages updates to the clients using classic HTTP methods (GET, POST, PUT, DELETE).
@@ -52,7 +75,7 @@ or this code for `carbon` theme:
   <link type="text/css" href="phpfreechat-2.0.0/client/themes/carbon/jquery.phpfreechat.min.css" />
 ```
 
-## Parameters (client side)
+## Parameters client side
 
 * `refresh_delay` [Integer:5000]: miliseconds to wait before next pending messages are checked
 * `focus_on_connect` [Bool:true]: setting this to true will give the focus to the input text box when connecting to the chat. It can be useful not to touch the focus when integrating the chat into an existing website because when the focus is changed, the viewport follows the focus location.
@@ -65,13 +88,14 @@ Client side parameters can be given to phpfreechat client side jquery plugin as 
 Example:
 ```javascript
 $('#mychat').phpfreechat({
-  refresh_delay: 2000
+  refresh_delay: 2000,
+  focus_on_connect: false
 });
 ```
 
-## Parameters (server side)
+## Parameters server side
 
-Server side parameters are located in `server/config.php` or `server/config.local.php` files. By default only `server/config.php` exists and contains default parameters. Parameters can be modified directly in this file but for easier upgrade, you can also overload just parameters you want to change in the file `server/config.local.php` (to create).
+Server side parameters are located in `server/config.php` or `server/config.local.php` files. By default only `server/config.php` exists and it contains default parameters. Parameters can be modified directly in this file but for easier upgrade, you can also overload just parameters you want to change in the file `server/config.local.php` (you have to create this file).
 
 Parameters list:
 
