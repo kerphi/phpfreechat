@@ -61,7 +61,6 @@ clean: dummy
 	@rm -f $(path)/server/logs/*
 
 clean-release: setup setup-minify minify
-	@rm -f $(path)/client/lib/less-*.js
 	@rm -rf $(path)/client/tests
 	@rm -rf $(path)/server/tests
 	@rm -rf $(path)/server/data/*
@@ -71,34 +70,30 @@ clean-release: setup setup-minify minify
 	@rm -f $(path)/.jshintignore
 	@rm -rf $(path)/.git
 
+# remove .less and .min.css and do not minify .js
 clean-release-for-dev: clean-release
 	@rm -f $(path)/client/*.min.js
 	@cat $(path)/client/*.js > $(path)/client/jquery.phpfreechat.js.tmp
 	@rm -f $(path)/client/*.js
 	@mv $(path)/client/jquery.phpfreechat.js.tmp $(path)/client/jquery.phpfreechat.js
+	@rm -f $(path)/client/lib/less-*.js
 	@rm -f $(path)/client/themes/*/*.less
 	@rm -f $(path)/client/themes/*/jquery.phpfreechat.min.css
 	@tools/switch-examples-head --dev
 	@rm -rf $(path)/tools
 
+# remove .less, minify.css and .js
 clean-release-for-prod: clean-release
 	@mv $(path)/client/jquery.phpfreechat.min.js $(path)/client/jquery.phpfreechat.min.js.tmp
 	@rm -f $(path)/client/*.js
 	@mv $(path)/client/jquery.phpfreechat.min.js.tmp $(path)/client/jquery.phpfreechat.min.js
+	@rm -f $(path)/client/lib/less-*.js
 	@rm -f $(path)/client/themes/*/*.less
 	@rm -f $(path)/client/themes/*/jquery.phpfreechat.css
 	@tools/switch-examples-head --prod
 	@rm -rf $(path)/tools
 
-clean-release-for-debug: clean setup
-	@rm -rf $(path)/client/tests
-	@rm -rf $(path)/server/tests
-	@rm -rf $(path)/server/data/*
-	@rm -f $(path)/server/logs/*
-	@rm -f $(path)/Makefile
-	@rm -f $(path)/.jshintrc
-	@rm -f $(path)/.jshintignore
-	@rm -rf $(path)/.git
+clean-release-for-debug: clean-release clean
 	@tools/switch-examples-head --debug
 	@rm -rf $(path)/tools
 
