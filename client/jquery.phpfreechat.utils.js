@@ -32,7 +32,12 @@ return x}function _encode(s){if(arguments.length!==1){throw"SyntaxError: exactly
       html = $(html);
       $('div.pfc-modal-box *').remove();
       $('div.pfc-modal-box').append(html).fadeIn();
-      $('div.pfc-modal-overlay').fadeIn('fast');
+      if ($.browser.msie) {
+        // ie bug: black screen if fadeIn is used (opacity is set to 1 instead of keeping the css fixed value)
+        $('div.pfc-modal-overlay').show();
+      } else {
+        $('div.pfc-modal-overlay').fadeIn('fast');
+      }
       $(window).trigger('resize'); // force new width calculation
       return html;
     },

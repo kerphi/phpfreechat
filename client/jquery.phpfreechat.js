@@ -29,7 +29,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     check_backlink: true,
 
     // if true powered by phpfreechat text is shown
-    show_powered_by: true,
+    show_powered_by: true
   };
 
   function Plugin(element, options) {

@@ -19,7 +19,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       type: 'GET',
       url:  pfc.options.serverUrl + '/auth',
       headers: h,
-      data: d,
+      data: d
     }).done(function (userdata) {
       $(pfc.element).trigger('pfc-login', [ pfc, userdata ]);
       if (callback) { callback(null, userdata) }
@@ -39,7 +39,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   pfc.logout = function (callback) {
     $.ajax({
       type: 'DELETE',
-      url:  pfc.options.serverUrl + '/auth',
+      url:  pfc.options.serverUrl + '/auth'
     }).done(function (userdata) {
       $(pfc.element).trigger('pfc-logout', [ pfc, userdata ]);
       if (callback) { callback(null, userdata) }

@@ -14,7 +14,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     
     $.ajax({
       type: 'GET',
-      url:  pfc.options.serverUrl + '/users/' + pfc.uid + '/msg/',
+      url:  pfc.options.serverUrl + '/users/' + pfc.uid + '/msg/'
     }).done(function (msgs) {
 
       msgs.forEach(function (m, i) {
@@ -48,7 +48,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
     $.ajax({
       type: 'PUT',
-      url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid,
+      url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid
     }).done(function (users) {
       
       // store userdata in the cache
@@ -63,7 +63,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       pfc.appendMessage({
         type: 'join',
         sender: pfc.uid,
-        body: 'you joined the channel',
+        body: 'you joined the channel'
       });
       
       // start to read pending messages
@@ -82,14 +82,14 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
     $.ajax({
       type: 'DELETE',
-      url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid,
+      url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid
     }).done(function (users) {
       pfc.clearUserList();
       
       // display a leave message for him
       pfc.appendMessage({
         type: 'leave',
-        sender: pfc.uid,
+        sender: pfc.uid
       });
 
     }).error(function (err) {
@@ -107,7 +107,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       type: 'POST',
       url:  pfc.options.serverUrl + '/channels/' + cid + '/msg/',
       contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify({ body: msg }),
+      data: JSON.stringify({ body: msg })
     }).done(function (msg) {
       pfc.appendMessage(msg);
     }).error(function (err) {
@@ -126,7 +126,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       type: 'PUT',
       async: false, // important or this request will be lost when windows is closed
       url:  pfc.options.serverUrl + '/users/' + pfc.uid + '/closed',
-      data: '1',
+      data: '1'
     }).done(function () {
       //      console.log('notifyThatWindowIsClosed done');
     }).error(function (err) {
