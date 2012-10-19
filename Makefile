@@ -70,8 +70,8 @@ clean-release: setup setup-minify minify
 	@rm -f $(path)/.jshintignore
 	@rm -rf $(path)/.git
 
-# remove .less and .min.css and do not minify .js
-clean-release-for-dev: clean-release
+# do not minify .js/.css (and remove .less)
+clean-release-for-debug: clean-release
 	@rm -f $(path)/client/*.min.js
 	@cat $(path)/client/*.js > $(path)/client/jquery.phpfreechat.js.tmp
 	@rm -f $(path)/client/*.js
@@ -82,7 +82,7 @@ clean-release-for-dev: clean-release
 	@tools/switch-examples-head --dev
 	@rm -rf $(path)/tools
 
-# remove .less, minify.css and .js
+# remove .less, minify .css and .js
 clean-release-for-prod: clean-release
 	@mv $(path)/client/jquery.phpfreechat.min.js $(path)/client/jquery.phpfreechat.min.js.tmp
 	@rm -f $(path)/client/*.js
@@ -93,7 +93,8 @@ clean-release-for-prod: clean-release
 	@tools/switch-examples-head --prod
 	@rm -rf $(path)/tools
 
-clean-release-for-debug: clean-release clean
+# keep less and separated js
+clean-release-for-dev: clean-release clean
 	@tools/switch-examples-head --debug
 	@rm -rf $(path)/tools
 
