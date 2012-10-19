@@ -45,10 +45,12 @@ else
   make clean-release-for-prod
 fi
 
-# generate the tar.gz
+# generate the tar.gz and .zip
 cd $TMP_DIR
 tar czf $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.tar.gz $PFC_ARCHIVE_NAME/
+zip -Tq9r $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.zip $PFC_ARCHIVE_NAME/
 mv $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.tar.gz $PFC_PATH
+mv $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.zip $PFC_PATH
 
 # cleanup 
 rm -rf $TMP_DIR
