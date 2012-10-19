@@ -206,3 +206,9 @@ Server stores data into the `server/data/` folder as following:
 * `server/data/users/:uid/messages/:mid`      (pending messages for the user)
 * `server/data/users/:uid/channels/:cid`      (channels joinded by the user)
 * TODO
+
+### Bench results archives
+
+```
+[Sat, 20 Oct 2012 21:05:31 GMT] [phpfreechat-2.0.0] Bench result: 20.13 (cpu=65% mem=55Mo dread=1k dwrite=17660k)
+```
