@@ -5,6 +5,7 @@ set -e
 MY_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
 TOOL_PATH=`dirname "$MY_PATH"`
 PFC_PATH=$TOOL_PATH/..
+VERSION=`$TOOL_PATH/get-version`
 
 # a temp folder to clone the git
 TMP_DIR=$PFC_PATH/tmp
@@ -20,6 +21,7 @@ if [ "$1" == "--dev" ]; then
   
   # cleanup the pfc files
   cd $TMP_DIR/$PFC_ARCHIVE_NAME
+  git checkout $VERSION
   make clean-release-for-dev
 elif [ "$1" == "--debug" ]; then
   PFC_AN_SUFFIX="-debug"
@@ -31,6 +33,7 @@ elif [ "$1" == "--debug" ]; then
   
   # cleanup the pfc files
   cd $TMP_DIR/$PFC_ARCHIVE_NAME
+  git checkout $VERSION
   make clean-release-for-debug
 else
   PFC_AN_SUFFIX=""
@@ -42,6 +45,7 @@ else
   
   # cleanup the pfc files
   cd $TMP_DIR/$PFC_ARCHIVE_NAME
+  git checkout $VERSION
   make clean-release-for-prod
 fi
 
