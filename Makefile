@@ -101,6 +101,8 @@ release: dummy
 	@tools/build-release --prod
 	@tools/build-release --dev
 	@tools/build-release --debug
+tag: dummy
+	@tools/tag-release
 
 setup-bench: dummy
 	@npm install shelljs
