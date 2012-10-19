@@ -211,7 +211,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // resize the textarea with javascript (because absolute positionning doesn't work on firefox)
     $(window).resize(function () {
       var textarea_border_width = parseInt($('.pfc-compose textarea').css('border-right-width'), 10);
-      var textarea_padding = parseInt($('.pfc-compose textarea').css('padding-right'), 10) 
+      var textarea_padding = parseInt($('.pfc-compose textarea').css('padding-right'), 10)
                            + parseInt($('.pfc-compose textarea').css('padding-left'), 10);
       $('.pfc-compose textarea').width($('.pfc-compose').innerWidth() - textarea_border_width * 2 - textarea_padding);
     });
