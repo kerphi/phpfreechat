@@ -198,6 +198,16 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + '      </div>'
     );
 
+    // load phpfreechat version and hook it to "powered by" title attribute
+    if (pfc.options.show_powered_by) {
+      $.ajax({
+        type: 'GET',
+        url:  pfc.options.packageUrl
+      }).done(function (p) {
+        $(pfc.element).find('p.logo a').attr('title', 'version ' + p.version);
+      });
+    }
+    
     // connect the textarea enter key event
     $('.pfc-compose textarea').keydown(function (evt) {
       if (evt.keyCode == 13 && evt.shiftKey === false) {

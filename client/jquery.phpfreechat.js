@@ -10,9 +10,12 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   var pluginName = 'phpfreechat';
   var document = window.document;
   var defaults = {
-     // phpfreechat server url
+    // phpfreechat server url
     serverUrl: '../server',
-    
+
+    // phpfreechat package.json url
+    packageUrl: '../package.json',
+
     // callback executed when interface is loaded
     loaded: null,
     
