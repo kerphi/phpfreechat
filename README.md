@@ -16,7 +16,7 @@ Features list:
   * multi-channel management
   * long polling refresh system (to improve reactvity)
   * user's avatars management
-  * user's role management (admin, users)
+  * user's role/rights management (admin, users)
   * user's presence management (away, online)
   * messages with smiley
   * messages with url detection (open in a new window)
