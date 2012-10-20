@@ -108,7 +108,9 @@ release: tag
 	@tools/build-release --debug
 
 upload: release
-	$(shell scp -r $VERSION/ kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
+	$(shell cd /tmp/; mkdir -p $VERSION ; scp -r $VERSION/ kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
+	$(shell scp    $(path)/$VERSION/phpfreechat-$VERSION.zip kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
+	$(shell scp -r $(path)/$VERSION/ kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
 
 setup-bench: dummy
 	@npm install shelljs
