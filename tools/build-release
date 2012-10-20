@@ -53,8 +53,12 @@ fi
 cd $TMP_DIR
 tar czf $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.tar.gz $PFC_ARCHIVE_NAME/
 zip -Tq9r $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.zip $PFC_ARCHIVE_NAME/
-mv $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.tar.gz $PFC_PATH
-mv $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.zip $PFC_PATH
+
+# move archives into a version directory ready to upload
+rm -rf $PFC_PATH/$VERSION
+mkdir $PFC_PATH/$VERSION
+mv $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.tar.gz $PFC_PATH/$VERSION/
+mv $PFC_ARCHIVE_NAME$PFC_AN_SUFFIX.zip    $PFC_PATH/$VERSION/
 
 # cleanup 
 rm -rf $TMP_DIR

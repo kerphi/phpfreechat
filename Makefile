@@ -1,5 +1,6 @@
 path=$(shell pwd)
 SERVERURL=`cat serverurl 2>/dev/null | echo "http://127.0.0.1:32773"`
+VERSION=`tools/get-version`
 TESTS=$(wildcard $(path)/server/tests/*.js)
 
 dummy:
@@ -98,12 +99,16 @@ clean-release-for-dev: clean-release clean
 	@tools/switch-examples-head --debug
 	@rm -rf $(path)/tools
 
-release: dummy
+tag: dummy
+	@tools/tag-release
+
+release: tag
 	@tools/build-release --prod
 	@tools/build-release --dev
 	@tools/build-release --debug
-tag: dummy
-	@tools/tag-release
+
+upload: release
+	$(shell scp -r $VERSION/ kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
 
 setup-bench: dummy
 	@npm install shelljs
