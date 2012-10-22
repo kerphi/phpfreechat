@@ -38,6 +38,12 @@ Here is an example of a basic communication between client and server:
 * Client sends a message into this channel, server publish this message into a queue for each connected users in this channel.
 * Client read its pending messages, server read the user's queue and returns the messages list, client displays the messages on the interface.
 
+## Prerequisite
+
+  * Web browser compatible with JQuery (almost all !)
+  * A server with php >= 5.3.0 ([Slim framework](http://www.slimframework.com/) dependency)
+  * No database !
+
 ## Quick start installation
 
 Include phpfreechat plugin in your html `<head>`:
