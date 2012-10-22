@@ -10,6 +10,7 @@ Features list:
 * polling refresh system (with ajax)
 * modular authentication system (phpbb3 integration available)
 * hook system to enable features extension
+* file system used for storage (no database)
 * coming soon:
   * be able to rename the username (/nick command)
   * be able to create private messages
