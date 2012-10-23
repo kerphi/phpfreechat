@@ -102,12 +102,12 @@ clean-release-for-dev: clean-release clean
 tag: dummy
 	@tools/tag-release
 
-release:
+release: dummy
 	@tools/build-release --prod
 	@tools/build-release --dev
 	@tools/build-release --debug
 
-upload: release
+upload: dummy
 	$(shell cd /tmp/; mkdir -p $VERSION ; scp -r $VERSION/ kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
 	$(shell scp    $(path)/$VERSION/phpfreechat-$VERSION.zip kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
 	$(shell scp -r $(path)/$VERSION/ kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
