@@ -41,7 +41,9 @@ Here is an example of a basic communication between client and server:
 ## Prerequisites
 
   * Web browser compatible with JQuery (almost all !)
-  * A server with php >= 5.2.0 ([Slim framework](https://github.com/codeguy/Slim/blob/18d6d035c983f5c3d1a16399a44bfa3a24e35813/README.markdown) dependency)
+  * A server with:
+    * php >= 5.2.0 ([Slim framework](https://github.com/codeguy/Slim/blob/18d6d035c983f5c3d1a16399a44bfa3a24e35813/README.markdown) dependency)
+    * apache server with mod_rewrite and .htaccess enabled
   * No database !
 
 ## Quick start installation
