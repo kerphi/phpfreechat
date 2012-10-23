@@ -6,7 +6,7 @@ include_once 'container/indexes.php';
 class Container_users {
   
   static public function getDir() {
-    $datadir = __DIR__.'/../data';
+    $datadir = dirname(__FILE__).'/../data';
     $udir = $datadir.'/users';
     return $udir;
   }
@@ -134,7 +134,7 @@ class Container_users {
    */
   static public function runGC() {
     // get the GC time
-    $gc = __DIR__.'/../data/gc';
+    $gc = dirname(__FILE__).'/../data/gc';
     if (file_exists($gc)) {
       $gctime = (integer)file_get_contents($gc);
     } else {

@@ -3,7 +3,7 @@
 class Container_indexes {
   
   static public function getIndexDir() {
-    return __DIR__ . '/../data/indexes';
+    return dirname(__FILE__) . '/../data/indexes';
   }
 
   /**

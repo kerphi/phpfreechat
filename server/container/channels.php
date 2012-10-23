@@ -6,7 +6,7 @@ include_once 'container/users.php';
 class Container_channels {
   
   static public function getChannelsDir() {
-    $datadir = __DIR__.'/../data';
+    $datadir = dirname(__FILE__).'/../data';
     $cdir = $datadir.'/channels';
     return $cdir;
   }

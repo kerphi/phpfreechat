@@ -1,7 +1,7 @@
 <?php
 
-include_once __DIR__.'/lib/Slim/Slim/Slim.php';
-include_once __DIR__.'/config.php';
+include_once dirname(__FILE__).'/lib/Slim/Slim/Slim.php';
+include_once dirname(__FILE__).'/config.php';
 
 //Slim::registerAutoloader();
 $app = new Slim();
@@ -9,9 +9,9 @@ $app = new Slim();
 
 function debug($msg) {
   if (is_string($msg)) {
-    file_put_contents(__DIR__.'/log/pfc.log', $msg."\n", FILE_APPEND);
+    file_put_contents(dirname(__FILE__).'/log/pfc.log', $msg."\n", FILE_APPEND);
   } else {
-    file_put_contents(__DIR__.'/log/pfc.log', print_r($msg, true), FILE_APPEND);
+    file_put_contents(dirname(__FILE__).'/log/pfc.log', print_r($msg, true), FILE_APPEND);
   }
 }
 

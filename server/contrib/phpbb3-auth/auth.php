@@ -9,12 +9,12 @@
 
 // the phpbb3 forum path
 define('IN_PHPBB', true);
-$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : __DIR__.'/../../../../../forum/';
+$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : dirname(__FILE__).'/../../../../../forum/';
 $phpEx           = substr(strrchr(__FILE__, '.'), 1);
 
 // prepare the tickets stuff
 $GLOBALS['tickets_expiration'] = 5; // in seconds
-$GLOBALS['tickets_dir']        = __DIR__.'/tickets';
+$GLOBALS['tickets_dir']        = dirname(__FILE__).'/tickets';
 cleanupExpiredTickets();
 
 $cmd = isset($_REQUEST['cmd']) ? strtolower($_REQUEST['cmd']) : 'login';

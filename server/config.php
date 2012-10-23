@@ -22,7 +22,7 @@ $GLOBALS['pfc_hooks'] = array();
 // };
 
 // include the local config if defined
-$clocal = __DIR__.'/config.local.php';
+$clocal = dirname(__FILE__).'/config.local.php';
 if (file_exists($clocal)) {
   include $clocal;
 }
