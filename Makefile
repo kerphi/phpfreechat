@@ -1,6 +1,6 @@
 path=$(shell pwd)
 SERVERURL=`cat serverurl 2>/dev/null | echo "http://127.0.0.1:32773"`
-VERSION=`tools/get-version`
+VERSION=`$(path)/tools/get-version`
 TESTS=$(wildcard $(path)/server/tests/*.js)
 
 dummy:
