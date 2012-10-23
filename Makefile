@@ -112,7 +112,7 @@ upload: dummy
 	$(shell scp    $(path)/$(VERSION)/phpfreechat-$(VERSION).zip kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
 	$(shell scp -r $(path)/$(VERSION)/ kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
 	$(shell sleep 5)
-	$(shell scp $(path)/$(VERSION)/phpfreechat-$(VERSION).zip kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/$VERSION")
+	$(shell scp $(path)/$(VERSION)/phpfreechat-$(VERSION).zip kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/$(VERSION)/")
 
 setup-bench: dummy
 	@npm install shelljs
