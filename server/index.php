@@ -3,9 +3,8 @@
 include_once dirname(__FILE__).'/lib/Slim/Slim/Slim.php';
 include_once dirname(__FILE__).'/config.php';
 
-//Slim::registerAutoloader();
-$app = new Slim();
-
+\Slim\Slim::registerAutoloader();
+$app = new \Slim\Slim();
 
 function debug($msg) {
   if (is_string($msg)) {
