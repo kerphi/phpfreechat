@@ -39,6 +39,11 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   };
 
   function Plugin(element, options) {
+    // adjust the packageUrl parameter if serverUrl is specified
+    if (options.serverUrl) {
+      defaults.packageUrl = options.serverUrl + '/../package.json'; 
+    }
+    
     // plugin attributs
     this.element = element;
     this.options = $.extend({}, defaults, options);
