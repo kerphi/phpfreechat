@@ -1,11 +1,15 @@
 <IfModule mod_rewrite.c>
-    Options -MultiViews
+  Options -MultiViews
 
-    RewriteEngine On
-    #RewriteBase /path/to/app
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php [QSA,L]
+  RewriteEngine On
+  #RewriteBase /path/to/app
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
+<Limit OPTIONS GET POST PUT DELETE>
+  Order allow,deny
+  Allow from all
+</Limit>
 
