@@ -50,7 +50,7 @@ Here is an example of a basic communication between client and server:
 
 Include phpfreechat plugin in your html `<head>`:
 ```html
-  <link type="text/css" href="phpfreechat-2.0.0/client/themes/default/jquery.phpfreechat.min.css" />
+  <link rel="stylesheet" type="text/css" href="phpfreechat-2.0.0/client/themes/default/jquery.phpfreechat.min.css" />
   <script src="phpfreechat-2.0.0/client/jquery.phpfreechat.min.js" type="text/javascript"></script>
 ```
 
@@ -77,11 +77,11 @@ phpfreechat is released with few themes. You can choose which one you want to us
 
 To select the theme, you only have to change one line in your html `<head>`. To use the `default` theme:
 ```html
-  <link type="text/css" href="phpfreechat-2.0.0/client/themes/default/jquery.phpfreechat.min.css" />
+  <link rel="stylesheet" type="text/css" href="phpfreechat-2.0.0/client/themes/default/jquery.phpfreechat.min.css" />
 ```
 or this code for `carbon` theme:
 ```html
-  <link type="text/css" href="phpfreechat-2.0.0/client/themes/carbon/jquery.phpfreechat.min.css" />
+  <link rel="stylesheet" type="text/css" href="phpfreechat-2.0.0/client/themes/carbon/jquery.phpfreechat.min.css" />
 ```
 
 ## Parameters client side
