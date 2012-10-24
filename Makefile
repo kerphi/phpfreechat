@@ -102,6 +102,9 @@ clean-release-for-dev: clean-release clean
 tag: dummy
 	@tools/tag-release
 
+untag: dummy
+	@tools/untag-release
+
 release: dummy
 	@tools/build-release --prod
 	@tools/build-release --dev

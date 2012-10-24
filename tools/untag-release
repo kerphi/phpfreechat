@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# Script used to remove the latest tag
+#
+
+set -e
+
+MY_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
+TOOL_PATH=`dirname "$MY_PATH"`
+VERSION=`$TOOL_PATH/get-version`
+
+git fetch --tags
+if [ "`git tag -l | grep $VERSION`" == "" ] ; then
+  echo "Warning: version $VERISON does not exists, can untag. Aborting ..."
+  exit 2
+fi
+
+git tag -d $VERSION
+git push origin :$VERSION
+git push --tags
+
+exit 0
