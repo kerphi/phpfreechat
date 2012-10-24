@@ -42,7 +42,7 @@ Here is an example of a basic communication between client and server:
 
   * Web browser compatible with JQuery (almost all !)
   * A server with:
-    * php >= 5.2.0 ([Slim framework](https://github.com/codeguy/Slim/blob/18d6d035c983f5c3d1a16399a44bfa3a24e35813/README.markdown) dependency)
+    * php >= 5.3.0 ([Slim framework](https://github.com/codeguy/Slim/blob/master/README.markdown#system-requirements) dependency)
     * apache server with mod_rewrite and .htaccess enabled
     * write access to the phpfreechat-2.0.0/server/data/ folder (777 or write permission for the web server)
   * No database !
@@ -66,6 +66,13 @@ Hook the phpfreechat plugin to this element:
 ```html
 <script>
   $('#mychat').phpfreechat();
+</script>
+```
+
+Be carful if your html page is not in the `examples` folder, you have to adjust the serverUrl parameter:
+```html
+<script>
+  $('#mychat').phpfreechat({ serverUrl: '/myphpfreechat/server' });
 </script>
 ```
 
