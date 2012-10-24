@@ -40,7 +40,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
   function Plugin(element, options) {
     // adjust the packageUrl parameter if serverUrl is specified
-    if (options.serverUrl) {
+    if (options && options.serverUrl) {
       defaults.packageUrl = options.serverUrl + '/../package.json'; 
     }
     
