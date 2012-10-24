@@ -92,6 +92,7 @@ or this code for `carbon` theme:
 * `serverUrl` [String:'../server']: where is located the pfc's server folder
 * `loaded` [Function:null]: a callback executed when pfc's interface is totaly loaded
 * `loadTestData` [Bool:false]: used for unit tests. It load test data into the interface.
+* `use_post_wrapper` [Bool:true]: used to wrap PUT and DELETE http methods by special POST http methods (useful with a badly configured server)
 
 Client side parameters can be given to phpfreechat client side jquery plugin as a javascript object.
 

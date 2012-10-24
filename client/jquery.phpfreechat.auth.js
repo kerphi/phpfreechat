@@ -38,8 +38,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    */
   pfc.logout = function (callback) {
     $.ajax({
-      type: 'DELETE',
-      url:  pfc.options.serverUrl + '/auth'
+      type: pfc.options.use_post_wrapper ? 'POST' : 'DELETE',
+      url:  pfc.options.serverUrl + '/auth',
+      data: pfc.options.use_post_wrapper ? { _METHOD: 'DELETE' } : null
     }).done(function (userdata) {
       $(pfc.element).trigger('pfc-logout', [ pfc, userdata ]);
       if (callback) { callback(null, userdata) }

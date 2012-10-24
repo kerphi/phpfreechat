@@ -47,8 +47,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   pfc.join = function (cid) {
 
     $.ajax({
-      type: 'PUT',
-      url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid
+      type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
+      url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid,
+      data: pfc.options.use_post_wrapper ? { _METHOD: 'PUT' } : null
     }).done(function (users) {
       
       // store userdata in the cache
@@ -81,8 +82,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   pfc.leave = function (cid) {
 
     $.ajax({
-      type: 'DELETE',
-      url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid
+      type: pfc.options.use_post_wrapper ? 'POST' : 'DELETE',
+      url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid,
+      data: pfc.options.use_post_wrapper ? { _METHOD: 'DELETE' } : null 
     }).done(function (users) {
       pfc.clearUserList();
       
@@ -123,10 +125,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   pfc.notifyThatWindowIsClosed = function () {
     console.log('notifyThatWindowIsClosed');
     $.ajax({
-      type: 'PUT',
+      type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
       async: false, // important or this request will be lost when windows is closed
       url:  pfc.options.serverUrl + '/users/' + pfc.uid + '/closed',
-      data: '1'
+      data: pfc.options.use_post_wrapper ? { _METHOD: 'PUT' } : '1'
     }).done(function () {
       //      console.log('notifyThatWindowIsClosed done');
     }).error(function (err) {

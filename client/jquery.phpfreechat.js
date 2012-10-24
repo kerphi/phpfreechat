@@ -32,7 +32,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     check_backlink: true,
 
     // if true powered by phpfreechat text is shown
-    show_powered_by: true
+    show_powered_by: true,
+    
+    // set it to true if PUT and DELETE http methods are not allowed by the server 
+    use_post_wrapper: true,
   };
 
   function Plugin(element, options) {
