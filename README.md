@@ -182,6 +182,14 @@ make setup
 * `make setup-minify`: install dependencies needed for `make minify`
 * `make setup-bench`: install dependencies needed for `make bench`
 
+### How to release a version
+
+* `make version v=x.x.x`
+* `git commit -a -m "prepare version x.x.x"`
+* `make tag`
+* `make release`
+* `make upload`
+
 ### Playing with unit tests
 
 Tests (client and server side) need phpfreechat's base absolute url. By default `http://127.0.0.1:32773` is used but it can be customized. For that, you have to create a `serverurl` file that contains the absolute url to your phpfreechat installation without the trailing slash  (ex: ``http://localhost/phpfreechat``)
