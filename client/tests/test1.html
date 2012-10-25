@@ -80,6 +80,7 @@
     <div class="pfc-hook"><a href="http://www.phpfreechat.net">phpFreeChat: simple Web chat</a></div>
     <script>
       $('.pfc-hook').phpfreechat({
+        check_server_config: false,
         loaded: function (pfc) {
 
           test("phpfreechat user list", function() {
@@ -113,7 +114,7 @@
             var message3 = pfc.appendMessage({name: 'AdminQUnit', type: 'join'});
             ok( message3.text().indexOf('joined') !== -1, "are able to display a joined channel system message" );
             var message4 = pfc.appendMessage({name: 'AdminQUnit', type: 'leave'});
-            ok( message4.text().indexOf('leave') !== -1, "are able to display a leave channel system message" );
+            ok( message4.text().indexOf('left') !== -1, "are able to display a left channel system message" );
             
           });
           
