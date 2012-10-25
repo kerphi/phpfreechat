@@ -16,6 +16,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // phpfreechat package.json url
     packageUrl: '../package.json',
 
+    // phpfreechat check.php url
+    serverCheckUrl: '../check.php',
+    
     // callback executed when interface is loaded
     loaded: null,
     
@@ -36,12 +39,19 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     
     // set it to true if PUT and DELETE http methods are not allowed by the server 
     use_post_wrapper: true,
+    
+    // when true, the first AJAX request is used to verify that server config is ok
+    check_server_config: true
   };
 
   function Plugin(element, options) {
     // adjust the packageUrl parameter if serverUrl is specified
     if (options && options.serverUrl) {
       defaults.packageUrl = options.serverUrl + '/../package.json'; 
+    }
+    // same for serverCheckUrl
+    if (options && options.serverUrl) {
+      defaults.serverCheckUrl = options.serverUrl + '/../check.php'; 
     }
     
     // plugin attributs

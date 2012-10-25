@@ -31,32 +31,56 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     pfc.loadHTML();
     pfc.loadResponsiveBehavior();
     
-    // try to authenticate
-    //pfc.logout(function (err) { pfc.login(); });
-    pfc.login();
+    if (pfc.options.check_server_config) {
+      $.ajax({
+        type: 'GET',
+        url:  pfc.options.serverCheckUrl
+      }).done(function (errors) {
+        if (errors && errors.length > 0) {
+          pfc.showErrorsPopup(errors);
+        } else {
+          pfc.startChatLogic();
+        }
+      }).error(function () {
+        pfc.showErrorsPopup([ 'Unknown error' ]);        
+      });
+    } else {
+      pfc.startChatLogic();
+    }
     
-    // when logged in
-    $(pfc.element).bind('pfc-login', function (evt, pfc, userdata) {
-      pfc.uid = userdata.id;
-      pfc.users[userdata.id] = userdata;
-      pfc.cid = 'xxx'; // static channel id for the first 2.x version
-      
-      if (pfc.options.focus_on_connect) {
-        // give focus to input textarea when auth
-        $('div.pfc-compose textarea').focus();
-      }
-      
-      pfc.join(pfc.cid);
-    });
 
-    // when logged out
-    $(pfc.element).bind('pfc-logout', function (evt, pfc, userdata) {
-      pfc.uid = null;
-      pfc.clearUserList();
-    });
 
   }
 
+  /**
+   * Start to authenticate and to prepare chat dynamic
+   */
+  pfc.startChatLogic = function () {
+      // try to authenticate
+      //pfc.logout(function (err) { pfc.login(); });
+      pfc.login();
+      
+      // when logged in
+      $(pfc.element).bind('pfc-login', function (evt, pfc, userdata) {
+        pfc.uid = userdata.id;
+        pfc.users[userdata.id] = userdata;
+        pfc.cid = 'xxx'; // static channel id for the first 2.x version
+        
+        if (pfc.options.focus_on_connect) {
+          // give focus to input textarea when auth
+          $('div.pfc-compose textarea').focus();
+        }
+        
+        pfc.join(pfc.cid);
+      });
+
+      // when logged out
+      $(pfc.element).bind('pfc-logout', function (evt, pfc, userdata) {
+        pfc.uid = null;
+        pfc.clearUserList();
+      });
+  };
+  
   /**
    * Check backlink in the page
    */
@@ -74,7 +98,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       return false;
     }
     return true;
-  }
+  };
 
   /**
    * Load HTML used by the interface in the browser DOM
@@ -243,6 +267,17 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     setTimeout(function () { $(pfc.element).trigger('pfc-loaded', [ pfc ]) }, 0);
   };
 
+  /**
+   * Function used to display errors list in the overlay popup
+   */
+  pfc.showErrorsPopup = function (errors) {
+    var popup = $('<ul class="pfc-errors"></ul>');
+    errors.forEach(function (err) {
+      popup.append($('<li></li>').text(err));
+    });
+    pfc.modalbox.open(popup);
+  };
+  
   /**
    * For mobile ergonomics
    **/

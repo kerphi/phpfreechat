@@ -6,8 +6,8 @@
 $status = array();
 
 // check that server/data/ folder is writable
-if (!is_writable(dirname(__FILE__).'/data/')) {
-  $status[] = basename(dirname(dirname(__FILE__))).'/server/data/ folder is not writable by your Web server. Please adjust folder permissions to 777.';
+if (!is_writable(dirname(__FILE__).'/server/data/')) {
+  $status[] = basename(dirname(__FILE__)).'/server/data/ folder is not writable by your Web server. Please adjust folder permissions to 777.';
 }
 
 // check that php version dependency is respected
