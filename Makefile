@@ -99,6 +99,10 @@ clean-release-for-dev: clean-release clean
 	@tools/switch-examples-head --debug
 	@rm -rf $(path)/tools
 
+version: dummy
+	#@npm install optimist
+	@tools/patch-version-number.js --version $(v)
+
 tag: dummy
 	@tools/tag-release
 
