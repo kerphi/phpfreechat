@@ -100,7 +100,7 @@ clean-release-for-dev: clean-release clean
 	@rm -rf $(path)/tools
 
 version: dummy
-	#@npm install optimist
+	@npm install optimist
 	@tools/patch-version-number.js --version $(v)
 
 tag: dummy
