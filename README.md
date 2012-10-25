@@ -167,7 +167,11 @@ make setup
 * `make minify`: compile and minify css and js
 * `make clean`: ...
 
+* `make version v=2.0.2`: patch files in source code and replace all version number by with 2.0.2
+* `make untag`: remove the current (which is in package.json) version tag from github
+* `make tag`: tag the source code with the version number found into package.json
 * `make release`: create a tar.gz ready to download
+* `make upload`: upload latest generated release on sourceforge
 * `make clean-release-for-dev`: used by `make release`
 * `make clean-release-for-prod`: used by `make release`
 
