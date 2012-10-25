@@ -252,7 +252,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     if (msg.type == 'join') {
       msg.body = msg.name + ' joined the channel';
     } else if (msg.type == 'leave') {
-      msg.body = msg.name + ' leave the channel' + (msg.body ? ' (' + msg.body + ')' : '');
+      msg.body = msg.name + ' left the channel' + (msg.body ? ' (' + msg.body + ')' : '');
     }
         
     var groupmsg_dom = $(pfc.element).find('.pfc-messages .messages-group:last');
