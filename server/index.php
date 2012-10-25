@@ -16,7 +16,7 @@ function debug($msg) {
 
 $req = $app->request();
 $res = $app->response();
-$res['X-Powered-By'] = 'phpFreeChat';
+$res['X-Powered-By'] = 'phpfreechat-'.$GLOBALS['pfc_version'];
 
 // connect custom user hooks
 foreach ($GLOBALS['pfc_hooks'] as $hook_name => $hooks) {
