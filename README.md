@@ -187,6 +187,7 @@ make setup
 
 * `make version v=x.x.x`
 * `git commit -a -m "prepare version x.x.x"`
+* `git push`
 * `make tag`
 * `make release`
 * `make upload`
