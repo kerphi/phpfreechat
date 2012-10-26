@@ -116,7 +116,6 @@ release: dummy
 
 upload: dummy
 	$(shell cd /tmp/; mkdir -p $(VERSION) ; scp -r $(VERSION)/ kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
-	$(shell scp    $(path)/$(VERSION)/phpfreechat-$(VERSION).zip kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
 	$(shell scp -r $(path)/$(VERSION)/ kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/")
 	$(shell sleep 5)
 	$(shell scp $(path)/$(VERSION)/phpfreechat-$(VERSION).zip kerphi@frs.sourceforge.net:"/home/frs/project/phpfreechat/branch\\ 2.x/$(VERSION)/")
