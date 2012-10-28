@@ -46,7 +46,7 @@ $app->get('/auth', function () use ($app, $req, $res) {
   if ($auth) {
     // decode basic http auth header
     $auth = @explode(':', @base64_decode(@array_pop(@explode(' ', $auth))));
-    if (!isset($auth[0]) && !$auth[0]) {
+    if (!isset($auth[0]) || trim($auth[0]) == '') {
       $res->status(400);
       $res['Content-Type'] = 'application/json; charset=utf-8';
       $res->body('{ "error": "Login is missing" }');
