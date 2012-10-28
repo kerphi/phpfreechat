@@ -26,8 +26,9 @@ if (RegExp('^[0-9]\.[0-9]+\.[0-9]+$').test(version)) {
   // README.md: phpfreechat-2.0.0
   c = fs.readFileSync('README.md', 'utf8');
   // must not convert [phpfreechat-x.x.x] because used by bench section
-  c = c.replace(RegExp('"phpfreechat-[0-9]\.[0-9]+\.[0-9]+', 'g'), '"phpfreechat-' + version); // in html tags
+  c = c.replace(RegExp('/phpfreechat-[0-9]\.[0-9]+\.[0-9]+', 'g'), '/phpfreechat-' + version); // in html tags
   c = c.replace(RegExp(' phpfreechat-[0-9]\.[0-9]+\.[0-9]+', 'g'), ' phpfreechat-' + version); // in text
+  c = c.replace(RegExp('(.*)d \\[phpfreechat-[0-9]\.[0-9]+\.[0-9]+', 'g'), '$1d [phpfreechat-' + version); // in text (quick start)
   fs.writeFileSync('README.md', c, 'utf8');  
   
 } else {

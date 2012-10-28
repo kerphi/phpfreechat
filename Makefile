@@ -99,6 +99,7 @@ clean-release-for-dev: clean-release clean
 	@tools/switch-examples-head --debug
 	@rm -rf $(path)/tools
 
+# call it like that: make version v=2.0.5
 version: dummy
 	@npm install optimist
 	@tools/patch-version-number.js --version $(v)
