@@ -45,13 +45,15 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   };
 
   function Plugin(element, options) {
-    // adjust the packageUrl parameter if serverUrl is specified
     if (options && options.serverUrl) {
-      defaults.packageUrl = options.serverUrl + '/../package.json'; 
-    }
-    // same for serverCheckUrl
-    if (options && options.serverUrl) {
-      defaults.serverCheckUrl = options.serverUrl + '/../check.php'; 
+      // adjust the packageUrl parameter if serverUrl is specified
+      if (!options.packageUrl) {
+        defaults.packageUrl = options.serverUrl + '/../package.json'; 
+      }
+      // same for serverCheckUrl
+      if (!options.serverCheckUrl) {
+        defaults.serverCheckUrl = options.serverUrl + '/../check.php'; 
+      }
     }
     
     // plugin attributs
