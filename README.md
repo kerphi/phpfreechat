@@ -49,30 +49,25 @@ Here is an example of a basic communication between client and server:
 
 ## Quick start installation
 
-Include phpfreechat plugin in your html `<head>`:
+Download [phpfreechat-2.0.4.zip](http://www.phpfreechat.net/download) and unzip it in the root folder of your Web server.
+
+Include the phpfreechat plugin in your html `<head>`:
 ```html
-  <link rel="stylesheet" type="text/css" href="phpfreechat-2.0.4/client/themes/default/jquery.phpfreechat.min.css" />
-  <script src="phpfreechat-2.0.4/client/jquery.phpfreechat.min.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="/phpfreechat-2.0.4/client/themes/default/jquery.phpfreechat.min.css" />
+  <script src="/phpfreechat-2.0.4/client/jquery.phpfreechat.min.js" type="text/javascript"></script>
 ```
 
-Add a piece of HTML in your `<body>` where you want the chat to be displayed:
+Add this piece of HTML in your `<body>` where you want the chat to be displayed:
 ```html
 ...
 <div id="mychat"><a href="http://www.phpfreechat.net">phpFreeChat: simple Web chat</a></div>
 ...
 ```
 
-Hook the phpfreechat plugin to this element:
+The add this piece of code just after (it will hook the chat on the page):
 ```html
-<script>
-  $('#mychat').phpfreechat();
-</script>
-```
-
-Be carful if your html page is not in the `examples` folder, you have to adjust the serverUrl parameter:
-```html
-<script>
-  $('#mychat').phpfreechat({ serverUrl: '/myphpfreechat/server' });
+<script type="text/javascript">
+  $('#mychat').phpfreechat({ serverUrl: '/phpfreechat-2.0.4/server' });
 </script>
 ```
 
@@ -86,11 +81,11 @@ phpfreechat is released with few themes. You can choose which one you want to us
 
 To select the theme, you only have to change one line in your html `<head>`. To use the `default` theme:
 ```html
-  <link rel="stylesheet" type="text/css" href="phpfreechat-2.0.4/client/themes/default/jquery.phpfreechat.min.css" />
+  <link rel="stylesheet" type="text/css" href="/phpfreechat-2.0.4/client/themes/default/jquery.phpfreechat.min.css" />
 ```
 or this code for `carbon` theme:
 ```html
-  <link rel="stylesheet" type="text/css" href="phpfreechat-2.0.4/client/themes/carbon/jquery.phpfreechat.min.css" />
+  <link rel="stylesheet" type="text/css" href="/phpfreechat-2.0.4/client/themes/carbon/jquery.phpfreechat.min.css" />
 ```
 
 ## Parameters client side
