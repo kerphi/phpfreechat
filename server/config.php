@@ -18,8 +18,18 @@ $GLOBALS['pfc_hooks'] = array();
 // with your own auth system (forum, ldap, database, sso ...)
 // example:
 // $GLOBALS['pfc_hooks']['pfc.before.auth'][5] = function ($app, $req, $res) {
-//   return function ($hr) use ($app, $req, $res) {
-//     $hr->login = 'kerphi'; // TODO: replace this code with a real example
+//   return function () use ($app, $req, $res) {
+//     return 'kerphi'; // TODO: replace this code with a real example
+//   };
+// };
+
+// HOOK - pfc.filter.login
+// Can be used to filter forbidden characters from the login string
+// example:
+// $GLOBALS['pfc_hooks']['pfc.filter.login'][5] = function ($app, $req, $res) {
+//   return function ($login) use ($app, $req, $res) {
+//     $ascii_pattern = '/[^a-z0-9()\/\'"|&,. -]/i';
+//     return preg_replace($ascii_pattern, '', $login);
 //   };
 // };
 

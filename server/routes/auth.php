@@ -3,6 +3,9 @@
 include_once 'container/users.php';
 
 $app->get('/auth', function () use ($app, $req, $res) {
+  // run garbage collector
+  Container_users::runGC();
+
   // check if a user session already exists
   session_start();
   if (isset($_SESSION['userdata']) and isset($_SESSION['userdata']['id'])) {
@@ -21,9 +24,13 @@ $app->get('/auth', function () use ($app, $req, $res) {
     return;
   } 
 
-  // apply the user defined auth hook
-  $app->applyHook('pfc.before.auth', $hr = new stdClass);
-  $hr->login = isset($hr->login) ? $hr->login : '';
+  // check if the login is defined by the hook
+  $login = '';
+  if (isset($GLOBALS['pfc_hooks']['pfc.before.auth'])) {
+    foreach($GLOBALS['pfc_hooks']['pfc.before.auth'] as $hook) {
+      $login = trim($hook());
+    }
+  }
   
   // check if the hook want to redirect the response
   if ($res->isRedirection()) {
@@ -35,14 +42,13 @@ $app->get('/auth', function () use ($app, $req, $res) {
   $auth = $req->headers('Authorization') ?
     $req->headers('Authorization') :
     ($req->headers('Pfc-Authorization') ? $req->headers('Pfc-Authorization') : '');
-  if (!$auth and $hr->login == '') {
+  if (!$auth and $login == '') {
     $res->status(403);
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res['Pfc-WWW-Authenticate'] = 'Basic realm="Authentication"';
     $res->body('{ "error": "Need authentication" }');
     return;
   }
-
   if ($auth) {
     // decode basic http auth header
     $auth = @explode(':', @base64_decode(@array_pop(@explode(' ', $auth))));
@@ -54,11 +60,21 @@ $app->get('/auth', function () use ($app, $req, $res) {
     }
     $login    = trim($auth[0]);
     $password = isset($auth[1]) ? $auth[1] : '';
-  } else {
-    // or get the login from the before.auth hook
-    $login = $hr->login;
   }
   
+  // filter login with hooks
+  if (isset($GLOBALS['pfc_hooks']['pfc.filter.login'])) {
+    foreach($GLOBALS['pfc_hooks']['pfc.filter.login'] as $filter) {
+      $login = trim($filter($login));
+    }
+    if ($login == '') {
+      $res->status(400);
+      $res['Content-Type'] = 'application/json; charset=utf-8';
+      $res->body('{ "error": "Bad characters used in login" }');
+      return;
+    }
+  }
+
   // check login/password
   if ($login and Container_indexes::getIndex('users/name', $login)) {
     $res->status(403);
