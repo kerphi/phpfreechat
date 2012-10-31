@@ -105,6 +105,11 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    */
   pfc.postToChannel = function (cid, msg) {
 
+    // do not send empty message
+    if (msg === '') {
+      return false;
+    }
+    
     $.ajax({
       type: 'POST',
       url:  pfc.options.serverUrl + '/channels/' + cid + '/msg/',
