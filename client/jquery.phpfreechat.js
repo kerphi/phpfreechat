@@ -41,7 +41,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     use_post_wrapper: true,
     
     // when true, the first AJAX request is used to verify that server config is ok
-    check_server_config: true
+    check_server_config: true,
+    
+    // number of tolerated network error before stoping chat refresh
+    tolerated_network_errors: 5
   };
 
   function Plugin(element, options) {

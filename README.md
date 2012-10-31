@@ -97,7 +97,7 @@ or this code for `carbon` theme:
 * `loadTestData` [Bool:false]: used for unit tests. It load test data into the interface.
 * `use_post_wrapper` [Bool:true]: used to wrap PUT and DELETE http methods by special POST http methods (useful with a badly configured server)
 * `check_server_config` [Bool:true]: when true, the first AJAX request is used to verify that server config is ok and display errors in a popup
-
+* `tolerated_network_errors` [Integer:5]: number of tolerated network error before stoping chat refresh
 
 Client side parameters can be given to phpfreechat client side jquery plugin as a javascript object.
 

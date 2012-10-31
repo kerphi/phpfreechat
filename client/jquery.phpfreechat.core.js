@@ -11,11 +11,19 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    * Read current user pending messages
    */
   pfc.readPendingMessages = function (loop) {
+
+    // initialize the network error counter
+    if (pfc.readPendingMessages.nb_network_error === undefined) {
+      pfc.readPendingMessages.nb_network_error = 0;
+    }
     
+    // send periodicaly AJAX request to check pending messages 
     $.ajax({
       type: 'GET',
       url:  pfc.options.serverUrl + '/users/' + pfc.uid + '/msg/'
     }).done(function (msgs) {
+      // reset the error counter because a request has been well received
+      pfc.readPendingMessages.nb_network_error = 0;
 
       msgs.forEach(function (m, i) {
         // specific actions for special messages
@@ -33,8 +41,11 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         setTimeout(function () { pfc.readPendingMessages(true) }, pfc.options.refresh_delay);
       }
     }).error(function (err) {
-      console.log(err);
-      if (loop) {
+      // check how many network errors has been received and 
+      // block the automatic refresh if number of allowed errors is exceed
+      if (pfc.readPendingMessages.nb_network_error++ > pfc.options.network_error) {
+        pfc.showErrorsPopup([ 'Network error. Please reload the chat to continue.' ]);
+      } else if (loop) {
         setTimeout(function () { pfc.readPendingMessages(true) }, pfc.options.refresh_delay);
       }
     });
