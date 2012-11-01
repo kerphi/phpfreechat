@@ -4,7 +4,7 @@ phpFreeChat (pfc) is a Web based chat written in JQuery and PHP. Perfect if you 
 
 Features list:
 
-* themable web interface (2 themes are available)
+* themable web interface
 * responsive web interface (mobile, tablet, desktop)
 * multi-user management
 * polling refresh system (with ajax)
