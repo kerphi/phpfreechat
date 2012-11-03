@@ -22,7 +22,7 @@ test-client: dummy
 	@./phantomjs/bin/phantomjs ./phantomjs/examples/run-qunit.js $(SERVERURL)/client/tests/test1.html
 
 setup: dummy
-	@cd $(path)/server/lib/ && curl -L https://nodeload.github.com/codeguy/Slim/tarball/2.1.0 > slim.tar.gz && pwd && tar -ztf slim.tar.gz 2>/dev/null | head -1 > /tmp/slimname
+	@cd $(path)/server/lib/ && curl -L https://github.com/codeguy/Slim/archive/2.1.0.tar.gz > slim.tar.gz && pwd && tar -ztf slim.tar.gz 2>/dev/null | head -1 > /tmp/slimname
 	@cd $(path)/server/lib/ && tar xzf slim.tar.gz
 	@rm -rf $(path)/server/lib/Slim && mv $(path)/server/lib/`cat /tmp/slimname` $(path)/server/lib/Slim
 	@rm -rf $(path)/server/lib/Slim/tests ; rm -rf $(path)/server/lib/Slim/docs
