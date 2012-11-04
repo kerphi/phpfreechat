@@ -37,7 +37,7 @@ setup-client-test:
 	@tar xzf phantomjs-1.6.1-linux-x86_64-dynamic.tar.bz2
 
 setup-minify:
-	@npm install -g less clean-css pack
+	@npm install -g less clean-css pack uglify-js
 
 # compress javascript and css
 minify: $(path)/client/jquery.phpfreechat.js $(path)/client/jquery.phpfreechat.*.js $(path)/client/themes/*/jquery.phpfreechat.less $(path)/client/themes/*/jquery.phpfreechat.*.less
