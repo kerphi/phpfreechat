@@ -43,7 +43,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }).error(function (err) {
       // check how many network errors has been received and 
       // block the automatic refresh if number of allowed errors is exceed
-      if (pfc.readPendingMessages.nb_network_error++ > pfc.options.network_error) {
+      if (pfc.readPendingMessages.nb_network_error++ > pfc.options.tolerated_network_errors) {
         pfc.showErrorsPopup([ 'Network error. Please reload the chat to continue.' ]);
       } else if (loop) {
         setTimeout(function () { pfc.readPendingMessages(true) }, pfc.options.refresh_delay);
