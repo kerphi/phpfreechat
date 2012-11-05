@@ -139,7 +139,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    * Thanks to this notification, server can tell other users that this user just leave the channels
    */
   pfc.notifyThatWindowIsClosed = function () {
-    console.log('notifyThatWindowIsClosed');
     $.ajax({
       type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
       async: false, // important or this request will be lost when windows is closed
