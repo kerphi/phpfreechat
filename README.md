@@ -133,7 +133,7 @@ Hooks can be used to plug piece of code into the official phpfreechat code. Than
 This hook can be used to connect the chat authentication system to you own one. It is activated just before asking a login to the user. It can check for an user in a cookie, an external database or through a sso. The hook has to return the login and it will be used by phpfreechat (if not already used by another user). Here is a basic example:
 ```php
 $GLOBALS['pfc_hooks']['pfc.before.auth'][5] = function ($app, $req, $res) {
-  return function ($hr) use ($app, $req, $res) {
+  return function () use ($app, $req, $res) {
     return 'guest'.rand(1,1000);
   };
 };
