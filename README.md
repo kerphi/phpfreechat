@@ -1,8 +1,10 @@
 # phpFreeChat
 
+## Overview
+
 phpFreeChat (pfc) is a Web based chat written in JQuery and PHP. Perfect if you need an easy to integrate chat for your Web site.
 
-Features list:
+### Features
 
 * themable web interface
 * responsive web interface (mobile, tablet, desktop)
@@ -26,6 +28,8 @@ Features list:
   * log message system
 
 
+### Architecture
+
 pfc architecture is splited in two distinct parts:
 
 - client: a themable jquery plugin in charge of displaying the chat interface and to communicate with the server side using for example AJAX
@@ -38,7 +42,9 @@ Here is an example of a basic communication between client and server:
 * Client sends a message into this channel, server publish this message into a queue for each connected users in this channel.
 * Client read its pending messages, server read the user's queue and returns the messages list, client displays the messages on the interface.
 
-## Prerequisites
+## Installation
+
+### Prerequisites
 
   * Web browser compatible with JQuery (almost all !)
   * A server with:
@@ -47,7 +53,7 @@ Here is an example of a basic communication between client and server:
     * write access to the phpfreechat-2.0.5/server/data/ folder (777 or write permission for the web server)
   * No database !
 
-## Quick start installation
+### Quick start
 
 Download [phpfreechat-2.0.5.zip](http://www.phpfreechat.net/download) and unzip it in the root folder of your Web server.
 
@@ -71,7 +77,9 @@ The add this piece of code just after (it will hook the chat on the page):
 </script>
 ```
 
-## Themes
+## Customization
+
+### Themes
 
 phpfreechat is released with few themes. You can choose which one you want to use:
 
@@ -88,7 +96,9 @@ or this code for `carbon` theme:
   <link rel="stylesheet" type="text/css" href="/phpfreechat-2.0.5/client/themes/carbon/jquery.phpfreechat.min.css" />
 ```
 
-## Parameters client side
+### Parameters
+
+#### Parameters client side
 
 * `refresh_delay` [Integer:5000]: miliseconds to wait before next pending messages are checked
 * `focus_on_connect` [Bool:true]: setting this to true will give the focus to the input text box when connecting to the chat. It can be useful not to touch the focus when integrating the chat into an existing website because when the focus is changed, the viewport follows the focus location.
@@ -109,7 +119,7 @@ $('#mychat').phpfreechat({
 });
 ```
 
-## Parameters server side
+#### Parameters server side
 
 Server side parameters are located in `server/config.php` or `server/config.local.php` files. By default only `server/config.php` exists and it contains default parameters. Parameters can be modified directly in this file but for easier upgrade, you can also overload just parameters you want to change in the file `server/config.local.php` (you have to create this file).
 
@@ -124,11 +134,11 @@ Example in `server/config.php` or `server/config.local.php`:
 $GLOBALS['pfc_timeout'] = 50;
 ```
 
-## Hooks (server side)
+### Hooks (server side)
 
 Hooks can be used to plug piece of code into the official phpfreechat code. Thanks to hooks, you can customize or extend phpfreechat's features.
 
-### pfc.before.auth
+#### pfc.before.auth
 
 This hook can be used to connect the chat authentication system to you own one. It is activated just before asking a login to the user. It can check for an user in a cookie, an external database or through a sso. The hook has to return the login and it will be used by phpfreechat (if not already used by another user). Here is a basic example:
 ```php
@@ -142,7 +152,7 @@ This hook will randomly assign a nickname to each users (`[5]` is the hook prior
 
 A hook to connect phpbb3 authentication system to the chat (used on the [phpfreechat web site](http://www.phpfreechat.net)) can be found [at github here](https://github.com/kerphi/phpfreechat/tree/master/server/contrib/phpbb3-auth). 
 
-### pfc.filter.login
+#### pfc.filter.login
 
 This hook can be used to filter characters on the user's login in the auth route. First parameter is the login and the hook must return the filtered login. 
 
