@@ -228,7 +228,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         type: 'GET',
         url:  pfc.options.packageUrl
       }).done(function (p) {
-        $(pfc.element).find('p.logo a').attr('title', 'version ' + p.version);
+        if (p.version) {
+          $(pfc.element).find('p.logo a').attr('title', 'version ' + p.version);
+        }
       });
     }
     

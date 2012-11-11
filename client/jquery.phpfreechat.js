@@ -48,15 +48,20 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   };
 
   function Plugin(element, options) {
-    if (options && options.serverUrl) {
-      // adjust the packageUrl parameter if serverUrl is specified
-      if (!options.packageUrl) {
-        defaults.packageUrl = options.serverUrl + '/../package.json'; 
-      }
-      // same for serverCheckUrl
-      if (!options.serverCheckUrl) {
-        defaults.serverCheckUrl = options.serverUrl + '/../check.php'; 
-      }
+
+    // to be sure options.serverUrl is filled
+    options = $.extend({}, options);
+    if (!options || !options.serverUrl) {
+      options.serverUrl = defaults.serverUrl; 
+    }
+    
+    // adjust the packageUrl parameter if serverUrl is specified
+    if (!options || !options.packageUrl) {
+      options.packageUrl = options.serverUrl + '/../package.json'; 
+    }
+    // same for serverCheckUrl
+    if (!options || !options.serverCheckUrl) {
+      options.serverCheckUrl = options.serverUrl + '/../check.php'; 
     }
     
     // plugin attributs
