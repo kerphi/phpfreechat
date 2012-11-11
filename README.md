@@ -50,7 +50,7 @@ Here is an example of a basic communication between client and server:
   * A server with:
     * php >= 5.3.0 ([Slim framework](https://github.com/codeguy/Slim/blob/master/README.markdown#system-requirements) dependency)
     * apache server with mod_rewrite and .htaccess enabled
-    * write access to the phpfreechat-2.0.5/server/data/ folder (777 or write permission for the web server)
+    * write access to the phpfreechat-2.0.5/server/data/ and phpfreechat-2.0.5/server/log/ folder (777 or write permission for the web server)
   * No database !
 
 ### Quick start
