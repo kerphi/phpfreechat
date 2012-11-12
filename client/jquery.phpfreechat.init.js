@@ -228,9 +228,12 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         type: 'GET',
         url:  pfc.options.packageUrl
       }).done(function (p) {
-        if (p.version) {
-          $(pfc.element).find('p.logo a').attr('title', 'version ' + p.version);
-        }
+        try {
+          p = JSON.parse(p); // nedd to parse because content-type can be text/plain on specific servers
+          if (p.version) {
+            $(pfc.element).find('p.logo a').attr('title', 'version ' + p.version);
+          }
+        } catch(err) {}
       });
     }
     
