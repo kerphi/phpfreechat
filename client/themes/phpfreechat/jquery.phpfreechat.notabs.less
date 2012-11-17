@@ -1,0 +1,39 @@
+//
+// if .pfc-notabs class is applied to div.pfc-content
+// then tabs (channels) are hidden
+// by default, tabs are hidden (see jquery.phpfreechat.init.js)
+//
+
+@notabs-height: 0;
+
+div.pfc-content.pfc-notabs {
+
+  div.pfc-tabs {
+    ul {
+      li {
+        height: @notabs-height;
+        &.new-tab {
+          height: @notabs-height - @tab-indent-height;
+          &:hover {
+            height: @notabs-height - @tab-indent-height - 1;
+          }
+        }
+      }
+    }
+  }
+  
+  div.pfc-users {
+    top: @notabs-height + @topic-height + 2 * @border-width;
+  }
+  
+  div.pfc-messages {
+    top: @notabs-height + @topic-height + 2 * @border-width;
+  }
+  
+  div.pfc-topic {
+    top: @notabs-height + @border-width;
+  }
+  
+}
+
+  

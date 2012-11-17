@@ -173,10 +173,13 @@ class Container_users {
   
   
   static public function getUsers() {
+    $dir = self::getDir();
     $users = array();
-    foreach (scandir(self::getDir()) as $value) {
-        if ($value === '.' || $value === '..') continue;
-        $users[] = $value;
+    if (file_exists($dir)) {
+      foreach (scandir($dir) as $value) {
+          if ($value === '.' || $value === '..') continue;
+          $users[] = $value;
+      }
     }
     return $users;
   }
