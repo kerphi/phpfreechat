@@ -57,6 +57,11 @@ Here is an example of a basic communication between client and server:
 
 Download [phpfreechat-2.0.5.zip](http://www.phpfreechat.net/download) and unzip it in the root folder of your Web server.
 
+JQuery should be included in your html `<head>` before the phpfreechat code:
+```html
+  <script src="/phpfreechat-2.0.5/client/lib/jquery-1.8.2.min.js" type="text/javascript"></script>
+```
+
 Include the phpfreechat plugin in your html `<head>`:
 ```html
   <link rel="stylesheet" type="text/css" href="/phpfreechat-2.0.5/client/themes/default/jquery.phpfreechat.min.css" />
