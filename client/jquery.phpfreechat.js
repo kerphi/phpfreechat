@@ -44,7 +44,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     check_server_config: true,
     
     // number of tolerated network error before stoping chat refresh
-    tolerated_network_errors: 5
+    tolerated_network_errors: 5,
+    
+    // flag used to force skiping intro message about donation
+    skip_intro: false    
   };
 
   function Plugin(element, options) {

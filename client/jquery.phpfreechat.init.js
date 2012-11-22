@@ -56,9 +56,12 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    * Start to authenticate and to prepare chat dynamic
    */
   pfc.startChatLogic = function () {
-      // try to authenticate
-      //pfc.logout(function (err) { pfc.login(); });
-      pfc.login();
+
+      // show donation popup
+      pfc.showDonationPopup(function () {
+        // then try to authenticate
+        pfc.login();
+      });
       
       // when logged in
       $(pfc.element).bind('pfc-login', function (evt, pfc, userdata) {
