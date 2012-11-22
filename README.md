@@ -254,6 +254,7 @@ Example: TODO
 * `/users/:uid/`                   (user info)
 * `/users/:uid/msg/`               (messages received by the user: from a channel or a private message)
 * `/users/:uid/closed`             (flag used to indicate when the user has closed his window)
+* `/skipintro`                     (flag used to indicate if the intro message about donation should be displayed or not)
 
 ### File container structure (server side)
 
@@ -264,6 +265,7 @@ Server stores data into the `server/data/` folder as following:
 * `server/data/users/:uid/name`               (user name)
 * `server/data/users/:uid/messages/:mid`      (pending messages for the user)
 * `server/data/users/:uid/channels/:cid`      (channels joinded by the user)
+* `server/data/skipintro`                     (contains 0 or 1)
 * TODO
 
 ### Bench results archives
