@@ -615,6 +615,21 @@ div.pfc-content {
         text-decoration: @footer-a-text-decoration-hover;
         color: @footer-a-font-color-hover;
       }
+      &.bt-powered {
+        margin-right: 10px;
+      }
+      &.bt-donate {
+        position: relative;
+        border: 1px solid @footer-donate-border-color;
+        .box-shadow-inset(0, 0, 1px, @footer-donate-shadow-inset-color);
+        .rounded-corners(@footer-donate-border-radius);
+        padding: 2px 10px 2px 25px;
+        background: url("img/donate.png") 10px 0 no-repeat;
+        &:hover {
+          background-color:@footer-donate-bg-color-hover;
+          text-decoration: none;
+        }
+      }
     }
     
     p.ping {
