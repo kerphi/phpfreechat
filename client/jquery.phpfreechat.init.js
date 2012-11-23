@@ -199,7 +199,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + ''
       + '        <div class="pfc-footer">'
       + (pfc.options.show_powered_by ?
-        '          <p class="logo"><a href="http://www.phpfreechat.net" target="_blank">Powered by phpFreeChat</a></p>' :
+        '          <p class="logo"><a href="http://www.phpfreechat.net" class="bt-powered" target="_blank">Powered by phpFreeChat</a><a href="http://www.phpfreechat.net/donate" class="bt-donate" target="_blank">Donate</a></p>' :
         '')
       + (pfc.options.loadTestData ? ''
       + '          <p class="ping">150ms</p>'
@@ -231,12 +231,16 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         type: 'GET',
         url:  pfc.options.packageUrl
       }).done(function (p) {
-        try {
-          p = JSON.parse(p); // nedd to parse because content-type can be text/plain on specific servers
-          if (p.version) {
-            $(pfc.element).find('p.logo a').attr('title', 'version ' + p.version);
+        // some server force text/plain content-type instead of json
+        if (typeof p === 'string') {
+          try {
+            p = JSON.parse(p); // nedd to parse because content-type can be text/plain on specific servers
+          } catch (err) {
           }
-        } catch(err) {}
+        }
+        if (p.version) {
+          $(pfc.element).find('p.logo a.bt-powered').attr('title', 'version ' + p.version);
+        }
       });
     }
     
