@@ -199,7 +199,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       + ''
       + '        <div class="pfc-footer">'
       + (pfc.options.show_powered_by ?
-        '          <p class="logo"><a href="http://www.phpfreechat.net" class="bt-powered" target="_blank">Powered by phpFreeChat</a><a href="http://www.phpfreechat.net/donate" class="bt-donate" target="_blank">Donate</a></p>' :
+        '          <p class="logo"><a href="http://www.phpfreechat.net" class="bt-powered" target="_blank">Powered by phpFreeChat</a><a href="http://www.phpfreechat.net/donate" class="bt-donate" title="Phpfreechat is for you and needs you" target="_blank">Donate</a></p>' :
         '')
       + (pfc.options.loadTestData ? ''
       + '          <p class="ping">150ms</p>'
