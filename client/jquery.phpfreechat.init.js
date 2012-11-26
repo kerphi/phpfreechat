@@ -57,7 +57,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    */
   pfc.startChatLogic = function () {
 
-      // show donation popup
+      // show donation popup if not skiped
       pfc.showDonationPopup(function () {
         // then try to authenticate
         pfc.login();

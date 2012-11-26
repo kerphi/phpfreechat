@@ -19,7 +19,6 @@ $app->put('/skipintro', function () use ($app, $req, $res) {
 
   $datadir = dirname(__FILE__).'/../data';
   $si_file = $datadir.'/skipintro';
-  $res = @touch($si_file);
-  $res->status($res ? 200 : 500);
+  $res->status(@touch($si_file) ? 200 : 500);
   
 });

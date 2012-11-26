@@ -326,49 +326,63 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    */
   pfc.showDonationPopup = function (next) {
     
-    // force skip by a parameter ? 
+    // force skip by a parameter ?
     if (pfc.options.skip_intro) {
       next();
       return;
     }
-    
-    // html of the popup 
-    var box = pfc.modalbox.open(
-        '<form>'
-      + '  <p>phpFreeChat needs you. Please make a donation.</p>'
-      + '  <label><input type="checkbox" name="skip-donate" /> skip next time</label>'
-      + '  <input type="submit" name="cancel-donate" value="Cancel" />'
-      + '  <input type="submit" name="ok-donate" value="Donate" />'
-      + '</form>'
-    );
-    
-    // default focus to donate button
-    box.find('input[name=ok-donate]').focus();
 
-    // donate or cancel button clicked
-    box.find('input[type=submit]').click(function () {
-      // donate button clicked
-      if ($(this).attr('name') == 'ok-donate') {
-        window.open('http://www.phpfreechat.net/donate','pfc-donate'); //,'width=400,height=200');
+    // check if skip intro checkbox has been set or not last time
+    $.ajax({
+      type: 'GET',
+      url:  pfc.options.serverUrl + '/skipintro'
+    }).complete(function (jqXHR) {
+      if (jqXHR.status != 200) {
+        buildAndShowDonationPopup();
+      } else {
+        next();
       }
-      // skip intro button clicked
-      if ($(this).parent().find('input[name=skip-donate]').attr('checked')) {
-        $.ajax({
-          type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
-          url:  pfc.options.serverUrl + '/skipintro',
-          data: pfc.options.use_post_wrapper ? { _METHOD: 'PUT' } : 1          
-        }).done(function (res) {
-        }).error(function (err) {
-        });
-      }
-      pfc.modalbox.close(true);
-      next();
     });
-    
-    // disable submit button action
-    box.submit(function (evt) {
-      evt.preventDefault();
-    });
+
+    function buildAndShowDonationPopup() {
+      // html of the popup 
+      var box = pfc.modalbox.open(
+          '<form>'
+        + '  <p>phpFreeChat needs you. Please make a donation.</p>'
+        + '  <label><input type="checkbox" name="skip-donate" /> skip next time</label>'
+        + '  <input type="submit" name="cancel-donate" value="Cancel" />'
+        + '  <input type="submit" name="ok-donate" value="Donate" />'
+        + '</form>'
+      );
+      
+      // default focus to donate button
+      box.find('input[name=ok-donate]').focus();
+
+      // donate or cancel button clicked
+      box.find('input[type=submit]').click(function () {
+        // donate button clicked
+        if ($(this).attr('name') == 'ok-donate') {
+          window.open('http://www.phpfreechat.net/donate','pfc-donate'); //,'width=400,height=200');
+        }
+        // skip intro button clicked
+        if ($(this).parent().find('input[name=skip-donate]').attr('checked')) {
+          $.ajax({
+            type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
+            url:  pfc.options.serverUrl + '/skipintro',
+            data: pfc.options.use_post_wrapper ? { _METHOD: 'PUT' } : 1          
+          }).done(function (res) {
+          }).error(function (err) {
+          });
+        }
+        pfc.modalbox.close(true);
+        next();
+      });
+      
+      // disable submit button action
+      box.submit(function (evt) {
+        evt.preventDefault();
+      });
+    }
     
   };
   
