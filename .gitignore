@@ -1,0 +1,6 @@
+phpfreechat-*.zip
+phpfreechat-*.tar.gz
+phantomjs*
+phpinfo.php
+node_modules
+server/log/*
