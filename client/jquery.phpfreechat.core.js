@@ -347,11 +347,13 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     function buildAndShowDonationPopup() {
       // html of the popup 
       var box = pfc.modalbox.open(
-          '<form>'
+          '<form class="popup-donate">'
         + '  <p>phpFreeChat needs you. Please make a donation.</p>'
-        + '  <label><input type="checkbox" name="skip-donate" /> skip next time</label>'
-        + '  <input type="submit" name="cancel-donate" value="Cancel" />'
-        + '  <input type="submit" name="ok-donate" value="Donate" />'
+        + '  <div clalss="bt-validate">'
+        + '    <input type="submit" name="cancel-donate" value="not now" />'
+        + '    <input type="submit" name="ok-donate" value="DONATE" />'
+        + '  </div>'
+        + '  <span><label><input type="checkbox" name="skip-donate" /> skip next time</label></span>'
         + '</form>'
       );
       
