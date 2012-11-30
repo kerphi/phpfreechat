@@ -367,7 +367,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
           window.open('http://www.phpfreechat.net/donate','pfc-donate'); //,'width=400,height=200');
         }
         // skip intro button clicked
-        if ($(this).parent().find('input[name=skip-donate]').attr('checked')) {
+        if (box.find('input[name=skip-donate]').attr('checked')) {
           $.ajax({
             type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
             url:  pfc.options.serverUrl + '/skipintro',
