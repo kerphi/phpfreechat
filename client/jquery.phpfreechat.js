@@ -47,7 +47,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     tolerated_network_errors: 5,
     
     // flag used to force skiping intro message about donation
-    skip_intro: false    
+    skip_intro: false,
+
+    // skip login step ? (if true, chat will not be usable)
+    skip_auth: false
   };
 
   function Plugin(element, options) {

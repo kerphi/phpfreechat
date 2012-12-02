@@ -59,8 +59,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
       // show donation popup if not skiped
       pfc.showDonationPopup(function () {
-        // then try to authenticate
-        pfc.login();
+        if (!pfc.options.skip_auth) {
+          // then try to authenticate
+          pfc.login();
+        }
       });
       
       // when logged in
