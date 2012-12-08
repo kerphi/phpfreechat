@@ -31,27 +31,61 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     pfc.loadHTML();
     pfc.loadResponsiveBehavior();
     
-    if (pfc.options.check_server_config) {
-      $.ajax({
-        type: 'GET',
-        url:  pfc.options.serverCheckUrl
-      }).done(function (errors) {
-        if (errors && errors.length > 0) {
-          pfc.showErrorsPopup(errors);
-        } else {
-          pfc.startChatLogic();
-        }
-      }).error(function () {
-        pfc.showErrorsPopup([ 'Unknown error' ]);        
-      });
-    } else {
-      pfc.startChatLogic();
-    }
-    
-
-
+    // run quick tests
+    pfc.checkServerConfig(pfc.startChatLogic);
   }
 
+  /**
+   * Run few tests to be sure the server is ready to receive requests
+   */
+  pfc.checkServerConfig = function (next) {
+  
+    if (pfc.options.check_server_config) {
+      pfc.checkServerConfigPHP(function () {
+        pfc.checkServerConfigRewrite(next);
+      });
+    } else {
+      next();
+    }
+    
+  };
+
+  /**
+   * Test the server php config file
+   */
+  pfc.checkServerConfigPHP = function (next) {
+    $.ajax({
+      type: 'GET',
+      url:  pfc.options.serverCheckUrl
+    }).done(function (errors) {
+      if (errors && errors.length > 0) {
+        pfc.showErrorsPopup(errors);
+      } else {
+        next();
+      }
+    }).error(function () {
+      pfc.showErrorsPopup([ 'Unknown error: check.php cannot be found' ]);        
+    });
+  };
+      
+  /**
+   * Test the rewrite rules are enabled on the server
+   */
+  pfc.checkServerConfigRewrite = function (next) {
+    $.ajax({
+      type: 'GET',
+      url:  pfc.options.serverUrl + '/status'
+    }).done(function (status) {
+      if (!status || !status.running) {
+        pfc.showErrorsPopup([ 'mod_rewrite must be enabled server side' ]);
+      } else {
+        next();
+      }
+    }).error(function () {
+      pfc.showErrorsPopup([ 'mod_rewrite must be enabled server side' ]);
+    });
+  };
+  
   /**
    * Start to authenticate and to prepare chat dynamic
    */

@@ -22,3 +22,14 @@ $app->put('/skipintro', function () use ($app, $req, $res) {
   $res->status(@touch($si_file) ? 200 : 500);
   
 });
+
+/**
+ * Route used to know if rewriting rules are enable in the web server
+ */
+$app->get('/status', function () use ($app, $req, $res) {
+  
+  $res->status(200);
+  $res['Content-Type'] = 'application/json; charset=utf-8';
+  $res->body('{ "running": true }');
+
+});
