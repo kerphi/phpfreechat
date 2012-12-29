@@ -1,4 +1,4 @@
-# phpFreeChat's developments guide
+# Developer guide
 
 ## Installation
 

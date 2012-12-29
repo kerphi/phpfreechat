@@ -1,4 +1,4 @@
-# phpFreeChat's quickstart
+# Installation quickstart
 
 ## Prerequisites
 

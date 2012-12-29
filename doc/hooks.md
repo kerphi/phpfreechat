@@ -1,4 +1,4 @@
-# phpFreeChat's server side hooks
+# Server side hooks
 
 Hooks can be used to plug piece of code into the official phpfreechat code. Thanks to hooks, you can customize or extend phpfreechat's features. Hooks can be configured in your `server/config.php` or `server/config.local.php` files.
 

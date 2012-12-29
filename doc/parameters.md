@@ -1,4 +1,4 @@
-# phpFreeChat's parameters
+# Parameters
 
 ## Parameters client side
 
