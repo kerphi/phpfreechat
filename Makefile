@@ -41,7 +41,7 @@ setup-minify:
 
 # compress javascript and css
 minify: $(path)/client/jquery.phpfreechat.js $(path)/client/jquery.phpfreechat.*.js $(path)/client/themes/*/jquery.phpfreechat.less $(path)/client/themes/*/jquery.phpfreechat.*.less
-	$(shell cat $(path)/client/jquery.phpfreechat.js $(path)/client/jquery.phpfreechat.*.js | packnode > $(path)/client/jquery.phpfreechat.min.js)
+	$(shell cat $(path)/client/jquery.phpfreechat.js $(path)/client/jquery.phpfreechat.*.js | uglifyjs -c 2> /dev/null > $(path)/client/jquery.phpfreechat.min.js)
 	$(shell for f in `ls client/themes/*/jquery.phpfreechat.less`; do lessc $$f `echo $$f | sed s/.less/.css/g`; done)
 	$(shell for f in `ls client/themes/*/jquery.phpfreechat.css`; do cleancss $$f > `echo $$f | sed s/.css/.min.css/g`; done)
 
