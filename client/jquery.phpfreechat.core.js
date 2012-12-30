@@ -25,7 +25,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       // reset the error counter because a request has been well received
       pfc.readPendingMessages.nb_network_error = 0;
 
-      msgs.forEach(function (m, i) {
+      $.each(msgs, function (i, m) {
         // specific actions for special messages
         if (m.type == 'join') {
           pfc.users[m.sender] = m.body; // store new joined user data
@@ -199,10 +199,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     if (user.id === 0) {
       do {
         user.id = Math.round(Math.random() * 10000);
-      } while (userids.indexOf(user.id) != -1);
+      } while ($.inArray(user.id ,userids) !== -1);
     }
     // add the id in the user's dom element
-    if (user.id !== 0 && userids.indexOf(user.id) == -1) {
+    if (user.id !== 0 && $.inArray(user.id, userids) === -1) {
       html.attr('id', 'user_' + user.id);
     } else {
       return 0;
