@@ -66,7 +66,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       // store userdata in the cache
       // refresh the interface
       pfc.clearUserList();
-      Object.keys(users).forEach(function (uid) {
+      $.each(users, function (uid) {
         pfc.users[uid] = users[uid];
         pfc.appendUser(users[uid]);
       });
