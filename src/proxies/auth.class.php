@@ -63,7 +63,9 @@ class pfcProxyCommand_auth extends pfcProxyCommand
       $container =& pfcContainer::Instance();
       $nickid = $u->nickid;
       $isadmin = $container->getUserMeta($nickid, 'isadmin');
-      if (!$isadmin)
+      $notallowed  = ($this->name == 'debug' && $c->firstisadmin);
+      $notallowed |= ($this->name != 'debug' && !$isadmin);
+      if ($notallowed)
       {
         $xml_reponse->script("alert('".addslashes(_pfc("You are not allowed to run '%s' command", $this->name))."');");
         return false;
