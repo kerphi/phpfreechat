@@ -27,7 +27,7 @@ Include the phpfreechat plugin in your html `<head>`:
 Add this piece of HTML in your `<body>` where you want the chat to be displayed:
 ```html
 ...
-<div id="mychat"><a href="http://www.phpfreechat.net">phpFreeChat • Creating chat rooms everywhere</a></div>
+<div id="mychat"><a href="http://www.phpfreechat.net">Creating chat rooms everywhere - phpFreeChat</a></div>
 ...
 ```
 
