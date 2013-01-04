@@ -101,7 +101,8 @@ clean-release-for-dev: clean-release clean
 
 # call it like that: make version v=2.0.5
 version: dummy
-	@npm install optimist
+	test -f node_modules/glob/package.json     || npm install glob
+	test -f node_modules/optimist/package.json || npm install optimist
 	@tools/patch-version-number.js --version $(v)
 
 tag: dummy
