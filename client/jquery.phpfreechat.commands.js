@@ -8,15 +8,17 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
   pfc.commands = {
     msg:  {
-      usage:      '/msg ["#<channel>"] "<message>"',
+      usage:      '/msg "<message>"',
+      longusage:  '/msg ["#<channel>"] "<message>"',
       params:     [ 'channel', 'message' ],
-      regexp:     /^\/msg ("#(.+?)" |)"(.+?)"$/,
+      regexp:     /^("#(.+?)" |)"(.+?)"$/,
       regexp_ids: [ 2, 3, 5 ]
     },
     kick: {
-      usage:      '/kick ["#<channel>"] "<username>" ["reason"]',
+      usage:      '/kick "<username>" ["reason"]',
+      longusage:  '/kick ["#<channel>"] "<username>" ["reason"]',
       params:     [ 'channel', 'username', 'reason' ],
-      regexp:     /^\/kick ("#(.+?)" |)"(.+?)"( "(.+?)"|)$/,
+      regexp:     /^("#(.+?)" |)"(.+?)"( "(.+?)"|)$/,
       regexp_ids: [ 2, 3, 5 ]
     }
   };
@@ -27,22 +29,37 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    */
   pfc.parseCommand = function (raw) {
     
-    // considere it's a /msg command by default
-    var cmd     = 'msg';
-    var cmd_arg = [ raw ];
+    var cmd     = '';
+    var cmd_arg = [];
     
     // test each commands on the raw message
     $.each(pfc.commands, function(c) {
-      var cmd_arg_tmp = pfc.commands[c].regexp.exec(raw);
-      if (cmd_arg_tmp && cmd_arg_tmp.length > 0) {
+      // first of all, try to reconize a /<command> pattern
+      if (new RegExp('^\/' + c + '( |$)').test(raw)) {
         cmd = c;
-        // collect interesting values from the regexp result
-        cmd_arg = [];
-        $.each(pfc.commands[c].regexp_ids, function(i, id) {
-          cmd_arg.push(cmd_arg_tmp[id]);
-        });
+        // parse the rest of the command line (the end)
+        var raw_end = new RegExp('^\/' + c + ' *(.*)$').exec(raw)[1];
+        var cmd_arg_tmp = pfc.commands[c].regexp.exec(raw_end);
+        if (cmd_arg_tmp && cmd_arg_tmp.length > 0) {
+          // collect interesting values from the regexp result
+          cmd_arg = [];
+          $.each(pfc.commands[c].regexp_ids, function(i, id) {
+            cmd_arg.push(cmd_arg_tmp[id]);
+          });
+        }
       }
     });
+    
+    // if no /<command> pattern found, considere it's a /msg command
+    if (cmd == '') {
+      cmd     = 'msg';
+      cmd_arg = [raw];
+    }
+    
+    // return an error if the command parameters do not match
+    if (cmd_arg.length == 0) {
+      throw [ cmd, pfc.commands[cmd].usage ];
+    }
     
     // optionaly fill channel value if user didn't indicate it
     var channel_idx = $.inArray('channel', pfc.commands[cmd].params);

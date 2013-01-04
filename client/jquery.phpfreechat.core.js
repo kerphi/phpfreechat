@@ -121,16 +121,28 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       return false;
     }
     
-    $.ajax({
-      type: 'POST',
-      url:  pfc.options.serverUrl + '/channels/' + cid + '/msg/',
-      contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify({ body: msg })
-    }).done(function (msg) {
-      pfc.appendMessage(msg);
-    }).error(function (err) {
-      console.log(err);
-    });
+    try {
+      // parse commands in the message
+      var cmd = pfc.parseCommand(msg);
+      
+      $.ajax({
+        type: 'POST',
+        url:  pfc.options.serverUrl + '/channels/' + cid + '/msg/?' + $.param({ type: cmd[0] }),
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ body: cmd[1] })
+      }).done(function (msg) {
+        pfc.appendMessage(msg);
+      }).error(function (err) {
+        console.log(err);
+      });
+      
+    } catch (err) {
+      // caught a command parsing error
+      pfc.appendMessage({
+        from: 'system-error',
+        body: 'Invalid command syntax. Usage:\n' + err[1]
+      });
+    }
 
   };
 
@@ -257,7 +269,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   pfc.appendMessage = function (msg) {
 
     // default values
-    msg.from      = (msg.type == 'msg') ? msg.sender : 'system';
+    msg.from      = (msg.type == 'msg') ? msg.sender : (msg.from !== undefined ? msg.from : 'system-message');
     msg.name      = (pfc.users[msg.sender] !== undefined) ? pfc.users[msg.sender].name : msg.name;
     msg.body      = (msg.body !== undefined) ? msg.body : '';
     msg.timestamp = (msg.timestamp !== undefined) ? msg.timestamp : Math.round(new Date().getTime() / 1000);
@@ -269,7 +281,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     } else if (msg.type == 'leave') {
       msg.body = msg.name + ' left the channel' + (msg.body ? ' (' + msg.body + ')' : '');
     }
-        
+
     var groupmsg_dom = $(pfc.element).find('.pfc-messages .messages-group:last');
     var messages_dom = $(pfc.element).find('.pfc-messages');
     var html         = null;
@@ -281,13 +293,13 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         + '       <div class="name"></div>'
         + '     </div>');
       
-      // system messages (join)
-      if (msg.from == 'system') {
-        html.addClass('system-message');
+      // system messages (join, error ...)
+      if (/^system-/.test(msg.from)) {
+        html.addClass('from-' + msg.from);
         html.find('.name').remove();
         html.find('.avatar').remove();
       }
-
+      
       // fill the html fragment
       html.find('.name').text(msg.name);
       html.attr('data-from', msg.from);
