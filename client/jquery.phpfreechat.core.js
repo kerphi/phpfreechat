@@ -128,9 +128,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       // post the command to the server
       $.ajax({
         type: 'POST',
-        url:  pfc.options.serverUrl + '/channels/' + cmd[1][0] + '/msg/?' + $.param({ type: cmd[0] }),
+        url:  pfc.options.serverUrl + '/channels/' + cmd[0] + '/msg/',
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(cmd[1].slice(1))
+        data: JSON.stringify(cmd.slice(1))
       }).done(function (msg) {
         pfc.appendMessage(msg);
       }).error(function (err) {

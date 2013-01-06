@@ -26,6 +26,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   /**
    * Parse the sent message
    * Try to extract explicit commands from it
+//    * Returns: [ <cid>, <cmd>, <cmd-param1>, <cmd-param2>, ... ] 
    */
   pfc.parseCommand = function (raw) {
     
@@ -72,8 +73,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         // todo: translate the channel name to the corresponding cid
       }
     }
-        
-    return [ cmd, cmd_arg ];
+
+    return [ cmd_arg[0], cmd ].concat(cmd_arg.slice(1));
   };
 
   return pfc;

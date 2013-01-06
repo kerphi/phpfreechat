@@ -150,15 +150,15 @@ $app->post('/channels/:cid/msg/', function ($cid) use ($app, $req, $res) {
  
    // check that request content contains a message
   $data = json_decode($req->getBody());
-  if (!$data or !is_array($data)) {
+  if (!$data or !is_array($data) or count($data) < 2) {
     $res->status(400); // Wrong body format
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res->body('{ "error": "Wrong body format (must be a JSON array)" }');
     return;
   }
 
-  // get the message type from the URL parameter
-  $msg_type = $req->params('type', 'msg');
+  // get the message type (first element of the array)
+  $msg_type = $data[0];
   // and execute the corresponding command
   switch ($msg_type) {
     
