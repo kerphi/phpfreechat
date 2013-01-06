@@ -53,7 +53,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // if no /<command> pattern found, considere it's a /msg command
     if (cmd === '') {
       cmd     = 'msg';
-      cmd_arg = [raw];
+      cmd_arg = [pfc.cid, raw];
     }
     
     // return an error if the command parameters do not match

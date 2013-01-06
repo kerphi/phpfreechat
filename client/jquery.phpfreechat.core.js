@@ -122,14 +122,15 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }
     
     try {
-      // parse commands in the message
+      // parse command in the message
       var cmd = pfc.parseCommand(msg);
       
+      // post the command to the server
       $.ajax({
         type: 'POST',
-        url:  pfc.options.serverUrl + '/channels/' + cid + '/msg/?' + $.param({ type: cmd[0] }),
+        url:  pfc.options.serverUrl + '/channels/' + cmd[1][0] + '/msg/?' + $.param({ type: cmd[0] }),
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ body: cmd[1] })
+        data: JSON.stringify(cmd[1].slice(1))
       }).done(function (msg) {
         pfc.appendMessage(msg);
       }).error(function (err) {
@@ -399,7 +400,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }
     
   };
-  
-  
+ 
   return pfc;
 }(phpFreeChat || {}, jQuery, window));
