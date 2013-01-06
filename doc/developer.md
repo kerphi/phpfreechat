@@ -70,29 +70,38 @@ Example: TODO
 
 ## Routes design (server side)
 
-* `/auth`                          (authentication)
-* `/channels/`                     (list available channels)
-* `/channels/:cid/name`            (channel little name)
-* `/channels/:cid/users/`          (list users in the channel)
-* `/channels/:cid/users/:uid`      (show a subscribed user to this channel)
-* `/channels/:cid/msg/`            (used to post a new message on this channel)
-* `/users/`                        (global users list)
-* `/users/:uid/`                   (user info)
-* `/users/:uid/msg/`               (messages received by the user: from a channel or a private message)
-* `/users/:uid/closed`             (flag used to indicate when the user has closed his window)
-* `/skipintro`                     (flag used to indicate if the intro message about donation should be displayed or not)
+* `server/auth`                          (authentication)
+* `server/channels/`                     (list available channels)
+* `server/channels/:cid/name`            (channel little name)
+* `server/channels/:cid/users/`          (list users in the channel)
+* `server/channels/:cid/users/:uid`      (show a subscribed user to this channel)
+* `server/channels/:cid/msg/`            (used to post a new message on this channel)
+* `server/users/`                        (global users list)
+* `server/users/:uid/`                   (user info)
+* `server/users/:uid/msg/`               (messages received by the user: from a channel or a private message)
+* `server/users/:uid/closed`             (flag used to indicate when the user has closed his window)
+* `server/skipintro`                     (flag used to indicate if the intro message about donation should be displayed or not)
+* `server/status`                        (returns json structure which indicates server status)
+* `/check.php`                           (check php version and other needed server dependancies)
+
+Warning: work in progress, routes structure can change.
 
 ## File container structure (server side)
 
 Server stores data into the `server/data/` folder as following:
 
-* `server/data/indexes/users/name/:name`      (index on user's nicknames: name -> uid)
 * `server/data/users/:uid/index.json`         (full user data without messages and channels)
 * `server/data/users/:uid/name`               (user name)
 * `server/data/users/:uid/messages/:mid`      (pending messages for the user)
 * `server/data/users/:uid/channels/:cid`      (channels joinded by the user)
+* `server/data/channels/:cid/users/:uid       (:uid is online on :cid)
+* `server/data/channels/:cid/index.json`      (full channel attributes)
+* `server/data/channels/:cid/op               (operators list)
+* `server/data/indexes/users/name/:name`      (index on user's nicknames: name -> uid)
 * `server/data/skipintro`                     (contains 0 or 1)
-* TODO
+* `server/data/gc`                            (timestamp used for garbage collector)
+
+Warning: work in progress, folder structure can change.
 
 ## Bench results archives
 
