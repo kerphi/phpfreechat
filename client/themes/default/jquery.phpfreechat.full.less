@@ -519,7 +519,7 @@ div.pfc-content {
         color: @messages-message-font-color;
       }
 
-      &.system-message {
+      &.from-system-message {
         .message {
           font-size: @messages-syst-message-font-size;
           font-family: @messages-syst-message-font-family;
@@ -527,6 +527,16 @@ div.pfc-content {
           font-style: @messages-syst-message-font-style;
           text-decoration: @messages-syst-message-text-decoration;
           color: @messages-syst-message-font-color;
+        }
+      }
+      &.from-system-error {
+        .message {
+          font-size: @messages-syst-error-font-size;
+          font-family: @messages-syst-error-font-family;
+          font-weight: @messages-syst-error-font-weight;
+          font-style: @messages-syst-error-font-style;
+          text-decoration: @messages-syst-error-text-decoration;
+          color: @messages-syst-error-font-color;
         }
       }
     }
