@@ -33,7 +33,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     var cmd_arg = [];
     
     // test each commands on the raw message
-    $.each(pfc.commands, function(c) {
+    $.each(pfc.commands, function (c) {
       // first of all, try to reconize a /<command> pattern
       if (new RegExp('^\/' + c + '( |$)').test(raw)) {
         cmd = c;
@@ -43,7 +43,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         if (cmd_arg_tmp && cmd_arg_tmp.length > 0) {
           // collect interesting values from the regexp result
           cmd_arg = [];
-          $.each(pfc.commands[c].regexp_ids, function(i, id) {
+          $.each(pfc.commands[c].regexp_ids, function (i, id) {
             cmd_arg.push(cmd_arg_tmp[id]);
           });
         }
@@ -51,13 +51,13 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     });
     
     // if no /<command> pattern found, considere it's a /msg command
-    if (cmd == '') {
+    if (cmd === '') {
       cmd     = 'msg';
       cmd_arg = [raw];
     }
     
     // return an error if the command parameters do not match
-    if (cmd_arg.length == 0) {
+    if (cmd_arg.length === 0) {
       throw [ cmd, pfc.commands[cmd].usage ];
     }
     

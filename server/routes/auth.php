@@ -27,7 +27,7 @@ $app->get('/auth', function () use ($app, $req, $res) {
   // check if the login is defined by the hook
   $login = '';
   if (isset($GLOBALS['pfc_hooks']['pfc.before.auth'])) {
-    foreach($GLOBALS['pfc_hooks']['pfc.before.auth'] as $hook) {
+    foreach ($GLOBALS['pfc_hooks']['pfc.before.auth'] as $hook) {
       $login = trim($hook());
     }
   }
@@ -64,7 +64,7 @@ $app->get('/auth', function () use ($app, $req, $res) {
   
   // filter login with hooks
   if (isset($GLOBALS['pfc_hooks']['pfc.filter.login'])) {
-    foreach($GLOBALS['pfc_hooks']['pfc.filter.login'] as $filter) {
+    foreach ($GLOBALS['pfc_hooks']['pfc.filter.login'] as $filter) {
       $login = trim($filter($login));
     }
     if ($login == '') {

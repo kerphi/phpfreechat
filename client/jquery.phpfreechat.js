@@ -37,7 +37,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // if true powered by phpfreechat text is shown
     show_powered_by: true,
     
-    // set it to true if PUT and DELETE http methods are not allowed by the server 
+    // set it to true if PUT and DELETE http methods are not allowed by the server
     use_post_wrapper: true,
     
     // when true, the first AJAX request is used to verify that server config is ok
@@ -58,16 +58,16 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // to be sure options.serverUrl is filled
     options = $.extend({}, options);
     if (!options || !options.serverUrl) {
-      options.serverUrl = defaults.serverUrl; 
+      options.serverUrl = defaults.serverUrl;
     }
     
     // adjust the packageUrl parameter if serverUrl is specified
     if (!options || !options.packageUrl) {
-      options.packageUrl = options.serverUrl + '/../package.json'; 
+      options.packageUrl = options.serverUrl + '/../package.json';
     }
     // same for serverCheckUrl
     if (!options || !options.serverCheckUrl) {
-      options.serverCheckUrl = options.serverUrl + '/../check.php'; 
+      options.serverCheckUrl = options.serverUrl + '/../check.php';
     }
     
     // plugin attributs

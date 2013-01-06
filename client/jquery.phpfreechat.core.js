@@ -17,7 +17,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       pfc.readPendingMessages.nb_network_error = 0;
     }
     
-    // send periodicaly AJAX request to check pending messages 
+    // send periodicaly AJAX request to check pending messages
     $.ajax({
       type: 'GET',
       url:  pfc.options.serverUrl + '/users/' + pfc.uid + '/msg/'
@@ -41,7 +41,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         setTimeout(function () { pfc.readPendingMessages(true) }, pfc.options.refresh_delay);
       }
     }).error(function (err) {
-      // check how many network errors has been received and 
+      // check how many network errors has been received and
       // block the automatic refresh if number of allowed errors is exceed
       if (pfc.readPendingMessages.nb_network_error++ > pfc.options.tolerated_network_errors) {
         pfc.showErrorsPopup([ 'Network error. Please reload the chat to continue.' ]);
@@ -95,7 +95,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     $.ajax({
       type: pfc.options.use_post_wrapper ? 'POST' : 'DELETE',
       url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid,
-      data: pfc.options.use_post_wrapper ? { _METHOD: 'DELETE' } : null 
+      data: pfc.options.use_post_wrapper ? { _METHOD: 'DELETE' } : null
     }).done(function (users) {
       pfc.clearUserList();
       
@@ -211,7 +211,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     if (user.id === 0) {
       do {
         user.id = Math.round(Math.random() * 10000);
-      } while ($.inArray(user.id ,userids) !== -1);
+      } while ($.inArray(user.id, userids) !== -1);
     }
     // add the id in the user's dom element
     if (user.id !== 0 && $.inArray(user.id, userids) === -1) {
@@ -357,7 +357,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     });
 
     function buildAndShowDonationPopup() {
-      // html of the popup 
+      // html of the popup
       var box = pfc.modalbox.open(
           '<form class="popup-donate">'
         + '  <p>phpFreeChat needs you. Please make a donation.</p>'
@@ -376,14 +376,14 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       box.find('input[type=submit]').click(function () {
         // donate button clicked
         if ($(this).attr('name') == 'ok-donate') {
-          window.open('http://www.phpfreechat.net/donate','pfc-donate'); //,'width=400,height=200');
+          window.open('http://www.phpfreechat.net/donate', 'pfc-donate'); //,'width=400,height=200');
         }
         // skip intro button clicked
         if (box.find('input[name=skip-donate]').attr('checked')) {
           $.ajax({
             type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
             url:  pfc.options.serverUrl + '/skipintro',
-            data: pfc.options.use_post_wrapper ? { _METHOD: 'PUT' } : 1          
+            data: pfc.options.use_post_wrapper ? { _METHOD: 'PUT' } : 1
           }).done(function (res) {
           }).error(function (err) {
           });
