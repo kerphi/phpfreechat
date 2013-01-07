@@ -24,11 +24,17 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       $(pfc.element).trigger('pfc-login', [ pfc, userdata ]);
       if (callback) { callback(null, userdata) }
     }).error(function (err) {
-      var errmsg = null;
       try {
-        errmsg = JSON.parse(err.responseText).error;
-      } catch (e) {}
-      pfc.showAuthForm(credentials ? errmsg : null);
+        err = JSON.parse(err.responseText);
+      } catch (e) {
+      }
+      if (err &&
+          err.error &&
+          err.errorCode != 40301) { // != Need authentication
+        pfc.showAuthForm(err.error);
+      } else {
+        pfc.showAuthForm();
+      }
       if (callback) { callback(err) }
     });
   };
