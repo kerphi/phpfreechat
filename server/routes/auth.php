@@ -46,7 +46,7 @@ $app->get('/auth', function () use ($app, $req, $res) {
     $res->status(403);
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res['Pfc-WWW-Authenticate'] = 'Basic realm="Authentication"';
-    $res->body('{ "error": "Need authentication" }');
+    $res->body(GetPfcError(40301)); // "Need authentication"
     return;
   }
   if ($auth) {
@@ -80,7 +80,7 @@ $app->get('/auth', function () use ($app, $req, $res) {
     $res->status(403);
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res['Pfc-WWW-Authenticate'] = 'Basic realm="Authentication"';
-    $res->body('{ "error": "Login already used" }');
+    $res->body(GetPfcError(40302)); // "Login already used"
     return;
   } else if ($login) {
     $uid = Container_users::generateUid();
@@ -102,7 +102,7 @@ $app->get('/auth', function () use ($app, $req, $res) {
     $res->status(403);
     $res['Pfc-WWW-Authenticate'] = 'Basic realm="Authentication"';
     $res['Content-Type'] = 'application/json; charset=utf-8';
-    $res->body('{ "error": "Wrong credentials" }');    
+    $res->body(GetPfcError(40303)); // "Wrong credentials"
     return;
   }
 

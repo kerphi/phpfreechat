@@ -14,6 +14,19 @@ function debug($msg) {
   }
 }
 
+function GetPfcError($code, $jsonformat = true) {
+  $errors = array();
+  $errors[40301] = "Need authentication";
+  $errors[40302] = "Login already used";
+  $errors[40303] = "Wrong credentials";
+  if (isset($errors[$code])) {
+    $e = array('error' => $errors[$code], 'errorCode' => $code);
+  } else {
+    $e = array('error' => 'Unknown error #'.$code, 'errorCode' => $code);
+  }
+  return $jsonformat ? json_encode($e) : $e;
+}
+
 $req = $app->request();
 $res = $app->response();
 $res['X-Powered-By'] = 'phpfreechat-'.$GLOBALS['pfc_version'];
