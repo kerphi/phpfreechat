@@ -12,7 +12,7 @@ $app->get('/users/', function () use ($app, $req, $res) {
 });
 
 /**
- * Returns users data or 404
+ * Returns user's data or 404
  */
 $app->get('/users/:uid/', function ($uid) use ($app, $req, $res) {
 

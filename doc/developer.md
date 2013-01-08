@@ -70,36 +70,46 @@ Example: TODO
 
 ## Routes design (server side)
 
-* `server/auth`                          (authentication)
-* `server/channels/`                     (list available channels)
-* `server/channels/:cid/name`            (channel little name)
-* `server/channels/:cid/users/`          (list users in the channel)
-* `server/channels/:cid/users/:uid`      (show a subscribed user to this channel)
-* `server/channels/:cid/msg/`            (used to post a new message on this channel)
-* `server/users/`                        (global users list)
-* `server/users/:uid/`                   (user info)
-* `server/users/:uid/msg/`               (messages received by the user: from a channel or a private message)
-* `server/users/:uid/closed`             (flag used to indicate when the user has closed his window)
-* `server/skipintro`                     (flag used to indicate if the intro message about donation should be displayed or not)
-* `server/status`                        (returns json structure which indicates server status)
-* `/check.php`                           (check php version and other needed server dependancies)
+* `server/auth`                          - GET    - returns authentication informations
+* `server/auth`                          - DELETE - logout
+* `server/channels/`                     - GET    - list available channels [not implemented]
+* `server/channels/:cid/`                - GET    - returns :cid channel merged infos [not implemented]
+* `server/channels/:cid/name`            - GET    - channel little name [not implemented]
+* `server/channels/:cid/users/`          - GET    - list users in the :cid channel
+* `server/channels/:cid/users/:uid`      - GET    - tells if :uid user is subscribed to this :cid channel
+* `server/channels/:cid/users/:uid`      - PUT    - :uid user joins :cid channel (try to)
+* `server/channels/:cid/users/:uid`      - DELETE - :uid user leave :cid channel (try to)
+* `server/channels/:cid/msg/`            - POST   - current user post a new message on :cid channel (if joined)
+* `server/channels/:cid/op/`             - GET    - returns the :cid channel operators list (list of :uid)
+* `server/channels/:cid/op/:uid`         - GET    - tells if :uid is operator on :cid
+* `server/channels/:cid/op/:uid`         - PUT    - add :uid to the operator list on :cid channel (try to)
+* `server/users/`                        - GET    - returns the online users :uid currently online on the server [not implemented]
+* `server/users/:uid/`                   - GET    - returns :uid user info
+* `server/users/:uid/msg/`               - GET    - pending messages for :uid user (from channels or a private messages)
+* `server/users/:uid/closed`             - PUT    - set the :uid user window closed flag to true (used to disconnect the user earlier)
+* `server/skipintro`                     - GET    - flag used to indicate if the intro message about donation should be displayed or not
+* `server/skipintro`                     - PUT    - tells to not display again the intro message (set the flag to true)
+* `server/status`                        - GET    - returns json structure indicating server status
+* `check.php`                            - GET    - check php version and other needed server dependencies
 
-Warning: work in progress, routes structure can change.
+Warning: work in progress, routes structure can change in future.
 
 ## File container structure (server side)
 
 Server stores data into the `server/data/` folder as following:
 
-* `server/data/users/:uid/index.json`         (full user data without messages and channels)
-* `server/data/users/:uid/name`               (user name)
-* `server/data/users/:uid/messages/:mid`      (pending messages for the user)
-* `server/data/users/:uid/channels/:cid`      (channels joinded by the user)
-* `server/data/channels/:cid/users/:uid       (:uid is online on :cid)
-* `server/data/channels/:cid/index.json`      (full channel attributes)
-* `server/data/channels/:cid/op               (operators list)
-* `server/data/indexes/users/name/:name`      (index on user's nicknames: name -> uid)
-* `server/data/skipintro`                     (contains 0 or 1)
-* `server/data/gc`                            (timestamp used for garbage collector)
+* `server/data/users/:uid/index.json`         - full user data without messages and channels
+* `server/data/users/:uid/name`               - user name
+* `server/data/users/:uid/messages/:mid`      - pending messages for the user
+* `server/data/users/:uid/channels/:cid`      - channels joinded by the user
+* `server/data/channels/:cid/users/           - users online on :cid channel
+* `server/data/channels/:cid/users/:uid       - tells that :uid is online on :cid
+* `server/data/channels/:cid/index.json`      - full channel attributes
+* `server/data/channels/:cid/op/              - operators list
+* `server/data/channels/:cid/op/:uid          - tells that :uid is operator on :cid
+* `server/data/indexes/users/name/:name`      - index on user's nicknames: name -> uid
+* `server/data/skipintro`                     - contains 0 or 1
+* `server/data/gc`                            - timestamp used for garbage collector
 
 Warning: work in progress, folder structure can change.
 
