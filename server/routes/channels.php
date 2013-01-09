@@ -75,7 +75,10 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
     
     $res->status(201); // User joined the channel
     $res['Content-Type'] = 'application/json; charset=utf-8';
-    $res->body(json_encode(Container_channels::getChannelUsers($cid, true)));
+    $res->body(json_encode(array(
+      'users' => Container_channels::getChannelUsers($cid, true),
+      'op'    => Container_channels_op::getOpList($cid),
+    )));
     return;
   }
 

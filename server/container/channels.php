@@ -50,7 +50,6 @@ class Container_channels {
       if ($uid === '.' || $uid === '..') continue;
       if ($withudata) {
         $subscribers[$uid]       = Container_users::getUserData($uid);
-        $subscribers[$uid]->op   = Container_channels_op::isOp($cid, $uid);
       } else {
         $subscribers[] = $uid;
       }

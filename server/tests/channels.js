@@ -49,7 +49,7 @@ vows.describe('Channels route').addBatch({
     'server returns the user list': function (error, res, body) {
       var userlist = {};
       try {
-        userlist = JSON.parse(body);
+        userlist = JSON.parse(body).users;
       } catch (err) {
         assert.isNull(err, 'response body should be JSON formated');
       }
@@ -87,7 +87,7 @@ vows.describe('Channels route').addBatch({
       'server returns the user list': function (error, res, body) {
         var userlist = {};
         try {
-          userlist = JSON.parse(body);
+          userlist = JSON.parse(body).users;
         } catch (err) {
           assert.isNull(err, 'response body should be JSON formated');
         }
@@ -99,7 +99,7 @@ vows.describe('Channels route').addBatch({
       'the user list contains full userdata': function (error, res, body) {
         var userlist;
         try {
-          userlist = JSON.parse(body);
+          userlist = JSON.parse(body).users;
         } catch (err) {
           assert.isNull(err, 'response body should be JSON formated');
         }

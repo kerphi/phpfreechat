@@ -61,15 +61,23 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
       url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid,
       data: pfc.options.use_post_wrapper ? { _METHOD: 'PUT' } : null
-    }).done(function (users) {
+    }).done(function (cinfo) {
+      
+      pfc.channels[cid] = {
+        users: [],
+        op: []
+      };
       
       // store userdata in the cache
       // refresh the interface
       pfc.clearUserList();
-      $.each(users, function (uid) {
-        pfc.users[uid] = users[uid];
-        pfc.appendUser(users[uid]);
+      $.each(cinfo.users, function (uid) {
+        pfc.channels[cid].users.push(uid);
+        pfc.users[uid] = cinfo.users[uid];
+        pfc.appendUser(cinfo.users[uid]);
       });
+      // store channel operators
+      pfc.channels[cid].op = cinfo.op;
 
       // display a join message for him
       pfc.appendMessage({
