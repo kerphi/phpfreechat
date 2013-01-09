@@ -137,3 +137,5 @@ bench: dummy
 	@rm -rf server/data/*
 	@node tools/run-bench.js
 	@mv -f $(path)/server/config.local.php.tmp $(path)/server/config.local.php
+
+.PHONY: test test-server
