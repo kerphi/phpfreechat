@@ -72,7 +72,7 @@ vows.describe('Send and receive messages').addBatch({
           request({
             method: 'POST',
             url: baseurl + '/server/channels/' + cid1 + '/msg/',
-            json: { body: 'my user2 message' },
+            json: ['msg', 'my user2 message' ],
             jar: j2,
           }, callback);
         },
@@ -90,7 +90,7 @@ vows.describe('Send and receive messages').addBatch({
           request({
             method: 'POST',
             url: baseurl + '/server/channels/' + cid1 + '/msg/',
-            json: { body: 'my user1 message' },
+            json: ['msg', 'my user1 message' ],
             jar: j1,
           }, callback);
         },
