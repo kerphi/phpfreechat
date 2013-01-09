@@ -2,6 +2,7 @@
 
 include_once 'container/users.php';
 include_once 'container/channels.php';
+include_once 'container/channels-op.php';
 include_once 'container/messages.php';
 
 /**
@@ -66,6 +67,11 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
   } else {
     // post a join message
     $msg = Container_messages::postMsgToChannel($cid, $uid, null, 'join');
+    
+    // first is op ? first connected user on the channel is an operator
+    if ($GLOBALS['first_is_op'] and count(Container_channels::getChannelUsers($cid)) == 1) {
+      Container_channels_op::addOp($cid, $uid);
+    }
     
     $res->status(201); // User joined the channel
     $res['Content-Type'] = 'application/json; charset=utf-8';

@@ -2,6 +2,7 @@
 
 include_once 'container/indexes.php';
 include_once 'container/users.php';
+include_once 'container/channels-op.php';
 
 class Container_channels {
   
@@ -45,12 +46,13 @@ class Container_channels {
     $cdir = self::getChannelsDir();
     $cupath = $cdir.'/'.$cid.'/users/';  
     $subscribers = array();
-    foreach (scandir($cupath) as $value) {
-      if ($value === '.' || $value === '..') continue;
+    foreach (scandir($cupath) as $uid) {
+      if ($uid === '.' || $uid === '..') continue;
       if ($withudata) {
-        $subscribers[$value] = Container_users::getUserData($value);
+        $subscribers[$uid]       = Container_users::getUserData($uid);
+        $subscribers[$uid]->op   = Container_channels_op::isOp($cid, $uid);
       } else {
-        $subscribers[] = $value;
+        $subscribers[] = $uid;
       }
     }
     return $subscribers;
