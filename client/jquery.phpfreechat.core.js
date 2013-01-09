@@ -74,10 +74,11 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       // store userdata in the cache
       // refresh the interface
       pfc.clearUserList();
-      $.each(cinfo.users, function (uid) {
+      $.each(cinfo.users, function (uid, udata) {
         pfc.channels[cid].users.push(uid);
-        pfc.users[uid] = cinfo.users[uid];
-        pfc.appendUser(cinfo.users[uid]);
+        
+        pfc.users[uid] = udata;
+        pfc.appendUser(udata);
       });
 
       // display a join message for him
