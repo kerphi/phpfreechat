@@ -83,6 +83,7 @@ Example: TODO
 * `server/channels/:cid/op/`             - GET    - returns the :cid channel operators list (list of :uid)
 * `server/channels/:cid/op/:uid`         - GET    - tells if :uid is operator on :cid
 * `server/channels/:cid/op/:uid`         - PUT    - add :uid to the operator list on :cid channel (try to)
+* `server/channels/:cid/op/:uid`         - DELETE - removes operator rights to :uid on :cid channel (try to)
 * `server/users/`                        - GET    - returns the online users :uid currently online on the server [not implemented]
 * `server/users/:uid/`                   - GET    - returns :uid user info
 * `server/users/:uid/msg/`               - GET    - pending messages for :uid user (from channels or a private messages)

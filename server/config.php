@@ -9,6 +9,9 @@ $GLOBALS['pfc_version'] = '2.0.5';
 // (Default value: 35 seconds)
 $GLOBALS['pfc_timeout'] = 35;
 
+// Gives channel operator rights to the first connected user
+// (Default value: true)
+$GLOBALS['first_is_op'] = true;
 
 // custom user hooks
 $GLOBALS['pfc_hooks'] = array();

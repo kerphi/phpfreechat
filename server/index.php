@@ -40,6 +40,7 @@ foreach ($GLOBALS['pfc_hooks'] as $hook_name => $hooks) {
 
 require 'routes/auth.php';
 require 'routes/channels.php';
+require 'routes/channels-op.php';
 require 'routes/users.php';
 require 'routes/utils.php';
 
