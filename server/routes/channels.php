@@ -134,7 +134,6 @@ $app->post('/channels/:cid/msg/', function ($cid) use ($app, $req, $res) {
     return;
   }
   $uid = $_SESSION['userdata']['id'];
-
   
   // check this user is online
   if (!Container_users::checkUserExists($uid)) {
@@ -164,7 +163,7 @@ $app->post('/channels/:cid/msg/', function ($cid) use ($app, $req, $res) {
     
     // post a simple message
     case 'msg':
-        $http_result = Container_messages::postMsgToChannel($cid, $uid, $data[0]);
+        $http_result = Container_messages::postMsgToChannel($cid, $uid, $data[1]);
         $http_status = 201;
         break;
       
