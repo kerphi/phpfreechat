@@ -389,6 +389,7 @@ div.pfc-content {
           position: absolute;
           left: @users-status-position-left;
           top: @users-status-position-top;
+          background-repeat: no-repeat;
         }
         .myself {
           font-size: @users-myself-font-size;
@@ -410,6 +411,12 @@ div.pfc-content {
         .st-admin.st-inactive {
           background-image: @admin-url-icon-inactive;
         }
+        .st-op.st-active {
+          background-image: @op-url-icon-active;
+        }
+        .st-op.st-inactive {
+          background-image: @op-url-icon-inactive;
+        }        
       }
     }
   }

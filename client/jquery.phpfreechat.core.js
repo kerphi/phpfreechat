@@ -68,6 +68,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         op: []
       };
       
+      // store channel operators
+      pfc.channels[cid].op = cinfo.op;
+      
       // store userdata in the cache
       // refresh the interface
       pfc.clearUserList();
@@ -76,8 +79,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         pfc.users[uid] = cinfo.users[uid];
         pfc.appendUser(cinfo.users[uid]);
       });
-      // store channel operators
-      pfc.channels[cid].op = cinfo.op;
 
       // display a join message for him
       pfc.appendMessage({
@@ -189,6 +190,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     user.name   = (user.name !== undefined) ? user.name : 'Guest ' + Math.round(Math.random() * 100);
     user.email  = (user.email !== undefined) ? user.email : '';
     user.active = (user.active !== undefined) ? user.active : true;
+    user.op     = ($.inArray(user.id, pfc.channels[pfc.cid].op) >= 0);
     
     // user list DOM element
     var users_dom = $(pfc.element).find(user.role == 'admin' ? 'div.pfc-role-admin' :
@@ -209,6 +211,12 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       html.addClass('first');
     }
     html.find('div.status').addClass(user.active ? 'st-active' : 'st-inactive');
+
+    // operators have a specific icon in the user list
+    if (user.op) {
+      html.find('div.status').addClass('st-op');
+    }
+    
     //html.find('div.avatar').append('<img src="http://www.gravatar.com/avatar/' + pfc.md5(user.email) + '?d=wavatar&amp;s=20" alt="" />');
 
     // get all userids from the list (could be cached)
