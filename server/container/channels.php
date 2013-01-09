@@ -11,17 +11,23 @@ class Container_channels {
     return $cdir;
   }
   
+  static public function init($cid) {
+    $cdir = self::getChannelsDir();
+    $cpath = $cdir.'/'.$cid;
+    @mkdir($cpath, 0777, true);
+    @mkdir($cpath.'/users', 0777, true);
+    @mkdir($cpath.'/op', 0777, true);  
+  }
+  
   static public function generateCid() {
     $cdir = self::getChannelsDir();
     do {
       $cid = sha1(uniqid('', true));
       $cpath = $cdir.'/'.$cid.'/';
     } while (file_exists($cpath));
-    @mkdir($cpath, 0777, true);
-    @mkdir($cpath.'/users', 0777, true);
+    self::init($cid);
     return $cid;
   }
-  
   
   static public function getChannelMsgPath($cid, $mid) {
     $cdir = self::getChannelsDir();

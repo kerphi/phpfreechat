@@ -58,12 +58,6 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
     return;
   }
   
-  // todo remove this code when channel create/join will be implemented
-  $cdir = Container_channels::getChannelsDir();
-  $cpath = $cdir.'/'.$cid.'/';
-  @mkdir($cpath, 0777, true);
-  @mkdir($cpath.'/users', 0777, true);
-  
   if (!Container_users::joinChannel($uid, $cid)) {
     $res->status(200); // User already joined the channel
     $res['Content-Type'] = 'application/json; charset=utf-8';

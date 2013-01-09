@@ -213,6 +213,7 @@ class Container_users {
   }
 
   static public function joinChannel($uid, $cid) {
+    Container_channels::init($cid);
     $cupath = Container_channels::getChannelUserPath($cid, $uid);    
     $ucpath  = self::getDir().'/'.$uid.'/channels/'.$cid;
     if (file_exists($ucpath) and file_exists($cupath)) {
