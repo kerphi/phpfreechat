@@ -11,7 +11,7 @@ VERSION=`$TOOL_PATH/get-version`
 
 git fetch --tags
 if [ "`git tag -l | grep $VERSION`" == "" ] ; then
-  echo "Warning: version $VERISON does not exists, can untag. Aborting ..."
+  echo "Warning: version $VERSION does not exists, can untag. Aborting ..."
   exit 2
 fi
 
