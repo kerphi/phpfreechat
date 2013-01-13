@@ -20,9 +20,9 @@ try {
   baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8');
 } catch (err) {}
 
-vows.describe('First is operator tests').addBatch({
+vows.describe('Channel operator rights tests').addBatch({
 
-  'when user1 joins the channel (he is alone) then user2 joins the channel (they are two in the channel)': {
+  'when user1 joins the channel (he is alone but operator) then user2 joins the channel (he is not an operator)': {
     topic: function () {
       var self = this;
       var requests = [
@@ -99,7 +99,62 @@ vows.describe('First is operator tests').addBatch({
             jar: j2,
           }, callback);
         },
+
         
+        // `server/channels/:cid/op/:uid`         - GET    - tells if :uid is operator on :cid
+        // [7] u2 check a operator user status
+        function USER2CHECKOP1(callback) {
+          request({
+            method: 'GET',
+            url: baseurl + '/server/channels/' + cid1 + '/op/' + userdata1.id,
+            jar: j2,
+          }, callback);
+        },
+        // [8] u2 check a none operator user status
+        function USER2CHECKOP2(callback) {
+          request({
+            method: 'GET',
+            url: baseurl + '/server/channels/' + cid1 + '/op/' + userdata2.id,
+            jar: j2,
+          }, callback);
+        },
+        
+        // `server/channels/:cid/op/:uid`         - PUT    - add :uid to the operator list on :cid channel (try to)
+        // [9] u2 try to give op rights to him
+        function USER2GIVEOP(callback) {
+          request({
+            method: 'PUT',
+            url: baseurl + '/server/channels/' + cid1 + '/op/' + userdata2.id,
+            jar: j2,
+          }, callback);
+        },
+        // [10] u1 try to give op rights to u2
+        function USER1GIVEOP(callback) {
+          request({
+            method: 'PUT',
+            url: baseurl + '/server/channels/' + cid1 + '/op/' + userdata2.id,
+            jar: j1,
+          }, callback);
+        },
+        
+        // `server/channels/:cid/op/:uid`         - DELETE - removes operator rights to :uid on :cid channel (try to)
+        // [11] u1 try to remove op rights to u2
+        function USER1REMOVEOP(callback) {
+          request({
+            method: 'DELETE',
+            url: baseurl + '/server/channels/' + cid1 + '/op/' + userdata2.id,
+            jar: j1,
+          }, callback);
+        },
+        // [12] u2 try to remove op rights to u1
+        function USER2REMOVEOP(callback) {
+          request({
+            method: 'DELETE',
+            url: baseurl + '/server/channels/' + cid1 + '/op/' + userdata1.id,
+            jar: j2,
+          }, callback);
+        },
+    
       ];
 
       // store function names in the steps array
@@ -116,40 +171,40 @@ vows.describe('First is operator tests').addBatch({
       });
     },
 
-    'server returns success status codes': function (error, results, requests, steps) {
-      var codes = [ 200, 201, 200, 200, 403, 201, 200 ];
-      results.forEach(function (r, i) {
-        assert.equal(r[0].statusCode, codes[i], 'response ' + i + ' code is wrong (expected ' + codes[i] + ' got ' + r[0].statusCode + ')');
-      });
-    },
-
     'user1 should be operator when he is alone (first_is_op feature)': function (error, results, requests, steps) {
-      var join_response = {};
+      var result = results[steps.USER1JOIN][0];
+      assert.equal(result.statusCode, 201);
+      
+      var response = {};
       try {
-        join_response = JSON.parse(results[steps.USER1JOIN][0].body);
+        response = JSON.parse(result.body);
       } catch (err) {
         assert.isNull(err, 'response body should be JSON formated');
       }
-      assert.lengthOf(join_response.op, 1);
-      assert.include(join_response.op, userdata1.id);
+      assert.lengthOf(response.op, 1);
+      assert.include(response.op, userdata1.id);
     },
 
     'user2 should not be operator when he just joined the channel (first_is_op feature)': function (error, results, requests, steps) {
-      var join_response = {};
+      var result = results[steps.USER2JOIN][0];
+      assert.equal(result.statusCode, 201);
+
+      var response = {};
       try {
-        join_response = JSON.parse(results[steps.USER2JOIN][0].body);
+        response = JSON.parse(result.body);
       } catch (err) {
         assert.isNull(err, 'response body should be JSON formated');
       }
-      assert.lengthOf(join_response.op, 1);
-      assert.include(join_response.op, userdata1.id);
-      assert.isTrue(join_response.op.indexOf(userdata2.id) == -1);
+      assert.lengthOf(response.op, 1);
+      assert.include(response.op, userdata1.id);
+      assert.isTrue(response.op.indexOf(userdata2.id) == -1);
     },    
     
     'user1 should be allowed to retrieve the channel operator list once he joins the channel': function (error, results, requests, steps) {
+      var result = results[steps.USER1OPLIST][0];
       var response = {};
       try {
-        response = JSON.parse(results[steps.USER1OPLIST][0].body);
+        response = JSON.parse(result.body);
       } catch (err) {
         assert.isNull(err, 'response body should be JSON formated');
       }
@@ -159,15 +214,17 @@ vows.describe('First is operator tests').addBatch({
     },    
 
     'user2 should not be allowed to retrieve the channel operator list if he did not joined the channel': function (error, results, requests, steps) {
-      assert.equal(results[steps.USER2OPLIST1][0].statusCode, 403);
+      var result = results[steps.USER2OPLIST1][0];
+      assert.equal(result.statusCode, 403);
     },
     
     'user2 should be allowed to retrieve the channel operator list once he joined the channel': function (error, results, requests, steps) {
-      assert.equal(results[steps.USER2OPLIST2][0].statusCode, 200);
+      var result = results[steps.USER2OPLIST2][0];
+      assert.equal(result.statusCode, 200);
       
       var response = {};
       try {
-        response = JSON.parse(results[steps.USER2OPLIST2][0].body);
+        response = JSON.parse(result.body);
       } catch (err) {
         assert.isNull(err, 'response body should be JSON formated');
       }
@@ -175,6 +232,36 @@ vows.describe('First is operator tests').addBatch({
       assert.isArray(response);
       assert.lengthOf(response, 1);
     },    
+    
+    'user2 should be able to check the user1 operator status': function (error, results, requests, steps) {
+      var result = results[steps.USER2CHECKOP1][0];
+      assert.equal(result.statusCode, 200, 'should returns 200 (user1 IS an operator on this channel)');
+    },
+    
+    'user2 should be able to check the user2 operator status': function (error, results, requests, steps) {
+      var result = results[steps.USER2CHECKOP2][0];
+      assert.equal(result.statusCode, 404, 'should returns 404 (user2 is NOT an operator on this channel)');
+    },
+    
+    'user2 should not be able to give op rights to him': function (error, results, requests, steps) {
+      var result = results[steps.USER2GIVEOP][0];
+      assert.equal(result.statusCode, 403, 'should returns 403 (user2 is NOT an operator so he cannot give op rights to other users)');
+    },    
+    
+    'user1 should be able to give op rights to user2': function (error, results, requests, steps) {
+      var result = results[steps.USER1GIVEOP][0];
+      assert.equal(result.statusCode, 200, 'should returns 200 (user1 IS an operator so he can give op rights to other users)');
+    },
+    
+    'user1 should be able to remove op rights to user2': function (error, results, requests, steps) {
+      var result = results[steps.USER1REMOVEOP][0];
+      assert.equal(result.statusCode, 200, 'should returns 200 (user1 IS an operator so he can remove op rights to other users)');
+    },
+    'user2 should not be able to remove op rights to user1': function (error, results, requests, steps) {
+      var result = results[steps.USER2REMOVEOP][0];
+      assert.equal(result.statusCode, 403, 'should returns 403 (user2 is NOT an operator so he cannot remove op rights to other users)');
+    },
+    
     
   },
 }).export(module);
