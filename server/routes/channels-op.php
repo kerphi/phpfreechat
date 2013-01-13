@@ -103,7 +103,8 @@ $app->put('/channels/:cid/op/:uid', function ($cid, $uid) use ($app, $req, $res)
   $ok = Container_channels_op::addOp($cid, $uid);
   if ($ok) {
     $res->status(200);
-    // todo: notification to other connected user of this new operator
+    // notification to other connected user of this new operator
+    Container_messages::postMsgToChannel($cid, $online_uid, $uid, 'op');
   } else {
     $res->status(500);
   }
@@ -141,7 +142,8 @@ $app->delete('/channels/:cid/op/:uid', function ($cid, $uid) use ($app, $req, $r
   $ok = Container_channels_op::rmOp($cid, $uid);
   if ($ok) {
     $res->status(200);
-    // todo: notification to other connected user of this removed operator
+    // notification to other connected user of this removed operator
+    Container_messages::postMsgToChannel($cid, $online_uid, $uid, 'deop');
   } else {
     $res->status(500);
   }

@@ -19,7 +19,8 @@ class Container_channels_op {
   static public function addOp($cid, $uid) {
     $cdir = Container_channels::getChannelsDir();
     $p    = $cdir.'/'.$cid.'/op/'.$uid;  
-    return @touch($p);
+    @touch($p);
+    return file_exists($p);
   }
 
   /**
@@ -28,7 +29,8 @@ class Container_channels_op {
   static public function rmOp($cid, $uid) {
     $cdir = Container_channels::getChannelsDir();
     $p    = $cdir.'/'.$cid.'/op/'.$uid;  
-    return @unlink($p);
+    @unlink($p);
+    return !file_exists($p);
   }
   
   /**
