@@ -22,10 +22,11 @@ try {
 
 vows.describe('First is operator tests').addBatch({
 
-  'when a user join a channel and is alone': {
+  'when user1 joins the channel (he is alone) then user2 joins the channel (they are two in the channel)': {
     topic: function () {
       var self = this;
       var requests = [
+        
         // [0] auth u1
         function USER1LOGIN(callback) {
           request({
@@ -39,6 +40,7 @@ vows.describe('First is operator tests').addBatch({
             callback(err, res, body);
           });
         },
+        
         // [1] u1 join cid1
         function USER1JOIN(callback) {
           request({
@@ -47,6 +49,57 @@ vows.describe('First is operator tests').addBatch({
             jar: j1,
           }, callback);
         },
+        
+        // [2] u1 get the operator list
+        function USER1OPLIST(callback) {
+          request({
+            method: 'GET',
+            url: baseurl + '/server/channels/' + cid1 + '/op/',
+            jar: j1,
+          }, callback);
+        },
+        
+        // [3] auth u2
+        function USER2LOGIN(callback) {
+          request({
+            method: 'GET',
+            url: baseurl + '/server/auth',
+            headers: { 'Pfc-Authorization': 'Basic '
+                       + new Buffer("testop2:password").toString('base64') },
+            jar: j2,
+          }, function (err, res, body) {
+            userdata2 = JSON.parse(body);
+            callback(err, res, body);
+          });
+        },
+        
+        // [4] u2 get the operator list
+        function USER2OPLIST1(callback) {
+          request({
+            method: 'GET',
+            url: baseurl + '/server/channels/' + cid1 + '/op/',
+            jar: j2,
+          }, callback);
+        },
+        
+        // [5] u2 join cid1
+        function USER2JOIN(callback) {
+          request({
+            method: 'PUT',
+            url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata2.id,
+            jar: j2,
+          }, callback);
+        },
+        
+        // [6] u2 get the operator list
+        function USER2OPLIST2(callback) {
+          request({
+            method: 'GET',
+            url: baseurl + '/server/channels/' + cid1 + '/op/',
+            jar: j2,
+          }, callback);
+        },
+        
       ];
 
       // store function names in the steps array
@@ -64,13 +117,13 @@ vows.describe('First is operator tests').addBatch({
     },
 
     'server returns success status codes': function (error, results, requests, steps) {
-      var codes = [ 200, 201 ];
+      var codes = [ 200, 201, 200, 200, 403, 201, 200 ];
       results.forEach(function (r, i) {
         assert.equal(r[0].statusCode, codes[i], 'response ' + i + ' code is wrong (expected ' + codes[i] + ' got ' + r[0].statusCode + ')');
       });
     },
 
-    'join command response has an operator list with the user1 id into (first_is_op feature)': function (error, results, requests, steps) {
+    'user1 should be operator when he is alone (first_is_op feature)': function (error, results, requests, steps) {
       var join_response = {};
       try {
         join_response = JSON.parse(results[steps.USER1JOIN][0].body);
@@ -81,5 +134,47 @@ vows.describe('First is operator tests').addBatch({
       assert.include(join_response.op, userdata1.id);
     },
 
+    'user2 should not be operator when he just joined the channel (first_is_op feature)': function (error, results, requests, steps) {
+      var join_response = {};
+      try {
+        join_response = JSON.parse(results[steps.USER2JOIN][0].body);
+      } catch (err) {
+        assert.isNull(err, 'response body should be JSON formated');
+      }
+      assert.lengthOf(join_response.op, 1);
+      assert.include(join_response.op, userdata1.id);
+      assert.isTrue(join_response.op.indexOf(userdata2.id) == -1);
+    },    
+    
+    'user1 should be allowed to retrieve the channel operator list once he joins the channel': function (error, results, requests, steps) {
+      var response = {};
+      try {
+        response = JSON.parse(results[steps.USER1OPLIST][0].body);
+      } catch (err) {
+        assert.isNull(err, 'response body should be JSON formated');
+      }
+
+      assert.isArray(response);
+      assert.lengthOf(response, 1);
+    },    
+
+    'user2 should not be allowed to retrieve the channel operator list if he did not joined the channel': function (error, results, requests, steps) {
+      assert.equal(results[steps.USER2OPLIST1][0].statusCode, 403);
+    },
+    
+    'user2 should be allowed to retrieve the channel operator list once he joined the channel': function (error, results, requests, steps) {
+      assert.equal(results[steps.USER2OPLIST2][0].statusCode, 200);
+      
+      var response = {};
+      try {
+        response = JSON.parse(results[steps.USER2OPLIST2][0].body);
+      } catch (err) {
+        assert.isNull(err, 'response body should be JSON formated');
+      }
+
+      assert.isArray(response);
+      assert.lengthOf(response, 1);
+    },    
+    
   },
 }).export(module);
