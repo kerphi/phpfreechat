@@ -136,9 +136,17 @@ vows.describe('Channel operator rights tests').addBatch({
             jar: j1,
           }, callback);
         },
+        // [11] u2 get the operator list
+        function USER2OPLIST3(callback) {
+          request({
+            method: 'GET',
+            url: baseurl + '/server/channels/' + cid1 + '/op/',
+            jar: j2,
+          }, callback);
+        },
         
         // `server/channels/:cid/op/:uid`         - DELETE - removes operator rights to :uid on :cid channel (try to)
-        // [11] u1 try to remove op rights to u2
+        // [12] u1 try to remove op rights to u2
         function USER1REMOVEOP(callback) {
           request({
             method: 'DELETE',
@@ -146,7 +154,7 @@ vows.describe('Channel operator rights tests').addBatch({
             jar: j1,
           }, callback);
         },
-        // [12] u2 try to remove op rights to u1
+        // [13] u2 try to remove op rights to u1
         function USER2REMOVEOP(callback) {
           request({
             method: 'DELETE',
@@ -252,6 +260,23 @@ vows.describe('Channel operator rights tests').addBatch({
       var result = results[steps.USER1GIVEOP][0];
       assert.equal(result.statusCode, 200, 'should returns 200 (user1 IS an operator so he can give op rights to other users)');
     },
+    
+    'once user1 gave op rights to user2, the operator list should contain user1 and user2': function (error, results, requests, steps) {
+      var result = results[steps.USER2OPLIST3][0];
+      assert.equal(result.statusCode, 200);
+      
+      var response = {};
+      try {
+        response = JSON.parse(result.body);
+      } catch (err) {
+        assert.isNull(err, 'response body should be JSON formated');
+      }
+
+      assert.isArray(response);
+      assert.lengthOf(response, 2);
+      assert.include(response, userdata1.id);
+      assert.include(response, userdata2.id);
+    },    
     
     'user1 should be able to remove op rights to user2': function (error, results, requests, steps) {
       var result = results[steps.USER1REMOVEOP][0];
