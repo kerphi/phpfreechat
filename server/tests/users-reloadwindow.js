@@ -1,3 +1,4 @@
+#!/usr/bin/env vows
 /*jslint node: true, maxlen: 150, maxerr: 50, indent: 2 */
 'use strict';
 
