@@ -3,9 +3,14 @@
 ## Installation
 
 ```bash
-git clone ...
+git clone https://github.com/kerphi/phpfreechat.git
 make setup
 ```
+
+If you are using Windows, you should download manualy [https://github.com/codeguy/Slim/archive/2.1.0.zip](Slim Framework)
+and unzip it into server/lib/Slim/ folder (rename Slim-x.x.x to Slim).
+
+If you plan to contribute, it's better to fork the git repository then to commit your code in your fork and to submit pull request to the phpfreechat github repository.
 
 ## Makefile
 
