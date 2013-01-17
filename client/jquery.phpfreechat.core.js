@@ -390,6 +390,14 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       // default focus to donate button
       box.find('input[name=ok-donate]').focus();
 
+      // press ESC to cancel donate
+      box.on('keyup', function (event) {
+        if ( event.which == 27 ) {
+          pfc.modalbox.close(true);
+          next();
+        }
+      });
+
       // donate or cancel button clicked
       box.find('input[type=submit]').click(function () {
         // donate button clicked
