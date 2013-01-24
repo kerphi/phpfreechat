@@ -401,13 +401,16 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       // default focus to donate button
       box.find('input[name=ok-donate]').focus();
 
-      // press ESC to cancel donate
-      box.on('keyup', function (event) {
+      // press ESC to hide donate popup
+      var esc_key_action = function (event) {
         if ( event.which == 27 ) {
           pfc.modalbox.close(true);
+          $(document).off('keyup', esc_key_action);  // removes escape key event handler
           next();
         }
-      });
+      };
+      $(document).on('keyup', esc_key_action); 
+      
 
       // donate or cancel button clicked
       box.find('input[type=submit]').click(function () {
@@ -426,6 +429,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
           });
         }
         pfc.modalbox.close(true);
+        $(document).off('keyup', esc_key_action); // removes escape key event handler
         next();
       });
       
