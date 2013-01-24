@@ -98,7 +98,23 @@ $app->put('/channels/:cid/op/:uid', function ($cid, $uid) use ($app, $req, $res)
     $res->status(403); // You have to be an operator to give op to other user
     return;
   }
-  
+
+  // check the new operator in online on this channel
+  if (!Container_channels::checkChannelUser($cid, $uid)) {
+    $res->status(400); 
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body(GetPfcError(40001)); // User is not online on the channel
+    return;
+  }
+
+  // check the new operator is not yet an operator on this channel
+  if (Container_channels_op::isOp($cid, $uid)) {
+    $res->status(400);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body(GetPfcError(40003)); // User is already an operator on this channel
+    return;
+  }
+
   // add $uid user as a $cid channel operator
   $ok = Container_channels_op::addOp($cid, $uid);
   if ($ok) {
@@ -135,6 +151,14 @@ $app->delete('/channels/:cid/op/:uid', function ($cid, $uid) use ($app, $req, $r
   // check this user is an operator on this channel
   if (!Container_channels_op::isOp($cid, $online_uid)) {
     $res->status(403); // You have to be an operator to give op to other user
+    return;
+  }
+
+  // check the destination user is an operator on this channel
+  if (!Container_channels_op::isOp($cid, $uid)) {
+    $res->status(400);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body(GetPfcError(40002)); // This user is not an operator on the channel
     return;
   }
   

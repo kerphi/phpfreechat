@@ -28,14 +28,22 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       $.each(msgs, function (i, m) {
         // specific actions for special messages
         if (m.type == 'join') {
+          // TODO: move this code into received_join
           pfc.users[m.sender] = m.body; // store new joined user data
           pfc.appendUser(pfc.users[m.sender]); // append the user to the list
+          pfc.appendMessage(m);
         } else if (m.type == 'leave') {
+          // TODO: move this code into received_leave
           pfc.removeUser(m.sender); // remove the user from the list
+          pfc.appendMessage(m);
+        } else if (m.type == 'op') {
+          pfc.received_op(m);
+        } else if (m.type == 'deop') {
+          pfc.received_deop(m);
+        } else {
+          // display the message of the chat interface
+          pfc.appendMessage(m);
         }
-        
-        // display the message of the chat interface
-        pfc.appendMessage(m);
       });
       if (loop) {
         setTimeout(function () { pfc.readPendingMessages(true) }, pfc.options.refresh_delay);
@@ -180,6 +188,11 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    */
   pfc.appendUser = function (user) {
 
+    // be tolerent "user" parameter could be a uid
+    if (pfc.users[user]) {
+      user = pfc.users[user];
+    }
+    
     // user.role = admin or user
     // user.name = nickname
     // user.email = user email used to calculate gravatar
@@ -187,11 +200,12 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     
     // default values
     user.id     = (user.id !== undefined) ? user.id : 0;
-    user.role   = (user.role !== undefined) ? user.role : 'user';
+    console.log($.inArray(user.id, pfc.channels[pfc.cid].op) >= 0);
+    user.op     = ($.inArray(user.id, pfc.channels[pfc.cid].op) >= 0);
+    user.role   = user.op ? 'admin' : 'user';
     user.name   = (user.name !== undefined) ? user.name : 'Guest ' + Math.round(Math.random() * 100);
     user.email  = (user.email !== undefined) ? user.email : '';
     user.active = (user.active !== undefined) ? user.active : true;
-    user.op     = ($.inArray(user.id, pfc.channels[pfc.cid].op) >= 0);
     
     // user list DOM element
     var users_dom = $(pfc.element).find(user.role == 'admin' ? 'div.pfc-role-admin' :
@@ -259,9 +273,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    * Hide or show the roles titles
    */
   pfc.updateRolesTitles = function () {
-    // do not show/hide role titles because not planned for 2.0
-    return;
-/*
     [ $(pfc.element).find('div.pfc-role-admin'),
       $(pfc.element).find('div.pfc-role-user') ].forEach(function (item, index) {
       if (item.find('li').length === 0) {
@@ -269,7 +280,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       } else {
         item.find('.role-title').show();
       }
-    });*/
+    });
   }
 
   /**

@@ -77,5 +77,90 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     return [ cmd_arg[0], cmd ].concat(cmd_arg.slice(1));
   };
 
+  
+  /**
+   * /op command: gives operator rights to a user on a channel
+   */
+  pfc.op = function (cid, uid) {
+
+    $.ajax({
+      type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
+      url:  pfc.options.serverUrl + '/channels/' + cid + '/op/' + uid,
+      data: pfc.options.use_post_wrapper ? { _METHOD: 'PUT' } : null
+    }).done(function (op_info) {
+      console.log(op_info);
+      pfc.received_op({
+        type: 'op',
+        sender: pfc.uid,
+        body: uid,
+        recipient: 'channel|' + cid
+      });
+    }).error(function (err) {
+      console.log(err);
+    });
+    
+  };
+
+  
+  pfc.received_op = function (msg) {
+    
+    // append message to the list
+    var op     = pfc.users[msg.sender];
+    var op_dst = pfc.users[msg.body];
+    msg.body = op.name + ' gave operator rights to ' + op_dst.name;
+    pfc.appendMessage(msg);
+
+    // update the channel operator list
+    var cid = msg.recipient.split('|')[1];
+    pfc.channels[cid].op.push(op_dst.id);
+    pfc.removeUser(op_dst.id);
+    pfc.appendUser(op_dst.id);
+
+  };
+  
+  
+  /**
+   * /deop command: removes operator rights to a user on a channel
+   */
+  pfc.deop = function (cid, uid) {
+
+    $.ajax({
+      type: pfc.options.use_post_wrapper ? 'POST' : 'DELETE',
+      url:  pfc.options.serverUrl + '/channels/' + cid + '/op/' + uid,
+      data: pfc.options.use_post_wrapper ? { _METHOD: 'DELETE' } : null
+    }).done(function (op_info) {
+      console.log(op_info);
+      pfc.received_deop({
+        type: 'deop',
+        sender: pfc.uid,
+        body: uid,
+        recipient: 'channel|' + cid
+      });
+    }).error(function (err) {
+      console.log(err);
+    });
+    
+  };  
+  
+  
+
+  pfc.received_deop = function (msg) {
+    
+    // append message to the list
+    var deop     = pfc.users[msg.sender];
+    var deop_dst = pfc.users[msg.body];
+    msg.body = deop.name + ' removed operator rights to ' + deop_dst.name;
+    pfc.appendMessage(msg);
+
+    // update the channel operator list
+    var cid = msg.recipient.split('|')[1];
+    var idx = pfc.channels[cid].op.indexOf(deop_dst.id);
+    if (idx !== -1) pfc.channels[cid].op.splice(idx, 1);
+    pfc.removeUser(deop_dst.id);
+    pfc.appendUser(deop_dst.id);
+
+  };
+    
+  
   return pfc;
 }(phpFreeChat || {}, jQuery, window));
