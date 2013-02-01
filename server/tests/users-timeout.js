@@ -83,7 +83,7 @@ vows.describe('User timeout')
                 setTimeout(function () {
                   request({
                     method: 'GET',
-                    url: baseurl + '/server/users/' + userdata2.id + '/msg/',
+                    url: baseurl + '/server/users/' + userdata2.id + '/pending/',
                     jar: j2,
                   }, function (err, res, body) {
                     tmsg = tmsg.concat(JSON.parse(body)); // get the timeout leave message of user1
@@ -193,7 +193,7 @@ vows.describe('User timeout')
         //console.log('6');
         request({
           method: 'GET',
-          url: baseurl + '/server/users/' + userdata1.id + '/msg/',
+          url: baseurl + '/server/users/' + userdata1.id + '/pending/',
           jar: j1,
         }, function (err, res, body) {
           tmsg = JSON.parse(body);

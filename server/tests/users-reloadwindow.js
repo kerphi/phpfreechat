@@ -105,7 +105,7 @@ vows.describe('User reload his window')
         setTimeout(function () {
           request({
             method: 'GET',
-            url: baseurl + '/server/users/' + userdata2.id + '/msg/',
+            url: baseurl + '/server/users/' + userdata2.id + '/pending/',
             jar: j2,
           }, function (err, res, body) {
             tmsg = tmsg.concat(JSON.parse(body));
@@ -124,7 +124,7 @@ vows.describe('User reload his window')
         setTimeout(function () {
           request({
             method: 'GET',
-            url: baseurl + '/server/users/' + userdata1.id + '/msg/',
+            url: baseurl + '/server/users/' + userdata1.id + '/pending/',
             jar: j1,
           }, function (err, res, body) {
             tmsg = tmsg.concat(JSON.parse(body));

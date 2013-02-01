@@ -53,7 +53,7 @@ $app->get('/users/:uid/', function ($uid) use ($app, $req, $res) {
 /**
  * Returns user's pending messages
  */
-$app->get('/users/:uid/msg/', function ($uid) use ($app, $req, $res) {
+$app->get('/users/:uid/pending/', function ($uid) use ($app, $req, $res) {
 
   // check user acces
   session_start();

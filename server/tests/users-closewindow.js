@@ -82,7 +82,7 @@ vows.describe('User close his window')
                 setTimeout(function () {
                   request({
                     method: 'GET',
-                    url: baseurl + '/server/users/' + userdata2.id + '/msg/',
+                    url: baseurl + '/server/users/' + userdata2.id + '/pending/',
                     jar: j2,
                   }, function (err, res, body) {
                     tmsg = tmsg.concat(JSON.parse(body)); // get the timeout leave message of user1

@@ -48,7 +48,7 @@ vows.describe('System messages on a channel').addBatch({
           // user1 read his pending messages
           request({
             method: 'GET',
-            url: baseurl + '/server/users/' + userdata1.id + '/msg/',
+            url: baseurl + '/server/users/' + userdata1.id + '/pending/',
             jar: j1,
           }, self.callback);
 
@@ -96,7 +96,7 @@ vows.describe('System messages on a channel').addBatch({
           function USER1READMSG(callback) {
             request({
               method: 'GET',
-              url: baseurl + '/server/users/' + userdata1.id + '/msg/',
+              url: baseurl + '/server/users/' + userdata1.id + '/pending/',
               jar: j1,
             }, function (err, res, body) {
               user1msg = JSON.parse(body);
@@ -107,7 +107,7 @@ vows.describe('System messages on a channel').addBatch({
           function USER2READMSG(callback) {
             request({
               method: 'GET',
-              url: baseurl + '/server/users/' + userdata2.id + '/msg/',
+              url: baseurl + '/server/users/' + userdata2.id + '/pending/',
               jar: j2,
             }, function (err, res, body) {
               user2msg = JSON.parse(body);
@@ -159,7 +159,7 @@ vows.describe('System messages on a channel').addBatch({
             function USER1READMSG(callback) {
               request({
                 method: 'GET',
-                url: baseurl + '/server/users/' + userdata1.id + '/msg/',
+                url: baseurl + '/server/users/' + userdata1.id + '/pending/',
                 jar: j1,
               }, function (err, res, body) {
                 user1msg = JSON.parse(body);
@@ -170,7 +170,7 @@ vows.describe('System messages on a channel').addBatch({
             function USER2READMSG(callback) {
               request({
                 method: 'GET',
-                url: baseurl + '/server/users/' + userdata2.id + '/msg/',
+                url: baseurl + '/server/users/' + userdata2.id + '/pending/',
                 jar: j2,
               }, function (err, res, body) {
                 user2msg = JSON.parse(body);

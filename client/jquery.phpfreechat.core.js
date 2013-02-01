@@ -20,7 +20,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // send periodicaly AJAX request to check pending messages
     $.ajax({
       type: 'GET',
-      url:  pfc.options.serverUrl + '/users/' + pfc.uid + '/msg/'
+      url:  pfc.options.serverUrl + '/users/' + pfc.uid + '/pending/'
     }).done(function (msgs) {
       // reset the error counter because a request has been well received
       pfc.readPendingMessages.nb_network_error = 0;
