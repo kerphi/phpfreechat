@@ -92,7 +92,7 @@ Example: TODO
 * `server/channels/:cid/op/:uid`         - DELETE - removes operator rights to :uid on :cid channel (try to)
 * `server/users/`                        - GET    - returns the online users :uid currently online on the server [not implemented]
 * `server/users/:uid/`                   - GET    - returns :uid user info
-* `server/users/:uid/msg/`               - GET    - pending messages for :uid user (from channels or a private messages)
+* `server/users/:uid/pending/`           - GET    - pending messages for :uid user (from channels or a private messages)
 * `server/users/:uid/closed`             - PUT    - set the :uid user window closed flag to true (used to disconnect the user earlier)
 * `server/skipintro`                     - GET    - flag used to indicate if the intro message about donation should be displayed or not
 * `server/skipintro`                     - PUT    - tells to not display again the intro message (set the flag to true)
