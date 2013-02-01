@@ -8,6 +8,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
   // phpfreechat commands list
   pfc.commands = {
+    
     /**
      * msg command
      */
@@ -82,6 +83,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       }
     },
     
+    /**
+     * kick command
+     */
     kick: {
       usage:      '/kick "<username>" ["reason"]',
       longusage:  '/kick ["#<channel>"] "<username>" ["reason"]',
@@ -90,6 +94,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       regexp_ids: [ { 2: 'channel', 3: 'username', 5: 'reason' } ]
     },
     
+    /**
+     * op command
+     */
     op: {
       help:       'gives operator rights to a user on a channel',
       usage:      '/op "<username>"',
@@ -130,6 +137,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       }
     },
     
+    /**
+     * deop command
+     */
     deop: {
       help:       'removes operator rights to a user on a channel',
       usage:      '/deop "<username>"',
