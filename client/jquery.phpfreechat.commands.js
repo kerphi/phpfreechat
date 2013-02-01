@@ -46,12 +46,65 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       regexp:     [ /^"#([^"]+?)"$/ ],
       regexp_ids: [ { 1: 'channel' } ],
       send: function (cmd_arg) {
-        //cid, command, channel, reason
         
+        // todo : POST to /channels/ route to require a cid for the channel name (cmd_arg.channel)
+        cmd_arg.cid = "xxx";
+        
+        //console.log(cmd_arg);
+        $.ajax({
+          type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
+          url:  pfc.options.serverUrl + '/channels/' + cmd_arg.cid + '/users/' + pfc.uid,
+          data: pfc.options.use_post_wrapper ? { _METHOD: 'PUT' } : null
+        }).done(function (cinfo) {
+          
+          pfc.channels[cmd_arg.cid] = {
+            name: cmd_arg.cid,
+            users: [],
+            op: []
+          };
+          
+          // store channel operators
+          pfc.channels[cmd_arg.cid].op = cinfo.op;
+          
+          // store userdata in the cache
+          // refresh the interface
+          pfc.clearUserList();
+          $.each(cinfo.users, function (uid, udata) {
+            pfc.addUidToCid(uid, cmd_arg.cid);
+            
+            pfc.users[uid] = udata;
+            pfc.appendUser(udata);
+          });
+
+          // display a join message for himself
+          pfc.appendMessage({
+            type: 'join',
+            sender: pfc.uid,
+            body: 'you joined the channel'
+          });
+          
+          // todo: move this code just after user's auth
+          // start to read pending messages
+          pfc.readPendingMessages(true); // true = loop
+
+        }).error(function (err) {
+          console.log(err);
+        });
+
       },
       receive: function (msg) {
-        pfc.users[msg.sender] = msg.body; // store new joined user data
-        pfc.appendUser(pfc.users[msg.sender]); // append the user to the list
+        var cid = msg.recipient.split('|')[1];
+
+        // store new user in the channels structure
+        pfc.addUidToCid(msg.sender, cid);
+        
+        // store new joined user data
+        pfc.users[msg.sender] = msg.body;
+        
+        // append the user to the list
+        pfc.appendUser(pfc.users[msg.sender]); 
+        
+        // display the join message
         pfc.appendMessage(msg);
       }
     },
@@ -99,7 +152,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         
       },
       receive: function (msg) {
-        // someone just leave the channel
+        var cid = msg.recipient.split('|')[1];
+
+        pfc.removeUidFromCid(msg.sender, cid);
         pfc.removeUser(msg.sender);
         pfc.appendMessage(msg);
       }
@@ -145,15 +200,18 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         });
       },
       receive: function (msg) {
-        // append message to the list
+        var cid    = msg.recipient.split('|')[1];
         var op     = pfc.users[msg.sender];
         var op_dst = pfc.users[msg.body];
+
+        // update the channel operator list structure
+        pfc.addUidToCidOp(op_dst.id, cid);
+
+        // append message to the list
         msg.body = op.name + ' gave operator rights to ' + op_dst.name;
         pfc.appendMessage(msg);
-
-        // update the channel operator list
-        var cid = msg.recipient.split('|')[1];
-        pfc.channels[cid].op.push(op_dst.id);
+        
+        // update the users list interface
         pfc.removeUser(op_dst.id);
         pfc.appendUser(op_dst.id);
       }
@@ -188,16 +246,18 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         });
       },
       receive: function (msg) {
-        // append message to the list
+        var cid = msg.recipient.split('|')[1];
         var deop     = pfc.users[msg.sender];
         var deop_dst = pfc.users[msg.body];
+
+        // update the channel operator list structure
+        pfc.removeUidFromCidOp(deop_dst.id, cid);
+
+        // append message to the list
         msg.body = deop.name + ' removed operator rights to ' + deop_dst.name;
         pfc.appendMessage(msg);
 
-        // update the channel operator list
-        var cid = msg.recipient.split('|')[1];
-        var idx = pfc.channels[cid].op.indexOf(deop_dst.id);
-        if (idx !== -1) pfc.channels[cid].op.splice(idx, 1);
+        // update the users list
         pfc.removeUser(deop_dst.id);
         pfc.appendUser(deop_dst.id);
       }
@@ -265,6 +325,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       } else {
         // one channel has been indicated, we have to translate the channel name to the corresponding cid
         cmd_arg.cid = pfc.getCidFromName(cmd_arg.channel);
+              console.log(pfc.getCidFromName(cmd_arg.channel));
+
       }
     }
 

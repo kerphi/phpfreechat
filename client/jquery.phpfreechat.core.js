@@ -52,53 +52,14 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    * Join a channel
    */
   pfc.join = function (cid) {
-
-    $.ajax({
-      type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
-      url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid,
-      data: pfc.options.use_post_wrapper ? { _METHOD: 'PUT' } : null
-    }).done(function (cinfo) {
-      
-      pfc.channels[cid] = {
-        name: cid,
-        users: [],
-        op: []
-      };
-      
-      // store channel operators
-      pfc.channels[cid].op = cinfo.op;
-      
-      // store userdata in the cache
-      // refresh the interface
-      pfc.clearUserList();
-      $.each(cinfo.users, function (uid, udata) {
-        pfc.channels[cid].users.push(uid);
-        
-        pfc.users[uid] = udata;
-        pfc.appendUser(udata);
-      });
-
-      // display a join message for him
-      pfc.appendMessage({
-        type: 'join',
-        sender: pfc.uid,
-        body: 'you joined the channel'
-      });
-      
-      // start to read pending messages
-      pfc.readPendingMessages(true); // true = loop
-
-    }).error(function (err) {
-      console.log(err);
-    });
-    
+    pfc.postCommand('/join "#xxx"');
   };
   
   /**
    * Wrapper for the leave a channel
    */
   pfc.leave = function (cid) {
-    pfc.postCommand('/leave');
+    pfc.postCommand('/leave "#xxx"');
   };
 
   /**
