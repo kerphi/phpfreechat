@@ -67,17 +67,39 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         /^"#([^"]+?)" "([^"]+?)"$/,
         /^"#([^"]+?)"$/,
         /^"([^"]+?)"$/,
+        /^$/
       ],
       regexp_ids: [
         { 1: 'channel', 2: 'reason' },
         { 1: 'channel' },
         { 1: 'reason' },
+        { }
       ],
       send: function (cmd_arg) {
         //cid, command, channel, reason
         
+        $.ajax({
+          type: pfc.options.use_post_wrapper ? 'POST' : 'DELETE',
+          url:  pfc.options.serverUrl + '/channels/' + cmd_arg.cid + '/users/' + pfc.uid,
+          data: pfc.options.use_post_wrapper ? { _METHOD: 'DELETE' } : null
+        }).done(function (users) {
+          pfc.clearUserList();
+          
+          // display a leave message for himself
+          pfc.appendMessage({
+            type: 'leave',
+            sender: pfc.uid
+          });
+          
+          // todo: close the tab
+          
+        }).error(function (err) {
+          console.log(err);
+        });
+        
       },
       receive: function (msg) {
+        // someone just leave the channel
         pfc.removeUser(msg.sender);
         pfc.appendMessage(msg);
       }

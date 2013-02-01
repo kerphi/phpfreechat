@@ -60,6 +60,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }).done(function (cinfo) {
       
       pfc.channels[cid] = {
+        name: cid,
         users: [],
         op: []
       };
@@ -94,28 +95,37 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   };
   
   /**
-   * Leave a channel
+   * Wrapper for the leave a channel
    */
   pfc.leave = function (cid) {
-
-    $.ajax({
-      type: pfc.options.use_post_wrapper ? 'POST' : 'DELETE',
-      url:  pfc.options.serverUrl + '/channels/' + cid + '/users/' + pfc.uid,
-      data: pfc.options.use_post_wrapper ? { _METHOD: 'DELETE' } : null
-    }).done(function (users) {
-      pfc.clearUserList();
-      
-      // display a leave message for him
-      pfc.appendMessage({
-        type: 'leave',
-        sender: pfc.uid
-      });
-
-    }).error(function (err) {
-      console.log(err);
-    });
-    
+    pfc.postCommand('/leave');
   };
+
+  /**
+   * Post a command to the server
+   */
+  pfc.postCommand = function (raw_cmd) {
+
+    // do not execute empty command
+    if (raw_cmd === '') {
+      return false;
+    }
+    
+    try {
+      // parse command
+      var cmd = pfc.parseCommand(raw_cmd);
+      // send the command to the server
+      pfc.commands[cmd[0]].send(cmd[1]);
+    } catch (err) {
+      // caught a command parsing error
+      pfc.appendMessage({
+        from: 'system-error',
+        body: 'Invalid command syntax. Usage:\n' + err[1]
+      });
+    }
+
+  };
+  
   
   /**
    * Post a message to a channel
