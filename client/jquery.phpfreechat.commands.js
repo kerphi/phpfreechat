@@ -8,6 +8,9 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
   // phpfreechat commands list
   pfc.commands = {
+    /**
+     * msg command
+     */
     msg:  {
       usage:      '/msg "<message>"',
       longusage:  '/msg ["#<channel>"] "<message>"',
@@ -28,6 +31,26 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       },
       receive: function (msg) {
         // display the message on the chat interface
+        pfc.appendMessage(msg);
+      }
+    },
+
+    /**
+     * join command
+     */
+    join: {
+      help:       '',
+      usage:      '/join "#<channel>"',
+      longusage:  '/join "#<channel>"',
+      regexp:     [ /^"#([^"]+?)"$/ ],
+      regexp_ids: [ { 1: 'channel' } ],
+      send: function (cmd_arg) {
+        //cid, command, channel, reason
+        
+      },
+      receive: function (msg) {
+        pfc.users[msg.sender] = msg.body; // store new joined user data
+        pfc.appendUser(pfc.users[msg.sender]); // append the user to the list
         pfc.appendMessage(msg);
       }
     },
@@ -55,6 +78,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       },
       receive: function (msg) {
         pfc.removeUser(msg.sender);
+        pfc.appendMessage(msg);
       }
     },
     

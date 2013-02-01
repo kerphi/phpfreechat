@@ -27,20 +27,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
       $.each(msgs, function (i, m) {
         // specific actions for special messages
-        if (m.type == 'join') {
-          // TODO: move this code into received_join
-          pfc.users[m.sender] = m.body; // store new joined user data
-          pfc.appendUser(pfc.users[m.sender]); // append the user to the list
-          pfc.appendMessage(m);
-        } else if (m.type == 'leave') {
-          pfc.commands[m.type].receive(m);
-          pfc.appendMessage(m);
-        } else if (m.type == 'op') {
-          pfc.commands[m.type].receive(m);
-        } else if (m.type == 'deop') {
+        if (pfc.commands[m.type] !== undefined) {
           pfc.commands[m.type].receive(m);
         } else {
-          pfc.commands[m.type].receive(m);
+          pfc.showErrorsPopup([ 'Unknown command ' + m.type ]);          
         }
       });
       if (loop) {
