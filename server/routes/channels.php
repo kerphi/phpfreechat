@@ -153,36 +153,18 @@ $app->post('/channels/:cid/msg/', function ($cid) use ($app, $req, $res) {
     return;
   }
  
-   // check that request content contains a message
+  // check that request content contains a message
   $data = json_decode($req->getBody());
-  if (!$data or !is_array($data) or count($data) < 2) {
-    $res->status(400); // Wrong body format
+  if (!$data or !is_string($data)) {
+    $res->status(400); // Wrong message format
     $res['Content-Type'] = 'application/json; charset=utf-8';
-    $res->body('{ "error": "Wrong body format (must be a JSON array)" }');
+    $res->body('{ "error": "Wrong message format (must be a JSON string)" }');
     return;
   }
 
-  // get the message type (first element of the array)
-  $msg_type = $data[0];
-  // and execute the corresponding command
-  switch ($msg_type) {
-    
-    // post a simple message
-    case 'msg':
-        $http_result = Container_messages::postMsgToChannel($cid, $uid, $data[1]);
-        $http_status = 201;
-        break;
-      
-    // kick a user
-    case 'kick':
-        // todo
-      
-    default:
-        debug("todo: implement the '$msg_type' command");
-        $http_result = '';
-        $http_status = 501;
-        break;
-  }
+  // post the message
+  $http_result = Container_messages::postMsgToChannel($cid, $uid, $data);
+  $http_status = 201;
   
   $res->status($http_status);
   $res['Content-Type'] = 'application/json; charset=utf-8';

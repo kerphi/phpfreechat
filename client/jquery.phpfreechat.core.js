@@ -33,16 +33,16 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
           pfc.appendUser(pfc.users[m.sender]); // append the user to the list
           pfc.appendMessage(m);
         } else if (m.type == 'leave') {
+          //pfc.commands[m.type].receive(m);
           // TODO: move this code into received_leave
           pfc.removeUser(m.sender); // remove the user from the list
           pfc.appendMessage(m);
         } else if (m.type == 'op') {
-          pfc.received_op(m);
+          pfc.commands[m.type].receive(m);
         } else if (m.type == 'deop') {
-          pfc.received_deop(m);
+          pfc.commands[m.type].receive(m);
         } else {
-          // display the message of the chat interface
-          pfc.appendMessage(m);
+          pfc.commands[m.type].receive(m);
         }
       });
       if (loop) {
@@ -142,18 +142,21 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     try {
       // parse command in the message
       var cmd = pfc.parseCommand(msg);
+      console.log(cmd);
+      pfc.commands[cmd[1]].send.apply(this, cmd);
       
-      // post the command to the server
-      $.ajax({
-        type: 'POST',
-        url:  pfc.options.serverUrl + '/channels/' + cmd[0] + '/msg/',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(cmd.slice(1))
-      }).done(function (msg) {
-        pfc.appendMessage(msg);
-      }).error(function (err) {
-        console.log(err);
-      });
+// TODO: déplacer ce code dans la commande msg
+      //       // post the command to the server
+//       $.ajax({
+//         type: 'POST',
+//         url:  pfc.options.serverUrl + '/channels/' + cmd[0] + '/msg/',
+//         contentType: 'application/json; charset=utf-8',
+//         data: JSON.stringify(cmd.slice(1))
+//       }).done(function (msg) {
+//         pfc.appendMessage(msg);
+//       }).error(function (err) {
+//         console.log(err);
+//       });
       
     } catch (err) {
       // caught a command parsing error
