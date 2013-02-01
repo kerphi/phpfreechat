@@ -33,9 +33,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
           pfc.appendUser(pfc.users[m.sender]); // append the user to the list
           pfc.appendMessage(m);
         } else if (m.type == 'leave') {
-          //pfc.commands[m.type].receive(m);
-          // TODO: move this code into received_leave
-          pfc.removeUser(m.sender); // remove the user from the list
+          pfc.commands[m.type].receive(m);
           pfc.appendMessage(m);
         } else if (m.type == 'op') {
           pfc.commands[m.type].receive(m);
@@ -142,8 +140,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     try {
       // parse command in the message
       var cmd = pfc.parseCommand(msg);
-      console.log(cmd);
-      pfc.commands[cmd[1]].send.apply(this, cmd);
+      //console.log(cmd);
+      pfc.commands[cmd[0]].send(cmd[1]);
       
 // TODO: déplacer ce code dans la commande msg
       //       // post the command to the server

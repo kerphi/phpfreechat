@@ -11,16 +11,15 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     msg:  {
       usage:      '/msg "<message>"',
       longusage:  '/msg ["#<channel>"] "<message>"',
-      params:     [ 'channel', 'message' ],
-      regexp:     /^("#(.+?)" |)"(.+?)"$/,
-      regexp_ids: [ 2, 3 ],
-      send: function (cid, command, message) {
+      regexp:     [ /^("#(.+?)" |)"(.+?)"$/ ],
+      regexp_ids: [ { 2: 'channel', 3: 'message' } ],
+      send: function (cmd_arg) {
         // post the command to the server
         $.ajax({
           type: 'POST',
-          url:  pfc.options.serverUrl + '/channels/' + cid + '/msg/',
+          url:  pfc.options.serverUrl + '/channels/' + cmd_arg.cid + '/msg/',
           contentType: 'application/json; charset=utf-8',
-          data: JSON.stringify(message)
+          data: JSON.stringify(cmd_arg.message)
         }).done(function (msg) {
           pfc.commands.msg.receive(msg);
         }).error(function (err) {
@@ -30,19 +29,32 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       receive: function (msg) {
         // display the message on the chat interface
         pfc.appendMessage(msg);
-      }     
+      }
     },
     
+    /**
+     * leave command
+     */
     leave: {
       help:       '',
       usage:      '/leave ["#<channel>"]',
       longusage:  '/leave ["#<channel>"] ["reason"]',
-      params:     [ 'channel', 'reason' ],
-      regexp:     /^("#(.+?)"|)( "(.+?)"|)$/,
-      regexp_ids: [ 2, 3 ],
-      send: function (cid, command, channel, reason) {
+      regexp:     [
+        /^"#([^"]+?)" "([^"]+?)"$/,
+        /^"#([^"]+?)"$/,
+        /^"([^"]+?)"$/,
+      ],
+      regexp_ids: [
+        { 1: 'channel', 2: 'reason' },
+        { 1: 'channel' },
+        { 1: 'reason' },
+      ],
+      send: function (cmd_arg) {
+        //cid, command, channel, reason
+        
       },
       receive: function (msg) {
+        pfc.removeUser(msg.sender);
       }
     },
     
@@ -50,8 +62,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       usage:      '/kick "<username>" ["reason"]',
       longusage:  '/kick ["#<channel>"] "<username>" ["reason"]',
       params:     [ 'channel', 'username', 'reason' ],
-      regexp:     /^("#(.+?)" |)"(.+?)"( "(.+?)"|)$/,
-      regexp_ids: [ 2, 3, 5 ]
+      regexp:     [ /^("#(.+?)" |)"(.+?)"( "(.+?)"|)$/ ],
+      regexp_ids: [ { 2: 'channel', 3: 'username', 5: 'reason' } ]
     },
     
     op: {
@@ -59,13 +71,13 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       usage:      '/op "<username>"',
       longusage:  '/op ["#<channel>"] "<username>"',
       params:     [ 'channel', 'username' ],
-      regexp:     /^("#(.+?)" |)"(.+?)"$/,
-      regexp_ids: [ 2, 3 ],
-      send: function (cid, command, username) {
-        var uid = pfc.getUidFromName(username);
+      regexp:     [ /^("#(.+?)" |)"(.+?)"$/ ],
+      regexp_ids: [ { 2: 'channel', 3: 'username' } ],
+      send: function (cmd_arg) {
+        var uid = pfc.getUidFromName(cmd_arg.username);
         $.ajax({
           type: pfc.options.use_post_wrapper ? 'POST' : 'PUT',
-          url:  pfc.options.serverUrl + '/channels/' + cid + '/op/' + uid,
+          url:  pfc.options.serverUrl + '/channels/' + cmd_arg.cid + '/op/' + uid,
           data: pfc.options.use_post_wrapper ? { _METHOD: 'PUT' } : null
         }).done(function (op_info) {
           //console.log(op_info);
@@ -73,7 +85,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
             type: 'op',
             sender: pfc.uid,
             body: uid,
-            recipient: 'channel|' + cid
+            recipient: 'channel|' + cmd_arg.cid
           });
         }).error(function (err) {
           console.log(err);
@@ -99,13 +111,13 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       usage:      '/deop "<username>"',
       longusage:  '/deop ["#<channel>"] "<username>"',
       params:     [ 'channel', 'username' ],
-      regexp:     /^("#(.+?)" |)"(.+?)"$/,
-      regexp_ids: [ 2, 3 ],
-      send: function (cid, command, username) {
-        var uid = pfc.getUidFromName(username);
+      regexp:     [ /^("#(.+?)" |)"(.+?)"$/ ],
+      regexp_ids: [ { 2: 'channel', 3: 'username' } ],
+      send: function (cmd_arg) {
+        var uid = pfc.getUidFromName(cmd_arg.username);
         $.ajax({
           type: pfc.options.use_post_wrapper ? 'POST' : 'DELETE',
-          url:  pfc.options.serverUrl + '/channels/' + cid + '/op/' + uid,
+          url:  pfc.options.serverUrl + '/channels/' + cmd_arg.cid + '/op/' + uid,
           data: pfc.options.use_post_wrapper ? { _METHOD: 'DELETE' } : null
         }).done(function (op_info) {
           //console.log(op_info);
@@ -113,7 +125,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
             type: 'deop',
             sender: pfc.uid,
             body: uid,
-            recipient: 'channel|' + cid
+            recipient: 'channel|' + cmd_arg.cid
           });
         }).error(function (err) {
           console.log(err);
@@ -147,7 +159,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   pfc.parseCommand = function (raw) {
     
     var cmd     = '';
-    var cmd_arg = [];
+    var cmd_arg = null;
     
     // test each commands on the raw message
     $.each(pfc.commands, function (c) {
@@ -156,41 +168,51 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         cmd = c;
         // parse the rest of the command line (the end)
         var raw_end = new RegExp('^\/' + c + ' *(.*)$').exec(raw)[1];
-        var cmd_arg_tmp = pfc.commands[c].regexp.exec(raw_end);
-        if (cmd_arg_tmp && cmd_arg_tmp.length > 0) {
-          // collect interesting values from the regexp result
-          cmd_arg = [];
-          $.each(pfc.commands[c].regexp_ids, function (i, id) {
-            cmd_arg.push(cmd_arg_tmp[id]);
-          });
-        }
+        $.each(pfc.commands[c].regexp, function (i, regexp) {
+          var cmd_arg_tmp = regexp.exec(raw_end);
+          if (cmd_arg === null && cmd_arg_tmp && cmd_arg_tmp.length > 0) {
+            // collect interesting values from the regexp result
+            cmd_arg = {};
+            $.each(pfc.commands[c].regexp_ids[i], function (id, key) {
+              cmd_arg[key] = cmd_arg_tmp[id]
+            });
+//             console.log("------------");
+//             console.log(i);
+//             console.log(regexp);
+//             console.log(cmd_arg_tmp);
+//             console.log(cmd_arg);
+//             console.log("------------");
+          }
+        });
       }
     });
     
     // if no /<command> pattern found, considere it's a /msg command
     if (cmd === '') {
       cmd     = 'msg';
-      cmd_arg = [pfc.cid, raw];
+      cmd_arg = {
+        cid:     pfc.cid,
+        message: raw
+      };
     }
-    
+
     // return an error if the command parameters do not match
-    if (cmd_arg.length === 0) {
+    if (cmd_arg === null) {
       throw [ cmd, pfc.commands[cmd].usage ];
-    }
+    }    
     
     // optionaly fill channel value if user didn't indicate it
-    var channel_idx = $.inArray('channel', pfc.commands[cmd].params);
-    if (channel_idx >= 0) {
-      if (cmd_arg[channel_idx] === undefined) {
+    if (!cmd_arg.cid) {
+      if (!cmd_arg.channel) {
         // no channel has been indicated, we have to used the current one
-        cmd_arg[channel_idx] = pfc.cid;
+        cmd_arg.cid = pfc.cid;
       } else {
         // one channel has been indicated, we have to translate the channel name to the corresponding cid
-        // todo: translate the channel name to the corresponding cid
+        cmd_arg.cid = pfc.getCidFromName(cmd_arg.channel);
       }
     }
 
-    return [ cmd_arg[0], cmd ].concat(cmd_arg.slice(1));
+    return [ cmd, cmd_arg ];
   };
   
   return pfc;
