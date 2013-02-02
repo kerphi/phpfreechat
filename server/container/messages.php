@@ -22,11 +22,6 @@ class Container_messages {
       'timestamp' => time(),
     );
 
-    // when a join message is sent, body contains user's data
-    if ($type == 'join') {
-      $msg['body'] = Container_users::getUserData($uid);
-    }
-
     // json encode msg before storing
     $msg = json_encode($msg);
 

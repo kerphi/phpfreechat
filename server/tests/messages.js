@@ -141,7 +141,7 @@ vows.describe('Send and receive messages').addBatch({
         if (m.type == 'msg') {
           assert.equal(m.body, 'my user2 message');
         } else if (m.type == 'join') {
-          assert.equal(m.body.name, 'testm2');
+          assert.equal(m.body.userdata.name, 'testm2');
         } else {
           assert.ok(false);
         }

@@ -67,9 +67,14 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
       // store new user in the channels structure
       pfc.addUidToCid(msg.sender, cid);
+
+      // update the channel operator list structure
+      if (msg.body.op) {
+        pfc.addUidToCidOp(msg.sender, cid);
+      }
       
       // store new joined user data
-      pfc.users[msg.sender] = msg.body;
+      pfc.users[msg.sender] = msg.body.userdata;
       
       // append the user to the list
       pfc.appendUser(pfc.users[msg.sender]); 

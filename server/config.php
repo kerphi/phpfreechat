@@ -36,6 +36,19 @@ $GLOBALS['pfc_hooks'] = array();
 //   };
 // };
 
+// HOOK - pfc.isop
+// Can be used to give operator rights to users
+// example:
+// $GLOBALS['pfc_hooks']['pfc.isop'][5] = function ($app, $req, $res) {
+//   return function ($login, $channel, $uid, $cid) use ($app, $req, $res) {
+//     if ($login == 'kerphi' and $channel == "Kerphi's room") {
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   };
+// };
+
 // include the local config if defined
 $clocal = dirname(__FILE__).'/config.local.php';
 if (file_exists($clocal)) {

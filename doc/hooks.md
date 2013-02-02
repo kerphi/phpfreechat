@@ -30,3 +30,27 @@ $GLOBALS['pfc_hooks']['pfc.filter.login'][0] = function ($app, $req, $res) {
 };
 ```
 This hook will remove all none ascii chars from the given login. The code source can be found [at github here](https://github.com/kerphi/phpfreechat/tree/master/server/contrib/ascii-login). 
+
+## pfc.isop
+
+This hook can be used to give operator right to a specific login on a specific channel.
+
+* First parameter is the login 
+* Second parameter is the channel name
+
+The hook must return true if operator, false if not an operator on this channel. 
+
+Example which filter none ascii characters from the login: 
+```php
+$GLOBALS['pfc_hooks']['pfc.isop'][5] = function ($app, $req, $res) {
+  return function ($login, $channel, $uid, $cid) use ($app, $req, $res) {
+    if ($login == 'kerphi' and $channel == "Kerphi's room") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+};
+```
+
+This hook will systematically give channel operator rights to "kerphi" login when he joins "Kerphi's room" channel.

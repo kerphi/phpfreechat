@@ -68,13 +68,30 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
     )));
     return;
   } else {
-    // post a join message
-    $msg = Container_messages::postMsgToChannel($cid, $uid, null, 'join');
+    // check if the user is an operator on this channel (from the hook)
+    $isop = false;
+    if (isset($GLOBALS['pfc_hooks']['pfc.isop'])) {
+      foreach ($GLOBALS['pfc_hooks']['pfc.isop'] as $hook) {
+        $login   = Container_users::getUserData($uid)->name;
+        $channel = $cid; // todo: replace this by the channel fullname
+        $isop = $hook($login, $channel, $uid, $cid);
+      }
+    }
     
     // first is op ? first connected user on the channel is an operator
     if ($GLOBALS['first_is_op'] and count(Container_channels::getChannelUsers($cid)) == 1) {
+      $isop = Container_channels_op::addOp($cid, $uid);
+    }
+    
+    if ($isop) {
       Container_channels_op::addOp($cid, $uid);
     }
+    
+    // post a join message
+    // when a join message is sent, body contains user's data and the "op" flag
+    $body = array('userdata' => Container_users::getUserData($uid),
+                  'op'       => $isop);
+    $msg = Container_messages::postMsgToChannel($cid, $uid, $body, 'join');
     
     $res->status(201); // User joined the channel
     $res['Content-Type'] = 'application/json; charset=utf-8';
