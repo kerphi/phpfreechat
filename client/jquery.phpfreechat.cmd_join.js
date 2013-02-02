@@ -55,10 +55,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
           sender: pfc.uid,
           body: 'you joined the channel'
         });
-        
-        // todo: move this code just after user's auth
-        // start to read pending messages
-        pfc.readPendingMessages(true); // true = loop
 
       }).error(function (err) {
         console.log(err);

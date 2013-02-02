@@ -110,6 +110,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         $('div.pfc-compose textarea').focus();
       }
       
+      // start to read pending messages on the server
+      pfc.readPendingMessages(true); // true = loop
+      
+      // join the default channel
       pfc.join(pfc.cid);
     });
 
