@@ -87,33 +87,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
 
   };
   
-  
-  /**
-   * Post a message to a channel
-   */
-  pfc.postToChannel = function (cid, msg) {
-
-    // do not send empty message
-    if (msg === '') {
-      return false;
-    }
-    
-    try {
-      // parse command in the message
-      var cmd = pfc.parseCommand(msg);
-      //console.log(cmd);
-      pfc.commands[cmd[0]].send(cmd[1]);
-      
-    } catch (err) {
-      // caught a command parsing error
-      pfc.appendMessage({
-        from: 'system-error',
-        body: 'Invalid command syntax. Usage:\n' + err[1]
-      });
-    }
-
-  };
-
   /**
    * Notify phpfreechat server that a windows close event occured
    * Thanks to this notification, server can tell other users that this user just leave the channels

@@ -283,7 +283,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // connect the textarea enter key event
     $('.pfc-compose textarea').keydown(function (evt) {
       if (evt.keyCode == 13 && evt.shiftKey === false) {
-        pfc.postToChannel(pfc.cid, $('.pfc-compose textarea').val());
+        pfc.postCommand($('.pfc-compose textarea').val());
         $('.pfc-compose textarea').val('');
         return false;
       }
