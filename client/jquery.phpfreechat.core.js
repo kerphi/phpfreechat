@@ -104,19 +104,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       //console.log(cmd);
       pfc.commands[cmd[0]].send(cmd[1]);
       
-// TODO: déplacer ce code dans la commande msg
-      //       // post the command to the server
-//       $.ajax({
-//         type: 'POST',
-//         url:  pfc.options.serverUrl + '/channels/' + cmd[0] + '/msg/',
-//         contentType: 'application/json; charset=utf-8',
-//         data: JSON.stringify(cmd.slice(1))
-//       }).done(function (msg) {
-//         pfc.appendMessage(msg);
-//       }).error(function (err) {
-//         console.log(err);
-//       });
-      
     } catch (err) {
       // caught a command parsing error
       pfc.appendMessage({
@@ -162,7 +149,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     
     // default values
     user.id     = (user.id !== undefined) ? user.id : 0;
-    console.log($.inArray(user.id, pfc.channels[pfc.cid].op) >= 0);
     user.op     = ($.inArray(user.id, pfc.channels[pfc.cid].op) >= 0);
     user.role   = user.op ? 'admin' : 'user';
     user.name   = (user.name !== undefined) ? user.name : 'Guest ' + Math.round(Math.random() * 100);

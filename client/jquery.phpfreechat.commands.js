@@ -107,8 +107,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       } else {
         // one channel has been indicated, we have to translate the channel name to the corresponding cid
         cmd_arg.cid = pfc.getCidFromName(cmd_arg.channel);
-              console.log(pfc.getCidFromName(cmd_arg.channel));
-
       }
     }
 

@@ -12,8 +12,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   pfc.getUidFromName = function (name) {
     var result = null;
     $.each(pfc.users, function (uid, user) {
-      console.log(uid);
-      console.log(user);
       if (name === user.name) {
          result = uid;
       }
