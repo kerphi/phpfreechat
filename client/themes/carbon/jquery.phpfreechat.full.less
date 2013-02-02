@@ -545,7 +545,7 @@ div.pfc-content {
     // used to move scroll at bottom on mobile interface (hidden by default)
     .pfc-message-mobile-padding {
       display: none;
-      height: @h - (@tabs-height + @topic-height + 5 * @border-width + @footer-height + @compose-height + @padding-bottom + @messages-group-height);
+      height: @h-mobile - (@tabs-height + @topic-height + 5 * @border-width + @footer-height + @compose-height + @padding-bottom + @messages-group-height);
     }
     
   }
@@ -789,15 +789,17 @@ div.pfc-content {
     }
     .popup-donate {
       p {
-          position: relative;
-          top: 2px;
-          font-size: 14px;
-          line-height: 16px;
-          height: 139px;
-          width: 300px;
-          margin-bottom: 0;
-          padding-right: 66px;
-          background: url("img/illus-donate.png") right bottom no-repeat;
+        font-size: 14px;
+        line-height: 18px;
+        text-align: justify;
+        height: 140px;
+        width: 290px;
+        margin: 0;
+        padding-right: 80px;
+        padding-top: 5px;
+        padding-left: 5px;
+        background: url("img/illus-donate.png") right bottom no-repeat;
+        overflow: auto;
       }
       div {
         input[name="cancel-donate"] {
@@ -823,7 +825,7 @@ div.pfc-content {
             background: url("img/bt-donate-popup.png") top center no-repeat;
             border: 0;
             padding: 0 0 0 60px;
-            margin: 0 10px;
+            margin: 0 20px;
             color: #fff;
             font-size: 20px;
             &:hover {
