@@ -325,7 +325,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   pfc.showErrorsPopup = function (errors) {
     var popup = $('<ul class="pfc-errors"></ul>');
     $.each(errors, function (i, err) {
-      popup.append($('<li></li>').text(err));
+      popup.append($('<li></li>').html(err));
     });
     pfc.modalbox.open(popup);
   };

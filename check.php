@@ -15,6 +15,11 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
   $status[] = 'Your php version '.PHP_VERSION.' must be >= 5.3.0';
 }
 
+// check that Slim framework is installed
+if (!file_exists(dirname(__FILE__).'/server/lib/Slim/Slim/Slim.php')) {
+  $status[] = 'Slim framework is not installed.<br/> It should be installed here: '.basename(dirname(__FILE__)).'/server/lib/Slim/<br/>Please run "make setup" to install it or download/unzip it yourself.';
+}
+
 header("HTTP/1.1 200");
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode($status);
