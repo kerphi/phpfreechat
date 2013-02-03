@@ -84,7 +84,7 @@ Example: TODO
 * `server/channels/:cid/users/`          - GET    - list users in the :cid channel
 * `server/channels/:cid/users/:uid`      - GET    - tells if :uid user is subscribed to this :cid channel
 * `server/channels/:cid/users/:uid`      - PUT    - :uid user joins :cid channel (try to)
-* `server/channels/:cid/users/:uid`      - DELETE - :uid user leave :cid channel (try to)
+* `server/channels/:cid/users/:uid`      - DELETE - :uid user leave himself or with a kick :cid channel (try to)
 * `server/channels/:cid/msg/`            - POST   - current user post a new message on :cid channel (if joined)
 * `server/channels/:cid/op/`             - GET    - returns the :cid channel operators list (list of :uid)
 * `server/channels/:cid/op/:uid`         - GET    - tells if :uid is operator on :cid

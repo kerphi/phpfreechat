@@ -227,7 +227,7 @@ class Container_users {
 
   static public function leaveChannel($uid, $cid) {
     $ret = true;
-    
+
     // clean user data
     $ucpath  = self::getDir().'/'.$uid.'/channels/'.$cid;
     if (file_exists($ucpath)) {

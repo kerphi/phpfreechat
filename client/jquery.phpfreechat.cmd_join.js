@@ -111,7 +111,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         type: pfc.options.use_post_wrapper ? 'POST' : 'DELETE',
         url:  pfc.options.serverUrl + '/channels/' + cmd_arg.cid + '/users/' + pfc.uid,
         data: pfc.options.use_post_wrapper ? { _METHOD: 'DELETE' } : null
-      }).done(function (users) {
+      }).done(function () {
         pfc.clearUserList();
         
         // display a leave message for himself

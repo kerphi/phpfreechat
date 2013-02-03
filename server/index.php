@@ -16,12 +16,14 @@ function debug($msg) {
 
 function GetPfcError($code, $jsonformat = true) {
   $errors = array();
-  $errors[40301] = "Need authentication";
-  $errors[40302] = "Login already used";
-  $errors[40303] = "Wrong credentials";
   $errors[40001] = "User is not online on the channel";
   $errors[40002] = "This user is not an operator on the channel";
   $errors[40003] = "User is already an operator on this channel";
+  $errors[40301] = "Need authentication";
+  $errors[40302] = "Login already used";
+  $errors[40303] = "Wrong credentials";
+  $errors[40304] = "You are not allowed to kick because you don't have op rights"; 
+  $errors[40401] = "User is not connected to the channel";
   if (isset($errors[$code])) {
     $e = array('error' => $errors[$code], 'errorCode' => $code);
   } else {

@@ -106,9 +106,9 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
 
 /**
  * Leave a channel
+ * or is kicked from a channel
  */
 $app->delete('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $res) {
-
   
   // check user acces
   session_start();
@@ -116,32 +116,61 @@ $app->delete('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req,
     $res->status(401); // Need to authenticate
     return;
   }
-  if ($uid !== $_SESSION['userdata']['id']) {
-    $res->status(403); // Forbidden
+  $online_uid = $_SESSION['userdata']['id'];
+  
+  // this is a kick ?
+  $isakick = ($uid !== $online_uid);
+
+  // check if the kick is allowed
+  if ($isakick) {
+    // check operator rights of $online_uid
+    if (!Container_channels_op::isOp($cid, $online_uid)) {
+      $res->status(403);
+      $res['Content-Type'] = 'application/json; charset=utf-8';
+      $res->body(GetPfcError(40304)); // You are not allowed to kick because you don't have op rights
+      return;
+    }
+  }
+  // check this trargeted user is online on the channel
+  if (!Container_channels::checkChannelUser($cid, $uid)) {
+    $res->status(404); // User is not connected
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body(GetPfcError(40401)); // User is not connected to the channel
     return;
   }
 
-  // check this user is online
-  if (!Container_users::checkUserExists($uid)) {
-    $res->status(400); // User is not connected
-    return;
-  }
+  if ($isakick) {
+    // this is a kick ?
+    
+    // post a kick message
+    $msg = Container_messages::postMsgToChannel($cid, $online_uid, $uid, 'kick');
+    
+    // remove the targeted user from the channel (must be executed after postMsgToChannel)
+    Container_users::leaveChannel($uid, $cid);
 
-
-  if (!Container_users::leaveChannel($uid, $cid)) {
-    $res->status(404);
-    // $res['Content-Type'] = 'application/json; charset=utf-8';
+    // success code
+    $res->status(200);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    // why not blank data ? 
     // $res->body(json_encode(Container_channels::getChannelUsers($cid, true)));
     return;
   } else {
+    // this is not a kick
+
     // post a leave message
-    $msg = Container_messages::postMsgToChannel($cid, $uid, null, 'leave');
+    $msg = Container_messages::postMsgToChannel($cid, $online_uid, $uid, 'leave');
     
+    // user leave the channel
+    Container_users::leaveChannel($uid, $cid);
+    
+    // success code
     $res->status(200);
     $res['Content-Type'] = 'application/json; charset=utf-8';
-    $res->body(json_encode(Container_channels::getChannelUsers($cid, true)));
+    // why not blank data ? 
+    //$res->body(json_encode(Container_channels::getChannelUsers($cid, true)));
     return;
   }
+
 
 });
 
