@@ -141,9 +141,10 @@ $app->delete('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req,
 
   if ($isakick) {
     // this is a kick ?
+    $reason = $req->params('reason');
     
     // post a kick message
-    $msg = Container_messages::postMsgToChannel($cid, $online_uid, $uid, 'kick');
+    $msg = Container_messages::postMsgToChannel($cid, $online_uid, array('target' => $uid, 'reason' => $reason), 'kick');
     
     // remove the targeted user from the channel (must be executed after postMsgToChannel)
     Container_users::leaveChannel($uid, $cid);

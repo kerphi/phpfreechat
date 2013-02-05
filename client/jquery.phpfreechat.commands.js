@@ -37,18 +37,6 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }
   };
 
-  
-  /**
-   * kick command
-   */
-  pfc.commands.kick = {
-    usage:      '/kick "<username>" ["reason"]',
-    longusage:  '/kick ["#<channel>"] "<username>" ["reason"]',
-    params:     [ 'channel', 'username', 'reason' ],
-    regexp:     [ /^("#(.+?)" |)"(.+?)"( "(.+?)"|)$/ ],
-    regexp_ids: [ { 2: 'channel', 3: 'username', 5: 'reason' } ]
-  };
-
   /**
    * Parse the sent message
    * Try to extract explicit commands from it

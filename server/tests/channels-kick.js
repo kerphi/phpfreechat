@@ -194,7 +194,8 @@ vows.describe('Channel kick tests').addBatch({
       }
       assert.equal(response[0].type, 'kick');
       assert.equal(response[0].sender, userdata1.id); // who kicked me !
-      assert.equal(response[0].body,   userdata2.id); // who was kicked
+      assert.isNotNull(response[0].body.target);
+      assert.equal(response[0].body.target, userdata2.id); // who was kicked
     },
   },
 }).export(module);
