@@ -54,3 +54,5 @@ $GLOBALS['pfc_hooks']['pfc.isop'][5] = function ($app, $req, $res) {
 ```
 
 This hook will systematically give channel operator rights to "kerphi" login when he joins "Kerphi's room" channel.
+
+Available in phpFreeChat ≥ 2.1.0
