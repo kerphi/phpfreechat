@@ -244,6 +244,12 @@ class Container_users {
       $ret = false;
     }
 
+    // clean channel operator flag
+    $p = $ucpath.'/op/'.$uid;    
+    if (file_exists($p)) {
+      unlink($p);
+    }
+
     return $ret;
   }
 }
