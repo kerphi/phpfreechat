@@ -20,6 +20,10 @@ if (!file_exists(dirname(__FILE__).'/server/lib/Slim/Slim/Slim.php')) {
   $status[] = 'Slim framework is not installed.<br/> It should be installed here: '.basename(dirname(__FILE__)).'/server/lib/Slim/<br/>Please run "make setup" to install it or download/unzip it yourself.';
 }
 
+if (!function_exists('microtime')) {
+  $status[] = 'microtime PHP function is not enable. phpFreeChat needs it';
+}
+
 header("HTTP/1.1 200");
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode($status);
