@@ -42,7 +42,7 @@ class Container_messages {
    * Generates a unique message id
    */
   static public function generateMid($cid) {
-    $mid = sha1(uniqid('', true));
+    $mid = microtime(true).'.'.uniqid('', true);
     return $mid;
   }
 
