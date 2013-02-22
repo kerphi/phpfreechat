@@ -29,7 +29,7 @@ Takes off a user from a given channel. You have to be op to use this command.
 This is a first tool to moderate the channel. Have a look to the ban command for a more serious sanction.
 
 ```
-/kick ["#channel"] "<username>"
+/kick ["#channel"] "<username>" ["<reason>"]
 ```
 
 Available in phpFreeChat ≥ 2.1.0
@@ -41,7 +41,7 @@ Add a user to channel's bannished list. You have to be op to use this command.
 When a user is added to this list, he cannot join later as long as he is in the list. Use this command to moderate the channel with serious sanction. 
 
 ```
-/ban ["#channel"] "<username>"
+/ban ["#channel"] "<username>" ["<reason>"]
 ```
 
 Available in phpFreeChat ≥ 2.1.0
