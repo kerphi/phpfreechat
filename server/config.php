@@ -13,6 +13,10 @@ $GLOBALS['pfc_timeout'] = 35;
 // (Default value: true)
 $GLOBALS['first_is_op'] = true;
 
+// Kick the user from the channel when he his banished
+// (Default value: true)
+$GLOBALS['ban_and_kick'] = true;
+
 // custom user hooks
 $GLOBALS['pfc_hooks'] = array();
 
