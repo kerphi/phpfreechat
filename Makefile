@@ -34,7 +34,8 @@ setup-server-test:
 
 setup-client-test:
 	@cd $(path) && wget http://phantomjs.googlecode.com/files/phantomjs-1.6.1-linux-x86_64-dynamic.tar.bz2
-	@tar xzf phantomjs-1.6.1-linux-x86_64-dynamic.tar.bz2
+	@tar xjf phantomjs-1.6.1-linux-x86_64-dynamic.tar.bz2
+	@ln -s phantomjs-1.6.1-linux-x86_64-dynamic phantomjs
 
 setup-minify:
 	@npm install -g less clean-css pack uglify-js
