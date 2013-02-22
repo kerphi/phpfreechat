@@ -88,8 +88,11 @@ Example: TODO
 * `server/channels/:cid/msg/`            - POST   - current user post a new message on :cid channel (if joined)
 * `server/channels/:cid/op/`             - GET    - returns the :cid channel operators list (list of :uid)
 * `server/channels/:cid/op/:uid`         - GET    - tells if :uid is operator on :cid
-* `server/channels/:cid/op/:uid`         - PUT    - add :uid to the operator list on :cid channel (try to)
+* `server/channels/:cid/op/:uid`         - PUT    - adds :uid to the operator list on :cid channel (try to)
 * `server/channels/:cid/op/:uid`         - DELETE - removes operator rights to :uid on :cid channel (try to)
+* `server/channels/:cid/ban/`            - GET    - returns the :cid channel banished list (list of :name)
+* `server/channels/:cid/ban/:name`       - PUT    - adds :name to the banished list on :cid channel (:name is base64 encoded)
+* `server/channels/:cid/ban/:name`       - DELETE - :name is no more banished on :cid channel (:name is base64 encoded)
 * `server/users/`                        - GET    - returns the online users :uid currently online on the server [not implemented]
 * `server/users/:uid/`                   - GET    - returns :uid user info
 * `server/users/:uid/pending/`           - GET    - pending messages for :uid user (from channels or a private messages)
@@ -114,6 +117,8 @@ Server stores data into the `server/data/` folder as following:
 * `server/data/channels/:cid/index.json`      - full channel attributes
 * `server/data/channels/:cid/op/              - operators list
 * `server/data/channels/:cid/op/:uid          - tells that :uid is operator on :cid
+* `server/data/channels/:cid/ban/             - banished list
+* `server/data/channels/:cid/ban/:name        - tells that :name is banished on :cid
 * `server/data/indexes/users/name/:name`      - index on user's nicknames: name -> uid
 * `server/data/skipintro`                     - contains 0 or 1
 * `server/data/gc`                            - timestamp used for garbage collector
