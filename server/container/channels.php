@@ -18,6 +18,7 @@ class Container_channels {
     @mkdir($cpath, 0777, true);
     @mkdir($cpath.'/users', 0777, true);
     @mkdir($cpath.'/op', 0777, true);  
+    @mkdir($cpath.'/ban', 0777, true);  
   }
   
   static public function generateCid() {

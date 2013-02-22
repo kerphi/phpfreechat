@@ -154,7 +154,7 @@ vows.describe('Channel kick tests').addBatch({
       assert.equal(result.statusCode, 200);      
     },    
 
-    'after being kicked user2 should not be joined anymore in the channel': function (error, results, requests, steps) {
+    'after being kicked user2 should not be listed anymore in the channel': function (error, results, requests, steps) {
       var result = results[steps.CHECKUSERLIST][0];
       assert.equal(result.statusCode, 200);
       

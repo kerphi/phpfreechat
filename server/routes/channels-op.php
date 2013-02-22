@@ -101,9 +101,9 @@ $app->put('/channels/:cid/op/:uid', function ($cid, $uid) use ($app, $req, $res)
 
   // check the new operator in online on this channel
   if (!Container_channels::checkChannelUser($cid, $uid)) {
-    $res->status(400); 
+    $res->status(404); 
     $res['Content-Type'] = 'application/json; charset=utf-8';
-    $res->body(GetPfcError(40001)); // User is not online on the channel
+    $res->body(GetPfcError(40401)) ; // User is not connected to the channel
     return;
   }
 

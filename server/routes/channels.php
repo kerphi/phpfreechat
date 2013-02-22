@@ -3,6 +3,7 @@
 include_once 'container/users.php';
 include_once 'container/channels.php';
 include_once 'container/channels-op.php';
+include_once 'container/channels-ban.php';
 include_once 'container/messages.php';
 
 /**
@@ -58,7 +59,17 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
     $res->body('{ "error": "User is not connected" }');
     return;
   }
-  
+
+  // check the user name is not banished on this channel
+  $name = Container_users::getUserData($uid, 'name');
+  if (Container_channels_ban::isBan($cid, $name)) {
+    $baninfo = Container_channels_ban::getBanInfo($cid, $name);
+    $res->status(403);
+    $res['Content-Type'] = 'application/json; charset=utf-8';
+    $res->body(GetPfcError(40305, array('baninfo' => $baninfo))); // You have been banished from this channel
+    return;
+  }
+
   if (!Container_users::joinChannel($uid, $cid)) {
     $res->status(200); // User already joined the channel
     $res['Content-Type'] = 'application/json; charset=utf-8';
