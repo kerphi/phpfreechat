@@ -12,5 +12,7 @@ before_script:
     - echo "$(curl -fsSL https://raw.github.com/gist/2eb301570ed4a1f4c33d/gistfile1.txt)" | sed -e "s,PATH,`pwd`,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
     - sudo service apache2 restart
     - make setup
+    - make setup-server-test
+    - make setup-client-test
 
 script: make test
