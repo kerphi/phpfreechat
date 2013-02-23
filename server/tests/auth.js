@@ -22,7 +22,10 @@ vows.describe('Auth route').addBatch({
         jar: false,
       }, this.callback);
     },
-    'server ask for authentication': function (error, res, body) {      
+    'server ask for authentication': function (error, res, body) {
+      
+      console.log(fs.readFileSync('/var/log/apache2/error.log', 'utf8'));
+      
       assert.equal(res.statusCode, 403);
       assert.isNotNull(res.headers['pfc-www-authenticate']);
     },

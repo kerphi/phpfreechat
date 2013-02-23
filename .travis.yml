@@ -21,4 +21,4 @@ before_script:
     - curl http://127.0.0.1:80/server/auth
     - sudo tail -n 20 /var/log/apache2/error.log
 
-script: make test
+script: sudo make test
