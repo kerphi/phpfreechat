@@ -23,6 +23,7 @@ vows.describe('Auth route').addBatch({
       }, this.callback);
     },
     'server ask for authentication': function (error, res, body) {
+      console.log(body);
       assert.equal(res.statusCode, 403);
       assert.isNotNull(res.headers['pfc-www-authenticate']);
     },
