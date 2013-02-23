@@ -20,5 +20,8 @@ before_script:
     - curl http://127.0.0.1:80/
     - curl http://127.0.0.1:80/server/auth
     - sudo tail -n 20 /var/log/apache2/error.log
+    - node -v
+    - echo "require('request')('http://127.0.0.1/server/auth', function (error, res, body) { console.log(res.statusCode); console.log(error); })" | node
+    - sudo tail -n 20 /var/log/apache2/error.log
 
-script: sudo -E make test
+script: make test
