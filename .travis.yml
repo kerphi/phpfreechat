@@ -18,7 +18,7 @@ before_script:
     - curl http://127.0.0.1:80/check.php
     - curl http://127.0.0.1:80/server/status
     - curl http://127.0.0.1:80/
-    - curl -v http://127.0.0.1:80/server/auth
-    - tail -n 20 /var/log/apache2/error.log
+    - curl http://127.0.0.1:80/server/auth
+    - sudo tail -n 20 /var/log/apache2/error.log
 
 script: make test
