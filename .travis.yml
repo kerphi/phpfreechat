@@ -12,16 +12,9 @@ before_script:
     - sudo service apache2 restart
     - make setup
     - make setup-server-test
-    - make setup-client-test
     - echo "http://127.0.0.1" > serverurl
     - chmod 777 server/data/
     - curl http://127.0.0.1/check.php
     - curl http://127.0.0.1/server/status
-    - curl http://127.0.0.1/
-    - curl http://127.0.0.1/server/auth
-    - sudo tail -n 20 /var/log/apache2/error.log
-    - node -v
-    - echo "require('request')('http://127.0.0.1/server/auth', function (error, res, body) { console.log(res.statusCode); console.log(error); })" | node
-    - sudo tail -n 20 /var/log/apache2/error.log
 
-script: make test
+script: make test-server
