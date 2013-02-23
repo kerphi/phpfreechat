@@ -15,7 +15,8 @@ before_script:
     - make setup-server-test
     - make setup-client-test
     - echo "http://127.0.0.1:80" > serverurl
-    - curl -v http://127.0.0.1:80/check.php
-    - curl -v http://127.0.0.1:80/server/status
+    - chmod 777 server/data/
+    - curl http://127.0.0.1:80/check.php
+    - curl http://127.0.0.1:80/server/status
 
 script: make test
