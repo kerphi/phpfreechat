@@ -14,5 +14,6 @@ before_script:
     - make setup
     - make setup-server-test
     - make setup-client-test
+    - echo "http://127.0.0.1:80" > serverurl
 
 script: make test
