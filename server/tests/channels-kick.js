@@ -19,7 +19,7 @@ var vows = require('vows'),
     login2 = 'testkickuser2';
     
 try {
-  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8');
+  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8').trim();
 } catch (err) {}
 
 vows.describe('Channel kick tests').addBatch({

@@ -18,7 +18,7 @@ var vows = require('vows'),
     cid2 = 'cid_2';
     
 try {
-  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8');
+  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8').trim();
 } catch (err) {}
 
 

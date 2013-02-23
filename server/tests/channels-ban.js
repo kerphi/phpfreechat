@@ -21,7 +21,7 @@ var vows = require('vows'),
     cid1 = 'cid_ban_1';
 
 try {
-  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8');
+  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8').trim();
 } catch (err) {}
 
 vows.describe('Channel ban tests').addBatch({

@@ -11,7 +11,7 @@ var vows = require('vows'),
     baseurl = 'http://127.0.0.1:32773';
 
 try {
-  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8');
+  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8').trim();
 } catch (err) {}
 
 vows.describe('User reload his window')

@@ -17,7 +17,7 @@ var vows = require('vows'),
     cid2 = 'cid_op_2';
     
 try {
-  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8');
+  baseurl = fs.readFileSync(__dirname + '/../../serverurl', 'utf8').trim();
 } catch (err) {}
 
 vows.describe('Channel operator rights tests').addBatch({
