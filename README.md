@@ -1,5 +1,7 @@
 # Installation quickstart
 
+[![Build Status](https://travis-ci.org/kerphi/phpfreechat.png?branch=master)](https://travis-ci.org/kerphi/phpfreechat)
+
 ## Prerequisites
 
   * Web browser compatible with JQuery (almost all !)
