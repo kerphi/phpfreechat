@@ -2,7 +2,6 @@ language: php
  
 php:
     - 5.3
-    - 5.4
  
 before_script:
     - sudo apt-get install apache2 libapache2-mod-php5
@@ -19,5 +18,7 @@ before_script:
     - curl http://127.0.0.1:80/check.php
     - curl http://127.0.0.1:80/server/status
     - curl http://127.0.0.1:80/
+    - curl -v http://127.0.0.1:80/server/auth
+    - tail -n 20 /var/log/apache2/error.log
 
 script: make test
