@@ -45,3 +45,34 @@ When a user is added to this list, he cannot join later as long as he is in the 
 ```
 
 Available in phpFreeChat ≥ 2.1.0
+
+## kickban
+
+Same as the /ban command but the user is directly kicked from the channel. You have to be op to use this command.
+
+```
+/kickban ["#channel"] "<username>" ["<reason>"]
+```
+
+Available in phpFreeChat ≥ 2.1.0
+
+## unban
+
+Remove a user from the channel's bannished list. You have to be op to use this command.
+Notice: the user is not notified he has been unbanned.
+
+```
+/unban ["#channel"] "<username>"
+```
+
+Available in phpFreeChat ≥ 2.1.0
+
+## banlist
+
+Lists username in the channel's banished list. You have to be on the channel to use this command.
+
+```
+/banlist ["#channel"]
+```
+
+Available in phpFreeChat ≥ 2.1.0
