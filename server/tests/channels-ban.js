@@ -192,6 +192,15 @@ vows.describe('Channel ban tests').addBatch({
           }, callback);
         },
 
+        // u1 kick u2
+        function USER1KICKUSER2(callback) {
+          request({
+            method: 'DELETE',
+            url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata2.id,
+            jar: j1,
+          }, callback);
+        },
+        
         // u2 join cid1 (not allowed cause he is banished)
         function USER2JOIN2(callback) {
           request({
@@ -225,6 +234,25 @@ vows.describe('Channel ban tests').addBatch({
             method: 'PUT',
             url: baseurl + '/server/channels/' + cid1 + '/users/' + userdata2.id,
             jar: j2,
+          }, callback);
+        },
+
+        // u1 kickban u2
+        function USER1KICKBANUSER2(callback) {
+          request({
+            method: 'PUT',
+            url: baseurl + '/server/channels/' + cid1 + '/ban/' + new Buffer(userdata2.name).toString('base64'),
+            qs: { 'reason': 'Bye bye', 'kickban' : true },
+            jar: j1,
+          }, callback);
+        },
+        
+        // u1 check the channels user list (u2 should not be listed anymore)
+        function USER1GETUSERLIST2(callback) {
+          request({
+            method: 'GET',
+            url: baseurl + '/server/channels/' + cid1 + '/users/',
+            jar: j1,
           }, callback);
         },
         
@@ -306,7 +334,7 @@ vows.describe('Channel ban tests').addBatch({
     },
     
     // USER1GETUSERLIST
-    'user2 should not be listed anymore in the users channel list': function (error, results, requests, steps) {
+    'user2 should still be listed in the users channel list cause he was not a kickban': function (error, results, requests, steps) {
       var result = results[steps.USER1GETUSERLIST][0];
       assert.equal(result.statusCode, 200);
       
@@ -318,7 +346,7 @@ vows.describe('Channel ban tests').addBatch({
       }
 
       assert.isArray(response);
-      assert.lengthOf(response, 2);
+      assert.lengthOf(response, 3);
     },
     
     // USER1BANLIST3
@@ -424,5 +452,21 @@ vows.describe('Channel ban tests').addBatch({
       assert.equal(result.statusCode, 201);
     },
     
+    // USER1GETUSERLIST2
+    'user2 should not be listed anymore in the users channel list cause he was kickbanned': function (error, results, requests, steps) {
+      var result = results[steps.USER1GETUSERLIST2][0];
+      assert.equal(result.statusCode, 200);
+      
+      var response = {};
+      try {
+        response = JSON.parse(result.body);
+      } catch (err) {
+        assert.isNull(err, 'response body should be JSON formated');
+      }
+
+      assert.isArray(response);
+      assert.lengthOf(response, 2);
+    },
+
   },
 }).export(module);

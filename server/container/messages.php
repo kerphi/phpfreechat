@@ -28,7 +28,7 @@ class Container_messages {
     // search users subscribed to the channel
     foreach (Container_channels::getChannelUsers($cid) as $subuid) {
       // post this message on each users subscribed on the channel
-      // /users/:uid/msg/
+      // /users/:uid/pending/
       if ($subuid != $uid) { // don't post message to the sender
         $umdir = Container_users::getDir().'/'.$subuid.'/messages';
         file_put_contents($umdir.'/'.$mid, $msg);

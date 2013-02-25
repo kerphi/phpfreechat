@@ -75,25 +75,27 @@ $app->put('/channels/:cid/ban/:name64', function ($cid, $name64) use ($app, $req
   // add name64 to the ban list
   $opname = Container_users::getUserData($online_uid, 'name');
   $reason = $req->params('reason');
-  $ok = Container_channels_ban::addBan($cid, $name64, array('opname' => $opname, 'reason' => $reason ? $reason : ''));
+  $ok = Container_channels_ban::addBan($cid, $name64, array('opname' => $opname, 'reason' => $reason ? $reason : '', 'timestamp' => time()));
   if ($ok) {
-    $name = base64_decode($name64);
+    $name      = base64_decode($name64);
+    $banuid    = Container_indexes::getIndex('users/name', $name);
+    $iskickban = ($req->params('kickban') && $banuid);
     
     // notification to other connected user of this ban
     Container_messages::postMsgToChannel(
       $cid,
       $online_uid,
-      array('opname' => $opname,
-            'name'   => $name,
-            'reason' => $reason ? $reason : ''),
+      array('opname'  => $opname,
+            'name'    => $name,
+            'reason'  => $reason ? $reason : '',
+            'kickban' => $iskickban),
       'ban');
 
-    // kick the user from the channel ? (warning: do it after the above notification)
-    if ($GLOBALS['ban_and_kick']) {
-      // convert $name64 into a $uid (must be online)
-      if ($banuid = Container_indexes::getIndex('users/name', $name)) {
-        Container_users::leaveChannel($banuid, $cid);
-      }
+    // kick the user from the channel
+    // (warning: do it after the above notification
+    //  or he will not receive the notification)
+    if ($iskickban) {
+      Container_users::leaveChannel($banuid, $cid);
     }
     
     $res->status(201);
@@ -138,14 +140,20 @@ $app->delete('/channels/:cid/ban/:name64', function ($cid, $name64) use ($app, $
   $banlist = Container_channels_ban::getBanList($cid);
   $ok      = Container_channels_ban::rmBan($cid, $name64);
   if ($ok) {
-    $res->status(200);
+  
+    // check if the user is in the ban list
+    $name = base64_decode($name64);
+    if (!isset($banlist[$name])) {
+      $res->status(404);
+      return;
+    }
     
     // notification to other connected user of this removed ban
-    $name       = base64_decode($name64);
     $unban_body = $banlist[$name];
     $unban_body = array_merge($unban_body, array('name' => $name));
     Container_messages::postMsgToChannel($cid, $online_uid, $unban_body, 'unban');
 
+    $res->status(200);    
   } else {
     $res->status(500);
   }
