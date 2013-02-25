@@ -60,9 +60,11 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
     return;
   }
 
-  // check the user name is not banished on this channel
-  $name = Container_users::getUserData($uid, 'name');
-  if (Container_channels_ban::isBan($cid, $name)) {
+  // check the user name is not banished or not on this channel
+  // do not allow the join if he is banned and he is not already online
+  $name   = Container_users::getUserData($uid, 'name');
+  $isjoin = Container_channels::checkChannelUser($cid, $uid);
+  if (!$isjoin and Container_channels_ban::isBan($cid, $name)) {
     $baninfo = Container_channels_ban::getBanInfo($cid, $name);
     $res->status(403);
     $res['Content-Type'] = 'application/json; charset=utf-8';

@@ -245,7 +245,7 @@ class Container_users {
     }
 
     // clean channel operator flag
-    $p = $ucpath.'/op/'.$uid;    
+    $p = $ucpath.'/op/'.$uid;
     if (file_exists($p)) {
       unlink($p);
     }

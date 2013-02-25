@@ -57,7 +57,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         });
 
       }).error(function (err) {
-        console.log(err);
+        pfc.displayError(err);
       });
 
     },
@@ -123,7 +123,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         // todo: close the tab
         
       }).error(function (err) {
-        console.log(err);
+        pfc.displayError(err);
       });
       
     },

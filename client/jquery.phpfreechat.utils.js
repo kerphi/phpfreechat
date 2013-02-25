@@ -62,6 +62,5 @@ fromCharCode(r>>6|192),t+=String.fromCharCode(r&63|128)):(t+=String.fromCharCode
     }
   };
 
-
   return pfc;
 }(phpFreeChat || {}, jQuery, window));

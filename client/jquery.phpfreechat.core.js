@@ -365,6 +365,45 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }
     
   };
+
+  /**
+   * Displays an error
+   * first parameter is the err object returned by the AJAX request
+   */
+  pfc.displayError = function (err) {
+    
+    // format the error (generic or specific)
+    if (err.responseText) {
+      err = JSON.parse(err.responseText);
+    } else {
+      err = {
+        'error':      err.statusText,
+        'errorCode' : err.status
+      };
+    }
+    
+    // display the error
+    switch (err.errorCode) {
+      
+      case 40305:
+        err.baninfo.timestamp = new Date(err.baninfo.timestamp * 1000);
+        pfc.appendMessage({
+          type: 'error',
+          body: 'You cannot join this channel because you have been banned by ' + err.baninfo.opname +
+                ' for ' + (err.baninfo.reason ? 'the reason "' + err.baninfo.opname + '"' : 'no reason') +
+                ' on ' + err.baninfo.timestamp
+        });
+        break;
+
+      default:
+        // generic error
+        pfc.appendMessage({
+          type: 'error',
+          body: err.error + ' [' + err.errorCode + ']'
+        });
+        break;
+    }
+  };
  
   return pfc;
 }(phpFreeChat || {}, jQuery, window));
