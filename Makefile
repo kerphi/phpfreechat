@@ -17,6 +17,15 @@ test-server: dummy
 	@vows $(TESTS) --spec
 	@mv -f $(path)/server/config.local.php.tmp $(path)/server/config.local.php
 
+# run one test file
+testone: dummy
+	@touch $(path)/server/config.local.php
+	@mv -f $(path)/server/config.local.php $(path)/server/config.local.php.tmp
+	@cp -f $(path)/server/tests/config.local.php $(path)/server/config.local.php
+	@rm -rf server/data/*
+	@vows ./server/tests/$(f) --spec
+	@mv -f $(path)/server/config.local.php.tmp $(path)/server/config.local.php
+
 # run client tests
 test-client: dummy
 	@./phantomjs/bin/phantomjs ./phantomjs/examples/run-qunit.js $(SERVERURL)/client/tests/test1.html
