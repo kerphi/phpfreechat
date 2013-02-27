@@ -390,7 +390,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
         pfc.appendMessage({
           type: 'error',
           body: 'You cannot join this channel because you have been banned by ' + err.baninfo.opname +
-                ' for ' + (err.baninfo.reason ? 'the reason "' + err.baninfo.opname + '"' : 'no reason') +
+                ' for ' + (err.baninfo.reason ? 'the reason "' + err.baninfo.reason + '"' : 'no reason') +
                 ' on ' + err.baninfo.timestamp
         });
         break;

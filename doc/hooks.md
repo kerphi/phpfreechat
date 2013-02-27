@@ -40,7 +40,7 @@ This hook can be used to give operator right to a specific login on a specific c
 
 The hook must return true if operator, false if not an operator on this channel. 
 
-Example which filter none ascii characters from the login: 
+Example which give op rights to "kerphi" login when he joins "Kerphi's room" channel: 
 ```php
 $GLOBALS['pfc_hooks']['pfc.isop'][5] = function ($app, $req, $res) {
   return function ($login, $channel, $uid, $cid) use ($app, $req, $res) {
@@ -54,5 +54,29 @@ $GLOBALS['pfc_hooks']['pfc.isop'][5] = function ($app, $req, $res) {
 ```
 
 This hook will systematically give channel operator rights to "kerphi" login when he joins "Kerphi's room" channel.
+
+Available in phpFreeChat ≥ 2.1.0
+
+## pfc.isban
+
+This hook can be used to banish a specific user on a specific channel.
+
+* First parameter is the login 
+* Second parameter is the channel name
+
+The hook must return an array with baninfo (see bellow example) if the user is banned, false if the user is not banned on this channel. 
+
+Example which ban "baduser" login on the "Kerphi's room" channel: 
+```php
+$GLOBALS['pfc_hooks']['pfc.isban'][5] = function ($app, $req, $res) {
+  return function ($login, $channel, $uid, $cid) use ($app, $req, $res) {
+    if ($login == 'baduser' and $channel == "Kerphi's room") {
+      return array('opname' => 'Chat Master', 'reason' => 'Because you are a spammer', 'timestamp' => time());
+    } else {
+      return false;
+    }
+  };
+};
+```
 
 Available in phpFreeChat ≥ 2.1.0

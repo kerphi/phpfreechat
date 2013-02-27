@@ -62,16 +62,29 @@ $app->put('/channels/:cid/users/:uid', function ($cid, $uid) use ($app, $req, $r
 
   // check the user name is not banished or not on this channel
   // do not allow the join if he is banned and he is not already online
+  $isban = false;
   $name   = Container_users::getUserData($uid, 'name');
   $isjoin = Container_channels::checkChannelUser($cid, $uid);
   if (!$isjoin and Container_channels_ban::isBan($cid, $name)) {
     $baninfo = Container_channels_ban::getBanInfo($cid, $name);
+    $isban = true;
+  }
+  // check if the user is banned from this channel (from the hook)
+  if (!$isban and !$isjoin and isset($GLOBALS['pfc_hooks']['pfc.isban'])) {
+    foreach ($GLOBALS['pfc_hooks']['pfc.isban'] as $hook) {
+      $login   = Container_users::getUserData($uid)->name;
+      $channel = $cid; // todo: replace this by the channel fullname
+      $baninfo = $hook($login, $channel, $uid, $cid);
+      $isban = ($baninfo !== false);
+    }
+  }
+  if ($isban) {
     $res->status(403);
     $res['Content-Type'] = 'application/json; charset=utf-8';
     $res->body(GetPfcError(40305, array('baninfo' => $baninfo))); // You have been banished from this channel
     return;
   }
-
+  
   if (!Container_users::joinChannel($uid, $cid)) {
     $res->status(200); // User already joined the channel
     $res['Content-Type'] = 'application/json; charset=utf-8';

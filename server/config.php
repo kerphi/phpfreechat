@@ -49,6 +49,19 @@ $GLOBALS['pfc_hooks'] = array();
 //   };
 // };
 
+// HOOK - pfc.isban
+// Can be used to banish user on one or several channels
+// example:
+// $GLOBALS['pfc_hooks']['pfc.isban'][5] = function ($app, $req, $res) {
+//   return function ($login, $channel, $uid, $cid) use ($app, $req, $res) {
+//     if ($login == 'baduser' and $channel == "Kerphi's room") {
+//       return array('opname' => 'Chat Master', 'reason' => 'Because you are a spammer', 'timestamp' => time());
+//     } else {
+//       return false;
+//     }
+//   };
+// };
+
 // include the local config if defined
 $clocal = dirname(__FILE__).'/config.local.php';
 if (file_exists($clocal)) {
