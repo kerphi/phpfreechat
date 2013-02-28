@@ -58,6 +58,15 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       type: 'GET',
       url:  pfc.options.serverCheckUrl
     }).done(function (errors) {
+      // parse json
+      try {
+        if (errors instanceof String) {
+          errors = JSON.parse(errors);
+        }
+      } catch (err) {
+        errors = [ errors ];
+      }
+      // show errors if one
       if (errors && errors.length > 0) {
         pfc.showErrorsPopup(errors);
       } else {
