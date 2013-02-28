@@ -72,17 +72,18 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    * Test the rewrite rules are enabled on the server
    */
   pfc.checkServerConfigRewrite = function (next) {
+    var err_rewrite_msg = 'mod_rewrite must be enabled server side and correctly configured. "RewriteBase" could be adjusted in server/.htaccess file.';
     $.ajax({
       type: 'GET',
       url:  pfc.options.serverUrl + '/status'
     }).done(function (status) {
       if (!status || !status.running) {
-        pfc.showErrorsPopup([ 'mod_rewrite must be enabled server side' ]);
+        pfc.showErrorsPopup([ err_rewrite_msg ]);
       } else {
         next();
       }
     }).error(function () {
-      pfc.showErrorsPopup([ 'mod_rewrite must be enabled server side' ]);
+      pfc.showErrorsPopup([ err_rewrite_msg ]);
     });
   };
   
