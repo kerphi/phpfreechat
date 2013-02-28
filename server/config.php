@@ -1,7 +1,7 @@
 <?php
 
 // phpfreechat version
-$GLOBALS['pfc_version'] = '2.0.5';
+$GLOBALS['pfc_version'] = '2.1.0';
 
 // This is the time of inactivity to wait before considering a user is disconnected (in milliseconds).
 // A user is inactive only if s/he closed his/her chat window. A user with an open chat window is not 
