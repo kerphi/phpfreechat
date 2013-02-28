@@ -6,7 +6,7 @@ TESTS=$(wildcard $(path)/server/tests/*.js)
 dummy:
 
 # run all tests
-test: test-server test-client
+test: test-server
 
 # run server tests
 test-server: dummy
