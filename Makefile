@@ -50,10 +50,10 @@ setup-minify:
 	@npm install -g less clean-css pack uglify-js
 
 # compress javascript and css
-minify: $(path)/client/pfc.js $(path)/client/pfc-*.js $(path)/client/themes/*/jquery.phpfreechat.less $(path)/client/themes/*/jquery.phpfreechat.*.less
+minify: $(path)/client/pfc.js $(path)/client/pfc-*.js $(path)/client/themes/*/pfc.less $(path)/client/themes/*/pfc-*.less
 	$(shell cat $(path)/client/pfc.js $(path)/client/pfc-*.js | uglifyjs -c 2> /dev/null > $(path)/client/pfc.min.js)
-	$(shell for f in `ls client/themes/*/jquery.phpfreechat.less`; do lessc $$f `echo $$f | sed s/.less/.css/g`; done)
-	$(shell for f in `ls client/themes/*/jquery.phpfreechat.css`; do cleancss $$f > `echo $$f | sed s/.css/.min.css/g`; done)
+	$(shell for f in `ls client/themes/*/pfc.less`; do lessc $$f `echo $$f | sed s/.less/.css/g`; done)
+	$(shell for f in `ls client/themes/*/pfc.css`; do cleancss $$f > `echo $$f | sed s/.css/.min.css/g`; done)
 
 setup-jshint:
 	@npm install -g jshint
@@ -66,8 +66,8 @@ phpcs:
 
 clean: dummy
 	@rm -f $(path)/client/*.min.js
-	@rm -f $(path)/client/themes/*/jquery.phpfreechat.css
-	@rm -f $(path)/client/themes/*/jquery.phpfreechat.min.css
+	@rm -f $(path)/client/themes/*/pfc.css
+	@rm -f $(path)/client/themes/*/pfc.min.css
 	@rm -rf $(path)/server/data/*
 	@rm -f $(path)/server/logs/*
 
@@ -92,7 +92,7 @@ clean-release-for-debug: clean-release
 	@mv $(path)/client/pfc.js.tmp $(path)/client/pfc.js
 	@rm -f $(path)/client/lib/less-*.js
 	@rm -f $(path)/client/themes/*/*.less
-	@rm -f $(path)/client/themes/*/jquery.phpfreechat.min.css
+	@rm -f $(path)/client/themes/*/pfc.min.css
 	@tools/switch-examples-head --dev
 	@rm -rf $(path)/tools
 
@@ -103,7 +103,7 @@ clean-release-for-prod: clean-release
 	@mv $(path)/client/pfc.min.js.tmp $(path)/client/pfc.min.js
 	@rm -f $(path)/client/lib/less-*.js
 	@rm -f $(path)/client/themes/*/*.less
-	@rm -f $(path)/client/themes/*/jquery.phpfreechat.css
+	@rm -f $(path)/client/themes/*/pfc.css
 	@tools/switch-examples-head --prod
 	@rm -rf $(path)/tools
 
