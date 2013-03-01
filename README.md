@@ -51,9 +51,9 @@ phpfreechat is released with few themes. You can choose which one you want to us
 
 To select the theme, you only have to change one line in your html `<head>`. To use the `default` theme:
 ```html
-  <link rel="stylesheet" type="text/css" href="/phpfreechat-2.1.1/client/themes/default/jquery.phpfreechat.min.css" />
+  <link rel="stylesheet" type="text/css" href="/phpfreechat-2.1.1/client/themes/default/pfc.min.css" />
 ```
 or this code for `carbon` theme:
 ```html
-  <link rel="stylesheet" type="text/css" href="/phpfreechat-2.1.1/client/themes/carbon/jquery.phpfreechat.min.css" />
+  <link rel="stylesheet" type="text/css" href="/phpfreechat-2.1.1/client/themes/carbon/pfc.min.css" />
 ```
