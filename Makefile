@@ -79,7 +79,10 @@ clean-release: setup setup-minify minify
 	@rm -f $(path)/Makefile
 	@rm -f $(path)/.jshintrc
 	@rm -f $(path)/.jshintignore
+	@rm -f $(path)/.gitignore
+	@rm -f $(path)/.travis.yml
 	@rm -rf $(path)/.git
+	
 
 # do not minify .js/.css (and remove .less)
 clean-release-for-debug: clean-release
