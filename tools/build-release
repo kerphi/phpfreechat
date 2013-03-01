@@ -7,6 +7,14 @@ TOOL_PATH=`dirname "$MY_PATH"`
 PFC_PATH=$TOOL_PATH/..
 VERSION=`$TOOL_PATH/get-version`
 
+# if version do not exists as a tag,
+# get the latest commit id as the latest version number
+if [ "`git tag -l | grep $VERSION`" == "" ]; then
+  VERSION_GIT="`git log --pretty=format:'%h' -n 1`"
+else
+  VERSION_GIT="$VERSION"
+fi
+
 # a temp folder to clone the git
 TMP_DIR=$PFC_PATH/tmp
 mkdir -p $TMP_DIR
@@ -21,7 +29,7 @@ if [ "$1" == "--dev" ]; then
   
   # cleanup the pfc files
   cd $TMP_DIR/$PFC_ARCHIVE_NAME
-  git checkout $VERSION
+  git checkout $VERSION_GIT
   make clean-release-for-dev
 elif [ "$1" == "--debug" ]; then
   PFC_AN_SUFFIX="-debug"
@@ -33,7 +41,7 @@ elif [ "$1" == "--debug" ]; then
   
   # cleanup the pfc files
   cd $TMP_DIR/$PFC_ARCHIVE_NAME
-  git checkout $VERSION
+  git checkout $VERSION_GIT
   make clean-release-for-debug
 else
   PFC_AN_SUFFIX=""
@@ -45,7 +53,7 @@ else
   
   # cleanup the pfc files
   cd $TMP_DIR/$PFC_ARCHIVE_NAME
-  git checkout $VERSION
+  git checkout $VERSION_GIT
   make clean-release-for-prod
 fi
 
