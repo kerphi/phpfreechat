@@ -23,7 +23,7 @@ JQuery should be included in your html `<head>` before the phpfreechat code:
 Include the phpfreechat plugin in your html `<head>`:
 ```html
   <link rel="stylesheet" type="text/css" href="/phpfreechat-2.1.0/client/themes/default/jquery.phpfreechat.min.css" />
-  <script src="/phpfreechat-2.1.0/client/jquery.phpfreechat.min.js" type="text/javascript"></script>
+  <script src="/phpfreechat-2.1.0/client/pfc.min.js" type="text/javascript"></script>
 ```
 
 Add this piece of HTML in your `<body>` where you want the chat to be displayed:
@@ -47,6 +47,7 @@ phpfreechat is released with few themes. You can choose which one you want to us
 * `default`
 * `carbon`
 * `gamer`
+* `phpfreechat`
 
 To select the theme, you only have to change one line in your html `<head>`. To use the `default` theme:
 ```html

@@ -50,8 +50,8 @@ setup-minify:
 	@npm install -g less clean-css pack uglify-js
 
 # compress javascript and css
-minify: $(path)/client/jquery.phpfreechat.js $(path)/client/jquery.phpfreechat.*.js $(path)/client/themes/*/jquery.phpfreechat.less $(path)/client/themes/*/jquery.phpfreechat.*.less
-	$(shell cat $(path)/client/jquery.phpfreechat.js $(path)/client/jquery.phpfreechat.*.js | uglifyjs -c 2> /dev/null > $(path)/client/jquery.phpfreechat.min.js)
+minify: $(path)/client/pfc.js $(path)/client/pfc-*.js $(path)/client/themes/*/jquery.phpfreechat.less $(path)/client/themes/*/jquery.phpfreechat.*.less
+	$(shell cat $(path)/client/pfc.js $(path)/client/pfc-*.js | uglifyjs -c 2> /dev/null > $(path)/client/pfc.min.js)
 	$(shell for f in `ls client/themes/*/jquery.phpfreechat.less`; do lessc $$f `echo $$f | sed s/.less/.css/g`; done)
 	$(shell for f in `ls client/themes/*/jquery.phpfreechat.css`; do cleancss $$f > `echo $$f | sed s/.css/.min.css/g`; done)
 
@@ -87,9 +87,9 @@ clean-release: setup setup-minify minify
 # do not minify .js/.css (and remove .less)
 clean-release-for-debug: clean-release
 	@rm -f $(path)/client/*.min.js
-	@cat $(path)/client/*.js > $(path)/client/jquery.phpfreechat.js.tmp
+	@cat $(path)/client/*.js > $(path)/client/pfc.js.tmp
 	@rm -f $(path)/client/*.js
-	@mv $(path)/client/jquery.phpfreechat.js.tmp $(path)/client/jquery.phpfreechat.js
+	@mv $(path)/client/pfc.js.tmp $(path)/client/pfc.js
 	@rm -f $(path)/client/lib/less-*.js
 	@rm -f $(path)/client/themes/*/*.less
 	@rm -f $(path)/client/themes/*/jquery.phpfreechat.min.css
@@ -98,9 +98,9 @@ clean-release-for-debug: clean-release
 
 # remove .less, minify .css and .js
 clean-release-for-prod: clean-release
-	@mv $(path)/client/jquery.phpfreechat.min.js $(path)/client/jquery.phpfreechat.min.js.tmp
+	@mv $(path)/client/pfc.min.js $(path)/client/pfc.min.js.tmp
 	@rm -f $(path)/client/*.js
-	@mv $(path)/client/jquery.phpfreechat.min.js.tmp $(path)/client/jquery.phpfreechat.min.js
+	@mv $(path)/client/pfc.min.js.tmp $(path)/client/pfc.min.js
 	@rm -f $(path)/client/lib/less-*.js
 	@rm -f $(path)/client/themes/*/*.less
 	@rm -f $(path)/client/themes/*/jquery.phpfreechat.css

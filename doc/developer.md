@@ -60,11 +60,12 @@ Server side tests are written with [vows](http://vowsjs.org/) and are located he
 
 ## Modules (client side)
 
-* `jquery.phpfreechat.js`: just jquery plugin stuff
-* `jquery.phpfreechat.init.js`: phpfreechat's initialization related function
-* `jquery.phpfreechat.core.js`: phpfreechat's core related function
-* `jquery.phpfreechat.auth.js`: phpfreechat's authentication related function
-* `jquery.phpfreechat.utils.js`: phpfreechat's helpers
+* `pfc.js`: just jquery plugin stuff
+* `pfc-init.js`: phpfreechat's initialization related function
+* `pfc-core.js`: phpfreechat's core related function
+* `pfc-auth.js`: phpfreechat's authentication related function
+* `pfc-utils.js`: phpfreechat's helpers
+* ...
 
 ## Events (client side)
 
