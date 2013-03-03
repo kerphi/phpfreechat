@@ -22,7 +22,7 @@ JQuery should be included in your html `<head>` before the phpfreechat code:
 
 Include the phpfreechat plugin in your html `<head>`:
 ```html
-  <link rel="stylesheet" type="text/css" href="/phpfreechat-2.1.1/client/themes/default/jquery.phpfreechat.min.css" />
+  <link rel="stylesheet" type="text/css" href="/phpfreechat-2.1.1/client/themes/default/pfc.min.css" />
   <script src="/phpfreechat-2.1.1/client/pfc.min.js" type="text/javascript"></script>
 ```
 
