@@ -50,7 +50,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     skip_intro: false,
 
     // skip login step ? (if true, chat will not be usable)
-    skip_auth: false
+    skip_auth: false,
+    
+    // show user avatar or not
+    show_avatar: false
   };
 
   function Plugin(element, options) {

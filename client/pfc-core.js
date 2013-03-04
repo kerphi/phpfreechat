@@ -125,7 +125,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     user.op     = ($.inArray(user.id, pfc.channels[pfc.cid].op) >= 0);
     user.role   = user.op ? 'admin' : 'user';
     user.name   = (user.name !== undefined) ? user.name : 'Guest ' + Math.round(Math.random() * 100);
-    user.email  = (user.email !== undefined) ? user.email : '';
+    user.email  = (user.email !== undefined) ? user.email : user.name + '@phpfreechat.net';
     user.active = (user.active !== undefined) ? user.active : true;
     
     // user list DOM element
@@ -152,9 +152,10 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     if (user.op) {
       html.find('div.status').addClass('st-op');
     }
+    if (pfc.options.show_avatar) {
+      html.find('div.avatar').append('<img src="http://www.gravatar.com/avatar/' + pfc.md5(user.email) + '?d=wavatar&amp;s=20" alt="" />');
+    }
     
-    //html.find('div.avatar').append('<img src="http://www.gravatar.com/avatar/' + pfc.md5(user.email) + '?d=wavatar&amp;s=20" alt="" />');
-
     // get all userids from the list (could be cached)
     var userids = [];
     $(pfc.element).find('div.pfc-users li.user').each(function (i, dom_user) {
@@ -224,6 +225,12 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     msg.body      = (msg.body !== undefined) ? msg.body : '';
     msg.timestamp = (msg.timestamp !== undefined) ? msg.timestamp : Math.round(new Date().getTime() / 1000);
     msg.date      = new Date(msg.timestamp * 1000).toLocaleTimeString();
+
+    msg.avatar    = (pfc.users[msg.sender] !== undefined) ?
+      (pfc.users[msg.sender].email ?
+        pfc.md5(pfc.users[msg.sender].email)
+        : pfc.md5(pfc.users[msg.sender].name + '@phpfreechat.net'))
+      : '';
     
     // reformat body text
     if (msg.type == 'join') {
@@ -237,12 +244,13 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     var html         = null;
     if (groupmsg_dom.attr('data-from') != msg.from) {
       html = $('<div class="messages-group" data-stamp="" data-from="">'
-//      + '       <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000001?d=wavatar&s=30" alt="" /></div>'
-//      + '       <div class="avatar"><div style="width:30px; height: 30px; background-color: #DDD;"></div></div>'
+        + (pfc.options.show_avatar ?
+          '       <div class="avatar"><img src="http://www.gravatar.com/avatar/' + msg.avatar + '?d=wavatar&s=30" alt="" /></div>' :
+          '')
         + '       <div class="date"></div>'
         + '       <div class="name"></div>'
         + '     </div>');
-      
+
       // system messages (join, error ...)
       if (/^system-/.test(msg.from)) {
         html.addClass('from-' + msg.from);
