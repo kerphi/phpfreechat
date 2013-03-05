@@ -48,6 +48,7 @@ phpfreechat is released with few themes. You can choose which one you want to us
 * `carbon`
 * `gamer`
 * `phpfreechat`
+* `phpfreechat-mini`
 
 To select the theme, you only have to change one line in your html `<head>`. To use the `default` theme:
 ```html
