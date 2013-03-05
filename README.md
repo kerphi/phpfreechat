@@ -7,7 +7,7 @@
   * Web browser compatible with JQuery (almost all !)
   * A server with:
     * php >= 5.3.0 ([Slim framework](https://github.com/codeguy/Slim/blob/master/README.markdown#system-requirements) dependency)
-    * apache server with mod_rewrite and .htaccess enabled
+    * apache server with mod_rewrite and .htaccess enabled (AllowOverride All)
     * write access to the phpfreechat-2.1.1/server/data/ and phpfreechat-2.1.1/server/log/ folder (777 or write permission for the web server)
   * No database needed !
 
