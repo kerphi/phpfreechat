@@ -30,6 +30,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // load the interface
     pfc.loadHTML();
     pfc.loadResponsiveBehavior();
+    pfc.loadThemeUI();
     
     // run quick tests
     pfc.checkServerConfig(pfc.startChatLogic);
@@ -81,7 +82,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
    * Test the rewrite rules are enabled on the server
    */
   pfc.checkServerConfigRewrite = function (next) {
-    var err_rewrite_msg = 'mod_rewrite must be enabled server side and correctly configured. "RewriteBase" could be adjusted in server/.htaccess file.';
+    var err_rewrite_msg = '.htaccess must be allowed on your server (AllowOverride All) and mod_rewrite must be enabled on your server and correctly configured ("RewriteBase" could be adjusted in server/.htaccess file)';
     $.ajax({
       type: 'GET',
       url:  pfc.options.serverUrl + '/status'
@@ -342,7 +343,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   
   /**
    * For mobile ergonomics
-   **/
+   */
   pfc.loadResponsiveBehavior = function () {
     var elt_tabs     = $(".pfc-tabs");
     var elt_users    = $(".pfc-users");
@@ -470,6 +471,23 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
   };
   
 
+  /**
+   * Load specific javascript defined by the theme
+   */
+  pfc.loadThemeUI = function () {
+    $('link').each(function (i, link) {
+      var href = $(link).attr('href');
+      if (new RegExp("\/client\/themes\/").test(href)) {
+        var base_url = href.replace(/[^\/]+$/, '');
+        var theme_ui_url = base_url + 'theme.js';
+        $.ajax({
+          url: theme_ui_url,
+          dataType: "script",
+          cache: true
+        });
+      }
+    });
+  };
 
   return pfc;
 }(phpFreeChat || {}, jQuery, window));

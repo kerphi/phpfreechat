@@ -1,0 +1,153 @@
+//
+// ads stylesheet used to redefine chat width
+// so that ads area can display well
+//
+
+@ad-desktop-width: 160px;
+@ad-tablet-height: 60px;
+@ad-mobile-height: 31px;
+
+// display pub for desktop
+@responsive-tablet-width-min: @responsive-tablet-width + 1;
+@media (min-width: @responsive-tablet-width-min) {
+
+  div.pfc-content {
+
+    div.pfc-users {
+      width: @users-width;
+      right: @ad-desktop-width + @padding-right;
+    }
+    
+    div.pfc-messages {
+      right: @users-width + @border-width + @ad-desktop-width;
+    }
+
+    div.pfc-topic {
+      right: @padding-right + @ad-desktop-width;
+    }
+    
+    div.pfc-compose {
+      right: @padding-right + @ad-desktop-width;
+    }
+    
+    div.pfc-footer {
+      right: @padding-right + @ad-desktop-width;
+    }  
+    
+    div.pfc-ad-desktop {
+      display: block;
+      position: absolute;
+      width: @ad-desktop-width;
+      right: 0;
+    }
+
+    div.pfc-ad-tablet {
+      display: none;
+    }
+    
+    div.pfc-ad-mobile {
+      display: none;
+    }
+    
+  }
+
+}
+
+// display pub for tablet
+@media (max-width: @responsive-tablet-width) {
+
+  div.pfc-content {
+
+    div.pfc-users {
+//      display: none; // todo: should be hidden ?
+    }
+    
+    div.pfc-messages {
+//      background-color:#FFF;
+      bottom: @footer-height + @compose-height + @padding-bottom + 3 * @border-width + @ad-tablet-height;
+//      right: @users-width;
+    }
+
+    div.pfc-topic {
+//      right: @padding-right;
+    }
+    
+    div.pfc-compose {
+      bottom: @padding-bottom + @border-width + @ad-tablet-height;
+//      right: @padding-right;
+    }
+    
+    div.pfc-footer {
+      bottom: @padding-bottom + @compose-height + @border-width + @ad-tablet-height;
+//      right: @padding-right;
+    }  
+
+    div.pfc-ad-desktop {
+      display: none;
+    }
+
+    div.pfc-ad-tablet {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      height: @ad-tablet-height;
+      text-align: center;
+      width: 100%;
+    }
+    
+    div.pfc-ad-mobile {
+      display: none;
+    }
+  }
+
+}
+
+// display pub for mobile
+@media (max-width: @responsive-mobile-width) {
+
+  div.pfc-content {
+
+    div.pfc-users {
+//      display: none; // todo: should be hidden ?
+    }
+    
+    div.pfc-messages {
+//      background-color:#FFF;
+      bottom: @footer-height + @compose-height + @padding-bottom + 3 * @border-width + @ad-mobile-height;
+//      right: @users-width;
+    }
+
+    div.pfc-topic {
+//      right: @padding-right;
+    }
+    
+    div.pfc-compose {
+      bottom: @padding-bottom + @border-width + @ad-mobile-height;
+//      right: @padding-right;
+    }
+    
+    div.pfc-footer {
+      bottom: @padding-bottom + @compose-height + @border-width + @ad-mobile-height;
+//      right: @padding-right;
+    }  
+
+    div.pfc-ad-desktop {
+      display: none;
+    }
+
+    div.pfc-ad-tablet {
+      display: none;
+    }
+    
+    div.pfc-ad-mobile {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      height: @ad-mobile-height;
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+}
+

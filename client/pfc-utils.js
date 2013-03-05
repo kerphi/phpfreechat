@@ -28,7 +28,9 @@ fromCharCode(r>>6|192),t+=String.fromCharCode(r&63|128)):(t+=String.fromCharCode
    * Todo: make it a jquery plugin
    */
   pfc.modalbox = {
+    isopen: false,
     open: function (html) {
+      this.isopen = true;
       html = $(html);
       $('div.pfc-modal-box *').remove();
       $('div.pfc-modal-box').append(html).fadeIn();
@@ -42,6 +44,7 @@ fromCharCode(r>>6|192),t+=String.fromCharCode(r&63|128)):(t+=String.fromCharCode
       return html;
     },
     close: function (now) {
+      this.isopen = false;
       if (now) {
         $('div.pfc-modal-box').hide();
         $('div.pfc-modal-overlay').hide();
@@ -61,6 +64,6 @@ fromCharCode(r>>6|192),t+=String.fromCharCode(r&63|128)):(t+=String.fromCharCode
       }).trigger('resize');
     }
   };
-
+  
   return pfc;
 }(phpFreeChat || {}, jQuery, window));

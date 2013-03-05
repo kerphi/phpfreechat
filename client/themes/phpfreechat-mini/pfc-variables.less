@@ -1,0 +1,395 @@
+//
+// phpfreechat variables used for styles
+// see also jquery.phpfreechat.theme.variables.less
+//
+
+/* GENERAL */
+@h: 600px;
+
+@padding-left: 6px;
+@padding-right: 6px;
+@padding-top: 6px;
+@padding-bottom: 6px;
+
+@border-width: 1px;
+@border-color: lighten(grey, 30%);
+
+@dialog-bg-color: #EEF;
+@dialog-overlay-color: #000;
+@dialog-border-color: darken(@border-color, 20%);
+@toggle-tabs-btn-display: block;
+
+@responsive-tablet-width: 750px;
+@responsive-mobile-width: 480px;
+
+
+/* CONTENT */
+@font-color: #797979;
+@font-size: 12px;
+@font-line-height: 14px;
+@font-family: arial;
+@font-weight: normal;
+@font-style: normal;
+@text-decoration: none;
+
+@a-font-color: #0C91EC;
+@a-font-size: @font-size;
+@a-font-family: @font-family;
+@a-font-weight: @font-weight;
+@a-font-style: @font-style;
+@a-text-decoration: @text-decoration;
+
+@a-font-color-hover: @a-font-color;
+@a-font-size-hover: @a-font-size;
+@a-font-family-hover: @a-font-family;
+@a-font-weight-hover: @a-font-weight;
+@a-font-style-hover: @a-font-style;
+@a-text-decoration-hover: underline;
+
+/* PFC TABS */
+@tabs-height: 30px;
+@tabs-bg-color: #EEF;
+@tabs-border-color: @border-color;
+
+@tabs-font-color: #FFF;
+@tabs-font-size: @font-size;
+@tabs-font-family: @font-family;
+@tabs-font-weight:  @font-weight;
+@tabs-font-style: @font-style;
+@tabs-text-decoration: @text-decoration;
+
+@tab-bg-color-inactive: #0C91EC;
+@tab-bg-color-inactive2: darken(@tab-bg-color-inactive, 20%);
+
+@tab-font-size-hover: @tabs-font-size;
+@tab-font-family-hover: @tabs-font-family;
+@tab-font-weight-hover:  @tabs-font-weight;
+@tab-font-style-hover: @tabs-font-style;
+@tab-text-decoration-hover: @tabs-text-decoration;
+@tab-font-color-hover: #333;
+@tab-bg-color-hover: @tab-bg-color-active;
+@tab-bg-color-hover2: @tabs-bg-color;
+@tab-border-color-hover: @tabs-border-color;
+
+@tab-font-size-active: @tabs-font-size;
+@tab-font-family-active: @tabs-font-family;
+@tab-font-weight-active:  @tabs-font-weight;
+@tab-font-style-active: @tabs-font-style;
+@tab-text-decoration-active: @tabs-text-decoration;
+@tab-font-color-active: #333;
+@tab-bg-color-active: #FFF;
+@tab-bg-color-active2: @tabs-bg-color;
+@tab-border-color-active: @tabs-border-color;
+
+@tab-url-bt-close: url('img/close.png');
+@tab-bt-close-width: 16px;
+@tab-bt-close-height: 16px;
+
+@tab-icon-width: 16px;
+@tab-icon-height: 16px;
+@tab-url-icon-channel: url('img/channel.png');
+@tab-url-icon-pm:  url('img/pm.png');
+
+@tab-newtab-bg-color: @tabs-bg-color;
+@tab-url-newtab: url('img/tab-add.png');
+@tab-icon-newtab-width: 16px;
+@tab-icon-newtab-height: 16px;
+@tab-icon-newtab-border-color: @tabs-border-color;
+
+@tab-indent-height: 6px;
+
+
+/* PFC TOPICS */
+@topic-height: 25px;
+@topic-bg-color: #EEF;
+@topic-border-color: @border-color;
+@topic-text-display: inline;
+
+@topic-font-color: @font-color;
+@topic-font-size: @font-size;
+@topic-font-family: @font-family;
+@topic-font-weight:  @font-weight;
+@topic-font-style: @font-style;
+@topic-text-decoration: @text-decoration;
+
+@topic-label-font-color: @topic-font-color;
+@topic-label-font-size: @topic-font-size;
+@topic-label-font-family: @topic-font-family;
+@topic-label-font-weight: bold;
+@topic-label-font-style: @topic-font-style;
+@topic-label-text-decoration: none;
+
+/* PFC MESSAGES */
+@messages-bg-color: #FFF;
+@messages-border-color: @border-color;
+
+@messages-font-color: @font-color;
+@messages-font-size: @font-size;
+@messages-font-family: @font-family;
+@messages-font-weight: @font-weight;
+@messages-font-style: @font-style;
+@messages-text-decoration: @text-decoration;
+
+@messages-a-font-color: @a-font-color;
+@messages-a-font-size: @a-font-size;
+@messages-a-font-family: @a-font-family;
+@messages-a-font-weight: @a-font-weight;
+@messages-a-font-style: @a-font-style;
+@messages-a-text-decoration: @a-text-decoration;
+
+@messages-a-font-color-hover: @a-font-color-hover;
+@messages-a-font-size-hover: @a-font-size-hover;
+@messages-a-font-family-hover: @a-font-family-hover;
+@messages-a-font-weight-hover: @a-font-weight-hover;
+@messages-a-font-style-hover: @a-font-style-hover;
+@messages-a-text-decoration-hover: @a-text-decoration-hover;
+
+@messages-shadow-top: 0; 
+@messages-shadow-left: 3px; 
+@messages-shadow-size: 10px;
+@messages-shadow-color: #E8E8E8;
+
+@messages-group-font-color: @messages-font-color;
+@messages-group-font-size: @messages-font-size;
+@messages-group-font-family: @messages-font-family;
+@messages-group-font-weight: @messages-font-weight;
+@messages-group-font-style: @messages-font-style;
+@messages-group-text-decoration: @messages-text-decoration;
+@messages-group-border-bottom-width: 1px;
+@messages-group-border-bottom-type: dotted;
+@messages-group-border-bottom-color: #D0D0D0;
+
+@messages-group-font-size-hover: @messages-group-font-size;
+@messages-group-font-family-hover: @messages-group-font-family;
+@messages-group-font-weight-hover: @messages-group-font-weight;
+@messages-group-font-style-hover: @messages-group-font-style;
+@messages-group-text-decoration-hover: @messages-group-text-decoration;
+@messages-group-bg-hover: @messages-bg-color;
+@messages-group-font-color-hover: @messages-font-color;
+@messages-group-border-bottom-width-hover: @messages-group-border-bottom-width;
+@messages-group-border-bottom-type-hover: @messages-group-border-bottom-type;
+@messages-group-border-bottom-color-hover: @messages-group-border-bottom-color;
+@messages-group-shadow-top-hover: "";
+@messages-group-shadow-left-hover: "";
+@messages-group-shadow-size-hover: ""; 
+@messages-group-shadow-color-hover: "";
+@messages-group-shadow-inset-top-hover: "";
+@messages-group-shadow-inset-left-hover: "";
+@messages-group-shadow-inset-size-hover: ""; 
+@messages-group-shadow-inset-color-hover: "";
+
+@messages-date-font-color: @messages-font-color;
+@messages-date-font-size: 90%;
+@messages-date-font-family: @messages-font-family;
+@messages-date-font-weight: @messages-font-weight;
+@messages-date-font-style: @messages-font-style;
+@messages-date-text-decoration: @messages-text-decoration;
+
+@messages-name-font-color: @messages-font-color;
+@messages-name-font-size: @messages-font-size;
+@messages-name-font-family: @messages-font-family;
+@messages-name-font-weight: bold;
+@messages-name-font-style: @messages-font-style;
+@messages-name-text-decoration: @messages-text-decoration;
+
+@messages-message-font-color: @messages-font-color;
+@messages-message-font-size: @messages-font-size;
+@messages-message-font-family: @messages-font-family;
+@messages-message-font-weight: @messages-font-weight;
+@messages-message-font-style: @messages-font-style;
+@messages-message-text-decoration: @messages-text-decoration;
+
+@messages-avatar-height: 30px;
+@messages-avatar-width: 30px;
+@messages-avatar-border-width: 0;
+@message-avatar-border-type: ""; 
+@message-avatar-border-color: "";
+@messages-avatar-shadow-top: "";
+@messages-avatar-shadow-left: "";
+@messages-avatar-shadow-size: "";
+@messages-avatar-shadow-color: "";
+
+@messages-syst-message-font-color: grey;
+@messages-syst-message-font-size: @messages-font-size;
+@messages-syst-message-font-family: @messages-font-family;
+@messages-syst-message-font-weight: @messages-font-weight;
+@messages-syst-message-font-style: italic;
+@messages-syst-message-text-decoration: @messages-text-decoration;
+
+@messages-padding-top: 10px;
+@messages-padding-right-left: 10px;  
+@message-padding-left: 50px;
+
+/* PFC USERS */
+@users-width: 200px;
+@users-list-height: 30px;
+@users-bg-color: #FFF;
+@users-border-top-width: 0;
+@users-border-bottom-width: @border-width;
+@users-border-type: solid;
+@users-border-color: @border-color;
+@users-margin-top: 0px;
+
+@users-font-color: @font-color;
+@users-font-size: @font-size;
+@users-font-family: @font-family;
+@users-font-weight: @font-weight;
+@users-font-style: @font-style;
+@users-text-decoration: @text-decoration;
+
+@users-bg-color-hover: @users-bg-color;
+@users-font-color-hover: @users-font-color;
+@users-font-size-hover: @users-font-size;
+@users-font-family-hover: @users-font-family;
+@users-font-weight-hover: @users-font-weight;
+@users-font-style-hover: @users-font-style;
+@users-text-decoration-hover: @users-text-decoration;
+@users-shadow-top-hover: "";
+@users-shadow-left-hover: "";
+@users-shadow-size-hover: ""; 
+@users-shadow-color-hover: "";
+@users-shadow-inset-top-hover: "";
+@users-shadow-inset-left-hover: "";
+@users-shadow-inset-size-hover: ""; 
+@users-shadow-inset-color-hover: "";
+
+@users-role-title-font-color: @users-font-color;
+@users-role-title-font-size: @users-font-size;
+@users-role-title-font-family: @users-font-family;
+@users-role-title-font-weight: bold;
+@users-role-title-font-style: @users-font-style;
+@users-role-title-text-decoration: @users-text-decoration;
+
+@users-shadow-top: 0; 
+@users-shadow-left: 3px; 
+@users-shadow-size: 10px;
+@users-shadow-color: #E8E8E8;
+
+@users-role-title-display: block;
+@users-role-title-border-width: 1px;
+@users-role-title-border-type: solid;
+@users-role-title-border-color: @users-border-color;
+
+@users-avatarlist-size: 30px;    
+@users-avatar-position-top: 5px;
+@users-avatar-position-right: 5px;
+
+@users-icon-width: 16px;
+@users-icon-height: 16px;
+@users-status-position-top: 6px;
+@users-status-position-left: 8px;
+@users-url-icon-active: url(img/active.png);
+@users-url-icon-inactive: url(img/inactive.png);
+@users-url-icon-neutral: url(img/netral.png);
+@admin-url-icon-active: url(img/user-admin-active.png);
+@admin-url-icon-inactive: url(img/user-admin-inactive.png);
+
+@users-name-margin-left: 30px;
+
+@users-myself-font-color: @users-font-color;
+@users-myself-font-size: @users-font-size;
+@users-myself-font-family: @users-font-family;
+@users-myself-font-weight: @users-font-weight;
+@users-myself-font-style: italic;
+@users-myself-text-decoration: @users-text-decoration;
+
+/* PFC FOOTER */
+@footer-height: 25px;
+@footer-bg-color: #EEF;
+@footer-border-color: @border-color;
+
+@footer-font-color: @font-color; 
+@footer-font-size: @font-size;
+@footer-font-family: @font-family;
+@footer-font-weight: @font-weight;
+@footer-font-style: @font-style;
+@footer-text-decoration: @text-decoration;
+
+@footer-a-font-color: @a-font-color;
+@footer-a-font-size: @a-font-size;
+@footer-a-font-family: @a-font-family;
+@footer-a-font-weight: @a-font-weight;
+@footer-a-font-style: @a-font-style;
+@footer-a-text-decoration: @a-text-decoration;
+
+@footer-a-font-color-hover: @a-font-color-hover;
+@footer-a-font-size-hover: @a-font-size-hover;
+@footer-a-font-family-hover: @a-font-family-hover;
+@footer-a-font-weight-hover: @a-font-weight-hover;
+@footer-a-font-style-hover: @a-font-style-hover;
+@footer-a-text-decoration-hover: @a-text-decoration-hover;
+
+@footer-ping-font-color: @footer-font-color; 
+@footer-ping-font-size: 90%;
+@footer-ping-font-family: @footer-font-family;
+@footer-ping-font-weight: @footer-font-weight;
+@footer-ping-font-style: @footer-font-style;
+@footer-ping-text-decoration: @footer-text-decoration;
+
+@footer-bt-width: 16px;
+@footer-bt-height: 16px;
+@footer-url-bt-logout: url('img/logout.png');
+@footer-url-bt-online: url('img/online-off.png');
+@footer-url-bt-smiley: url('img/smiley-off.png');
+@footer-url-bt-sound: url('img/sound-off.png');
+
+@footer-donate-border-color: @border-color;
+@footer-donate-shadow-inset-color: #fff;
+@footer-donate-border-radius: 5px;
+@footer-donate-bg-color-hover: #dfdef6;
+
+
+/* PFC COMPOSE */
+@compose-height: 40px;
+@compose-bg-color: #FFF;
+@compose-border-color: @border-color;
+
+@compose-font-color: @font-color; 
+@compose-font-size: @font-size;
+@compose-font-family: @font-family;
+@compose-font-weight: @font-weight;
+@compose-font-style: @font-style;
+@compose-text-decoration: @text-decoration;
+
+@compose-shadow-top: 0; 
+@compose-shadow-left: 3px; 
+@compose-shadow-size: 10px;
+@compose-shadow-color: #dcdcdc;
+
+
+/* MODALBOX */
+@modalbox-bg: #FFF;
+@modalbox-bg-overlay: #000;
+@modalbox-shadow-top: "";
+@modalbox-shadow-left: "";
+@modalbox-shadow-size: ""; 
+@modalbox-shadow-color: "";
+@modalbox-popup-login-input-login-border-color: @border-color;
+@modalbox-popup-login-input-login-bg-color: @users-bg-color;
+@modalbox-popup-login-input-login-font-color: @users-font-color;
+@modalbox-popup-login-bt-signin-border-color: @footer-donate-border-color;
+@modalbox-popup-login-bt-signin-bg-color: @footer-bg-color;
+@modalbox-popup-login-bt-signin-font-color: @footer-a-font-color;
+@modalbox-popup-login-bt-signin-border-radius: 5px;
+@modalbox-popup-login-bt-signin-border-color-hover: @footer-donate-border-color;
+@modalbox-popup-login-bt-signin-bg-color-hover: @footer-donate-bg-color-hover;
+@modalbox-popup-login-bt-signin-font-color-hover: @footer-a-font-color-hover;
+
+@import "pfc-theme-variables.less";
+
+/* NOT PLANNED FOR 2.0 */
+/*
+@userlist-avatar-w:       0px;    // avatar not planned for 2.0
+@message-padding-left:    0px;    // avatar not planned for 2.0
+@users-role-title-display:            none;   // role not planned for 2.0
+@users-role-title-border-width:       0px;    // role not planned for 2.0
+
+@users-url-icon-active: url(img/neutral.png);
+@users-url-icon-inactive: url(img/neutral.png);
+@users-url-icon-neutral: url(img/neutral.png);
+@admin-url-icon-active: url(img/neutral.png);
+@admin-url-icon-inactive: url(img/neutral.png);
+
+@toggle-tabs-btn-display: none;   // channels not planned for 2.0
+@topic-text-display: none;        // topics not planned for 2.0
+*/

@@ -1,0 +1,173 @@
+//
+// phpfreechat mini theme
+//
+div.pfc-mini-chat-wrapper {
+  position: fixed !important;
+  bottom: 0;
+  right: @pfc-mini-chat-position-right;
+  width: @pfc-mini-chat-width;
+  // menu minichat
+  #pfc-menu-mini-chat {
+    position: absolute;
+    bottom: 0;
+    z-index: 100;
+    a {
+      display: block;
+      float: left;
+      &.chat {
+        width: 194px;
+        height: 40px;
+        background: url("img/minichat/bt-mini-chat.png") top right no-repeat;
+      }
+      &.tabs {
+        width: 28px;
+        height: 28px;
+        margin-top: 12px;
+        background: url("img/minichat/bt-rooms.png") top right no-repeat;
+      }
+      &.users {
+        width: 28px;
+        height: 28px;
+        margin-top: 12px;
+        background: url("img/minichat/bt-users.png") top right no-repeat;
+      }
+      &:hover {
+        background-position: bottom right;
+      }
+      &.active {
+        background-position: center right;
+      }
+    }
+  }
+}
+
+div.pfc-content {
+  display: none;
+  background-color: @pfc-mini-chat-content-fade-color-1;
+  background: -moz-linear-gradient(top, @pfc-mini-chat-content-fade-color-1 50%, @pfc-mini-chat-content-fade-color-2 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, @pfc-mini-chat-content-fade-color-1), color-stop(100%, @pfc-mini-chat-content-fade-color-2));
+  height: @pfc-mini-chat-content-height;
+  .box-shadow(0, 0, 5px, #bbb);
+
+  // channels tabs
+  div.pfc-tabs {
+    position: relative;
+    top: 90px;
+    display: none;
+    ul {
+    top: 31px;
+      padding: 0;
+      width: @pfc-mini-chat-width + 2;
+      li {
+        border-radius: 0;
+        float: none;
+        &.new-tab {
+          width: @pfc-mini-chat-width;
+          height: @tabs-height;
+          line-height: @tabs-height;
+          position: absolute;
+          top: -35px;
+          border: 0;
+          &:hover {
+            @tab-indent-height: 0;
+            margin-top: 5px;
+            height: @tabs-height;
+            background-color: @tab-bg-color-hover;
+            background: -moz-linear-gradient(top, @tab-bg-color-hover 0%, @tab-bg-color-hover 05%, @tab-bg-color-hover2 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @tab-bg-color-hover), color-stop(05%, @tab-bg-color-hover), color-stop(100%,@tab-bg-color-hover2));
+            cursor: pointer;
+          }
+          div.icon {
+            float: right;
+            margin: 4px 10px;
+          }
+        }
+      }
+    }
+  }
+
+  // user list
+  div.pfc-users {
+    display:none;
+    top: 25px;
+    right: 0;
+    bottom: 28px;
+    width: @pfc-mini-chat-width - 2;
+  }
+
+  // message zone
+  div.pfc-messages {
+    top: 25px;
+    right: 0;
+    left: 0;
+    bottom: 80px;
+    width: @pfc-mini-chat-width - 21;
+    border-bottom: 1px solid #ccc;
+    .messages-group .message {
+      white-space: normal;
+    }
+  }
+
+  // top zone (between tabs and messages)
+  div.pfc-topic {
+    display: none;
+  }
+
+  div.pfc-footer {
+    right: 0;
+    left: 0;
+    top: 0;
+    .ping {
+      display: none;
+    }
+    ul {
+      display: none;
+    }
+  }
+
+  // input text zone
+  div.pfc-compose {
+    left: 0;
+    bottom: 40px;
+    width: @pfc-mini-chat-width - 2;
+    textarea {
+      width: @pfc-mini-chat-width - 6 !important;
+    }
+  }
+  
+  // modal-overlay
+  div.pfc-modal-overlay {
+    top: 26px;
+    border-radius: 0;
+  }
+  
+  // login
+  div.pfc-modal-box {
+    top: 100px !important;
+    left: 35px !important;
+    ul.pfc-errors {
+      padding: 0 5px 0 15px;
+      margin: 0;
+      color: red;
+      width: 145px;
+    }
+  }
+  
+  // add-mobile
+  div.pfc-ad-mobile {
+      position: absolute;
+      background: @footer-bg-color;
+      width: 100%;
+      height: 65px;
+      left: 0px;
+      top: 26px;
+      z-index: 1000;
+      div.pub1 {
+          width: 234px;
+          height: 60px;
+          margin: 0 auto;
+          background-color: red;
+      }
+  }
+
+}

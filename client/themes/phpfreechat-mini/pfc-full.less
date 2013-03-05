@@ -1,0 +1,851 @@
+//
+// phpfreechat default theme: CSS rules
+//
+
+.rounded-corners (@radius: 5px) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
+.box-shadow(@top, @left, @size, @color) {
+  box-shadow: @top @left @size @color;
+  -moz-box-shadow: @top @left @size @color;
+  -webkit-box-shadow: @top @left @size @color;
+}
+.box-shadow-inset(@top, @left, @size, @color) {
+  box-shadow: inset @top @left @size @color;
+  -moz-box-shadow: inset @top @left @size @color;
+  -webkit-box-shadow: inset @top @left @size @color;
+}
+
+div.pfc-content {
+  position: relative;
+  height: @h;
+
+  padding: 0px;
+  margin: 0px;
+  font-size: @font-size;
+  line-height: @font-line-height;
+  font-family: @font-family;
+  font-weight: @font-weight;
+  font-style: @font-style;
+  text-decoration: @text-decoration;
+  color: @font-color;
+
+  a {
+    font-size: @a-font-size;
+    font-family: @a-font-family;
+    font-weight: @a-font-weight;
+    font-style: @a-font-style;
+    text-decoration: @a-text-decoration;
+    color: @a-font-color;
+    &:hover {
+      font-size: @a-font-size-hover;
+      font-family: @a-font-family-hover;
+      font-weight: @a-font-weight-hover;
+      font-style: @a-font-style-hover;
+      text-decoration: @a-text-decoration-hover;
+      color: @a-font-color-hover;
+    }
+  }
+
+  // channels tabs
+  div.pfc-tabs {
+    ul {
+      list-style: none;
+      padding: 0 0 0 @padding-left + 10px;
+      margin: 0;
+      z-index: 10;
+      position: absolute;
+      
+      li {
+        z-index: 10;
+        height: @tabs-height;
+        line-height: @tabs-height;
+        font-size: @tabs-font-size;
+        font-family: @tabs-font-family;
+        font-weight: @tabs-font-weight;
+        font-style: @tabs-font-style;
+        text-decoration: @tabs-text-decoration;
+        color: @tabs-font-color;
+        margin: 0 2px 0 0;
+        padding: 0 5px 0 5px;
+        display: block;
+        float: left;
+        border-left: @border-width solid @tabs-border-color;
+        border-right: @border-width solid @tabs-border-color;
+        border-top: @border-width solid @tabs-border-color;
+        border-bottom: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+        -moz-border-radius-topleft: 4px;
+        -moz-border-radius-topright: 4px;
+        -moz-border-radius-bottomright: 0px;
+        -moz-border-radius-bottomleft: 0px;
+        border-top-left-radius:4px;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+        background-color: @tab-bg-color-inactive;
+        background: -moz-linear-gradient(top, @tab-bg-color-inactive 0%, @tab-bg-color-inactive2 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @tab-bg-color-inactive), color-stop(100%, @tab-bg-color-inactive2));
+        
+        &:hover {
+          background-color: @tab-bg-color-hover;
+          background: -moz-linear-gradient(top, @tab-bg-color-hover 0%, @tab-bg-color-hover 05%, @tab-bg-color-hover2 100%);
+          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @tab-bg-color-hover), color-stop(05%, @tab-bg-color-hover), color-stop(100%,@tab-bg-color-hover2));
+          cursor: pointer;
+          font-size: @tab-font-size-hover;
+          font-family: @tab-font-family-hover;
+          font-weight: @tab-font-weight-hover;
+          font-style: @tab-font-style-hover;
+          text-decoration: @tab-text-decoration-hover;
+          color: @tab-font-color-hover;
+          border-left: @border-width solid @tab-border-color-hover;
+          border-right: @border-width solid @tab-border-color-hover;
+          border-top: @border-width solid @tab-border-color-hover;
+          border-bottom: none;
+        }
+        
+        &.active {
+          background-color: @tab-bg-color-active;
+          background: -moz-linear-gradient(top, @tab-bg-color-active 0%, @tab-bg-color-active 05%, @tab-bg-color-active2 100%);
+          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @tab-bg-color-active), color-stop(05%, @tab-bg-color-active), color-stop(100%,@tab-bg-color-active2));
+          cursor: pointer;
+          font-size: @tab-font-size-active;
+          font-family: @tab-font-family-active;
+          font-weight: @tab-font-weight-active;
+          font-style: @tab-font-style-active;
+          text-decoration: @tab-text-decoration-active;
+          color: @tab-font-color-active;
+          border-left: @border-width solid @tab-border-color-active;
+          border-right: @border-width solid @tab-border-color-active;
+          border-top: @border-width solid @tab-border-color-active;
+          border-bottom: none;
+          
+          div.close {
+            background-image: @tab-url-bt-close;
+            float: right;
+            width: @tab-bt-close-width;
+            height: @tab-bt-close-height;
+            margin-top: (@tabs-height - @tab-bt-close-height) / 2;
+            &:hover {
+              background-position: bottom center;
+            }
+          }
+        }
+        
+        div.icon {
+          width: @tab-icon-width;
+          height: @tab-icon-height;
+          float: left;
+          margin-top: (@tabs-height - @tab-icon-height) / 2;
+          margin-left: 4px;
+          margin-right: 6px;
+        }
+        &.channel {
+          div.icon {
+            background-image: @tab-url-icon-channel;
+          }
+        }
+        &.pm {
+          div.icon {
+            background-image: @tab-url-icon-pm;
+          }
+        }
+        
+        div.name {
+          float: left;
+          margin-right: 4px;
+        }
+        &.new-tab {
+          display: block;
+          background: none;
+          background-color: @tab-newtab-bg-color;
+          padding: 0; margin: 0;
+          margin-top: @tab-indent-height - 1px;
+          height: @tabs-height - @tab-indent-height;
+          border-left: @border-width solid @tab-icon-newtab-border-color;
+          border-right: @border-width solid @tab-icon-newtab-border-color;
+          border-top: @border-width solid @tab-icon-newtab-border-color;
+          border-bottom: 1px solid @border-color;
+          div.icon {
+            background-image: @tab-url-newtab;
+            width: @tab-icon-newtab-width;
+            height: @tab-icon-newtab-height;
+            margin: 2px; padding: 0;
+          }
+          &:hover {
+            @tab-indent-height: 0;
+            margin-top: @tab-indent-height - 0px;
+            height: @tabs-height - @tab-indent-height - 1;
+          }
+        }
+      }
+    }
+  }
+  
+  // channels tabs (mobile version)
+  div.pfc-mobile-tabs {
+    display: none;
+    position: absolute;
+    top: @tabs-height + @topic-height + 2 * @border-width + 4px;
+    left: @padding-left;
+    right: @padding-right;
+    z-index: 5;
+    border: @border-width solid @tabs-border-color;
+    ul {
+      margin: 0px; padding: 0px;
+      list-style: none;
+      li {
+        float: none;
+        padding: 0 10px;
+        border-bottom: @border-width solid @tabs-border-color;
+        z-index: 10;
+        height: @tabs-height;
+        line-height: @tabs-height;
+        display: block;
+        font-size: @tabs-font-size;
+        font-family: @tabs-font-family;
+        font-weight: @tabs-font-weight;
+        font-style: @tabs-font-style;
+        text-decoration: @tabs-text-decoration;
+        color: @tabs-font-color;
+        background-color: @tab-bg-color-inactive;
+        background: -moz-linear-gradient(top, @tab-bg-color-inactive 0%, @tab-bg-color-inactive2 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @tab-bg-color-inactive), color-stop(100%, @tab-bg-color-inactive2));
+        &:hover {
+          background-color: @tab-bg-color-hover;
+          background: -moz-linear-gradient(top, @tab-bg-color-hover 0%, @tab-bg-color-hover 05%, @tab-bg-color-hover2 100%);
+          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @tab-bg-color-hover), color-stop(05%, @tab-bg-color-hover), color-stop(100%,@tab-bg-color-hover2));
+          cursor: pointer;
+          font-size: @tab-font-size-hover;
+          font-family: @tab-font-family-hover;
+          font-weight: @tab-font-weight-hover;
+          font-style: @tab-font-style-hover;
+          text-decoration: @tab-text-decoration-hover;
+          color: @tab-font-color-hover;
+          border-left: @border-width solid @tab-border-color-hover;
+          border-right: @border-width solid @tab-border-color-hover;
+          border-top: @border-width solid @tab-border-color-hover;
+          border-bottom: @border-width solid @tab-border-color-hover;
+        }
+        &.active {
+          background-color: @tab-bg-color-active;
+          background: -moz-linear-gradient(top, @tab-bg-color-active 0%, @tab-bg-color-active 05%, @tab-bg-color-active2 100%);
+          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @tab-bg-color-active), color-stop(05%, @tab-bg-color-active), color-stop(100%,@tab-bg-color-active2));
+          cursor: pointer;
+          font-size: @tab-font-size-active;
+          font-family: @tab-font-family-active;
+          font-weight: @tab-font-weight-active;
+          font-style: @tab-font-style-active;
+          text-decoration: @tab-text-decoration-active;
+          color: @tab-font-color-active;
+          border-left: @border-width solid @tab-border-color-active;
+          border-right: @border-width solid @tab-border-color-active;
+          border-top: @border-width solid @tab-border-color-active;
+          border-bottom: @border-width solid @tab-border-color-active;
+          div.close {
+            background-image: @tab-url-bt-close;
+            float: right;
+            width: @tab-bt-close-width;
+            height: @tab-bt-close-height;
+            margin-top: (@tabs-height - @tab-bt-close-height) / 2;
+            &:hover {
+              background-position: bottom center;
+            }
+          }
+        }
+        &:last-child {
+          border: 0px;
+        }
+        div.icon {
+          width: @tab-icon-width;
+          height: @tab-icon-height;
+          float: left;
+          margin-top: (@tabs-height - @tab-icon-height) / 2;
+          margin-left: 4px;
+          margin-right: 6px;
+        }
+        &.channel {
+          div.icon {
+            background-image: @tab-url-icon-channel;
+          }
+        }
+        &.pm {
+          div.icon {
+            background-image: @tab-url-icon-pm;
+          }
+        }
+
+        div.name {
+          float: left;
+          margin-right: 4px;
+        }
+        &.new-tab {
+          display: none;
+          background: none;
+          background-color: @tab-newtab-bg-color;
+          padding: 0; margin: 0;
+          margin-top: @tab-indent-height - 1px;
+          height: @tabs-height - @tab-indent-height;
+          border-left: @border-width solid @tab-icon-newtab-border-color;
+          border-right: @border-width solid @tab-icon-newtab-border-color;
+          border-top: @border-width solid @tab-icon-newtab-border-color;
+          border-bottom: 1px solid @border-color;
+          div.icon {
+            background-image: @tab-url-newtab;
+            width: @tab-icon-newtab-width;
+            height: @tab-icon-newtab-height;
+            margin: 2px; padding: 0;
+          }
+          &:hover {
+            @tab-indent-height: 0;
+            margin-top: @tab-indent-height - 0px;
+            height: @tabs-height - @tab-indent-height - 1;
+          }
+        }
+      }
+    }
+  }
+    
+  // user list
+  div.pfc-users {
+    width: @users-width - @padding-right - @border-width;
+    position: absolute;
+    top: @tabs-height + @topic-height + 2 * @border-width;
+    right: @padding-right;
+    bottom: @footer-height + @compose-height + @padding-bottom + 3 * @border-width;
+    overflow: auto;
+    border-left:  @border-width solid @users-border-color;
+    border-right: @border-width solid @users-border-color;
+    background-color: @users-bg-color;
+    
+    font-size: @users-font-size;
+    font-family: @users-font-family;
+    font-weight: @users-font-weight;
+    font-style: @users-font-style;
+    text-decoration: @users-text-decoration;
+    color: @users-font-color;
+    
+    /* internal shadow effect */
+    .box-shadow-inset(@users-shadow-top, @users-shadow-left, @users-shadow-size, @users-shadow-color);
+    
+    .role-title {
+      display: @users-role-title-display;
+      font-size: @users-role-title-font-size;
+      font-family: @users-role-title-font-family;
+      font-weight: @users-role-title-font-weight;
+      font-style: @users-role-title-font-style;
+      text-decoration: @users-role-title-text-decoration;
+      color: @users-role-title-font-color;
+      padding: 15px 0 5px 10px; margin: 0;
+      border-bottom: @users-role-title-border-width @users-role-title-border-type @users-role-title-border-color;
+    }
+    
+    ul {
+      padding: 0;
+      margin: 0;
+      
+      li {
+        border-top:  @users-border-top-width @users-border-type @users-border-color;
+        border-bottom:  @users-border-bottom-width @users-border-type @users-border-color;
+        height: @users-list-height;
+        display: block;
+        position: relative;
+        margin-top: @users-margin-top;
+        &:hover {
+          background-color: @users-bg-color-hover;
+          font-size: @users-font-size-hover;
+          font-family: @users-font-family-hover;
+          font-weight: @users-font-weight-hover;
+          font-style: @users-font-style-hover;
+          text-decoration: @users-text-decoration-hover;
+          color: @users-font-color-hover;
+          .box-shadow(@users-shadow-top-hover, @users-shadow-left-hover, @users-shadow-size-hover, @users-shadow-color-hover);
+          .box-shadow-inset(@users-shadow-inset-top-hover, @users-shadow-inset-left-hover, @users-shadow-inset-size-hover, @users-shadow-inset-color-hover);
+        }
+        
+        .name {
+          margin-right: @users-avatarlist-size;
+          margin-left: @users-name-margin-left;
+          line-height: @users-list-height;
+          white-space: pre;
+          overflow: hidden;
+        }
+        .avatar {
+          max-height: @users-avatarlist-size;
+          max-width: @users-avatarlist-size;
+          position: absolute;
+          right: @users-avatar-position-right;
+          top: @users-avatar-position-top;
+          bottom: 0;
+        }
+        
+        .status {
+          width: @users-icon-width;
+          height: @users-icon-height;
+          position: absolute;
+          left: @users-status-position-left;
+          top: @users-status-position-top;
+        }
+        .myself {
+          font-size: @users-myself-font-size;
+          font-family: @users-myself-font-family;
+          font-weight: @users-myself-font-weight;
+          font-style: @users-myself-font-style;
+          text-decoration: @users-myself-text-decoration;
+          color: @users-myself-font-color;
+        }
+        .st-active {
+          background-image: @users-url-icon-active;
+        }
+        .st-inactive {
+          background-image: @users-url-icon-inactive;
+        }
+        .st-admin.st-active {
+          background-image: @admin-url-icon-active;
+        }
+        .st-admin.st-inactive {
+          background-image: @admin-url-icon-inactive;
+        }
+      }
+    }
+  }
+
+  // message zone
+  div.pfc-messages {
+    background-color: @messages-bg-color;
+    position: absolute;
+    top: @tabs-height + @topic-height + 2 * @border-width;
+    bottom: @footer-height + @compose-height + @padding-bottom + 3 * @border-width;
+    right: @users-width;
+    left: @padding-left;
+    overflow: auto;
+    padding: @messages-padding-top @messages-padding-right-left 0 @messages-padding-right-left;
+    border-left: @border-width solid @messages-border-color;
+    font-size: @messages-font-size;
+    font-family: @messages-font-family;
+    font-weight: @messages-font-weight;
+    font-style: @messages-font-style;
+    text-decoration: @messages-text-decoration;
+    color: @messages-font-color;
+    
+    a {
+      font-size: @messages-a-font-size;
+      font-family: @messages-a-font-family;
+      font-weight: @messages-a-font-weight;
+      font-style: @messages-a-font-style;
+      text-decoration: @messages-a-text-decoration;
+      color: @messages-a-font-color;
+      &:hover {
+        font-size: @messages-a-font-size-hover;
+        font-family: @messages-a-font-family-hover;
+        font-weight: @messages-a-font-weight-hover;
+        font-style: @messages-a-font-style-hover;
+        text-decoration: @messages-a-text-decoration-hover;
+        color: @messages-a-font-color-hover;
+      }
+    }
+    
+    /* internal shadow effect */
+    .box-shadow-inset(@messages-shadow-top, @messages-shadow-left, @messages-shadow-size, @messages-shadow-color);
+    
+    @messages-group-height: 1 + 8 + 10;
+    .messages-group {
+      border-bottom: @messages-group-border-bottom-width @messages-group-border-bottom-type @messages-group-border-bottom-color;
+      padding: 5px 0 8px;
+      font-size: @messages-group-font-size;
+      font-family: @messages-group-font-family;
+      font-weight: @messages-group-font-weight;
+      font-style: @messages-group-font-style;
+      text-decoration: @messages-group-text-decoration;
+      color: @messages-group-font-color;
+      &:hover {
+        background-color: @messages-group-bg-hover;
+        font-size: @messages-group-font-size-hover;
+        font-family: @messages-group-font-family-hover;
+        font-weight: @messages-group-font-weight-hover;
+        font-style: @messages-group-font-style-hover;
+        text-decoration: @messages-group-text-decoration-hover;
+        color: @messages-group-font-color-hover;
+        border-bottom: @messages-group-border-bottom-width-hover @messages-group-border-bottom-type-hover @messages-group-border-bottom-color-hover;
+        .box-shadow(@messages-group-shadow-top-hover, @messages-group-shadow-left-hover, @messages-group-shadow-size-hover, @messages-group-shadow-color-hover);
+        .box-shadow-inset(@messages-group-shadow-inset-top-hover, @messages-group-shadow-inset-left-hover, @messages-group-shadow-inset-size-hover, @messages-group-shadow-inset-color-hover);
+      }
+      .avatar {
+        margin: 4px 0 0 6px;
+        height: @messages-avatar-height;
+        width: @messages-avatar-width;
+        border: @messages-avatar-border-width @message-avatar-border-type @message-avatar-border-color;
+        .box-shadow(@messages-avatar-shadow-top, @messages-avatar-shadow-left, @messages-avatar-shadow-size, @messages-avatar-shadow-color);
+        float: left;
+      }
+    
+      .date {
+        float: right;
+        margin-right:5px;
+        font-size: @messages-date-font-size;
+        font-family: @messages-date-font-family;
+        font-weight: @messages-date-font-weight;
+        font-style: @messages-date-font-style;
+        text-decoration: @messages-date-text-decoration;
+        color: @messages-date-font-color;
+      }
+      
+      .name {
+        padding: 0; margin: 0;
+        padding-left: @message-padding-left;
+        word-wrap: break-word;
+        font-size: @messages-name-font-size;
+        font-family: @messages-name-font-family;
+        font-weight: @messages-name-font-weight;
+        font-style: @messages-name-font-style;
+        text-decoration: @messages-name-text-decoration;
+        color: @messages-name-font-color;
+      }
+      
+      .message {
+        padding: 0; margin: 0;
+        padding-left: @message-padding-left;
+        word-wrap: break-word;
+        white-space: pre;
+        font-size: @messages-message-font-size;
+        font-family: @messages-message-font-family;
+        font-weight: @messages-message-font-weight;
+        font-style: @messages-message-font-style;
+        text-decoration: @messages-message-text-decoration;
+        color: @messages-message-font-color;
+      }
+
+      &.system-message {
+        .message {
+          font-size: @messages-syst-message-font-size;
+          font-family: @messages-syst-message-font-family;
+          font-weight: @messages-syst-message-font-weight;
+          font-style: @messages-syst-message-font-style;
+          text-decoration: @messages-syst-message-text-decoration;
+          color: @messages-syst-message-font-color;
+        }
+      }
+    }
+    
+    // used to move scroll at bottom on mobile interface (hidden by default)
+    .pfc-message-mobile-padding {
+      display: none;
+      height: @h - (@tabs-height + @topic-height + 5 * @border-width + @footer-height + @compose-height + @padding-bottom + @messages-group-height);
+    }
+    
+  }
+
+  // top zone (between tabs and messages)
+  div.pfc-topic {
+    z-index: 5;
+    position: absolute;
+    margin-top: -@border-width;
+    top: @tabs-height + @border-width;
+    right: @padding-right;
+    left: @padding-left;
+    height: @topic-height;
+    background-color: @topic-bg-color;
+    border: @border-width solid @topic-border-color;
+    
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    -moz-border-radius-topleft: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -webkit-border-top-left-radius: 3px;      
+    
+    p {
+      color: @topic-font-color;
+      font-size: @topic-font-size;
+      font-family: @topic-font-family;
+      font-weight: @topic-font-weight;
+      font-style: @topic-font-style;
+      text-decoration: @topic-text-decoration;
+      line-height: @topic-height;
+      float: right;
+      padding: 0;
+      margin: 0 10px 0 0;
+      span.pfc-topic-label {
+        display: @topic-text-display;
+        color: @topic-label-font-color; 
+        font-size: @topic-label-font-size;
+        font-family: @topic-label-font-family;
+        font-weight: @topic-label-font-weight;
+        font-style: @topic-label-font-style;
+        text-decoration: @topic-label-text-decoration;
+      }
+      span.pfc-topic-value {
+        display: @topic-text-display;
+      }
+    }
+  }
+  
+  div.pfc-footer {
+    position: absolute;
+    bottom: @padding-bottom + @compose-height + @border-width;
+    left: @padding-left;
+    right: @padding-right;
+    border: @border-width solid @footer-border-color;
+    height: @footer-height;
+    line-height: @footer-height;
+    background-color: @footer-bg-color;
+    color: @footer-font-color; 
+    font-size: @footer-font-size;
+    font-family: @footer-font-family;
+    font-weight: @footer-font-weight;
+    font-style: @footer-font-style;
+    text-decoration: @footer-text-decoration;
+    
+    a {
+      font-size: @footer-a-font-size;
+      font-family: @footer-a-font-family;
+      font-weight: @footer-a-font-weight;
+      font-style: @footer-a-font-style;
+      text-decoration: @footer-a-text-decoration;
+      color: @footer-a-font-color;
+      &:hover {
+        font-size: @footer-a-font-size-hover;
+        font-family: @footer-a-font-family-hover;
+        font-weight: @footer-a-font-weight-hover;
+        font-style: @footer-a-font-style-hover;
+        text-decoration: @footer-a-text-decoration-hover;
+        color: @footer-a-font-color-hover;
+      }
+      &.bt-powered {
+        margin-right: 10px;
+      }
+      &.bt-donate {
+        position: relative;
+        border: 1px solid @footer-donate-border-color;
+        .box-shadow-inset(0, 0, 1px, @footer-donate-shadow-inset-color);
+        .rounded-corners(@footer-donate-border-radius);
+        padding: 2px 10px 2px 25px;
+        background: url("img/donate.png") 10px 0 no-repeat;
+        &:hover {
+          background-color:@footer-donate-bg-color-hover;
+          text-decoration: none;
+        }
+      }
+    }
+    
+    p.ping {
+      margin: 0 8px 0 0; padding: 0;
+      float: right;
+      line-height: @footer-height;
+      color: @footer-ping-font-color; 
+      font-size: @footer-ping-font-size;
+      font-family: @footer-ping-font-family;
+      font-weight: @footer-ping-font-weight;
+      font-style: @footer-ping-font-style;
+      text-decoration: @footer-ping-text-decoration;
+    }
+    p.logo {
+      margin: 0 4px 0 0; padding: 0;
+      float: right;
+      line-height: @footer-height;
+      img {
+        vertical-align: middle;
+        margin-top: -4px;
+      }
+    }
+    ul {
+      margin: 0 0 0 4px; padding: 0;
+      list-style: none;
+      li {
+        float: left;
+        margin-right: 6px;
+        line-height: @footer-height;
+        div {
+          width: @footer-bt-width;
+          height: @footer-bt-height;
+          margin-top: 4px;
+          cursor: pointer;
+          &:hover {
+            background-position: bottom center;
+          }
+          &.logout-btn {
+            background-image: @footer-url-bt-logout;
+          }
+          /*&.online-btn {
+            background-image: @footer-url-bt-online;
+          }
+          */
+          &.smiley-btn {
+            background-image: @footer-url-bt-smiley;
+          }
+          &.sound-btn {
+            background-image: @footer-url-bt-sound;
+          }
+        }
+      }
+    }
+  }
+  
+  // input text zone
+  div.pfc-compose {
+    position: absolute;
+    bottom: @padding-bottom + @border-width;
+    left: @padding-left;
+    right: @padding-right;
+    background-color: @compose-bg-color ;
+    height: @compose-height;
+    
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    -moz-border-radius-bottomright: 3px;
+    -moz-border-radius-bottomleft: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    -webkit-border-bottom-left-radius: 3px;      
+    
+    textarea {
+      position: absolute;
+      right: 0; left: 0;
+      top: 0; bottom: 0;
+      margin: 0; padding: 2px;
+      background-color: @compose-bg-color ;
+      
+      color: @compose-font-color; 
+      font-size: @compose-font-size;
+      font-family: @compose-font-family;
+      font-weight: @compose-font-weight;
+      font-style: @compose-font-style;
+      text-decoration: @compose-text-decoration;
+    
+      border-left: @border-width solid @compose-border-color;
+      border-right: @border-width solid @compose-border-color;
+      border-bottom: @border-width solid @compose-border-color;
+      border-top: none;
+
+      .box-shadow-inset(@compose-shadow-top, @compose-shadow-left, @compose-shadow-size, @compose-shadow-color);
+
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+      -moz-border-radius-bottomright: 3px;
+      -moz-border-radius-bottomleft: 3px;
+      -webkit-border-bottom-right-radius: 3px;
+      -webkit-border-bottom-left-radius: 3px;
+    }
+  }
+
+  // modalbox styles
+  div.pfc-modal-overlay {
+    display: none;
+    position: absolute;
+    background-color: #000;
+    opacity: 0.2;
+    z-index: 50;
+    right: 0;
+    left: 0;
+    bottom: -10px;
+    top: -@padding-top;
+    .rounded-corners(5px);
+  }
+  div.pfc-modal-box {
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    z-index: 55;
+    padding: 10px;
+    .rounded-corners(5px);
+    .box-shadow(@modalbox-shadow-top, @modalbox-shadow-left, @modalbox-shadow-size, @modalbox-shadow-color);
+    .popup-login {
+      text-align: right;
+      input[type="text"] {
+        border: 1px solid @modalbox-popup-login-input-login-border-color;
+        background-color: @modalbox-popup-login-input-login-bg-color;
+        color: @modalbox-popup-login-input-login-font-color;
+        padding: 2px 5px;
+        margin-bottom: 10px;
+      }
+      input[type="submit"] {
+        border: 1px solid @modalbox-popup-login-bt-signin-border-color;
+        .rounded-corners(@modalbox-popup-login-bt-signin-border-radius);
+        color: @modalbox-popup-login-bt-signin-font-color;
+        padding: 2px 10px;
+        background-color: @modalbox-popup-login-bt-signin-bg-color;
+        &:hover {
+          border: 1px solid @modalbox-popup-login-bt-signin-border-color-hover;
+          color: @modalbox-popup-login-bt-signin-font-color-hover;
+          background-color: @modalbox-popup-login-bt-signin-bg-color-hover;
+          text-decoration: none;
+          cursor: pointer;
+        }
+      }
+    }
+    .popup-donate {
+      p {
+          position: relative;
+          top: 2px;
+          font-size: 14px;
+          line-height: 16px;
+          height: 139px;
+          width: 300px;
+          margin-bottom: 0;
+          padding-right: 66px;
+          background: url("img/illus-donate.png") right bottom no-repeat;
+      }
+      div {
+        input[name="cancel-donate"] {
+            position: relative;
+            top: -4px;
+            width: 114px;
+            height: 24px;
+            background: url("img/bt-not-now.png") top center no-repeat;
+            border: 0;
+            padding: 0 0 4px;
+            margin: 0 10px;
+            color: #9e9e9e;
+            font-size: 14px;
+            &:hover {
+              background-position: bottom center;
+              cursor: pointer;
+              color: #2593c5;
+            }
+        }
+        input[name="ok-donate"]{
+            width: 204px;
+            height:44px;
+            background: url("img/bt-donate-popup.png") top center no-repeat;
+            border: 0;
+            padding: 0 0 0 60px;
+            margin: 0 10px;
+            color: #fff;
+            font-size: 20px;
+            &:hover {
+              cursor: pointer;
+              background-position: bottom center;
+            }
+        }
+      }
+      span {
+        display: block;
+        margin-top: 5px;
+        label {
+          font-size: 10px;
+          position: relative;
+          top: -3px;
+        }
+      }
+    }
+    
+  }
+
+}
+
+// pfc backlink zone
+div.pfc-backlink {
+  padding: 10px;
+  border: @border-width solid @border-color;
+  background-color: @footer-bg-color;
+  p {
+    padding: 0; margin: 0;
+  }
+  pre {
+    padding: 5px;
+    background-color: #DDD;
+  }
+}

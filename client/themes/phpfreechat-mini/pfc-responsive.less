@@ -1,0 +1,110 @@
+// hidden elements used by tablet and mobile version
+// --------------------------------------------------
+div.pfc-content {
+  // tabs toggle button design 
+  a.pfc-toggle-users {
+    display: none;
+    float: right;
+    position: absolute;
+    top: 1px; right: 2px;
+    width: 40px; height: 28px;
+    background: url('img/users-toggle.png') top center no-repeat;
+    cursor: pointer;
+    &:hover {
+      background-position: bottom center;
+    }
+  }
+
+  // tabs toggle button design 
+  a.pfc-toggle-tabs {
+    display: none;
+    float: right;
+    position: absolute;
+    top: 1px; left: 2px;
+    width: 40px;height: 28px;
+    background: url('img/tabs-toggle.png') top center no-repeat;
+    cursor: pointer;
+    &:hover {
+      background-position: bottom center;
+    }
+  }
+}
+
+// TABLET
+// ----------------------------------
+@media (max-width: @responsive-tablet-width) {
+  div.pfc-content {
+    div.pfc-users {
+      display: none;
+    }
+    div.pfc-messages {
+      right: @padding-right;
+    }
+    div.pfc-topic {
+      height: 30px !important;
+      p {
+        line-height: 30px !important;
+        margin-right: 50px !important;
+      }
+    }
+    a.pfc-toggle-users {
+      display: block;
+    }
+  }
+}
+
+// MOBILE
+//--------------------------------------
+@media (max-width: @responsive-mobile-width) {
+    
+  .pfc-content{
+    top: -30px;
+    div.pfc-messages {
+      .messages-group {
+        .avatar {
+          display: none;
+        }
+        .name, .message{
+          padding: 0px !important;
+        }
+      }
+      .pfc-message-mobile-padding {
+        display: block !important;
+      }
+    }
+    a.pfc-toggle-tabs {
+      display: @toggle-tabs-btn-display !important;
+    }
+    
+    .pfc-tabs {
+      display: none;
+    }
+    
+    .pfc-modal-box{
+      .popup-donate {
+        p {
+          width: 140px !important;
+        }
+        div {
+          position: relative;
+          height: 70px;
+          input[name="cancel-donate"] {
+            display: block;
+            margin: 0 auto !important;
+            top: 50px !important;
+          }
+          input[name="ok-donate"] {
+            display: block;
+            margin: 0 auto !important;
+            position: absolute;
+            top: 0px;
+          }
+        }
+        span {
+          clear: both;
+        }
+      }
+    }
+    
+  }
+}
