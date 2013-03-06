@@ -30,7 +30,8 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     // load the interface
     pfc.loadHTML();
     pfc.loadResponsiveBehavior();
-    pfc.loadThemeUI();
+    pfc.loadActionMenu();
+    pfc.loadThemeUI();    
     
     // run quick tests
     pfc.checkServerConfig(pfc.startChatLogic);
@@ -469,7 +470,23 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
     }
     
   };
-  
+
+  /**
+   * Load action menu used for interactions with users in the list
+   */
+  pfc.loadActionMenu = function () {  
+    $(".avatar").live("mouseenter",function () {
+      var menu = '<div class="actions-menu"><ul class="menu">';
+      menu += '<li><a href="#">Give operator rights</a></li>';
+      menu += '<li><a href="#">Remove operator rights</a></li>';
+      menu += '<li><a href="#">Kick</a></li>';
+      menu += '<li><a href="#">Ban</a></li>';
+      menu += '</ul></div>';
+      $(this).append(menu);
+    }).live("mouseleave", function () {
+      $(".actions-menu").remove();
+    });
+  };
 
   /**
    * Load specific javascript defined by the theme

@@ -153,7 +153,7 @@ var phpFreeChat = (function (pfc, $, window, undefined) {
       html.find('div.status').addClass('st-op');
     }
     if (pfc.options.show_avatar) {
-      html.find('div.avatar').append('<img src="http://www.gravatar.com/avatar/' + pfc.md5(user.email) + '?d=wavatar&amp;s=20" alt="" />');
+      html.find('div.avatar').append('<img src="http://www.gravatar.com/avatar/' + pfc.md5(user.email) + '?d=wavatar&amp;s=30" alt="" />');
     }
     
     // get all userids from the list (could be cached)

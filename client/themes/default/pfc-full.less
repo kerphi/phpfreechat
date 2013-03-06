@@ -375,12 +375,51 @@ div.pfc-content {
           overflow: hidden;
         }
         .avatar {
-          max-height: @users-avatarlist-size;
-          max-width: @users-avatarlist-size;
+          height: @users-avatarlist-size;
+          width: @users-avatarlist-size;
           position: absolute;
           right: @users-avatar-position-right;
           top: @users-avatar-position-top;
           bottom: 0;
+          img {
+            height: @users-avatarlist-size;
+            width: @users-avatarlist-size;
+          }
+          .actions-menu {
+            position: absolute;
+            display: none;
+            height: @users-avatarlist-size;
+            width: @users-avatarlist-size;
+            top: 0;
+            left: 0;
+            background: @users-avatar-url-action-menu center center no-repeat;
+            .menu {
+                position: absolute;
+                top: @users-avatarlist-size;
+                right: 0;
+                width: 170px;
+                padding: 0;
+                border: 1px solid @footer-donate-bg-color-hover;
+                background: @dialog-bg-color;
+                z-index: 500;
+                li {
+                  height: auto;
+                  border: 0;
+                  a {
+                    display: block;
+                    padding: 5px 10px;
+                    &:hover {
+                      text-decoration: none;
+                      background-color: @footer-donate-bg-color-hover;
+                    }
+                  }
+                }
+            }
+          }
+          &:hover > .actions-menu {
+            display: block;
+            cursor: pointer;
+          }
         }
         
         .status {
