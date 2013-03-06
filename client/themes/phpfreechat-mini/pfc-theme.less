@@ -89,7 +89,7 @@ div.pfc-content {
   // user list
   div.pfc-users {
     display:none;
-    top: 25px;
+    top: 90px;
     right: 0;
     bottom: 28px;
     width: @pfc-mini-chat-width - 2;
@@ -97,7 +97,7 @@ div.pfc-content {
 
   // message zone
   div.pfc-messages {
-    top: 25px;
+    top: 90px;
     right: 0;
     left: 0;
     bottom: 80px;
@@ -143,13 +143,38 @@ div.pfc-content {
   
   // login
   div.pfc-modal-box {
-    top: 100px !important;
+    top: 120px !important;
     left: 35px !important;
+    width: 155px;
     ul.pfc-errors {
       padding: 0 5px 0 15px;
       margin: 0;
       color: red;
       width: 145px;
+    }
+    .popup-donate{
+      p{
+        background: none;
+        font-size: 10px;
+        height: none;
+        width: 155px;
+        padding: 0 0 10px;
+        margin: 0 0 10px;
+        text-align: justify;
+      }
+      div.bt-validate{
+        text-align: center;
+        input[name='ok-donate']{
+          height: 33px;
+          width: 152px;
+          margin: 0;
+          font-size: 16px;
+          background: url("img/minichat/bt-donate-popup.png") top center no-repeat;
+          &:hover{
+            background-position: bottom center;
+          }
+        }
+      }
     }
   }
   
