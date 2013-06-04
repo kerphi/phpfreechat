@@ -132,14 +132,7 @@
 </div>
      
 <div class="footer">
-  <span class="partners">phpFreeChat partners:</span>
-  <a href="http://www.jeu-gratuit.net">jeux gratuits</a> |
-  <a href="http://jeux-flash.jeu-gratuit.net">jeux flash</a> |
-  <a href="http://www.pronofun.com">pronofun</a> |
-  <a href="http://areno.jeu-gratuit.net">areno</a> |
-  <a href="http://www.micropolia.com">micropolia</a> |
-  <a href="http://www.zeitoun.net">zeitoun</a> |
-  <a href="http://federation.jeu-gratuit.net">federation</a>
+  <span class="partners">-</span>
 </div>
 
 </body></html>
