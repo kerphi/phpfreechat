@@ -106,9 +106,9 @@ class pfcContainer_Mysql extends pfcContainerInterface
 
     // create the db if it doesn't exists
     $db_exists = false;
-    $db_list = mysql_list_dbs($db);
-    while (!$db_exists && $row = mysql_fetch_object($db_list))
-      $db_exists = ($c->container_cfg_mysql_database == $row->Database);
+    $db_list = mysql_query("SHOW DATABASES");
+    while (!$db_exists && $row = mysql_fetch_assoc($db_list))
+      $db_exists = ($c->container_cfg_mysql_database == $row['Database']); 
     if (!$db_exists)
     {
       $query = 'CREATE DATABASE '.$c->container_cfg_mysql_database;
