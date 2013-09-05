@@ -33,7 +33,7 @@ Add this piece of HTML in your `<body>` where you want the chat to be displayed:
 ...
 ```
 
-The add this piece of code just after (it will hook the chat on the page):
+Then add this piece of code just after (it will hook the chat on the page):
 ```html
 <script type="text/javascript">
   $('#mychat').phpfreechat({ serverUrl: '/phpfreechat-2.1.1/server' });
